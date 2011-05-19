@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<containers>
+    <container name="panel"
+               columnSpecs="right:max(30dlu;pref),3dlu,60dlu,10dlu,right:max(10dlu;pref),3dlu,30dlu,3dlu,pref,1dlu:grow"
+               rowSpecs="pref,5dlu,pref,12dlu,pref,3dlu,pref,3dlu,pref,12dlu,pref,12dlu,pref:grow">
+        <cellconstraints name="alignmentLabel" gridX="1" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="alignmentComboBox" gridX="3" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="sizeLabel" gridX="1" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="sizeComboBox" gridX="3" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="resizeBehaviorLabel" gridX="1" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="resizeComboBox" gridX="3" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="resizeGrowValueTextField" gridX="7" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="panel" gridX="1" gridY="1" gridWidth="8" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="componentSizeLabel" gridX="1" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="componentSizeComboBox" gridX="3" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="constantSizeLabel" gridX="1" gridY="7" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="constantSizeTextField" gridX="3" gridY="7" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="unitsLabel" gridX="5" gridY="7" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>        
+        <cellconstraints name="unitsComboBox" gridX="7" gridY="7" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>        
+        <cellconstraints name="boundedTypeLabel" gridX="5" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="boundedTypeComboBox" gridX="7" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="resizeGrowLabel" gridX="5" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="buttonBar" gridX="1" gridY="13" gridWidth="10" gridHeight="1" horizontalAlignment="default" verticalAlignment="bottom" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="specificationSeparator" gridX="1" gridY="1" gridWidth="10" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="percentLabel" gridX="9" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+    </container>
+</containers>

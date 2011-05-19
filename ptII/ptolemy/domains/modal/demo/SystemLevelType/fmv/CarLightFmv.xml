@@ -1,0 +1,229 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CarLightFmv" class="ptolemy.domains.modal.kernel.fmv.FmvAutomaton">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={221, 15, 815, 584}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 467]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 233.5}">
+    </property>
+    <entity name="Cinit" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Cred" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Credyel" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="Cgrn" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="Cyel" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 370.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5962642691130368">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.3187380933660348">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count &lt; 2">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.5161411138036684">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.533134301387646">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count == 2">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cyel=1; Pstop=1">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count =0">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.47637659907432806">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6165049244607009">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cred=0; Cyel=0; Cgrn=1">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5923291496350379">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.8830988216856923">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count &lt; 1">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3844574382062285">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0582997041627948">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count == 1">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cyel=1; Cgrn=0">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.3290363831886758">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.121405046020323">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="  Pgo=1;&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6631118069216579">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5388815573620949">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <link port="Cinit.outgoingPort" relation="relation"/>
+    <link port="Cred.incomingPort" relation="relation"/>
+    <link port="Cred.incomingPort" relation="relation2"/>
+    <link port="Cred.incomingPort" relation="relation7"/>
+    <link port="Cred.outgoingPort" relation="relation2"/>
+    <link port="Cred.outgoingPort" relation="relation3"/>
+    <link port="Credyel.incomingPort" relation="relation3"/>
+    <link port="Credyel.outgoingPort" relation="relation4"/>
+    <link port="Cgrn.incomingPort" relation="relation4"/>
+    <link port="Cgrn.incomingPort" relation="relation5"/>
+    <link port="Cgrn.outgoingPort" relation="relation5"/>
+    <link port="Cgrn.outgoingPort" relation="relation6"/>
+    <link port="Cyel.incomingPort" relation="relation6"/>
+    <link port="Cyel.outgoingPort" relation="relation7"/>
+</entity>

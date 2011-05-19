@@ -1,0 +1,96 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="zeroRate1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[101, 25]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="267.0, 36.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 98, 819, 572}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <entity name="SDFTestZeroRate1" class="ptolemy.domains.sdf.kernel.test.SDFTestZeroRate1">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="input_rate1" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="output_rate1" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 149.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="84.0, 145.0">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="432.0, 152.0">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="188.0, 142.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SDFTestZeroRate1.input" relation="relation3"/>
+    <link port="SDFTestZeroRate1.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Scale.input" relation="relation"/>
+    <link port="Scale.output" relation="relation3"/>
+</entity>

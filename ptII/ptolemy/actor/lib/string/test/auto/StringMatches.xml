@@ -1,0 +1,508 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="StringMatches" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 95.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 739}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 630]">
+    </property>
+    <entity name="String" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;TEST 123 test 456&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="119.23599243164062, 122.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Numeric" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;123&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="121.73599243164062, 82.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Text String" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;find me&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 170.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="String2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;TEST 123 find me 456&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="109.23599243164062, 207.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Character Class" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;[a-c]&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 260.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="String3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Look for character classes&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="114.23599243164062, 307.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="String4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;There are non digits here&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="124.23599243164062, 402.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="No Digits" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;\\D&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 355.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Word Boundary" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;nd\\b&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="124.23599243164062, 447.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="String5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Find the end with word boundary&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="124.23599243164062, 497.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Word Boundary2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;\\bfoo\\b&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="119.23599243164062, 547.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="String6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Won't match foobar because of word boundary&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="139.23599243164062, 597.7008056640625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{true,true,true,true,true,false}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 290.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringMatches7" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 85.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="matchString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 180.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="matchString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringMatches2" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 270.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="matchString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringMatches3" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 365.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="matchString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringMatches4" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 450.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="matchString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringMatches8" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 535.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="matchString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="String.output" relation="relation19"/>
+    <link port="Numeric.output" relation="relation2"/>
+    <link port="Text String.output" relation="relation13"/>
+    <link port="String2.output" relation="relation3"/>
+    <link port="Character Class.output" relation="relation14"/>
+    <link port="String3.output" relation="relation5"/>
+    <link port="String4.output" relation="relation7"/>
+    <link port="No Digits.output" relation="relation15"/>
+    <link port="Word Boundary.output" relation="relation16"/>
+    <link port="String5.output" relation="relation9"/>
+    <link port="Word Boundary2.output" relation="relation17"/>
+    <link port="String6.output" relation="relation11"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation6"/>
+    <link port="Test.input" relation="relation8"/>
+    <link port="Test.input" relation="relation10"/>
+    <link port="Test.input" relation="relation12"/>
+    <link port="StringMatches7.pattern" relation="relation2"/>
+    <link port="StringMatches7.matchString" relation="relation19"/>
+    <link port="StringMatches7.output" relation="relation"/>
+    <link port="StringMatches.pattern" relation="relation13"/>
+    <link port="StringMatches.matchString" relation="relation3"/>
+    <link port="StringMatches.output" relation="relation4"/>
+    <link port="StringMatches2.pattern" relation="relation14"/>
+    <link port="StringMatches2.matchString" relation="relation5"/>
+    <link port="StringMatches2.output" relation="relation6"/>
+    <link port="StringMatches3.pattern" relation="relation15"/>
+    <link port="StringMatches3.matchString" relation="relation7"/>
+    <link port="StringMatches3.output" relation="relation8"/>
+    <link port="StringMatches4.pattern" relation="relation16"/>
+    <link port="StringMatches4.matchString" relation="relation9"/>
+    <link port="StringMatches4.output" relation="relation10"/>
+    <link port="StringMatches8.pattern" relation="relation17"/>
+    <link port="StringMatches8.matchString" relation="relation11"/>
+    <link port="StringMatches8.output" relation="relation12"/>
+</entity>

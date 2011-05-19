@@ -1,0 +1,137 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Download Ptplot 5.8.beta</title>
+<link href="../default.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffff">
+<H1>Download Ptplot 5.8.beta</A></H1>
+<h2>Downloads</h2>
+Ptplot is available for download in several format.
+ <br>Each of the formats contains the same functionality.
+<menu>
+<li> Tar and Zip files: 
+  <menu>
+  <li> <A HREF="../../ptplot5.8.beta.tar.gz"><CODE>ptplot5.8.beta.tar.gz</CODE></A> 
+	-  2.0Mb Gzipped Tar File</A>
+  <li> <A HREF="../../ptplot5.8.beta.zip"><CODE>ptplot5.8.beta.zip</CODE></A>
+	- 2.4Mb Compressed Zip File
+
+  <li> <a href="../install.htm#tarorzip">Build Instructions for Tar or Zip files</a>
+ <br> Note that viewing local applets that have
+spaces in the path name may fail if the applet tries to download a
+data file.  The workaround is to place the Ptplot distribution in a
+directory that does not have space in the pathname.  For details, see
+the <a href="../troubleshooting.htm#spaces">Troubleshooting Guide</a>.
+
+  </menu>
+
+<li> The
+<a href="InstData/Windows/NoVM/ptplot5-6-devel-install.exe">3.3Mb Windows installer executable</a>.
+Please
+send any feedback about this installer to
+ptplot at ptolemy eecs berkeley edu.
+
+</menu>
+
+<h2>Installation Instructions</h2>
+
+<h3>1. Install Java, if necessary</h3>
+<p>
+Ptplot 5.8.beta requires Java 1.5 or later.
+
+ <p>To run Ptplot, the Java runtime environment (JRE) is sufficient.
+To run the applets in a browser, the Java plug-in is required.
+The JRE is bundled with the plug-in, so downloading the plug-in
+is sufficient.  To extend Ptplot with your own
+Java code, the Java development kit (JDK)
+or an equivalent Java development environment is required.
+The JDK includes a Java compiler.
+<p>
+One way to determine what version of Java (if any) is installed 
+is to run our
+<a href="JavaVersionApplet.htm">Java Version Applet </a>, which
+uses the Java 1.5 plug-in.
+Another way is to run the command below to see whether
+you have Java installed, and whether it is the proper version:
+<pre>
+java -version
+</pre>
+If the command cannot be found, or the version that is printed is
+less than 1.5, you should install the plug-in, JRE 1.5, or JDK 1.5
+<p>
+Downloads:
+<menu>
+<li> Full JDK, or other Platforms:
+<a href="http://www.oracle.com/technetwork/java/javase/overview/index.html" target="_top"><CODE>http://www.oracle.com/technetwork/java/javase/overview/index.html</CODE></a>
+</menu>
+
+<h3>2. Install Ptplot</h3>
+
+<menu>
+
+<li> There are three ways to install Ptplot on Windows machines:
+ 
+
+<menu>
+<li> Download the tar file and run using the java command
+  <ol>
+  <li> Download <a href="../../ptplot5.8.beta.tar.gz"><CODE>ptplot5.8.beta.tar.gz</CODE></a> (2.0Mb) 
+
+  <li> Untar the file.  In this example, I untared it in <CODE>d:\tmp</CODE>
+so that <CODE>d:\tmp\ptplot5.8.beta</CODE> was created.
+  <li> The tar file contains sources and jar files, to run the
+plotter, start up a command window with
+<CODE>Start</CODE> -&gt; <CODE>Run</CODE> -&gt; <CODE>cmd</CODE>
+and type
+<pre>
+java -classpath d:/tmp/ptplot5.8.beta/ptolemy/plot/plotapplication.jar ptolemy.plot.plotml.EditablePlotMLApplication
+
+</pre>
+There are also simple DOS batch files that will start up
+the Plotter.  They depend on the <CODE>PTII</CODE> environment variable
+being set.  You can set that variable and run the batch files with:
+<pre>
+C:\&gt;set PTII=d:\tmp\ptplot5.8.beta
+
+C:\&gt;echo %PTII%
+d:\tmp\ptplot5.8.beta
+
+C:\&gt;%PTII%\bin\ptplot
+
+</pre>
+
+  </ol>
+</menu>
+
+<p> To extend Ptplot under Windows, you will also need the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm">Cygwin toolkit</a>, and then
+follow the 
+<a href="../install.htm">Installation Instructions</a>
+to set up your build environment.  
+
+ <p>
+
+
+<p>
+<li> Other Platforms: 
+
+<menu>
+<li> Standard tar file and configure method:
+  <ol>
+  <li> Download <a href="../../ptplot5.8.beta.tar.gz"><CODE>ptplot5.8.beta.tar.gz</CODE></a> (2.0Mb) 
+
+  <li> Follow the 
+<a href="../install.htm">Installation Instructions</a>
+  </ol>
+</menu>
+
+</ol>
+
+</menu>
+</menu>
+</menu>
+
+
+</body>
+</html>

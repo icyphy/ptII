@@ -1,0 +1,6 @@
+#!/bin/sh
+# Check the sizes of all the demos listed in the completeDemos.htm file
+
+demos=`grep ".xml" $PTII/ptolemy/configs/doc/completeDemos.htm | 
+    awk '{split($0, f , "\""); print f[2]}' | sed s@../..@$PTII/ptolemy@`
+$PTII/util/testsuite/chksize $demos

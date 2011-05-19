@@ -1,0 +1,137 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Conversions" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Conversion actors</doc>
+
+  <entity name="AnythingToDouble"
+          class="ptolemy.actor.lib.conversions.AnythingToDouble">
+  </entity>
+  <entity name="BooleanToAnything"
+          class="ptolemy.actor.lib.conversions.BooleanToAnything">
+  </entity>
+
+  <entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
+  </entity>
+
+  <entity name="CartesianToComplex"
+          class="ptolemy.actor.lib.conversions.CartesianToComplex">
+  </entity>
+
+  <entity name="CartesianToPolar"
+          class="ptolemy.actor.lib.conversions.CartesianToPolar">
+  </entity>
+
+  <entity name="ComplexToCartesian"
+          class="ptolemy.actor.lib.conversions.ComplexToCartesian">
+  </entity>
+
+  <entity name="ComplexToPolar"
+          class="ptolemy.actor.lib.conversions.ComplexToPolar">
+  </entity>
+
+  <entity name="DoubleToFix"
+          class="ptolemy.actor.lib.conversions.DoubleToFix">
+    <property name="quantization">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="round" value="round"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="truncate" value="truncate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+  </entity>
+
+  <entity name="ExpressionToToken"
+          class="ptolemy.actor.lib.conversions.ExpressionToToken">
+  </entity>
+
+  <entity name="FixToDouble"
+          class="ptolemy.actor.lib.conversions.FixToDouble">
+  </entity>
+
+  <entity name="FixToFix"
+          class="ptolemy.actor.lib.conversions.FixToFix">
+    <property name="quantization">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="round" value="round"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="truncate" value="truncate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+    <property name="overflow">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="saturate" value="saturate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="overflow_to_zero" value="overflow_to_zero"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+
+  </entity>
+
+  <entity name="IntToBits"
+          class="ptolemy.domains.sdf.lib.IntToBits">
+  </entity>
+
+  <entity name="InUnitsOf"
+          class="ptolemy.actor.lib.conversions.InUnitsOf">
+    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+        <property name="attributeName" value="units"/>
+        <property name="displayWidth" value="40"/>
+    </property>
+  </entity>
+
+  <entity name="LongToDouble"
+          class="ptolemy.actor.lib.conversions.LongToDouble">
+  </entity>
+
+  <entity name="PolarToCartesian"
+          class="ptolemy.actor.lib.conversions.PolarToCartesian">
+  </entity>
+
+  <entity name="PolarToComplex"
+          class="ptolemy.actor.lib.conversions.PolarToComplex">
+  </entity>
+
+  <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
+    <property name="function">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="ceil" value="ceil"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="floor" value="floor"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="round" value="round"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+	        <property name="truncate" value="truncate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+  </entity>
+
+  <entity name="StringToUnsignedByteArray"
+          class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+  </entity>
+  
+  <entity name="StringToXML"
+          class="ptolemy.actor.lib.conversions.StringToXML">
+  </entity>
+
+  <entity name="TokenToExpression"
+          class="ptolemy.actor.lib.conversions.TokenToExpression">
+  </entity>
+
+  <entity name="UnsignedByteArrayToString"
+          class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

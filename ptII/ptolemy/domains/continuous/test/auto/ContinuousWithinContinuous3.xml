@@ -1,0 +1,160 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ContinuousWithinContinuous3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[105, 47]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 146, 817, 460}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 175.0}">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK45Solver">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 95.0]">
+        </property>
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK45Solver">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 60.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 193, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 85.0]">
+            </property>
+        </port>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 175.0}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+        </entity>
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 175.0}">
+            </property>
+        </entity>
+        <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 175.0}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="{280.0, 175.0}">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="{60.0, 220.0}">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="output" relation="relation"/>
+        <link port="Scale.input" relation="relation"/>
+        <link port="Scale.output" relation="relation2"/>
+        <link port="Integrator.derivative" relation="relation2"/>
+        <link port="Integrator.state" relation="relation3"/>
+        <link port="Integrator2.derivative" relation="relation3"/>
+        <link port="Integrator2.state" relation="relation"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="repeat(12, 0.0)">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 175.0}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+    </entity>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 175.0}">
+        </property>
+    </entity>
+    <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 175.0}">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 110}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{280.0, 175.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{60.0, 220.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="CompositeActor.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
+    <link port="Scale.input" relation="relation2"/>
+    <link port="Scale.output" relation="relation3"/>
+    <link port="Integrator.derivative" relation="relation3"/>
+    <link port="Integrator.state" relation="relation4"/>
+    <link port="Integrator2.derivative" relation="relation4"/>
+    <link port="Integrator2.state" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.minus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation5"/>
+</entity>

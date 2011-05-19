@@ -1,0 +1,323 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JAI" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>Java Advanced Imaging actors</doc>
+	<entity name="AdaptiveMedian" class="ptolemy.actor.lib.jai.AdaptiveMedian">
+	</entity>
+	<entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
+	  <property name="dataFormat">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="byte" value="byte"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="double" value="double"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="float" value="float"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="int" value="int"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="short" value="short"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="ushort" value="ushort"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="ImageToJAI" class="ptolemy.actor.lib.jai.ImageToJAI">
+	</entity>
+	<entity name="JAIAffineTransform" class="ptolemy.actor.lib.jai.JAIAffineTransform">
+	  <property name="interpolationType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="bicubic" value="bicubic"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bicubic2" value="bicubic2"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bilinear" value="bilinear"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="nearestNeighbor" value="nearestNeighbor"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="JAIBandCombine" class="ptolemy.actor.lib.jai.JAIBandCombine">
+	</entity>
+	<entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
+	</entity>
+	<entity name="JAIBorder" class="ptolemy.actor.lib.jai.JAIBorder">
+	  <property name="borderType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Constant" value="Constant"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Copy" value="Copy"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Reflect" value="Reflect"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Wrap" value="Wrap"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Zero" value="Zero"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>	
+	<entity name="JAIBoxFilter" class="ptolemy.actor.lib.jai.JAIBoxFilter">
+	</entity>
+	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
+	</entity>
+	<entity name="JAIConstant" class="ptolemy.actor.lib.jai.JAIConstant">
+	  <property name="dataFormat">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="byte" value="byte"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="double" value="double"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="float" value="float"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="int" value="int"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="short" value="short"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>
+	  </property>   	
+	</entity>
+	<entity name="JAIConvolve" class="ptolemy.actor.lib.jai.JAIConvolve">
+	</entity>
+	<entity name="JAICrop" class="ptolemy.actor.lib.jai.JAICrop">
+	</entity>	
+	<entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
+	  <property name="dataFormat">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="byte" value="byte"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="double" value="double"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="float" value="float"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="int" value="int"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="short" value="short"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="ushort" value="ushort"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	
+	<entity name="JAIDCT" class="ptolemy.actor.lib.jai.JAIDCT">
+	</entity>
+	<entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
+	  <property name="scalingType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="dimensions" value="dimensions"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="unitary" value="unitary"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="none" value="none"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	  <property name="dataNature">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="complexToComplex" value="complexToComplex"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="complexToReal" value="complexToReal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="realToComplex" value="realToComplex"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="JAIEdgeDetection" class="ptolemy.actor.lib.jai.JAIEdgeDetection">
+	  <property name="firstMask">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Backdiagonal" value="Backdiagonal"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Diagonal" value="Diagonal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Frei and Chen Horizontal" value="Frei and Chen Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Frei and Chen Vertical" value="Frei and Chen Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Prewitt Horizontal" value="Prewitt Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Prewitt Vertical" value="Prewitt Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>	      
+	          <property name="Roberts Horizontal" value="Roberts Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Roberts Vertical" value="Roberts Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Sobel Horizontal" value="Sobel Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Sobel Vertical" value="Sobel Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Transparent" value="Transparent"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="User Specified" value="User Specified"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Zero" value="Zero"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>	
+	  <property name="secondMask">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Backdiagonal" value="Backdiagonal"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Diagonal" value="Diagonal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Frei and Chen Horizontal" value="Frei and Chen Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Frei and Chen Vertical" value="Frei and Chen Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Prewitt Horizontal" value="Prewitt Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Prewitt Vertical" value="Prewitt Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>	      
+	          <property name="Roberts Horizontal" value="Roberts Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Roberts Vertical" value="Roberts Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Sobel Horizontal" value="Sobel Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Sobel Vertical" value="Sobel Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Transparent" value="Transparent"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="User Specified" value="User Specified"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Zero" value="Zero"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="JAIIDCT" class="ptolemy.actor.lib.jai.JAIIDCT">
+	</entity>
+	<entity name="JAIIDFT" class="ptolemy.actor.lib.jai.JAIIDFT">
+	  <property name="scalingType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="dimensions" value="dimensions"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="unitary" value="unitary"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="none" value="none"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	  <property name="dataNature">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="complexToComplex" value="complexToComplex"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="complexToReal" value="complexToReal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="realToComplex" value="realToComplex"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>	
+	</entity>
+	<entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+	</entity>
+	<entity name="JAIInvert" class="ptolemy.actor.lib.jai.JAIInvert">
+	</entity>
+	<entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
+	</entity>
+	<entity name="JAILog" class="ptolemy.actor.lib.jai.JAILog">
+	</entity>		
+	<entity name="JAIMagnitude" class="ptolemy.actor.lib.jai.JAIMagnitude">
+	</entity>	
+	<entity name="JAIMedianFilter" class="ptolemy.actor.lib.jai.JAIMedianFilter">
+	  <property name="shape">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Plus" value="Plus"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Separable Square" value="Separable Square"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Square" value="Square"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="X" value="X"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="JAIPeriodicShift" class="ptolemy.actor.lib.jai.JAIPeriodicShift">
+	</entity>
+	<entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
+	</entity>	
+	<entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">
+	</entity>		
+	<entity name="JAIPNMWriter" class="ptolemy.actor.lib.jai.JAIPNMWriter">
+	</entity>
+	<entity name="JAIPNGWriter" class="ptolemy.actor.lib.jai.JAIPNGWriter">
+	</entity>
+	<entity name="JAIRotate" class="ptolemy.actor.lib.jai.JAIRotate">
+	  <property name="interpolationType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="bicubic" value="bicubic"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bicubic2" value="bicubic2"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bilinear" value="bilinear"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="nearestNeighbor" value="nearestNeighbor"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="JAIScale" class="ptolemy.actor.lib.jai.JAIScale">
+	  <property name="interpolationType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="bicubic" value="bicubic"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bicubic2" value="bicubic2"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bilinear" value="bilinear"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="nearestNeighbor" value="nearestNeighbor"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>	
+	<entity name="JAITIFFWriter" class="ptolemy.actor.lib.jai.JAITIFFWriter">
+	</entity>
+	<entity name="JAIToDoubleMatrix" class="ptolemy.actor.lib.jai.JAIToDoubleMatrix">
+	</entity>
+	<entity name="JAITranslate" class="ptolemy.actor.lib.jai.JAITranslate">
+	  <property name="interpolationType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="bicubic" value="bicubic"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bicubic2" value="bicubic2"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bilinear" value="bilinear"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="nearestNeighbor" value="nearestNeighbor"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="JAITranspose" class="ptolemy.actor.lib.jai.JAITranspose">
+	  <property name="transposeType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="flip antidiagonal" value="flip antidiagonal"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="flip diagonal" value="flip diagonal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="flip horizontal" value="flip horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="flip vertical" value="flip vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="rotate 90" value="rotate 90"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="rotate 180" value="rotate 180"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="rotate 270" value="rotate 270"
+		            class="ptolemy.kernel.util.StringAttribute"/>	      
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="SaltAndPepper" class="ptolemy.actor.lib.jai.SaltAndPepper">
+	</entity>
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,45 @@
+#!/bin/sh
+# $Id$
+# Shell script that reports what directories are not in JSALLDIRS
+# Usage: jsalldirs_check distribution_directory jsalldirs
+
+distdir=$1
+shift
+jsalldirs=$@
+
+jsalldirs_file=/tmp/jsalldirs_check_jsalldirs
+
+echo "$jsalldirs" | sed "s@$distdir/ptolemy@\.@g" | awk '{for(i=1;i<NF;i++) print $i}' | sort > $jsalldirs_file
+
+
+# List of directories in $PTII/ptolemy that have java files
+javadirs_file=/tmp/jsalldirs_check_javadirs
+if [ ! -f $javadirs_file ]; then
+	echo "Generating list of java directories in $PTII/ptolemy"
+
+	#cd $(PTII)/ptolemy; find . -name "*.java" -print) | xargs -n 1 dirname | sort | uniq | egrep -v 'test$' | egrep -v 'CVS$' > $javadirs_file
+
+	dirs=`cd $PTII/ptolemy; find . -xdev -type d -print | egrep -v '(test|CVS|\.svn)$' | egrep -v demo`
+	for dir in $dirs;
+	do
+	        javaFile=`ls $PTII/ptolemy/$dir/*.java 2>&1 | grep -v "No such file" | head -1`
+		if [ -f "$javaFile" ]; then 
+			echo "$dir" >> $javadirs_file
+		fi
+	done
+fi
+
+echo 'Column 1 is directories that have java files, but are not'
+echo 'listed in $(JSALLDIRS) in the makefile'
+echo 'Column 2 is directories that are listed in $(JSALL), but'
+echo 'do not have .java files' 
+
+comm -3 $javadirs_file $jsalldirs_file 
+
+javaDirs=`comm -23 $javadirs_file $jsalldirs_file`
+for javaDir in $javaDirs;
+do
+    if [ -d "$PTII/ptolemy/$javaDir/test" ]; then
+	echo "WARNING: $javaDir/test exists, but is not in JSALLDIRS"
+    fi
+done

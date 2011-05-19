@@ -1,0 +1,202 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="test1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 129, 875, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[660, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Tickles a bug we had where the input consumption of an actor was not getting recorded properly</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-90.0, 305.0">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1,1,1}">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 175.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 235.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{1,2}">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-25.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </port>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{2,3}">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="365.0, 280.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation"/>
+    <link port="SampleDelay.input" relation="relation4"/>
+    <link port="SampleDelay.output" relation="relation6"/>
+    <link port="ArrayToSequence.input" relation="relation"/>
+    <link port="ArrayToSequence.output" relation="relation4"/>
+    <link port="SequenceToArray.input" relation="relation5"/>
+    <link port="SequenceToArray.output" relation="relation2"/>
+    <link port="SampleDelay2.input" relation="relation6"/>
+    <link port="SampleDelay2.output" relation="relation5"/>
+</entity>

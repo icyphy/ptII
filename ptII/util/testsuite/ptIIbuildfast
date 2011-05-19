@@ -1,0 +1,25 @@
+#!/bin/sh
+# Build Ptolemy II very quickly
+
+if [ ! -d "$PTII" ]; then
+	echo "PTII is '$PTII', which either is not set or does not exist"
+	exit 9
+fi
+cd $PTII
+./configure
+
+ptIIdirs=`sh $PTII/util/testsuite/ptIIdirs`
+for dir in $ptIIdirs
+do
+	echo "---------------:> $dir"
+	if [ -d $PTII/$dir ]; then
+		cd $PTII/$dir
+
+		if [ "`ls *.java`" != "" ]; then
+			echo "javac *.java"
+			CLASSPATH=$PTII javac *.java
+		fi
+	else
+		echo "$PTII/dir does not exist"
+	fi
+done

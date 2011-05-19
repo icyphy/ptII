@@ -1,0 +1,158 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Viewgraph" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 667]">
+    </property>
+    <property name="image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/ptIIplanet.gif">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="870.0, 20.0">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:40; font-family:Comic Sans MS; fill:blue">Video Model</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 65.0">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 190.0">
+        </property>
+    </property>
+    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="lineColor">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="400.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,0.5}">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="50.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 465.0">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:24; font-family:Comic Sans MS; fill:black">This model shows an example
+of a Ptolemy II actor that
+updates its own icon dynamically
+while it executes, and some
+attributes with visual elements.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 490.0">
+        </property>
+    </property>
+    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="lineColor">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="1024.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 120.0">
+        </property>
+    </property>
+    <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
+    </property>
+    <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,1.0,0.5}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 220.0">
+        </property>
+    </property>
+    <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 365.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="MonitorImage" class="ptolemy.vergil.actor.lib.MonitorImage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 215.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="VideoCamera.output" relation="relation"/>
+    <link port="MonitorImage.input" relation="relation"/>
+</entity>

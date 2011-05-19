@@ -1,0 +1,63 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ContinuousMerge2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 50.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 377, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.domains.continuous.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="ContinuousMerge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225, 155}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 0.0, 0.3090169943749, 0.4539904997395, 0.5877852522925, 0.5877852522925, 0.8090169943749, 0.8910065241884, 0.9510565162952, 0.9510565162952, 1.0, 0.9876883405951, 0.9510565162952, 0.9510565162952, 0.8090169943749, 0.7071067811865, 0.5877852522925, 0.5877852522925, 0.3090169943749, 0.1564344650402, 1.2246467991474E-16, 1.2246467991474E-16, -0.3090169943749, -0.4539904997395, -0.5877852522925, -0.5877852522925, -0.8090169943749, -0.8910065241884, -0.9510565162952, -0.9510565162952, -1.0, -0.9876883405951, -0.9510565162952, -0.9510565162952, -0.8090169943749, -0.7071067811865, -0.5877852522925, -0.5877852522925, -0.3090169943749, -0.1564344650402, -2.4492935982947E-16, -2.4492935982947E-16, 0.3090169943749, 0.4539904997395, 0.5877852522925, 0.5877852522925, 0.8090169943749, 0.8910065241884, 0.9510565162952, 0.9510565162952, 1.0, 0.9876883405951, 0.9510565162952, 0.9510565162952, 0.8090169943749, 0.7071067811865, 0.5877852522925, 0.5877852522925, 0.3090169943749, 0.1564344650402, 3.6739403974421E-16, 3.6739403974421E-16, -0.3090169943749, -0.4539904997395, -0.5877852522925, -0.5877852522925, -0.8090169943749, -0.8910065241884, -0.9510565162952, -0.9510565162952, -1.0, -0.9876883405951, -0.9510565162952, -0.9510565162952, -0.8090169943749, -0.7071067811865, -0.5877852522925, -0.5877852522925, -0.3090169943749, -0.1564344650402, -4.8985871965894E-16, 1.0, -4.8985871965894E-16, 0.3090169943749, 0.4539904997395, 0.5877852522925, 0.5877852522925, 0.8090169943749, 0.8910065241884, 0.9510565162952, 0.9510565162952, 1.0, 0.9876883405951, 0.9510565162952, 0.9510565162952, 0.8090169943749, 0.7071067811865, 0.5877852522925, 0.5877852522925, 0.3090169943749, 0.1564344650402, 6.1232339957368E-16, 6.1232339957368E-16, -0.3090169943749, -0.4539904997395, -0.5877852522925, -0.5877852522925, -0.8090169943749, -0.8910065241884, -0.9510565162952, -0.9510565162952, -1.0, -0.9876883405951, -0.9510565162952, -0.9510565162952, -0.8090169943749, -0.7071067811865, -0.5877852522925, -0.5877852522925, -0.3090169943749, -0.1564344650402, -7.3478807948841E-16, -7.3478807948841E-16}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 245}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{310.0, 165.0}">
+        </vertex>
+    </relation>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="ContinuousMerge.input" relation="relation2"/>
+    <link port="ContinuousMerge.input" relation="relation3"/>
+    <link port="ContinuousMerge.output" relation="relation4"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="ContinuousSinewave.output" relation="relation3"/>
+</entity>

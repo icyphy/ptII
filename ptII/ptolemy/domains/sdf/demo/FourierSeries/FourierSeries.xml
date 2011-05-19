@@ -1,0 +1,210 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FourierSeries" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 65.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 24, 813, 460}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run the model.  Edit the time-domain plot x(n),&#10;and see the magnitude of its Fourier series&#10;coefficients plotted in response. To edit the&#10;plot, right click and drag.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 25.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 310.0}">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
+    </property>
+    <entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 493, 414, 271}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[406, 216]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="length" class="ptolemy.data.expr.Parameter" value="32">
+        </property>
+        <property name="initialTrace" class="ptolemy.data.expr.Parameter" value="{-0.0154929577465, 0.1704225352113, 0.3253521126761, 0.4802816901408, 0.6197183098592, 0.7591549295775, 0.8521126760563, 0.9450704225352, 1.0070422535211, 1.0845070422535, 1.1, 1.1, 1.1, 1.1, 1.0535211267606, 0.9915492957746, 0.8366197183099, 0.6197183098592, 0.356338028169, 0.1084507042254, -0.0774647887324, -0.2478873239437, -0.4028169014085, -0.5577464788732, -0.6197183098592, -0.6971830985915, -0.7591549295775, -0.8211267605634, -0.8830985915493, -0.8830985915493, -0.7901408450704, -0.6507042253521}">
+        </property>
+        <property name="periodic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="yBottom" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="yTop" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="runOnModification" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create values from a sketch on the screen</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 170.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Sketch One Period of x(n) Here</title>
+<xLabel>n</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="32.0"/>
+<yRange min="-1.0" max="1.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={417, 492, 413, 272}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 217]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-16.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 200.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Magnitude Fourier Series, |X_k|</title>
+<xLabel>k</xLabel>
+<yLabel></yLabel>
+<xRange min="-16.0" max="15.0"/>
+<yRange min="0.006294014084503141" max="0.5069347107820368"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 210.0">
+        </property>
+    </entity>
+    <entity name="ComplexToPolar" class="ptolemy.actor.lib.conversions.ComplexToPolar">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 210.0">
+        </property>
+    </entity>
+    <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 240.0">
+        </property>
+    </entity>
+    <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 210.0">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="1.0/32.0">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 200.0">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SketchedSource.output" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="FFT.input" relation="relation"/>
+    <link port="FFT.output" relation="relation2"/>
+    <link port="ComplexToPolar.input" relation="relation2"/>
+    <link port="ComplexToPolar.magnitude" relation="relation3"/>
+    <link port="Waveform.output" relation="_R"/>
+    <link port="Multiply.multiply" relation="_R"/>
+    <link port="Multiply.multiply" relation="relation4"/>
+    <link port="Multiply.output" relation="relation"/>
+    <link port="Scale.input" relation="relation3"/>
+    <link port="Scale.output" relation="relation5"/>
+</entity>

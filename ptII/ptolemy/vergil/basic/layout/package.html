@@ -1,0 +1,57 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>ptolemy.vergil.basic.layout</title>
+</head>
+<body>
+Classes used to place entities and relations and to route connection using different methods in Vergil.
+<p>Graph layout support using
+<a href="http://rtsys.informatik.uni-kiel.de/trac/kieler/wiki/Releases/Layout#in_browser">Kieler</a>, from University of Kiel.</p>
+
+<h4>Graph -&gt; Automatic Layout [Ctrl/Cmd-T] (Recommended)</h4>
+<p>
+Automatic placement of nodes and routing of edges by specifying bendpoints in layoutHints attributes at relations. 
+Only connected nodes are placed. Others are not moved. This can be used to place unconnected nodes like Director, text attributes, etc.
+manually, e.g. to place documentation. The Nodes are placed starting at the top left corner of the former bounding box of the nodes.
+</p>
+<p>This option uses a new feature of explicitly routing edges. The additional routing information will be deleted automatically when
+nodes are moved manually afterwards to allow manual editing. Therefore manual editing always only uses the standard Manhattan router.</p>
+
+<h4>Graph -&gt; Advanced Layout Dialog (Experimental)</h4>
+<p>
+The advanced layout dialog shows different experimental options to compare different layout integrations. The buttons implement the following behavior:
+<dl>
+<dt>Place all</dt>
+<dd>Place all nodes, do no routing. Placement is done for connected and unconnected nodes, i.e. also text attributes, Director, etc. 
+This can be used to get an initial placement of everything to avoid node overlaps. No automatic routing is done so there likely will be connection overlaps.</dd>
+<dt>Place only connected nodes</dt>
+<dd>Place only connected node, do not move unconnected nodes like attributes, do no routing. This can be used if you want to manually place unconnected nodes, e.g.
+to place text annotations near some actors.</dd>
+<dt>Place and Route connected nodes (EXPERIMENTAL)</dt>
+<dd>Places connected nodes and routes edges by inserting new relation vertices for each bend point that the layout algorithm has calculated. By this the layout might get
+quite crowded with new relation vertices. This makes a model transformation and really changes the structure of the model. So use with care only!</dd>
+<dt>Remove unnecessary relation vertices</dt>
+<dd>Removes relation vertices that semantically are not required, e.g. that have been introduced for routing purposes only. Will do a model transformation that tries to
+directly connect ports if possible and remove as many vertices as possible while keeping the original structure.</dd>
+<dt>Hide unnecessary relation vertices</dt>
+<dd>Toggles the visibility of semantically irrelevant relation vertices. Can be used to hide vertices that have been introduced for routing purposes only.
+</dl>
+The advanced layout dialog can be used to show the different features of layout. The following would be a typical use case:
+<ol>
+<li>Place all nodes initially.</li>
+<li>Move textual annotations manually.</li>
+<li>Place and route connected nodes. The view gets crowded with new vertices.</li>
+<li>Hide unnecessary relation vertices to get a clean and beautiful view. Last routing errors of the default Manhattan Router will vanish.</li>
+<li>To edit the diagram again, make toggle the visibility again, to show all superflous vertices.</li>
+<li>If the amount of vertices is annoying for editing, remove all unnecessary vertices.</li>
+<li>Edit and call place and route in between with the other steps as you like.</li>
+</ol>
+</p>
+
+Still, we recommend to mainly use the more advanced menu entry "Automatic Layout" mentioned above, because it offers a whole new approach to route edges.
+
+<p>
+   @since Ptolemy II 8.0
+   @author Miro Spoenemann (University of Kiel), Hauke Fuhrmann (University of Kiel)
+</body>
+</html>

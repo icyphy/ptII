@@ -1,0 +1,457 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Performance</title>
+</head>
+<body>
+<h1>Performance</h1>
+Contents
+<menu>
+<li> <a href="#models">Models</a>
+<li> <a href="#eclipse">Eclipse</a>
+<li> <a href="#profiling">Profiling</a>
+<li> <a href="#remoteresources">Remote resources</a>
+</menu>
+
+<h2><a name="Overview">Overview</a></h2>
+When a model is run, some run data is printed
+to stdout, such as:
+<pre>
+2212 ms. Memory: 31664K Free: 7107K (22%)
+</pre>
+
+This data is printed by ptolemy.actor.Manager, which has methods
+such as <code>timeAndMemory()</code>
+
+<p>To measure the time of an execution within a model, you could use
+the WallClockTime actor, see
+
+<p>The Expression Language also has totalMemory and freeMemory variables
+that can be accessed, though the values tend to get cached, so they
+are not always updated during the execution of a system.
+
+To do performance measurements, run models
+<a href="../ptIIfaq.htm#invoking Ptolemy II">without a GUI</a> and then do several runs, tossing out the times for the
+first run.  $PTII/ptolemy/actor/lib/test/performance, has some scripts that might be of use.
+
+<h2><a name="Models">Models</a></h2>
+<menu>
+<li> <a href="../../ptolemy/actor/lib/test/performance/"><CODE>ptolemy/actor/lib/test/performance/</CODE></a> 
+ - models that test performance
+
+<li> <a href="../../ptolemy/data/type/test/performance.xml"><CODE>ptolemy/data/type/test/performance.xml</CODE></a> 
+ - type system performance testing
+
+
+<li> <a href="../../ptolemy/domains/de/lib/test/Time.java"><CODE>ptolemy/domains/de/lib/test/Time.java</CODE></a>  - Simple DE domain test.  To run it, do
+<pre>
+cd $PTII/ptolemy/domains/de/lib/test
+java -classpath $PTII ptolemy.domains.de.lib.test.Time
+</pre>
+
+<li> <a href="../../ptolemy/domains/de/test/auto/TwoSigmaDelta.xml"><CODE>ptolemy/domains/de/test/auto/TwoSigmaDelta.xml</CODE></a> - Test that runs the a version of the sigma delta demo.  This test takes 3-7 seconds.
+
+<li> <a href="../../ptolemy/domains/wireless/test/auto/performance.xml"><CODE>ptolemy/domains/wireless/test/performance.xml</CODE></a>  - Wireless domain test.  Note that the Wireless domains extends the Discrete Event (DE) domain, so
+this is also a good DE test.
+
+
+<li> 
+</menu>
+
+<h2><a name="Eclipse">Eclipse</a></h2>
+In <a href="http://www.eclipse.org/">Eclipse</a>, use the
+<a href="http://www.eclipse.org/">Test & Performance Tools Platform (TPTP) Project</a>
+<p>See the <a
+href="http://www.eclipse.org/tptp/home/documents/index.html">TPTP Documentation</a>
+<ol>
+<li> Use the <a href="http://www.eclipse.org/emf/updates/">update manager to install EMF</a>
+<blockquote>
+				Help
+				<ul>
+					<li>
+						Software Updates
+						<ul>
+
+							<li>
+								Find and Install...
+								<ul>
+									<li>
+										Search for new features to install
+										<ul>
+											<li>
+											Add Update Site...<br>
+											* Name: <b>EMF Update Manager Site</b><br>
+
+											* URL: <b><a href="http://download.eclipse.org/tools/emf/updates/site.xml" target="_um">http://download.eclipse.org/tools/emf/updates/site.xml</a></b> (Releases)<br>
+											(or): <b><a href="http://download.eclipse.org/tools/emf/updates/site-interim.xml" target="_um">http://download.eclipse.org/tools/emf/updates/site-interim.xml</a></b> (I, M and S Builds)
+											</li>
+										</ul>
+
+</blockquote>
+
+<li> Use the <a href="http://www.eclipse.org/tptp/home/downloads/installguide/InstallGuide42.html#install_update_manager">update manager to install tptp</a>
+<blockquote>
+<ol>
+	<li>From the <b>Help</b> menu in Eclipse, select <b>Software Updates</b> &gt; <b>Find and Install</b>.</li>
+	<li>Select the <b>Search for new features to install</b> radio button. Click <b>Next</b>.</li>
+
+	<li>Add a new update site by clicking on <b>New Remote Site</b>.</li>
+	<li>Enter the following name and URL and click <b>OK</b>:
+	<ul>
+		<li>Name: TPTP Update site</li>
+		<li>URL: http://eclipse.org/tptp/updates/site.xml</li>
+	</ul>
+
+	</li>
+	<li>Click <b>Finish</b>.</li>
+	<li>In the "Search Results" dialog box, select the features to
+	install. 
+<blockquote>
+<ol>
+<li>Select TPTP 4.2.0
+<li>Unselect the BIRT and Web profiling packages
+</ol>
+</blockquote>
+
+Then click <b>Next</b>.</li>
+	<li>In the "Feature License" dialog box, accept the license and click <b>Next</b>.</li>
+
+	<li>In the "Installation" dialog box, verify the features to be installed and change install location if necessary. Then click <b>Finish</b>.</li>
+	<li>After you click Finish, you will be presented a confirmation about a digital signature. Click <b>Install All</b>.</li>
+	<li>When done, restart your workbench.</li>
+  </ol>
+</blockquote>
+</ol>
+
+<h3>Java 1.5 profiler and Eclipse</h3>
+<a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/Java_Application_Profiling_using_TPTP-v2.0.html">Profiling J2SW 5.0 based applications using Eclipse</a>
+
+<ol>
+<li> Install the New Technology Agent Controller version 4.2+.
+  <ol>
+  <li>See the <a href="http://www.eclipse.org/tptp/home/downloads/installguide/agentcontroller_42/win_ia32/getting_started.html">Agent Controller 4.2 Windows IA32 Getting Started Guide</a>
+  <li> Download the TPTP New Technology Agent Controller version 4.2+.
+  (<a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/agntctrl.win_ia32-TPTP-4.2.0.2.zip">Agent Controller 4.2.0.2 Windows-IA32</a>) and unzip in any directory.
+  <li> Go to the <code>bin/</code> directory of the Agent Controller and
+  run <code>SetConfig.bat</code>.
+  <li>While in the Agent Controller <code>bin/</code> directory,
+   start the Agent Controller with <code>./ACServer.exe</code>.
+</ol>
+<li> Download the <a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/jvmti-client-TPTP-4.2.0.2.zip">JVMTI Client</a> and unzip it in the Eclipse directory
+<li> Download the <a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/javaprofiler.win_ia32-TPTP-4.2.0.2.zip">New Java Profiler</a> and unzip it in the same directory as the
+New Technology Agent Controller.
+<li> Restart Eclipse
+<li> See <a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/Java_Application_Profiling_using_TPTP-v2.0.html#2.4">2.4 Configuring The Eclipse Client</a>:
+<blockquote>
+ The New Java Profiler works with the New Technology Agent Controller. The client should be configured to connect to the New Technology Agent Controller port. This is configured in the file "serviceConfig.xml" in the <New Technology Agent Controller install-home>/config directory. The default client connection port number of the New Technology Agent Controller is 10006.
+
+<p>To configure the hostname, navigate to the Preferences menu ( Window > Preferences ) in the Eclipse Workbench and click on "Profiling and Logging". Change the "Agent Controller local port" to 10006. You will also need to select "Host" under "Profiling and Logging" to add a localhost entry with port 10006. 
+(<a href="http://www.eclipse.org/tptp/platform/documents/tutorials/jvmti/jvmti-images/img2-1.png">fig 2.1</a>)
+</blockquote>
+<li> Do Run -&gt; Profiler -&gt; Monitor and select 
+<code>Java Profiling with Instrumentation</code>.
+<li> Run the profiler
+
+<li> In the Profile view, you should be able
+to start and stop the profiler
+</ol>
+
+<h4>Problems</h4>
+<dl>
+<dt> <code>org.eclipse.core.runtime.CoreException</code>
+<dd>
+<pre>
+org.eclipse.core.runtime.CoreException
+The process launcher seems to be inactive.  Restart the Agent Controller and try again.
+
+org.eclipse.core.runtime.CoreException: The process launcher seems to be inactive.  Restart the Agent Controller and try again.
+  at org.eclipse.tptp.trace.ui.internal.launcher.core.LauncherUtility.createCoreException(LauncherUtility.java:115)
+  at org.eclipse.tptp.trace.ui.internal.launcher.core.LauncherUtility.createCoreException(LauncherUtility.java:123)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIDelegateHelper.handleError(TIDelegateHelper.java:278)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIDelegateHelper.launchProcess(TIDelegateHelper.java:264)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIDelegateHelper.launch(TIDelegateHelper.java:173)
+  at org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIJavaLauncherDelegate.launch(TIJavaLauncherDelegate.java:37)
+  at org.eclipse.tptp.trace.ui.provisional.launcher.PrimaryLaunchDelegate.run(PrimaryLaunchDelegate.java:249)
+  at java.lang.Thread.run(Thread.java:595)
+</pre>
+<ol>
+<li>In Window -&gt; Preferences -&gt; "Profiling and Logging", make sure that
+port 10006 is selected and click on the test button.
+<li>In Run -&gt; Profile -&gt; Monitor, select "Java Profilin with Instrumentation" and click on the "Test availability" button.
+<pre> 
+The JVMTI agent org.eclipse.tptp.jvmti is not available.
+Make sure that the agent's libraries are available and that
+it is configured properly
+</pre>
+<p>See <a href="http://dev.eclipse.org/newslists/news.eclipse.tptp/msg02385.html">Re: jvmti agent</a>
+<p>It looks like the <code>javaprofiler.all_platforms-TPTP-4.2.0.2.zip</code>
+file should not be extracted in the Agent Controller home directory, it
+does not put the files in the plugin directory, instead it created a 
+<code>tptp</code> directory that has platform specific files in it.
+In the Agent Controller directory, either
+<ul>
+<li move the 
+<code>tptp/javaprofiler/win_ia32/plugins/org.eclipse.tptp.javaprofiler/</code>
+directory to
+<code>plugins</code>
+<li><b>or</b>
+Download the <a href="http://www.eclipse.org/downloads/download.php?file=/tptp/4.2.0.2/TPTP-4.2.0.2-200608021100/javaprofiler.win_ia32-TPTP-4.2.0.2.zip">JVMTI Agent controller extension for Windows-IA32 Runtime</a> and unzip it in
+the Agent Controller directory.
+<li>In the Agent Controller <code>bin</code> directory,
+rerun <code>SetConfig.bat</code> and restart <code>ACServer</code>
+<li>In Eclipse: run -&gt; Profile -&gt; Monitor, select "Java Profilin with Instrumentation" and click on the "Test availability" button.
+
+</dl>
+
+
+<h2><a name="profiling">Profiling</a></h2>
+ <p>In JDK1.3, try
+<pre>
+java -Xrunhprof:help
+</pre>
+
+
+<h2>Simple timing</h2>
+One simple way to time a run is to modify
+the <CODE>run()</CODE> method in ptolemy.actor.Manager so that
+<CODE>System.out.println(new Date()).getTime())</CODE> is called
+at the start and the end of the <CODE>run()</CODE> method.
+
+ <p>You may also need to include the following at the top with the other
+import statements.
+<pre>
+import java.util.Date;
+</pre>
+
+<h2><a name="performance">Performance</a></h2>
+Measuring the performance of an Applet inside a browser is tricky.
+
+ <p><a href="http://help.netscape.com/kb/consumer/19970907-1.html" target="_top"><CODE>http://help.netscape.com/kb/consumer/19970907-1.html</CODE></a>
+says
+<pre>
+To troubleshoot your Java applets in UNIX environment, you can start Communicator with the "-java" switch.
+
+
+ #netscape -java
+ Usage: -java [-options] class
+
+ where options include:
+     -help             print out this message
+     -version          print out the build version
+     -v -verbose       turn on verbose mode
+     -debug            enable remote JAVA debugging
+     -noasyncgc        don't allow asynchronous garbage collection
+     -verbosegc        print a message when garbage collection occurs
+     -noclassgc        disable class garbage collection
+     -cs -checksource  check if source is newer when loading classes
+     -ss&lt;number&gt;       set the maximum native stack size for any thread
+     -oss&lt;number&gt;      set the maximum Java stack size for any thread
+     -ms&lt;number&gt;       set the initial Java heap size
+     -mx&lt;number&gt;       set the maximum Java heap size
+     -D&lt;name&gt;=&lt;value&gt;  set a system property
+     -classpath &lt;directories separated by ':'&gt;
+                       list directories in which to look for classes
+     -prof[:&lt;file&gt;]    output profiling data to ./java.prof or ./&lt;file&gt;
+     -verify           verify all classes when read in
+     -verifyremote     verify classes read in over the network [default]
+     -noverify         do not verify any class
+</pre>
+
+ <p>And
+<a href="http://help.netscape.com/kb/consumer/19970907-2.html" target="_top"><CODE>http://help.netscape.com/kb/consumer/19970907-2.html</CODE></a>
+
+<pre>
+You can automatically startup the Java Virtual Machine as you launch
+ Communicator. This will prevent Communicator from restarting the
+ Java Virtual Machine each time you browse pages that have Java applets
+ or audio files played by the liveaudio plugin.
+
+ The command to use is :
+ "C:\Program Files\Netscape\Communicator\Program\netscape.exe" -start_java
+
+ You can edit the properties of your start icon of the Communicator
+ to add the option. You can also start the messenger (or other
+ component) the same way by :
+ "C:\Program Files\Netscape\Communicator\Program\netscape.exe" -start_java -mail
+
+ Note: This doesn't seem to work on NT3.51
+</pre>
+
+<h3>Memory Leaks</h3>
+Under C and C++, one must manage memory by hand.  
+
+ <p>Java has a garbage collector, which helps, but memory leaks are
+still possible. Usually, an object is marked as being eligible for GC
+when it goes out of scope.  Or, if the value of the object is null,
+then it may be GC'd.  However, an object will not be garbage collected
+if the object has references to it.  This is how we get memory leaks.
+
+ <p>We can <B>ask</B> that the garbage collector be run with
+<pre>
+System.gc();
+</pre>
+For example, we do this in the code generator after building
+the large AST that represents the java.lang and ptolemy.kernel classes.
+
+ <p>Finalization is what happens before an object is GC'd.  We
+can force the system to run the <CODE>finalize</CODE> method
+on all objects that are waiting to be finalized with:
+<pre>
+System.runFinalization();
+</pre>
+
+
+For further information, see
+<a href="http://www.javasoft.com/docs/books/tutorial/java/data/garbagecollection.html" target="_top">Java Tutorial Page about Garbage Collection</a>
+and
+<a href="http://www-106.ibm.com/developerworks/java/library/j-leaks/" target="_top">IBM page about memory leaks</a>
+
+<h3>Increasing the size of the Heap</h3>
+Sometimes, as a workaround, all that is necessary is to increase the
+size of the Java heap.  The <code>java</code> command takes non-standard
+commands like <code>-Xmx<i>size</i></code> to set the maximum stack
+size.  For example, under Cygwin, to run with a 256 megabyte heap size:
+<pre>
+export JAVAFLAGS=-Xmx256m
+$PTII/bin/vergil
+</pre>
+To see what other <code>-X</code> commands are available, run
+<pre>
+java -X
+</pre> 
+
+<h3>HP's JMeter</h3>
+HP's JMeter is a tool available as a free download after a quick registration
+from
+<a href="http://www.hp.com/products1/unix/java/hpjmeter/">http://www.hp.com/products1/unix/java/hpjmeter/</a>.
+HP's JMeter works with Java 1.2 through 1.5.
+
+<p>To generate the profile, do
+c:/Program\ Files/java/jdk1.5.0_05/bin/java  -Xmx256M "-Dptolemy.ptII.dir=c:/cxh/ptII" -Xrunhprof:heap=all,depth=30 -classpath "c:\cxh\ptII;c:\cxh\ptII\lib\diva.jar" ptolemy.vergil.VergilApplication
+
+
+To run the HP JMeter tool:
+<pre>
+java -Xmx256m -jar $PTII/vendors/hpjmeter/HPjmeter.jar
+</pre>
+Then open up the <code>java.prof.txt</a>
+
+<p>JMeter reported a syntax error, I then had to edit v.hprof.txt and
+move two bogus lines:
+
+<pre>
+ROOT 50000105 (kind=<thread>, id=200000, trace=300000)
+ROOT 50000187 (kind=<thread>, id=200003, trace=300000)
+HEAP DUMP BEGIN (4250 objects, 298272 bytes) Tue Jun 08 11:23:54 2004
+</pre>
+became
+
+<pre>
+HEAP DUMP BEGIN (4250 objects, 298272 bytes) Tue Jun 08 11:23:54 2004
+ROOT 50000105 (kind=<thread>, id=200000, trace=300000)
+ROOT 50000187 (kind=<thread>, id=200003, trace=300000)
+</pre>
+<h3>Heap Analysis Tool</h3>
+
+Heap Analysis Tool (HAT) is a freely available tool from 
+<a href="https://hat.dev.java.net/">https://hat.dev.java.net/</a>
+that
+can process -Xrunhprof data.  HAT works best with Java 1.2,
+it did not work for me with Java 1.4.2:
+<pre>
+java.io.IOException: Stack trace not found for serial # 0
+	at hat.parser.HprofReader.getStackTraceFromSerial(HprofReader.java:611)
+	at hat.parser.HprofReader.readArray(HprofReader.java:777)
+</pre>
+ <p>See the 
+<a href="http://developer.java.sun.com/developer/onlineTraining/Programming/JDCBook/perf3.html">JDC Book that discusses Heap Analysis Tool</a> for <!--link ok on 1/11 -->
+downloads and further information.
+
+ <p>Generate a hprof file:
+<pre>
+ java -Xrunhprof:file=vergil.hprof,format=b -classpath $PTII/lib/diva.jar\;$PTII/ptolemy/vergil/vergil.jar\;$PTII/ptolemy/ptolemy.jar\;$PTII ptolemy.vergil.VergilApplication
+</pre>
+
+<pre>Run HAT:
+java -classpath hat.zip\;$PTII/lib/diva.jar\;$PTII/ptolemy/vergil/vergil.jar\;$PTII/ptolemy/ptolemy.jar\;$PTII -mx100m hat.Main vergil.hprof
+</pre>
+
+<h3>Java 1.5 Console</h3>
+Java 1.5 includes the Java Console, which can be used to monitor
+memory usage.
+<a href="http://java.sun.com/developer/technicalArticles/J2SE/jconsole.html" target="_top"><CODE>http://java.sun.com/developer/technicalArticles/J2SE/jconsole.html</CODE></a> <!--link ok on 1/11 -->
+<a href="http://download.oracle.com/javase/6/docs/technotes/tools/index.html#jconsole" target="_top"><CODE>http://download.oracle.com/javase/6/docs/technotes/tools/index.html#jconsole</CODE></a>
+<ol>
+<li> In Cygwin bash, set the <code>JAVAFLAGS</code> property:
+<pre>
+export JAVAFLAGS=-Dcom.sun.management.jmxremote
+</pre>
+<li> Start up vergil
+<pre>
+$PTII/bin/vergil &
+</pre>
+<li> Start up <code>jconsole</code>
+<pre>
+jconsole
+</pre>
+</ol>
+<h2><a name="remoteresources">Remote resources</a></h2>
+
+<h3>Commercial Profilers</h3>
+<menu>
+<li> <a href="http://www.alphaworks.ibm.com/tech/heaproots?open&ca=daw-rss-s8" target="_top">IBM's HeapRoots</a> (Free download after registration?)
+
+<li> <a href="http://www.student.nada.kth.se/~d94-rol/jmp/" target="_top">JMP</a> GPL'd, written in C, uses GTK
+
+<li> <a href="http://www.software.hp.com/portal/swdepot/displayProductInfo.do?productNumber=HPJMETER" target="_top">HP's JMeter</a> (Free download after registration)
+
+<li> <a href="http://www.quest.com/jprobe/software-downloads.aspx" target="_top">JProbe</a> (Commercial tool)
+
+<li> <a href="http://www.ej-technologies.com/products/jprofiler/overview.html" target="_top">JProfiler</a> (Commercial tool, $199 University Pricing)
+
+<li> <a href="http://www.ibm.com/software/awdtools/purify/unix/" target="_top">Purify</a>
+
+</menu>
+
+<h3>Java and Optimization</h3>
+
+<menu>
+
+<li> <a href="http://www.oracle.com/technetwork/java/hotspotfaq-138619.html" target="_top">Java HotSpot FAQ</a>
+
+<li> <a href="http://java.sun.com/developer/technicalArticles/Programming/perfanal/index.html" target="_top">PerfAnal: A Performance Analysis Tool</a>
+(March 2000 Java Developer Connection Article - The JDC requires registration, but is free to join)
+
+ <li><a href="http://java.sun.com/developer/onlineTraining/Programming/JDCBook/perf3.html" target="_top">JDC Book that discusses Heap Analysis Tool</a>
+
+<li> <a href="http://www.javaworld.com/javatips/jw-javatip92.html" target="_top">Using Hprof to Tune performance</a>
+
+<li> <a href="http://www.javaworld.com/javaworld/jw-09-1998/jw-09-speed.html" target="_top"> September 1998 Javaworld article</a> - includes a benchmark applet
+<li> <a href="http://www.javaworld.com/javaworld/jw-04-1997/jw-04-optimize.html" target="_top">March 1997 Javaworld article</a> - includes a benchmark applet
+<li> <A HREF="http://www.cs.cmu.edu/~jch/java/" target="_top">CMU Java optimization page</A>
+
+</menu>
+
+
+<h3>Benchmarks</h3>
+
+<menu>
+
+<li> <a href="http://dir.yahoo.com/Computers_and_Internet/Programming_and_Development/Languages/Java/Benchmarks/" target="_top">Yahoo Java Benchmarks</a>
+
+<li> <a href="http://www.webfayre.com/pendragon/jpr/index.html" target="_top">Java Performance Report</a> (1997)
+
+</menu>
+
+<h3>Scripting and Java</h3>
+
+<menu>
+<li> <A HREF="http://cm.bell-labs.com/cm/cs/who/bwk/interps/pap.html" target="_top">Kernighan Scripting Benchmark paper</A>
+<li> <a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/tclblend/scriptperf/index.html" target="_top">Ptolemy Group Scripting Benchmark paper</a>
+</menu>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>

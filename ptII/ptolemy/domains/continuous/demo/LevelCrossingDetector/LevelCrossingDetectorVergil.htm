@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>LevelCrossingDetector</title>
+</head>
+<body>
+<h1>LevelCrossingDetector</h1>
+This page contains an applet that should appear as a separate window.
+<p>This model shows how level crossing
+detector handles the continuous signals
+with and w/o discontinuity.</p>
+
+<p>The level crossing detector has two
+operation modes. For continuous signals,
+the detector try to refine step size to
+find the point level crossing happens.
+At the time points where discontinuities
+happen, the detector does not try to
+refine step size (which is 0.0 already),
+but to detect the level crossing only.</p>
+
+<p>The output event of level crossing
+detectors have the value as the specified
+"level" parameter. If the "useDefaultEventValue"
+is checked, the event has value as parameter
+"defaultEventValue".</p>
+
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- PT SIMPLE APPLET CONVERTER -->
+<APPLET 
+ code = "ptolemy.vergil.VergilApplet"
+ codebase = "../../../../.."
+  archive = "ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/continuous.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <!-- PARAM name="jnlp_href" value="ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.jnlp" -->
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer LevelCrossingDetector.xml">
+ <PARAM NAME = "NAME" VALUE = "LevelCrossingDetector" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "LevelCrossingDetector.xml" > \
+ <a href="LevelCrossingDetector.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT SIMPLE APPLET CONVERTER -->
+</CENTER>
+</p>
+</body>
+</html>

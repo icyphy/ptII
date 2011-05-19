@@ -1,0 +1,479 @@
+<html>
+<head>
+<!-- $Id$ -->
+<!--
+
+This file has pointers to tours of what's new in version 7.0
+
+The version number should match
+ptolemy.kernel.attributes.VersionAttribute.CURRENT_VERSION
+so that we can easily find and update the version number
+
+-->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>
+Tour of What's New in Version 7.0.1
+</h1>
+See also <a href="whatsNew.htm">What's New in other versions</a>.
+
+<p>Contents:
+<ul>
+<li> <a href="#highlights">Highlights</a>:
+     <a href="#sdfcodegen">SDF Code Generation</a>
+     - <a href="#ptalon">Ptalon</a>
+     - <a href="#backtracking">Backtracking</a>
+     - <a href="#continuousDomain">Continuous Domain</a>
+     - <a href="#modelTransformation">Model Transformation</a>
+<li> <a href="#demos">New demonstrations</a>
+<li> <a href="#other">Other Key New Capabilities</a>
+<li> <a href="#libraries">New and Enhanced Actor Libraries</a>
+<li> <a href="#features">Additional features</a>
+<li> <a href="#bugs">Bug fixes</a>
+</ul>
+
+<h2><a name="highlights">Highlights</a></h2>
+
+<h3><a name="sdfCodegen">SDF Code Generation</a></h3>
+
+The SDF Template based C code generator (Codegen) generates code for
+hierarchical Synchronous Dataflow (SDF), Finite State Machine (FSM) and
+Heterochronous Dataflow Domain (HDF) models.
+
+<p>Codegen has the following new features:
+<ul> 
+<li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCActor">EmbeddedCActor</a> - Allows arbitrary C code to be embedded in a Java model.  The entire Java model can then be converted to C code and the code within the EmbeddedCActor will be used.
+<li>Enhanced polymorphic type system
+<li>Support for invoking the Java plotter from a C version of a model
+<li><i>and many more<i>
+</ul>
+
+<p><a href="../../../doc/codegen.htm">Code Generator Documentation</a>
+
+<h4>References</h4>
+<ul>
+<li> G. Zhou, M.-K. Leung, and E. A. Lee, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/codegen/">A Code Generation Framework for Actor-Oriented Models with Partial Evaluation</a>," <i>Proceedings of International Conference on Embedded Software and Systems 2007,</i> LNCS Vol. 4523, Daegu, South Korea, May 14-16, 2007, pp. 786-799.
+</ul>
+
+<h4>Codegen Demonstrations</h4>
+<i>Some of the code generation demos might not work under Web Start because
+Web Start uses a JRE, not a JDK.</i>
+
+ <p><a href="../codegen/demos.htm">Codegen demonstrations</a>
+
+ <p>Primary Codegen Developers: Gang Zhou, Man-kit Leung.
+ <p>Codegen Contributors: Christopher Brooks, Teale Fristoe, Edward A. Lee, Ye Zhou
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="ptalon">Ptalon</h3>
+
+<p>Actor-oriented design is a common design strategy in embedded
+system design, where actors are concurrent components which
+communicate through ports by sending signals to one another. Such
+systems are frequently modeled with block diagrams, where the blocks
+represent systems and lines or arrows between blocks represent
+signals. Examples include Simulink, LabView, and VHDL/Verilog.
+
+<p>A common problem in such environments is managing complexity,
+particularly when the designs become large. Most actor-oriented design
+environments allow hierarchy, or systems (blocks) which are composed
+of other systems (blocks). To take this a step further, we are
+developing the Ptalon programming language, which allows users to
+parameterize components with other components.
+
+<p>We have developed a preliminary interpreter for the Ptalon language in
+the context of Ptolemy II, a general-purpose design environment for
+actor-oriented systems. We have also developed a mathematical
+framework for such languages, to help aid our understanding . We are
+currently investigating the resource management issues inherent in
+supporting large block-diagram models.
+
+<h4>References</h4>
+<ul>
+<li> E. A. Lee, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/03/MontereyWorkshopLee/#in_browser" target="_top">Model-driven Development--From Object-Oriented Design to Actor-Oriented Design</a>," <i>Workshop on Software Engineering for Embedded Systems: From Requirements to Implementation (a.k.a. The Monterey Workshop),</i> Chicago, IL, 2003.
+
+<li> A. Cataldo, E. Cheong, T. H. Feng, E. A. Lee, and A. Mihal, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-48.html#in_browser" target="_top">A Formalism for Higher-Order Composition Languages that Satisfies the Church-Rosser Property</a>," UC Berkeley EECS Technical Report No. UCB/EECS-2006-48, 2006.
+
+<li> J. A. Cataldo, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-189.html#in_browser" target="_top">The Power of Higher-Order Composition Languages in System Design</a>," EECS Department, UC Berkeley, Technical Report No. UCB/EECS-2006-189, December 18, 2006.
+
+<li> E. Cheong, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-112.html#in_browser" target="_top">Actor-Oriented Programming for Wireless Sensor Networks</a>," EECS Department, University of California, Berkeley Technical Report No. UCB/EECS-2007-112, August 30, 2007
+</ul>
+
+<h4>Ptalon Demonstrations</h4>
+  <ul>
+  <li> <a href="../../actor/ptalon/demo/CruiseControl/CruiseControl.xml">CruiseControl</a>
+  <li> <a href="../../actor/ptalon/demo/EightChannelFFT/EightChannelFFT.xml">EightChannelFFT</a>
+  <li> <a href="../../actor/ptalon/demo/GameOfLife/GameOfLife.xml">GameOfLife</a>
+  <li> <a href="../../actor/ptalon/demo/MapReduce/MapReduce.xml">MapReduce</a>
+  <li> <a href="../../actor/ptalon/demo/Unicycle/Unicycle.xml">Unicycle</a>
+  <li> <a href="../../actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM.xml">ParameterSweepSmallWorldFSM</a> (<i>Renamed after Ptolemy II 7.0</i>)
+ <li> <a href="../../actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldSDF.xml">ParameterSweepSmallWorldSDF</a>(<i>Renamed after Ptolemy II 7.0</i>)
+
+  <li> <a href="../../actor/ptalon/demo/SmallWorld/SmallWorldMultiInstanceComposite.xml">SmallWorld MultiInstanceComposite</a>(<i>Renamed after Ptolemy II 7.0</i>)
+  <li> <a href="../../actor/ptalon/demo/SmallWorld/SmallWorldPtalonActor.xml">SmallWorld PtalonActor</a>(<i>Renamed after Ptolemy II 7.0</i>)
+  </ul>
+
+<p>Primary Ptalon Developer: Adam Cataldo
+<p>Contributor: Elaine Cheong
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="backtracking">Backtracking</h3>
+A backtracking facility enables the system to restore its old
+state. It has many applications in practice, and is especially
+important to high-performance distributed computation.</p>
+<p>In developing this sub-project, we highlight the
+following (increasing) list of criteria:</p>
+
+<ul>
+
+<li><em>Performance</em>. The highest priority is awarded to the
+performance of the resulting system (the Ptolemy II system with
+backtracking support built in), as compared to the original
+system. Novel approaches are employed mainly to improve performance,
+with moderate complexity added.</li>
+
+<li><em>Automatic transformation</em>. Transformation from the original
+system to the backtracking-enabled system must be automated as much as
+possible. Due to the size of the existing system, it is not realistic
+to require a manual recoding in most of its sources. Moreover, coding
+the backtracking sub-system by hand makes it hard to debug and evolve
+over time.</li>
+
+<li><em>Clean interface to other parts</em>. The
+backtracking sub-system must reveal a small but powerful
+interface to the other parts in the system. It provides
+the users with functions such as creating checkpoints,
+undoing multiple language-level operations by backtracking
+to a previous checkpoint, and even redoing those
+operations to achieve some form of laziness.</li>
+
+</ul>
+
+ <p>Primary Backtracking Developer: Thomas Huining Feng
+<h4>Backtracking Demonstrations</h4>
+ <ul>
+   <li> <a href="../../../ptolemy/backtrack/demo/PrimeTest/PrimeTest.xml">Prime Test</a> </li>
+   <li> <a href="../../../ptolemy/backtrack/demo/RampRollback/RampRollback.xml">Ramp Rollback</a> </li>
+   <li> <a href="../../../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">Trial Module</a> </li>
+ </ul>
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="continuousDomain">Continuous Domain</a></h3>
+
+<P> The
+<a href="../../../ptolemy/domains/continuous/doc/main.htm">Continuous domain</a>
+is a redesign of the Continuous Time (CT) domain with
+a rigorous semantics documented in the following papers:
+
+<ul>
+<li> Edward A. Lee, Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browse" target="_top">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT,  September 30 - October 2, 2007, Salzburg, Austria.
+
+<li> Haiyang Zheng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-68.html#in_browser" target="_top">Operational Semantics of Hybrid Systems</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2007-68, May 18, 2007.
+
+<li> Edward A. Lee and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics" target="_top">Operational Semantics of Hybrid Systems</a>," Invited paper in <i>Proceedings of Hybrid Systems:  Computation and Control</i> (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
+</ul>
+
+The continuous domain models systems with continuous dynamics, including
+for example analog circuits and mechanical systems, but also
+cleanly supports discrete events, modal behaviors, and signals that
+mix continuous-time behaviors with discrete events.
+Models for continuous dynamics are equivalent to linear or nonlinear
+integral equations. A sophisticated numerical solver for these equations
+is integrated with the director.
+The clean semantics of the Continuous domain enables its integration
+in hierarchical heterogeneous models that use the Synchronous/Reactive (SR)
+and Discrete Event (DE) domains. Arbitrary hierarchical mixtures of these
+domains are supported, although if SR is at the top level, then the
+<i>period</i> parameter of the director must be used so that time advances.
+Domain interactions are documented in the following paper:
+
+<ul>
+<li> A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html#in_browser" target="_top">Heterogeneous Composition of Models of Computation</a>," EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
+</ul>
+
+ <p>Primary Continuous Domain Developers: Haiyang Zheng, Edward A. Lee
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="modelTransformation">Model Transformation</h3>
+
+<p>The model transformation facility provides a framework for the
+analysis and transformation of actor models using model transformation
+techniques.
+
+<p>The design of large-scale models poses a number of challenges. As
+the size of the models increases to thousands of actors or hundreds of
+thousands of actors, analysis and consistent modification on the
+models become extremely hard. Furthermore, to maximize component
+reuse, a systematic approach is needed for the specification and
+maintenance of common patterns in the models and the transformation of
+those patterns.
+
+<p>The model transformation framework to be developed in this project
+aims to support the flexible specification of patterns and
+replacements by means of rules in graph grammar. An intuitive
+graphical user interface will be built. For novice users, a set of
+common transformations will be included in a library to facilitate
+their common tasks.
+
+<p>The transformations are models in their own right. They can be
+embedded in larger models hierarchically. Heterogeneous models of
+computation can be used to control the application of individual
+"atomic" transformations. This makes it easy to create sophisticated
+transformations by composing simple ones in a manageable and
+disciplined way. The sophisticated transformations will also take
+advantage of the concurrency inherent in those models of computation.
+
+<p>Model transformation can be applied as an optimization of modal
+models. These are hierarchical state machines with refinements in
+their states, which are sub-models to be executed when those states
+are active. The current implementation includes the complete
+description of each refinement in the model description, even though
+refinements of the states in a state machine tend to have large
+commonality. With the transformation technique, only one refinement
+needs to be stored completely. The others are obtained by
+transformations performed on the stored refinement. This eliminates
+redundancy and eases the job of modifying multiple refinements
+consistently.
+
+<p>Other applications of the model transformation technique include
+recognizing common design patterns in the models in a static analysis,
+replacing exiting design patterns with more efficient ones, and
+reusing design patterns by incorporating them into new models.
+
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, Miriam Zia, and Hans Vangheluwe, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/fzv07scsc.pdf" target="_top">Multi-Formalism Modelling and Model Transformation for the Design of Reactive Systems</a>," In <a href="http://www.sce.carleton.ca/faculty/wainer/SCSC07/">2007 Summer Computer Simulation Conference (SCSC 2007)</a>, San Diego, CA, USA, Jul. 2007.
+</ul>
+
+<h4>Model Transformation Demonstrations</h4>
+
+<p>Primary Model Transformation Developer: Thomas Huining Feng
+ <!-- If you change these, change completeDemos.htm -->
+<ul>
+   <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> </li>
+   <li> <a href="../../../ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a> </li>
+   <li> <a href="../../../ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml">HierarchyFlattening</a> </li>
+   <li> <a href="../../../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a> </li>
+   <li> <a href="../../../ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml">PublisherTest</a> </li>
+</ul>
+
+<h2><a name="demos">New demonstrations</a></h2>
+
+
+<h3>Continuous Time (CT)</h3>
+<ul>
+<li> <a href="../../domains/ct/demo/Starmac/Starmac.xml">Starmac</a>
+</ul>
+
+<h3>Discrete Event (DE)</h3>
+<ul>
+<li> <a href="../../domains/de/demo/RealTimeComposite/RealTimeComposite.xml">Real Time Composite</a> 
+</ul>
+
+
+<h3>Process Network (PN)</h3>
+<ul>
+<li><a href="../../domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.xml">Nondeterministic Merge with Feedback</a>
+</ul>
+
+<h3>Synchronous Dataflow (SDF)</h3>
+<ul>
+<li><a href="../../domains/sdf/demo/Gravitation/Gravitation.xml">Gravitation</a>
+<li><a href="../../domains/sdf/demo/ModelDisplay/ModelDisplay.xml">ModelDisplay</a>
+</ul>
+
+<h3>Synchronous/Reactive (SR) </h3>
+<ul>
+<li><a href="../../domains/sr/demo/GuardedCount/GuardedCountTimed.xml">GuardedCountTimed</a> 
+<li><a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> 
+<li><a href="../../domains/sr/demo/TrafficLight/WirelessDeployment.xml">WirelessDeployment</a> 
+</ul>
+
+<h3>User Interface Demonstrations </h3>
+<ul>
+<li> <a href="../../domains/curriculum/demo/Curriculum/Curriculum.xml">Curriculum</a>
+</ul>
+
+
+</ul>
+See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
+
+
+<h2><a name="other">Other Key New Capabilities</a></h2>
+
+<h3>ArrayType changes surrounding length</h3>
+
+The <a href="ptdoc:ptolemy.data.type.ArrayType">ArrayType</a> class
+now represents the length of arrays.  New methods were added:
+
+<pre>
+boolean hasKnownLength()
+int length()
+</pre>          
+The length() method throws a RuntimeException if invoked on an 
+ArrayType with hasKnownLength() == false.
+          
+<p>Existing ArrayType instances (creating using the ArrayType(Type)
+constructor have unknown length.  A new constructor ArrayType(Type,
+int) creates array types with a known length.  Generally speaking,
+array types with known length are incomparable with array types with
+different lengths, and can be converted to an array type with unknown
+length and compatible element type.  Scalars are convertible to array
+types with length 1.  Getting the code to do this right was
+significantly more complex than inferring sizes of Fix-point types
+because:
+
+<ol>
+
+<li>The FixType modifications were easily factored since any FixType
+with a known length is less than the single FixType with an unknown
+length.  ArrayType could not be factored this way because of the more
+complex type relations.
+
+<li>FixType doesn't have a contained type variable.
+</ol>
+          
+ArrayTypes now have a type construction functions: arrayType(int) and
+arrayType(int, 4) represent the types that you might expect.
+
+<p> Unfortunately, this means that there is <b>a signficant
+backward-compatibility issue</b> Previously, if you wanted to force an
+arbitrary integer array type, you used {int}, which is really an array
+with one element.  This now has the type arrayType(int, 1), which is
+more specific than you probably want.
+
+ <p>As a result, in almost any case where the old style is used in a model
+to declare the type of a port in a model, e.g. {int}, it should be
+replaced with an arrayType declaration, e.g. arrayType(int, 7), or
+arrayType(int).  If this is not done, such models will most likely have
+a type error related to an array of length one.
+
+<p>The existing models have been updated using the new description
+of an array type with an unknown length.
+
+<p>Note that arrayType(int) returns an instance of the special class
+UnsizedArrayToken, whose only purpose is to have an unknown array
+size.  Regular array tokens always have a known length.
+          
+<p>Note also that arrayType(unknown) is no longer the GLB of all of
+the arrayTypes.  The GLB is now represented by BaseType.ARRAY_BOTTOM
+(which is not an instance of ArrayType).  This required moving farther
+along the path of decoupling type constraints on array element types
+from the type objects themselves.  TypeableElementTypeTerm can now
+refer to the element type of a typeable which may never esolve to a
+valid array type (resulting in an unsatisifed inequality term).
+
+<p>Primary Developer of ArrayType changes: Stephen Neuendorffer
+
+
+<ul>
+<li><a href="ptdoc:ptolemy.actor.Initializable">Initializable</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotEvent">TokenGotEvent</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotListener">TokenGotListener</a>
+</ul>
+
+<h2><a name="libraries">New and Enhanced Actor Libraries</a>
+
+<!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII8.1.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
+
+<ul>
+<li><a href="ptdoc:ptolemy.actor.lib.ArrayElementAsMatrix">ArrayElementAsMatrix</a>
+<li><a href="ptdoc:ptolemy.actor.lib.ArraySum">ArraySum</a>
+<li><a href="ptdoc:ptolemy.actor.lib.CodegenActor">CodegenActor</a>
+<li><a href="ptdoc:ptolemy.actor.lib.LimitedFiringSource">LimitedFiringSource</a>
+<li><a href="ptdoc:ptolemy.actor.lib.MovingAverage">MovingAverage</a>
+<li><a href="ptdoc:ptolemy.actor.lib.PublisherNonStrictTest">PublisherNonStrictTest</a>
+<li><a href="ptdoc:ptolemy.actor.lib.PublisherTest">PublisherTest</a>
+<li><a href="ptdoc:ptolemy.actor.lib.SingleTokenCommutator">SingleTokenCommutator</a>
+<li><a href="ptdoc:ptolemy.actor.lib.SubMatrix">SubMatrix</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.ArrayPlotterXY">ArrayPlotterXY</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.LEDMatrix">LEDMatrix</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.ModelDisplay">ModelDisplay</a>
+<li><a href="ptdoc:ptolemy.actor.lib.hoc.MirrorComposite">MirrorComposite</a>
+<li><a href="ptdoc:ptolemy.actor.lib.hoc.RealTimeComposite">RealTimeComposite</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.ClipPlayer">ClipPlayer</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundActor">SoundActor</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundPlaye">SoundPlayer</a>
+</ul>
+
+<li><i>New Continuous Time (CT) actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.domains.ct.lib.DiscreteClock">DiscreteClock</a>
+</ul>
+
+<li><i>New Synchronous Dataflow (SDF) actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.domains.sdf.lib.MatrixJoin">MatrixJoin</a>
+<li><a href="ptdoc:ptolemy.domains.sdf.lib.MatrixSplit">MatrixSplit</a>
+</ul>
+
+</ul>
+
+<h2><a name="features">Additional Features</a></h2>
+
+<ul>
+<li> doc/tutorial - Tutorials for creating directors and using the GUI.
+
+<li><a href="ptdoc:ptolemy.actor.ActorFiringListener">ActorFiringListener</a>
+<li><a href="ptdoc:ptolemy.actor.FiringsRecordable">FiringsRecordable</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotEvent">TokenGotEvent</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotListener">TokenGotListener</a>
+<li><a href="ptdoc:ptolemy.actor.TypedCompositeActorWithCoSimulation.">TypedCompositeActorWithCoSimulation</a>
+<li><a href="ptdoc:ptolemy.actor.gui.AbstractPlaceableActor">AbstractPlaceableActor</a>
+<li><a href="ptdoc:ptolemy.actor.gui.DependencyHighlighter">DependencyHighlighter</a>
+<li><a href="ptdoc:ptolemy.data.FloatToken">FloatToken</a>
+<li><a href="ptdoc:ptolemy.data.ShortToken">ShortToken</a>
+<li><a href="ptdoc:ptolemy.data.UnsizedArrayToken">UnsizedArrayToken</a>
+<li><a href="ptdoc:ptolemy.data.expr.NameParameter">NameParameter</a>
+<li><a href="ptdoc:ptolemy.data.expr.UndefinedConstantOrIdentifierException">UndefinedConstantOrIdentifierException</a>
+<li><a href="ptdoc:ptolemy.moml.MissingClassException">MissingClassException</a>
+<li><a href="ptdoc:ptolemy.moml.MoMLVariableChecker">MoMLVariableChecker</a>
+<li><a href="ptdoc:ptolemy.util.StringBufferExec">StringBufferExec</a>
+<li><a href="ptdoc:ptolemy.vergil.basic.ContextMenuFactoryCreator">ContextMenuFactoryCreator</a>
+<li><a href="ptdoc:ptolemy.vergil.basic.KeplerDocumentationAttribute">KeplerDocumentationAttribute</a>
+<li><a href="ptdoc:ptolemy.vergil.basic.OffsetMoMLChangeRequest">OffsetMoMLChangeRequest</a>
+
+</ul>
+
+<h3>New Code Generation Actors</h3>
+<ul>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.ArrayElementAsMatrix">ArrayElementAsMatrix</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.ArrayPeakSearch">ArrayPeakSearch</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.CodegenActor">CodegenActor</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.CurrentTime">CurrentTime</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Lattice">Lattice</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.MovingAverage">MovingAverage</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Publisher">Publisher</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.PublisherTest">PublisherTest</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.RecursiveLattice">RecursiveLattice</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.SetVariable">SetVariable</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Subscriber">Subscriber</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.SubscriptionAggregator">SubscriptionAggregator</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.VectorAssembler">VectorAssembler</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.VectorDisassembler">VectorDisassembler</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.WallClockTime">WallClockTime</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.conversions.CartesianToComplex">CartesianToComplex</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.conversions.ComplexToCartesian">ComplexToCartesian</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.gui.LEDMatrix">LEDMatrix</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.hoc.MultiInstanceComposite">MultiInstanceComposite</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.test.RampNecessaryFiles">RampNecessaryFiles</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.BitsToInt">BitsToInt</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.Chop">Chop</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.DownSample">DownSample</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.IntToBits">IntToBits</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.LMSAdaptive">LMSAdaptive</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.RaisedCosine">RaisedCosine</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.UpSample">UpSample</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.VariableFIR">VariableFIR</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.VariableLattice">VariableLattice</a>
+<li><a href="ptdoc:ptolemy.codegen.c.kernel.CCodegenUtilities">CCodegenUtilities</a>
+</ul>
+
+<h2><a name="bugs">Bug fixes</a></h2>
+
+</body>
+</html>

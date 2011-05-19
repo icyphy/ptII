@@ -1,0 +1,243 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LocalZeno" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="90.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 1275, 826}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1062, 716]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{531.0, 358.0}">
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Default inferred width to 1"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225, 45}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the localization of Zeno conditions in the Distributed Discrete Event (DDE) domain. The demo consists of two&#10;topologically identical branches connected to a clock source actor. Each branch contains a feedback loop and is fed identical tokens from&#10;the clock source. As with all feedback loops in DDE (and DE) models, a positive time delay is necessary in feedback loops to prevent&#10;deadlock. If the time delay of a given loop is lower bounded by zero but can not be guaranteed to be greater than a fixed positive value,&#10;then a Zeno condition occurs in which time will cease to advance even though the actors of the feedback loop continue to execute without&#10;deadlocking.&#10;&#10;In centralized discrete event systems, Zeno conditions prevent progress in the entire simulation. This is true because the feedback cycle&#10;experiencing the Zeno condition prevents time from advancing in the entire model. In contrast, distributed systems localize Zeno conditions&#10;as much as possible based on the topology of the system. Thus, as shown in the demo above, a Zeno condition can exist in one section of a&#10;topology without impacting the entire system.&#10;&#10;In the above model, the bottom branch experiences a Zeno condition as soon as time advances to 45. This causes the the bottom branch to continue&#10;execution long after the top branch has ceased execution, even though the clock source sends identical data to both branches. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 400.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that for convenience the lower branch only approximates a&#10;Zeno condition. It has been deliberately designed to eventually&#10;end the Zeno condition and complete execution.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 340.0]">
+        </property>
+    </property>
+    <entity name="Clock" class="ptolemy.domains.dde.demo.LocalZeno.ListenClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="20.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 10.0, 15.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 200.0">
+        </property>
+    </entity>
+    <entity name="UpperJoin" class="ptolemy.domains.dde.demo.LocalZeno.ListenWire">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 125.0">
+        </property>
+    </entity>
+    <entity name="UpperFork" class="ptolemy.domains.dde.demo.LocalZeno.ListenFork">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 125.0">
+        </property>
+    </entity>
+    <entity name="UpperFeedBack" class="ptolemy.domains.dde.demo.LocalZeno.ListenFeedBackDelay">
+        <property name="nullDelay" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 220.0">
+        </property>
+    </entity>
+    <entity name="LowerJoin" class="ptolemy.domains.dde.demo.LocalZeno.ListenWire">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 285.0">
+        </property>
+    </entity>
+    <entity name="LowerFork" class="ptolemy.domains.dde.demo.LocalZeno.ListenFork">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 285.0">
+        </property>
+    </entity>
+    <entity name="LowerFeedBack" class="ptolemy.domains.dde.demo.LocalZeno.ZenoDelay">
+        <property name="nullDelay" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 365.0">
+        </property>
+    </entity>
+    <entity name="UpperRcvr" class="ptolemy.domains.dde.demo.LocalZeno.ListenSink">
+        <property name="numTokens" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 40.0">
+        </property>
+    </entity>
+    <entity name="LowerRcvr" class="ptolemy.domains.dde.demo.LocalZeno.ListenSink">
+        <property name="numTokens" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 210.0">
+        </property>
+    </entity>
+    <entity name="upperPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={805, 51, 485, 187}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[485, 143]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 115.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>upperPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="5.0" max="90.0"/>
+<yRange min="0.0" max="0.0"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="lowerPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={805, 242, 309, 183}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[309, 139]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 275.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>lowerPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="5.0" max="50.0"/>
+<yRange min="0.0" max="0.0"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="UpperTime" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="LowerTime" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 275.0]">
+        </property>
+    </entity>
+    <relation name="_R" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="90.0, 200.0">
+        </vertex>
+    </relation>
+    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="_R"/>
+    <link port="UpperJoin.output" relation="_R2"/>
+    <link port="UpperJoin.input" relation="_R"/>
+    <link port="UpperJoin.input" relation="_R5"/>
+    <link port="UpperFork.output1" relation="_R3"/>
+    <link port="UpperFork.output1" relation="relation3"/>
+    <link port="UpperFork.output2" relation="_R4"/>
+    <link port="UpperFork.input" relation="_R2"/>
+    <link port="UpperFeedBack.input" relation="_R4"/>
+    <link port="UpperFeedBack.output" relation="_R5"/>
+    <link port="LowerJoin.output" relation="_R6"/>
+    <link port="LowerJoin.input" relation="_R"/>
+    <link port="LowerJoin.input" relation="_R9"/>
+    <link port="LowerFork.output1" relation="_R7"/>
+    <link port="LowerFork.output1" relation="relation"/>
+    <link port="LowerFork.output2" relation="_R8"/>
+    <link port="LowerFork.input" relation="_R6"/>
+    <link port="LowerFeedBack.input" relation="_R8"/>
+    <link port="LowerFeedBack.output" relation="_R9"/>
+    <link port="UpperRcvr.input" relation="_R3"/>
+    <link port="LowerRcvr.input" relation="_R7"/>
+    <link port="upperPlotter.input" relation="relation4"/>
+    <link port="lowerPlotter.input" relation="relation2"/>
+    <link port="UpperTime.output" relation="relation4"/>
+    <link port="UpperTime.trigger" relation="relation3"/>
+    <link port="LowerTime.output" relation="relation2"/>
+    <link port="LowerTime.trigger" relation="relation"/>
+</entity>

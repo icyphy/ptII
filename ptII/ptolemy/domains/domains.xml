@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExperimentalDomains" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Experimental Domains</doc>
+
+	    <!-- All domains specific actors are included here
+	         See also ptinydomains.xml --> 
+
+	    <!-- Do not use relative paths with ../ here, it is safer to use
+	     paths that start with ptolemy/ so that we can find these
+	     files if they are in a jar file besides the jar file that
+	     contains this file. -->
+
+	    <input source="ptolemy/domains/ca/lib/caentities.xml"/>
+	    <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
+	    <input source="ptolemy/domains/dde/dde.xml"/>	 
+
+	    <!-- ddf is shipped with ptiny, so no need to list fsm here -->
+	    <!-- fsm is shipped with ptiny, so no need to list fsm here -->
+
+            <input source="ptolemy/domains/giotto/giotto.xml"/>
+            
+	    <!-- Don't include hsentities -->
+            <!-- input source="ptolemy/domains/hs/lib/hsentities.xml"/ -->
+
+	    <!-- HDE is not shipping in 4.0 -->
+            <!-- input source="ptolemy/domains/hde/lib/hdeentities.xml"/-->
+	    <!-- HDF has no actors -->
+
+	    <!-- GR depends on the 3D graphics package of Java being present-->             
+	    <input source="ptolemy/domains/gr/gr.xml"/>
+	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
+	    <input source="ptolemy/domains/psdf/psdf.xml"/>	   
+            <input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/>
+	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>

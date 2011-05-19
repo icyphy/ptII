@@ -1,0 +1,169 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ArrayAverage" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 3, 904, 605}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[689, 487]">
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 395.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.5, 243.5}">
+    </property>
+    <entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 125.0">
+        </property>
+    </entity>
+    <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
+        <property name="allowDuplicates" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="ascending" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 215.0">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 90.0">
+        </property>
+    </entity>
+    <entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 370.0">
+        </property>
+    </entity>
+    <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
+        <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 225.0">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 90.0">
+        </property>
+    </entity>
+    <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 135.0">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 135.0">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{50}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 370.0">
+        </property>
+    </entity>
+    <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 290.0">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{99, 100}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 290.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="195.0, 125.0">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ArrayMinimum.input" relation="relation"/>
+    <link port="ArrayMinimum.output" relation="relation3"/>
+    <link port="ArraySort.input" relation="relation"/>
+    <link port="ArraySort.output" relation="relation6"/>
+    <link port="SequenceToArray.input" relation="relation7"/>
+    <link port="SequenceToArray.output" relation="relation"/>
+    <link port="ArrayAverage.input" relation="relation"/>
+    <link port="ArrayAverage.output" relation="relation4"/>
+    <link port="ArrayElement.input" relation="relation6"/>
+    <link port="ArrayElement.output" relation="relation5"/>
+    <link port="Ramp.output" relation="relation7"/>
+    <link port="Equals.input" relation="relation3"/>
+    <link port="Equals.input" relation="relation5"/>
+    <link port="Equals.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="ArrayMaximum.input" relation="relation"/>
+    <link port="ArrayMaximum.output" relation="relation9"/>
+    <link port="ArrayMaximum.index" relation="relation8"/>
+    <link port="Test3.input" relation="relation8"/>
+    <link port="Test3.input" relation="relation9"/>
+</entity>

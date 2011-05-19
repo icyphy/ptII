@@ -1,0 +1,53 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Counter" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 40, 815, 644}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 526]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 263.0}">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240, 90}">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{fix(1,32,32), fix(2,32,32), fix(3,32,32)}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="FixCounter" class="ptolemy.actor.lib.vhdl.FixCounter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 230.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation"/>
+    <link port="FixCounter.output" relation="relation"/>
+    <link port="FixCounter.increment" relation="relation2"/>
+    <link port="FixConst.output" relation="relation2"/>
+</entity>

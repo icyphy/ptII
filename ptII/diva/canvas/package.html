@@ -1,0 +1,52 @@
+<!-- Copyright (c) 1998-2005 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+
+<html>
+<head>
+<title>diva.canvas</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+A Java2D structured graphics package. The Diva
+canvas is designed to be a useful construction toolkit for interactive
+2D editors, viewers, and visualization tools.  It aims to be useful
+and flexible without constraining clients to conventional user
+interface idioms.
+
+<p>
+This top-level package, <b>diva.canvas</b>, provides the
+essential infrastructure of the canvas. Other sub-packages,
+with the exception of <b>diva.canvas.event</b> (which is
+also essential) provide additional functionality, complexity, 
+or ease-of-use of the basic infrastructure.
+
+<p>
+This package provides:
+
+<ul>
+<li> A Swing component, <b>JCanvas</b>.
+
+<li> A layered canvas pane, <b>CanvasPane</b>, and a 
+basic implementation, <b>BasicCanvasPane</b>, which 
+provide a screen-independent coordinate system.
+
+<li> A set of layers, including <b>CanvasLayer</b>
+and <b>FigureLayer</b>, which map onto a canvas pane
+and which display graphics or handle events.
+
+<li> A set of abstract and concrete persistent object classes,
+including <b>Figure</b>, <b>LeafFigure</b>, <b>SimpleFigure</b>,
+and <b>CompositeFigure</b>.
+
+<li> Various support classes and interfaces.
+
+</ul>
+<p>
+    @since Ptolemy II 1.0
+</body>
+</html>
+
+
+
+

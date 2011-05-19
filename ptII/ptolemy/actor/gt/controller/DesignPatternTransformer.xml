@@ -1,0 +1,104 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="DesignPatternTransformer" extends="ptolemy.domains.ptera.kernel.PteraModalModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 135}">
+    </property>
+    <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+        <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/actor/gt/controller/EventLibrary.xml"></input></entity>
+          </configure>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="Model" class="ptolemy.actor.gt.controller.ModelParameter">
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, -5.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                </property>
+                <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, 1.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="12.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="-5.0">
+                    </property>
+                </property>
+                <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, -4.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="12.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                    </property>
+                </property>
+                <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, 18.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="12.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="-8.0">
+                    </property>
+                </property>
+                <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, 10.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="12.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="8.0">
+                    </property>
+                </property>
+                <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="1.0, -12.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="16.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="16.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                    <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 45.0]">
+            </property>
+        </property>
+        <entity name="InitModel" class="ptolemy.actor.gt.controller.InitModelWithContainer">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 30.0]">
+            </property>
+        </entity>
+    </entity>
+</class>

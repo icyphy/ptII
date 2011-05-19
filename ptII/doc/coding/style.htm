@@ -1,0 +1,2138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="TtH 3.87">
+ <style type="text/css"> div.p { margin-top: 7pt;}</style>
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;}
+           --></style>
+
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Ptolemy Project Coding Style</title>
+</head>
+
+<h1 align="center">Ptolemy Project Coding Style </h1>
+This document is also <a href="style.pdf" target="_top">Available in PDF format</a>
+
+<div class="p"><!----></div>
+
+<h3 align="center">Christopher Brooks, Edward A. Lee </h3>
+<a name="pgfId-164027">
+</a>
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;Motivation</h2>
+<a name="59648">
+</a>
+Collaborative software projects benefit when participants read code
+created by other participants. The objective of a coding style is to
+reduce the fatigue induced by unimportant formatting differences and
+differences in naming conventions. Although individual programmers
+will undoubtedly have preferences and habits that differ from the
+recommendations here, the benefits that flow from following these
+recommendations far outweigh the inconveniences. Published papers in
+journals are subject to similar stylistic and layout constraints, so
+such constraints are not new to the academic community.
+
+<div class="p"><!----></div>
+Software written by the Ptolemy Project participants follows this
+style guide. Although many of these conventions are arbitrary, the
+resulting consistency makes reading the code much easier, once you get
+used to the conventions. We recommend that if you extend Ptolemy II in
+any way, that you follow these conventions. To be included in future
+versions of Ptolemy II, the code must follow the conventions.
+
+<div class="p"><!----></div>
+In general, we follow the Java Style guide
+(<a href="http://www.oracle.com/technetwork/java/codeconv-138413.html">http://www.oracle.com/technetwork/java/codeconv-138413.html</a>). We
+encourage new developers to use Eclipse
+(<a href="http://www.eclipse.org">http://www.eclipse.org</a>) as their
+development platform. Eclipse includes a Java Formatter, and we have
+found that the Java Conventions style is very close to our
+requirements. For information about setting up Eclipse to follow the
+Ptolemy II coding style, see
+<br /><a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm">http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm</a>,
+which is a copy of
+<br />$PTII/doc/coding/eclipse.htm, where $PTII is the
+location of your Ptolemy II installation.  A file template that
+follows these rules can be found in
+<br />$PTII/doc/coding/templates/JavaTemplate.java
+In addition useful tools are provided in the directories under $PTII/util/ to help enforce the standards. 
+
+<ul>
+<li>lisp/ptjavastyle.el is a lisp module for GNU Emacs that has appropriate indenting rules. This file works well with Emacs under both Unix and Windows.
+<div class="p"><!----></div>
+</li>
+
+<li>
+testsuite/ptspell is a shell script that checks Java code and prints
+out an alphabetical list of unrecognized spellings. It properly
+handles namesWithEmbeddedCapitalization and has a list of author
+names. This script works best under Unix. Under Windows, it would
+require the installation of the <tt>ispell</tt>
+command as /usr/local/bin/ispell. To run this script, type
+
+<pre>
+$PTII/util/testsuite/ptspell&nbsp;*.java
+
+</pre>
+
+<div class="p"><!----></div>
+</li>
+
+<li>
+testsuite/chkjava is a shell script for checking various other
+potentially bad things in Java code, such as debugging code, and
+FIXME's. This script works under both Unix and Windows. To run this
+script, type:
+
+<pre>
+$PTII/util/testsuite/chkjava&nbsp;*.java
+
+</pre>
+
+<div class="p"><!----></div>
+</li>
+
+<li> adm/bin/fix-files is a shell script that fixes common problems
+ in files.  To run this script, type:
+
+<pre>
+$PTII/adm/bin/fix-files&nbsp;*.java
+
+</pre>
+
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Anatomy of a File</h2>
+<a name="66571">
+</a>
+A Java file has the structure shown in figures 
+&nbsp;<a href="#codingStyle-AnatomyOfAJavaFilePart1">1</a> and
+&nbsp;<a href="#codingStyle-AnatomyOfAJavaFilePart2">2</a>.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center>Figure 1: Anatomy of a Java file, part1.</center>
+<font>
+  
+<pre>
+/*&nbsp;One&nbsp;line&nbsp;description&nbsp;of&nbsp;the&nbsp;class.
+
+&nbsp;&nbsp;&nbsp;copyright&nbsp;notice
+*/
+package&nbsp;MyPackageName;
+
+//&nbsp;Imports&nbsp;go&nbsp;here,&nbsp;in&nbsp;alphabetical&nbsp;order,&nbsp;with&nbsp;no&nbsp;wildcards.
+
+//////////////////////////////////////////////////////////////////////////
+////&nbsp;ClassName
+
+/**
+&nbsp;&nbsp;&nbsp;Describe&nbsp;your&nbsp;class&nbsp;here,&nbsp;in&nbsp;complete&nbsp;sentences.
+&nbsp;&nbsp;&nbsp;What&nbsp;does&nbsp;it&nbsp;do?&nbsp;&nbsp;What&nbsp;is&nbsp;its&nbsp;intended&nbsp;use?
+
+&nbsp;&nbsp;&nbsp;@author&nbsp;yourname
+&nbsp;&nbsp;&nbsp;@version&nbsp;$Id:&nbsp;codingStyle.tex,v&nbsp;1.15&nbsp;2010/03/31&nbsp;23:33:07&nbsp;cxh&nbsp;Exp&nbsp;$
+&nbsp;&nbsp;&nbsp;@see&nbsp;classname&nbsp;(refer&nbsp;to&nbsp;relevant&nbsp;classes,&nbsp;but&nbsp;not&nbsp;the&nbsp;base&nbsp;class)
+&nbsp;&nbsp;&nbsp;@since&nbsp;Ptolemy&nbsp;II&nbsp;x.x
+&nbsp;&nbsp;&nbsp;@Pt.ProposedRating&nbsp;Red&nbsp;(yourname)
+&nbsp;&nbsp;&nbsp;@Pt.AcceptedRating&nbsp;Red&nbsp;(reviewmoderator)
+*/
+public&nbsp;class&nbsp;ClassName&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;/**&nbsp;Create&nbsp;an&nbsp;instance&nbsp;with&nbsp;...&nbsp;(describe&nbsp;the&nbsp;properties&nbsp;of&nbsp;the
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;instance).&nbsp;Use&nbsp;the&nbsp;imperative&nbsp;case&nbsp;here.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@param&nbsp;parameterName&nbsp;Description&nbsp;of&nbsp;the&nbsp;parameter.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@exception&nbsp;ExceptionClass&nbsp;If&nbsp;...&nbsp;(describe&nbsp;what
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;causes&nbsp;the&nbsp;exception&nbsp;to&nbsp;be&nbsp;thrown).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ClassName(ParameterClass&nbsp;parameterName)&nbsp;throws&nbsp;ExceptionClass&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;///////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;////&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;variables&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;////
+
+&nbsp;&nbsp;&nbsp;&nbsp;/**&nbsp;Description&nbsp;of&nbsp;the&nbsp;variable.&nbsp;*/
+&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;int&nbsp;variableName;
+
+&nbsp;&nbsp;&nbsp;&nbsp;///////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;////&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;methods&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;////
+
+&nbsp;&nbsp;&nbsp;&nbsp;/**&nbsp;Do&nbsp;something...&nbsp;(Use&nbsp;the&nbsp;imperative&nbsp;case&nbsp;here,&nbsp;such&nbsp;as:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;"Return&nbsp;the&nbsp;most&nbsp;recently&nbsp;recorded&nbsp;event.",&nbsp;not
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;"Returns&nbsp;the&nbsp;most&nbsp;recently&nbsp;recorded&nbsp;event.")
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@param&nbsp;parameterName&nbsp;Description&nbsp;of&nbsp;the&nbsp;parameter.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@return&nbsp;Description&nbsp;of&nbsp;the&nbsp;returned&nbsp;value.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@exception&nbsp;ExceptionClass&nbsp;If&nbsp;...&nbsp;(describe&nbsp;what
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;causes&nbsp;the&nbsp;exception&nbsp;to&nbsp;be&nbsp;thrown).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;int&nbsp;publicMethodName(ParameterClass&nbsp;parameterName)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throws&nbsp;ExceptionClass&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;///////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;////&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;methods&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;////
+
+&nbsp;&nbsp;&nbsp;&nbsp;/**&nbsp;Describe&nbsp;your&nbsp;method,&nbsp;again&nbsp;using&nbsp;imperative&nbsp;case.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@see&nbsp;RelevantClass#methodName()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@param&nbsp;parameterName&nbsp;Description&nbsp;of&nbsp;the&nbsp;parameter.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@return&nbsp;Description&nbsp;of&nbsp;the&nbsp;returned&nbsp;value.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;@exception&nbsp;ExceptionClass&nbsp;If&nbsp;...&nbsp;(describe&nbsp;what
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;causes&nbsp;the&nbsp;exception&nbsp;to&nbsp;be&nbsp;thrown).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;int&nbsp;_protectedMethodName(ParameterClass&nbsp;parameterName)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throws&nbsp;ExceptionClass&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;///////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;////&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;variables&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;////
+
+&nbsp;&nbsp;&nbsp;&nbsp;/**&nbsp;Description&nbsp;of&nbsp;the&nbsp;variable.&nbsp;*/
+&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;int&nbsp;_aProtectedVariable;
+
+&nbsp;
+</pre>
+</font>
+   <a name="codingStyle-AnatomyOfAJavaFilePart1">
+</a>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center>Figure 2: Anatomy of a Java file, part2.</center>
+<font>
+  
+<pre>
+&nbsp;&nbsp;&nbsp;&nbsp;///////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;////&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;methods&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;////
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Private&nbsp;methods&nbsp;need&nbsp;not&nbsp;have&nbsp;Javadoc&nbsp;comments,&nbsp;although&nbsp;it&nbsp;can
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;be&nbsp;more&nbsp;convenient&nbsp;if&nbsp;they&nbsp;do,&nbsp;since&nbsp;they&nbsp;may&nbsp;at&nbsp;some&nbsp;point
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;become&nbsp;protected&nbsp;methods.
+&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;int&nbsp;_privateMethodName()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;///////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;////&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;variables&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;////
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Private&nbsp;variables&nbsp;need&nbsp;not&nbsp;have&nbsp;Javadoc&nbsp;comments,&nbsp;although&nbsp;it&nbsp;can
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;be&nbsp;more&nbsp;convenient&nbsp;if&nbsp;they&nbsp;do,&nbsp;since&nbsp;they&nbsp;may&nbsp;at&nbsp;some&nbsp;point
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;become&nbsp;protected&nbsp;variables.
+&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;int&nbsp;_aPrivateVariable;
+}
+
+</pre>
+</font>
+    <a name="codingStyle-AnatomyOfAJavaFilePart2">
+</a>
+
+<div class="p"><!----></div>
+The key points to note about this organization are:
+
+<ul>
+<li> The file is divided into sections with highly visible
+  delimiters. The sections contain constructors, public variables
+  (including ports and parameters for actor definitions), public
+  methods, protected variables, protected members, private methods,
+  and private variables, in that order. Note in particular that
+  although it is customary in the Java community to list private
+  variables at the beginning of a class definition, we put them at the
+  end. They are not part of the public interface, and thus should not
+  be the first thing you see.
+<div class="p"><!----></div>
+</li>
+
+<li> Within each section, method
+  order to easily search for a particular method (in printouts, for
+  example, finding a method can be very difficult if the order is
+  arbitrary, and use of printouts during design and code reviews is
+  very convenient). If you wish to group methods together, try to name
+  them so that they have a common prefix. Static methods are generally
+  mixed with non-static methods.
+<div class="p"><!----></div>
+</li>
+</ul>
+The key sections are explained below.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.1">
+2.1</a>&nbsp;&nbsp;Copyright</h3>
+<a name="60856">
+</a>
+The copyright used in Ptolemy II is shown in figure
+&nbsp;<a href="#codingStyle-Copyright">3</a>.
+
+<div class="p"><!----></div>
+<a name="tth_fIg3">
+</a>  <center>Figure 3: Copyright notice used in Ptolemy II.</center>
+  <font>
+   
+<pre>
+Copyright&nbsp;(c)&nbsp;1999-2010&nbsp;The&nbsp;Regents&nbsp;of&nbsp;the&nbsp;University&nbsp;of&nbsp;California.
+All&nbsp;rights&nbsp;reserved.
+
+Permission&nbsp;is&nbsp;hereby&nbsp;granted,&nbsp;without&nbsp;written&nbsp;agreement&nbsp;and&nbsp;without
+license&nbsp;or&nbsp;royalty&nbsp;fees,&nbsp;to&nbsp;use,&nbsp;copy,&nbsp;modify,&nbsp;and&nbsp;distribute&nbsp;this
+software&nbsp;and&nbsp;its&nbsp;documentation&nbsp;for&nbsp;any&nbsp;purpose,&nbsp;provided&nbsp;that&nbsp;the&nbsp;above
+copyright&nbsp;notice&nbsp;and&nbsp;the&nbsp;following&nbsp;two&nbsp;paragraphs&nbsp;appear&nbsp;in&nbsp;all&nbsp;copies
+of&nbsp;this&nbsp;software.
+
+IN&nbsp;NO&nbsp;EVENT&nbsp;SHALL&nbsp;THE&nbsp;UNIVERSITY&nbsp;OF&nbsp;CALIFORNIA&nbsp;LIABLE&nbsp;TO&nbsp;ANY&nbsp;PARTY
+FOR&nbsp;DIRECT,&nbsp;INDIRECT,&nbsp;SPECIAL,&nbsp;INCIDENTAL,&nbsp;OR&nbsp;CONSEQUENTIAL&nbsp;DAMAGES
+ARISING&nbsp;OUT&nbsp;OF&nbsp;THE&nbsp;USE&nbsp;OF&nbsp;THIS&nbsp;SOFTWARE&nbsp;AND&nbsp;ITS&nbsp;DOCUMENTATION,&nbsp;EVEN&nbsp;IF
+THE&nbsp;UNIVERSITY&nbsp;OF&nbsp;CALIFORNIA&nbsp;HAS&nbsp;BEEN&nbsp;ADVISED&nbsp;OF&nbsp;THE&nbsp;POSSIBILITY&nbsp;OF
+SUCH&nbsp;DAMAGE.
+
+THE&nbsp;UNIVERSITY&nbsp;OF&nbsp;CALIFORNIA&nbsp;SPECIFICALLY&nbsp;DISCLAIMS&nbsp;ANY&nbsp;WARRANTIES,
+INCLUDING,&nbsp;BUT&nbsp;NOT&nbsp;LIMITED&nbsp;TO,&nbsp;THE&nbsp;IMPLIED&nbsp;WARRANTIES&nbsp;OF
+MERCHANTABILITY&nbsp;AND&nbsp;FITNESS&nbsp;FOR&nbsp;A&nbsp;PARTICULAR&nbsp;PURPOSE.&nbsp;THE&nbsp;SOFTWARE
+PROVIDED&nbsp;HEREUNDER&nbsp;IS&nbsp;ON&nbsp;AN&nbsp;"AS&nbsp;IS"&nbsp;BASIS,&nbsp;AND&nbsp;THE&nbsp;UNIVERSITY&nbsp;OF
+CALIFORNIA&nbsp;HAS&nbsp;NO&nbsp;OBLIGATION&nbsp;TO&nbsp;PROVIDE&nbsp;MAINTENANCE,&nbsp;SUPPORT,&nbsp;UPDATES,
+ENHANCEMENTS,&nbsp;OR&nbsp;MODIFICATIONS.
+
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
+
+</pre>
+</font>
+    <a name="codingStyle-Copyright">
+</a>
+
+<div class="p"><!----></div>
+This style of copyright is often referred to the community as a
+"BSD" copyright because it was used for the "Berkeley Standard
+Distribution" of Unix. It is much more liberal that the commonly used
+"GPL" or "GNU Public License," which encumbers the software and
+derivative works with the requirement that they carry the source code
+and the same copyright agreement. The BSD copyright requires that the
+software and derivative work carry the identity of the copyright
+owner, as embodied in the lines:
+
+<div class="p"><!----></div>
+  
+<pre>
+Copyright&nbsp;(c)&nbsp;1999-2010&nbsp;The&nbsp;Regents&nbsp;of&nbsp;the&nbsp;University&nbsp;of&nbsp;California.
+All&nbsp;rights&nbsp;reserved.
+&nbsp;&nbsp;
+</pre>
+
+
+<div class="p"><!----></div>
+The copyright also requires that copies and derivative works include
+the disclaimer of liability in BOLD. It specifically does not require
+that copies of the software or derivative works carry the middle
+paragraph, so such copies and derivative works need not grant
+similarly liberal rights to users of the software.
+
+<div class="p"><!----></div>
+The intent of the BSD copyright is to maximize the potential impact of
+the software by enabling uses of the software that are inconsistent
+with disclosing the source code or granting free redistribution
+rights. For example, a commercial enterprise can extend the software,
+adding value, and sell the original software embodied with the
+extensions. Economic principles indicate that granting free
+redistribution rights may render the enterprise business model
+untenable, so many business enterprises avoid software with GPL
+licenses. Economic principles also indicate that, in theory, fair
+pricing of derivative works must be based on the value of the
+extensions, the packaging, or the associated services provided by the
+enterprise. The pricing cannot reflect the value of the free software,
+since an informed consumer will, in theory, obtain that free software
+from another source.
+
+<div class="p"><!----></div>
+Software with a BSD license can also be more easily included in
+defense or national-security related applications, where free
+redistribution of source code and licenses may be inconsistent with
+the mission of the software.  Ptolemy II can include other software
+with copyrights that are different from the BSD copyright. In general,
+we do not include software with the GNU General Public License (GPL)
+license, because provisions of the GPL license require that software
+with which GLP'd code is integrated also be encumbered by the GPL
+license. In the past, we have made an exception for GPL'd code that is
+aggregated with Ptolemy II but not directly combined with Ptolemy
+II. For example cvs2cl.pl was shipped with Ptolemy II.  This file is a
+GPL'd Perl script that access the CVS database and generates a
+ChangeLog file. This script is not directly called by Ptolemy II, and
+we include it as a "mere aggregation" and thus Ptolemy II does not
+fall under the GPL. Note that we do not include GPL'd Java files that
+are compiled and then called from Ptolemy II because this would
+combine Ptolemy II with the GPL'd code and thus encumber Ptolemy II
+with the GPL.
+
+<div class="p"><!----></div>
+Another GNU license is the GNU Library General Public License now
+known as the GNU Lesser General Public License (LGPL). We try to avoid
+packages that have this license, but we on occasion we have included
+them with Ptolemy II. The LGPL license is less strict than the GPL -
+the LGPL permits linking with other packages without encumbering the
+other package.  In general, it is best if you avoid GNU code. If you
+are considering using code with the GPL or LGPL, we encourage you to
+carefully read the license and to also consult the GNU GPL FAQ at
+<a href="http://www.gnu.org/licenses/gpl-faq.html">http://www.gnu.org/licenses/gpl-faq.html</a>.
+We also avoid including software with proprietary copyrights that do
+not permit redistribution of the software.
+
+<div class="p"><!----></div>
+The date of the copyright for newly created files should be the
+current year:
+
+<div class="p"><!----></div>
+  
+<pre>
+Copyright&nbsp;(c)&nbsp;2010&nbsp;The&nbsp;Regents&nbsp;of&nbsp;the&nbsp;University&nbsp;of&nbsp;California.
+All&nbsp;rights&nbsp;reserved.
+&nbsp;&nbsp;
+</pre>
+
+
+<div class="p"><!----></div>
+If a file is a copy of a previously copyrighted file, then the start
+date of the new file should be the same as that of the original file:
+
+<div class="p"><!----></div>
+ 
+<pre>
+Copyright&nbsp;(c)&nbsp;1999-2010&nbsp;The&nbsp;Regents&nbsp;of&nbsp;the&nbsp;University&nbsp;of&nbsp;California.
+All&nbsp;rights&nbsp;reserved.
+&nbsp;
+</pre>
+
+
+<div class="p"><!----></div>
+Ideally, files should have at most one copyright from one
+institution. Files with multiple copyrights are often in legal limbo
+if the copyrights conflict. If necessary, two institutions can share
+the same copyright:
+
+<div class="p"><!----></div>
+ 
+<pre>
+Copyright&nbsp;(c)&nbsp;2010&nbsp;The&nbsp;Ptolemy&nbsp;Institute&nbsp;and&nbsp;The&nbsp;Regents&nbsp;of&nbsp;the
+University&nbsp;of&nbsp;California.
+All&nbsp;rights&nbsp;reserved.
+&nbsp;
+</pre>
+
+
+<div class="p"><!----></div>
+Ptolemy II includes a copyright management system that will display
+the copyrights of packages that are included in Ptolemy II at
+runtime. To see what packages are used in a particular Ptolemy
+configuration, do Help  -  About  -  Copyright. Currently, URLs such as
+<tt>about:</tt> and <tt>about:copyright</tt> are handled specially. If,
+within Ptolemy, the user clicks on a link with a target URL of
+<tt>about:copyright</tt>, then we eventually invoke code within
+<br />$PTII/ptolemy/actor/gui/GenerateCopyrights.java. This class searches
+the runtime environment for particular packages and generates a web
+page with the links to the appropriate copyrights if certain packages
+are found.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.2">
+2.2</a>&nbsp;&nbsp;Imports</h3>
+<a name="52137">
+</a>
+The imports section identifies the classes outside the current package on which this class depends. The package structure of Ptolemy II is carefully constructed so that core packages do not depend on more elaborate packages. This limited dependencies makes it possible to create derivative works that leverage the core but drastically modify or replace the more advanced capabilities.
+By convention, we list imports by full class name, as follows:
+
+<div class="p"><!----></div>
+
+<pre>
+import&nbsp;ptolemy.kernel.CompositeEntity;
+import&nbsp;ptolemy.kernel.Entity;
+import&nbsp;ptolemy.kernel.Port;
+import&nbsp;ptolemy.kernel.util.IllegalActionException;
+import&nbsp;ptolemy.kernel.util.Locatable;
+import&nbsp;ptolemy.kernel.util.NameDuplicationException;
+
+</pre>
+
+
+<div class="p"><!----></div>
+in particular, we do not use the wildcards supported by Java, as in:
+
+<div class="p"><!----></div>
+
+<pre>
+import&nbsp;ptolemy.kernel.*;
+import&nbsp;ptolemy.kernel.util.*;
+
+</pre>
+
+
+<div class="p"><!----></div>
+The reason that we discourage wildcards is that the full class names
+in import statements makes it easier find classes that are referenced
+in the code. If you use an IDE such as Eclipse, it is trivially easy
+to generate the import list in this form, so there is no reason to not
+do it.  Imports are ordered alphabetically by package first, then by
+class name, as shown above.
+
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;Comment Structure</h2>
+<a name="30842">
+</a>
+
+<div class="p"><!----></div>
+Good comments are essential to readable code. In Ptolemy II, comments
+fall into two categories, Javadoc comments, which become part of the
+generated documentation, and code comments, which do not. Javadoc
+comments are used to explain the interface to a class, and code
+comments are used to explain how it works.  Both Javadoc and code
+comments should be complete sentences and complete thoughts,
+capitalized at the beginning and with a period at the end. Spelling
+and grammar should be correct.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.1">
+3.1</a>&nbsp;&nbsp;Javadoc and HTML</h3>
+<a name="69524">
+</a>
+Javadoc is a program distributed with Java that generates 
+HTML documentation files from Java source code files 
+<a href="#tthFtNtAAB" name="tthFrefAAB"><sup>1</sup></a>. Javadoc comments begin with "<tt>/**</tt>" and end with
+"<tt>*/</tt>". The comment immediately preceding a method, member, or
+class documents that method, member, or class. Ptolemy II classes
+include Javadoc documentation for all classes and all public and
+protected members and methods. Members and methods should appear in
+alphabetical order within their protection category (public, protected
+etc.) so that it is easy to find them in the Javadoc output.  When
+writing Javadoc comments, pay special attention to the first sentence
+of each Javadoc comment. This first sentence is used as a summary in
+the Javadocs. It is extremely helpful if the first sentence is a
+cogent and complete summary.  Javadoc comments can include embedded
+HTML formatting. For example, by convention, in actor documentation,
+we set in italics the names of the ports and parameters using the
+syntax:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;In&nbsp;this&nbsp;actor,&nbsp;inputs&nbsp;are&nbsp;read&nbsp;from&nbsp;the&nbsp;&lt;i&#62;input&lt;/i&#62;&nbsp;port&nbsp;...&nbsp;*/
+
+</pre>
+
+
+<div class="p"><!----></div>
+The Javadoc program gives extensive diagnostics when run on a source
+file. Our policy is to format the comments until there are no Javadoc
+warnings. Private members and methods need not be documented by
+Javadoc comments. The doccheck tool from
+<br /><a href="http://java.sun.com/j2se/javadoc/doccheck/index.html">http://java.sun.com/j2se/javadoc/doccheck/index.html</a>
+gives even more extensive diagnostics in HTML format. We encourage
+developers to run doccheck and fix all warnings.  The nightly
+build at
+<a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/">http://chess.eecs.berkeley.edu/ptexternal/nightly/</a>
+includes a run of doccheck.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.2">
+3.2</a>&nbsp;&nbsp;Class documentation</h3>
+<a name="36965">
+</a>
+The class documentation is the Javadoc comment that immediately
+precedes the class definition line. It is a particularly important
+part of the documentation. It should describe what the class does and
+how it is intended to be used. When writing it, put yourself in the
+mind of the user of your class. What does that person need to know? In
+particular, that person probably does not need to know how you
+accomplish what the class does. She only needs to know what you
+accomplish.  A class may be intended to be a base class that is
+extended by other programmers. In this case, there may be two distinct
+sections to the documentation. The first section should describe how a
+user of the class should use the class. The second section should
+describe how a programmer can meaningfully extend the class. Only the
+second section should reference protected members or methods. The
+first section has no use for them. Of course, if the class is
+abstract, it cannot be used directly and the first section can be
+omitted.
+
+<div class="p"><!----></div>
+Comments should include honest information about the limitations of a class.
+
+<div class="p"><!----></div>
+Each class comment should also include the following Javadoc tags:
+
+<ul>
+<li>@author
+The @author tag should list the authors and contributors of a class,
+for example:
+
+<div class="p"><!----></div>
+
+<pre>
+@author&nbsp;Claudius&nbsp;Ptolemaus,&nbsp;Contributor:&nbsp;Tycho&nbsp;Brahe
+
+</pre>
+
+
+<div class="p"><!----></div>
+If you are creating a new file that is based on an older file, move
+the authors of the older file towards the end:
+<font>
+
+<pre>
+@author&nbsp;Copernicus,&nbsp;Based&nbsp;on&nbsp;Galileo.java&nbsp;by&nbsp;Claudius&nbsp;Ptolemaus,&nbsp;Contributor:&nbsp;Tycho&nbsp;Brahe
+
+</pre>
+</font>
+The general rule is that only people who actually contributed to the
+code should be listed as authors.  So, in the case of a new file, the
+authors should only be people who edited the file.
+Note that all the authors should be listed on one line.  Javadoc will
+not include authors listed on a separate line.
+<div class="p"><!----></div>
+</li>
+
+<li>
+@version
+The @version tag includes text that Subversion automatically substitutes in the version. The @version tag starts out with:
+<tt>@version&nbsp;$Id</tt><tt>$</tt>
+When the file is committed using Subversion, the <tt>@version&nbsp;$Id</tt><tt>$</tt>
+gets substituted, so the tag might look like:
+<br /><tt>@version&nbsp;$Id</tt><tt>:&nbsp;makefile&nbsp;43472&nbsp;2006-08-21&nbsp;23:16:56Z&nbsp;cxh&nbsp;$</tt>
+
+
+<div class="p"><!----></div>
+Note that for Subversion keyword substitution to work properly, the file must have the svn:keyword attribute set.
+In addition, it is best if the svn:native property is set.  Below is
+how to check the values for a file named README.txt:
+
+<div class="p"><!----></div>
+
+<pre>
+bash-3.2$&nbsp;svn&nbsp;proplist&nbsp;README.txt
+Properties&nbsp;on&nbsp;'README.txt':
+&nbsp;&nbsp;svn:keywords
+&nbsp;&nbsp;svn:eol-style
+bash-3.2$&nbsp;svn&nbsp;propget&nbsp;svn:keywords&nbsp;README.txt
+Author&nbsp;Date&nbsp;Id&nbsp;Revision
+bash-3.2$&nbsp;svn&nbsp;propget&nbsp;svn:eol-style&nbsp;README.txt
+native
+
+</pre>
+
+To set the properties on a file:
+
+<div class="p"><!----></div>
+
+<pre>
+svn&nbsp;propset&nbsp;svn:keywords&nbsp;"Author&nbsp;Date&nbsp;Id&nbsp;Revision"&nbsp;filename
+svn&nbsp;propset&nbsp;svn:eol-style&nbsp;native&nbsp;filename
+
+</pre>
+
+
+<div class="p"><!----></div>
+For details about properly configuring your Subversion environment, see
+<br /><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#KeywordSubstitution">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#KeywordSubstitution</a>
+
+<div class="p"><!----></div>
+</li>
+
+<li> @since The @since tag refers the release that the class first
+  appeared in. Usually, this is one decimal place after the current
+  release. For example if the current release is 8.0.2, then the
+  @since tag on a new file would read:
+
+<div class="p"><!----></div>
+
+<pre>
+@since&nbsp;Ptolemy&nbsp;II&nbsp;8.1
+
+</pre>
+
+
+<div class="p"><!----></div>
+Adding an @since tag to a new class is optional, we usually update
+these tags by running a script when we do a release. However, authors
+should be aware of their meaning. Note that the @since tag can also be
+used when a method is added to an existing class, which will help
+users notice new features in older code.
+<div class="p"><!----></div>
+</li>
+
+<li> @Pt.ProposedRating
+<div class="p"><!----></div>
+</li>
+
+<li> @Pt.AcceptedRating
+Code rating tags, discussed below.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.3">
+3.3</a>&nbsp;&nbsp;Code rating</h3>
+<a name="pgfId-180643">
+</a>
+The Javadoc tags 
+<tt>@Pt.ProposedRating</tt> and <tt>@Pt.AcceptedRating</tt>
+contain code rating information. Each tag includes the color (one of 
+<tt>red</tt>, <tt>yellow</tt>, <tt>green</tt> or <tt>blue</tt>)
+and the Subversion login of the person responsible for the proposed
+or accepted rating level, for example:
+
+<div class="p"><!----></div>
+
+<pre>
+@Pt.ProposedRating&nbsp;blue&nbsp;ptolemy
+@Pt.AcceptedRating&nbsp;green&nbsp;ptolemy
+
+</pre>
+
+
+<div class="p"><!----></div>
+The intent of the code rating is to clearly identify to readers of the
+file the level of maturity of the contents. The Ptolemy Project
+encourages experimentation, and experimentation often involves
+creating immature code, or even "throw-away" code. Such code is
+red. We use a lightweight software engineering process documented in
+"Software Practice in the Ptolemy Project,"<a href="#ReekieNeuendorfferHylandsLee99_SoftwarePracticeInThePtolemyProject" name="CITEReekieNeuendorfferHylandsLee99_SoftwarePracticeInThePtolemyProject">[1</a>] 
+to raise the code to higher ratings. That paper documents the ratings
+a:
+
+<ul>
+<li> Red code is untrusted code. This means that we have no confidence in the design or implementation (if there is one) of this code or design, and that anyone that uses it can expect it to change substantially and without notice. All code starts at red.
+<div class="p"><!----></div>
+</li>
+
+<li> Yellow code is code with a trusted design. We have a reasonable degree of confidence in the design, and do not expect it to change in any substantial way. However, we do expect the API to shift around a little during development.
+<div class="p"><!----></div>
+</li>
+
+<li> Green code is code with a trusted implementation. We have confidence that the implementation is sound, based on test suites and practical application of the code. If possible, we try not to release important code unless it is green.
+<div class="p"><!----></div>
+</li>
+
+<li> Blue marks polished and complete code, and also represents a
+  firm commitment to backwards-compatibility. Blue code is completely
+  reviewed, tested, documented, and stressed in actual usage.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+The Javadoc  doclet at
+$PTII/doc/doclets/RatingTaglet.java adds the ratings to the Javadoc
+output.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.4">
+3.4</a>&nbsp;&nbsp;Constructor documentation</h3>
+<a name="pgfId-177037">
+</a>
+Constructor documentation usually begins with the phrase "Construct an instance that ..." and goes on to give the properties of that instance. Note the use of the imperative case. A constructor is a command to construct an instance of a class. What it does is construct an instance.
+
+     <h3><a name="tth_sEc3.5">
+3.5</a>&nbsp;&nbsp;Method documentation</h3>
+<a name="36603">
+</a>
+Method documentation needs to state what the method does and how it
+should be used. For example:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;Mark&nbsp;the&nbsp;object&nbsp;invalid,&nbsp;indicating&nbsp;that&nbsp;when&nbsp;a&nbsp;method
+&nbsp;*&nbsp;&nbsp;is&nbsp;next&nbsp;called&nbsp;to&nbsp;get&nbsp;information&nbsp;from&nbsp;the&nbsp;object,&nbsp;that
+&nbsp;*&nbsp;&nbsp;information&nbsp;needs&nbsp;to&nbsp;be&nbsp;reconstructed&nbsp;from&nbsp;the&nbsp;database.
+&nbsp;*/
+public&nbsp;void&nbsp;invalidate()&nbsp;{
+&nbsp;&nbsp;&nbsp;_valid&nbsp;=&nbsp;false;
+}
+
+</pre>
+
+
+<div class="p"><!----></div>
+By contrast, here is a poor method comment:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;Set&nbsp;the&nbsp;variable&nbsp;_valid&nbsp;to&nbsp;false.
+&nbsp;*/
+public&nbsp;void&nbsp;invalidate()&nbsp;{
+&nbsp;&nbsp;&nbsp;_valid&nbsp;=&nbsp;false;
+}
+
+</pre>
+
+
+<div class="p"><!----></div>
+While this certainly describes what the method does from the perspective of the coder, it says nothing useful from the perspective of the user of the class, who cannot see the (presumably private) variable _valid nor how that variable is used. On closer examination, this comment describes how the method is accomplishing what it does, but it does not describe what it accomplishes.
+Here is an even worse method comment:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;Invalidate&nbsp;this&nbsp;object.
+&nbsp;*/
+public&nbsp;void&nbsp;invalidate()&nbsp;{
+&nbsp;&nbsp;&nbsp;_valid&nbsp;=&nbsp;false;
+}
+
+</pre>
+
+
+<div class="p"><!----></div>
+This says absolutely nothing.
+Note the use of the imperative case in all of the above comments. It
+is common in the Java community to use the following style for
+documenting methods:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;Sets&nbsp;the&nbsp;expression&nbsp;of&nbsp;this&nbsp;variable.&nbsp;
+&nbsp;*&nbsp;&nbsp;@param&nbsp;expression&nbsp;The&nbsp;expression&nbsp;for&nbsp;this&nbsp;variable.
+&nbsp;*/
+public&nbsp;void&nbsp;setExpression(String&nbsp;expression)&nbsp;{
+	...
+}
+
+</pre>
+
+
+<div class="p"><!----></div>
+We use instead the imperative case, as in
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;Set&nbsp;the&nbsp;expression&nbsp;of&nbsp;this&nbsp;variable.
+&nbsp;*&nbsp;&nbsp;@param&nbsp;expression&nbsp;The&nbsp;expression&nbsp;for&nbsp;this&nbsp;variable.
+&nbsp;*/
+public&nbsp;void&nbsp;setExpression(String&nbsp;expression)&nbsp;{
+	...
+}
+
+</pre>
+
+
+<div class="p"><!----></div>
+The reason we do this is that our sentence is a well-formed,
+grammatical English sentence, while the usual convention is not (it is
+missing the subject). Moreover, calling a method is a command "do
+this," so it seems reasonable that the documentation say "Do this."
+The use of imperative case has a large impact on how interfaces are
+documented, especially when using the listener design pattern. For
+instance, the java.awt.event.ItemListener interface has the method:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;Invoked&nbsp;when&nbsp;an&nbsp;item&nbsp;has&nbsp;been&nbsp;selected&nbsp;or&nbsp;deselected.
+&nbsp;*&nbsp;&nbsp;The&nbsp;code&nbsp;written&nbsp;for&nbsp;this&nbsp;method&nbsp;performs&nbsp;the&nbsp;operations
+&nbsp;*&nbsp;&nbsp;that&nbsp;need&nbsp;to&nbsp;occur&nbsp;when&nbsp;an&nbsp;item&nbsp;is&nbsp;selected&nbsp;(or&nbsp;deselected).
+&nbsp;*/
+void&nbsp;itemStateChanged(ItemEvent&nbsp;e);
+
+</pre>
+
+
+<div class="p"><!----></div>
+A naive attempt to rewrite this in imperative tense might result in:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;Notify&nbsp;this&nbsp;object&nbsp;that&nbsp;an&nbsp;item&nbsp;has&nbsp;been&nbsp;selected&nbsp;or&nbsp;deselected.
+&nbsp;*/
+void&nbsp;itemStateChanged(ItemEvent&nbsp;e);	
+
+</pre>
+
+
+<div class="p"><!----></div>
+However, this sentence does not capture what the method does. The
+method may be called in order to notify the listener, but the method
+does not "notify this object". The correct way to concisely document
+this method in imperative case (and with meaningful names) is:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;React&nbsp;to&nbsp;the&nbsp;selection&nbsp;or&nbsp;deselection&nbsp;of&nbsp;an&nbsp;item.
+&nbsp;*/
+void&nbsp;itemStateChanged(ItemEvent&nbsp;event);	
+
+</pre>
+
+
+<div class="p"><!----></div>
+The above is defining an interface (no implementation is given). To
+define the implementation, it is also necessary to describe what the
+method does:
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;React&nbsp;to&nbsp;the&nbsp;selection&nbsp;or&nbsp;deselection&nbsp;of&nbsp;an&nbsp;item&nbsp;by&nbsp;doing...
+&nbsp;*/
+void&nbsp;itemStateChanged(ItemEvent&nbsp;event)&nbsp;{&nbsp;...&nbsp;implementation&nbsp;...&nbsp;}
+
+</pre>
+
+
+<div class="p"><!----></div>
+Comments for base class methods that are intended to be overridden
+should include information about what the method generally does, plus
+information that a programmer may need to override it. If the derived
+class uses the base class method (by calling <tt>super.methodName()</tt>),
+but then appends to its behavior, then the documentation in the
+derived class should describe both what the base class does and what
+the derived class does.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.6">
+3.6</a>&nbsp;&nbsp;Referring to methods in comments</h3>
+<a name="pgfId-177225">
+</a>
+By convention, method names are set in the default font, but followed
+by empty parentheses, as in
+
+<div class="p"><!----></div>
+
+<pre>
+/**&nbsp;The&nbsp;fire()&nbsp;method&nbsp;is&nbsp;called&nbsp;when&nbsp;...&nbsp;*/
+
+</pre>
+
+
+<div class="p"><!----></div>
+The parentheses are empty even if the method takes arguments. The
+arguments are not shown. If the method is 
+overloaded (has several versions with different argument sets), then
+the text of the documentation needs to distinguish which version is
+being used.  Other methods in the same class may be linked to with the
+@link ...  Javadoc tag. For example, to link to a foo() method that
+takes a String:
+
+<div class="p"><!----></div>
+
+<pre>
+*&nbsp;Unlike&nbsp;the&nbsp;{@link&nbsp;#foo(String)}&nbsp;method,&nbsp;this&nbsp;method&nbsp;...
+
+</pre>
+
+
+<div class="p"><!----></div>
+Methods and members in the same package should have an octothorpe (#
+sign) prepended. Methods and members in other classes should use the
+fully qualified class name: 
+
+<div class="p"><!----></div>
+
+<pre>
+{@link&nbsp;ptolemy.util.StringUtilities.substitute(String,&nbsp;String,&nbsp;String)}
+
+</pre>
+
+
+<div class="p"><!----></div>
+Links to methods should include the types of the arguments.  To run
+Javadoc on the classes in the current directory, run <tt>make&nbsp;docs</tt>,
+which will create the HTML javadoc output in the doc/codeDoc
+subdirectory. To run Javadoc for all the common packages, run
+<tt>cd&nbsp;$PTII/doc;&nbsp;make&nbsp;docs</tt>.  The output will appear in
+$PTII/doc/codeDoc. Actor documentation can be viewed from within
+Vergil, right clicking on an actor and selecting View Documentation.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.7">
+3.7</a>&nbsp;&nbsp;Tags in method documents</h3>
+<a name="73903">
+</a>
+
+<div class="p"><!----></div>
+Methods should include Javadoc tags @param (one for each parameter),
+@return (unless the return type is void), and @exception (unless no
+exceptions are thrown). Note that we do not use the @throws tag, and
+that @returns is not a legitimate Javadoc tag, use @return instead.
+The annotation for the arguments (the  @param
+statement) need not be a complete sentence, since it is usually
+presented in tabular format. However, we do capitalize it and end it
+with a period.  Exceptions that are thrown by a method need to be
+identified in the Javadoc comment. An 
+@exception tag should read like this:
+
+<div class="p"><!----></div>
+
+<pre>
+*&nbsp;@exception&nbsp;MyException&nbsp;If&nbsp;such&nbsp;and&nbsp;such&nbsp;occurs.
+
+</pre>
+
+
+<div class="p"><!----></div>
+Notice that the body always starts with "If", not "Thrown if", or
+anything else. Just look at the Javadoc output to see why. In the case
+of an interface or base class that does not throw the exception, use
+the following: 
+
+<div class="p"><!----></div>
+
+<pre>
+*&nbsp;@exception&nbsp;MyException&nbsp;Not&nbsp;thrown&nbsp;in&nbsp;this&nbsp;base&nbsp;class.&nbsp;Derived
+*&nbsp;&nbsp;classes&nbsp;may&nbsp;throw&nbsp;it&nbsp;if&nbsp;such&nbsp;and&nbsp;such&nbsp;happens.
+
+</pre>
+
+
+<div class="p"><!----></div>
+The exception still has to be declared so that derived classes can
+throw it, so it needs to be documented as well.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.8">
+3.8</a>&nbsp;&nbsp;FIXME annotations</h3>
+<a name="pgfId-176528">
+</a>
+We use the keyword "FIXME" in comments to mark places in the code
+with known problems. For example:
+
+<div class="p"><!----></div>
+
+<pre>
+//&nbsp;FIXME:&nbsp;The&nbsp;following&nbsp;cast&nbsp;may&nbsp;not&nbsp;always&nbsp;be&nbsp;safe.
+Foo&nbsp;foo&nbsp;=&nbsp;(Foo)bar;
+
+</pre>
+
+
+<div class="p"><!----></div>
+By default, Eclipse will highlight FIXMEs.
+
+ <h2><a name="tth_sEc4">
+4</a>&nbsp;&nbsp;Code Structure</h2>
+<a name="pgfId-177732">
+</a>
+
+     <h3><a name="tth_sEc4.1">
+4.1</a>&nbsp;&nbsp;Names of classes and variables</h3>
+<a name="pgfId-177234">
+</a>
+
+<div class="p"><!----></div>
+In general, the names of classes, methods and members should consist of complete words separated using internal capitalization
+<a href="#tthFtNtAAC" name="tthFrefAAC"><sup>2</sup></a>.
+Class names, and only  class names, have their
+first letter capitalized, as in AtomicActor. Method and member names
+are not capitalized, except at internal word boundaries, as in
+getContainer(). Protected or private members and methods are preceded
+by a leading underscore "_" as in _protectedMethod().  Static
+final constants should be in uppercase, with words separated by
+underscores, as in INFINITE_CAPACITY. A leading underscore should be
+used if the constant is protected or private.  Package names should be
+short and not capitalized, as in "de" for the discrete-event domain.
+In Java, there is no limit to name sizes (as it should be). Do not
+hesitate to use long names.
+
+     <h3><a name="tth_sEc4.2">
+4.2</a>&nbsp;&nbsp;Indentation and brackets</h3>
+<a name="marker-167870">
+</a>
+Nested statements should be indented by 4 characters, as in: 
+
+<div class="p"><!----></div>
+
+<pre>
+if&nbsp;(container&nbsp;!=&nbsp;null)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;Manager&nbsp;manager&nbsp;=&nbsp;container.getManager();
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(manager&nbsp;!=&nbsp;null)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;manager.requestChange(change);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}
+
+</pre>
+
+
+<div class="p"><!----></div>
+Closing brackets should be on a line by themselves, aligned with the
+beginning of the line that contains the open bracket. Please avoid
+using the Tab character in source files. The reason for this is that
+code becomes unreadable when the Tab character is interpreted
+differently by different programs. Your text editor should be
+configured to react to the Tab key by inserting spaces rather than the
+tab character. To set up Emacs to follow the Ptolemy II indentation
+style, see $PTII/util/lisp/ptemacs.el. To set up Eclipse to follow
+the Ptolemy II indentation style, see the instructions in
+$PTII/doc/coding/eclipse.htm.  Long lines should be broken up into
+many small lines. The easiest places to break long lines are usually
+just before operators, with the operator appearing on the next
+line. Long strings can be broken up using the + operator in Java, with
+the + starting the next line. Continuation lines are indented by 8
+characters, as in the throws clause of the constructor in figure
+&nbsp;<a href="#codingStyle-AnatomyOfAJavaFilePart1">1</a>.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.3">
+4.3</a>&nbsp;&nbsp;Spaces</h3>
+<a name="pgfId-167404">
+</a>
+Use a space after each comma: 
+
+<div class="p"><!----></div>
+
+<pre>
+Right:&nbsp;foo(a,&nbsp;b);&nbsp;
+Wrong:&nbsp;foo(a,b);&nbsp;
+
+</pre>
+
+
+<div class="p"><!----></div>
+Use spaces around operators such as plus, minus, multiply, divide or
+equals signs, after semicolons and after keywords like if, else, for,
+do, while, try, catch and throws:
+
+<div class="p"><!----></div>
+
+<pre>
+Right:&nbsp;a&nbsp;=&nbsp;b&nbsp;+&nbsp;1;
+Wrong:&nbsp;a=b+1;&nbsp;
+
+Right:&nbsp;for(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;10;&nbsp;i&nbsp;+=&nbsp;2)&nbsp;
+Wrong:&nbsp;for&nbsp;(i=0&nbsp;;i&lt;10;i+=2)
+
+Right:&nbsp;if&nbsp;(&nbsp;a&nbsp;==&nbsp;b)&nbsp;{
+Wrong:&nbsp;if(a==b)
+
+</pre>
+
+
+<div class="p"><!----></div>
+Note that the Eclipse clean up facility will fix these problems, see
+<br /><a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm">http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm</a>.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.4">
+4.4</a>&nbsp;&nbsp;Exceptions</h3>
+<a name="pgfId-167439">
+</a>
+
+<div class="p"><!----></div>
+A number of exceptions are provided in the kernel.util package. Use
+these exceptions when possible because they provide convenient
+constructor arguments of type  Nameable that identify
+the source of the exception by name in a consistent way.
+
+<div class="p"><!----></div>
+A key decision you need to make is whether to use a compile-time
+exception or a run-time exception. A run-time exception is one that
+implements the  RuntimeException
+interface. Run-time exceptions are more convenient in that they do not
+need to be explicitly declared by methods that throw them. However,
+this can have the effect of masking problems in the code.
+
+<div class="p"><!----></div>
+The convention we follow is that a run-time exception is acceptable
+only if the cause of the exception can be tested for prior to calling
+the method. This is called a <em>testable 
+precondition</em>. For example, if a particular method will fail if the
+argument is negative, and this fact is documented, then the method can
+throw a run-time exception if the argument is negative. On the other
+hand, consider a method that takes a string argument and evaluates it
+as an expression. The expression may be malformed, in which case an
+exception will be thrown. Can this be a run-time exception? No,
+because to determine whether the expression is malformed, you really
+need to invoke the evaluator. Making this a compile-time exception
+forces the caller to explicitly deal with the exception, or to declare
+that it too throws the same exception. In general, we prefer to use
+compile-time exceptions wherever possible.
+
+<div class="p"><!----></div>
+When throwing an exception, the detail message should be a complete
+sentence that includes a string that fully describes what caused the
+exception. For example
+
+<div class="p"><!----></div>
+
+<pre>
+throw&nbsp;IllegalActionException(this,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Cannot&nbsp;append&nbsp;an&nbsp;object&nbsp;of&nbsp;type:&nbsp;"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;obj.getClass().getName()&nbsp;+&nbsp;"&nbsp;because&nbsp;"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;"it&nbsp;does&nbsp;not&nbsp;implement&nbsp;Cloneable.");
+
+</pre>
+
+
+<div class="p"><!----></div>
+Note that the exception not only gives a way to identify the objects
+that caused the exception, but also why the exception occurred. There
+is no need to include in the message an identification of the "this"
+object passed as the first argument to the exception constructor. That
+object will be identified when the exception is reported to the user.
+
+<div class="p"><!----></div>
+If an exception is caught, be sure to use exception chaining to
+include the original exception. For example:
+
+<div class="p"><!----></div>
+
+<pre>
+String&nbsp;fileName&nbsp;=&nbsp;foo();
+try&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Try&nbsp;to&nbsp;open&nbsp;the&nbsp;file
+}&nbsp;catch&nbsp;(IOException&nbsp;ex)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;IllegalActionException(this,&nbsp;ex,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Failed&nbsp;to&nbsp;open&nbsp;'"&nbsp;+&nbsp;fileName&nbsp;+&nbsp;"'");
+}
+
+</pre>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.5">
+4.5</a>&nbsp;&nbsp;Code Cleaning</h3>
+<a name="pgfId-180845">
+</a>
+Code cleaning is the act of homogenizing the coding style, looking for
+and repairing common problems. Fortunately, Eclipse includes a file
+formatter and a cleaner that fixes many common problems. Software that
+is to be formally released should be cleaned according to the
+guidelines set forth in $PTII/doc/coding/releasemgt.htm
+
+ <h2><a name="tth_sEc5">
+5</a>&nbsp;&nbsp;Directory naming conventions</h2>
+<a name="pgfId-180365">
+</a>
+Individual demonstrations should be in directories under a
+<tt>demo/</tt> directory. The name of the directory, and the name of the
+model should match and both begin with capital letters. The demos
+should be capitalized so that it is possible to generate code for
+demonstrations. For example, the Butterfly demonstration is in
+<tt>sdf/demo/Butterfly/Butterfly.xml</tt>.  All other directories begin
+with lower case letters and should consist solely of lower case
+letters. Java package names with embedded upper case letters are not
+encouraged.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc6">
+6</a>&nbsp;&nbsp;Makefiles</h2>
+<a name="codingStyle-Makefiles">
+</a>
+The Ptolemy tree uses makefiles to provide a manifest of what files
+should be shipped with the release and to break the system up into
+modules.  The advantage of this system is that we ship only the files
+that are necessary.
+
+<div class="p"><!----></div>
+There are a few different types of makefiles
+
+<ul>
+<li> makefiles that have no subdirectories that contain source code.
+  For example, $PTII/ptolemy/kernel/util contains Java files but has
+  no subdirectories that contain Java source code.
+<div class="p"><!----></div>
+</li>
+
+<li> makefiles that have one or more subdirectories that contain
+  source code.  For example, $PTII/ptolemy/kernel contains Java files
+  and ptolemy/kernel has subdirectories such as
+  $PTII/ptolemy/kernel/util that contain Java source code.
+<div class="p"><!----></div>
+</li>
+
+<li> makefiles in directories that do not have source code in the
+  current directory, but have subdirectories that contain source code.
+  For example, the ptolemy directory does not contain Java files, but
+  does contain subdirectories that contain Java files.
+<div class="p"><!----></div>
+</li>
+
+<li> makefiles that contain tests.  For example,
+  ptolemy/kernel/util/test contains Tcl tests.
+<div class="p"><!----></div>
+</li>
+
+<li> makefiles in $PTII/mk that are included by other makefiles.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.1">
+6.1</a>&nbsp;&nbsp;An example makefile</h3> 
+Below are the sections of  $PTII/ptolemy/kernel/util/makefile.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;Makefile&nbsp;for&nbsp;the&nbsp;Java&nbsp;classes&nbsp;used&nbsp;to&nbsp;implement&nbsp;the&nbsp;Ptolemy&nbsp;kernel
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+Each makefile has a one line description of the purpose of the makefile.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#
+#&nbsp;@Authors:&nbsp;Christopher&nbsp;Hylands,&nbsp;based&nbsp;on&nbsp;a&nbsp;file&nbsp;by&nbsp;Thomas&nbsp;M.&nbsp;Parks
+#
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The authors for the makefile.
+
+<div class="p"><!----></div>
+<font><tt>#&nbsp;@version&nbsp;$Id</tt><tt>:&nbsp;makefile&nbsp;56450&nbsp;2009-12-06&nbsp;06:54:56Z&nbsp;eal&nbsp;$</tt>
+</font>
+
+<div class="p"><!----></div>
+The version control version.  We use <tt>$Id</tt><tt>$</tt>, which gets
+expanded by Subversion to include the revision number, the date of the
+last revision and the login of the person who made the last revision.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;@Copyright&nbsp;(c)&nbsp;1997-2010&nbsp;The&nbsp;Regents&nbsp;of&nbsp;the&nbsp;University&nbsp;of&nbsp;California.
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The copyright year should be the start with the year the makefile file was first created,
+so when creating a new file, use the current year, for example
+"Copyright (c) 2010 The Regents . . ."
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;All&nbsp;rights&nbsp;reserved.
+#
+#&nbsp;Permission&nbsp;is&nbsp;hereby&nbsp;granted,&nbsp;without&nbsp;written&nbsp;agreement&nbsp;and&nbsp;without
+#&nbsp;license&nbsp;or&nbsp;royalty&nbsp;fees,&nbsp;to&nbsp;use,&nbsp;copy,&nbsp;modify,&nbsp;and&nbsp;distribute&nbsp;this
+#&nbsp;software&nbsp;and&nbsp;its&nbsp;documentation&nbsp;for&nbsp;any&nbsp;purpose,&nbsp;provided&nbsp;that&nbsp;the
+#&nbsp;above&nbsp;copyright&nbsp;notice&nbsp;and&nbsp;the&nbsp;following&nbsp;two&nbsp;paragraphs&nbsp;appear&nbsp;in&nbsp;all
+#&nbsp;copies&nbsp;of&nbsp;this&nbsp;software.
+#
+#&nbsp;IN&nbsp;NO&nbsp;EVENT&nbsp;SHALL&nbsp;THE&nbsp;UNIVERSITY&nbsp;OF&nbsp;CALIFORNIA&nbsp;BE&nbsp;LIABLE&nbsp;TO&nbsp;ANY&nbsp;PARTY
+#&nbsp;FOR&nbsp;DIRECT,&nbsp;INDIRECT,&nbsp;SPECIAL,&nbsp;INCIDENTAL,&nbsp;OR&nbsp;CONSEQUENTIAL&nbsp;DAMAGES
+#&nbsp;ARISING&nbsp;OUT&nbsp;OF&nbsp;THE&nbsp;USE&nbsp;OF&nbsp;THIS&nbsp;SOFTWARE&nbsp;AND&nbsp;ITS&nbsp;DOCUMENTATION,&nbsp;EVEN&nbsp;IF
+#&nbsp;THE&nbsp;UNIVERSITY&nbsp;OF&nbsp;CALIFORNIA&nbsp;HAS&nbsp;BEEN&nbsp;ADVISED&nbsp;OF&nbsp;THE&nbsp;POSSIBILITY&nbsp;OF
+#&nbsp;SUCH&nbsp;DAMAGE.
+#
+#&nbsp;THE&nbsp;UNIVERSITY&nbsp;OF&nbsp;CALIFORNIA&nbsp;SPECIFICALLY&nbsp;DISCLAIMS&nbsp;ANY&nbsp;WARRANTIES,
+#&nbsp;INCLUDING,&nbsp;BUT&nbsp;NOT&nbsp;LIMITED&nbsp;TO,&nbsp;THE&nbsp;IMPLIED&nbsp;WARRANTIES&nbsp;OF
+#&nbsp;MERCHANTABILITY&nbsp;AND&nbsp;FITNESS&nbsp;FOR&nbsp;A&nbsp;PARTICULAR&nbsp;PURPOSE.&nbsp;THE&nbsp;SOFTWARE
+#&nbsp;PROVIDED&nbsp;HEREUNDER&nbsp;IS&nbsp;ON&nbsp;AN&nbsp;"AS&nbsp;IS"&nbsp;BASIS,&nbsp;AND&nbsp;THE&nbsp;UNIVERSITY&nbsp;OF
+#&nbsp;CALIFORNIA&nbsp;HAS&nbsp;NO&nbsp;OBLIGATION&nbsp;TO&nbsp;PROVIDE&nbsp;MAINTENANCE,&nbsp;SUPPORT,&nbsp;UPDATES,
+#&nbsp;ENHANCEMENTS,&nbsp;OR&nbsp;MODIFICATIONS.
+#
+#&nbsp;						PT_COPYRIGHT_VERSION_2
+#&nbsp;						COPYRIGHTENDKEY
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The new BSD copyright appears in each makefile.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+ME&nbsp;=&nbsp;		ptolemy/kernel/util
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The makefile variable ME is set to the directory where that includes the makefile.  Since
+this makefile is in ptII/ptolemy/kernel/util, ME is set to that directory.  The ME variable
+is primarily used by make to print informational messages.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+DIRS&nbsp;=&nbsp;		test
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The DIRS makefile variable lists each subdirectory in which make is to be run.  Any
+subdirectory that contains a makefile should be listed in DIRS.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;Root&nbsp;of&nbsp;the&nbsp;Ptolemy&nbsp;II&nbsp;directory
+ROOT&nbsp;=		../../..
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The ROOT makefile variable is a relative path to the $PTII directory.  This variable is relative
+so as to avoid problems if the $PTII environment variable is not set
+or is set to a different version of Ptolemy II.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+CLASSPATH&nbsp;=&nbsp;	\$(ROOT)
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+Set the Java classpath to the value of the ROOT makefile variable,
+which should be the same as the $PTII environment variable.  Note
+that if this makefile contains Java files that require third party
+software contained in jar files not usually found in the Java
+classpath, then CLASSPATH would be set to include those jar files, for
+example CLASSPATH = $(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR) would
+include ptII/lib/diva.jar, where the DIVA_JAR makefile variable is
+defined in ptII.mk
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;Get&nbsp;configuration&nbsp;info
+CONFIG&nbsp;=	$(ROOT)/mk/ptII.mk
+include&nbsp;$(CONFIG)
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The above includes $PTII/mk/ptII.mk The way the makefiles work is
+that the $PTII/configure script examines the environment, and then
+reads in the
+<br />$PTII/mk/ptII.mk.in file, substitutes in user specific
+values and creates $PTII/mk/ptII.mk.  Each makefile refers to
+$PTII/mk/ptII.mk, which defines variable settings such as the
+location of the compilers.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;Flags&nbsp;to&nbsp;pass&nbsp;to&nbsp;javadoc.&nbsp;(Override&nbsp;value&nbsp;in&nbsp;ptII.mk)
+JDOCFLAGS&nbsp;=&nbsp;	-author&nbsp;-version&nbsp;-public&nbsp;$(JDOCBREAKITERATOR)&nbsp;$(JDOCMEMORY)&nbsp;$(JDOCTAG)
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+Directory specific makefile variables appear here.  This variable sets
+JDOCFLAGS, which is used if "make docs" is run in this directory.
+JDOCFLAGS is not often used, we include it here for completeness.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;Used&nbsp;to&nbsp;build&nbsp;jar&nbsp;files
+PTPACKAGE&nbsp;=&nbsp;	util
+PTCLASSJAR&nbsp;=&nbsp;	$(PTPACKAGE).jar
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+ PTPACKAGE is the directory name of this directory.  In this example,
+the makefile is in ptolemy/kernel/util, so PTPACKAGE is set to util.
+PTPACKAGE is used by PTCLASSJAR to name the jar file when make install
+is run.  For this file, running <tt>make&nbsp;install</tt> will create
+util.jar.  If a directory contains subdirectories that have source
+files, then PTCLASSJAR is not set and PTCLASSALLJAR and PTCLASSALLJARS
+is set, see below.
+
+<div class="p"><!----></div>
+<a name="codingStyle-makefileJSRCS">
+</a><font>
+<pre>
+JSRCS&nbsp;=&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AbstractSettableAttribute.java&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Attribute.java&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BasicModelErrorHandler.java&nbsp;\
+
+</pre>
+</font>
+
+And so on . . .
+<font>
+
+<pre>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ValueListener.java&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Workspace.java
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+A list of all the .java files to be included.  The reason that each
+Java file is listed separately is to avoid shipping test files and
+random kruft.  Each file that is listed should follow this style
+guide.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+EXTRA_SRCS&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(JSRCS)
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+EXTRA_SRCS contains all the source files that should be present.  If there are files such as icons or .xml files that should be included, then
+OTHER_FILES_TO_BE_JARED is set to include those files and  the
+makefile would include:
+<br />EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;Sources&nbsp;that&nbsp;may&nbsp;or&nbsp;may&nbsp;not&nbsp;be&nbsp;present,&nbsp;but&nbsp;if&nbsp;they&nbsp;are&nbsp;present,&nbsp;we&nbsp;don't
+#&nbsp;want&nbsp;make&nbsp;checkjunk&nbsp;to&nbsp;barf&nbsp;on&nbsp;them.
+#&nbsp;Don't&nbsp;include&nbsp;demo&nbsp;or&nbsp;DIRS&nbsp;here,&nbsp;or&nbsp;else&nbsp;'make&nbsp;sources'&nbsp;will&nbsp;run&nbsp;'make&nbsp;demo'
+MISC_FILES&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(DIRS)
+
+#&nbsp;make&nbsp;checkjunk&nbsp;will&nbsp;not&nbsp;report&nbsp;OPTIONAL_FILES&nbsp;as&nbsp;trash
+#&nbsp;make&nbsp;distclean&nbsp;removes&nbsp;OPTIONAL_FILES
+OPTIONAL_FILES&nbsp;=&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'CrossRefList$$1.class'&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'CrossRefList$$CrossRef.class'&nbsp;\
+
+</pre>
+</font>
+
+And so on . . .
+<font>
+
+<pre>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Workspace$$ReadDepth.class'&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(PTCLASSJAR)
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+MISC_FILES and OPTIONAL_FILES are used by the make checkjunk
+command.  The checkjunk target prints out the names of files that
+should not be present.  We use checkjunk as part of the release
+process.  MISC_FILES should <em>not</em> include the demo directory or
+else running make sources will invoke the demos. To determine the
+value of OPTIONAL_FILES, run <tt>make&nbsp;checkjunk</tt> and add the
+missing .class files.  Since the inner classes have $ in their name,
+we need to use single quotes around the inner class name and repeat
+the $ to stop make from performing substitution.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+JCLASS&nbsp;=&nbsp;$(JSRCS:%.java=%.class)
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+JCLASS uses a make macro to read the value of JSRCS and substitute in .class for .java.  JCLASS is
+used to determine what .class files should be created when make is run.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+all:&nbsp;jclass
+install:&nbsp;jclass&nbsp;$(PTCLASSJAR)
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The all rule is the first rule in the makefile, so if the command make
+is run with no arguments, then the all rule is run.  The all rule runs
+the jclass rule, which compiles the java files. The install rule is
+run if make install is run.  The install rule is like the all rule in
+that the java files are compiled.  The install rule also depends on
+the value of PTCLASSJAR makefile variable, which means that make
+install also creates util.jar
+
+<div class="p"><!----></div>
+<font>
+<pre>
+#&nbsp;Get&nbsp;the&nbsp;rest&nbsp;of&nbsp;the&nbsp;rules
+include&nbsp;$(ROOT)/mk/ptcommon.mk
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+The rest of the rules are defined in ptcommon.mk
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.2">
+6.2</a>&nbsp;&nbsp;jar files</h3>
+If a directory contains subdirectories that contain sources or
+resources necessary at runtime, then the jar file in that directory
+should contain the contents of the jar files in the subdirectories.
+For example, $PTII/ptolemy/kernel.jar contains the .class files from
+$PTII/ptolemy/kernel/util and other subdirectories.
+
+<div class="p"><!----></div>
+Using $PTII/ptolemy/kernel/makefile as an example, we discuss the
+lines that are different from the example above.
+
+<div class="p"><!----></div>
+
+<pre>
+DIRS&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;util&nbsp;attributes&nbsp;undo&nbsp;test
+
+</pre>
+
+
+<div class="p"><!----></div>
+ DIRS contains each subdirectory in which make will be run
+
+<div class="p"><!----></div>
+
+<pre>
+#&nbsp;Used&nbsp;to&nbsp;build&nbsp;jar&nbsp;files
+PTPACKAGE&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel
+PTCLASSJAR&nbsp;=
+
+</pre>
+
+
+<div class="p"><!----></div>
+Note that in ptolemy/kernel/util, we set PTCLASSJAR, but here it is empty. 
+
+<div class="p"><!----></div>
+
+<pre>
+#&nbsp;Include&nbsp;the&nbsp;.class&nbsp;files&nbsp;from&nbsp;these&nbsp;jars&nbsp;in&nbsp;PTCLASSALLJAR
+PTCLASSALLJARS&nbsp;=&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attributes/attributes.jar&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;undo/undo.jar&nbsp;\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;util/util.jar
+
+</pre>
+
+
+<div class="p"><!----></div>
+PTCLASSALLJARS is set to include each jar file that is to be included
+in this jar file.  Note that we don't include test/test.jar because
+the test directory contains the test harness and test suites and is
+not necessary at run time
+
+<div class="p"><!----></div>
+
+<pre>
+PTCLASSALLJAR&nbsp;=&nbsp;$(PTPACKAGE).jar
+
+</pre>
+
+
+<div class="p"><!----></div>
+PTCLASSALLJAR is set to the name of the jar file to be created, which 
+in this case is kernel.jar.  
+
+<div class="p"><!----></div>
+
+<pre>
+install:&nbsp;jclass&nbsp;jars&nbsp;
+
+</pre>
+
+
+<div class="p"><!----></div>
+The install rule depends on the jars target.  The jars target is
+defined in ptcommon.mk.  The jars target depends on PTCLASSALLJAR, so
+if PTCLASSALLJAR is set, then make unjars each jar file listed in
+PTCLASSALLJARS and creates the jar file named by PTCLASSALLJAR
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc7">
+7</a>&nbsp;&nbsp;Subversion Keywords</h2>
+<a name="SubversionKeywords">
+</a>
+If you are checking files in to the Ptolemy II Subversion repository,
+then you must set two svn properties:
+
+<div class="p"><!----></div>
+
+<ul>
+<li> svn:keywords must be set to "Author Date Id Revision"
+<div class="p"><!----></div>
+</li>
+
+<li> svn:eol-style must be set to "native"
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+To enable keyword substitution, such as $Id$ being changed to
+
+<div class="p"><!----></div>
+<tt>@version&nbsp;$Id</tt><tt>:&nbsp;Foo.java&nbsp;43472&nbsp;2006-08-21&nbsp;23:16:56Z&nbsp;cxh&nbsp;$</tt>,
+
+
+<div class="p"><!----></div>
+you need to set
+up &#160;&#8764;&#160;/.subversion/config so that each file extension has the
+appropriate settings. See
+<br /><a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm#Subversive">http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm#Subversive</a>
+for details which involve adding
+$PTII/ptII/doc/coding/svn-config-auto-props.txt to &#160;&#8764;&#160;/.subversion/config
+
+<div class="p"><!----></div>
+Why is it necessary to add have a pattern for every file? The answer
+is that Subversion decides that everything is a binary file and that
+it is safer to check things in and not modify them. However, there
+should be a repository wide way to set up config instead of requiring
+each user to do so.
+
+<div class="p"><!----></div>
+To test out keyword substitution on new files, follow the steps
+below. If you have read/write permission to the
+<br />source.eecs.berkeley.edu SVN repositories, then use the svntest
+repository.  If you don't have write permission on the
+source.eecs.berkeley.edu repositories, then use your local repository.
+
+<div class="p"><!----></div>
+<font>
+<pre>
+bash-3.2$&nbsp;svn&nbsp;co&nbsp;svn+ssh://source.eecs.berkeley.edu/chess/svntest
+A&nbsp;&nbsp;&nbsp;&nbsp;svntest/README.txt
+Checked&nbsp;out&nbsp;revision&nbsp;7.
+bash-3.2$&nbsp;cd&nbsp;svntest
+
+</pre>
+<tt>bash-3.2$&nbsp;echo&nbsp;'$Id</tt><tt>$'&nbsp;&gt;&nbsp;testfile.txt</tt>
+
+<pre>
+bash-3.2$&nbsp;svn&nbsp;add&nbsp;testfile.txt
+A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;testfile.txt
+bash-3.2$&nbsp;svn&nbsp;commit&nbsp;-m&nbsp;"A&nbsp;test&nbsp;for&nbsp;svn&nbsp;keywords:&nbsp;testfile.txt&nbsp;"&nbsp;testfile.txt
+Adding&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;testfile.txt
+Transmitting&nbsp;file&nbsp;data&nbsp;.
+Committed&nbsp;revision&nbsp;8.
+bash-3.2$&nbsp;cat&nbsp;testfile.txt
+
+</pre>
+
+<tt>@version&nbsp;$Id</tt><tt>:&nbsp;testfile.txt&nbsp;1.1&nbsp;2010-03-31&nbsp;18:18:22Z&nbsp;cxh&nbsp;$</tt>
+
+
+<pre>
+bash-3.2$&nbsp;svn&nbsp;proplist&nbsp;testfile.txt
+Properties&nbsp;on&nbsp;'testfile.txt':
+&nbsp;&nbsp;svn:keywords
+&nbsp;&nbsp;svn:eol-style
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+Note that testfile.txt had <tt>$Id</tt><tt>$</tt> properly substituted. If
+testfile.txt had only <tt>$Id</tt><tt>$</tt> and not something like
+<br /><tt>$Id:&nbsp;codingStyle.tex,v&nbsp;1.15&nbsp;2010/03/31&nbsp;23:33:07&nbsp;cxh&nbsp;Exp&nbsp;$</tt> 
+then keywords were not being substituted and that &#160;&#8764;&#160;/.subversion/config had a problem.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.1">
+7.1</a>&nbsp;&nbsp;Checking Keyword Substitution</h3>
+To check keyword substitution on a file:
+
+<div class="p"><!----></div>
+<font>
+<pre>
+bash-3.2$&nbsp;svn&nbsp;proplist&nbsp;README.txt
+Properties&nbsp;on&nbsp;'README.txt':
+&nbsp;&nbsp;svn:keywords
+&nbsp;&nbsp;svn:eol-style
+bash-3.2$&nbsp;svn&nbsp;propget&nbsp;svn:keywords&nbsp;README.txt
+Author&nbsp;Date&nbsp;Id&nbsp;Revision
+bash-3.2$&nbsp;svn&nbsp;propget&nbsp;svn:eol-style&nbsp;README.txt
+native
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+See $PTIII/doc/coding/releasemgt.htm for information about how to use
+<br />$PTII/adm/bin/svnpropcheck to check many files.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.2">
+7.2</a>&nbsp;&nbsp;Fixing Keyword Substitution</h3>
+
+<div class="p"><!----></div>
+To set the keywords in a file called MyClass.java:
+
+<div class="p"><!----></div>
+<font>
+<pre>
+svn&nbsp;propset&nbsp;svn:keywords&nbsp;"Author&nbsp;Date&nbsp;Id&nbsp;Revision"&nbsp;MyClass.java
+svn&nbsp;propset&nbsp;svn:eol-style&nbsp;native&nbsp;MyClass.java
+svn&nbsp;commit&nbsp;-m&nbsp;"Fixed&nbsp;svn&nbsp;keywords"&nbsp;MyClass.java
+
+</pre>
+</font>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.3">
+7.3</a>&nbsp;&nbsp;Setting svn:ignore</h3>
+<a name="codingStyle-SettingSvnIgnore">
+</a>
+Directories that contain .class files should have svn:ignore set.  It
+is also helpful if svn:ignore is set to ignore the jar file that is
+created by make install.  For example, in the package ptolemy.foo.bar,
+a makefile called bar.jar will be created by make install.  One way to
+set multiple values in svn:ignore is to create a file /tmp/i and add
+what is to be ignored:
+
+<div class="p"><!----></div>
+
+<pre>
+svn&nbsp;propget&nbsp;svn:ignore&nbsp;.&nbsp;&#62;&nbsp;/tmp/i
+
+</pre>
+
+
+<div class="p"><!----></div>
+If the directory has svn:ignore set, then /tmp/i will contain the
+files to be ignored.  If the directory does not have svn:ignore set,
+then /tmp/i will be ignored.  Edit /tmp/i and add files to be ignored:
+
+<div class="p"><!----></div>
+
+<pre>
+*.class
+bar.jar
+
+</pre>
+
+
+<div class="p"><!----></div>
+Then run
+
+<div class="p"><!----></div>
+
+<pre>
+svn&nbsp;propset&nbsp;svn:ignore&nbsp;-F&nbsp;/tmp/i&nbsp;.
+svn&nbsp;commit&nbsp;-N&nbsp;-m&nbsp;"Added&nbsp;*.class&nbsp;and&nbsp;bar.jar&nbsp;to&nbsp;svn:ignore"&nbsp;.
+
+</pre>
+
+
+<div class="p"><!----></div>
+We use the -N option to commit just the directory.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc8">
+8</a>&nbsp;&nbsp;Checklist for new files</h2>
+<a name="pgfId-180931">
+</a>
+Below is a checklist for common issues with new Ptolemy II files.
+
+     <h3><a name="tth_sEc8.1">
+8.1</a>&nbsp;&nbsp;Infrastructure</h3>
+
+<ol type="1">
+<li> Is the java file listed in the makefile? (section <a href="#codingStyle-makefileJSRCS">6.1</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Are the subversion properties svn:keywords and svn:eol-style set? (section <a href="#SubversionKeywords">7</a>)
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc8.2">
+8.2</a>&nbsp;&nbsp;File Structure</h3>
+<a name="pgfId-181127">
+</a>
+
+<ol type="1">
+<li> Copyright - Does the file have the copyright? (section <a href="#60856">2.1</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Is the copyright year correct? New files should have the just the current year (section <a href="#60856">2.1</a>)
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc8.3">
+8.3</a>&nbsp;&nbsp;Class comment</h3>
+<a name="pgfId-180947">
+</a>
+
+<ol type="1">
+<li> Is the first sentence of the class comment a cogent and complete summary? (section <a href="#30842">3</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Are these tags present? (section <a href="#36965">3.2</a>):
+
+<div class="p"><!----></div>
+
+<pre>
+@author
+@version
+@since
+@Pt.ProposedRating
+@Pt.AcceptedRating
+
+</pre>
+
+<div class="p"><!----></div>
+</li>
+
+<li> Are the constructors, methods and variables separated by the appropriate comment lines? (section <a href="#66571">2</a>)
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc8.4">
+8.4</a>&nbsp;&nbsp;Constructor, method, field and inner class Javadoc documentation.</h3>
+<a name="pgfId-180966">
+</a>
+
+<ol type="1">
+<li> Within each section, is each Javadoc comment alphabetized? (section <a href="#66571">2</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Is the first sentence a cogent and complete summary in the imperative case? (section <a href="#36603">3.5</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Are all the parameters of each method clearly documented? (section <a href="#73903">3.7</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Are the descriptions of each exception useful?
+<div class="p"><!----></div>
+</li>
+
+<li> Did you run doccheck and review the results? See
+<br /><a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/">http://chess.eecs.berkeley.edu/ptexternal/nightly/</a>
+(section <a href="#69524">3.1</a>)
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc8.5">
+8.5</a>&nbsp;&nbsp;Overall</h3>
+
+<ol type="1">
+<li> Did you run spell check on the program and fix errors? (section <a href="#59648">1</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Did you format the file using Eclipse? (section <a href="#59648">1</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Did you fix the imports using Eclipse? (section <a href="#52137">2.2</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Did you add the new file to the makefile?
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc9">
+9</a>&nbsp;&nbsp;Checklist for creating a new demonstration</h2>
+<a name="pgfId-180932">
+</a>
+Ptolemy II ships with many demonstrations that have a consistent look
+and feel and a high level of quality.  Below is a checklist for
+creating a new demonstration.
+
+<ol type="1">
+<li> Does the name of the demonstration match the directory?
+  Demonstrations should be in directories like demo/Foo/Foo.xml so
+  that the code generators can easily find them.  Model names should
+  definitely be well-formed Java identifiers, so Foo-Bar.xml is not
+  correct, use FooBar.xml instead.
+<div class="p"><!----></div>
+</li>
+
+<li> Does the model name begin with a capital letter?  Most
+  demonstrations start with a capital letter because if we generate
+  code for them, then the corresponding class should start with a
+  capital letter.
+<div class="p"><!----></div>
+</li>
+
+<li> Is there a makefile in the directory that contains the
+  demonstration and does the upper level makefile in the demos
+  directory include the jar file produced in the directory?  If your
+  model is demo/Foo/Foo.xml, then demo/makefile should include
+  Foo/Foo.jar in PTCLASSALLJARS.
+<div class="p"><!----></div>
+</li>
+
+<li> Does the demonstration have a title?
+<div class="p"><!----></div>
+</li>
+
+<li> Does the demonstration have an annotation that describes what
+  the models does and why it is of interest?
+<div class="p"><!----></div>
+</li>
+
+<li> Does the demonstration have any limitation or requirements for
+  third-party software or hardware clearly marked in red.  Usually
+  these limitations use a smaller font.
+<div class="p"><!----></div>
+</li>
+
+<li> Does the demonstration make sense?  Some models require third
+  party software or hardware and might not be the best demonstration.
+<div class="p"><!----></div>
+</li>
+
+<li> Is there a gray author annotation in the bottom corner?  The
+  color values should be 0.4,0.4,0.4,1.0, which appears as grey.
+  One trick is to copy the author annotation from another
+  demonstration.
+<div class="p"><!----></div>
+</li>
+
+<li> Do all the models use paths that are relative and not specific
+  to your machine?  In general, it is best if fileOrURL parameters
+  start with $CLASSPATH so that they can be found no matter how
+  Ptolemy is invoked.
+<div class="p"><!----></div>
+</li>
+
+<li> Has the demonstration been added to
+  $PTII/doc/coding/completeDemos.htm?
+<div class="p"><!----></div>
+</li>
+
+<li> Is there a separate test that will exercise a model similar to
+  the demo? Usually these tests go in directories like
+  domains/sdf/test/auto because the domains/*/test/auto models are run
+  after all of Ptolemy has been built.
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc10">
+10</a>&nbsp;&nbsp;Checklist for creating a new directory</h2>
+To create a directory that contains Java file follow the steps below:
+
+<ol type="1">
+<li> Copy a makefile from a similar directory. (section <a href="#codingStyle-Makefiles">6</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Verify that the makefile works by running the command below
+
+<div class="p"><!----></div>
+
+<pre>
+make&nbsp;sources
+make&nbsp;
+make&nbsp;install
+
+</pre>
+
+<div class="p"><!----></div>
+</li>
+
+<li> Check the style of the makefile: first line, author, copyright
+  date etc. (section <a href="#codingStyle-Makefiles">6</a>)
+<div class="p"><!----></div>
+</li>
+
+<li> Add the package to doc/makefile so that Javadoc is created.
+<div class="p"><!----></div>
+</li>
+
+<li> Create package.html and README.txt by running
+  adm/bin/mkpackagehtml.  For example, to create these files in the
+  package ptolemy.foo.bar:
+
+<div class="p"><!----></div>
+
+<pre>
+$PTII/adm/bin/mkpackagehtml&nbsp;ptolemy.foo.bar
+cd&nbsp;$PTII/ptolemy/foo/bar
+svn&nbsp;add&nbsp;README.txt&nbsp;package.html
+
+</pre>
+
+<div class="p"><!----></div>
+</li>
+
+<li> Don't forget to edit package.html and add descriptive text that
+describes the package.
+<div class="p"><!----></div>
+</li>
+
+<li> Set the svn:ignore properties (section <a href="#codingStyle-SettingSvnIgnore">7.3</a>)
+<div class="p"><!----></div>
+</li>
+</ol>
+
+
+<div class="p"><!----></div>
+<h2>References</h2>
+
+<dl compact="compact">
+ <dt><a href="#CITEReekieNeuendorfferHylandsLee99_SoftwarePracticeInThePtolemyProject" name="ReekieNeuendorfferHylandsLee99_SoftwarePracticeInThePtolemyProject">[1]</a></dt><dd>
+John Reekie, Stephen Neuendorffer, Christopher Hylands, and Edward&nbsp;A. Lee.
+ Software practice in the ptolemy.
+ Technical Report GSRC-TR-1999-01, Gigascale Silicon Research Center,
+  April 1999.</dd>
+</dl>
+
+<hr /><h3>Footnotes:</h3>
+
+<div class="p"><!----></div>
+<a name="tthFtNtAAB"></a><a href="#tthFrefAAB"><sup>1</sup></a>See
+<a href="http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html">http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html</a>
+for guidelines from Sun Microsystems on writing Javadoc comments.
+
+<div class="p"><!----></div>
+<a name="tthFtNtAAC"></a><a href="#tthFrefAAC"><sup>2</sup></a>Yes, there are exceptions (NamedObj, CrossRefList,
+  IOPort). Many discussions dealt with these names, and we still
+  regret not making them complete words.
+<br /><br /><hr /><small>File translated from
+T<sub><font>E</font></sub>X
+by <a href="http://hutchinson.belmont.ma.us/tth/">
+T<sub><font>T</font></sub>H</a>,
+version 3.87.<br />On 31 Mar 2010, 17:49.</small>
+</html>

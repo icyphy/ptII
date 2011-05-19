@@ -1,0 +1,114 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ContinuousWithinContinuous7" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[105, 47]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={269, 225, 817, 564}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK45Solver">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 165.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+    </entity>
+    <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 85.0}">
+        </property>
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 60.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={167, 241, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 290.0]">
+            </property>
+        </port>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="input" relation="relation"/>
+        <link port="output" relation="relation"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9950041654167, 0.8253375239735, 0.4535977997559, -0.0292008307088, -0.5048525231704, -0.8569006547381, -0.9991505890589, -0.8967733683079, -0.5748333536934, -0.1121518779693, 0.37799076728, 0.7755902316375, 0.9832994385269, 0.9502627554418, 0.6845675140051, 0.2512642430801, -0.243559741056, -0.6787541028055, -0.9477673554797, -0.9847345598352, -0.7806036307777, -0.3853519032214, 0.1042498089086, 0.5683299375229, 0.8932648993094, 0.9994982542956, 0.8610191488716, 0.5117309794192, 0.0371509322443, -0.4465274251068, -0.8208823376093, -0.9942577423676, -0.924204095711, -0.6278717952533, -0.1778124529046, 0.3157840569945, 0.7320678364584, 0.9691172967338, 0.9688933140097, 0.7314495123156, 0.3149194319031, -0.1787163480769, -0.6285984868048, -0.9245794845288, -0.9941917941111, -0.8203906674516, -0.4457276046667, 0.0380674734323, 0.5125447466251, 0.8615351208447, 0.9995925987126, 0.892914680232, 0.5676186910397, 0.1033476316148, -0.3862290103377, -0.7812454512608, -0.9849870209875, -0.9475694997375, -0.6781528032525, -0.242698609381, 0.2521791345103, 0.6853169197699, 0.9506667725554, 0.9832606770201, 0.7751172850295, 0.3771963281172, -0.1130778498762, -0.5756690268855, -0.8973181572626, -0.999273281159, -0.8565710042273, -0.5041487069159, -0.0282909279647, 0.454495921029, 0.8260083471391, 0.995286220051, 0.9208832123588, 0.6210145998917, 0.1690978146788, -0.3242224917405, -0.7381640349691, -0.9713786790732, -0.9667661930748, -0.7254546610963, -0.3065245850868, 0.187455843326, 0.6355428905061, 0.9280285485093, 0.9933010459625, 0.8153781720314, 0.4378205794448, -0.0469331200386, -0.5201983914043, -0.8661028709677, -0.9999560893952, -0.888984894396, -0.5603577591555, -0.0945332730526, 0.3944387325638, 0.754990612598, 0.9652201215325}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 85.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="270.0, 165.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="50.0, 210.0">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Scale.input" relation="relation4"/>
+    <link port="Scale.output" relation="relation2"/>
+    <link port="Integrator3.derivative" relation="relation2"/>
+    <link port="Integrator3.state" relation="relation"/>
+    <link port="Integrator.derivative" relation="relation"/>
+    <link port="Integrator.state" relation="relation4"/>
+    <link port="CompositeActor.input" relation="relation4"/>
+    <link port="CompositeActor.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+</entity>

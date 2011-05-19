@@ -1,0 +1,41 @@
+<!-- : $Id$
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Butterfly</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Butterfly</H1>
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+	the second is for appletviewer and Netscape Communicator
+	the third is for anything that doesn't understand applets.
+ -->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Butterfly is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Butterfly.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="ButterflyVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This applet shows an elaborate curve called the butterfly curve,
+described by T. Fay, <i>American Mathematical Monthly</i>, 96(5),
+May, 1989.  Above, the applet has been implemented directly in
+Java (see the <a href="Butterfly.java">source code</a>).</p>
+
+</body>
+</html>

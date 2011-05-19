@@ -1,0 +1,154 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DummyDirector1_SDFActor" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="f" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="fR" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={311, 167, 817, 565}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <port name="hTF" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="374.0, 310.0">
+        </property>
+    </port>
+    <port name="t" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="371.0, 152.0">
+        </property>
+    </port>
+    <port name="hTT" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="373.0, 262.0">
+        </property>
+    </port>
+    <port name="hT" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 217.0">
+        </property>
+    </port>
+    <port name="g" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="369.0, 109.0">
+        </property>
+    </port>
+    <entity name="0_0" class="ptolemy.domains.fsm.kernel.State">
+        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="131.0, 235.0">
+        </property>
+    </entity>
+    <entity name="1_1" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="219.0, 233.0">
+        </property>
+    </entity>
+    <entity name="1_2" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="314.0, 222.0">
+        </property>
+    </entity>
+    <entity name="1_3" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="256.0, 143.0">
+        </property>
+    </entity>
+    <relation name="SDFActor_SDFActor" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="f=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="f;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="SDFActor" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="g=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g!">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="SDFActor2" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="t_isPresent">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t?">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="SDFActor_SDFActor3" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fR=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fR;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <link port="0_0.incomingPort" relation="SDFActor_SDFActor3"/>
+    <link port="0_0.outgoingPort" relation="SDFActor_SDFActor"/>
+    <link port="1_1.incomingPort" relation="SDFActor_SDFActor"/>
+    <link port="1_1.outgoingPort" relation="SDFActor"/>
+    <link port="1_2.incomingPort" relation="SDFActor"/>
+    <link port="1_2.outgoingPort" relation="SDFActor2"/>
+    <link port="1_3.incomingPort" relation="SDFActor2"/>
+    <link port="1_3.outgoingPort" relation="SDFActor_SDFActor3"/>
+</entity>

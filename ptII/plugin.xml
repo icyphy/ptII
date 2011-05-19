@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="ptolemy.backtrack"
+   name="Ptolemy Backtracking Plug-in"
+   version="0.1.3"
+   provider-name="ptolemy.eecs.berkeley.edu"
+   class="ptolemy.backtrack.eclipse.plugin.EclipsePlugin">
+
+   <runtime>
+      <library name=".">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.help"/>
+   </requires>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ptolemy.backtrack.eclipse.plugin.preferences.PreferenceInitializer"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="ptolemy.backtrack.actions.GlobalActionSet"
+            label="Ptolemy Backtracking"
+            visible="true">
+            
+         <menu
+               id="ptolemy.backtrack.menus.Ptolemy"
+               label="&amp;Ptolemy">
+            <separator name="group1"/>
+            <separator name="group2"/>
+            <separator name="group3"/>
+         </menu>
+         
+         <!-- Coding Style Menu -->
+         <menu
+               id="ptolemy.backtrack.menus.CodingStyle"
+               label="&amp;Coding Style"
+               path="ptolemy.backtrack.menus.Ptolemy/group1">
+            <separator name="group1"/>
+         </menu>
+         
+         <!-- Backtracking Menu -->
+         <menu
+               id="ptolemy.backtrack.menus.Backtracking"
+               label="&amp;Backtracking"
+               path="ptolemy.backtrack.menus.Ptolemy/group1">
+            <separator name="group1"/>
+         </menu>
+         
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.RefactorAction"
+               definitionId="ptolemy.backtrack.commands.BatchRefactoringCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+               id="ptolemy.backtrack.eclipse.plugin.refactoraction"
+               label="&amp;Batch Refactoring"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.Backtracking/group1"
+               tooltip="Refactor Ptolemy actors"/>
+         
+         <!-- Options -->
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.OptionsAction"
+               id="ptolemy.backtrack.eclipse.plugin.preferences"
+               label="&amp;Options..."
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/group2"
+               tooltip="Modify Ptolemy options"/>
+               
+         <!-- About -->
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.AboutAction"
+               id="ptolemy.backtrack.eclipse.plugin.about"
+               label="&amp;About Ptolemy II Plugin"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/group3"
+               tooltip="About Ptolemy II plugin for Eclipse"/>
+
+         <!-- Help -->
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.HelpAction"
+               id="ptolemy.backtrack.eclipse.plugin.help"
+               label="&amp;Help Contents"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/group3"
+               tooltip="Help for Ptolemy II plugin for Eclipse"/>
+      </actionSet>
+      
+      <actionSet
+            id="ptolemy.backtrack.editorActionSet"
+            label="Ptolemy Coding Style"
+            visible="false">
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.StandardizeTabsSpacesEditorAction"
+               definitionId="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/standardize_tabs_spaces_icon.png"
+               id="ptolemy.backtrack.eclipse.plugin.StandardizeTabsSpacesAction"
+               label="Standardize &amp;Tabs and Spaces"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodingStyle/group1"
+               toolbarPath="Ptolemy"
+               tooltip="Replace each tab with 4 spaces, remove trailing spaces, and add a new line to the end if necessary.">
+         </action>
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.SortMembersEditorAction"
+               definitionId="ptolemy.backtrack.commands.SortMembersCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/sort_members_icon.png"
+               id="ptolemy.backtrack.eclipse.plugin.SortMembersAction"
+               label="&amp;Sort Members"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodingStyle/group1"
+               toolbarPath="Ptolemy"
+               tooltip="Sort Java class members"/>
+      </actionSet>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor"
+            contributorClass="org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditorActionContributor"
+            default="true"
+            extensions="java"
+            icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+            id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"
+            name="Ptolemy II Multi-page Editor"
+            symbolicFontName="org.eclipse.jdt.ui.editors.textfont">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.jdt.core.javaSource"/>
+      </editor>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"
+            id="org.eclipse.jdt.debug.CompilationUnitEditor.BreakpointRulerActions">
+         <action
+               label="Toggle &amp;Breakpoint"
+               class="ptolemy.backtrack.eclipse.plugin.compatibility.RulerToggleBreakpointActionDelegate"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction"/>
+      </editorContribution>
+      <editorContribution
+            targetID="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"
+            id="org.eclipse.ui.texteditor.ruler.actions">
+         <action
+               label="Java Editor Bookmark Ruler Action"
+               helpContextId="org.eclipse.ui.bookmark_action_context"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.jdt.internal.ui.javaeditor.BookmarkRulerAction"/>
+         <action
+               label="Java Editor Ruler Single-Click"
+               class="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction"
+               actionID="RulerClick"
+               id="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction"/>
+      </editorContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="ptolemy.backtrack.contribution.PackageExplorer"
+            objectClass="org.eclipse.jdt.core.ICompilationUnit">
+         <menu
+               id="ptolemy.backtrack.menu.PtolemyPackageExplorer"
+               path="additions"
+               label="&amp;Ptolemy Coding Style">
+            <separator name="group1"/>
+         </menu>
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.StandardizeTabsSpacesObjectAction"
+               definitionId="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/standardize_tabs_spaces_icon.png"
+               id="ptolemy.backtrack.actions.StandardizeTabsSpacesObjectAction"
+               label="Standardize &amp;Tabs and Spaces"
+               menubarPath="ptolemy.backtrack.menu.PtolemyPackageExplorer/group1">
+         </action>
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.SortMembersObjectAction"
+               definitionId="ptolemy.backtrack.commands.SortMembersCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/sort_members_icon.png"
+               id="ptolemy.backtrack.actions.SortMembersObjectAction"
+               label="&amp;Sort Members"
+               menubarPath="ptolemy.backtrack.menu.PtolemyPackageExplorer/group1"/>
+      </objectContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ptolemy.backtrack.eclipse.plugin.preferences.PtolemyPreferencePage"
+            id="ptolemy.backtrack.preferences.Ptolemy"
+            name="Ptolemy II"/>
+      <page
+            category="ptolemy.backtrack.preferences.Ptolemy"
+            class="ptolemy.backtrack.eclipse.plugin.preferences.BacktrackingPreferencePage"
+            id="ptolemy.backtrack.preferences.Backtracking"
+            name="Backtracking"/>
+      <page
+            category="ptolemy.backtrack.preferences.Ptolemy"
+            class="ptolemy.backtrack.eclipse.plugin.preferences.EditorPreferencePage"
+            id="ptolemy.backtrack.preferences.Editor"
+            name="Editor"/>
+   </extension>
+   
+   <extension point="org.eclipse.help.toc">
+      <toc file="ptolemy/backtrack/eclipse/plugin/doc/toc.xml" primary="true"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.A_OpenActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.CodingActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.SearchActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.text.java.actionSet.presentation">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+      
+      <actionSetPartAssociation
+            targetID="ptolemy.backtrack.editorActionSet">
+         <part
+               id="ptolemy.backtrack.editors.MultiPageCompilationUnitEditor"/>
+      </actionSetPartAssociation>
+   </extension>
+   
+   <!-- Eclipse 3.1 only
+   <extension
+         point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            label="Ptolemy II Backtracking"
+            icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+            class="ptolemy.backtrack.eclipse.plugin.console.ConsoleFactory"/>
+   </extension>
+   -->
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="ptolemy.backtrack.category"
+            name="Ptolemy"/>
+      <command
+            categoryId="ptolemy.backtrack.category"
+            id="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
+            name="Standardize Tabs and Spaces">
+      </command>
+      <command
+            categoryId="ptolemy.backtrack.category"
+            id="ptolemy.backtrack.commands.SortMembersCommand"
+            name="Sort Members"/>
+      <command
+            categoryId="ptolemy.backtrack.category"
+            id="ptolemy.backtrack.commands.BatchRefactoringCommand"
+            name="Batch Refactoring">
+      </command>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+T">
+      </key>
+      <key
+            sequence="Ctrl+Alt+S"
+            commandId="ptolemy.backtrack.commands.SortMembersCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+</plugin>

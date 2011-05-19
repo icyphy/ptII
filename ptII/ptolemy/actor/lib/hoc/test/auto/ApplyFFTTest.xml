@@ -1,0 +1,239 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ApplyFFTTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.2">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 2, 886, 576}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 460]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.5, 230.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the ApplyFunction and ApplyFunctionOverSequence actors.&#10;These apply a function defined in the expression language over either an&#10;individual input token or an array constructed from a sequence of input tokens.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 10.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Steve Neuendorffer">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generate a reference signal using conventional&#10;dataflow techniques. The other signals should match.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 75.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create an array from a sequence of tokens, and&#10;then apply the FFT() function to it.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 195.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use tokenConsumptionRate and tokenProductionRate parameters&#10;in the ports to specify a segment of the input signal over which&#10;to apply the function.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test of the &#10;actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml&#10;demo">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 70.0]">
+        </property>
+    </property>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="signal + noise">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 230.0]">
+        </property>
+        <port name="signal" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="noise" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value=".1">
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="256">
+        </property>
+        <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
+        <property name="function" class="ptolemy.actor.parameters.PortParameter" value="function(x:{double}) abs(FFT(x, 8))">
+        </property>
+        <doc>The function is applied to its input data.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 265.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 220.0]">
+        </property>
+        <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 85.0}">
+            </property>
+        </port>
+        <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
+        <property name="function" class="ptolemy.actor.parameters.PortParameter" value="function(x:{double}) abs(FFT(x, 8))">
+        </property>
+        <doc>The function is applied to its input data.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 405.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2347812657757, 0.6207972688801, 0.2688241220808, 2.1422096383903, 1.3874314690845, 1.7565596189313, 1.4116096641716, 1.501218659574, 1.9992572602525, 1.5430602324856, 1.4672482736968, 1.4536239858027, 4.3888958678518, 9.415979612, 126.4016511998356, 11.363418289682, 5.9556305050746, 4.069912230831, 2.1553982035301, 2.4795894689777, 2.0529974977209, 1.3849005872723, 3.2681385921603, 2.2959540053518, 1.8765938506734, 2.459622926596, 2.5766090536669, 2.7272252911966, 0.6761424154799, 1.9154247692805, 1.0614835467322, 1.1889859064516, 1.8836916766109, 0.8716986633764, 2.136235943657, 2.1809590003651, 2.4331448399139, 1.1243815081865, 3.7055225118311, 1.3481781715282, 2.2920662821977, 1.7298350238111, 2.9980100089592, 1.9414205158262, 2.9308952850082, 3.3227417368844, 0.9539638502001, 2.7789760579083, 2.0051128354673, 2.5757743449217, 1.796617232845, 2.9306636727292, 2.0176021593822, 1.7394114913336, 2.0191994415858, 0.6178162418129, 0.3357355637164, 2.6327782709929, 0.1953108270369, 0.9463773446882, 3.2432884817665, 1.0480552047426, 0.8846910483968, 0.570605563891, 0.4025737686761, 1.7111588112302, 1.5489382228574, 1.1549112641731, 2.1424081082316, 1.6366248444562, 0.5565309289934, 0.5381590313957, 1.7281356261593, 1.0608984707939, 1.5108952350569, 1.7706275400645, 1.1837021448262, 1.2623229038795, 1.4870162710251, 1.2703519676001, 2.0269392617326, 1.1530516001015, 1.3459260596495, 1.7028258507136, 1.0715451771968, 1.2165237384824, 0.8246495626015, 1.6203519569459, 0.202009934272, 1.9980599400667, 1.5482058955373, 1.9138438475698, 0.6336053184859, 1.4144844181951, 2.5869458930299, 1.6105903750341, 1.6934881632676, 1.252012564608, 1.503649651324, 1.0228190117372, 1.6428218103357, 1.8287733150092, 0.2797306583902, 0.5800437028227, 2.3498793860096, 2.195253000006, 0.890706742738, 0.1624623315313, 0.7662398703331, 1.1176902650291, 1.2827243507451, 3.7369759465475, 2.20274811144, 3.8944329183529, 0.8891431888797, 1.9131941478484, 1.2548987936253, 0.6143981923994, 3.0493822731999, 0.2462438741508, 0.9092944951475, 2.0397411647877, 2.7071235229826, 1.6482963747711, 1.0071172799603, 2.7256850903404, 1.1197299428991, 1.4117296251157, 1.4741006707959, 1.4117296251157, 1.1197299428991, 2.7256850903404, 1.0071172799603, 1.6482963747711, 2.7071235229826, 2.0397411647877, 0.9092944951475, 0.2462438741508, 3.0493822731999, 0.6143981923994, 1.2548987936253, 1.9131941478484, 0.8891431888797, 3.8944329183529, 2.20274811144, 3.7369759465475, 1.2827243507451, 1.1176902650291, 0.7662398703331, 0.1624623315313, 0.890706742738, 2.195253000006, 2.3498793860096, 0.5800437028227, 0.2797306583902, 1.8287733150092, 1.6428218103357, 1.0228190117372, 1.503649651324, 1.252012564608, 1.6934881632676, 1.6105903750341, 2.5869458930299, 1.4144844181951, 0.6336053184859, 1.9138438475698, 1.5482058955373, 1.9980599400667, 0.202009934272, 1.6203519569459, 0.8246495626015, 1.2165237384824, 1.0715451771968, 1.7028258507136, 1.3459260596495, 1.1530516001015, 2.0269392617326, 1.2703519676001, 1.4870162710251, 1.2623229038795, 1.1837021448262, 1.7706275400645, 1.5108952350569, 1.0608984707939, 1.7281356261593, 0.5381590313957, 0.5565309289934, 1.6366248444562, 2.1424081082316, 1.1549112641731, 1.5489382228574, 1.7111588112302, 0.4025737686761, 0.570605563891, 0.8846910483968, 1.0480552047426, 3.2432884817665, 0.9463773446882, 0.1953108270369, 2.6327782709929, 0.3357355637164, 0.6178162418129, 2.0191994415858, 1.7394114913336, 2.0176021593822, 2.9306636727292, 1.796617232845, 2.5757743449217, 2.0051128354673, 2.7789760579083, 0.9539638502001, 3.3227417368844, 2.9308952850082, 1.9414205158262, 2.9980100089592, 1.7298350238111, 2.2920662821977, 1.3481781715282, 3.7055225118311, 1.1243815081865, 2.4331448399139, 2.1809590003651, 2.136235943657, 0.8716986633764, 1.8836916766109, 1.1889859064516, 1.0614835467322, 1.9154247692805, 0.6761424154799, 2.7272252911966, 2.5766090536669, 2.459622926596, 1.8765938506734, 2.2959540053518, 3.2681385921603, 1.3849005872723, 2.0529974977209, 2.4795894689777, 2.1553982035301, 4.069912230831, 5.9556305050746, 11.363418289682, 126.4016511998356, 9.415979612, 4.3888958678518, 1.4536239858027, 1.4672482736968, 1.5430602324856, 1.9992572602525, 1.501218659574, 1.4116096641716, 1.7565596189313, 1.3874314690845, 2.1422096383903, 0.2688241220808, 0.6207972688801}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.2347812657757, 0.6207972688801, 0.2688241220808, 2.1422096383903, 1.3874314690845, 1.7565596189313, 1.4116096641716, 1.501218659574, 1.9992572602525, 1.5430602324856, 1.4672482736968, 1.4536239858027, 4.3888958678518, 9.415979612, 126.4016511998356, 11.363418289682, 5.9556305050746, 4.069912230831, 2.1553982035301, 2.4795894689777, 2.0529974977209, 1.3849005872723, 3.2681385921603, 2.2959540053518, 1.8765938506734, 2.459622926596, 2.5766090536669, 2.7272252911966, 0.6761424154799, 1.9154247692805, 1.0614835467322, 1.1889859064516, 1.8836916766109, 0.8716986633764, 2.136235943657, 2.1809590003651, 2.4331448399139, 1.1243815081865, 3.7055225118311, 1.3481781715282, 2.2920662821977, 1.7298350238111, 2.9980100089592, 1.9414205158262, 2.9308952850082, 3.3227417368844, 0.9539638502001, 2.7789760579083, 2.0051128354673, 2.5757743449217, 1.796617232845, 2.9306636727292, 2.0176021593822, 1.7394114913336, 2.0191994415858, 0.6178162418129, 0.3357355637164, 2.6327782709929, 0.1953108270369, 0.9463773446882, 3.2432884817665, 1.0480552047426, 0.8846910483968, 0.570605563891, 0.4025737686761, 1.7111588112302, 1.5489382228574, 1.1549112641731, 2.1424081082316, 1.6366248444562, 0.5565309289934, 0.5381590313957, 1.7281356261593, 1.0608984707939, 1.5108952350569, 1.7706275400645, 1.1837021448262, 1.2623229038795, 1.4870162710251, 1.2703519676001, 2.0269392617326, 1.1530516001015, 1.3459260596495, 1.7028258507136, 1.0715451771968, 1.2165237384824, 0.8246495626015, 1.6203519569459, 0.202009934272, 1.9980599400667, 1.5482058955373, 1.9138438475698, 0.6336053184859, 1.4144844181951, 2.5869458930299, 1.6105903750341, 1.6934881632676, 1.252012564608, 1.503649651324, 1.0228190117372, 1.6428218103357, 1.8287733150092, 0.2797306583902, 0.5800437028227, 2.3498793860096, 2.195253000006, 0.890706742738, 0.1624623315313, 0.7662398703331, 1.1176902650291, 1.2827243507451, 3.7369759465475, 2.20274811144, 3.8944329183529, 0.8891431888797, 1.9131941478484, 1.2548987936253, 0.6143981923994, 3.0493822731999, 0.2462438741508, 0.9092944951475, 2.0397411647877, 2.7071235229826, 1.6482963747711, 1.0071172799603, 2.7256850903404, 1.1197299428991, 1.4117296251157, 1.4741006707959, 1.4117296251157, 1.1197299428991, 2.7256850903404, 1.0071172799603, 1.6482963747711, 2.7071235229826, 2.0397411647877, 0.9092944951475, 0.2462438741508, 3.0493822731999, 0.6143981923994, 1.2548987936253, 1.9131941478484, 0.8891431888797, 3.8944329183529, 2.20274811144, 3.7369759465475, 1.2827243507451, 1.1176902650291, 0.7662398703331, 0.1624623315313, 0.890706742738, 2.195253000006, 2.3498793860096, 0.5800437028227, 0.2797306583902, 1.8287733150092, 1.6428218103357, 1.0228190117372, 1.503649651324, 1.252012564608, 1.6934881632676, 1.6105903750341, 2.5869458930299, 1.4144844181951, 0.6336053184859, 1.9138438475698, 1.5482058955373, 1.9980599400667, 0.202009934272, 1.6203519569459, 0.8246495626015, 1.2165237384824, 1.0715451771968, 1.7028258507136, 1.3459260596495, 1.1530516001015, 2.0269392617326, 1.2703519676001, 1.4870162710251, 1.2623229038795, 1.1837021448262, 1.7706275400645, 1.5108952350569, 1.0608984707939, 1.7281356261593, 0.5381590313957, 0.5565309289934, 1.6366248444562, 2.1424081082316, 1.1549112641731, 1.5489382228574, 1.7111588112302, 0.4025737686761, 0.570605563891, 0.8846910483968, 1.0480552047426, 3.2432884817665, 0.9463773446882, 0.1953108270369, 2.6327782709929, 0.3357355637164, 0.6178162418129, 2.0191994415858, 1.7394114913336, 2.0176021593822, 2.9306636727292, 1.796617232845, 2.5757743449217, 2.0051128354673, 2.7789760579083, 0.9539638502001, 3.3227417368844, 2.9308952850082, 1.9414205158262, 2.9980100089592, 1.7298350238111, 2.2920662821977, 1.3481781715282, 3.7055225118311, 1.1243815081865, 2.4331448399139, 2.1809590003651, 2.136235943657, 0.8716986633764, 1.8836916766109, 1.1889859064516, 1.0614835467322, 1.9154247692805, 0.6761424154799, 2.7272252911966, 2.5766090536669, 2.459622926596, 1.8765938506734, 2.2959540053518, 3.2681385921603, 1.3849005872723, 2.0529974977209, 2.4795894689777, 2.1553982035301, 4.069912230831, 5.9556305050746, 11.363418289682, 126.4016511998356, 9.415979612, 4.3888958678518, 1.4536239858027, 1.4672482736968, 1.5430602324856, 1.9992572602525, 1.501218659574, 1.4116096641716, 1.7565596189313, 1.3874314690845, 2.1422096383903, 0.2688241220808, 0.6207972688801}}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2347812657757, 0.6207972688801, 0.2688241220808, 2.1422096383903, 1.3874314690845, 1.7565596189313, 1.4116096641716, 1.501218659574, 1.9992572602525, 1.5430602324856, 1.4672482736968, 1.4536239858027, 4.3888958678518, 9.415979612, 126.4016511998356, 11.363418289682, 5.9556305050746, 4.069912230831, 2.1553982035301, 2.4795894689777, 2.0529974977209, 1.3849005872723, 3.2681385921603, 2.2959540053518, 1.8765938506734, 2.459622926596, 2.5766090536669, 2.7272252911966, 0.6761424154799, 1.9154247692805, 1.0614835467322, 1.1889859064516, 1.8836916766109, 0.8716986633764, 2.136235943657, 2.1809590003651, 2.4331448399139, 1.1243815081865, 3.7055225118311, 1.3481781715282, 2.2920662821977, 1.7298350238111, 2.9980100089592, 1.9414205158262, 2.9308952850082, 3.3227417368844, 0.9539638502001, 2.7789760579083, 2.0051128354673, 2.5757743449217, 1.796617232845, 2.9306636727292, 2.0176021593822, 1.7394114913336, 2.0191994415858, 0.6178162418129, 0.3357355637164, 2.6327782709929, 0.1953108270369, 0.9463773446882, 3.2432884817665, 1.0480552047426, 0.8846910483968, 0.570605563891, 0.4025737686761, 1.7111588112302, 1.5489382228574, 1.1549112641731, 2.1424081082316, 1.6366248444562, 0.5565309289934, 0.5381590313957, 1.7281356261593, 1.0608984707939, 1.5108952350569, 1.7706275400645, 1.1837021448262, 1.2623229038795, 1.4870162710251, 1.2703519676001, 2.0269392617326, 1.1530516001015, 1.3459260596495, 1.7028258507136, 1.0715451771968, 1.2165237384824, 0.8246495626015, 1.6203519569459, 0.202009934272, 1.9980599400667, 1.5482058955373, 1.9138438475698, 0.6336053184859, 1.4144844181951, 2.5869458930299, 1.6105903750341, 1.6934881632676, 1.252012564608, 1.503649651324, 1.0228190117372, 1.6428218103357, 1.8287733150092, 0.2797306583902, 0.5800437028227, 2.3498793860096, 2.195253000006, 0.890706742738, 0.1624623315313, 0.7662398703331, 1.1176902650291, 1.2827243507451, 3.7369759465475, 2.20274811144, 3.8944329183529, 0.8891431888797, 1.9131941478484, 1.2548987936253, 0.6143981923994, 3.0493822731999, 0.2462438741508, 0.9092944951475, 2.0397411647877, 2.7071235229826, 1.6482963747711, 1.0071172799603, 2.7256850903404, 1.1197299428991, 1.4117296251157, 1.4741006707959, 1.4117296251157, 1.1197299428991, 2.7256850903404, 1.0071172799603, 1.6482963747711, 2.7071235229826, 2.0397411647877, 0.9092944951475, 0.2462438741508, 3.0493822731999, 0.6143981923994, 1.2548987936253, 1.9131941478484, 0.8891431888797, 3.8944329183529, 2.20274811144, 3.7369759465475, 1.2827243507451, 1.1176902650291, 0.7662398703331, 0.1624623315313, 0.890706742738, 2.195253000006, 2.3498793860096, 0.5800437028227, 0.2797306583902, 1.8287733150092, 1.6428218103357, 1.0228190117372, 1.503649651324, 1.252012564608, 1.6934881632676, 1.6105903750341, 2.5869458930299, 1.4144844181951, 0.6336053184859, 1.9138438475698, 1.5482058955373, 1.9980599400667, 0.202009934272, 1.6203519569459, 0.8246495626015, 1.2165237384824, 1.0715451771968, 1.7028258507136, 1.3459260596495, 1.1530516001015, 2.0269392617326, 1.2703519676001, 1.4870162710251, 1.2623229038795, 1.1837021448262, 1.7706275400645, 1.5108952350569, 1.0608984707939, 1.7281356261593, 0.5381590313957, 0.5565309289934, 1.6366248444562, 2.1424081082316, 1.1549112641731, 1.5489382228574, 1.7111588112302, 0.4025737686761, 0.570605563891, 0.8846910483968, 1.0480552047426, 3.2432884817665, 0.9463773446882, 0.1953108270369, 2.6327782709929, 0.3357355637164, 0.6178162418129, 2.0191994415858, 1.7394114913336, 2.0176021593822, 2.9306636727292, 1.796617232845, 2.5757743449217, 2.0051128354673, 2.7789760579083, 0.9539638502001, 3.3227417368844, 2.9308952850082, 1.9414205158262, 2.9980100089592, 1.7298350238111, 2.2920662821977, 1.3481781715282, 3.7055225118311, 1.1243815081865, 2.4331448399139, 2.1809590003651, 2.136235943657, 0.8716986633764, 1.8836916766109, 1.1889859064516, 1.0614835467322, 1.9154247692805, 0.6761424154799, 2.7272252911966, 2.5766090536669, 2.459622926596, 1.8765938506734, 2.2959540053518, 3.2681385921603, 1.3849005872723, 2.0529974977209, 2.4795894689777, 2.1553982035301, 4.069912230831, 5.9556305050746, 11.363418289682, 126.4016511998356, 9.415979612, 4.3888958678518, 1.4536239858027, 1.4672482736968, 1.5430602324856, 1.9992572602525, 1.501218659574, 1.4116096641716, 1.7565596189313, 1.3874314690845, 2.1422096383903, 0.2688241220808, 0.6207972688801}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 405.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[255.0, 230.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Expression.output" relation="relation5"/>
+    <link port="Expression.signal" relation="relation"/>
+    <link port="Expression.noise" relation="relation2"/>
+    <link port="Noise Source.output" relation="relation2"/>
+    <link port="FFT.input" relation="relation5"/>
+    <link port="FFT.output" relation="relation4"/>
+    <link port="SequenceToArray.input" relation="relation5"/>
+    <link port="SequenceToArray.output" relation="relation8"/>
+    <link port="AbsoluteValue.input" relation="relation4"/>
+    <link port="AbsoluteValue.output" relation="relation7"/>
+    <link port="ApplyFunction.output" relation="relation6"/>
+    <link port="ApplyFunction.input" relation="relation8"/>
+    <link port="Sinewave.output" relation="relation"/>
+    <link port="ApplyFunctionOverSequence.output" relation="relation3"/>
+    <link port="ApplyFunctionOverSequence.input" relation="relation5"/>
+    <link port="Test.input" relation="relation7"/>
+    <link port="Test2.input" relation="relation6"/>
+    <link port="Test3.input" relation="relation3"/>
+</entity>

@@ -1,0 +1,34 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>LevelCrossingDetector</TITLE>
+</HEAD>
+<BODY>
+<H1>LevelCrossingDetector</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+LevelCrossingDetector is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "LevelCrossingDetector.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="LevelCrossingDetectorVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model shows how level crossing detector handles the continuous signals with and w/o discontinuity. The level crossing detector has two operation modes. For continuous signals, the detector try to refine step size to find the point level crossing happens. At the time points where discontinuities happen, the detector does not try to refine step size (which is 0.0 already), but to detect the level crossing only. The output event of level crossing detectors have the value as the specified "level" parameter. If the "useDefaultEventValue" is checked, the event has value as parameter "defaultEventValue".</p>
+</BODY>
+</HTML>

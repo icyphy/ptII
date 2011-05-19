@@ -1,0 +1,466 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Transmission" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+        </property>
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="500.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 860, 584}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[647, 474]">
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Steve Neuendorffer</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 430.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.5, 237.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the &quot;car model&quot; actor&#10;to see how function closures are&#10;used to simplify the model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model represents an automobile transmission,&#10;a classic example of a hybrid system.&#10;&#10;The inputs to &quot;car model&quot; hybrid system are the current applied&#10;gear and the current throttle position.  In this model, the gear&#10;shift sequence is predetermined, and the throttle is applied&#10;constantly.  It is assumed that shifts from one gear to another&#10;occur instantaneously.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of &quot;function closures&quot; to compact&#10;the states of the hybrid system.  Instead of having one mode for each gear,&#10;the model contains only one mode.  The reset actions of transitions set the&#10;efficiency function for the current gear.  The efficiency function determines&#10;the amount of the engine's power that is available to accelerate the vehicle.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 295.0]">
+        </property>
+    </property>
+    <entity name="car model" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 215.0}">
+        </property>
+        <port name="position" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="gear" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <port name="throttle" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+        </port>
+        <port name="velocity" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 25, 813, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 405]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 202.5}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the inGear state&#10;to see how the function closure&#10;&quot;efficiencyFunction&quot; is applied.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 130.0]">
+                </property>
+            </property>
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 145.0]">
+                </property>
+            </port>
+            <port name="gear" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 140.0]">
+                </property>
+            </port>
+            <port name="throttle" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
+                </property>
+            </port>
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 205.0]">
+                </property>
+            </port>
+            <entity name="inGear" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 170.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="gear_isPresent">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300*gear)/100)^2)">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.160046119885927">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.2756478298664344">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300)/100)^2)">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.3077625089165776">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.11152199101145541">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <link port="inGear.incomingPort" relation="relation"/>
+            <link port="inGear.incomingPort" relation="relation2"/>
+            <link port="inGear.outgoingPort" relation="relation"/>
+            <link port="init.outgoingPort" relation="relation2"/>
+        </entity>
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                </property>
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
+                </property>
+            </property>
+            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="(function(rpm:double) (1/(1+((rpm-1800)/100)^2)))">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 25.0">
+                </property>
+            </property>
+            <property name="mass" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 137, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The &quot;efficiencyFunction&quot; parameter is set each time this mode is entered to&#10;the efficiency function of a particular gear. The Expression actor (named&#10;&quot;Compute Acceleration&quot;) applies the function to its other inputs (throttle&#10;and rpm).  The integrators model the inertia of the vehicle.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 70.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Convert velocity to revolutions per minute (rpm).">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 355.0]">
+                </property>
+            </property>
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 275.0">
+                </property>
+            </port>
+            <port name="gear" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 175.0">
+                </property>
+            </port>
+            <port name="throttle" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 220.0">
+                </property>
+            </port>
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 345.0">
+                </property>
+            </port>
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 230.0">
+                </property>
+            </entity>
+            <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 275.0">
+                </property>
+            </entity>
+            <entity name="Compute Acceleration" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="efficiencyFunction(rpm)*throttle*mass">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 230.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                    </property>
+                </port>
+                <port name="throttle" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                </port>
+                <port name="rpm" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input*100">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 330.0">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="455.0, 275.0">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="position" relation="relation2"/>
+            <link port="throttle" relation="relation5"/>
+            <link port="velocity" relation="relation6"/>
+            <link port="Integrator.derivative" relation="relation4"/>
+            <link port="Integrator.state" relation="relation6"/>
+            <link port="Integrator2.derivative" relation="relation6"/>
+            <link port="Integrator2.state" relation="relation2"/>
+            <link port="Compute Acceleration.output" relation="relation4"/>
+            <link port="Compute Acceleration.throttle" relation="relation5"/>
+            <link port="Compute Acceleration.rpm" relation="relation"/>
+            <link port="Expression2.output" relation="relation"/>
+            <link port="Expression2.input" relation="relation6"/>
+        </entity>
+        <relation name="positionRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="gearRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="throttleRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="velocityRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="position" relation="positionRelation"/>
+        <link port="gear" relation="gearRelation"/>
+        <link port="throttle" relation="throttleRelation"/>
+        <link port="velocity" relation="velocityRelation"/>
+        <link port="_Controller.position" relation="positionRelation"/>
+        <link port="_Controller.gear" relation="gearRelation"/>
+        <link port="_Controller.throttle" relation="throttleRelation"/>
+        <link port="_Controller.velocity" relation="velocityRelation"/>
+        <link port="state.position" relation="positionRelation"/>
+        <link port="state.gear" relation="gearRelation"/>
+        <link port="state.throttle" relation="throttleRelation"/>
+        <link port="state.velocity" relation="velocityRelation"/>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 265.0">
+        </property>
+    </entity>
+    <entity name="Gear Shift" class="ptolemy.domains.continuous.lib.EventSource">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2000">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 20.0,40.0,60.0,90.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2,3,4,6}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 190.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.019778735239, 0.0647634165995, 0.1365939284979, 0.2362008972067, 0.3645977447823, 0.5228929431194, 0.7123048770112, 0.9341800592087, 1.1900157115651, 1.4814881206744, 1.8104887624834, 2.1791710825771, 2.5900122143746, 3.0458961679924, 3.5502287802283, 3.8218161885669, 4.1071168830319, 4.4067891098168, 4.7215705813995, 5.052294249466, 5.3999085269468, 5.7655036073505, 6.1503462865291, 6.5559268541994, 6.9840234159108, 7.4367917371241, 7.9168926101384, 8.4276731640413, 8.6958742874818, 8.9734451993901, 9.2611194029112, 9.5597245960737, 9.8701793350471, 10.1934693204873, 10.5305876240519, 10.882424746403, 11.2496151855241, 11.6323904818189, 12.0305175840052, 12.443362265765, 12.8700356452988, 13.3095462318392, 13.7609091896137, 14.2232061714127, 14.695609310722, 15.1773847819128, 16.1665254574828, 17.1863685687002, 18.2335591291575, 19.3054313464534, 20.3998263096988, 21.5149639030667, 22.6493525199091, 23.8017244782689, 24.9709889726468, 26.1561971569762, 27.3565157660454, 29.7995946370621, 32.2952278143286, 34.8393191493087, 37.4284597899464, 40.0597638092314, 42.7307528095182, 45.4392724849841, 48.8748341122143, 48.8748341122143, 48.8748341122143, 48.8748341122143, 49.7508034796724, 50.4673769473679, 51.1988999781659, 51.9458959766366, 52.7084539288841, 53.4862048902154, 54.2784187302999, 55.0841601646236, 55.902430555727, 56.7322612011085, 57.5727603315336, 58.4231293310638, 60.150713974329, 61.9103647867882, 63.6984336583361, 65.5120404626584, 67.3488679222041, 69.20701680593, 71.0849041762398, 72.9811910179035, 74.8947298558698, 76.824526126716, 78.7697091711279, 80.7295100783445, 84.6902835618808, 88.7021828250768, 92.7613586676321, 96.8645885684686, 101.0091307979846, 105.1926209488993, 109.4129964726385, 113.6684403120258, 117.9573379219666, 122.2782439052398, 126.6298557011202, 131.0109925446616, 135.4205784305604, 139.8576281650231, 144.3212358307587, 148.8105651605388, 153.3248414368454, 157.8633446239991, 167.0103809816565, 176.2468163343183, 185.5683543109331, 194.9711724804581, 204.4518444708043, 214.0072785915626, 218.5113215013144, 218.5113215013144, 218.5113215013144, 218.5113215013144, 220.0237559780654, 221.2452363455939, 222.4761545355769, 224.9637460069248, 227.4822195407438, 230.0281819126186, 232.5989393543237, 235.1923122340639, 237.8065048054687, 240.440013442628, 243.0915610507758, 245.7600493282916, 248.4445233684467, 251.1441449390222, 256.5859250907866, 262.0803664543467, 267.6233540897527, 273.2114650346685, 278.841802486529, 284.5118794797679, 290.2195348319481, 295.9628708578286, 301.7402062033834, 307.5500394513405, 313.3910205718953, 319.2619281995026, 325.1616513115615, 331.0891742845133, 337.0435645773382, 343.0239624846146, 349.0295725382615, 355.0596562362574, 361.1135258494991, 373.2900856069776, 385.5545921618007, 397.9029127572615, 410.3313611626474, 422.8366257071158, 435.4157122880939, 448.0658986122131, 452.430367116013, 452.430367116013, 452.430367116013, 452.430367116013, 454.4239103666649, 456.0294648518325, 459.2663993357983, 462.5342923581439, 465.8297343787228, 469.150019694596, 472.4929598391584, 475.8567524059122, 479.2398886508286, 482.6410874732853, 486.0592473832091, 489.493410897228, 492.9427376723503, 499.8839686462469, 506.8779061240212, 513.9204271914487, 521.0081029012723, 528.1380318398734, 535.3077234102585, 542.5150135162495, 549.758002096979, 557.0350058344411, 564.3445216678435, 571.6851981772041, 579.0558128098361, 586.4552535207075, 593.8825037989169, 601.3366303279917, 608.8167727205655, 616.3221349053969, 623.8519778441784, 631.4056133286748, 646.5817230334904, 661.8458014211403, 677.1937132951093, 692.6217703896441, 708.1266593171057, 723.7053845120195, 739.3552224233074, 755.0736842839145, 770.8584855183528, 786.707520355598, 802.6188405729104, 818.590637553548, 834.6212270292366, 850.7090360173662, 866.8525915672217, 883.0505110087248, 899.301493457922, 906.9370582055651, 906.9370582055651, 906.9370582055651, 906.9370582055651, 912.044071594417, 916.1490825210275, 920.2725814908048, 924.4159224360711, 928.5807072372205, 932.7688595623357, 936.9827287184225, 941.2252374283607, 943.3583613794515, 945.5001129639198, 947.6511244319223, 949.8121145248933, 951.9838956116248, 954.1673724873594, 956.3635229072303, 958.5733447852358, 960.7977547626516, 963.0374396935401, 965.2927034393091, 967.5633868113192, 969.8489116415471, 972.1484191728665, 974.4609257041158, 976.7854400997193, 979.1210309224003, 981.4668550838875, 983.8221638357419, 988.5586545233183, 993.3261555098493, 998.1212462003235, 1002.9412128060275, 1007.7838608764024, 1012.6473834953883, 1017.5302684545826, 1022.4312319426597, 1027.3491703125446, 1032.2831243381743, 1037.2322522492607, 1047.1731127852279, 1057.1667104049004, 1067.2089168056862, 1077.2962989971743, 1087.4259524513395, 1097.5953841188566, 1107.802427936158, 1118.045182238527, 1128.3219623821662, 1138.631264196924, 1148.9717353245424, 1159.342152411154, 1169.7414027217537, 1180.1684691466648, 1190.6224178461719, 1201.102387972784, 1211.6075830483112, 1222.1372636726323, 1232.6907413142712, 1253.8665476103956, 1275.1303373480903, 1296.4779736850787, 1317.9057669829497, 1339.4104026961172, 1360.9888842724456, 1382.6384873126183, 1404.3567223145044, 1426.1413040610146, 1447.99012621746, 1469.9012400629724, 1491.8728365382153, 1513.9032309797133, 1535.9908500503643, 1558.1342204801385, 1580.3319593102085, 1602.5827653945666, 1624.8854119603006, 1647.2387400645616, 1669.6416528153445, 1692.0931102463373, 1714.592124754644, 1737.1377570251468, 1759.7291123774487, 1782.3653374812698, 1805.0456173943608, 1827.7691728837551, 1850.5352579968078, 1873.3431578531668, 1896.1921866327655, 1919.0816857382545, 1942.0110221130992, 1964.9795866989725, 1987.9867930181058, 2011.0320758680186, 2034.1148901175472, 2057.234709594389, 2080.391026055507, 2103.5833482327052, 2126.8112009465394, 2150.074124282464, 2173.371672823767, 2196.703414936409, 2220.068932101383, 2243.4678182906573, 2266.899679383146, 2290.364132617503, 2313.8608060788342, 2337.38933821671, 2360.9493773920785, 2384.5405814509268, 2408.1626173227023, 2431.815160641707, 2455.497895389809, 2479.2105135589773, 2502.9527148322586, 2526.724206281935, 2550.5247020837032, 2574.353923245811, 2598.211597352168, 2622.09745831853, 2646.0112461609174, 2669.952706775508, 2693.921591729277, 2717.917658060741, 2741.9406680901793, 2765.9903892387824, 2790.066593856187, 2814.169059055916, 2838.29756655827, 2862.4519025402406, 2886.6318574920588, 2910.8372260800033, 2935.067807015129, 2959.3234029275955, 2983.603820246292, 3007.9088690834824, 3032.238363124203, 3056.5921195201695, 3080.9699587879627, 3105.3717047112727, 3129.7971842470006, 3154.246227435027, 3178.718667311464, 3203.2143398252247, 3227.733083757749, 3252.274740645734, 3276.839154706732, 3301.4261727674793, 3326.035644194825, 3350.6674208291515, 3375.3213569201635, 3399.997309064947, 3424.6951361481915, 3449.414699284483, 3474.1558617625774, 3498.918488991569, 3523.7024484488716, 3548.507609629935, 3573.333843999627, 3598.181024945208, 3623.0490277308336, 3647.9377294535243, 3672.847009000539, 3697.7767470080994, 3722.7268258214094, 3747.6971294559207, 3772.6875435597904, 3797.69795537749, 3822.7282537145197, 3847.7783289031827, 3872.848072769383, 3897.937378600407, 3923.04614111365, 3948.1742564262563, 3973.321622025638, 3998.488136740837, 4023.6737007147044, 4048.878215376867, 4074.1015834174495, 4099.343708761529, 4124.604496544299, 4149.883853086903, 4175.181685872943, 4200.497903525604, 4225.832415785409, 4251.185133488551, 4276.555968545812, 4301.944833922023, 4327.351643616064, 4352.776312641388, 4378.218757007034, 4403.67889369913, 4429.156640662867, 4454.651916784924, 4480.164641876329, 4505.694736655755, 4531.242122733217, 4556.806722594175, 4582.388459584023, 4607.987257892952, 4633.6030425411755, 4659.235739364512, 4684.885275000302, 4710.551576873663, 4736.234573184066, 4761.934192892218, 4787.650365707256, 4813.38302207423, 4839.132093161873, 4864.897510850646, 4890.6792077210575, 4916.477117042243, 4942.291172760795, 4968.121309489846, 4993.967462498386, 5019.829567700821, 5045.70756164675, 5071.60138151097, 5097.510965083693, 5123.43625076097, 5149.377177535324, 5175.3336849865755, 5201.305713272862, 5227.293203121847, 5253.29609582211, 5279.314333214716, 5305.347857684952, 5331.3966121542435, 5357.460540072223, 5383.539585408967, 5409.633692647384, 5435.742806775762, 5461.86687328045, 5488.005838138702, 5514.159647811645, 5540.328249237398, 5566.511589824316, 5592.709617444366, 5618.922280426635, 5645.149527550958, 5671.39130804167, 5697.6475715614715, 5723.918268205418, 5750.2033484950125, 5776.502763372418, 5802.816464194768, 5829.144402728591, 5855.486531144329, 5881.842802010964, 5908.213168290736, 5934.59758333396, 5960.996000873937, 5987.408375021953, 6013.834660262372, 6040.274811447809, 6066.728783794397, 6093.196532877129, 6119.678014625291, 6146.173185317962, 6172.682001579603, 6199.204420375719, 6225.740399008592, 6252.289895113092, 6278.8528666525535, 6305.42927191473, 6332.019069507806, 6358.6222183564905, 6385.238677698157, 6411.868407079064, 6438.511366350633, 6465.167515665782, 6491.836815475328, 6518.519226524443, 6545.214709849169, 6571.923226772986, 6598.644738903446, 6625.3792081288475, 6652.126596614971, 6678.886866801867, 6705.659981400689, 6732.445903390582, 6759.24459601562, 6786.056022781786, 6812.880147454004, 6839.716934053216, 6866.566346853504, 6893.428350379255, 6920.302909402369, 6947.1899889395145, 6974.08955424942, 7001.001570830208, 7027.926004416771, 7054.862820978186, 7081.811986715166, 7108.773468057551, 7135.747231661838, 7162.733244408741, 7189.731473400796, 7216.741885959994, 7243.764449625452, 7270.799132151113, 7297.845901503489, 7324.904725859425, 7351.975573603905, 7379.058413327883, 7406.1532138261455, 7433.259944095209, 7460.378573331242, 7487.509070928017, 7514.651406474896, 7541.8055497548385, 7568.971470742439, 7596.149139601994, 7623.33852668559, 7650.539602531228, 7677.752337860962, 7704.976703579069, 7732.212670770246, 7759.460210697826, 7786.719294802023, 7813.989894698195, 7841.271982175137, 7868.5655291933945, 7895.870507883595, 7923.186890544806, 7950.514649642917, 7977.853757809035, 8005.2041878379105, 8032.565912686376, 8059.938905471808, 8087.323139470612, 8114.7185881167225, 8142.125225000125, 8169.543023865395, 8196.971958610258, 8224.412003284166, 8251.86313208689, 8279.325319367143, 8306.798539621197, 8334.282767491542, 8361.777977765549, 8389.284145374142, 8416.801245390508, 8444.329253028809, 8471.868143642903, 8499.417892725103, 8526.978475904927, 8554.549868947879, 8582.132047754243, 8609.724988357886, 8637.328666925076, 8664.943059753321, 8692.568143270217, 8720.20389403231, 8747.850288723968, 8775.507304156283, 8803.174917265958, 8830.853105114234, 8858.541844885816, 8886.241113887812, 8913.950889548689, 8941.671149417238, 8969.401871161554, 8997.143032568021, 9024.894611540321, 9052.656586098443, 9080.428934377705, 9108.211634627796, 9136.004665211818, 9163.808004605344, 9191.621631395488, 9219.445524279989, 9247.279662066287, 9275.124023670634, 9302.978588117205, 9330.843334537207, 9358.718242168019, 9386.603290352326, 9414.49845853727, 9442.403726273606, 9470.319073214872, 9498.244479116567, 9526.179923835332, 9554.125387328148, 9582.080849651538, 9610.046290960783, 9638.021691509137, 9666.00703164706, 9694.002291821453, 9722.007452574908, 9750.022494544955, 9778.04739846333, 9806.082145155238, 9834.12671553864, 9862.181090623526, 9890.245251511216, 9918.31917939366, 9946.40285555274, 9974.496261359589, 10002.59937827391, 10030.712187843304, 10058.834671702614, 10086.966811573255, 10115.108589262572, 10143.259986663197, 10171.420985752404, 10199.591568591484, 10227.771717325122, 10255.961414180776, 10284.160641468065, 10312.369381578163, 10340.587616983204, 10368.815330235688, 10397.052503967885, 10425.299120891264, 10453.555163795916, 10481.820615549976, 10510.095459099068, 10538.37967746574, 10566.673253748917, 10594.976171123346, 10623.288412839058, 10651.609962220833, 10679.940802667661, 10708.280917652224, 10736.63029072037, 10764.988905490594, 10793.356745653533, 10821.733794971455, 10850.120037277758, 10878.515456476476, 10906.920036541784, 10935.333761517508, 10963.756615516651, 10992.188582720908, 11020.629647380194, 11049.079793812174, 11077.5390064018, 11106.007269600848, 11134.484567927471, 11162.970885965733, 11191.466208365173, 11219.970519840354, 11248.48380517043, 11277.006049198708, 11305.537236832215, 11334.077353041275, 11362.626382859084, 11391.184311381287, 11419.751123765567, 11448.326805231234, 11476.91134105881, 11485.845822022271, 11485.845822022271}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{535.0, 190.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0637088488693, 0.1165200844088, 0.17111692529, 0.2276541701279, 0.2863089150876, 0.3472851677221, 0.4108197357921, 0.4771898416873, 0.5467231111321, 0.6198108891372, 0.6969263152117, 0.7786493650064, 0.8657023589679, 0.9590016728693, 1.0597353992915, 1.1133656583793, 1.1694876854603, 1.2283925623304, 1.2904272477143, 1.3560098190254, 1.4256501802608, 1.4999786760822, 1.5797863372106, 1.6660825015232, 1.7601786601125, 1.8638117763965, 1.9793248582951, 2.1099192588947, 2.1821868328069, 2.259959235874, 2.3439724657089, 2.4349845998563, 2.5336629845698, 2.6403635413531, 2.7547759238176, 2.8755059263561, 2.9998637947089, 3.1242234419066, 3.2449600533639, 3.3593851248495, 3.4661030820735, 3.5648007821861, 3.6558318296986, 3.7398623261953, 3.817649929863, 3.8899306654599, 4.020565602355, 4.1361050255573, 4.239755620091, 4.3338637631495, 4.4201684344189, 4.499982334908, 4.5743155445494, 4.643959562046, 4.7095450358524, 4.7715820727515, 4.8304888890947, 4.9402478277145, 5.0409879174924, 5.1342914032095, 5.221347217845, 5.3030722224773, 5.3801890302586, 5.4532778000352, 5.539687702432, 5.539687702432, 5.539687702432, 5.539687702432, 5.6748829732599, 5.7914533737325, 5.9136468106172, 6.0384135931305, 6.1620129814607, 6.2810294310833, 6.3931674087878, 6.4974048165378, 6.5936789401433, 6.6824714584443, 6.7644944155615, 6.840507054301, 6.9773081710579, 7.0976507625855, 7.2051082018009, 7.3022920444474, 7.3911272713718, 7.4730574503103, 7.549186088595, 7.620372606518, 7.6872979601336, 7.7505101888074, 7.8104565895039, 7.8675068551981, 7.9741101230026, 8.0722654941382, 8.1634094485871, 8.248631156281, 8.3287768946593, 8.4045179150163, 8.4763960923884, 8.5448555502344, 8.6102651356795, 8.6729347528016, 8.7331274679105, 8.7910686389074, 8.8469529081525, 8.9009496340594, 8.9532071634179, 9.0038562304204, 9.0530126891357, 9.1007797310982, 9.1925062124904, 9.2796687195271, 9.3627868589743, 9.4422923379996, 9.5185480977569, 9.5918624596649, 9.6252922610453, 9.6252922610453, 9.6252922610453, 9.6252922610453, 9.7321956427302, 9.810541219289, 9.88331288451, 10.0147592375418, 10.1309321293685, 10.2350862473714, 10.3296023706088, 10.416243584861, 10.4963395809747, 10.5709126001551, 10.6407630075822, 10.7065280371937, 10.7687227743162, 10.8277692612523, 10.9377648067616, 11.038697948296, 11.132162219991, 11.219354232965, 11.3011962519707, 11.3784148045652, 11.4515929559822, 11.5212061684334, 11.5876475686544, 11.6512461732605, 11.7122803072301, 11.7709876643095, 11.8275729726362, 11.8822139208107, 11.935065799294, 11.986265178777, 12.0359328567789, 12.0841762412875, 12.1310912963813, 12.2212729542024, 12.3070703788444, 12.3889721590301, 12.4673858612328, 12.5426553396926, 12.6150736132432, 12.6848926127683, 12.7083327923968, 12.7083327923968, 12.7083327923968, 12.7083327923968, 12.8075249114116, 12.8805056626246, 13.0122975533703, 13.1287400641304, 13.233108355097, 13.3277979027822, 13.4145820931113, 13.4947978734379, 13.5694726760908, 13.6394106485871, 13.7052518324356, 13.7675134342345, 13.826619125597, 13.9367149319011, 14.0377298466944, 14.131262203167, 14.2185118743352, 14.3004034193818, 14.3776650271976, 14.4508809960586, 14.5205277230647, 14.5869990570568, 14.6506245815591, 14.7116830730701, 14.7704125895906, 14.8270181565023, 14.8816777074858, 14.9345467369691, 14.9857619868419, 15.035444399437, 15.0837015061102, 15.1306293767278, 15.2208342994044, 15.3066523113842, 15.3885724587728, 15.4670026649793, 15.5422870671282, 15.6147189113283, 15.6845503132903, 15.7519997617172, 15.8172579670396, 15.8804924776521, 15.9418513647585, 16.0014661941028, 16.0594544451649, 16.1159214975513, 16.1709622749555, 16.224662615684, 16.2771004229742, 16.3012663547472, 16.3012663547472, 16.3012663547472, 16.3012663547472, 16.3846800711713, 16.4562010621073, 16.5327194299702, 16.6151094516204, 16.7044950221586, 16.802348147137, 16.9106339349834, 17.0320204548154, 17.0987255629625, 17.1701692829752, 17.2470049294103, 17.3299592923573, 17.4197923315532, 17.5171976157569, 17.62260189187, 17.7358310166534, 17.8556901148155, 17.9796925074255, 18.1043103972432, 18.2258461979818, 18.3414178285587, 18.4494243621713, 18.5494050719453, 18.6416332290513, 18.7267428749723, 18.8054868373807, 18.8786091259823, 19.0106349101201, 19.127259878385, 19.231773058792, 19.3265798924412, 19.4134607490886, 19.4937574952507, 19.5685010812747, 19.6384982171605, 19.704390845929, 19.7666976104625, 19.8258432852675, 19.9360067909406, 20.0370769111795, 20.1306552247929, 20.2179438101421, 20.2998687772495, 20.3771594376762, 20.4504009227845, 20.5200702612127, 20.5865617895297, 20.6502054741154, 20.7112803963627, 20.7700248602149, 20.8266440917331, 20.8813161900456, 20.9341967872638, 20.9854227408335, 21.0351150908278, 21.0833814518639, 21.1303179652004, 21.2205385770902, 21.3063704721282, 21.3883030050341, 21.4667443400393, 21.5420388051167, 21.6144797996985, 21.6843195641767, 21.7517766897525, 21.8170419719478, 21.8802830304263, 21.9416479965671, 22.0012684872982, 22.0592620259304, 22.1157340298385, 22.1707794554473, 22.2244841695804, 22.2769261004438, 22.3281762097339, 22.3782993184829, 22.4273548124812, 22.4753972479204, 22.5224768738606, 22.5686400849749, 22.6139298155373, 22.6583858836482, 22.7020452931174, 22.7449424991562, 22.7871096430083, 22.8285767598145, 22.8693719633247, 22.9095216105115, 22.9490504486774, 22.9879817472611, 23.0263374162328, 23.0641381126962, 23.101403337093, 23.1381515202138, 23.1744001020601, 23.2101656034642, 23.2454636912585, 23.2803092376846, 23.314716374649, 23.3486985433581, 23.3822685397988, 23.4154385564828, 23.4482202208167, 23.4806246304251, 23.5126623857158, 23.5443436199417, 23.5756780269908, 23.6066748871097, 23.6373430907415, 23.6676911606462, 23.6977272724494, 23.7274592737534, 23.7568947019313, 23.7860408007111, 23.8149045356505, 23.8434926085888, 23.8718114711586, 23.8998673374292, 23.9276661957491, 23.955213819848, 23.9825157792547, 24.0095774490795, 24.0364040192092, 24.0630005029566, 24.0893717452021, 24.1155224300653, 24.1414570881368, 24.1671801033017, 24.1926957191829, 24.218008045228, 24.2431210624649, 24.2680386289468, 24.2927644849077, 24.3173022576452, 24.34165546615, 24.3658275254961, 24.3898217510077, 24.4136413622154, 24.4372894866158, 24.4607691632449, 24.4840833460773, 24.5072349072607, 24.5302266401961, 24.553061262472, 24.5757414186602, 24.5982696829834, 24.6206485618585, 24.642880496325, 24.6649678643639, 24.6869129831126, 24.7087181109825, 24.7303854496827, 24.7519171461573, 24.7733152944377, 24.7945819374177, 24.8157190685517, 24.8367286334838, 24.8576125316075, 24.8783726175625, 24.8990107026698, 24.9195285563089, 24.9399279072402, 24.9602104448744, 24.9803778204916, 25.0004316484139, 25.0203735071313, 25.0402049403852, 25.05992745821, 25.0795425379355, 25.0990516251522, 25.1184561346398, 25.137757451262, 25.1569569308286, 25.1760559009254, 25.1950556617158, 25.2139574867118, 25.2327626235189, 25.2514722945545, 25.2700876977409, 25.2886100071741, 25.3070403737705, 25.3253799258898, 25.3436297699386, 25.3617909909522, 25.3798646531578, 25.3978518005182, 25.4157534572585, 25.4335706283746, 25.4513043001257, 25.468955440511, 25.4865249997301, 25.5040139106304, 25.5214230891384, 25.5387534346792, 25.5560058305816, 25.5731811444713, 25.5902802286515, 25.6073039204725, 25.6242530426896, 25.6411284038099, 25.6579307984294, 25.6746610075593, 25.6913197989432, 25.7079079273649, 25.7244261349465, 25.7408751514385, 25.7572556945017, 25.77356846998, 25.7898141721664, 25.8059934840611, 25.8221070776219, 25.8381556140084, 25.8541397438185, 25.870060107319, 25.8859173346697, 25.901712046141, 25.917444852326, 25.9331163543465, 25.948727144054, 25.9642778042246, 25.9797689087492, 25.9952010228184, 26.010574703103, 26.025890497929, 26.0411489474487, 26.056350583807, 26.0714959313038, 26.0865855065517, 26.1016198186303, 26.1165993692358, 26.131524652828, 26.146396156772, 26.1612143614782, 26.1759797405373, 26.1906927608528, 26.2053538827699, 26.2199635602017, 26.2345222407516, 26.2490303658334, 26.2634883707882, 26.2778966849987, 26.2922557320004, 26.3065659295908, 26.3208276899352, 26.3350414196709, 26.3492075200083, 26.3633263868297, 26.3773984107868, 26.3914239773941, 26.4054034671222, 26.4193372554873, 26.4332257131399, 26.4470692059508, 26.4608680950952, 26.4746227371354, 26.4883334841013, 26.5020006835687, 26.5156246787372, 26.5292058085047, 26.5427444075418, 26.5562408063633, 26.5696953313993, 26.5831083050639, 26.5964800458228, 26.6098108682598, 26.6231010831407, 26.6363509974776, 26.6495609145902, 26.6627311341671, 26.6758619523246, 26.6889536616657, 26.7020065513363, 26.7150209070819, 26.7279970113016, 26.740935143102, 26.7538355783499, 26.7666985897234, 26.7795244467624, 26.7923134159182, 26.8050657606018, 26.817781741231, 26.8304616152778, 26.843105637313, 26.8557140590517, 26.8682871293966, 26.8808250944812, 26.8933281977121, 26.9057966798101, 26.9182307788508, 26.9306307303044, 26.9429967670748, 26.9553291195378, 26.9676280155785, 26.9798936806285, 26.9921263377015, 27.0043262074294, 27.0164935080967, 27.0286284556749, 27.040731263856, 27.0528021440851, 27.0648413055932, 27.0768489554288, 27.0888252984888, 27.1007705375494, 27.112684873296, 27.1245685043528, 27.1364216273116, 27.1482444367605, 27.1600371253117, 27.1717998836288, 27.1835329004542, 27.1952363626353, 27.2069104551507, 27.2185553611354, 27.2301712619066, 27.2417583369878, 27.2533167641336, 27.2648467193529, 27.2763483769332, 27.287821909463, 27.2992674878547, 27.3106852813668, 27.322075457626, 27.3334381826486, 27.3447736208617, 27.356081935124, 27.3673632867463, 27.3786178355118, 27.3898457396954, 27.401047156084, 27.412222239995, 27.4233711452952, 27.4344940244198, 27.4455910283903, 27.4566623068322, 27.4677080079935, 27.478728278761, 27.4897232646784, 27.5006931099623, 27.5116379575195, 27.5225579489626, 27.5334532246266, 27.5443239235844, 27.5551701836624, 27.5659921414558, 27.5767899323436, 27.5875636905037, 27.5983135489271, 27.6090396394325, 27.6197420926805, 27.6304210381875, 27.6410766043392, 27.6517089184044, 27.6623181065482, 27.6729042938452, 27.6834676042922, 27.6940081608211, 27.7045260853114, 27.7150214986024, 27.7254945205056, 27.7359452698166, 27.7463738643265, 27.7567804208344, 27.7671650551578, 27.7775278821448, 27.7878690156847, 27.7981885687191, 27.8084866532527, 27.8187633803639, 27.8290188602156, 27.8392532020648, 27.8494665142738, 27.8596589043193, 27.8698304788031, 27.8799813434612, 27.8901116031738, 27.900221361975, 27.9103107230613, 27.920379788802, 27.9304286607472, 27.9404574396376, 27.950466225413, 27.9604551172207, 27.9704242134247, 27.980373611614, 27.9903034086108, 28.0002137004786, 28.010104582531, 28.019976149339, 28.0298284947394, 28.0396617118422, 28.049475893039, 28.0592711300097, 28.0690475137306, 28.0788051344819, 28.0885440818544, 28.0982644447574, 28.1079663114251, 28.1176497694243, 28.127314905661, 28.1369618063871, 28.1465905572074, 28.1562012430861, 28.1657939483535, 28.1753687567122, 28.184925751244, 28.1944650144156, 28.2039866280855, 28.2134906735093, 28.2229772313468, 28.2324463816672, 28.2418982039553, 28.2513327771175, 28.260750179487, 28.2701504888305, 28.2795337823528, 28.288900136703, 28.2982496279796, 28.3075823317362, 28.3168983229868, 28.3261976762109, 28.335480465359, 28.3447467638574, 28.3539966446137, 28.3632301800213, 28.3724474419651, 28.3816485018255, 28.3908334304842, 28.4000022983282, 28.4091551752548, 28.4182921306765, 28.4274132335253, 28.4365185522574, 28.4456081548577, 28.4546821088442, 28.4637404812723, 28.4727833387394, 28.4818107473891, 28.4908227729151, 28.4998194805661, 28.5088009351491, 28.5177672010342, 28.5267183421583, 28.5356544220289, 28.5445755037287, 28.5534816499187, 28.5623729228428, 28.571249384331, 28.5801110958035, 28.5889581182745, 28.5917198099956, 28.5917198099956}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 270.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="car model.position" relation="relation"/>
+    <link port="car model.gear" relation="relation5"/>
+    <link port="car model.throttle" relation="relation2"/>
+    <link port="car model.velocity" relation="relation3"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="Gear Shift.output" relation="relation5"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
+</entity>

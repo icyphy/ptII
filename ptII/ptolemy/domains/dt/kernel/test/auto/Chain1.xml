@@ -1,0 +1,167 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Chain1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DT1" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="PI">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="529.0, 31.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="1_2" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="outrate" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="88.0, 100.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="3_4" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <property name="inrate" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="outrate" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 100.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+        </port>
+    </entity>
+    <entity name="5_1" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <property name="inrate" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="452.0, 100.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="CurrentTime7" class="ptolemy.actor.lib.CurrentTime">
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="221.0, 194.0">
+        </property>
+    </entity>
+    <entity name="CurrentTime8" class="ptolemy.actor.lib.CurrentTime">
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 345.0">
+        </property>
+    </entity>
+    <entity name="Test13" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.1047198,0.2094395,0.3141593,0.418879,0.5235988,0.6283185,0.7330383,0.837758,0.9424778,1.0471976,1.1519173,1.2566371,1.3613568,1.4660766,1.5707963,1.6755161,1.7802358,1.8849556,1.9896753,2.0943951,2.1991149,2.3038346,2.4085544,2.5132741,2.6179939,2.7227136,2.8274334,2.9321531,3.0368729,3.1415927,3.2463124,3.3510322,3.4557519,3.5604717,3.6651914,3.7699112,3.8746309,3.9793507,4.0840704,4.1887902,4.29351,4.3982297,4.5029495,4.6076692,4.712389,4.8171087,4.9218285,5.0265482,5.131268,5.2359878,5.3407075,5.4454273,5.550147,5.6548668,5.7595865,5.8643063,5.969026,6.0737458,6.1784656,6.2831853,6.3879051,6.4926248,6.5973446,6.7020643,6.8067841,6.9115038,7.0162236,7.1209433,7.2256631,7.3303829,7.4351026,7.5398224,7.6445421,7.7492619,7.8539816,7.9587014,8.0634211,8.1681409,8.2728607,8.3775804,8.4823002,8.5870199,8.6917397,8.7964594,8.9011792,9.0058989,9.1106187,9.2153385,9.3200582,9.424778,9.5294977,9.6342175,9.7389372,9.843657,9.9483767,10.0530965,10.1578162,10.262536,10.3672558,10.4719755,10.5766953,10.681415,10.7861348,10.8908545,10.9955743,11.100294,11.2050138,11.3097336,11.4144533,11.5191731,11.6238928,11.7286126,11.8333323,11.9380521,12.0427718,12.1474916,12.2522113,12.3569311,12.4616509,12.5663706,12.6710904,12.7758101,12.8805299,12.9852496,13.0899694,13.1946891,13.2994089,13.4041287,13.5088484,13.6135682,13.7182879,13.8230077,13.9277274,14.0324472,14.1371669,14.2418867,14.3466065,14.4513262,14.556046,14.6607657,14.7654855,14.8702052,14.974925,15.0796447,15.1843645,15.2890842,15.393804,15.4985238,15.6032435,15.7079633,15.812683,15.9174028,16.0221225,16.1268423,16.231562,16.3362818,16.4410016,16.5457213,16.6504411,16.7551608,16.8598806,16.9646003,17.0693201,17.1740398,17.2787596,17.3834793,17.4881991,17.5929189,17.6976386,17.8023584,17.9070781,18.0117979,18.1165176,18.2212374,18.3259571,18.4306769,18.5353967,18.6401164,18.7448362,18.8495559,18.9542757,19.0589954,19.1637152,19.2684349,19.3731547,19.4778745,19.5825942,19.687314,19.7920337,19.8967535,20.0014732,20.106193,20.2109127,20.3156325,20.4203522,20.525072,20.6297918,20.7345115,20.8392313,20.943951,21.0486708,21.1533905,21.2581103,21.36283,21.4675498,21.5722696,21.6769893,21.7817091,21.8864288,21.9911486,22.0958683,22.2005881,22.3053078,22.4100276,22.5147474,22.6194671,22.7241869,22.8289066,22.9336264,23.0383461,23.1430659,23.2477856,23.3525054,23.4572251,23.5619449,23.6666647,23.7713844,23.8761042,23.9808239,24.0855437,24.1902634,24.2949832,24.3997029,24.5044227,24.6091425,24.7138622,24.818582,24.9233017,25.0280215,25.1327412,25.237461,25.3421807,25.4469005,25.5516202,25.65634,25.7610598,25.8657795,25.9704993,26.075219,26.1799388,26.2846585,26.3893783,26.494098,26.5988178,26.7035376,26.8082573,26.9129771,27.0176968,27.1224166,27.2271363,27.3318561,27.4365758,27.5412956,27.6460154,27.7507351,27.8554549,27.9601746,28.0648944,28.1696141,28.2743339,28.3790536,28.4837734,28.5884931,28.6932129,28.7979327,28.9026524,29.0073722,29.1120919,29.2168117,29.3215314,29.4262512,29.5309709,29.6356907,29.7404105,29.8451302,29.94985,30.0545697,30.1592895,30.2640092,30.368729,30.4734487,30.5781685,30.6828883,30.787608,30.8923278,30.9970475,31.1017673,31.206487,31.3112068}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.99998474121094, 194.0">
+        </property>
+    </entity>
+    <entity name="Test8" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.0785398,0.1570796,0.2356194,0.3141593,0.3926991,0.4712389,0.5497787,0.6283185,0.7068583,0.7853982,0.863938,0.9424778,1.0210176,1.0995574,1.1780972,1.2566371,1.3351769,1.4137167,1.4922565,1.5707963,1.6493361,1.727876,1.8064158,1.8849556,1.9634954,2.0420352,2.120575,2.1991149,2.2776547,2.3561945,2.4347343,2.5132741,2.5918139,2.6703538,2.7488936,2.8274334,2.9059732,2.984513,3.0630528,3.1415927,3.2201325,3.2986723,3.3772121,3.4557519,3.5342917,3.6128316,3.6913714,3.7699112,3.848451,3.9269908,4.0055306,4.0840704,4.1626103,4.2411501,4.3196899,4.3982297,4.4767695,4.5553093,4.6338492,4.712389,4.7909288,4.8694686,4.9480084,5.0265482,5.1050881,5.1836279,5.2621677,5.3407075,5.4192473,5.4977871,5.576327,5.6548668,5.7334066,5.8119464,5.8904862,5.969026,6.0475659,6.1261057,6.2046455,6.2831853,6.3617251,6.4402649,6.5188048,6.5973446,6.6758844,6.7544242,6.832964,6.9115038,6.9900437,7.0685835,7.1471233,7.2256631,7.3042029,7.3827427,7.4612826,7.5398224,7.6183622,7.696902,7.7754418,7.8539816,7.9325215,8.0110613,8.0896011,8.1681409,8.2466807,8.3252205,8.4037603,8.4823002,8.56084,8.6393798,8.7179196,8.7964594,8.8749992,8.9535391,9.0320789,9.1106187,9.1891585,9.2676983,9.3462381,9.424778,9.5033178,9.5818576,9.6603974,9.7389372,9.817477,9.8960169,9.9745567,10.0530965,10.1316363,10.2101761,10.2887159,10.3672558,10.4457956,10.5243354,10.6028752,10.681415,10.7599548,10.8384947,10.9170345,10.9955743,11.0741141,11.1526539,11.2311937,11.3097336,11.3882734,11.4668132,11.545353,11.6238928,11.7024326,11.7809725,11.8595123,11.9380521,12.0165919,12.0951317,12.1736715,12.2522113,12.3307512,12.409291,12.4878308,12.5663706,12.6449104,12.7234502,12.8019901,12.8805299,12.9590697,13.0376095,13.1161493,13.1946891,13.273229,13.3517688,13.4303086,13.5088484,13.5873882,13.665928,13.7444679,13.8230077,13.9015475,13.9800873,14.0586271,14.1371669,14.2157068,14.2942466,14.3727864,14.4513262,14.529866,14.6084058,14.6869457,14.7654855,14.8440253,14.9225651,15.0011049,15.0796447,15.1581846,15.2367244,15.3152642,15.393804,15.4723438,15.5508836,15.6294235,15.7079633,15.7865031,15.8650429,15.9435827,16.0221225,16.1006623,16.1792022,16.257742,16.3362818,16.4148216,16.4933614,16.5719012,16.6504411,16.7289809,16.8075207,16.8860605,16.9646003,17.0431401,17.12168,17.2002198,17.2787596,17.3572994,17.4358392,17.514379,17.5929189,17.6714587,17.7499985,17.8285383,17.9070781,17.9856179,18.0641578,18.1426976,18.2212374,18.2997772,18.378317,18.4568568,18.5353967,18.6139365,18.6924763,18.7710161,18.8495559,18.9280957,19.0066356,19.0851754,19.1637152,19.242255,19.3207948,19.3993346,19.4778745,19.5564143,19.6349541,19.7134939,19.7920337,19.8705735,19.9491134,20.0276532,20.106193,20.1847328,20.2632726,20.3418124,20.4203522,20.4988921,20.5774319,20.6559717,20.7345115,20.8130513,20.8915911,20.970131,21.0486708,21.1272106,21.2057504,21.2842902,21.36283,21.4413699,21.5199097,21.5984495,21.6769893,21.7555291,21.8340689,21.9126088,21.9911486,22.0696884,22.1482282,22.226768,22.3053078,22.3838477,22.4623875,22.5409273,22.6194671,22.6980069,22.7765467,22.8550866,22.9336264,23.0121662,23.090706,23.1692458,23.2477856,23.3263255,23.4048653,23.4834051,23.5619449,23.6404847,23.7190245,23.7975644,23.8761042,23.954644,24.0331838,24.1117236,24.1902634,24.2688032,24.3473431,24.4258829,24.5044227,24.5829625,24.6615023,24.7400421,24.818582,24.8971218,24.9756616,25.0542014,25.1327412,25.211281,25.2898209,25.3683607,25.4469005,25.5254403,25.6039801,25.6825199,25.7610598,25.8395996,25.9181394,25.9966792,26.075219,26.1537588,26.2322987,26.3108385,26.3893783,26.4679181,26.5464579,26.6249977,26.7035376,26.7820774,26.8606172,26.939157,27.0176968,27.0962366,27.1747765,27.2533163,27.3318561,27.4103959,27.4889357,27.5674755,27.6460154,27.7245552,27.803095,27.8816348,27.9601746,28.0387144,28.1172542,28.1957941,28.2743339,28.3528737,28.4314135,28.5099533,28.5884931,28.667033,28.7455728,28.8241126,28.9026524,28.9811922,29.059732,29.1382719,29.2168117,29.2953515,29.3738913,29.4524311,29.5309709,29.6095108,29.6880506,29.7665904,29.8451302,29.92367,30.0022098,30.0807497,30.1592895,30.2378293,30.3163691,30.3949089,30.4734487,30.5519886,30.6305284,30.7090682,30.787608,30.8661478,30.9446876,31.0232275,31.1017673,31.1803071,31.2588469,31.3373867}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.99998474121094, 345.0">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="162.0, 106.0">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="341.0, 106.0">
+        </vertex>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="1_2.output" relation="relation5"/>
+    <link port="3_4.input" relation="relation5"/>
+    <link port="3_4.output" relation="relation6"/>
+    <link port="5_1.input" relation="relation6"/>
+    <link port="CurrentTime7.output" relation="relation14"/>
+    <link port="CurrentTime7.trigger" relation="relation5"/>
+    <link port="CurrentTime8.output" relation="relation9"/>
+    <link port="CurrentTime8.trigger" relation="relation6"/>
+    <link port="Test13.input" relation="relation14"/>
+    <link port="Test8.input" relation="relation9"/>
+</entity>

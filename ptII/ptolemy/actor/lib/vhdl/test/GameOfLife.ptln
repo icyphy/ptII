@@ -1,0 +1,104 @@
+danglingPortsOkay;
+
+GameOfLife is {
+    inport initializing;
+    relation isInitializing;
+    inport initialValue;
+	outport output;
+	parameter size;
+	
+	actor addsub = ptolemy.actor.lib.vhdl.AddSubtract;
+	actor comparator = ptolemy.actor.lib.vhdl.FixComparator;
+	actor constant = ptolemy.actor.lib.vhdl.FixConst;
+	actor logic = ptolemy.actor.lib.vhdl.LogicFunction;
+	actor mux = ptolemy.actor.lib.vhdl.Multiplexor;
+	actor register = ptolemy.actor.lib.vhdl.RegisterSR;
+	
+	relation bornValue;
+	relation sameValue;
+	relation aliveValue;
+	relation deadValue;
+	relation outputDead;
+	constant(outputPrecision := [["U3.0"]], value := [[3]], output := bornValue);
+	constant(outputPrecision := [["U3.0"]], value := [[2]], output := sameValue);
+	constant(outputPrecision := [["U1.0"]], value := [[1]], output := aliveValue);
+	constant(outputPrecision := [["U1.0"]], value := [[0]], output := deadValue);
+	constant(outputPrecision := [["U1.0"]], value := [[0]], output := outputDead);
+	
+	for i initially [[0]] [[i < size]] {
+	    for j initially [[0]] [[j < size]] {
+	    	relation addsub11[[i*size+j]];
+			relation addsub12[[i*size+j]];
+			relation addsub13[[i*size+j]];
+			relation addsub14[[i*size+j]];
+			relation addsub21[[i*size+j]];
+			relation addsub22[[i*size+j]];
+			relation neighbors[[i*size+j]];
+			
+			relation isBorn[[i*size+j]];
+			relation isSuffocated[[i*size+j]];
+			relation isLonely[[i*size+j]];
+			relation isSuffocatedOrLonely[[i*size+j]];	
+			relation sameOrBornValue[[i*size+j]];
+			
+			relation calculatedNextValue[[i*size+j]];
+			
+			relation newCellValue[[i*size+j]];
+			
+		    relation output[[i*size + j]];
+		} next [[j + 1]]
+	} next [[i + 1]]
+	
+	for i initially [[0]] [[i < size]] {
+	    for j initially [[0]] [[j < size]] {
+	    	addsub(outputPrecision := [["U3.0"]], operation := [["ADD"]], 
+	    	       A := output[[ (i-1<0 || j-1<0) ? Dead : (i-1)*size + (j-1) ]], 
+	    	       B := output[[ (i-1<0) ? Dead : (i-1)*size + j*size ]], 
+	    	       output := addsub11[[i*size+j]]); 
+			addsub(outputPrecision := [["U3.0"]], operation := [["ADD"]], 
+			       A := output[[ (i-1<0 || j+1>=size) ? Dead : (i-1)*size + (j+1) ]], 
+			       B := output[[ (j-1<0) ? Dead : i*size + (j-1) ]], 
+			       output := addsub12[[i*size+j]]);
+			addsub(outputPrecision := [["U3.0"]], operation := [["ADD"]], 
+			       A := output[[ (j+1>=size) ? Dead : i*size + (j+1) ]], 
+			       B := output[[ (i+1>=size || j-1<0) ? Dead : (i+1)*size + (j-1) ]], 
+			       output := addsub13[[i*size+j]]);
+			addsub(outputPrecision := [["U3.0"]], operation := [["ADD"]], 
+			       A := output[[ (i+1>=size) ? Dead : (i+1)*size + j ]], 
+			       B := output[[ (i+1>=size || j+1>=size) ? Dead : (i+1)*size + (j+1) ]], 
+			       output := addsub14[[i*size+j]]);
+	    } next [[j + 1]]
+	} next [[i + 1]]
+	
+    for i initially [[0]] [[i < size]] {
+	    for j initially [[0]] [[j < size]] {
+		    /** adders to calculate the number of neighbors **/		
+			addsub(outputPrecision := [["U3.0"]], operation := [["ADD"]], A := addsub11[[i*size+j]], B := addsub12[[i*size+j]], output := addsub21[[i*size+j]]);
+			addsub(outputPrecision := [["U3.0"]], operation := [["ADD"]], A := addsub13[[i*size+j]], B := addsub14[[i*size+j]], output := addsub22[[i*size+j]]);
+			addsub(outputPrecision := [["U3.0"]], operation := [["ADD"]], A := addsub21[[i*size+j]], B := addsub22[[i*size+j]], output := neighbors[[i*size+j]]);
+			
+			/* determine what the next state should be */
+			comparator(operation := [["="]], A := neighbors[[i*size+j]], B := bornValue, output := isBorn[[i*size+j]]);
+			comparator(operation := [[">"]], A := neighbors[[i*size+j]], B := bornValue, output := isSuffocated[[i*size+j]]);
+			comparator(operation := [["<"]], A := neighbors[[i*size+j]], B := sameValue, output := isLonely[[i*size+j]]);
+			
+			/* generate the value for the next state */
+			mux(outputPrecision := [["U1.0"]], A := output[[i*size+j]], B := aliveValue, 
+			       select := isBorn[[i*size+j]], output := sameOrBornValue[[i*size+j]]);
+			logic(outputPrecision := [["U1.0"]], operation := [["OR"]], A := isSuffocated[[i*size+j]], 
+			       B := isLonely[[i*size+j]], output := isSuffocatedOrLonely[[i*size+j]]);
+			mux(outputPrecision := [["U1.0"]], A := sameOrBornValue[[i*size+j]], B := deadValue,
+			       select := isSuffocatedOrLonely[[i*size+j]], output := calculatedNextValue[[i*size+j]]);
+			if [[ (i*size+j) == 0 ]] { 
+				mux(outputPrecision := [["U1.0"]], A := calculatedNextValue[[i*size+j]], B := initialValue,
+				       select := isInitializing, output := newCellValue[[i*size+j]]);  
+		    } else { 
+				mux(outputPrecision := [["U1.0"]], A := calculatedNextValue[[i*size+j]], B := output[[i*size+j-1]],
+				       select := isInitializing, output := newCellValue[[i*size+j]]);     
+			}	         
+			register(outputPrecision := [["U1.0"]], latency :=[[1]], input := newCellValue[[i*size+j]], output := output[[i*size+j]]);
+		} next [[j + 1]]
+	} next [[i + 1]]
+	 
+	this(initializing := isInitializing, output := output[[(size-1)*size+(size-1)]]);
+}

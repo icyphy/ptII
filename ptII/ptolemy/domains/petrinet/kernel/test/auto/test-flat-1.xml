@@ -1,0 +1,71 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="error3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[92, 65]">
+    </property>
+    <property name="PTN" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 367.0">
+        </property>
+    </property>
+    <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="97.0, 106.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Transition" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="244.0, 204.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location">
+            </property>
+        </port>
+    </entity>
+    <entity name="Place2" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="397.0, 76.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Place.output" relation="relation"/>
+    <link port="Transition.input" relation="relation"/>
+    <link port="Transition.output" relation="relation3"/>
+    <link port="Place2.input" relation="relation3"/>
+</entity>

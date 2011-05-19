@@ -1,0 +1,43 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>SpontaneousSources</TITLE>
+</HEAD>
+<BODY>
+<H1>SpontaneousSources</H1>
+<P>
+
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+SpontaneousSources is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "SpontaneousSources.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="SpontaneousSourcesVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model opens two interactive shells into which you can type
+and reports the time (since the start of execution) when you type
+something in either shell.  Normally, the InteractiveShell actor blocks
+until you type something, so each firing would block execution
+in other parts of the model.  Here, each InteractiveShell is placed
+within a ThreadedComposite with the delay parameter set to
+UNDEFINED and synchronizeToRealTime set to true.
+Thus, the InteractiveShell actors execute in their own threads,
+and when they produce outputs, the outputs are assigned time
+stamps equal to real time.</p>
+<p>For details, see E.A. Lee, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html" target="_top">ThreadedComposite: A Mechanism for Building Concurrent and Parallel Ptolemy II Models</a>," EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2008-151, December 7, 2008.</p>
+</BODY>
+</HTML>

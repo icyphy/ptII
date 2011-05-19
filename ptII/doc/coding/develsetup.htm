@@ -1,0 +1,304 @@
+<!--$Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Setting up a development tree</title>
+</head>
+<body>
+<h1>Setting up a development tree</h1>
+
+This page describes how local developers setup parallel development
+trees.  The information below is primarily for use by developers at
+U.C. Berkeley.  Remote sites doing Ptolemy II development may want to
+emulate the U.C. Berkeley developer setup.
+ <p>We also include notes about various configuration management issues.
+<menu>
+<li> <a href="#ParallelTrees">Parallel Trees</a>
+<li> <a href="#browsing">Browsing your tree from the web</a>
+<li> <a href="#RenamingActors">Renaming Actors</a>
+<li> <a href="#ExternalPackages">External Packages</a>
+</menu>
+
+
+<h2><a name="ParallelTrees">Parallel Trees</a></h2>
+
+Currently, the CVS Repository for the Ptolemy II tree is on
+<CODE>gigascale.eecs.berkeley.edu</CODE>.  Access to the Ptolemy CVS
+Repository is by invitation only.  We consider software releases a
+form of publication, so we would like to be sure our software is
+of suitable quality.
+
+Instructions for setting up your parallel tree can be found at
+<a href="http://www.gigascale.org/ptexternal/" target="_top"><CODE>http://www.gigascale.org/ptexternal/</CODE></a>
+
+
+<h2><a name="browsing">Browsing your tree from the web</a></h2>
+
+If you would like to be able to browse your development tree from the
+web, then you should set it up so that the development tree is
+not publically available to anyone on the net.
+
+<ol>
+<li>  Create a directory for your private webpages:
+<pre>
+mkdir ~/public_html/private
+</pre>
+
+An alternative name is <CODE>~/public_html/local</CODE>
+
+<li> Create a link to a <CODE>.htaccess</CODE> file that limits access:
+<pre>
+cd ~/public_html/private
+ln -s /usr/local/apache/htaccess/ohmCluster .htaccess
+</pre>
+
+<li>  Create any links you want from that directory.
+<pre>
+ln -s ~/ptII .
+</pre>
+</ol>
+
+<h2><a name="RenamingActors">Renaming Actors</a></h2>
+Below are the steps necessary to rename an actor
+
+<ol>
+<li> copy the .java file to the new directory.
+
+<li> Remove the file from the makefile in the old directory
+<li> Remove the file from the cvs repository in the old directory
+<pre>
+cvs delete -f Foo.java
+cvs commit -m "Moved Foo to new directory blah" Foo.java makefile
+</pre>
+
+
+<li> Edit the .java file in the new directory and change the package
+and the comment at the top if necessary.
+
+<li> Add the new file to the makefile in the new directory
+
+<li> Compile the new file
+
+<li> Add the new file to CVS and commit the change to the makefile
+
+<pre>
+cd blah
+cvs add Foo.java
+cvs commit -m "Moved Foo from oldblah directory" Foo.java makefile
+</pre>
+
+
+<li> Move any tests from the old test directory by doing the
+copy - cvs delete - edit - cvs add - commit cycle as above
+
+<li> Run the tests in both the old and new directory
+
+<li> Fix up the Vergil palettes in each directory
+
+
+<li> Update the glimpse index and then search for
+instances of the actor name and fix it:
+<pre>
+cd $PTII
+make glimpse
+glimpse -H $PTII Foo
+</pre>
+
+
+<li> Update the framemaker documentation
+
+<li> Check the nightly build the next day for errors
+</ol>
+
+<h2><a name="ExternalPackages">External Packages</a></h2>
+Ptolemy II uses various external packages such as Corba, javacomm and kvm.
+Not all users will have these packages installed, so the 
+build and runtime environment needs to allow users to build
+with and without the external packages and to have the external
+packages in different locations.  External packages are usually installed in 
+<CODE>ptII/vendors</CODE>, which we do not distribute.
+
+<p>Packages that are large or have restricted copyrights (such as GPL)
+should go into <code>ptII/vendors</code>.
+
+<p>Large packages should optionally be placed in a separate repository
+and a directory in <code>$PTII/vendors</code> should be created
+that contains a <code>README.txt</code> file that describes how
+to obtain the package (either by download or by using cvs).
+<br>For example, JHDL is a large package that is used 
+by the code generator.
+<br> <code>$PTII/vendors/jhdl/README.txt</code> would desribe how to
+get JHDL.  In this case, it says to use <code>cvs</code> so
+that <code>$PTII/vendors/jhdl/ptjhdllib</code> is created.
+<br> <code>$PTII/configure</code> would then be modified to 
+look <code>$PTII/vendors/jhdl/ptjhdllib</code> for the pieces that it
+needs.
+
+
+<h3>Build-time considerations</h3>
+
+During development, we use GNU autoconf to read in
+<a href="../../configure.in"><CODE>$PTII/configure.in</CODE></a> to generate 
+<a href="../../configure"><CODE>$PTII/configure</CODE></a>.
+During the build process, users run
+<a href="../../configure"><CODE>$PTII/configure</CODE></a> which
+reads in 
+<a href="../../mk/ptII.mk.in"><CODE>$PTII/mk/ptII.mk.in</CODE></a>
+and substitutes in makefile variables and creates
+<a href="../../mk/ptII.mk"><CODE>$PTII/mk/ptII.mk</CODE></a>.
+
+ <p>The primary method is to look for a directory
+that contains the external package.  Another method
+is to compile a program that uses the package and see if
+it works.   Usually, all you need to do is to try to compile a file
+that imports the package.  The javasound and java3d portions
+of configure.in try to compile files from $PTII/conf that
+contain the appropriate import statements.
+
+
+ <p>Below is a rough outline of the steps necessary to add a package.
+by looking for a directory.
+In general, your best bet is to find a similar package that
+has already been added and mimic that setup.
+
+<ol>
+<li> Edit 
+<a href="../../mk/ptII.mk.in"><CODE>$PTII/mk/ptII.mk.in</CODE></a>
+and add three variables for your package:
+<pre>
+# KVM is the JDK for PalmOS, see
+# http://java.sun.com/products/kvm
+KVM_CLASSES = @KVM_CLASSES@
+
+# Directory that contains the kvm used by PalmOS
+KVM_DIR = @KVM_DIR@
+
+# Set to kvm and used in $PTII/ptolemy/makefile if the PalmOS KVM was found
+PTKVM_DIR =	@PTKVM_DIR@
+</pre>
+
+<li> Edit 
+<a href="../../configure.in"><CODE>$PTII/configure.in</CODE></a> 
+and add a new section for your package.  It is easiest to
+copy a section for an existing package.  There are many small
+design decisions to be made here:
+	<menu>
+
+	<li> Check to be sure that the package is actually required.
+	 <br>configure.in can be used for small Ptolemy II trees that
+	might not have all the source code, so be sure to check
+	that the external package is actually needed.
+
+	<li> What happens if the package is not present?
+	 <br>Print a useful message stating what this package is used
+	for and where to get it.
+
+	<li> External packages that we cannot ship should go
+	in <CODE>$PTII/vendors</CODE>.  See 
+<a href="../../vendors/README.txt"><CODE>$PTII/vendors/README.txt</CODE></a>
+	for information about naming conventions.  The configure
+	script should look in <CODE>$PTII/vendors</CODE> for
+	the external package
+	</menu>
+
+<li> Run
+<pre>
+cd $PTII
+rm -f config.status config.cache; autoconf; ./configure
+</pre>
+until you get the settings in <CODE>ptII.mk</CODE> right.
+
+<li> If you Ptolemy II code requires that the package be present
+at compile time, then place your .java files in a subdirectory
+with the same name as the package, and use the 
+<CODE>PTKVM_DIR</CODE> makefile variable in the makefile
+<B>above</B> your package to determine whether make runs
+in your Ptolemy II code.  
+ <p>For example, <CODE>$PTII/ptolemy/apps/kvm</CODE> requires
+that kvm be present to compile.  <CODE>configure</CODE> sets
+the <CODE>PTKVM_DIR</CODE> makefile variable to <CODE>kvm</CODE>
+if the kvm package was found.  
+<a href="../../ptolemy/apps/makefile"><CODE>$PTIIptolemy/apps/makefile</CODE></a>
+uses <CODE>PTKVM_DIR</CODE> in the <CODE>DIRS</CODE> variable
+to select whether make goes into the <CODE>kvm</CODE> subdirectory:
+
+<pre>
+# $PTII/configure looks for various packages and sets variables
+# in $PTII/mk/ptII.mk if these packages are found, otherwise
+# the variables are empty
+#
+# PTKVM_DIR is set to kvm by configure if the kvm runtime was found
+# PTLEGO_DIR is set to lego if the commapi was found.
+# PTWABA_DIR is set to waba if waba was found
+#
+DIRS =		 agilent $(PTKVM_DIR) $(PTLEGO_DIR) $(PTWABA_DIR)
+</pre>
+
+
+<li> In the makefile where you actually compile the .java files
+that use the package, use <CODE>KVM_CLASSES</CODE> to
+set the CLASSPATH:
+<pre>
+CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(KVM_CLASSES)"
+</pre>
+If you need access to a binary in the external package tree, use
+the <CODE>KVM_DIR</CODE> makefile variable
+
+<li> Create a <code><i>package</i>-license.htm</code> file that
+	describes the copyright and license for the third party
+	package.  This file should be in the same directory as
+	the Java class that uses the third party package.
+<li> Ptolemy II includes a system to determine what third party
+	packages are used by a particular configuration.  To see
+	the list of packages, follow the copyright links on the
+        Help | About page.
+        When adding a third party package, update
+	<code>$PTII/ptolemy/actor/gui/GenerateCopyrights.java</code>
+	and add the class name of the primary class of the third
+	party package and the path to the 
+        <code><i>package</i>-license.htm</code> file.
+<li>  Since Kepler uses Ptolemy II, it is best to update the Kepler
+      files that exclude Ptolemy II third party directories.  See
+     <a
+	href="https://kepler-project.org/developers/reference/update-ptolemy-third-party-package-dependencies"
+	target="_top">https://kepler-project.org/developers/reference/update-ptolemy-third-party-package-dependencies</a>
+	  
+</ol>
+
+<h3>Run-time considerations</h3>
+When <CODE>configure</CODE> runs, it also reads in
+<CODE>$PTII/bin/ptinvoke.in</CODE> and generates
+<CODE>$PTII/bin/ptinvoke</CODE>.  When make is run in the
+bin directory, <CODE>ptinvoke</CODE> is copied to the various
+startup scripts like <CODE>vergil</CODE> and <CODE>ptolemy</CODE>.
+Note that all the startup scripts share a common body and
+use a switch statement to select the appropriate jar files
+at runtime.
+
+ <p><CODE>ptinvoke.in</CODE> issues
+<menu>
+<li> In general, do not add external packages to the <CODE>ptolemy</CODE>
+switch section.  The ptolemy command should not require non-standard
+packages that we do not ship.  The right solution is to add another
+switch section that uses your package
+
+<li> If you want to create a new startup script, add a section to
+the switch statement and edit $PTII/bin/makefile
+
+</menu>
+
+ <p>Also, you will need to update <CODE>$PTII/.classpath.default</CODE>
+and <CODE>$PTII/.classpath.in</CODE> for Eclipse users.
+
+ <p>In Kepler, you will need to modify these files:
+<ul>
+<li><code>kepler/build-area/resources/eclipse/PtolemyClasspath</code>
+<li><code>kepler/build-area/resources/idea/PtolemyModule</code>
+<li><code>kepler/build-area/settings/ptolemy-excludes</code>
+</ul>
+To check your work, <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse">download and build Kepler under Eclipse</a>.
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>

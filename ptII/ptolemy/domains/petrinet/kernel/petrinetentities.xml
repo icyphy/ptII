@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PetriNet" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Petri net actors</doc>
+
+<entity name="Place" class="ptolemy.domains.petrinet.kernel.Place"/>
+<entity name="PetriNetActor" class="ptolemy.domains.petrinet.kernel.PetriNetActor"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+

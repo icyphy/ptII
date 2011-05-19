@@ -1,0 +1,187 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HTVQSender" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[147, 210]">
+    </property>
+    <property name="2:1:SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 135.0">
+        </property>
+    </property>
+    <property name="2:1:1:0:1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 260.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">4 x 2
+integer matrices</text>
+           </svg>
+           </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 65.0">
+        </property>
+    </property>
+    <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 90.0">
+        </property>
+    </property>
+    <entity name="2:1:Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
+        <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
+        </property>
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="startFrame" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 235.0">
+        </property>
+    </entity>
+    <entity name="2:1:Encoder" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        </property>
+        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="176*144/blockWidth/blockHeight">
+        </property>
+        <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="blockWidth">
+        </property>
+        <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 235.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="2:1:Partition Image" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="partitionColumns" class="ptolemy.data.expr.Parameter" value="blockWidth">
+        </property>
+        <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 235.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="2:SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="176*144/blockWidth/blockHeight">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 235.0">
+        </property>
+    </entity>
+    <entity name="2:1:DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.Attribute">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+                </property>
+                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
+                </property>
+                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 225.0">
+        </property>
+    </entity>
+    <relation name="2:1:R2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="2:relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="435.0, 235.0">
+        </vertex>
+    </relation>
+    <relation name="2:1:R1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="115.0, 235.0">
+        </vertex>
+    </relation>
+    <relation name="2:relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="2:1:Source.output" relation="2:1:R1"/>
+    <link port="2:1:Encoder.input" relation="2:1:R2"/>
+    <link port="2:1:Encoder.output" relation="2:relation"/>
+    <link port="2:1:Partition Image.input" relation="2:1:R1"/>
+    <link port="2:1:Partition Image.output" relation="2:1:R2"/>
+    <link port="2:SequenceToArray.input" relation="2:relation"/>
+    <link port="2:SequenceToArray.output" relation="2:relation2"/>
+    <link port="2:1:DatagramWriter.data" relation="2:relation2"/>
+</entity>

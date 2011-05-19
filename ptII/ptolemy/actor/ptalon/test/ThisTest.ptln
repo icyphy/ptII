@@ -1,0 +1,6 @@
+ThisTest is {
+	inport in;
+	outport out;
+	relation r;
+	this(in := r, out := r);
+}

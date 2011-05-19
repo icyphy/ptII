@@ -1,0 +1,302 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SynchronizerDE" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="DE0" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="91.04999999999995, 569.8555555555556">
+        </property>
+    </property>
+    <entity name="Clock1" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.94999999999997, 41.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="66.25, 125.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Synchronizer7" class="ptolemy.actor.lib.Synchronizer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="163.15000000000003, 458.5">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Distributor12" class="ptolemy.actor.lib.Distributor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="66.55000000000001, 220.5">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime1" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="414.75, 56.64999999999999">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="621.75, 238.75">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="629.75, 418.85">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="639.75, 548.95">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test0" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="528.0499847412109, 58.14444444444443">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test1" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="736.0499847412109, 234.23333333333332">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="738.05, 387.3222222222222">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="737.0499847412109, 525.411111111111">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 4.0, 8.0, 12.0, 16.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0499847412109, 140.5">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 5.0, 9.0, 13.0, 17.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="736.0499847412109, 312.58888888888896">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test8" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 6.0, 10.0, 14.0, 18.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="736.0499847412109, 457.6777777777778">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="739.05, 592.7666666666667">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="15.850000000000023, 339.2">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="51.85000000000002, 340.3999995231628">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="118.85000000000002, 338.79999999999995">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="88.85000000000002, 338.59999999999997">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="237.45000000000005, 145.2">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="360.45000000000005, 318.4">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="338.45000000000005, 533.5999999999999">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="339.45000000000005, 598.8">
+        </vertex>
+    </relation>
+    <link port="Clock1.output" relation="relation4"/>
+    <link port="Ramp2.output" relation="relation13"/>
+    <link port="Ramp2.trigger" relation="relation4"/>
+    <link port="Synchronizer7.input" relation="relation9"/>
+    <link port="Synchronizer7.input" relation="relation8"/>
+    <link port="Synchronizer7.input" relation="relation10"/>
+    <link port="Synchronizer7.input" relation="relation11"/>
+    <link port="Synchronizer7.output" relation="relation1"/>
+    <link port="Synchronizer7.output" relation="relation2"/>
+    <link port="Synchronizer7.output" relation="relation3"/>
+    <link port="Synchronizer7.output" relation="relation5"/>
+    <link port="Distributor12.input" relation="relation13"/>
+    <link port="Distributor12.output" relation="relation9"/>
+    <link port="Distributor12.output" relation="relation8"/>
+    <link port="Distributor12.output" relation="relation10"/>
+    <link port="Distributor12.output" relation="relation11"/>
+    <link port="CurrentTime1.output" relation="relation14"/>
+    <link port="CurrentTime1.trigger" relation="relation1"/>
+    <link port="CurrentTime2.output" relation="relation15"/>
+    <link port="CurrentTime2.trigger" relation="relation2"/>
+    <link port="CurrentTime3.output" relation="relation16"/>
+    <link port="CurrentTime3.trigger" relation="relation3"/>
+    <link port="CurrentTime4.output" relation="relation17"/>
+    <link port="CurrentTime4.trigger" relation="relation5"/>
+    <link port="Test0.input" relation="relation14"/>
+    <link port="Test1.input" relation="relation15"/>
+    <link port="Test2.input" relation="relation16"/>
+    <link port="Test3.input" relation="relation17"/>
+    <link port="Test6.input" relation="relation1"/>
+    <link port="Test7.input" relation="relation2"/>
+    <link port="Test8.input" relation="relation3"/>
+    <link port="Test9.input" relation="relation5"/>
+</entity>

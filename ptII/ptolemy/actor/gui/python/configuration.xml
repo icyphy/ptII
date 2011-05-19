@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+  <doc>Configuration For Python Shell only.</doc>
+
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/actor/gui/python/help.htm"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/actor/gui/python/help.htm"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
+  </entity>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Include HTML Viewer and Web Browser so we can view the docs -->
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
+    <entity name="Web Browser" class="ptolemy.actor.gui.BrowserEffigy$Factory"/>
+    <entity name="Python Evaluator"
+            class="ptolemy.actor.gui.python.PythonShellEffigy$ShellFactory"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <property name="HTML Viewer"
+              class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
+      <property name="Source"
+              class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+    </property>
+    <property name="Web Browser"
+              class="ptolemy.actor.gui.BrowserTableau$Factory"/>
+    <property name="Python Evaluator"
+              class="ptolemy.actor.gui.python.PythonShellTableau$Factory"/>
+
+  </property>
+</entity>

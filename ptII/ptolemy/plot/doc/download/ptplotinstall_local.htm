@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>Ptplot3.1 Installer Applet</title>
+<script>
+<!--
+//  The only purpose of the JavaScript in this page is
+//  to determine the browser version to check if it can support
+//  signed applets properly. These are MS IE versions
+//  3.02 or higher, and Communicator versions 4.04 and higher.
+
+useIt = 0;
+ms = -1;
+if (navigator.appName.indexOf("Netscape") != -1)
+{
+  if (parseFloat(navigator.appVersion) >= 4.04)
+  { useIt = 1; }
+  else
+  { reqString = "Netscape Communicator 4.04 or higher"; }
+}
+else if (navigator.appName.indexOf("Microsoft Internet Explorer") != -1)
+{
+  if (parseFloat(navigator.appVersion) >= 4.0)
+  {
+	useIt = 1;
+	ms = 1;
+  }
+  else if (navigator.appVersion.indexOf("MSIE 3.02") != -1)
+  {
+	useIt = 1;
+	ms =1;
+  }
+  else
+  { reqString = "Microsoft Internet Explorer 3.02 or higher"; }
+}
+else
+{ reqString = "Netscape Communicator 4.04 or Internet Explorer 3.02 or higher"; }
+// -->
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" topmargin="0" leftmargin="0">
+
+<table border="0" width="100%" bgcolor="#ffffff" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><table border="0" width="100%" bgcolor="#000000" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><p align="right"><font color="#FFFFFF" size="3" face="arial, helvetica, verdana"><strong>Ptplot</strong></font></td>
+      </tr>
+    </table>
+    <table border="0" width="738" cellpadding="0" cellspacing="0">
+      <tr>
+        <td valign="middle" align="left"><b><font color="#666666" size="4"
+        face="arial, helvetica, verdana"><br>
+        &nbsp;<img src="cup.jpg" width="37" height="23" alt="" align="top">
+        Install
+Ptplot 3.1</font></b><br>
+        </td>
+      </tr>
+    </table>
+    <table border="0" align="left" width="742" cellspacing="0" cellpadding="10">
+      <tr>
+        <td valign="top" align="left" width="172"><font color="#666666" size="3"
+        face="arial, helvetica, verdana"><b>Product Information</b></font> <p><font
+        color="#666666" size="2" face="arial, helvetica, verdana"><b>Operating System:</b></font> <br>
+        <font color="#666666" size="2" face="arial, helvetica, verdana">
+	Applets will operate under any OS with JDK1.1 or later.
+	Some standalone applications require JDK1.2.
+        </font></p>
+
+        <p><font color="#666666" size="2" face="arial, helvetica, verdana"><b>Disk Space:</b></font>
+        <br>
+        <font color="#666666" size="2" face="arial, helvetica, verdana">
+	2Mb
+        </font></p>
+        </td>
+        <td valign="top" align="center" width="510" height="362" bgcolor="#ffffff"><p align="left">&nbsp;
+<noscript>
+<b>Please enable both Javascript and Java in your browser through the
+Options or Preferences menu in your browser and reload this page.</b> If your
+browser does not support Java or Javascript, please install one of these
+browsers and return to this page.
+<ul>
+<li><a href="http://www.microsoft.com/ie/">Microsoft Internet Explorer</a>
+<li><a href="http://home.netscape.com/comprod/products/communicator/index.html">Netscape Communicator</a>
+</ul>
+</noscript>
+<script>
+<!--
+if (useIt == 1)
+{
+if (ms == 1)
+{document.writeln("<applet archive=ms.cab code=com.installshield.isjava.applet.ms.Install height=300 width=450>")}
+else
+{document.writeln("<applet archive=ns.jar code=com.installshield.isjava.applet.ns.Install height=300 width=450>")}
+document.writeln("<param name=\"Windows.jre\" value=\"jre.exe\">");
+document.writeln("<param name=\"Solaris.sparc.jre\" value=\"jre.sparc.bin\">");
+document.writeln("<param name=\"Windows.drone\" value=\"drone.exe\">");
+document.writeln("<param name=\"shell.drone\" value=\"drone.sh\">");
+document.writeln("<param name=cabbase value=ms.cab>");
+document.writeln("<param name=\"version.class\" value=\"IsjVersion.class\">");
+document.writeln("<param name=\"vm.list\" value=\"A:A:A \">");
+document.writeln("<param name=\"application.name\" value=\"ptplotinstall.class\">");
+document.writeln("<param name=\"application.data\" value=\"ptplotinstall.class\">");
+document.writeln("<param name=\"bgcolor\" value=\"ffffff\">");
+document.writeln("<param name=\"font\" value=\"helvetica\">");
+document.writeln("<param name=\"fontSize\" value=\"12\">");
+document.writeln("<param name=\"startPhase\" value=\"Intro\">");
+document.writeln("</applet>");
+}
+else
+{
+ document.writeln("<b>Sorry, this applet requires at least "+reqString+"</b>");
+ document.writeln(". Please download one of these browsers.");
+ document.writeln("<ul>");
+ document.writeln("<li><a href="\"http://www.microsoft.com/ie/\"">Microsoft Internet Explorer</a>");
+ document.writeln("<li><a href="\"http://home.netscape.com/comprod/products/communicator/index.html\"">Netscape Communicator</a>");
+ document.writeln("</ul>");
+}
+// -->
+</script>
+
+</td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" width="698"><font color="#666666" size="2"
+        face="arial, helvetica, verdana"><br>
+        For additional information regarding
+Ptplot please contact
+ptplot at ptolemy eecs berkeley edu  or visit
+<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot">http://ptolemy.eecs.berkeley.edu/java/ptplot</a>
+. </font><br>
+        <br>
+        <font color="#666666" size="1" face="arial, helvetica, verdana"><em>Copyright (c) 1997-2006
+        The Regents of the University of California</em></font></td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

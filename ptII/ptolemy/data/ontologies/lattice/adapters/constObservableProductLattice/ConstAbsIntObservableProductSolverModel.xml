@@ -1,0 +1,265 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstAbsIntObservableProductSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={528, 362, 863, 475}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[648, 358]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.9422348484849, 82.2542613636364}">
+    </property>
+    <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/observableLattice/ObservableSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 115.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="ConstAbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 115.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="ScaleActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<polygon points="-30,-20 30,-4 30,4 -30,20" style="fill:white"></polygon>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= productZero(input, output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        </property>
+        <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= productZero(factor, output)">
+        </property>
+        <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="productZero" class="ptolemy.data.ontologies.ExpressionConceptFunctionDefinitionAttribute">
+        <property name="constrainFunctionToBeMonotonic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableLattice">
+        </property>
+        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;factor&quot;, &quot;product&quot;}">
+        </property>
+        <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constObservableLattice&quot;, &quot;constObservableLattice&quot;}">
+        </property>
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="product &lt;= UnobservableUndefined ? UnobservableUnknown :&#10;product &lt;= ObservableZero &amp;&amp; (factor &lt;= ObservablePositive || factor &lt;= ObservableNegative) ? UnobservableUnknown :&#10;ObservableUnknown">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 215.0}">
+        </property>
+    </property>
+    <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, -5.0]">
+        </property>
+    </entity>
+    <entity name="constAbstractInterpretation" class="ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.constAbstractInterpretation">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 0.0]">
+        </property>
+    </entity>
+    <entity name="constObservableLattice" class="ptolemy.data.ontologies.lattice.ProductLatticeOntology">
+        <property name="latticeOntologies" class="ptolemy.data.expr.Parameter" value="{observableLattice, constAbstractInterpretation}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, -5.0]">
+        </property>
+        <entity name="UnobservableUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="UnobservableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="ObservableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="belowPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="abovePort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+    </entity>
+</entity>

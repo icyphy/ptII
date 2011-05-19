@@ -1,0 +1,16 @@
+#
+# heli.mtl
+#
+
+newmtl bodyMaterial
+Ka 0.011765 0.752941 0.752941
+Kd 0.909804 0 0.905882
+Ks 0.933333 0.933333 0.933333
+Ns 85
+illum 2
+
+newmtl defaultWhite
+Kd 1 1 1
+Ks 0 0 0
+Ka 0 0 0
+illum 1

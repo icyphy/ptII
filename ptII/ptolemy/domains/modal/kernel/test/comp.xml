@@ -1,0 +1,318 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="comp" class="ptolemy.domains.modal.kernel.InterfaceAutomaton">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0">
+    </property>
+    <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+        <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.modal.kernel.State"></entity></entity>
+          </configure>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
+    </property>
+    <port name="msg" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="146.0, 270.0">
+        </property>
+    </port>
+    <port name="send" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 264.75">
+        </property>
+    </port>
+    <port name="nack" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="667.0, 359.75">
+        </property>
+    </port>
+    <port name="ack" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="666.0, 309.75">
+        </property>
+    </port>
+    <port name="ok" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="147.0, 315.0">
+        </property>
+    </port>
+    <port name="fail" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="147.0, 365.0">
+        </property>
+    </port>
+    <entity name="0" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 314.5">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="2" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 315.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="3" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 314.5">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="4" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="625.0, 315.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="5" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 209.5">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="6" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 404.5">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="1" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 315.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="msg_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.004217516139700332">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="msg?">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="send=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.004854951416122881">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="send!">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="nack_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="3.1898439772641216E-4">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="nack?">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="send=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0015868888123370083">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="send!">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.0028393414061350254">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ack?">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.30292995193989924">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ack?">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ok=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2537777114101556">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ok!">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="nack_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.28513660132915297">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="nack?">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fail=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.31313071225056976">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fail!">
+        </property>
+    </relation>
+    <link port="0.incomingPort" relation="relation13"/>
+    <link port="0.incomingPort" relation="relation15"/>
+    <link port="0.outgoingPort" relation="relation"/>
+    <link port="2.incomingPort" relation="relation8"/>
+    <link port="2.outgoingPort" relation="relation9"/>
+    <link port="2.outgoingPort" relation="relation11"/>
+    <link port="3.incomingPort" relation="relation9"/>
+    <link port="3.outgoingPort" relation="relation10"/>
+    <link port="4.incomingPort" relation="relation10"/>
+    <link port="4.outgoingPort" relation="relation12"/>
+    <link port="4.outgoingPort" relation="relation14"/>
+    <link port="5.incomingPort" relation="relation11"/>
+    <link port="5.incomingPort" relation="relation12"/>
+    <link port="5.outgoingPort" relation="relation13"/>
+    <link port="6.incomingPort" relation="relation14"/>
+    <link port="6.outgoingPort" relation="relation15"/>
+    <link port="1.incomingPort" relation="relation"/>
+    <link port="1.outgoingPort" relation="relation8"/>
+</entity>

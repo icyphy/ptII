@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <property name="BinaryOperation" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition"></property>
+  <property name="UnaryOperation" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition"></property>
+  <property name="InequalityConceptFunction" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition"></property>
+  <property name="LogicOperationConceptFunction" class="ptolemy.data.ontologies.lattice.LogicOpConceptFunctionDefinition"></property>
+  <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition"></property>
+  <property name="subtractFunction" class="ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition"></property>
+  <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition"></property>
+  <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition"></property>
+</group>

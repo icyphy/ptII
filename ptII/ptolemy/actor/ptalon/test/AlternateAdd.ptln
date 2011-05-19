@@ -1,0 +1,19 @@
+danglingPortsOkay;
+
+AlternateAdd is {
+	actor adder = ptolemy.actor.ptalon.lib.ComplexAddSubtract;
+	inport[] x;
+	outport out1;
+	outport out2;
+	transparent relation xIn;
+	this(x := xIn);
+	transparent relation plus1;
+	transparent relation plus2;
+	adder(plus := plus1, output := out1);
+	adder(plus := plus2, output := out2);
+	this(xIn := plus1);
+	this(xIn := plus2);
+	this(xIn := plus1);
+	this(xIn := plus2);
+}
+

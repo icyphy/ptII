@@ -1,0 +1,50 @@
+#!/bin/sh
+rm -f opentime.plt ticks.plt runtime.plt realtime.plt memory.plt
+
+for file in $*
+do
+	size=`echo $file | sed 's/pubSubAgg//' | sed 's/pubsub//' | sed 's/hierarchicalModel[A-Za-z]*//' | sed 's/.out//' | awk -F _ '{print $1}'`
+
+	egrep "^Opened" $file |
+	awk -v size="$size" '
+				 {op="p"
+				  print "<" op " x=\"" size "\" y=\"" $4 "\"/>"
+				 }' >> opentime.plt
+
+	awk '{if ($2 == "ms." && $3 == "Memory:") print $0}' $file |
+	awk -v size="$size" '
+                                 {op="p"
+                                  print "<" op " x=\"" size "\" y=\"" $1 "\"/>"
+				 }' >> runtime.plt
+
+	awk '{if ($2 == "ms." && $3 == "Memory:") print $0}' $file |
+	awk -v size="$size" ' 	 {mem=substr($4,1,length($4)-1); free=substr($6,1,length($6)-1); sum+=mem-free; 
+				  op="p"
+				  print "<" op " x=\"" size "\" y=\"" mem-free "\"/>"
+				  }' >> memory.plt
+
+done
+
+cat <<EoF
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<!-- Ptolemy plot, version 5.7.1.devel , PlotML format. -->
+<title>Runs using different versions of Ptolemy</title>
+<default marks="bigdots"/>
+<xLabel>Date</xLabel>
+<yLabel>Time in ms, Memory in K Bytes</yLabel>
+EoF
+
+echo "<dataset name=\"Open time (ms.)\">"
+cat opentime.plt
+echo "</dataset>"
+echo "<dataset name=\"Run time (ms.)\">"
+cat runtime.plt
+echo "</dataset>"
+echo "<dataset name=\"Memory (K)\">"
+cat memory.plt
+echo "</dataset>"
+echo "</plot>"
+

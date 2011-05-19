@@ -1,0 +1,748 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ComparedClocks" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 929, 641}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 531]">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+        </property>
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 40.0">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This demo illustrates discrete and continuous
+clocks in the Continuous domain. 
+
+The top three clocks have the same period of 0.5.
+The top clock is discrete, which is absent most
+of the time. The second clock is continuous.
+It is present all the time. The third clock is a
+hybrid. It is absent until time 0.1, the value of
+its first offset.
+
+The third clock is created with a modal model
+and mixes being present and absent at various
+times.
+
+
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Haiyang Zheng and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 490.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.0, 265.5}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 440.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A single event &#10;occurs at 0.5.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 440.0]">
+        </property>
+    </property>
+    <property name="timeInterval" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
+        </property>
+    </property>
+    <property name="outputValue1" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 35.0]">
+        </property>
+    </property>
+    <property name="outputValue2" class="ptolemy.data.expr.Parameter" value="-1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 55.0]">
+        </property>
+    </property>
+    <property name="outputValue3" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 75.0]">
+        </property>
+    </property>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 503, 198}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[503, 154]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 145.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Discrete Clock</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.0"/>
+<yRange min="0.0" max="2.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 220, 506, 198}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[506, 154]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 235.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Continuous Clock</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.0"/>
+<yRange min="0.0" max="2.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 419, 508, 198}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[508, 154]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 320.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Continuous Clock 2</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.0"/>
+<yRange min="0.0" max="2.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ContinuousClock2" class="ptolemy.domains.continuous.lib.ContinuousClock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1, 0.2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 145.0}">
+        </property>
+    </entity>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 390.0}">
+        </property>
+        <port name="time" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="value" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 177, 953, 606}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[740, 495]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{370.0, 247.5}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The first three states have the same refinement, while state4&#10;has a different refinement. Each refinement measures the passage&#10;of time and produces a constant output value. The transitions&#10;set the values. In state4, no output value is produced, resulting&#10;in gaps in the output signal from the modal model.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 30.0]">
+                </property>
+            </property>
+            <port name="time" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 45.0]">
+                </property>
+            </port>
+            <port name="value" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 95.0]">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 430.0]">
+                </property>
+            </port>
+            <entity name="state2" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 235.0]">
+                </property>
+            </entity>
+            <entity name="state1" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 235.0]">
+                </property>
+            </entity>
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 235.0]">
+                </property>
+            </entity>
+            <entity name="state3" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 340.0]">
+                </property>
+            </entity>
+            <entity name="state4" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state2">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 340.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  time == timeInterval">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.outputValue = outputValue2;&#10;  state.startTime = 0.0">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.2601137899724549">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0028784049500850664">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  time == timeInterval">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.outputValue = outputValue3;&#10;  state.startTime = 0.0">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7286236260381681">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.03963362407244682">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.outputValue = outputValue1; &#10;state.startTime = 0.0">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6187694722042256">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.08832695925317943">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  time == timeInterval / 2.0">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.startTime = 0.0">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.41941417718172624">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.1847969781532726">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  time == timeInterval / 2.0">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.outputValue = outputValue1;&#10;  state.startTime = 0.0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7530379123882487">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.256622371717358">
+                </property>
+            </relation>
+            <link port="state2.incomingPort" relation="relation2"/>
+            <link port="state2.outgoingPort" relation="relation3"/>
+            <link port="state1.incomingPort" relation="relation"/>
+            <link port="state1.incomingPort" relation="relation5"/>
+            <link port="state1.outgoingPort" relation="relation2"/>
+            <link port="init.outgoingPort" relation="relation"/>
+            <link port="state3.incomingPort" relation="relation3"/>
+            <link port="state3.outgoingPort" relation="relation4"/>
+            <link port="state4.incomingPort" relation="relation4"/>
+            <link port="state4.outgoingPort" relation="relation5"/>
+        </entity>
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 75.0]">
+                </property>
+            </property>
+            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="2.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 70.0]">
+                </property>
+            </property>
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 95.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 749, 460}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[536, 350]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{268.0, 175.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Measure the passage of time.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 115.0]">
+                </property>
+            </property>
+            <port name="time" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
+                </property>
+            </port>
+            <port name="value" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 255.0]">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 225.0]">
+                </property>
+            </port>
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="startTime">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 175.0}">
+                </property>
+            </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 175.0]">
+                </property>
+            </entity>
+            <entity name="Const2" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="outputValue">
+                </property>
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 255.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="time" relation="relation3"/>
+            <link port="value" relation="relation2"/>
+            <link port="Integrator.derivative" relation="relation"/>
+            <link port="Integrator.state" relation="relation3"/>
+            <link port="Const.output" relation="relation"/>
+            <link port="Const2.output" relation="relation2"/>
+        </entity>
+        <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 85.0}">
+                </property>
+            </property>
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 105.0}">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Measure the passage of time.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 125.0}">
+                </property>
+            </property>
+            <port name="time" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 185.0]">
+                </property>
+            </port>
+            <port name="value" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 235.0]">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 275.0]">
+                </property>
+            </port>
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="startTime">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 185.0}">
+                </property>
+            </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 185.0}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="time" relation="relation2"/>
+            <link port="Integrator.derivative" relation="relation"/>
+            <link port="Integrator.state" relation="relation2"/>
+            <link port="Const.output" relation="relation"/>
+        </entity>
+        <relation name="timeRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="valueRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="triggerRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="time" relation="timeRelation"/>
+        <link port="value" relation="valueRelation"/>
+        <link port="trigger" relation="triggerRelation"/>
+        <link port="_Controller.time" relation="timeRelation"/>
+        <link port="_Controller.value" relation="valueRelation"/>
+        <link port="_Controller.trigger" relation="triggerRelation"/>
+        <link port="state.time" relation="timeRelation"/>
+        <link port="state.value" relation="valueRelation"/>
+        <link port="state.trigger" relation="triggerRelation"/>
+        <link port="state2.time" relation="timeRelation"/>
+        <link port="state2.value" relation="valueRelation"/>
+        <link port="state2.trigger" relation="triggerRelation"/>
+    </entity>
+    <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 618, 511, 196}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 152]">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 390.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>ModalModel Clock</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.0"/>
+<yRange min="-1.0" max="2.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 390.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="ContinuousClock.output" relation="relation2"/>
+    <link port="TimedPlotter2.input" relation="relation2"/>
+    <link port="TimedPlotter3.input" relation="relation3"/>
+    <link port="ContinuousClock2.output" relation="relation3"/>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="ModalModel.value" relation="relation"/>
+    <link port="ModalModel.trigger" relation="relation5"/>
+    <link port="TimedPlotter4.input" relation="relation"/>
+    <link port="DiscreteClock2.output" relation="relation5"/>
+</entity>

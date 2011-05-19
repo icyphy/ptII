@@ -1,0 +1,180 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AssemblyLine" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 655, 779}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 673]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.5, 336.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to use the NonInterruptibleTimer actor and Pulse actor to&#10;model an assembly line.&#10;&#10;The Clock actor (Jobs) generates a set of jobs at different times, where no two&#10;jobs happen at the same time. The Pulse actor (ServiceTimes) takes a job &#10;request and produces the service time of the job request. &#10;&#10;The NonInterruptibleTimer actor (Station) takes the service time and sets a&#10;timer. The timer goes off when the service time expires. The timer can not&#10;be interrupted to respond to another input when it is running. &#10;&#10;A job is passed along all three stations. The Plotter monitors the outputs&#10;from Stations plots the times when jobs leaves the station.&#10;&#10;This model is based on the assembly line example described in &quot;Distributed &#10;Discrete-Event Simulation&quot; by Jayadev Misra, Computer Surveys, Vol. 18, &#10;No. 1, March 1986.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 340.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 640.0]">
+        </property>
+    </property>
+    <entity name="Jobs" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 7.0, 30.0, 32.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{4, 10, 1, 5}">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[47.5, 42.5]">
+        </property>
+    </entity>
+    <entity name="Times when stations finish jobs" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Station 1,Station 2, Station 3">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 499, 450, 220}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 176]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 265.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Times when stations finish jobs</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="9.0" max="49.0"/>
+<yRange min="1.0" max="3.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ServiceTimes 2" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{12, 15, 2, 7}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="ServiceTimes 3" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2, 3, 1, 4}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="Times when jobs arrive" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 500, 434, 220}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[434, 176]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[362.5, 97.5]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Times when jobs arrive</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="5.0" max="32.0"/>
+<yRange min="5.0" max="32.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ServiceTimes 1" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{4, 10, 1, 5}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[227.5, 97.5]">
+        </property>
+    </entity>
+    <entity name="Station 1" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 150.0}">
+        </property>
+    </entity>
+    <entity name="Station 2" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 225.0}">
+        </property>
+    </entity>
+    <entity name="Station 3" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 310.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{230.0, 185.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[230.0, 260.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[102.5, 97.5]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Jobs.output" relation="relation7"/>
+    <link port="Times when stations finish jobs.input" relation="relation"/>
+    <link port="Times when stations finish jobs.input" relation="relation4"/>
+    <link port="Times when stations finish jobs.input" relation="relation6"/>
+    <link port="ServiceTimes 2.output" relation="relation2"/>
+    <link port="ServiceTimes 2.trigger" relation="relation"/>
+    <link port="ServiceTimes 3.output" relation="relation5"/>
+    <link port="ServiceTimes 3.trigger" relation="relation4"/>
+    <link port="Times when jobs arrive.input" relation="relation3"/>
+    <link port="ServiceTimes 1.output" relation="relation8"/>
+    <link port="ServiceTimes 1.trigger" relation="relation7"/>
+    <link port="CurrentTime.output" relation="relation3"/>
+    <link port="CurrentTime.trigger" relation="relation7"/>
+    <link port="Station 1.input" relation="relation8"/>
+    <link port="Station 1.output" relation="relation"/>
+    <link port="Station 2.input" relation="relation2"/>
+    <link port="Station 2.output" relation="relation4"/>
+    <link port="Station 3.input" relation="relation5"/>
+    <link port="Station 3.output" relation="relation6"/>
+</entity>

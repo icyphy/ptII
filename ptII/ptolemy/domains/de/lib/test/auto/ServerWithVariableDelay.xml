@@ -1,0 +1,85 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ServerWithVariableDelay" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 65}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 70, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Variable service time as the output from a clock.&#10;Period 2.0, offsets [0.0, 1.0], delays [1.5, 0.5]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Inputs from a clock.&#10;Period 2.0, offsets [0.0, 1.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 115.0]">
+        </property>
+    </property>
+    <entity name="Server2" class="ptolemy.domains.de.lib.Server">
+        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.5, 0.5}">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1.5, 1.0}, {2.0, 0.0}, {3.5, 1.0}, {4.0, 0.0}, {5.5, 1.0}, {6.0, 0.0}, {7.5, 1.0}, {8.0, 0.0}, {9.5, 1.0}, {10.0, 0.0}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 260.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[355.0, 205.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Server2.input" relation="relation4"/>
+    <link port="Server2.output" relation="relation2"/>
+    <link port="Server2.serviceTime" relation="relation"/>
+    <link port="Clock2.output" relation="relation4"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation3"/>
+    <link port="CurrentTime.trigger" relation="relation2"/>
+</entity>

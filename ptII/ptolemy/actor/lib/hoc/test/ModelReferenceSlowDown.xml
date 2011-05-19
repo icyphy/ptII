@@ -1,0 +1,93 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModelReferenceSlowDown" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 114, 815, 517}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When this model is run, it starts to slow down&#10;after awhile.&#10;&#10;Patches from Ian Brown fixed this problem.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ian Brown">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 350.0]">
+        </property>
+    </property>
+    <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="ModelReferenceSlowDown_Inner.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 155.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 240.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{110.0, 165.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="ModelReference.trigger" relation="relation"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="MonitorValue.input" relation="relation2"/>
+    <link port="Accumulator.input" relation="relation"/>
+    <link port="Accumulator.output" relation="relation2"/>
+</entity>

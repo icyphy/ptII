@@ -1,0 +1,238 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RealTimeComposite" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 30, 840, 527}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 410]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.5, 205.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model produces a periodic rhythmic sound composed&#10;of three different sound clips.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, the RealTimeComposite actor&#10;has delay set to UNDEFINED, and we&#10;use the triggering mechanism of the&#10;Clock actor to throttle model time. &#10;Notice however that this mechanism &#10;will fail if there is any other &#10;open-loop part of the model (e.g. &#10;an untriggered Clock actor) because &#10;model time will get very far ahead &#10;very quickly. The time stamps of &#10;the outputs from the RealTimeComposite&#10;become large quickly.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 95.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 370.0]">
+        </property>
+    </property>
+    <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 75.0]">
+        </property>
+    </property>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="RealTimeComposite" class="ptolemy.actor.lib.hoc.RealTimeComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
+        </property>
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 170.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+        </port>
+        <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Drop1.aif">
+            </property>
+            <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 100}">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.5}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="RealTimeComposite2" class="ptolemy.actor.lib.hoc.RealTimeComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 320.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+        </port>
+        <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/glup.aif">
+            </property>
+            <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 100}">
+            </property>
+        </entity>
+    </entity>
+    <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="0.25">
+        </property>
+        <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0, 0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delay of">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-23.0, -16.0]">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="delay">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -2.0]">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="RealTimeComposite3" class="ptolemy.actor.lib.hoc.RealTimeComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 240.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+        </port>
+        <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Kys2.aif">
+            </property>
+            <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 100}">
+            </property>
+        </entity>
+    </entity>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{95.0, 170.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="relation"/>
+    <link port="RealTimeComposite.trigger" relation="relation"/>
+    <link port="Clock2.output" relation="relation8"/>
+    <link port="RealTimeComposite2.trigger" relation="relation8"/>
+    <link port="TimedDelay.input" relation="relation"/>
+    <link port="TimedDelay.output" relation="relation2"/>
+    <link port="RealTimeComposite3.trigger" relation="relation2"/>
+</entity>

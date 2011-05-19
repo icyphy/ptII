@@ -1,0 +1,172 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JAIDFTJAIIDFTJAIDataConver" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 50.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Take the DFT and IDFT of an image.
+A DataConvert must be used because 
+the data type of each pixel at the 
+output of the IDFT are doubles, 
+whereas file types expect bytes.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 245.0">
+        </property>
+    </property>
+    <entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
+        <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="none">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="dimensions" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
+                </property>
+                <property name="unitary" class="ptolemy.kernel.util.StringAttribute" value="unitary">
+                </property>
+                <property name="none" class="ptolemy.kernel.util.StringAttribute" value="none">
+                </property>
+            </property>
+        </property>
+        <property name="dataNature" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="complexToComplex" class="ptolemy.kernel.util.StringAttribute" value="complexToComplex">
+                </property>
+                <property name="complexToReal" class="ptolemy.kernel.util.StringAttribute" value="complexToReal">
+                </property>
+                <property name="realToComplex" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 145.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIIDFT" class="ptolemy.actor.lib.jai.JAIIDFT">
+        <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="dimensions" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
+                </property>
+                <property name="unitary" class="ptolemy.kernel.util.StringAttribute" value="unitary">
+                </property>
+                <property name="none" class="ptolemy.kernel.util.StringAttribute" value="none">
+                </property>
+            </property>
+        </property>
+        <property name="dataNature" class="ptolemy.kernel.util.StringAttribute" value="complexToReal">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="complexToComplex" class="ptolemy.kernel.util.StringAttribute" value="complexToComplex">
+                </property>
+                <property name="complexToReal" class="ptolemy.kernel.util.StringAttribute" value="complexToReal">
+                </property>
+                <property name="realToComplex" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 180.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
+        <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="byte">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
+                </property>
+                <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                </property>
+                <property name="float" class="ptolemy.kernel.util.StringAttribute" value="float">
+                </property>
+                <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                </property>
+                <property name="short" class="ptolemy.kernel.util.StringAttribute" value="short">
+                </property>
+                <property name="ushort" class="ptolemy.kernel.util.StringAttribute" value="ushort">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 210.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII.jpg">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 120.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={491, 91, 1032, 1036}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1024, 988]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 260.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JAIDFT.input" relation="relation"/>
+    <link port="JAIDFT.output" relation="relation2"/>
+    <link port="JAIIDFT.input" relation="relation2"/>
+    <link port="JAIIDFT.output" relation="relation3"/>
+    <link port="JAIDataConvert.input" relation="relation3"/>
+    <link port="JAIDataConvert.output" relation="relation4"/>
+    <link port="JAIImageReader.output" relation="relation"/>
+    <link port="ImageDisplay.input" relation="relation4"/>
+</entity>

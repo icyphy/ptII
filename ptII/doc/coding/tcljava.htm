@@ -1,0 +1,644 @@
+<HTML><HEAD><TITLE>TclJava Package Commands - java manual page</TITLE></HEAD><BODY>
+<DL>
+<DD><A HREF="#M2" NAME="L2">NAME</A>
+<DL><DD>java - Java method invocation package</DL>
+<DD><A HREF="#M3" NAME="L3">SYNOPSIS</A>
+<DL>
+<DD><B>package require java ?1.1?</B>
+<DD><B>java::new </B><I>signature</I> ?<I>arg arg ...</I>?
+<DD><B>java::new </B><I>arraySignature</I> <I>sizeList</I> ?<I>valueList</I>?
+<DD><B>java::call</B> ?<B>-noconvert</B>? <I>class signature</I> ?<I>arg arg ...</I>?
+<DD><B>java::field</B> ?<B>-noconvert</B>? <I>objOrClass fieldSignature</I> ?<I>value fieldSignature value ...</I>?
+<DD><B>java::instanceof</B> <I>javaObj type</I>
+<DD><B>java::prop</B> ?<B>-noconvert</B>? <I>javaObj</I> <I>property</I> ?<I>value property value ...</I>?
+<DD><B>java::info</B> <I>option</I> ?<I>arg arg ...</I>?
+<DD><B>java::null</B>
+<DD><B>java::isnull</B> <I>javaObj</I>
+<DD><B>java::lock</B> <I>javaObj</I>
+<DD><B>java::unlock</B> <I>javaObj</I>
+<DD><B>java::defineclass </B><I>classData</I>
+<DD><B>java::getinterp</B>
+<DD><B>java::throw</B> <I>throwableObj</I>
+<DD><B>java::cast</b> <I>signature</I> <I>javaObj</I>
+<DD><I>javaObj</I> ?<B>-noconvert</B>? <I>signature</I> ?<I>arg arg ...</I>?
+<DD><I>javaArrayObj</I> ?<B>-noconvert</B>? <I>option</I> ?<I>arg arg ...</I>?
+</DL>
+<DD><A HREF="#M4" NAME="L4">DESCRIPTION</A>
+<DL>
+<DD><A HREF="#M4_1" NAME="L5"><B>package require java ?1.1?</B></A>
+<DD><A HREF="#M5" NAME="L5"><B>java::new</B></A>
+<DD><A HREF="#M6" NAME="L6"><B>java::call</B></A>
+<DD><A HREF="#M7" NAME="L7"><B>java::field</B></A>
+<DD><A HREF="#M8" NAME="L8"><B>java::instanceof</B></A>
+<DD><A HREF="#M9" NAME="L9"><B>java::prop</B></A>
+<DD><A HREF="#M10" NAME="L10"><B>java::info</B></A>
+<DL>
+<DD><A HREF="#M11" NAME="L11"><B>class</B> <I>javaObj</I></A>
+<DD><A HREF="#M12" NAME="L12"><B>events</B> <I>objOrClass</I></A>
+<DD><A HREF="#M13" NAME="L13"><B>baseclass</B> <I>objOrClass</I></A>
+<DD><A HREF="#M14" NAME="L14"><B>dimensions</B> <I>objOrClass</I></A>
+<DD><A HREF="#M15" NAME="L15"><B>fields</B> ?<B>-type</B>? ?<B>-static</B>? <I>objOrClass</I></A>
+<DD><A HREF="#M16" NAME="L16"><B>methods</B> ?<B>-type</B>? ?<B>-static</B>? <I>objOrClass</I></A>
+<DD><A HREF="#M17" NAME="L17"><B>constructors</B> <I>objOrClass</I></A>
+<DD><A HREF="#M18" NAME="L18"><B>properties</B> <I>objOrClass</I> ?<B>-type</B>?</A>
+<DD><A HREF="#M19" NAME="L19"><B>superclass</B> <I>objOrClass</I></A>
+</DL>
+<DD><A HREF="#M20" NAME="L20"><B>java::null</B></A>
+<DD><A HREF="#M21" NAME="L21"><B>java::isnull</B></A>
+<DD><A HREF="#M22" NAME="L22"><B>java::lock</B></A>
+<DD><A HREF="#M23" NAME="L23"><B>java::unlock</B></A>
+<DD><A HREF="#M24" NAME="L24"><B>java::defineclass</B></A>
+<DD><A HREF="#M25" NAME="L25"><B>java::getinterp</B></A>
+<DD><A HREF="#M101" NAME="L101"><b>java::throw</b></A>
+<DD><A HREF="#M103" NAME="L102"><b>java::cast</b></A>
+<DD><A HREF="#M26" NAME="L26"><B>javaObj</B></A>
+<DD><A HREF="#M27" NAME="L27"><B>javaArrayObj</B></A>
+<DL>
+<DD><A HREF="#M28" NAME="L28"><B>length</B></A>
+<DD><A HREF="#M29" NAME="L29"><B>get</B> ?<B>-noconvert</B>? <I>indexList</I></A>
+<DD><A HREF="#M30" NAME="L30"><B>set</B> <I>indexList</I> <I>value</I></A>
+<DD><A HREF="#M31" NAME="L31"><B>getrange</B> ?<B>-noconvert</B>? ?<I>indexList</I> ?<I>count</I>??</A>
+<DD><A HREF="#M32" NAME="L32"><B>setrange</B> ?<I>indexList</I> ?<I>count</I>?? <I>valueList</I></A>
+</DL>
+</DL>
+<DD><A HREF="#M33" NAME="L33">CLASS NAMES</A>
+<DD><A HREF="#M34" NAME="L34">SIGNATURE</A>
+<DD><A HREF="#M35" NAME="L35">CONVERSION</A>
+<DD><A HREF="#M36" NAME="L36">EXCEPTIONS</A>
+<DD><A HREF="#M102" NAME="L102">THROWING EXCEPTIONS</A>
+<DD><A HREF="#M37" NAME="L101">OBJECT GARBAGE COLLECTION</A>
+<DD><A HREF="#M11" NAME="L49">ERRORS IN CALLBACK SCRIPTS</A>
+<DD><A HREF="#M38" NAME="L38">SEE ALSO</A>
+<DD><A HREF="#M39" NAME="L39">KEYWORDS</A>
+</DL><HR>
+<H3><A NAME="M2">NAME</A></H3>
+java - Java method invocation package
+<H3><A NAME="M3">SYNOPSIS</A></H3>
+<B>package require java ?1.1?</B><BR>
+<B>java::new </B><I>signature</I> ?<I>arg arg ...</I>?<BR>
+<B>java::new </B><I>arraySignature</I> <I>sizeList</I> ?<I>valueList</I>?<BR>
+<B>java::call</B> ?<B>-noconvert</B>? <I>class signature</I> ?<I>arg arg ...</I>?<BR>
+<B>java::field</B> ?<B>-noconvert</B>? <I>objOrClass fieldSignature</I> ?<I>value fieldSignature value ...</I>?<BR>
+<B>java::instanceof</B> <I>javaObj type</I><BR>
+<B>java::prop</B> ?<B>-noconvert</B>? <I>javaObj</I> <I>property</I> ?<I>value property value ...</I>?<BR>
+<B>java::info</B> <I>option</I> ?<I>arg arg ...</I>?<BR>
+<B>java::null</B><BR>
+<B>java::isnull</B> <I>javaObj</I><BR>
+<B>java::lock</B> <I>javaObj</I><BR>
+<B>java::unlock</B> <I>javaObj</I><BR>
+<B>java::defineclass </B><I>classData</I><BR>
+<B>java::getinterp</B><BR>
+<B>java::throw</B> <I>throwableObj</I><BR>
+<B>java::cast</b>  <I>signature</I> <I>javaObj</I>
+<I>javaObj</I> ?<B>-noconvert</B>? <I>signature</I> ?<I>arg arg ...</I>?<BR>
+<I>javaArrayObj</I> ?<B>-noconvert</B>? <I>option</I> ?<I>arg arg ...</I>?<BR>
+<H3><A NAME="M4">DESCRIPTION</A></H3>
+<P>
+<DL>
+<P><DT><A NAME="M4_1"><B>package require java ?1.1?</B></A><DD>
+<B>package require java</B> loads the <B>java</B> package which
+provides an interface for creating and
+manipulating Java objects via <I>oject handles</I>.  Object handles are
+references to Java objects in Tcl.  Many of the commands in the java
+package take arguments and return values that are object handles.
+
+ <p>The <B>java</B> package is automatically included in Jacl,
+but needs to be loaded in Tcl Blend.  When the package is loaded in
+Tcl Blend, Tcl will use an existing Java VM or initialize a new one as
+needed.  Note that <B>tcl.lang</B> and the JDK 1.1 need to be on the
+class path.
+
+<P> When Tcl Blend under JDK1.2 is initializing the <CODE>java</CODE>
+package, it reads the <B>tclblend_init</B>
+Tcl global variable, and passes its value along to the Java Virtual
+Machine upon initialization.
+Example values include:
+<dl>
+<dt><B>-Djava.compiler=NONE </B>
+<dd> disable Just In Time Compiler
+
+<dt> <B>-Djava.library.path=c:&#92jdk&#92lib&#92tools.jar</B>
+<dd> set native library path
+
+<dt> <B>-verbose:jni</B>
+<dd>print debugging messages
+
+</dl>
+
+For <B>-verbose</B>, the value should be a string with one or
+more comma separated names (i.e. <B>class,jni</B>).  In JDK1.2
+the standard names are:
+	 <B>class</B>, <B>gc</B>, <B>jni</B>
+To see what other options are available, run <B>java -help</B>
+from the command line.
+ <p>
+In addition <B>tclblend_init</B> can have the following values:
+<dl>
+<dt> <B>help</B>
+<dd> Print a help message and then stop JVM initialization.
+<dt> <B>debug</B>
+<dd> Print out debugging messages while start up.
+</dl>
+
+To use <B>tclblend_init</B>, set it before loading the <B>java</B>
+package:
+<pre>
+set tclblend_init -verbose:jni
+package require java
+</pre>
+
+Note that <B>tclblend_init</B> is only read if the Tcl Blend C shared
+library was compiled with JDK1.2.
+
+<P><DT><A NAME="M5"><B>java::new</B></A><DD>
+The <B>java::new</B> command is used to create new instances of Java
+objects from Tcl.  The <I>signature</I> argument specifies which class
+constructor to use for creating the object.
+<P>
+See SIGNATURE below for a full description of how to specify the
+signature of non-array constructors.  Additional parameters to the
+<B>java::new</B> command are converted to Java objects or primitive values
+and passed to the constructor.
+See the CLASS LOADING section in the <B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javaload.htm">java::load</A></B> man page for a
+description on how classes are resolved and loaded into the VM.  Any
+of the java commands that reference a java class also use the
+mechanism described in CLASS LOADING.
+<P>
+The <I>arraySignature</I> argument consists of a class name or a
+primitive data type followed by one or more pairs of brackets.  The
+number of pairs of brackets determines the dimension of the array
+(e.g. {int[][][]}
+indicates a three dimensional array of integers; the curly braces keep
+the interpreter from removing the extra brackets).  The <I>sizeList</I>
+argument determines the number of array elements allocated for each
+dimension in the array.  The <I>i</I>'th element of <I>sizeList</I>
+specifies the size of the <I>i</I>'th dimension of the array.  If
+<I>sizeList</I> contains more elements than the number of dimensions
+specified by <I>arraySignature</I>, then an error is returned.  If
+<I>sizeList</I> contains fewer elements than the number of dimensions
+specified by <I>arraySignature</I>, then the size will be determined by
+the <I>valueList</I>, if present.  The <I>valueList</I> argument is used
+to set initial values of the array cells.  Elements of the
+<I>valueList</I> must be of the same type as the base class of the
+array.  If the array is multidimensional, then the list must contain
+sublists of a depth equal to the number of dimensions of the array.
+If no element is specified in the <I>valueList</I> for a particular
+array cell, the cell will be initialized to the standard default value
+for the corresponding Java array type. If the length of the
+<I>sizeList</I> is smaller than the number of array dimensions, the
+size of each row whose size is not specified by the <I>sizeList</I> is
+determined by the length of the corresponding sublist in
+<I>valueList</I>, or 0 if the <I>valueList</I> contains no corresponding
+sublist.  An error occurs if any dimension other than the last has
+size 0.
+
+The CONVERSION and EXCEPTIONS sections below describe the result and
+possible error conditions of the <B>java::new</B> command, including the
+effect of the optional <B>-noconvert</B> flag.
+
+<P><DT><A NAME="M6"><B>java::call</B></A><DD>
+The <B>java::call</B> command is used to invoke public static methods
+from Tcl.  The <I>class</I> argument specifies the fully qualified name
+of the declaring class of the method to invoke.  See the CLASS NAMES
+below for a full description of fully qualified class names.  The
+<I>signature</I> argument specifies which class method to invoke (see
+SIGNATURE below).  Additional parameters to the <B>java::call</B> command are
+converted to Java objects or primitive types and passed to the method.
+The CONVERSION and EXCEPTIONS sections below describe the result
+and possible error conditions of the <B>java::call</B> command, including
+the effect of the optional <B>-noconvert</B> flag.
+
+<P><DT><A NAME="M7"><B>java::field</B></A><DD>
+The <B>java::field</B> command is used to manipulate public fields from
+Tcl.  The <I>objOrClass</I> argument specifies either a fully qualified
+name of the declaring class of the field to access, or an object
+handle.  The <I>fieldSignature</I> argument specifies which field to
+manipulate (see SIGNATURE below).  If an additional <I>value</I>
+parameter exists, then the field will be set to <I>value</I>, otherwise
+the current value of the field is returned.  Multiple fields may be
+set via additional parameters by alternating field signatures and
+values.  The <B>-noconvert</B> flag can only be used when getting the
+value of a field.  The CONVERSION section below describes the effect
+of the optional <B>-noconvert</B> flag on the result.
+
+<P><DT><A NAME="M8"><B>java::instanceof</B></A><DD>
+The <B>java::instanceof</B> command is used to tell whether a Java
+object is of a given type.  The <I>javaObj</I> argument specifies an
+object handle.  The <I>type</I> argument specifies a fully
+qualified interface or class name (see CLASS NAMES below).  If the
+<I>type</I> argument is a class name, <B>java::instanceof</B> returns 1
+if the <I>javaObj</I> argument is an instance of <I>type</I> or an
+instance of a subclass of <I>type</I>.  If the <I>type</I> argument is
+an interface name, <B>java::instanceof</B> returns true if the
+<I>javaObj</I> argument implements this interface. Otherwise,
+<B>java::instanceof</B> returns 0.
+
+<P><DT><A NAME="M9"><B>java::prop</B></A><DD>
+The <B>java::prop</B> command is used to manipulate Java Bean
+properties from Tcl.  The <I>javaObj</I> argument specifies an object
+handle.  The <I>property</I> argument specifies a Java Bean property
+that has corresponding get and set methods.  If an additional
+<I>value</I> parameter exists, then the property will be set to
+<I>value</I>, otherwise the current value of the property is returned.
+Multiple properties may be set via additional parameters by
+alternating properties and values.  The <B>-noconvert</B> flag can only
+be used when getting the value of a property.  The CONVERSION section
+below describes the effect of the optional <B>-noconvert</B> flag on
+the result.
+
+<P><DT><A NAME="M10"><B>java::info</B></A><DD>
+The <B>java::info</B> command provides introspection for Java classes,
+objects, and Beans.  The valid options for this command are:
+<P>
+<DL>
+<P><DT><A NAME="M11"><B>class</B> <I>javaObj</I></A><DD>
+Returns the class name of the specified Java object.
+<P><DT><A NAME="M12"><B>events</B> <I>objOrClass</I></A><DD>
+Returns a list of the fully-qualified names of all the event
+interfaces of the Java class or object. The events of a Java class are
+determined by the JavaBean design patterns. Usually, if a Java class
+has the methods <B>add</B><I>XXX</I><B>Listener</B> and
+<B>remove</B><I>XXX</I><B>Listener</B> and <I>XXX</I> is the name of an
+interface, then <I>XXX</I> is considered as an event interface of the
+Java class.
+<P><DT><A NAME="M13"><B>baseclass</B> <I>objOrClass</I></A><DD>
+Returns the base class name of the specified class or Java object.
+For example, the base class of a Java array object of type
+String[][][] is java.lang.String.  If the class or Java object is not
+an array, the base class is the same as the class.
+<P><DT><A NAME="M14"><B>dimensions</B> <I>objOrClass</I></A><DD>
+Returns the number of dimensions of the specified array class or Java
+array object.  If the class or Java object is not an array, the number
+of dimensions is 0.
+<P><DT><A NAME="M15"><B>fields</B> ?<B>-type</B>? ?<B>-static</B>? <I>objOrClass</I></A><DD>
+Returns a list of fieldSignatures of public fields of the specified
+class or Java object (see SIGNATURE below).  For shadowed superclass
+fields, the fieldSignature is full.  For all other fields, the
+fieldSignature is simple.  If the ?<B>-type</B>? flag is used, then
+each element of the result list is a pair containing the data type and
+fieldSignature.  If the <B>-static</B> flag is used, only static fields
+will appear in the result list.  Otherwise, only non-static fields
+will appear in the result list.
+<P><DT><A NAME="M16"><B>methods</B> ?<B>-type</B>? ?<B>-static</B>? <I>objOrClass</I></A><DD>
+Returns a list that describes all methods of the specified class or
+Java object. If <B>-type</B> is not used, each element in the list is
+the full signature of a method. If <B>-type</B> is used, each element
+in the list is in turn a list in the form {<I>type sig exceptions</I>},
+where <I>type</I> is the method's return type, <I>sig</I> is the
+method's full signature, and <I>exceptions</I> is a list of the
+fully-qualified names of all the checked exceptions that can be thrown
+by this method.  If the method does not throw exceptions,
+<I>exceptions</I> is the empty list. If the <B>-static</B> flag is used,
+only static methods will appear in the result list. Otherwise, only
+non-static methods will appear in the result list.
+<P><DT><A NAME="M17"><B>constructors</B> <I>objOrClass</I></A><DD>
+Returns a list of the full signatures of constructors of the specified
+class or Java object.
+<P><DT><A NAME="M18"><B>properties</B> <I>objOrClass</I> ?<B>-type</B>?</A><DD>
+Returns a list of the names of Java Bean properties of the specified
+class or Java object.  If the ?<B>-type</B>? flag is used, then each
+element of the result list is a pair containing the data type and name
+of the property.
+<P><DT><A NAME="M19"><B>superclass</B> <I>objOrClass</I></A><DD>
+Returns the name of the immediate superclass of the specified Java
+object or class.  If <I>objOrClass</I> is or is an instance of
+java.lang.Object, then the empty string is returned.
+<P></DL>
+<P><DT><A NAME="M20"><B>java::null</B></A><DD>
+The <B>java::null</B> command returns an object handle that represents
+the &quot;null&quot; value in Java.  To check for null results from Java method
+invocations, compare the methods' return values to the result of
+<B>java::null</B>.  The exact form of the return value of <B>java::null</B> is
+not specified and is likely to change.
+
+<P><DT><A NAME="M21"><B>java::isnull</B></A><DD>
+The <B>java::isnull</B> command is used to tell whether a Java
+object has the null value.  The <I>javaObj</I> argument specifies an
+object handle.  If the object has the null value, <B>java::isnull</B>
+returns 1.  If the object is a Java object then <B>java::isnull</B>
+will return 0.  If the object is not a valid Java object but rather
+a standard Tcl string, <B>java::isnull</B> will return an error
+stating that the argument was not a Java object.
+
+<P><DT><A NAME="M22"><B>java::lock</B></A><DD>
+The <B>java::lock</B> command prevents the Java object, <I>javaObj</I>,
+from getting garbage collected.  A Tcl variable that references a Java
+object has an internal rep that points to the Java object.  If the
+Tcl variable's internal rep is changed (e.g. to a Tcl List), the
+pointer to the Java Object is removed, and the Java object is garbage
+collected.  The <B>java::lock</B> maintains a copy of <I>javaObj</I>'s
+internal rep, so the Java object will be preserved.  Multiple locks
+can be placed on the same Tcl variable.  If <I>javaObject</I> is not a
+valid reference to a Java object, a Tcl error is generated.
+
+<P><DT><A NAME="M23"><B>java::unlock</B></A><DD>
+The <B>java::unlock</B> command removes a lock placed on <I>javaObj</I> by the
+<B>java::lock</B> command.  Multiple locks are allowed on
+<I>javaObj</I>.  The <B>java::unlock</B> removes one lock each
+time it is called.  If the internal rep of the Tcl variable referenced by
+<I>javaObj</I> is zero after the lock is removed, the Java object will
+be garbage collected.  If <I>javaObj</I> does not have an existing lock a
+Tcl error is generated.
+
+<P><DT><A NAME="M24"><B>java::defineclass</B></A><DD>
+The <B>java::defineclass</B> command is used to convert a string of bytes
+into a Java Class object.  The <I>classData</I> argument is a string of
+bytes that compose a class.  For example, the <I>classData</I>
+string could be from reading a Java class file.  <I>ClassData</I>
+is passed to the TclClassLoader, where the TclClassLoader attempts to
+construct a Java Class object from the bytes.  If <I>classData</I>
+does not represent a valid class, <B>java::defineclass</B> returns a
+null object, otherwise it will return a handle to the Java Class
+object.  A class is not valid if; the TclClassLoader cannot decipher a
+class from <I>classData</I>, the class has already been loaded into the
+VM, or if the class is in the reserved java package.  See the CLASS
+LOADING section in the <B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javaload.htm">java::load</A></B> man page for information on
+the TclClassLoader.
+<P>
+The TclClassLoader maintains a cache of the Java Class objects loaded
+by the <B>java::defineclass</B> routine.  The name of the class, which
+is stored within the class bytecodes, is extracted and is used to
+reference the cached Java Class object.  If the class name is used in
+future calls (e.g. <B>java::new</B>) the class defined by
+<I>classData</I> is used.  For example:
+<PRE>set file [open Foo.class r]
+
+# Tcl Blend users must call 'fconfigure $file -translate binary'
+set data [read $file]
+
+# This returns a Java Class object.
+set class [java::defineclass $data]
+
+# Get an instance of the object.
+set object [$class newInstance]
+
+# The class is now loaded into the VM, so the
+# following call also works.
+set object [java::new Foo]</PRE>
+<P><DT><A NAME="M25"><B>java::getinterp</B></A><DD>
+The <B>java::getinterp</B> command returns a handle to the current Java Interp
+object.  This command is primarily used to pass the interp object as
+an argument to a Java method.
+
+<P>
+<P><DT><A NAME="M101"><b>java::throw</b></A><DD>
+The <B>java::throw</B> command throws a Java
+exception. <I>ThrowableObj</I> must be a valid Java object handle and
+must be an instance of <B>java.lang.Throwable</B>.  Internally, the
+<B>java::throw</B> command sets the <B>errorCode</B> global variable to
+a list whose first element is the string &quot;JAVA&quot; and whose second
+element is <I>throwableObj</I>. Then, it generates a Tcl error to cause
+the script to return abruptly. The effect of calling the
+<B>java::throw</B> command is exactly the same as calling a Java method
+which throws a Java exception (see section <B>RETURN VALUES AND
+EXCEPTIONS</B> in <B>java(n)</B>.)
+
+
+<P>
+<P><DT><A NAME="M103"><b>java::cast</b></A><DD>
+The <B>java::cast</B> command converts a Java object from one type
+to another. The <I>signature</I> argument provides the name of the
+Java class that the Java object should be cast to and the <i>javaObj</i>
+provides the Java object that will be cast. Casting is done in a type
+safe way as defined by the Java Language Specification. For example,
+an instance of the Java class java.lang.String can be allocated and
+cast into an instance of the class java.lang.Object with the following
+code.
+
+<PRE>
+# Get an instance of a String object.
+set string [java::new String "Hi there"]
+
+# Cast the String to an Object reference
+set object [java::cast Object $string]
+
+# Cast the Object reference back up to a String reference
+set string2 [java::cast String $object]
+
+</PRE>
+
+Casting also works in for java array objects. Arrays can be cast to
+an array of a parent class type or to the special base type Object.
+
+The <i>javaObj</i> argument must be a valid Java object handle and the
+<I>signature</I> argument must specify a Java class that the <i>javaObj</i>
+argument is able to be cast. If these conditions are not met an error will
+be raised.
+
+<P><DT><A NAME="M26"><B>javaObj</B></A><DD>
+Each Java object handle is also the name of a Tcl command that can be
+used to invoke public methods of that object from Tcl.  The
+<I>signature</I> argument specifies which method to invoke (see
+SIGNATURE below).  Additional parameters to an object command are
+converted to Java objects or primitive values and passed to the
+method.  The RETURN VALUES AND EXCEPTIONS section below describes the
+result (and possible error conditions) of the object command,
+including the effect of the optional <B>-noconvert</B> flag on the
+result.
+
+<P><DT><A NAME="M27"><B>javaArrayObj</B></A><DD>
+If a Java object handle represents an instance of an array object,
+then it is also the name of a Tcl command that takes the following
+options: <B>length</B>, <B>get</B>, <B>set</B>, <B>getrange</B>, and
+<B>setrange</B>.  If any other option is chosen, the behavior of the
+array object command defaults to that of the object command described
+above.  The <B>-noconvert</B> flag can only be used with the <B>get</B>,
+<B>getrange</B>, and default options.  The options for this command
+behave as follows:
+<P>
+<DL>
+<P><DT><A NAME="M28"><B>length</B></A><DD>
+Returns the number of elements in the Java object.  If the object is a
+multi-dimensional array, the number of elements in the first dimension
+is returned.
+<P><DT><A NAME="M29"><B>get</B> ?<B>-noconvert</B>? <I>indexList</I></A><DD>
+Returns the value stored in the multi-dimensional array cell specified
+by <I>indexList</I>.  The <I>i</I>'th element in <I>indexList</I>
+specifies the index value of the <I>i</I>'th array dimension.  For
+example, the result of the following commands is the string &quot;easy&quot;.
+<PRE>set a [java::new {String[]} {6} {Java scripting is easy in Tcl}]
+$a get 3</PRE>
+To retrieve a k-dimensional subarray of an n-dimensional array,
+specify an <I>indexList</I> with <I>n - k</I> index values.  For
+example, the following commands result in <I>subArray</I> containing a
+1-dimensional char array handle that refers to a[1][0], the internal
+value of which is {e f}.
+
+<PRE>set a [java::new {char[][][]} {2 2 2} {{{a b} {c d}} {{e f} {g h}}}]
+set subArray [$a get {1 0}]</PRE>
+The CONVERSION section below describes the effect of the optional
+<B>-noconvert</B> flag on the result.
+<P><DT><A NAME="M30"><B>set</B> <I>indexList</I> <I>value</I></A><DD>
+Sets the multi-dimensional array cell specified by <I>indexList</I> to
+<I>value</I>.  The <I>i</I>'th element in <I>indexList</I> specifies the
+index value of the <I>i</I>'th array dimension.  If <I>value</I> is not
+the correct data type, an error is returned.  For example, the
+following commands result in <I>a</I> having an interanl value of {Tcl
+is a great scripting language!}.
+<PRE>set a [java::new {String[]} {6} {Tcl is a good scripting language!}]
+$a set 3 great</PRE>
+<P><DT><A NAME="M31"><B>getrange</B> ?<B>-noconvert</B>? ?<I>indexList</I> ?<I>count</I>??</A><DD>
+Returns the list of objects corresponding to the specified range of
+the array.  The range starts at the element specified by
+<I>indexList</I> and spans a maximum of <I>count</I> elements or the
+remaining elements of the subarray.  The <I>indexList</I> defaults to
+0, and <I>count</I> defaults to the length of the subarray.  For
+example, the result of the following commands is the list {scripting
+is easy}.
+
+<PRE>set a [java::new {String[]} {6} {Java scripting is easy in Tcl}]
+$a getrange 1 3</PRE>
+To retrieve a k-dimensional subarray
+of an n-dimensional array, specify an <I>indexList</I> with <I>n -
+k</I> index values.  For example, the following commands result in
+<I>pair</I> containing two 1-dimensional char array handles that refer
+to a[0][1] and a[0][2], the internal values of which are {c d} and {e
+f} respectively.
+<PRE>set a [java::new {char[][][]} {2 3 2} {{{a b} {c d} {e f}} {{g h} {i j} {k l}}}]
+set pair [$a getrange {0 1} 2]</PRE>
+The CONVERSION section below
+describes the effect of the optional <B>-noconvert</B> flag on the
+result.
+
+<P><DT><A NAME="M32"><B>setrange</B> ?<I>indexList</I> ?<I>count</I>?? <I>valueList</I></A><DD>
+Sets the range of array elements to elements of <I>valueList</I>.  The
+range starts at the element specified by <I>indexList</I> and spans a
+minimum of <I>count</I> elements, the remaining elements of the
+subarray, or the size of <I>valueList</I>.  If an element of
+<I>valueList</I> in the replacement range is not the correct data type,
+an error is returned.  For example, the following commands result in
+<I>a</I> having an interanl value of {Tcl is an excellent scripting
+language!}
+<PRE>set a [java::new {String[]} {6} {Tcl is a good scripting language!}]
+$a setrange 2 {an excellent}</PRE>
+<P></DL>
+<P></DL>
+<H3><A NAME="M33">CLASS NAMES</A></H3>
+Any command which takes as input or returns a <I>class name</I>,
+<I>interface name</I>, or primitive value expects a fully qualified
+Java class name (e.g. java.awt.Button).  If a name is not fully
+qualified, it is assumed to be in java.lang.*.
+
+<H3><A NAME="M34">SIGNATURE</A></H3>
+A <I>signature</I> is the string which specifies a class constructor,
+method, or field, thereby distinguishing it from other constructors,
+methods, and fields.  We will refer to signatures of fields as
+<I>fieldSignatures</I>.  Any further mention of signatures refers to
+those of both constructors and methods.
+
+Two forms of signatures are accepted: simple and full.  The <I>simple
+signature</I> is a single element list containing the method or
+constructor name. In most cases a simple signature is all that is
+needed as the Java method resolver is able to disambiguate overloaded
+Java methods based on the types of Java object arguments. There are
+some cases where the Java method resolver is unable to determine
+which Java method you intended to invoke and you will be forced
+to use the <I>full signature</I> for the method. The <I>full
+signature</I> is used to distinguish between two or more methods with
+the same name and number of arguments. The <I>full signature</I> of a
+method is a Tcl list containing the method name followed by the type
+of each parameter of the method. The full form of <I>fieldSignature</I>
+is required to specify shadowed fields of superclasses.
+
+<H3><A NAME="M35">CONVERSION</A></H3>
+For calls that return the value of a Java field, property, array
+element, or method or constructor, Tcl automatically converts the
+result to a corresponding Tcl value.  If the type of the return value
+is a boolean or numeric type, it will be converted to an integer (or
+floating-point) value.  If the result is a string, then the contents
+of the string are returned.  For all other object types, a new Java
+object handle is created and returned.  If the <B>-noconvert</B> option
+is specified, then Tcl's automatic data conversion is overidden, and a
+new Java object handle is created and returned.
+
+<H3><A NAME="M36">EXCEPTIONS</A></H3>
+Java constructors and methods are invoked by calls to <B>java::new</B>,
+<B>java::call</B>, and object commands.  If the method invoked throws
+an exception, Tcl returns the string representation of the exception
+as an error.  The <B>errorCode</B> is set to a list whose first two
+elements are the string &quot;JAVA&quot; and the object handle of the exception
+object, respectively.
+
+<H3><A NAME="M102">THROWING EXCEPTIONS</A></H3>
+The <B>java::throw</B> command is used to raise a Java exception. The
+following code will raise a ClassNotFoundException.
+
+<PRE>
+java::throw [java::new ClassNotFoundException "bad class foo"]
+</pre>
+
+<H3><A NAME="M37">OBJECT GARBAGE COLLECTION</A></H3>
+The object handle associated with a Java object is considered to be an
+object reference by the Java VM, ensuring that the Java object is not
+garbage collected while Tcl is using it.  Tcl will release the object
+handle when the last reference to the handle in a Tcl script goes
+away.  A handle is considered to be active as long as at least one
+<B>Tcl_Obj</B> points to the handle.  In practice this means that Java
+object handles must be stored in Tcl variables or passed as arguments
+to other commands to keep them from being released.  Constructing a
+Java object handle using <B>concat</B> or some other string
+manipulation command will produce a string that can be used where a
+Java object handle is expected, but it will not count as a reference
+to the object for garbage collection purposes.
+<P>
+Tcl objects usually remain one type over their life, but occasionally a
+Tcl object must be converted from one type to another. For example, a
+Java object handle may be passed as the argument to the <B>llength</B>
+command.  The internal rep of the Tcl object is converted from a Java
+object handle to a Tcl List.  When this happens the ref count of the Java
+object handle is decremented.  If the ref count becomes zero, the Java
+object handle is invalidated and the Tcl variable no longer accesses a
+Java object.  For example:
+<PRE># Create a new Java Object.  The ref count equals one.
+set o [java::new java.lang.Object]
+
+# Call a method of the Java Object.
+puts [$o toString]
+
+# Convert the Java object handle to a Tcl List.  This
+# decrements the ref count by one.  The ref count equals
+# zero and the  Java object is invalidated.
+llength $o
+
+# This command will generate an error, because the
+# Tcl object no longer references a valid Java object.
+puts [$o toString]</PRE>
+The solution is to guarantee that the Java object handle's ref count
+does not become zero.  Use the <B>java::lock</B> and <B>java::unlock</B>
+commands to maintain a permanent reference to the Java object handle.
+For example:
+<PRE># Create a new Java object.  The ref count equals one.
+set o [java::new java.lang.Object]
+
+# Lock the Java Object handle so it is not invalidated.
+# The ref count now equals two.
+java::lock $o
+
+# Convert the Java object to a Tcl List.  This decrements
+# the ref count by one.  The ref count equals one and the
+# Java object remains valid.
+llength $o
+
+# Now this command works.  It also increments the ref count
+# of the java object, because a Tcl List is being converted
+# to the original Java object handle.
+puts [$o toString]
+
+# Remove the lock and decrement the ref count.
+java::unlock $o
+
+# Now this will fail as in the previous example.
+llength $o
+puts [$o toString]</PRE>
+<H3><A NAME="M38">SEE ALSO</A></H3>
+<B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javaload.htm">java::load</A></B>, <B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javabind.htm">java::bind</A></B>
+<H3><A NAME="M39">KEYWORDS</A></H3>
+<A href="http://dev.scriptics.com/man/java1.1/Keywords/J.htm#java">java</A>, <A href="http://dev.scriptics.com/man/java1.1/Keywords/T.htm#tcl">tcl</A>
+
+<HR><PRE>
+<A HREF="sunlicense.htm">Copyright</A> &#169; 1998 by Sun Microsystems, Inc.
+<A HREF="sunlicense.htm">Copyright</A> &#169; 1995-2001 Roger E. Critchlow Jr.</PRE>
+This file is based on a file similar to
+<a href="http://dev.scriptics.com/man/java1.1/TclJava/java.htm"><code>http://dev.scriptics.com/man/java1.1/TclJava/java.htm</code>
+
+</BODY></HTML>

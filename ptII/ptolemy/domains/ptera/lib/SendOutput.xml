@@ -1,0 +1,68 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SendOutput" class="ptolemy.domains.ptera.kernel.PteraController">
+    <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+        </property>
+    </property>
+    <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Schedule the Output event with&#10;some data as parameter to send&#10;those data to the dataOutput&#10;port.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 65.0]">
+        </property>
+    </property>
+    <property name="_alternateGetMomlAction" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.DesignPatternGetMoMLAction">
+    </property>
+    <property name="_designPatternIcon" class="ptolemy.vergil.icon.DesignPatternIcon">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </property>
+    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+    </property>
+    <port name="dataOutput" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 200.0]">
+        </property>
+    </port>
+    <entity name="Output" class="ptolemy.domains.ptera.kernel.Event">
+        <property name="parameters" class="ptolemy.domains.ptera.kernel.ParametersAttribute" value="(data : general)">
+        </property>
+        <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="dataOutput = data">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
+        </property>
+    </entity>
+</entity>

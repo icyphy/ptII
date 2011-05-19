@@ -1,0 +1,33 @@
+#!/bin/sh -x
+# $Id$
+
+# Build models and run them.
+
+# Clean up
+rm *.out *.xml *.plt
+rm -rf $HOME/cg/
+
+export JAVAFLAGS=-Xmx4000M
+
+# If you change these, then edit ModularCodeGenLarge.tcl
+numberOfSubsPerLevel=3
+levels=4
+
+# Build the models
+#$PTII/bin/ptjacl ModularCodeGenLarge.tcl
+
+
+models="pubSubAggOpaque_${numberOfSubsPerLevel}_${levels}.xml
+pubSubAggTransparent_${numberOfSubsPerLevel}_${levels}.xml
+pubSubAggLazyOpaque_${numberOfSubsPerLevel}_${levels}.xml
+pubSubAggLazyTransparent_${numberOfSubsPerLevel}_${levels}.xml
+pubSubAggMCGOpaque_${numberOfSubsPerLevel}_${levels}.xml"
+
+for model in $models
+do
+    echo $model
+    $PTII/bin/ptjacl run.tcl $model > `basename $model .xml`.out
+    #$PTII/bin/vergil -run20x $model > `basename $model .xml`.out
+done
+
+$PTII/bin/ptcg -language java -measureTime true pubSubAggMCGOpaque_${numberOfSubsPerLevel}_${levels}.xml

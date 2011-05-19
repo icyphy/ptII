@@ -1,0 +1,37 @@
+$PTII/util/testsuite/README.jindent
+Version: $Id$
+
+This is the README file for the standalone version of jindent.
+
+jindent is a simple shell script that indents Java files using Emacs.
+It is fairly slow, but the indentation style is very configurable.
+
+Usually jindent is shipped as part of Ptolemy II, but we are making
+this small standalone release available.
+
+
+The standalone release consists of the following files
+$PTII/util/testsuite/jindent  - The shell script that does the actual work
+$PTII/util/lisp/jindent.el - Emacs file that does some set up
+$PTII/util/lisp/ptjavastyle.el - Emacs file that contains the
+				      Ptolemy II coding style
+
+Installation:
+1. Set your PTII variable to point to the top of the tree:
+setenv PTII ~/jindent1.0
+
+or edit the jindent and jindent.el scripts to hardware the variable
+
+2. Place $PTII/util/testsuite/jindent in your path
+
+Usage:
+jindent Foo.java will:
+	1. Copy the file to a temporary location
+	2. Indent the temporary file
+	3. If there are any indentation changes necessary,
+	it will check the file out of SCCS if necessary
+	4. Reindent the file
+	5. Check the file back in using SCCS or CVS
+
+jindent -n Foo.java will do the above steps, but not actually
+check the file in or out.

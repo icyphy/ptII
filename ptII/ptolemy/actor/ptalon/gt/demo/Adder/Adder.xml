@@ -1,0 +1,192 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Adder" class="ptolemy.actor.gt.TransformationRule">
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.actor.ptalon.gt.PtalonMatcher&quot;,&quot;ptolemy/actor/ptalon/gt.jar&quot;},{&quot;ptolemy.domains.sdf.kernel.SDFDirector.xml&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;}}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 375.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.data.expr.StringParameter" value="Used by the JNLP system">
+            </property>
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={409, 174, 694, 585}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[673, 433]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.5, 216.5}">
+    </property>
+    <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
+        <property name="ContainerIgnoring" class="ptolemy.actor.gt.ContainerIgnoringAttribute">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><rect x="0" y="0" width="94" height="32" style="fill:#00FFFF"></rect><rect x="5" y="5" width="30" height="22" style="fill:#FF0000"></rect><rect x="7" y="7" width="26" height="18" style="fill:#C0C0C0"></rect><rect x="14" y="11" width="15" height="10" style="fill:#FF0000"></rect><rect x="16" y="13" width="11" height="6" style="fill:#C0C0C0"></rect><line x1="39" y1="14" x2="52" y2="14" style="stroke:#303030; stroke-width:2"></line><line x1="39" y1="18" x2="52" y2="18" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="11" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="21" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><rect x="59" y="5" width="30" height="22" style="fill:#FF0000"></rect><rect x="61" y="7" width="26" height="18" style="fill:#C0C0C0"></rect></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"></rect>
+            <text x="5" y="15" style="font-size:16; font-family:SansSerif; fill:blue">CI</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 130.0]">
+            </property>
+        </property>
+        <property name="n" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 55.0]">
+            </property>
+        </property>
+        <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute" value="BaseModel.xml">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace 2-Input Adders with 4-Input Actors">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 15.0]">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="Annotation_1_" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Press the Match button (the first yellow button on&#10;the toolbar) to perform pattern matching with&#10;BaseModel.xml (a model in the same directory). In&#10;the new window, press the Transform button (also&#10;the first yellow one) to perform transformation.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 75.0]">
+            </property>
+        </property>
+        <property name="Annotation_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    This basic transformation rule replaces (n-1) 2-input adders with an n-input adder, where&#10;n is a parameter defined here. The model to be transformed is BaseModel.xml in the same&#10;directory, which has 3 adders to sum up 4 constants. Each adder takes 2 inputs. Suppose&#10;now an adder is allowed to have up to n inputs (with n = 4 in this case). This transformation&#10;rule simplifies the model by replacing the 3 adders with only one.&#10;    Change n to 3 to simplify the model with an adder that takes up to 3 inputs.&#10;    Change n to 2 and the model would not be simplified at all.&#10;    Change n to any number greater than 4 and the pattern would not be matched in the&#10;model, and simplification would not be possible either.&#10;    The Ptalon higher-order composition language is used here to generate the structure of&#10;the transformation rule depending on the given n. Contents inside PtalonMatcher is defined&#10;in AdderPtalon.ptln in the same directory.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 185.0]">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="Annotation_1_3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 395.0]">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <entity name="PtalonMatcher" class="ptolemy.actor.ptalon.gt.PtalonMatcher">
+            <property name="_containerIgnoring" class="ptolemy.actor.gt.ContainerIgnoringAttribute">
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><rect x="0" y="0" width="94" height="32" style="fill:#00FFFF"></rect><rect x="5" y="5" width="30" height="22" style="fill:#FF0000"></rect><rect x="7" y="7" width="26" height="18" style="fill:#C0C0C0"></rect><rect x="14" y="11" width="15" height="10" style="fill:#FF0000"></rect><rect x="16" y="13" width="11" height="6" style="fill:#C0C0C0"></rect><line x1="39" y1="14" x2="52" y2="14" style="stroke:#303030; stroke-width:2"></line><line x1="39" y1="18" x2="52" y2="18" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="11" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="21" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><rect x="59" y="5" width="30" height="22" style="fill:#FF0000"></rect><rect x="61" y="7" width="26" height="18" style="fill:#C0C0C0"></rect></svg></configure>
+                </property>
+            </property>
+            <property name="ptalonCodeLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/ptalon/gt/demo/Adder/AdderPtalon.ptln">
+            </property>
+            <property name="PtalonMatcherIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="-2.0, 4.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="43.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="48.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                    </property>
+                </property>
+                <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="-2.0, 4.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="39.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="44.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/ptalon/gt/ptalon.png">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, -15.0]">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 145.0]">
+            </property>
+            <property name="m_num" class="ptolemy.actor.ptalon.PtalonExpressionParameter" value="n">
+            </property>
+        </entity>
+    </entity>
+</entity>

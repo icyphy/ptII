@@ -1,0 +1,340 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HysteresisWithDefault" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    </property>
+    <property name="heatOnThreshold" class="ptolemy.data.expr.Parameter" value="18.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 15.0]">
+        </property>
+    </property>
+    <property name="heatOffThreshold" class="ptolemy.data.expr.Parameter" value="22.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 35.0]">
+        </property>
+    </property>
+    <property name="heatingRate" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 15.0]">
+        </property>
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 237, 799, 460}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.0, 175.0}">
+    </property>
+    <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 35.0]">
+        </property>
+    </property>
+    <property name="initialTemp" class="ptolemy.data.expr.Parameter" value="15.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 55.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 115.0}">
+        </property>
+        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+            <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+                <display name="Show parameters"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 290.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 440, 797, 250}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[584, 140]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.0, 70.0}">
+        </property>
+        <port name="temperature" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 45.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="heat" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 30.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+            <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+            </property>
+            <doc>Create a sequence of gaussian random variables</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 95.0]">
+            </property>
+        </entity>
+        <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="initialTemp">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 45.0]">
+            </property>
+        </entity>
+        <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{initialTemp}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 45.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="temperature" relation="relation3"/>
+        <link port="heat" relation="relation"/>
+        <link port="Gaussian.output" relation="relation2"/>
+        <link port="Accumulator.input" relation="relation"/>
+        <link port="Accumulator.input" relation="relation2"/>
+        <link port="Accumulator.output" relation="relation4"/>
+        <link port="SampleDelay.input" relation="relation4"/>
+        <link port="SampleDelay.output" relation="relation3"/>
+    </entity>
+    <entity name="FSMActor" class="ptolemy.domains.modal.kernel.FSMActor">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+  </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 160.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="temperature" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 40.0]">
+            </property>
+        </port>
+        <port name="heat" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 35.0]">
+            </property>
+        </port>
+        <entity name="heating" class="ptolemy.domains.modal.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 80.0]">
+            </property>
+        </entity>
+        <entity name="cooling" class="ptolemy.domains.modal.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 155.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &gt;= heatOffThreshold">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5302286874608051">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5880154806418394">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &lt;= heatOnThreshold">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4675630981439211">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.51504410352183">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.270126629514137">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.044190606909536">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.304477848756624">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.030127293506284583">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <link port="heating.incomingPort" relation="relation2"/>
+        <link port="heating.incomingPort" relation="relation3"/>
+        <link port="heating.outgoingPort" relation="relation"/>
+        <link port="heating.outgoingPort" relation="relation3"/>
+        <link port="cooling.incomingPort" relation="relation"/>
+        <link port="cooling.incomingPort" relation="relation4"/>
+        <link port="cooling.outgoingPort" relation="relation2"/>
+        <link port="cooling.outgoingPort" relation="relation4"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05, -0.05}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{15.0, 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8, 15.9, 16.0, 16.1, 16.2, 16.3, 16.4, 16.5, 16.6, 16.7, 16.8, 16.9, 17.0, 17.1, 17.2, 17.3, 17.4, 17.5, 17.6, 17.7, 17.8, 17.9, 18.0, 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8, 18.9, 19.0, 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8, 19.9000000000001, 20.0000000000001, 20.1000000000001, 20.2000000000001, 20.3000000000001, 20.4000000000001, 20.5000000000001, 20.6000000000001, 20.7000000000001, 20.8000000000001, 20.9000000000001, 21.0000000000001, 21.1000000000001, 21.2000000000001, 21.3000000000001, 21.4000000000001, 21.5000000000001, 21.6000000000001, 21.7000000000001, 21.8000000000001, 21.9000000000001, 22.0000000000001, 21.9500000000001, 21.9000000000001, 21.8500000000001, 21.8000000000001, 21.7500000000001, 21.7000000000001, 21.6500000000001, 21.6000000000001, 21.5500000000001, 21.5000000000001, 21.4500000000001, 21.4000000000001, 21.3500000000001, 21.3000000000001, 21.2500000000001, 21.2000000000001, 21.1500000000001, 21.1000000000001, 21.0500000000001, 21.0000000000001, 20.9500000000001, 20.9000000000001, 20.8500000000001, 20.8000000000001, 20.7500000000001, 20.7000000000001, 20.6500000000001, 20.6000000000001, 20.5500000000001, 20.5000000000001, 20.4500000000001, 20.4000000000001, 20.3500000000001, 20.3000000000001, 20.2500000000001, 20.2000000000001, 20.1500000000001, 20.1000000000001, 20.0500000000001, 20.0000000000001, 19.9500000000001, 19.9000000000001, 19.85, 19.8, 19.75, 19.7, 19.65, 19.6, 19.55, 19.5, 19.45, 19.4, 19.35, 19.3, 19.25, 19.2, 19.15, 19.1, 19.05, 19.0, 18.95, 18.9, 18.85, 18.8, 18.75, 18.7, 18.65, 18.6, 18.55, 18.5, 18.45, 18.4, 18.35, 18.3, 18.25, 18.2, 18.15, 18.1, 18.05, 18.0, 17.95, 18.05, 18.15, 18.25, 18.35, 18.45, 18.55, 18.65, 18.75, 18.85, 18.95, 19.05, 19.15, 19.25, 19.35, 19.45, 19.55, 19.65, 19.75, 19.85, 19.9500000000001, 20.0500000000001, 20.1500000000001, 20.2500000000001, 20.3500000000001, 20.4500000000001, 20.5500000000001, 20.6500000000001, 20.7500000000001, 20.8500000000001, 20.9500000000001, 21.0500000000001, 21.1500000000001, 21.2500000000001, 21.3500000000001, 21.4500000000001, 21.5500000000001, 21.6500000000001, 21.7500000000001, 21.8500000000001, 21.9500000000001, 22.0500000000001, 22.0000000000001, 21.9500000000001, 21.9000000000001, 21.8500000000001, 21.8000000000001, 21.7500000000001, 21.7000000000001}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 115.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[185.0, 115.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[300.0, 190.0]">
+        </vertex>
+    </relation>
+    <link port="Temperature Model.temperature" relation="relation2"/>
+    <link port="Temperature Model.heat" relation="relation"/>
+    <link port="FSMActor.temperature" relation="relation2"/>
+    <link port="FSMActor.heat" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation2"/>
+</entity>

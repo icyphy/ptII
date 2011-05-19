@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RealTime" class="ptolemy.moml.EntityLibrary">
+  <doc>Real Time Actors</doc>
+  <configure>
+    <?moml
+      <group>
+        <entity name="DelayStart" class="ptolemy.actor.lib.DelayStart">
+          <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="startTime">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+          </property>
+        </entity>
+        <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime"/>
+        <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter"/>
+	    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+          <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+          </property>
+        </entity>
+	    <entity name="VariableSleep" class="ptolemy.actor.lib.VariableSleep"/>
+        <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime"/>
+      </group>
+    ?>
+  </configure>
+</entity>

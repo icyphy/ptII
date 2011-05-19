@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+<!-- scopeExtendingAttribute -->
+<property name="ScopeExtendingAttribute" 
+          class="ptolemy.data.expr.ScopeExtendingAttribute">
+  <property name="_iconDescription" 
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+           <rect x="-30" y="-15" width="60" height="30" style="fill:grey"/>
+      </svg>
+    </configure>
+  </property>
+</property>
+<property name="ParameterSet" 
+          class="ptolemy.actor.parameters.ParameterSet">
+  <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
+      <!-- property name="attributeName" value="fileOrURL"/ -->
+  </property> 
+  <property name="initialDefaultContents"
+            class="ptolemy.data.expr.StringParameter"
+            value="# This file defines parameters in the current container.&#10;# Each non-comment line in the file is interpreted as a separate assignment.&#10;# The lines are of the form:&#10;# attributeName = value&#10;# where variableName is the name of the attribute&#10;# in a format suitable for ptolemy.kernel.util.NamedObj.setName()&#10;# (i.e., does not contain periods) and value is&#10;# the expression in the Ptolemy expression language.&#10;# Comments are lines that begin with the # character.&#10;# FIXME: After saving, you need to update the fileOrURLParameter by hand.&#10;" >
+        <property name="_expertMode" class="ptolemy.kernel.util.Attribute"/>
+  </property>
+
+  <property name="_iconDescription" 
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:#C0C0C0"/>
+        <text x="-30"
+              style="font-size:30; font-family:SansSerif; fill:#00BB00"
+              y="10">-PS-</text>
+      </svg>
+    </configure>
+  </property>
+</property>
+</group>

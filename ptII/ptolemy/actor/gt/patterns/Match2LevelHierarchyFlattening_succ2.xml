@@ -1,0 +1,234 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Match2LevelHierarchyFlattening_succ2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 283, 926, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[713, 406]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.5, 203.0}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">If you open this file from the HierarchyFlattening demo for model transformation, click
+         and         to navigate between matches in the same file, and         and         to
+navigate between multiple files (when the buttons are enabled).</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 275.0}">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation5">
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/previous.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{49.0, 297.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Image3">
+        </property>
+    </property>
+    <property name="Image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/next.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{112.0, 297.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Image4">
+        </property>
+    </property>
+    <property name="Image3" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/previousfile.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 295.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Image5">
+        </property>
+    </property>
+    <property name="Image4" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/nextfile.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 295.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Image6">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">After you choose a desired match, click         to perform hierarchy flattening.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 340.0}">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation6">
+        </property>
+    </property>
+    <property name="Image5" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/transform.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 340.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Image7">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:16; font-family:SansSerif; fill:red">Instructions:</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{24.0, 247.0}">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation5">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 105.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 150.0]">
+            </property>
+        </entity>
+        <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.61978912353516, 244.6095199584961]">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 200.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="Const.trigger" relation="relation"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port" relation="relation2"/>
+        <link port="Const.trigger" relation="relation"/>
+        <link port="CompositeActor.port" relation="relation2"/>
+    </entity>
+    <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 105.0]">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="Const.output" relation="relation"/>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="CompositeActor.port" relation="relation"/>
+    <link port="CompositeActor2.port" relation="relation"/>
+</entity>

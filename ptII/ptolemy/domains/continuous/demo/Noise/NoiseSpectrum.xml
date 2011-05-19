@@ -1,0 +1,334 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NoiseSpectrum" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="(2^order - 1) / samplingFrequency">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 365.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model measures the power spectrum of&#10;bandlimited noise and compares it against the&#10;theoretical value of the spectrum. Notice that&#10;the sidebands decay slightly more slowly than&#10;the theory predicts because of aliasing distortion.&#10;You can experiment with the bandwidth of the&#10;noise.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 10.0]">
+        </property>
+    </property>
+    <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="500.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 70.0]">
+        </property>
+    </property>
+    <property name="order" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 90.0]">
+        </property>
+    </property>
+    <property name="noiseBandwidth" class="ptolemy.data.expr.Parameter" value="50.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
+        </property>
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.4">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 130.0]">
+        </property>
+    </property>
+    <entity name="BandlimitedNoise" class="ptolemy.domains.continuous.lib.BandlimitedNoise">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+        </property>
+        <property name="bandwidth" class="ptolemy.data.expr.Parameter" value="noiseBandwidth">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 250.0}">
+        </property>
+    </entity>
+    <entity name="Spectrum" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 250.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 359, 883, 471}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[670, 361]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.0, 180.5}">
+        </property>
+        <property name="T" class="ptolemy.data.expr.Parameter" value="(1.0/noiseBandwidth)">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 35.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This submodel uses a DE Director so that there is buffering&#10;in the receivers, and then, inside the _intance_ of the Periodogram&#10;actor, there is an SDF director to handle the multirate properties&#10;of the spectrum analysis. If you use Open Actor to look inside&#10;the Periodogram, you will not see the SDF director. If you use&#10;Open Instance, you will.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 235.0]">
+            </property>
+        </property>
+        <property name="a" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 60.0}">
+            </property>
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <entity name="Periodogram" class="ptolemy.domains.sdf.lib.Periodogram">
+            <property name="order" class="ptolemy.data.expr.Parameter" value="order">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 200.0]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 375}">
+                </property>
+            </property>
+        </entity>
+        <entity name="Frequency Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theoretical, measured">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 342, 1127, 455}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1127, 411]">
+            </property>
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="xInit" class="ptolemy.data.expr.Parameter" value="-samplingFrequency/2.0">
+            </property>
+            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="samplingFrequency/2^order">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 200.0]">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Spectrum</title>
+<xLabel>frequency</xLabel>
+<yLabel>dB</yLabel>
+<xRange min="-250.0" max="249.8779296875"/>
+<yRange min="-100.0" max="8.697653802599113"/>
+<noGrid/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="close(w, 0.0) ?&#10;   a :&#10;   a * sinc(w * T / 2) ^ 4">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[302.5, 155.0]">
+            </property>
+            <port name="w" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="DB" class="ptolemy.actor.lib.DB">
+            <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 155.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="-samplingFrequency * pi">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="samplingFrequency * 2 * pi / 2^order">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 155.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[130.0, 200.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in" relation="relation"/>
+        <link port="Periodogram.input" relation="relation"/>
+        <link port="Periodogram.output" relation="relation4"/>
+        <link port="Frequency Domain Display.input" relation="relation5"/>
+        <link port="Frequency Domain Display.input" relation="relation4"/>
+        <link port="Expression.output" relation="relation3"/>
+        <link port="Expression.w" relation="relation2"/>
+        <link port="DB.input" relation="relation3"/>
+        <link port="DB.output" relation="relation5"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation4"/>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1127, 319}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1127, 275]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 330.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Time Domain Signal</title>
+<xLabel>time</xLabel>
+<yLabel>noise</yLabel>
+<xRange min="1.0" max="8191.0"/>
+<yRange min="-1.0889192791489124" max="1.0224715098283663"/>
+<default stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="1.0/ samplingFrequency">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 250.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[350.0, 250.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="BandlimitedNoise.output" relation="relation"/>
+    <link port="Spectrum.in" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="PeriodicSampler.input" relation="relation"/>
+    <link port="PeriodicSampler.output" relation="relation3"/>
+</entity>

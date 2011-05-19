@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BooleanFlowControl" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Boolean Flow Control Actors</doc>
+        <entity name="BooleanMultiplexor"
+	        class="ptolemy.actor.lib.BooleanMultiplexor"/>
+	<entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect"/>
+	<entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch"/>
+	<entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect"/>
+	<entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch"/>
+	<entity name="CountTrues" class="ptolemy.domains.sdf.lib.CountTrues"/>
+      </group>
+    ?>
+  </configure>
+</entity>

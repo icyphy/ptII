@@ -1,0 +1,45 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II DE Demo</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Illustration of the M/M/1 Queues</H1>
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.jar,ptolemy/actor/lib/colt/colt.jar,ptolemy/data/data.jar,lib/ptcolt.jar,ptolemy/domains/de/de.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.jnlp">
+<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer QueueAndServer.xml">
+  <PARAM NAME = "NAME" VALUE = "QueueAndServer" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "QueueAndServer.xml" > \
+  <a href="QueueAndServer.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</center>
+<P>
+The applet uses the Ptolemy II Discrete Event (DE) domain 
+to illustrate two ways to implement M/M/1 queues. 
+<p>
+</BODY>
+</HTML>

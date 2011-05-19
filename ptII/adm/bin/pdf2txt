@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+txtFile=`basename $1 pdf`txt
+pdftotext $1 
+ sed 's/^[ 	]*//' < $txtFile | \
+    awk '{if ($0 ~ /-$/) {printf("%s", substr($0,0,length($0)-1))} else {print $0}}' | \
+    awk '{if (length($0) == 0) {print $0} else {printf("%s ", $0)}}' \
+    > pdf2textTmp.txt
+cp pdf2textTmp.txt $txtFile
+
+rm -f  pdf2textTmp.txt

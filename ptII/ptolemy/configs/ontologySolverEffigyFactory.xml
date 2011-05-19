@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <entity name="Ontology Solver Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <entity name="blank" class="ptolemy.data.ontologies.OntologySolverModel">
+        <!-- Annotate with instructions. -->
+	    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+	      <property name="_hideName"
+			class="ptolemy.kernel.util.SingletonAttribute"/>
+	      <property name="_iconDescription"
+			class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create an ontology solver here.  Drag an ontology
+and actor constraint elements from the palette on
+the right into this window, then right click to configure them.
+Then delete this annotation.</text>
+</svg></configure></property>
+              <property name="_location"
+			class="ptolemy.kernel.util.Location" value="100.0, 5.0"/>
+	      <property name="_controllerFactory"
+			class="ptolemy.vergil.basic.NodeControllerFactory"/>
+	      <property name="_editorFactory"
+			class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+	    </property>
+	    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+	      <configure>
+		<entity name="library" class="ptolemy.kernel.CompositeEntity">
+		  <input source="ptolemy/data/ontologies/ontologySolverLibrary.xml"/>
+		</entity>
+	      </configure>
+	    </property>
+      </entity>
+  </entity>
+</group>
+
+
+

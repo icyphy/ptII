@@ -1,0 +1,46 @@
+sensor
+  double GPS uses GPS_device_driver_fire;
+
+actuator
+  double motor uses motor_device_driver_fire;
+
+output
+  // FIXME: If there are two outputs for A, one function or two?
+  double A_out := init_function_name_A_out;
+  double B_out := init_function_name_B_out;
+
+task A (double in1, double in2) output (A_out) {
+  schedule A_fire(in1, in2, A_out)
+}
+
+task B (double in1) output (B_out) {
+  schedule B_fire(in1, B_out)
+}
+
+// NOTE: Names in1 and in2 are arbitrary, but the types
+// must match the port types of A.
+driver A_driver (GPS, A_out) output (double in1, double in2) {
+  if A_guard(GPS, A_out) then
+     A_transferInputs(GPS, A_out, in1, in2)
+}
+
+driver B_driver (GPS) output (double in1) {
+  if B_guard(GPS) then
+     B_transferInputs(GPS, in1)
+}
+
+// port_name arg is formal, and has no associated name
+// in the visual syntax.
+driver motor_driver (B_out) output (double port_name) {
+  if motor_guard(B_out) then
+     motor_transferOutputs(B_out, port_name)
+}
+
+start mode_name {
+mode mode_name () period 10 {
+  actfreq 1 do motor(motor_driver);
+
+  taskfreq 1 do A(A_driver);
+  taskfreq 2 do B(B_driver);
+}
+}

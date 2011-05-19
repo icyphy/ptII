@@ -1,0 +1,23 @@
+SendAndReceiveCnt is {
+    actor channel = ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
+
+    actor sender = ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.CntToLedsAndRfm;
+
+    actor receiver = ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.RfmToLeds;
+
+    parameter channelName;
+    channel(name := [[ channelName ]]);
+
+    parameter numberOfSenders;
+    parameter numberOfReceivers;
+
+    for i initially [[ 1 ]] [[ i <= numberOfSenders ]] {
+        sender(commandPort := [[ 10584 + (i - 1)*2 ]],
+                   nodeID := [[ i ]] );
+    } next [[ i + 1 ]]
+
+    for i initially [[ 1 ]] [[ i <= numberOfReceivers ]] {
+        receiver(commandPort := [[ 10584 + (i - 1 + numberOfSenders)*2 ]],
+                   nodeID := [[ i + numberOfSenders]] );
+    } next [[ i + 1 ]]
+}

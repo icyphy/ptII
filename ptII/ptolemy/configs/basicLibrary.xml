@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Basic library, including mature directors, actors and utilities.  -->
+<entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+  <!-- Marker so that tree view expands the library. -->
+  <property name="_libraryMarker"
+            class="ptolemy.kernel.util.SingletonAttribute"/>
+
+  <!-- Default utilities library. -->
+  <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+
+  <!-- Default director library. -->
+  <!-- This uses configure so that directors are not instantiated -->
+  <!-- until (and unless) the library is opened. -->
+  <entity name="Directors" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+          <input source="ptolemy/configs/basicDirectors.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+
+  <!-- Default actor library. -->
+  <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+          <input source="ptolemy/configs/basicActorLibrary.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+</entity>

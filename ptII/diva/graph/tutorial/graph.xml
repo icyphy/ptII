@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE graph SYSTEM "graph.dtd">
+
+<graph>
+<node id="_a"/>
+<node id="_b"/>
+<node id="_c"/>
+<node id="_d"/>
+<node id="_e"/>
+<node id="_f"/>
+<edge id="_e1" tail="_a" head="_b" directed="true"/>
+<edge id="_e2" tail="_a" head="_c" directed="true"/>
+<edge id="_e3" tail="_a" head="_e" directed="true"/>
+<edge id="_e4" tail="_b" head="_d" directed="true"/>
+<edge id="_e5" tail="_b" head="_e" directed="true"/>
+<edge id="_e6" tail="_c" head="_e" directed="true"/>
+<edge id="_e7" tail="_c" head="_f" directed="true"/>
+</graph>
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- RequireVersion, a parameter that insists on a specified version. -->
+<property name="RequireVersion"
+          class="ptolemy.kernel.attributes.RequireVersion">
+  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
+  <property name="_smallIconDescription"
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20"
+              style="font-size:14; font-family:SansSerif; fill:blue"
+              y="20">-V-</text>
+      </svg>
+    </configure>
+  </property>
+</property>

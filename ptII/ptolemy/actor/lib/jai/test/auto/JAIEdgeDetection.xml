@@ -1,0 +1,148 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JAIEdgeDetection" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Edge Detection using Sobel masks.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 265.0">
+        </property>
+    </property>
+    <entity name="JAIEdgeDetection" class="ptolemy.actor.lib.jai.JAIEdgeDetection">
+        <property name="firstMask" class="ptolemy.kernel.util.StringAttribute" value="Sobel Horizontal">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="Backdiagonal" class="ptolemy.kernel.util.StringAttribute" value="Backdiagonal">
+                </property>
+                <property name="Diagonal" class="ptolemy.kernel.util.StringAttribute" value="Diagonal">
+                </property>
+                <property name="Frei and Chen Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Frei and Chen Horizontal">
+                </property>
+                <property name="Frei and Chen Vertical" class="ptolemy.kernel.util.StringAttribute" value="Frei and Chen Vertical">
+                </property>
+                <property name="Prewitt Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Prewitt Horizontal">
+                </property>
+                <property name="Prewitt Vertical" class="ptolemy.kernel.util.StringAttribute" value="Prewitt Vertical">
+                </property>
+                <property name="Roberts Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Roberts Horizontal">
+                </property>
+                <property name="Roberts Vertical" class="ptolemy.kernel.util.StringAttribute" value="Roberts Vertical">
+                </property>
+                <property name="Sobel Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Sobel Horizontal">
+                </property>
+                <property name="Sobel Vertical" class="ptolemy.kernel.util.StringAttribute" value="Sobel Vertical">
+                </property>
+                <property name="Transparent" class="ptolemy.kernel.util.StringAttribute" value="Transparent">
+                </property>
+                <property name="User Specified" class="ptolemy.kernel.util.StringAttribute" value="User Specified">
+                </property>
+                <property name="Zero" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+                </property>
+            </property>
+        </property>
+        <property name="secondMask" class="ptolemy.kernel.util.StringAttribute" value="Sobel Vertical">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="Backdiagonal" class="ptolemy.kernel.util.StringAttribute" value="Backdiagonal">
+                </property>
+                <property name="Diagonal" class="ptolemy.kernel.util.StringAttribute" value="Diagonal">
+                </property>
+                <property name="Frei and Chen Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Frei and Chen Horizontal">
+                </property>
+                <property name="Frei and Chen Vertical" class="ptolemy.kernel.util.StringAttribute" value="Frei and Chen Vertical">
+                </property>
+                <property name="Prewitt Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Prewitt Horizontal">
+                </property>
+                <property name="Prewitt Vertical" class="ptolemy.kernel.util.StringAttribute" value="Prewitt Vertical">
+                </property>
+                <property name="Roberts Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Roberts Horizontal">
+                </property>
+                <property name="Roberts Vertical" class="ptolemy.kernel.util.StringAttribute" value="Roberts Vertical">
+                </property>
+                <property name="Sobel Horizontal" class="ptolemy.kernel.util.StringAttribute" value="Sobel Horizontal">
+                </property>
+                <property name="Sobel Vertical" class="ptolemy.kernel.util.StringAttribute" value="Sobel Vertical">
+                </property>
+                <property name="Transparent" class="ptolemy.kernel.util.StringAttribute" value="Transparent">
+                </property>
+                <property name="User Specified" class="ptolemy.kernel.util.StringAttribute" value="User Specified">
+                </property>
+                <property name="Zero" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+                </property>
+            </property>
+        </property>
+        <property name="userSpecifiedFirstMask" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0; 0.0, 0.7070000171661, 0.0; 0.0, 0.0, 0.0]">
+        </property>
+        <property name="userSpecifiedSecondMask" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0; 0.0, 0.7070000171661, 0.0; 0.0, 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 200.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII.jpg">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 160.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 232, 520, 560}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 512]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 230.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JAIEdgeDetection.input" relation="relation"/>
+    <link port="JAIEdgeDetection.output" relation="relation2"/>
+    <link port="JAIImageReader.output" relation="relation"/>
+    <link port="ImageDisplay.input" relation="relation2"/>
+</entity>

@@ -1,0 +1,118 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PolarToComplexAndBack" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 39.5">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 175.0">
+        </property>
+    </entity>
+    <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="pi/2">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 295.0">
+        </property>
+    </entity>
+    <entity name="Test11" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 295.0">
+        </property>
+    </entity>
+    <entity name="Test13" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 175.0">
+        </property>
+    </entity>
+    <entity name="ComplexToPolar11" class="ptolemy.actor.lib.conversions.ComplexToPolar">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 185.0">
+        </property>
+    </entity>
+    <entity name="PolarToComplex14" class="ptolemy.actor.lib.conversions.PolarToComplex">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 185.0">
+        </property>
+    </entity>
+    <entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 250.0">
+        </property>
+    </entity>
+    <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 295.0">
+        </property>
+    </entity>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="115.0, 295.0">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp0.output" relation="relation9"/>
+    <link port="Ramp1.output" relation="relation4"/>
+    <link port="Test11.input" relation="relation5"/>
+    <link port="Test13.input" relation="relation15"/>
+    <link port="ComplexToPolar11.input" relation="relation13"/>
+    <link port="ComplexToPolar11.magnitude" relation="relation15"/>
+    <link port="ComplexToPolar11.angle" relation="relation"/>
+    <link port="PolarToComplex14.magnitude" relation="relation9"/>
+    <link port="PolarToComplex14.angle" relation="relation4"/>
+    <link port="PolarToComplex14.output" relation="relation13"/>
+    <link port="PhaseUnwrap.input" relation="relation"/>
+    <link port="PhaseUnwrap.output" relation="relation3"/>
+    <link port="Equals.input" relation="relation3"/>
+    <link port="Equals.input" relation="relation4"/>
+    <link port="Equals.output" relation="relation5"/>
+</entity>

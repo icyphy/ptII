@@ -1,0 +1,162 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FixPoint" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model compares fixed-point (quantized)&#10;data against unquantized data.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 5.0}">
+        </property>
+    </property>
+    <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 33.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[564, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[124, 152]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 777, 460}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{282.0, 175.0}">
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 190.0">
+        </property>
+    </entity>
+    <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
+        <property name="precision" class="ptolemy.data.expr.Parameter" value="[4,2]">
+        </property>
+        <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 145.0">
+        </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="second quantized, first quantized, original">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 412, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 190.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Quantization of fixed-point numbers</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-1.0" max="2.9000000000000012"/>
+<yRange min="-1.0" max="2.9000000000000012"/>
+<noGrid/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="FixToFix" class="ptolemy.actor.lib.conversions.FixToFix">
+        <property name="precision" class="ptolemy.data.expr.Parameter" value="[3, 2]">
+        </property>
+        <property name="overflow" class="ptolemy.kernel.util.StringAttribute" value="overflow_to_zero">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="saturate" class="ptolemy.kernel.util.StringAttribute" value="saturate">
+                </property>
+                <property name="overflow_to_zero" class="ptolemy.kernel.util.StringAttribute" value="overflow_to_zero">
+                </property>
+            </property>
+        </property>
+        <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 85.0">
+        </property>
+    </entity>
+    <entity name="FixToDouble0" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 85.0">
+        </property>
+    </entity>
+    <entity name="FixToDouble1" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 145.0">
+        </property>
+    </entity>
+    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="100.0, 190.0">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="225.0, 145.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="_R0"/>
+    <link port="DoubleToFix.input" relation="_R0"/>
+    <link port="DoubleToFix.output" relation="relation8"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="_R0"/>
+    <link port="FixToFix.input" relation="relation8"/>
+    <link port="FixToFix.output" relation="relation2"/>
+    <link port="FixToDouble0.input" relation="relation2"/>
+    <link port="FixToDouble0.output" relation="relation3"/>
+    <link port="FixToDouble1.input" relation="relation8"/>
+    <link port="FixToDouble1.output" relation="relation4"/>
+</entity>

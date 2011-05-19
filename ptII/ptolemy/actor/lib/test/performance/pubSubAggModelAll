@@ -1,0 +1,43 @@
+#!/bin/sh
+# $Id$
+# Script that creates regular models, lazy models and a ModularCodeGen model
+
+numberOfSubsPerLevel=3
+levels=6
+
+numberOfSubsPerLevel=2
+levels=2
+
+composite=ptolemy.actor.TypedCompositeActor
+
+$PTII/bin/ptjacl pubSubAggModel.tcl $numberOfSubsPerLevel $levels $composite true
+$PTII/bin/ptjacl pubSubAggModel.tcl $numberOfSubsPerLevel $levels $composite false
+
+composite=ptolemy.actor.LazyTypedCompositeActor
+
+$PTII/bin/ptjacl pubSubAggModel.tcl $numberOfSubsPerLevel $levels $composite true
+$PTII/bin/ptjacl pubSubAggModel.tcl $numberOfSubsPerLevel $levels $composite false
+
+composite=ptolemy.cg.lib.ModularCodeGenTypedCompositeActor
+
+$PTII/bin/ptjacl pubSubAggModel.tcl $numberOfSubsPerLevel $levels $composite true
+
+models="pubSubAggMCG_${numberOfSubsPerLevel}_${levels}-clean.xml
+pubSubAggMCG_${numberOfSubsPerLevel}_${levels}.xml
+pubSubAgg_${numberOfSubsPerLevel}_${levels}-clean.xml
+pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml
+pubSubAggother_${numberOfSubsPerLevel}_${levels}-clean.xml
+pubSubAggother_${numberOfSubsPerLevel}_${levels}.xml"
+
+for model in $models
+do
+    echo $model
+    #$PTII/bin/ptjacl run.tcl $model
+    $PTII/bin/vergil -statistics -runThenExit hierarchicalModel_2_6.xml
+    $PTII/bin/vergil -statistics -runThenExit hierarchicalModel_2_6.xml
+    $PTII/bin/vergil -statistics -runThenExit hierarchicalModel_2_6.xml
+    $PTII/bin/vergil -statistics -runThenExit hierarchicalModel_2_6.xml
+    $PTII/bin/vergil -statistics -runThenExit hierarchicalModel_2_6.xml
+done
+
+$PTII/bin/ptcg -language java -measureTime true pubSubAggMCG_${numberOfSubsPerLevel}_${levels}.xml

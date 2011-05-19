@@ -1,0 +1,57 @@
+<!-- $Id$-->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>A Synthetic Voice</TITLE>
+</head>
+<body>
+
+<h1>A Synthetic Voice</h1>
+
+This applet plays two different audio streams.  The first is a recording of a man's voice.  The second is a synthetic version of the same spoken sentence.  The synthetic version is created using an adaptive linear-prediction filter to create an autoregressive model of the speech signal.  This filter changes during the speech signal to approximate the spectral characteristics of the speech.  These analyzed characteristics are then used to create the synthesized speech.
+
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<h3>Play Original Speech</h3>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+SynthesizedVoice is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "SynthesizedVoice.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="SynthesizedVoiceVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+<h3>Play Synthesized Speech</h3>
+        <applet 
+            code = "ptolemy.actor.gui.MoMLApplet" 
+            codebase = "../../../../.." 
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar" 
+            width = "650" 
+            height = "100" 
+            > 
+            <param name="NAME" value="MoML" > 
+	    <param name="background" value="#ffffff" > 
+	    <param name="controls" value="buttons" > 
+	    <param name="model" value="SynthesizedVoice.xml" > 
+            <a href="SynthesizedVoice.xml">MoML specification for this model.</a> 
+        </applet> 
+
+<p>
+The <a href="SynthesizedVoiceVergil.htm">block diagram</a>
+for the synthetic speech model.
+</p>
+<p></p>
+</body>
+</html>

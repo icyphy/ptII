@@ -1,0 +1,110 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DT test actors" class="ptolemy.moml.EntityLibrary">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <configure>
+        <group>
+            <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <doc>discrete time test actors</doc>
+            <entity name="TimedDisplay" class="ptolemy.domains.dt.kernel.test.TimedDisplay">
+                <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="title" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <entity name="OnePort" class="ptolemy.domains.dt.kernel.test.OnePort">
+                <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="TwoPort" class="ptolemy.domains.dt.kernel.test.TwoPort">
+                <property name="inrate1" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="inrate2" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="outrate1" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="outrate2" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <port name="input1" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="input2" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output1" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="output2" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="FakePlotter" class="ptolemy.domains.dt.kernel.test.FakePlotter">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+                <port name="outVal" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outTime" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+        </group>
+    </configure>
+</entity>

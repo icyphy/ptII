@@ -1,0 +1,11 @@
+NestedForTest is {
+	actor Scale = ptolemy.actor.lib.Scale;
+	parameter n;
+	for i initially [[1]] [[i <= n]] {
+		for j initially [[1]] [[j <= n]] {
+			inport in;
+			outport out;
+		} next [[j + 1]]
+		Scale(input := in, output := out);
+	} next [[i + 1]]
+}

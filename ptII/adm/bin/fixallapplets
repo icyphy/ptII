@@ -1,0 +1,24 @@
+#!/bin/sh
+# Script that runs fixapplets on all the .htm files that contain applets
+
+printOnly=no
+if [ "$1" = "-n" ]; then
+    echo "$0: -n: Not updating files"
+    printOnly=yes
+    minusNFlag="-n"
+    shift
+fi
+
+ptii=`echo $PTII | sed 's@\\\@/@g'`
+
+htmFiles=`"$PTII/adm/bin/ptIItxtfiles" | grep '.htm$' | grep -v fixapplets | grep -v vendors`
+for file in $htmFiles
+do
+	grep '<OBJECT' "$file" > /dev/null
+	retval=$?
+	if [ "$retval" = "0" ]; then	
+		echo $file
+		fix-files $minusNFlag "$file"
+		#$PTII/adm/bin/fixapplets141 $minusNFlag "$file"
+	fi
+done

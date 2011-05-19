@@ -1,0 +1,290 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ProductLatticeRecordConceptTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 226, 1327, 682}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1112, 565]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.3394886363637, 223.1974431818182}">
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, -15.0}">
+        </property>
+    </property>
+    <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 30.0]">
+        </property>
+    </property>
+    <property name="ConstAbsIntObservableReachableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="solvers/ConstAbsIntObservableReachableProductSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.columnsDisplayed&quot;}, {Concept = &quot;ObservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const5.value&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.input&quot;}, {Concept = &quot;ObservableUnreachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Scale15.factor&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.columnsDisplayed&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.trueOutput&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.suppressBlankLines&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const5.output&quot;}, {Concept = &quot;{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.output&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.rowsDisplayed&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Scale15.input&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const2.output&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.position&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.speed&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const13.output&quot;}, {Concept = &quot;ObservableUnreachableBooleanTrue&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const2.value&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.control&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.input&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Constant1&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.position&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.columnsDisplayed&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.suppressBlankLines&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.suppressBlankLines&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.input&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.input&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Scale15.output&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const13.value&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const3.value&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.suppressBlankLines&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.acceleration&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.time&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.acceleration&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.falseOutput&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.rowsDisplayed&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.speed&quot;}, {Concept = &quot;{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.input&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.time&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.columnsDisplayed&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.input&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const3.output&quot;}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, -10.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <entity name="Const13" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="546.72">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 150.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Scale15" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 345.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 250.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 375.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 270.0]">
+        </property>
+        <port name="time" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="acceleration" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="speed" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="position" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 80.0]">
+        </property>
+        <port name="time" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="acceleration" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="speed" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="position" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, -10.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 185.0]">
+        </property>
+    </entity>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const13.output" relation="relation21"/>
+    <link port="Scale15.input" relation="relation21"/>
+    <link port="Scale15.output" relation="relation10"/>
+    <link port="BooleanSwitch.input" relation="relation6"/>
+    <link port="BooleanSwitch.control" relation="relation5"/>
+    <link port="BooleanSwitch.trueOutput" relation="relation3"/>
+    <link port="BooleanSwitch.falseOutput" relation="relation20"/>
+    <link port="Const2.output" relation="relation5"/>
+    <link port="Const3.output" relation="relation6"/>
+    <link port="Const5.output" relation="relation4"/>
+    <link port="RecordAssembler.output" relation="relation"/>
+    <link port="RecordAssembler.time" relation="relation10"/>
+    <link port="RecordAssembler.acceleration" relation="relation3"/>
+    <link port="RecordAssembler.speed" relation="relation20"/>
+    <link port="RecordAssembler.position" relation="relation4"/>
+    <link port="RecordDisassembler.input" relation="relation"/>
+    <link port="RecordDisassembler.time" relation="relation2"/>
+    <link port="RecordDisassembler.acceleration" relation="relation7"/>
+    <link port="RecordDisassembler.speed" relation="relation8"/>
+    <link port="RecordDisassembler.position" relation="relation9"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Display2.input" relation="relation7"/>
+    <link port="Display3.input" relation="relation8"/>
+    <link port="Display4.input" relation="relation9"/>
+</entity>

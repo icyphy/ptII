@@ -1,0 +1,100 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="controlled_kahnnet" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[717, 373]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[96, 19]">
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {229, 280, 932, 508}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.5, 186.5}">
+    </property>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="DDFSingleTokenCommutator" class="ptolemy.domains.ddf.lib.DDFSingleTokenCommutator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="1:Switch" class="ptolemy.actor.lib.Switch">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1,0,1,0,1,0,1,0,1,0,1,0,1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 305.0]">
+        </property>
+        <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </entity>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[255.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SampleDelay.input" relation="relation8"/>
+    <link port="SampleDelay.output" relation="relation7"/>
+    <link port="SampleDelay2.input" relation="relation10"/>
+    <link port="SampleDelay2.output" relation="relation"/>
+    <link port="SingleTokenDistributor.input" relation="relation2"/>
+    <link port="SingleTokenDistributor.output" relation="relation8"/>
+    <link port="SingleTokenDistributor.output" relation="relation10"/>
+    <link port="DDFSingleTokenCommutator.input" relation="relation7"/>
+    <link port="DDFSingleTokenCommutator.input" relation="relation"/>
+    <link port="DDFSingleTokenCommutator.output" relation="relation9"/>
+    <link port="1:BooleanToAnything.input" relation="relation3"/>
+    <link port="1:BooleanToAnything.output" relation="relation17"/>
+    <link port="1:Switch.input" relation="relation9"/>
+    <link port="1:Switch.output" relation="relation2"/>
+    <link port="1:Switch.control" relation="relation17"/>
+    <link port="Test.input" relation="relation9"/>
+    <link port="Test.output" relation="relation3"/>
+</entity>

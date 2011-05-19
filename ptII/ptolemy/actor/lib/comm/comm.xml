@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="communications" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+<!-- entity name="DensityEstimator" class="ptolemy.actor.lib.comm.DensityEstimator"/ -->
+
+<entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder"/>
+<entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler"/>
+
+<!-- entity name="FlipFlop" class="ptolemy.actor.lib.comm.FlipFlop"/ -->
+
+<entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode"/>
+<entity name="HammingCoder" class="ptolemy.actor.lib.comm.HammingCoder"/>
+<entity name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder"/>
+<entity name="HuffmanCoder" class="ptolemy.actor.lib.comm.HuffmanCoder"/>
+<entity name="HuffmanDecoder" class="ptolemy.actor.lib.comm.HuffmanDecoder"/>
+<entity name="LempelZivCoder" class="ptolemy.actor.lib.comm.LempelZivCoder"/>
+<entity name="LempelZIvDecoder" class="ptolemy.actor.lib.comm.LempelZivDecoder"/>
+<entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
+<entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
+<entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
+<entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler"/>
+<entity name="Slicer" class="ptolemy.actor.lib.comm.Slicer"/>
+<entity name="TrellisDecoder" class="ptolemy.actor.lib.comm.TrellisDecoder"/>
+<entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder"/>
+     </group>
+    ?>
+  </configure>
+</entity>
+
+

@@ -1,0 +1,143 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SoundGenerator" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="3.2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 35.0]">
+        </property>
+    </property>
+    <property name="C Emachine Framework Generator" class="ptolemy.domains.giotto.cgc.GiottoCEmachineFrameworkGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 65}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {232, 254, 815, 516}, maximized = false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Sound_Gen0" class="ptolemy.domains.giotto.cgc.CActor">
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
+        </property>
+        <port name="output1" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="output"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1500">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sound_Gen2" class="ptolemy.domains.giotto.cgc.CActor">
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 215.0]">
+        </property>
+        <port name="output1" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="output"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1500">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sound_Gen3" class="ptolemy.domains.giotto.cgc.CActor">
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 290.0]">
+        </property>
+        <port name="output1" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="output"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1500">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sound_Gen1" class="ptolemy.domains.giotto.cgc.CActor">
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 135.0]">
+        </property>
+        <port name="output1" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="output"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1500">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Mixer" class="ptolemy.domains.giotto.cgc.CActor">
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 190.0]">
+        </property>
+        <port name="input" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="input"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+        </port>
+        <port name="input2" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="input"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+        </port>
+        <port name="input3" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="input"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+        </port>
+        <port name="input4" class="ptolemy.domains.giotto.cgc.CPort">
+            <property name="input"/>
+            <property name="initialOutputValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Sound_Gen0.output1" relation="relation"/>
+    <link port="Sound_Gen2.output1" relation="relation3"/>
+    <link port="Sound_Gen3.output1" relation="relation4"/>
+    <link port="Sound_Gen1.output1" relation="relation2"/>
+    <link port="Mixer.input" relation="relation"/>
+    <link port="Mixer.input2" relation="relation2"/>
+    <link port="Mixer.input3" relation="relation3"/>
+    <link port="Mixer.input4" relation="relation4"/>
+</entity>

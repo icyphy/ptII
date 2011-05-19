@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>HysteresisWithBernoulliLosses</title>
+</head>
+<body>
+<h1>HysteresisWithBernoulliLosses</h1>
+This model demonstrates the use of a modal model to 
+implement hysteresis, but where, with a specified 
+probability, the model fails to switch levels on 
+decting a threshold crossing. Instead, the switch
+happens after some delay. Note that the amount of
+delay in this model is not explicitly specified. It
+depends on not only the probablity of the failure
+but also the step size used by the ODE solver. 
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+HysteresisWithBernoulliLosses is available as:
+<ul>
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "HysteresisWithBernoulliLosses.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="HysteresisWithBernoulliLossesVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+</p>
+
+</body>
+</htm>

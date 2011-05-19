@@ -1,0 +1,242 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="memory" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[603, 455]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[103, 100]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 46.0">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model plots the amount of free
+memory and total memory that is reported
+by the JVM.  
+To request a Garbage Collection, do
+View -&gt; JVM Properties and hit the
+'Request Garbage Collection' button.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, -5.0">
+        </property>
+    </property>
+    <property name="interval" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 100.0">
+        </property>
+    </property>
+    <entity name="Total Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input + totalMemory()">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 165.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="long">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="long">
+            </property>
+        </port>
+    </entity>
+    <entity name="Total Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 165.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Free Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input+freeMemory()">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 275.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="LongToDouble" class="ptolemy.actor.lib.conversions.LongToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 275.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Free Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 275.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+        <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="interval">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 165.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
+        <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="interval">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 275.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Total, Free">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="persistence" class="ptolemy.data.expr.Parameter" value="900">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 214.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>JVM Memory Usage</title>
+<xLabel>Time (ms.)</xLabel>
+<yLabel>Bytes</yLabel>
+<xRange min="0.0" max="560000.0"/>
+<yRange min="805160.0" max="5500928.0"/>
+<wrap/>
+<default marks="points"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="1:LongToDouble" class="ptolemy.actor.lib.conversions.LongToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 165.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Total Expression.output" relation="relation2"/>
+    <link port="Total Expression.input" relation="relation"/>
+    <link port="Total Ramp.output" relation="relation"/>
+    <link port="Free Expression.output" relation="relation5"/>
+    <link port="Free Expression.input" relation="relation6"/>
+    <link port="LongToDouble.input" relation="relation5"/>
+    <link port="LongToDouble.output" relation="relation10"/>
+    <link port="Free Ramp.output" relation="relation6"/>
+    <link port="Sleep.input" relation="relation3"/>
+    <link port="Sleep.output" relation="relation16"/>
+    <link port="Sleep2.input" relation="relation10"/>
+    <link port="Sleep2.output" relation="relation17"/>
+    <link port="SequenceScope.input" relation="relation16"/>
+    <link port="SequenceScope.input" relation="relation17"/>
+    <link port="1:LongToDouble.input" relation="relation2"/>
+    <link port="1:LongToDouble.output" relation="relation3"/>
+</entity>

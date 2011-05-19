@@ -1,0 +1,38 @@
+#!/bin/sh
+# $Id$
+# Check for possibly messed up <pre>...</pre> statements
+
+javafilenames=/tmp/jpre
+if [ ! -f $javafilenames ]; then
+   if [ ! -f /tmp/f ]; then
+      echo "Generating list of files"
+      $PTII/adm/bin/ptIItxtfiles > /tmp/f
+   fi      
+   echo "Generating list of java files that contain <pre> (case insensitive)"
+   cat /tmp/f | egrep ".java$" | xargs grep -il "<pre>" > $javafilenames
+fi
+
+prefilenames=/tmp/prefilesnames
+rm -f $prefilenames
+javafiles=`cat $javafilenames`
+for javafile in $javafiles
+do
+	grep -q '<pre>' $javafile
+	results=$?
+	if [ $results = 1 ]; then
+	   continue;
+	fi 
+	awk '$0 ~ /<pre>/ { sawPre = 1}
+	$0 ~ /<\/pre>/ { sawPre = 0}
+	$0 ~ /<PRE>/ { sawPre = 1}
+	$0 ~ /<\/PRE>/ { sawPre = 0}
+	(sawPre == 1 && $0 ~ /---/) {print FILENAME}
+	' $javafile >> $prefilenames
+done
+prefiles=`cat $prefilenames | sort | uniq`
+for prefile in $prefiles
+do
+	echo $prefile
+	svn annotate $prefile | grep '<pre>'
+	`svn annotate $prefile | grep '<pre>' | head -1 | awk -v file=$prefile '{print "svn diff -r", $1 - 1 ":" $1, file}'`
+done

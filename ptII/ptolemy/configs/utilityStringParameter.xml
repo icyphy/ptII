@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Parameter. -->
+<property name="StringParameter" class="ptolemy.data.expr.StringParameter">
+  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}"/>
+  </property>
+  <property name="_smallIconDescription" 
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20"
+              style="font-size:14; font-family:SansSerif; fill:red"
+              y="20">-S-</text>
+      </svg>
+    </configure>
+  </property>
+  <property name="_editorFactory"
+            class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
+</property>

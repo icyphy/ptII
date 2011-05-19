@@ -1,0 +1,10 @@
+#!/bin/sh
+homedir=`pwd`
+dirs=`find . -name SCCS -print`
+for dir in $dirs
+do
+	echo $dir
+	cd $homedir
+	cd $dir/..
+	sccs get SCCS
+done

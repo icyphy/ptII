@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="testClass" extends="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="prop" class="ptolemy.data.expr.Parameter">
+    </property>
+    <port name="port" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="c" class="ptolemy.kernel.ComponentEntity">
+    </entity>
+</class>

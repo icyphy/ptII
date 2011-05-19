@@ -1,0 +1,240 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="logic" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="SDF3" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 25.0">
+        </property>
+    </property>
+    <entity name="Equals0" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="272.0, 108.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Pulse1" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, true, true}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="111.0, 102.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="2:Pulse1" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="113.0, 169.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="3:Pulse1" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true, true}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="112.0, 239.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="411.0, 37.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="LogicalNot11" class="ptolemy.actor.lib.logic.LogicalNot">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 187.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="12:Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="521.0, 188.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="LogicFunction14" class="ptolemy.actor.lib.logic.LogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 258.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="1:12:Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="449.0, 267.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="3:LogicFunction14" class="ptolemy.actor.lib.logic.LogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 336.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="6:1:12:Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="458.0, 338.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="340.0, 96.0">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="181.0, 103.0">
+        </vertex>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="198.0, 174.0">
+        </vertex>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="223.0, 209.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Equals0.input" relation="relation15"/>
+    <link port="Equals0.input" relation="relation16"/>
+    <link port="Equals0.input" relation="relation17"/>
+    <link port="Equals0.output" relation="relation10"/>
+    <link port="Pulse1.output" relation="relation15"/>
+    <link port="2:Pulse1.output" relation="relation16"/>
+    <link port="3:Pulse1.output" relation="relation17"/>
+    <link port="Test9.input" relation="relation10"/>
+    <link port="LogicalNot11.input" relation="relation10"/>
+    <link port="LogicalNot11.output" relation="relation13"/>
+    <link port="12:Test9.input" relation="relation13"/>
+    <link port="LogicFunction14.input" relation="relation15"/>
+    <link port="LogicFunction14.input" relation="relation16"/>
+    <link port="LogicFunction14.input" relation="relation17"/>
+    <link port="LogicFunction14.output" relation="relation2"/>
+    <link port="1:12:Test9.input" relation="relation2"/>
+    <link port="3:LogicFunction14.input" relation="relation15"/>
+    <link port="3:LogicFunction14.input" relation="relation16"/>
+    <link port="3:LogicFunction14.input" relation="relation17"/>
+    <link port="3:LogicFunction14.output" relation="relation7"/>
+    <link port="6:1:12:Test9.input" relation="relation7"/>
+</entity>

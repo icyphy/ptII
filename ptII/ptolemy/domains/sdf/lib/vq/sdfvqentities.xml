@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<entity name="VectorQuantization" class="ptolemy.moml.EntityLibrary">
+  <configure>
+      <group>
+  <doc>Image processing actors</doc>
+
+<entity name="HTVQEncode" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
+</entity>
+
+<entity name="ImageContrast" class="ptolemy.domains.sdf.lib.vq.ImageContrast">
+</entity>
+
+<entity name="ImageDisplay" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+</entity>
+
+<entity name="ImagePartition" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
+</entity>
+
+<entity name="ImageSequence" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
+</entity>
+
+<entity name="ImageUnpartition" class="ptolemy.domains.sdf.lib.vq.ImageUnpartition">
+</entity>
+
+<entity name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
+</entity>
+
+<entity name="VQDecode" class="ptolemy.domains.sdf.lib.vq.VQDecode">
+</entity>
+
+      </group>
+  </configure>
+</entity>

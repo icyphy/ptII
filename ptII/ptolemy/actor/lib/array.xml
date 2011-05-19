@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Array" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Array manipulation actors</doc>
+
+<entity name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend"/>
+<entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage"/>
+<entity name="ArrayContains" class="ptolemy.actor.lib.ArrayContains"/>
+<entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement"/>
+<entity name="ArrayElementAsMatrix" class="ptolemy.actor.lib.ArrayElementAsMatrix"/>
+<entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract"/>
+<entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength"/>
+<entity name="ArrayLevelCrossing" class="ptolemy.actor.lib.ArrayLevelCrossing"/>
+<entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum"/>
+<entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum"/>
+<entity name="ArrayPeakSearch" class="ptolemy.actor.lib.ArrayPeakSearch"/>
+<entity name="ArrayRemoveElement" class="ptolemy.actor.lib.ArrayRemoveElement"/>
+<entity name="ArraySort" class="ptolemy.actor.lib.ArraySort"/>
+<entity name="ArraySum" class="ptolemy.actor.lib.ArraySum"/>
+<entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements"/>
+<entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence"/>
+<entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray"/>
+<entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

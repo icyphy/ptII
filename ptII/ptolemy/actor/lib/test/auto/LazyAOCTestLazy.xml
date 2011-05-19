@@ -1,0 +1,155 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LazyAOCTestLazy" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 60}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 109, 859, 502}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[646, 392]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.0, 196.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an example that works fine as TypedCompositeActors,&#10;but fails when converted to LazyTypedCompositeActors.&#10;&#10;If this model is called LazyAOCTestNonLazy.xml, then it&#10;contains TypedCompositeActors and a class hierarchy.&#10;The non lazy version runs fine.&#10;&#10;If this model is called LazyAOCTestLazy.xml, then it was&#10;created by running&#10;&#10;$PTII/bin/convertToLazy LazyAOCTestNonLazy.xml 0 &gt; LazyAOCTestLazy.xml &#10;&#10;The Lazy version fails to run.  ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
+        </property>
+    </property>
+    <class name="MyInnerClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="MyCategory" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{264.763671875, 280.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 55.0]">
+        </property>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{288.0400390625, 125.234375}">
+            </property>
+        </entity>
+    </class>
+    <class name="MyClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 55.0]">
+        </property>
+        <entity name="Foo_Bar" class="MyInnerClass">
+            <property name="MyCategory" class="ptolemy.data.expr.StringParameter" value="Foo_Bar">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 205.0]">
+            </property>
+        </entity>
+    </class>
+    <class name="MyOuterClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="myGroup" class="ptolemy.data.expr.StringParameter" value="Temp">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{252.548828125, 280.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 55.0]">
+        </property>
+        <entity name="MyClassInstance" class="MyClass">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{284.6357421875, 126.283203125}">
+            </property>
+            <entity name="MyTypecComposite" class="ptolemy.actor.TypedCompositeActor">
+                <property name="MyParameterPort" class="ptolemy.actor.parameters.PortParameter" value="0.02">
+                </property>
+                <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+        </entity>
+    </class>
+    <entity name="MyComposite" class="ptolemy.actor.LazyTypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 55.0]">
+        </property>
+        <configure>
+            <group>
+                <entity name="AComposite" class="ptolemy.actor.LazyTypedCompositeActor">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{296.1259765625, 206.1015625}">
+                    </property>
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                    </property>
+                    <configure>
+                        <group>
+                            <entity name="MyOuterClassInstance1" class="MyOuterClass">
+                                <property name="myGroup" class="ptolemy.data.expr.StringParameter" value="MyOuterClass1">
+                                </property>
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 125.0}">
+                                </property>
+                                <entity name="MyClassInstance" class="MyClass">
+                                    <entity name="MyTypecComposite" class="ptolemy.actor.TypedCompositeActor">
+                                        <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+                                            <property name="input"/>
+                                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-375.0, 225.0}">
+                                            </property>
+                                        </port>
+                                    </entity>
+                                </entity>
+                            </entity>
+                            <entity name="MyOuterClassInstance2" class="MyOuterClass">
+                                <property name="myGroup" class="ptolemy.data.expr.StringParameter" value="MyOuterClass2">
+                                </property>
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="{288.4599609375, 286.283203125}">
+                                </property>
+                                <entity name="MyClassInstance" class="MyClass">
+                                    <entity name="MyTypecComposite" class="ptolemy.actor.TypedCompositeActor">
+                                        <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+                                            <property name="input"/>
+                                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-375.0, 225.0}">
+                                            </property>
+                                        </port>
+                                    </entity>
+                                </entity>
+                            </entity>
+                        </group>
+                    </configure>
+                </entity>
+            </group>
+        </configure>
+    </entity>
+</entity>
+

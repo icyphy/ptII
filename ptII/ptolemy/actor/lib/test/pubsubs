@@ -1,0 +1,19 @@
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub2.xml >&  pubsub2.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub10.xml >&  pubsub10.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub20.xml >&  pubsub20.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub50.xml >&  pubs
+ub50.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub100.xml >&  pubsub100.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub200.xml >&  pubsub200.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub300.xml >&  pubsub300.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub400.xml >&  pubsub400.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub500.xml >&  pubsub500.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub600.xml >&  pubsub600.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub700.xml >&  pubsub700.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub800.xml >&  pubsub800.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub900.xml >&  pubsub900.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub1000.xml >&  pubsub1000.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub2000.xml >&  pubsub2000.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub5000.xml >&  pubsub5000.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub10000.xml >&  pubsub10000.out
+java -Xmx1600M -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication pubsub20000.xml >&  pubsub20000.out

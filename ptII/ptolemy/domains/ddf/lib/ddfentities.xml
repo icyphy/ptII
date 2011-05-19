@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DynamicDataFlow" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Dynamic dataflow actors</doc>
+
+<entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion"/>
+
+<!-- Use actor.lib.BooleanSelect instead of DDFBooleanSelect -->
+<!-- entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect"/-->
+
+<!-- Use actor.lib.OrderedMerge instead of DDFOrderedMerge -->
+<!-- entity name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge"/-->
+
+<!-- Use actor.lib.Select instead of DDFSelect -->
+<!--entity name="DDFSelect" class="ptolemy.domains.ddf.lib.DDFSelect"/-->
+
+<entity name="DDFSingleTokenCommutator" class="ptolemy.domains.ddf.lib.DDFSingleTokenCommutator"/>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+

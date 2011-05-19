@@ -1,0 +1,31 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Model Display</TITLE>
+<BODY>
+<H1>Model Display</H1>
+<P>
+The model below modifies a model produced by the
+<a href="ModelGenerator.htm">ModelGenerator</a> example
+in order to get animation. It creates MoML text to
+modify the colors of the circles.
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+ModelDisplay is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "ModelDisplay.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="ModelDisplayVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</BODY>
+</HTML>

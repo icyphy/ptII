@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Select2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 60}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 1032, 746}, maximized = true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 314.0}">
+    </property>
+    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="Select" class="ptolemy.actor.lib.Select">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 275.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[185.0, 315.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation3"/>
+    <link port="SingleEvent2.output" relation="relation4"/>
+    <link port="Merge.input" relation="relation3"/>
+    <link port="Merge.input" relation="relation4"/>
+    <link port="Merge.output" relation="relation5"/>
+    <link port="Select.input" relation="relation5"/>
+    <link port="Select.input" relation="relation4"/>
+    <link port="Select.output" relation="relation2"/>
+    <link port="Select.control" relation="relation4"/>
+    <link port="Test.input" relation="relation2"/>
+</entity>

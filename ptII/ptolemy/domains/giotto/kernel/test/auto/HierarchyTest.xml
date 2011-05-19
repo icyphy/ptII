@@ -1,0 +1,106 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HierarchyTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+            <doc>Number of iterations in an execution.</doc>
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 46.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 151, 798, 468}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 175.0}">
+    </property>
+    <entity name="Source" class="ptolemy.actor.lib.Const">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 165.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="Composite A" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 115.0">
+        </property>
+    </entity>
+    <entity name="Composite B" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 200.0">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 3, 5, 7, 9, 11, 13, 15}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="1:NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 7, 11, 15, 19, 23, 27, 31}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 200.0">
+        </property>
+    </entity>
+    <entity name="Composite C" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 280.0]">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{7, 15, 23, 31, 39, 47, 55, 63}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 280.0]">
+        </property>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="165.0, 165.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Source.output" relation="r1"/>
+    <link port="Composite A.input" relation="r1"/>
+    <link port="Composite A.output" relation="relation"/>
+    <link port="Composite B.input" relation="r1"/>
+    <link port="Composite B.output" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="1:NonStrictTest.input" relation="relation2"/>
+    <link port="Composite C.input" relation="r1"/>
+    <link port="Composite C.output" relation="relation3"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
+</entity>

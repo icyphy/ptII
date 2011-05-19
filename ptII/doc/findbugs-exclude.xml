@@ -1,0 +1,79 @@
+<FindBugsFilter>
+    <!-- ApplianceTest etc. are part of the x10 sources in vendors/ -->
+    <Match classregex="ApplianceTest"/>
+    <Match classregex="DocTest"/>
+    <Match classregex="IDTest"/>
+    <Match classregex="LightTest"/>
+    <Match classregex="MasterTest"/>
+    <Match classregex="X10SerialServer"/>
+    <Match classregex="X10SerialServerTest"/>
+    <Match classregex="antlr.*"/>
+    <Match classregex="bsh.*"/>
+    <Match classregex="caltrop.*"/>
+    <Match classregex="cern.*"/>
+    <Match classregex="chic.*"/>
+    <Match classregex="com.centralnexus.input.*"/>
+    <Match classregex="COM.claymoresystems.*"/>
+    <Match classregex="com.coi.tools.os.win.*"/>
+    <Match classregex="com.ibm.*"/>
+    <Match classregex="com.izforge.*"/>
+    <Match classregex="com.jgoodies.*"/>
+    <Match classregex="com.mysql.*"/>
+    <Match classregex="com.oroinc.*"/>
+    <Match classregex="com.sun.*"/>
+    <Match classregex="com.ziclix.*"/>
+    <Match classregex="cryptix.*"/>
+    <Match classregex="dependenceAnalyzer.*"/>
+    <Match classregex="de.cau.cs.*"/>
+    <Match classregex="edu.cornell.*"/>
+    <Match classregex="edu.umd.*"/>
+    <Match classregex="gnu.*"/>
+    <Match classregex="interfaces.*"/>
+    <Match classregex="jas.*"/>
+    <Match classregex="jasmin.*"/>
+    <Match classregex="java_cup.*"/>
+    <Match classregex="javatests.*"/>
+    <Match classregex="javax.*"/>
+    <Match classregex="jcc.*"/>
+    <Match classregex="jdepend.*"/>
+    <Match classregex="jni.*"/>
+    <Match classregex="jode.*"/>
+    <Match classregex="jxta.*"/>
+    <Match classregex="mapss.*"/>
+    <Match classregex="net.*"/>
+    <Match classregex="net.tinyos.*"/>
+    <Match classregex="netscape.*"/>
+    <Match classregex="oracle.*"/>
+    <Match classregex="org.apache.*"/>
+    <Match classregex="org.beepcore.*"/>
+    <Match classregex="org.bouncycastle.*"/>
+    <Match classregex="org.dom4j.*"/>
+    <Match classregex="org.eclipse.*"/>
+    <Match classregex="org.jaxen.*"/>
+    <Match classregex="org.jdom.*"/>
+    <Match classregex="org.mlc.*"/>
+    <Match classregex="org.objectweb.*"/>
+    <Match classregex="org.python.*"/>
+    <Match classregex="polyglot.*"/>
+    <Match classregex="ppg.*"/>
+    <Match classregex="ptolemy.data..*Parser.*"/>
+    <Match classregex="ptolemy.data.unit.UParser"/>
+    <Match classregex="ptolemy.data.unit.UParserTokenManager"/>
+    <Match classregex="scm.*"/>
+    <Match classregex="soot.*"/>
+    <Match classregex="sun.net.*"/>
+    <Match classregex="text.*"/>
+    <Match classregex="tcl.*"/>
+    <Match classregex="test.*"/>
+    <Match classregex="util.ClassnameFilterList"/>
+    <Match classregex="vendors.vr.*"/>
+    <Match classregex="vm.*"/>
+    <Match classregex="xjava.*"/>
+    <Match classregex=".*">
+       <!-- Exclude Serializable warnings -->
+       <!-- Exclude class names shouldn't shadow simple name of super class
+            because cg adapters shadow. -->
+       <!-- Exclude class is Serializable; consider declaring a serialVersionUID -->
+       <BugCode name="Nm,Se,SnVI" />
+    </Match>
+</FindBugsFilter>

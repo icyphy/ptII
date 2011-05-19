@@ -1,0 +1,68 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>ptolemy.actor.gui.properties</title>
+</head>
+<body>
+The ptolemy.actor.gui.properties package, used to augment the toolbar
+with user defined buttons.
+
+<h1>Configurable User Interface</h1>
+ 
+ <p>The user interface of Ptolemy II (vergil) can be configured with XML files. Those XML files
+ are the configuration files located in directory ptolemy/configs and its subdirectories. By
+ default, when vergil is started up, the configuration ptolemy/configs/defaultFullConfiguration.xml
+ is used.</p>
+ 
+ <p>The startup configuration controls several settings of the Ptolemy II environment, including its
+ user interface. It may also link to other configuration files.</p>
+ 
+ <p>The tableauFactory section of defaultFullConfiguration.xml specifies the tableaus (i.e., editors)
+ to be used when certain types of models are opened in the environment. For example, a modalTableauFactory
+ is used to open any modal model. At the time a model is opened, the tableaus in the tableauFactory section
+ are tried one by one, until a tableau that can handle the model is found. In general, tableau factories
+ that can handle more general types of models are usually placed after the more specific ones.</p>
+ 
+ <p>The defaultFullConfiguration.xml file links to graphTableauFactory.xml that specifies one of the most
+ general-purpose tableau for actor models. The latter file defines how such a tableau looks like. The
+ default menus and tool bar buttons are created in Java, so there is no description about them in the XML
+ file. However, users may enhance the tableau with more graphical elements.</p>
+ 
+ <p>For example, if the following text is added before the last "&lt;/property&gt;" in graphTableauFactory.xml, then
+ a new button with text "Const" appears at the end of the graph tableau's tool bar, whose function is to create
+ a Const actor in the middle of the current model:
+ <pre>  &lt;property name="Graph Editor"
+           class="ptolemy.vergil.actor.ActorGraphTableau$Factory"&gt;
+   &lt;configure&gt;
+     &lt;property name="toolbar" class="ptolemy.actor.gui.properties.ToolBar"&gt;
+       <font color="red">&lt;property name="Const" class="ptolemy.actor.gui.properties.Button"&gt;
+         <font color="blue">&lt;configure&gt;
+           &lt;entity name="Const" class="ptolemy.actor.lib.Const"&gt;
+           &lt;/entity&gt;
+         &lt;/configure&gt;</font>
+       &lt;/property&gt;</font>
+     &lt;/property&gt;
+   &lt;/configure&gt;
+ &lt;/property&gt;</pre>
+
+ <p>Here the <font color="red">red</font> text serves to add the button. The
+ <font color="blue">blue</font> text specifies the action to be taken when the button is pressed.
+ The action is written in MoML contained in a the &lt;configure&gt; element. The rest of the text
+ sets the context for the button. It does not create anything because the editor and the tool bar
+ in it are created originally in Java.</p>
+ 
+ <p>The Button class, as well as several other classes for objects in the user interface, are
+ defined in package ptolemy.actor.gui.properties. By creating more classes in a similar way, the
+ user may create any GUI objects supported by Java. Attributes of existing objects may also be
+ enhanced by editing the existing classes.</p>
+ 
+ <p>An example of usage is provided in ptolemy/configs/layout, which contains the configuration
+ files for the automatic layout configuration for Ptolemy II. To start vergil with that
+ configuration, the <tt>-layout</tt> parameter must be provided to the JVM at startup time. (With
+ that parameter, configuration.xml in ptolemy/configs/layout is used as the configuration rather
+ than defaultFullConfiguration.xml in ptolemy/configs.</p>
+
+<p>
+@since Ptolemy II 7.2
+</body>
+</html>

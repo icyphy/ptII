@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="directory">
+  <entity name="doc" class="ptolemy.actor.gui.HTMLEffigy">
+    <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
+      <property name="size" value="[650, 460]"/>
+      <property name="url" value="ptolemy/configs/visualsense/intro.htm"/>
+    </entity>
+  </entity>
+</entity>

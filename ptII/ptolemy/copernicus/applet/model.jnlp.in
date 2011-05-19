@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     @ptIILocalURL@
+-->
+<!-- href is needed so that web start can cache the app and
+     it will appear in the desktop icon
+-->
+<jnlp codebase="@ptIILocalURL@"
+      href="@ptIILocalURL@@targetPath@@sanitizedModelName@.jnlp"> 
+<!-- jnlp
+      codebase="file:./@codeBase@" 
+      href="@targetPath@@sanitizedModelName@.jnlp"-->
+  <information>
+	  <title>@sanitizedModelName@</title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description kind="tooltip">@sanitizedModelName@</description>
+	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <homepage href="@ptIILocalURL@"/>
+	  <offline-allowed/>
+  </information>
+  <security> 
+        <all-permissions/>
+  </security> 
+
+  <resources>
+        <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
+  	<j2se version="1.6+" max-heap-size="500m" />
+	<!-- Start Jars -->
+@jnlpJars@
+	<!-- End Jars -->
+  </resources>
+  <application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
+	<argument>@configurationName@</argument>
+	<argument>@sanitizedModelName@.xml</argument>
+  </application-desc>
+  <!-- applet-desc 
+         name="@sanitizedModelName@ Applet"
+         main-class="ptolemy.vergil.VergilApplet"
+         width="@vergilWidth@"
+         height="@vergilHeight@">
+   </applet-desc-->
+
+
+</jnlp>

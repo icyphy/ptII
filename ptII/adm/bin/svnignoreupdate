@@ -1,0 +1,63 @@
+#!/bin/sh
+# $Id$
+# Update svn:ignore
+
+statusFile=/tmp/svnignoreupdate.statusFile.$$
+svnIgnoreFile=/tmp/svnignoreupdate.svnIgnoreFile.$$
+svnIgnoreJarFile=/tmp/svnignoreupdate.svnIgnoreJarFile.$$
+
+svn status | egrep '^\?' | awk '{print $2}' > $statusFile
+
+classDirs=`egrep ".class$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for classDir in $classDirs
+do
+    echo $classDir
+    svn propget svn:ignore $classDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo '*.class' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $classDir
+done
+
+alljtestsDirs=`egrep "alljtests.tcl$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for alljtestsDir in $alljtestsDirs
+do
+    echo $alljtestsDir
+    svn propget svn:ignore $alljtestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo 'alljtests.tcl' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $alljtestsDir
+done
+
+
+alljsimpletestsDirs=`egrep "alljsimpletests.tcl$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for alljsimpletestsDir in $alljsimpletestsDirs
+do
+    echo $alljsimpletestsDir
+    svn propget svn:ignore $alljsimpletestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo 'alljsimpletests.tcl' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $alljsimpletestsDir
+done
+
+jarDirs=`egrep "\.jar$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for jarDir in $jarDirs
+do
+    basedir=`basename $jarDir`
+    if [ -f $jarDir/${basedir}.jar -o $jarDir/signed_${basedir}.jar ]; then
+	echo $jarDir
+	svn propget svn:ignore $jarDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+	if [ -f $svnIgnoreFile ]; then 
+	    cp $svnIgnoreFile $svnIgnoreJarFile
+        else
+	    rm $svnIgnoreJarFile
+	    touch $svnIgnoreJarFile
+        fi
+	if [ -f $jarDir/${basedir}.jar ]; then
+	    echo "${basedir}.jar" >> $svnIgnoreFile
+        fi
+	if [ -f $jarDir/signed_${basedir}.jar ]; then
+	    echo "signed_${basedir}.jar" >> $svnIgnoreFile
+        fi	    
+	#diff $svnIgnoreJarFile $svnIgnoreFile
+	svn propset svn:ignore -F $svnIgnoreFile $jarDir
+    fi	
+done
+
+#rm -f $statusFile

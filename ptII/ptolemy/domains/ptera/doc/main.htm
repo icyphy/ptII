@@ -1,0 +1,35 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy Event Relation Actor (PTERA) Domain</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Ptolemy Event Relation Actor (PTERA) Domain</h1>
+<p>The Ptera (Ptolemy Event Relation Actor) domain is a discrete-event model of computation. A model in Ptera is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
+at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
+queue to be emptied after their actions are performed, and therefore no more events can be processed.
+
+<p>The Ptera domain supports a different kind of modal models called PteraModalModels, compared to modal models using FSMs (Finite State Machines) as the control. A PteraModalModel uses Ptera at the top level, and each event is refined into a sub-model. The refinements can use Ptera and any other Ptolemy models of computation.
+
+<p>A Ptera model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or Ptera domain itself are recommended. When embedded in those domains, the scheduling of the Ptera model is delegated to the container by calling the fireAt() function of its director.
+
+<p>There are many useful additional features for Ptera, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
+Events may also have parameters, and the actual values for those parameters are specified by the expressions on the edges that schedule them. Those expressions are evaluated at run-time. The events may refer to the values of those parameters in their actions by parameter names.
+
+<p>
+
+
+<H2>References</H2>
+<OL>
+<li> Lee W. Schruben, "Simulation Modeling with Event Graphs," Communications of the ACM (CACM), 26(11): 957-963, 1983.
+<br><i>Ptera is based on Lee W. Schruben's Event Graphs.</i></li>
+<li> T. H. Feng, E. A. Lee, L. W. Schruben, "<a href="http://chess.eecs.berkeley.edu/pubs/680.html" target="_top">Ptera: An Event-Oriented Model of Computation for Heterogeneous Systems</a>", EMSOFT, October 24-29, 2010, Scottsdale, Arizona, USA, ACM Press.
+  <br><i>A short explanation of Ptera.</i></li>
+<li> Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2009-77, May 20, 2009.
+  <br><i>See chapter three for an explanation of Ptera.</i></li>
+</OL>
+
+</body>
+</html>

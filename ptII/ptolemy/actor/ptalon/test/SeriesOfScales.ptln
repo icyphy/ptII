@@ -1,0 +1,7 @@
+SeriesOfScales is {
+	actor Scale = ptolemy.actor.lib.Scale;
+	actor Series = ptalonActor:ptolemy.actor.ptalon.test.Series;
+	parameter numberOfScales;
+	parameter scaleFactor;
+	Series(n := [[numberOfScales]], transformer := Scale(factor := [[scaleFactor]]));
+}

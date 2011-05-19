@@ -1,0 +1,535 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="CarLightNormal" extends="ptolemy.domains.modal.modal.ModalModel">
+    <property name="_Director" class="ptolemy.domains.modal.kernel.FSMDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0,44.693359375}">
+        </property>
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -45.0]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <port name="Pgo" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="output"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{208.0,241.92031860351562}">
+        </property>
+    </port>
+    <port name="Pstop" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="output"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{208.0,182.07968139648438}">
+        </property>
+    </port>
+    <port name="Sec" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="input"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{38.0,120.49882507324219}">
+        </property>
+    </port>
+    <port name="CarLight" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="output"/>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{208.0,123.10038757324219}">
+        </property>
+    </port>
+    <port name="OtherPgo" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{38.0,182.80038452148438}">
+        </property>
+    </port>
+    <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 221, 1101, 608}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[878, 494]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{438.9999999999999, 247.0}">
+        </property>
+        <property name="count" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 125.0]">
+            </property>
+        </property>
+        <property name="RedStart" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 40.0]">
+            </property>
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 125.0]">
+            </property>
+        </property>
+        <property name="LightsToWait" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 60.0]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0,141.09336853027344}">
+        </property>
+        <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 255.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 300.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 200.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="CarLight" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 210.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="OtherPgo" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 260.0]">
+            </property>
+        </port>
+        <entity name="Cinit" class="ptolemy.domains.modal.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 245.0]">
+            </property>
+        </entity>
+        <entity name="Cred" class="ptolemy.domains.modal.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[238.73081970214844, 113.99018287658691]">
+            </property>
+        </entity>
+        <entity name="Credyel" class="ptolemy.domains.modal.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[563.7308197021484, 193.9901828765869]">
+            </property>
+        </entity>
+        <entity name="Cgrn" class="ptolemy.domains.modal.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[388.73081970214844, 403.9901828765869]">
+            </property>
+        </entity>
+        <entity name="Cyel" class="ptolemy.domains.modal.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[113.73081970214844, 188.9901828765869]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="RedStart">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=0;&#10;Pgo=1">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count=0;&#10;step=0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5628632617440648">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.0291008041952283">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count==1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count=0;&#10;step=OtherPgo_isPresent?step+1:step">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7897083514109159">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.22514251398920565">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent&#10;  &amp;&amp; step==LightsToWait&#10;|| OtherPgo_isPresent&#10;  &amp;&amp; step==0x10+LightsToWait-1&#10;|| Sec_isPresent&#10;  &amp;&amp; OtherPgo_isPresent&#10;  &amp;&amp; step==LightsToWait-1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=2; Pstop=1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7961465809380771">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.194664627373548">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent&#10;&amp;&amp; count == 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.934440123468747">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.715512245212839">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=0; Pgo=1">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count=0; step=0">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4589165362323783">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6748664000268345">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count&lt;1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count=count+1;&#10;step=OtherPgo_isPresent?step+1:step">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.26054082069838">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.697278585860642">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count &lt; 1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.344608733526458">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.08483628954149453">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!RedStart">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=2;&#10;Pstop=1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count=0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5601968671229008">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.0616521356279995">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation9" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent&#10;&amp;&amp; !OtherPgo_isPresent&#10;&amp;&amp; step&lt;LightsToWait">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="step=step+0x10">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2232216179809563">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.600844002710242">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation10" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Sec_isPresent&#10;&amp;&amp; OtherPgo_isPresent&#10;&amp;&amp; step&lt;0x10+LightsToWait-1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="step=step+1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1807598580324616">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.2524295031528205">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation11" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OtherPgo_isPresent&#10;&amp;&amp; OtherPgo&#10;&amp;&amp; !Sec_isPresent">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="step=step+1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.183264728934517">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.2987359908918867">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation12" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent&#10;&amp;&amp; OtherPgo_isPresent&#10;&amp;&amp; step&lt;LightsToWait-1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="step=step+0x11">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.0678337107119185">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.3534348436064325">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <link port="Cinit.outgoingPort" relation="relation"/>
+        <link port="Cinit.outgoingPort" relation="relation8"/>
+        <link port="Cred.incomingPort" relation="relation"/>
+        <link port="Cred.incomingPort" relation="relation5"/>
+        <link port="Cred.incomingPort" relation="relation6"/>
+        <link port="Cred.incomingPort" relation="relation11"/>
+        <link port="Cred.outgoingPort" relation="relation2"/>
+        <link port="Cred.outgoingPort" relation="relation6"/>
+        <link port="Cred.outgoingPort" relation="relation11"/>
+        <link port="Credyel.incomingPort" relation="relation2"/>
+        <link port="Credyel.incomingPort" relation="relation9"/>
+        <link port="Credyel.incomingPort" relation="relation10"/>
+        <link port="Credyel.incomingPort" relation="relation12"/>
+        <link port="Credyel.outgoingPort" relation="relation3"/>
+        <link port="Credyel.outgoingPort" relation="relation9"/>
+        <link port="Credyel.outgoingPort" relation="relation10"/>
+        <link port="Credyel.outgoingPort" relation="relation12"/>
+        <link port="Cgrn.incomingPort" relation="relation3"/>
+        <link port="Cgrn.incomingPort" relation="relation7"/>
+        <link port="Cgrn.incomingPort" relation="relation8"/>
+        <link port="Cgrn.outgoingPort" relation="relation4"/>
+        <link port="Cgrn.outgoingPort" relation="relation7"/>
+        <link port="Cyel.incomingPort" relation="relation4"/>
+        <link port="Cyel.outgoingPort" relation="relation5"/>
+    </entity>
+    <relation name="PgoRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="PstopRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="SecRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="CarLightRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="OtherPgoRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Pgo" relation="PgoRelation"/>
+    <link port="Pstop" relation="PstopRelation"/>
+    <link port="Sec" relation="SecRelation"/>
+    <link port="CarLight" relation="CarLightRelation"/>
+    <link port="OtherPgo" relation="OtherPgoRelation"/>
+    <link port="_Controller.Pgo" relation="PgoRelation"/>
+    <link port="_Controller.Pstop" relation="PstopRelation"/>
+    <link port="_Controller.Sec" relation="SecRelation"/>
+    <link port="_Controller.CarLight" relation="CarLightRelation"/>
+    <link port="_Controller.OtherPgo" relation="OtherPgoRelation"/>
+</class>

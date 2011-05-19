@@ -1,0 +1,359 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ArrayPeakSearch3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 61, 815, 673}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 557]">
+    </property>
+    <entity name="ArrayPeakSearch" class="ptolemy.actor.lib.ArrayPeakSearch">
+        <property name="dip" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="squelch" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative power decibels">
+        </property>
+        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="endIndex" class="ptolemy.actor.parameters.PortParameter" value="MaxInt">
+        </property>
+        <property name="maximumNumberOfPeaks" class="ptolemy.data.expr.Parameter" value="MaxInt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 180.0">
+        </property>
+        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="endIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="peakValues" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="peakIndices" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{6.0, 10.0, 6.0, 10.0, 0.0}">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 180.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{10.0, 0.0, 10.0, 0.0}">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 95.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ArrayPeakSearch2" class="ptolemy.actor.lib.ArrayPeakSearch">
+        <property name="dip" class="ptolemy.data.expr.Parameter" value="6.0">
+        </property>
+        <property name="squelch" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative amplitude decibels">
+        </property>
+        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="endIndex" class="ptolemy.actor.parameters.PortParameter" value="MaxInt">
+        </property>
+        <property name="maximumNumberOfPeaks" class="ptolemy.data.expr.Parameter" value="MaxInt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 95.0">
+        </property>
+        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="endIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="peakValues" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="peakIndices" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{10.0, 10.0}, {0.0, 2.0}}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 95.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{6.0, 10.0, 0.0, 0.9, 0.0, 10.0, 0.0}">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 270.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ArrayPeakSearch3" class="ptolemy.actor.lib.ArrayPeakSearch">
+        <property name="dip" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="squelch" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative amplitude decibels">
+        </property>
+        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="endIndex" class="ptolemy.actor.parameters.PortParameter" value="MaxInt">
+        </property>
+        <property name="maximumNumberOfPeaks" class="ptolemy.data.expr.Parameter" value="MaxInt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 270.0">
+        </property>
+        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="endIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="peakValues" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="peakIndices" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{10.0}, {1.0}}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 180.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{10.0, 10.0}, {1.0, 5.0}}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 265.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{6.0, 10.0, 0.0, 0.9, 0.0, 10.0, 0.0}">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 370.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{10.0, 0.9, 10.0}, {1.0, 3.0, 5.0}}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 360.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ArrayPeakSearch4" class="ptolemy.actor.lib.ArrayPeakSearch">
+        <property name="dip" class="ptolemy.data.expr.Parameter" value="10*log10(2.0)">
+        </property>
+        <property name="squelch" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative amplitude decibels">
+        </property>
+        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="endIndex" class="ptolemy.actor.parameters.PortParameter" value="MaxInt">
+        </property>
+        <property name="maximumNumberOfPeaks" class="ptolemy.data.expr.Parameter" value="MaxInt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 365.0">
+        </property>
+        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="endIndex" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="peakValues" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="peakIndices" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ArrayPeakSearch.input" relation="relation"/>
+    <link port="ArrayPeakSearch.peakValues" relation="relation2"/>
+    <link port="ArrayPeakSearch.peakIndices" relation="relation3"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Const2.output" relation="relation5"/>
+    <link port="ArrayPeakSearch2.input" relation="relation5"/>
+    <link port="ArrayPeakSearch2.peakValues" relation="relation4"/>
+    <link port="ArrayPeakSearch2.peakIndices" relation="relation7"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation7"/>
+    <link port="Const3.output" relation="relation8"/>
+    <link port="ArrayPeakSearch3.input" relation="relation8"/>
+    <link port="ArrayPeakSearch3.peakValues" relation="relation6"/>
+    <link port="ArrayPeakSearch3.peakIndices" relation="relation9"/>
+    <link port="Test2.input" relation="relation2"/>
+    <link port="Test2.input" relation="relation3"/>
+    <link port="Test3.input" relation="relation6"/>
+    <link port="Test3.input" relation="relation9"/>
+    <link port="Const4.output" relation="relation11"/>
+    <link port="Test4.input" relation="relation10"/>
+    <link port="Test4.input" relation="relation12"/>
+    <link port="ArrayPeakSearch4.input" relation="relation11"/>
+    <link port="ArrayPeakSearch4.peakValues" relation="relation10"/>
+    <link port="ArrayPeakSearch4.peakIndices" relation="relation12"/>
+</entity>

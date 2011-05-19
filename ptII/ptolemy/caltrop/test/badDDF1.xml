@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="badDDF1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 187, 908, 563}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 445]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{346.5, 222.5}">
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 60.0]">
+        </property>
+    </property>
+    <entity name="GreaterThan5" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor GreaterThan5 () &#10;	In ==&gt; Out:&#10;  action [x] ==&gt; [true]&#10;	guard x &gt; 5&#10;  end&#10; action [x] ==&gt; [false]&#10;	guard x &lt;= 5&#10;  end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 150.0]">
+        </property>
+        <port name="In" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="Out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, true, true, true, true, true, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 150.0}">
+        </property>
+        <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) &#10;	==&gt; Out:&#10;&#10;  n := init;&#10;&#10;  action ==&gt; [old n]&#10;  do&#10;    n := n + step;&#10;  end&#10; action ==&gt; [1, old n]&#10;  do&#10;    n := n + step;&#10;  end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 150.0]">
+        </property>
+        <port name="Out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="GreaterThan5.In" relation="relation2"/>
+    <link port="GreaterThan5.Out" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Ramp2.Out" relation="relation2"/>
+</entity>

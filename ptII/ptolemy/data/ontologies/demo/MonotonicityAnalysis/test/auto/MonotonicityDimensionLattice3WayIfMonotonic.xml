@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MonotonicityDimensionLattice3WayIfMonotonic" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/DimensionSystemMonotonicitySolverModel.xml">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.MonotonicityDimensionLattice3WayIfMonotonic.Expression.expression&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.MonotonicityDimensionLattice3WayIfMonotonic.Expression.output&quot;}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 70.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={480, 97, 960, 630}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 513]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.953125">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{208.7314551767677, 144.4929766414142}">
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 70.0]">
+        </property>
+    </property>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= Acceleration) ? Unknown :&#10;(x &lt;= Velocity) ? Position :&#10;Conflict">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 145.0]">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+</entity>

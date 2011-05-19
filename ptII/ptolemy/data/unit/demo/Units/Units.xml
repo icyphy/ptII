@@ -1,0 +1,424 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Units" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+        </property>
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                </property>
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 55.0">
+        </property>
+    </property>
+    <property name="ElectronicUnitBase" class="ptolemy.data.unit.UnitSystem">
+        <property name="volt" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="electricPotential" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="ampere" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="electricCurrent" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="second" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Time" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="meter" class="ptolemy.data.expr.Parameter" value="1E+7*ampere*second/volt/(299792458.0^2)">
+        </property>
+        <property name="kilogram" class="ptolemy.data.expr.Parameter" value="ampere*volt*(second^3)/(meter^2)">
+        </property>
+        <property name="kelvin" class="ptolemy.data.expr.Parameter" value="1.38065E-23*kilogram*(meter^2)/(second^2)">
+        </property>
+        <property name="mole" class="ptolemy.data.expr.Parameter" value="6.022142E+23">
+        </property>
+        <property name="candela" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/683">
+        </property>
+        <property name="ohm" class="ptolemy.data.expr.Parameter" value="volt/ampere">
+        </property>
+        <property name="mho" class="ptolemy.data.expr.Parameter" value="ampere/volt">
+        </property>
+        <property name="coulomb" class="ptolemy.data.expr.Parameter" value="ampere*second">
+        </property>
+        <property name="esu" class="ptolemy.data.expr.Parameter" value="coulomb/(299792458.0*10)">
+        </property>
+        <property name="statvolt" class="ptolemy.data.expr.Parameter" value="299.792458*volt">
+        </property>
+        <property name="gauss" class="ptolemy.data.expr.Parameter" value="statvolt/(meter/100)">
+        </property>
+        <property name="electronCharge" class="ptolemy.data.expr.Parameter" value="1.6021765E-19*coulomb">
+        </property>
+        <property name="farad" class="ptolemy.data.expr.Parameter" value="ampere*second/volt">
+        </property>
+        <property name="henry" class="ptolemy.data.expr.Parameter" value="volt*second/ampere">
+        </property>
+        <property name="kg" class="ptolemy.data.expr.Parameter" value="kilogram">
+        </property>
+        <property name="gram" class="ptolemy.data.expr.Parameter" value="kilogram/1000">
+        </property>
+        <property name="cm" class="ptolemy.data.expr.Parameter" value="meter/100">
+        </property>
+        <property name="amp" class="ptolemy.data.expr.Parameter" value="ampere">
+        </property>
+        <property name="planckConstant" class="ptolemy.data.expr.Parameter" value="hBar*2*pi">
+        </property>
+        <property name="planckConstantReduced" class="ptolemy.data.expr.Parameter" value="1.0545716E-34*joule*second">
+        </property>
+        <property name="hBar" class="ptolemy.data.expr.Parameter" value="planckConstantReduced">
+        </property>
+        <property name="lightSpeed" class="ptolemy.data.expr.Parameter" value="299792458.0*meter/second">
+        </property>
+        <property name="dyne" class="ptolemy.data.expr.Parameter" value="gram*cm/second^2">
+        </property>
+        <property name="newton" class="ptolemy.data.expr.Parameter" value="kilogram*meter/second^2">
+        </property>
+        <property name="joule" class="ptolemy.data.expr.Parameter" value="newton*meter">
+        </property>
+        <property name="erg" class="ptolemy.data.expr.Parameter" value="dyne*cm">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"></rect>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[765, 633]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 8]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 978, 743}, maximized=false}">
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Win Williams</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 600.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.5, 316.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of a dynamically checked unit system:&#10;Simulation of RC decay for 1000 ohms in contact with 0.001 farad.&#10;The integrator has been set to an initial charge of 5.0 volts.&#10;The voltage and current are sampled every 0.2 seconds.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These three actors together serve&#10;as a unit-handling integrator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 430.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The gray box above contains a unit system.&#10;Double click to see the units that are defined.&#10;These units function exactly as variables&#10;in expressions. E.g., one volt is written&#10;&quot;1 * volt&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 150.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="unitless">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal with units of volts.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal with&#10;units of&#10;amperes.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 470.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal with units of volt/second.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 565.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="unitless">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 520.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Multiply by a number with units of&#10;1/farad = volt/(ampere*second)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 550.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that unit terms are merely constants&#10;in the expression language, as defined by&#10;the ElectronicUnitBase box at the upper left.&#10;Multiplying or dividing by these unit&#10;constants results in compound units, or&#10;elimination of units.  The InUnitsOf actor&#10;below merely checks that the input has is&#10;of the correct unit category (current,&#10;voltage, etc.) and then divides by its argument.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 120.0]">
+        </property>
+    </property>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="volt">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 395.0">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1000 * ohm">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 505.0">
+        </property>
+    </entity>
+    <entity name="DisplayVoltage" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 60, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Voltage">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 375.0">
+        </property>
+    </entity>
+    <entity name="Scale3" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0 / ( 1.0e-3 * farad )">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 535.0]">
+        </property>
+    </entity>
+    <entity name="InUnitsOf" class="ptolemy.actor.lib.conversions.InUnitsOf">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="amp">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="units">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="DisplayCurrent" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 297, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Current">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 435.0">
+        </property>
+    </entity>
+    <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 445.0">
+        </property>
+    </entity>
+    <entity name="Scale1" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="second / volt">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 395.0">
+        </property>
+    </entity>
+    <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 435.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 375.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="DisplayCurrentInAmps" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={723, 533, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Current in units of Amps">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 395.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="335.0, 375.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="455.0, 445.0">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="605.0, 595.0">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[555.0, 435.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Scale2.input" relation="relation6"/>
+    <link port="Scale2.output" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="DisplayVoltage.input" relation="relation3"/>
+    <link port="Scale3.input" relation="relation5"/>
+    <link port="Scale3.output" relation="relation12"/>
+    <link port="InUnitsOf.input" relation="relation15"/>
+    <link port="InUnitsOf.output" relation="relation4"/>
+    <link port="DisplayCurrent.input" relation="relation15"/>
+    <link port="MultiplyDivide.multiply" relation="relation"/>
+    <link port="MultiplyDivide.divide" relation="relation2"/>
+    <link port="MultiplyDivide.output" relation="relation5"/>
+    <link port="Scale1.input" relation="relation12"/>
+    <link port="Scale1.output" relation="relation7"/>
+    <link port="PeriodicSampler2.input" relation="relation5"/>
+    <link port="PeriodicSampler2.output" relation="relation15"/>
+    <link port="PeriodicSampler.input" relation="relation"/>
+    <link port="PeriodicSampler.output" relation="relation3"/>
+    <link port="DisplayCurrentInAmps.input" relation="relation4"/>
+    <link port="Integrator.input" relation="relation7"/>
+    <link port="Integrator.output" relation="relation6"/>
+</entity>

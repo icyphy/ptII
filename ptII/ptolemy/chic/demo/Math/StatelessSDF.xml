@@ -1,0 +1,132 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="StatelessSDF" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 60.0">
+        </property>
+    </property>
+    <property name="chic" class="ptolemy.chic.ChicInvoker">
+        <property name="InterfaceName" class="ptolemy.kernel.util.StringAttribute" value="synag">
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 120.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1024, 714}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 612]">
+    </property>
+    <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface MathFunction__SampleDelay__AddSubstract__Const&#10;input .StatelessSDF.Const.trigger;&#10;output .StatelessSDF.MathFunction.output, .StatelessSDF.SampleDelay.output, .StatelessSDF.AddSubtract.output, .StatelessSDF.Const.output;&#10;&#10;state a__a__a__a&#10;assume (0) &#10;guarantee ((.StatelessSDF.AddSubtract.output=0)((.StatelessSDF.MathFunction.output=1)((.StatelessSDF.SampleDelay.output=1)((.StatelessSDF.Const.output=0)) ) ) ) &#10;&#10;&#10;state a__a__b__a&#10;assume (0) &#10;guarantee ((.StatelessSDF.AddSubtract.output=0)((.StatelessSDF.MathFunction.output=1)((.StatelessSDF.SampleDelay.output=1)((.StatelessSDF.Const.output=0)) ) ) ) &#10;&#10;&#10;state a__b__a__a&#10;assume (0) &#10;guarantee ((.StatelessSDF.AddSubtract.output=0)((.StatelessSDF.MathFunction.output=1)((.StatelessSDF.SampleDelay.output=0)((.StatelessSDF.Const.output=0)) ) ) ) &#10;&#10;&#10;state a__b__b__a&#10;assume (0) &#10;guarantee ((.StatelessSDF.AddSubtract.output=0)((.StatelessSDF.MathFunction.output=1)((.StatelessSDF.SampleDelay.output=0)((.StatelessSDF.Const.output=0)) ) ) ) &#10;&#10;&#10;end&#10;">
+    </property>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={257, 208, 512, 347}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="680.0, 230.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="19.0"/>
+<yRange min="0.0" max="3.7015621187164243"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sqrt">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+                <property name="sign" class="ptolemy.kernel.util.StringAttribute" value="sign">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 310.0">
+        </property>
+        <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface MathFunction&#10;&#10;input firstOperand;&#10;output output;&#10;&#10;state a&#10;assume firstOperand;&#10;guarantee output;&#10;&#10;end&#10;">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 310.0">
+        </property>
+        <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface SampleDelay&#10;&#10;input input;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee output;&#10;!input -&gt; b;&#10;&#10;state b&#10;assume true;&#10;guarantee !output;&#10; input -&gt; a;&#10;&#10;end&#10;">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 310.0">
+        </property>
+        <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface AddSubstract&#10;&#10;input plus, minus;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee !output;&#10;!(plus AND !minus) -&gt; b;&#10;&#10;state b&#10;assume true;&#10;guarantee !output;&#10;(plus AND !minus) -&gt; a;&#10;&#10;end&#10;">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-10">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 320.0">
+        </property>
+        <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Const&#10;&#10;input trigger;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee !output;&#10;&#10;end&#10;">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="585.0, 230.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="MathFunction.firstOperand" relation="relation"/>
+    <link port="MathFunction.output" relation="relation3"/>
+    <link port="SampleDelay.input" relation="relation3"/>
+    <link port="SampleDelay.output" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.minus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+</entity>

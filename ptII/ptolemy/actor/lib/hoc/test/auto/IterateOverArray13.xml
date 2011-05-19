@@ -1,0 +1,189 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IterateOverArray13" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 816, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 55.0}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
+        <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+            <doc>Iterate a contained actor over input arrays</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            </property>
+            <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 195.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="input"/>
+            </port>
+            <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="output"/>
+            </port>
+            <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+                <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 35}">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 220}">
+                </property>
+                <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                    </property>
+                </port>
+                <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                    </property>
+                </port>
+                <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 200.0]">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="port" relation="relation"/>
+                <link port="port2" relation="relation2"/>
+                <link port="Sinewave.frequency" relation="relation"/>
+                <link port="Sinewave.output" relation="relation2"/>
+            </entity>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation3"/>
+        <link port="IterateOverArray.port" relation="relation"/>
+        <link port="IterateOverArray.port2" relation="relation3"/>
+    </class>
+    <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 285.0]">
+        </property>
+        <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+        </port>
+        <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+        </port>
+        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+            <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 35}">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 220}">
+            </property>
+            <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
+            </port>
+            <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 200.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="port2" relation="relation2"/>
+            <link port="Sinewave.frequency" relation="relation"/>
+            <link port="Sinewave.output" relation="relation2"/>
+        </entity>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="repeat(20, 100.0)">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="repeat(20, 100.0)">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 225}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0, 0.0784590957278, 0.1564344650402, 0.2334453638559, 0.3090169943749, 0.3826834323651, 0.4539904997395, 0.5224985647159, 0.5877852522925, 0.6494480483302, 0.7071067811865, 0.7604059656, 0.8090169943749, 0.8526401643541, 0.8910065241884, 0.9238795325113, 0.9510565162952, 0.9723699203977, 0.9876883405951, 0.9969173337331}, {1.0, 0.9876883405951, 0.9510565162952, 0.8910065241884, 0.8090169943749, 0.7071067811865, 0.5877852522925, 0.4539904997395, 0.3090169943749, 0.1564344650402, 1.2246467991474E-16, -0.1564344650402, -0.3090169943749, -0.4539904997395, -0.5877852522925, -0.7071067811865, -0.8090169943749, -0.8910065241884, -0.9510565162952, -0.9876883405951}, {-1.0, -0.9723699203977, -0.8910065241884, -0.7604059656, -0.5877852522925, -0.3826834323651, -0.1564344650402, 0.0784590957278, 0.3090169943749, 0.5224985647159, 0.7071067811865, 0.8526401643541, 0.9510565162952, 0.9969173337331, 0.9876883405951, 0.9238795325113, 0.809016994375, 0.6494480483302, 0.4539904997396, 0.2334453638559}, {9.2491782367455E-15, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.809016994375, -0.5877852522925, -0.309016994375, -9.3716429166602E-15, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.809016994375, 0.5877852522925, 0.309016994375}, {9.4941075965749E-15, -0.3826834323651, -0.7071067811865, -0.9238795325113, -1.0, -0.9238795325113, -0.7071067811866, -0.3826834323651, -1.8498356473491E-14, 0.3826834323651, 0.7071067811865, 0.9238795325113, 1.0, 0.9238795325113, 0.7071067811866, 0.3826834323651, 2.9278962189807E-14, -0.3826834323651, -0.7071067811865, -0.9238795325113}, {-1.0, -0.8910065241884, -0.5877852522925, -0.1564344650403, 0.3090169943749, 0.7071067811865, 0.9510565162951, 0.9876883405951, 0.809016994375, 0.4539904997396, 4.3734746264839E-14, -0.4539904997395, -0.8090169943749, -0.9876883405951, -0.9510565162952, -0.7071067811866, -0.309016994375, 0.1564344650402, 0.5877852522924, 0.8910065241883}, {1.0, 0.8526401643541, 0.4539904997396, -0.0784590957278, -0.5877852522924, -0.9238795325113, -0.9876883405951, -0.7604059656001, -0.309016994375, 0.2334453638559, 0.7071067811865, 0.9723699203977, 0.9510565162952, 0.6494480483302, 0.1564344650403, -0.382683432365, -0.8090169943749, -0.9969173337331, -0.8910065241884, -0.522498564716}, {-5.1452497022013E-14, 0.5877852522924, 0.9510565162951, 0.9510565162952, 0.5877852522925, 3.3811393307926E-14, -0.5877852522924, -0.9510565162951, -0.9510565162952, -0.5877852522925, -1.6170289593838E-14, 0.5877852522925, 0.9510565162952, 0.9510565162952, 0.5877852522925, -1.47081412025E-15, -0.5877852522925, -0.9510565162952, -0.9510565162951, -0.5877852522925}, {1.9111917834338E-14, 0.6494480483302, 0.9876883405951, 0.8526401643541, 0.3090169943749, -0.3826834323651, -0.8910065241884, -0.9723699203977, -0.5877852522925, 0.0784590957279, 0.7071067811866, 0.9969173337331, 0.8090169943749, 0.2334453638559, -0.4539904997396, -0.9238795325113, -0.9510565162951, -0.5224985647159, 0.1564344650403, 0.7604059656}, {1.0, 0.7071067811865, -2.2052308113565E-14, -0.7071067811866, -1.0, -0.7071067811865, 1.1271702397248E-14, 0.7071067811866, 1.0, 0.7071067811865, -4.9109668093212E-16, -0.7071067811865, -1.0, -0.7071067811866, -1.0289509035384E-14, 0.7071067811865, 1.0, 0.7071067811866, 2.10701147517E-14, -0.7071067811865}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0, 0.0784590957278, 0.1564344650402, 0.2334453638559, 0.3090169943749, 0.3826834323651, 0.4539904997395, 0.5224985647159, 0.5877852522925, 0.6494480483302, 0.7071067811865, 0.7604059656, 0.8090169943749, 0.8526401643541, 0.8910065241884, 0.9238795325113, 0.9510565162952, 0.9723699203977, 0.9876883405951, 0.9969173337331}, {1.0, 0.9876883405951, 0.9510565162952, 0.8910065241884, 0.8090169943749, 0.7071067811865, 0.5877852522925, 0.4539904997395, 0.3090169943749, 0.1564344650402, 1.2246467991474E-16, -0.1564344650402, -0.3090169943749, -0.4539904997395, -0.5877852522925, -0.7071067811865, -0.8090169943749, -0.8910065241884, -0.9510565162952, -0.9876883405951}, {-1.0, -0.9723699203977, -0.8910065241884, -0.7604059656, -0.5877852522925, -0.3826834323651, -0.1564344650402, 0.0784590957278, 0.3090169943749, 0.5224985647159, 0.7071067811865, 0.8526401643541, 0.9510565162952, 0.9969173337331, 0.9876883405951, 0.9238795325113, 0.809016994375, 0.6494480483302, 0.4539904997396, 0.2334453638559}, {9.2491782367455E-15, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.809016994375, -0.5877852522925, -0.309016994375, -9.3716429166602E-15, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.809016994375, 0.5877852522925, 0.309016994375}, {9.4941075965749E-15, -0.3826834323651, -0.7071067811865, -0.9238795325113, -1.0, -0.9238795325113, -0.7071067811866, -0.3826834323651, -1.8498356473491E-14, 0.3826834323651, 0.7071067811865, 0.9238795325113, 1.0, 0.9238795325113, 0.7071067811866, 0.3826834323651, 2.9278962189807E-14, -0.3826834323651, -0.7071067811865, -0.9238795325113}, {-1.0, -0.8910065241884, -0.5877852522925, -0.1564344650403, 0.3090169943749, 0.7071067811865, 0.9510565162951, 0.9876883405951, 0.809016994375, 0.4539904997396, 4.3734746264839E-14, -0.4539904997395, -0.8090169943749, -0.9876883405951, -0.9510565162952, -0.7071067811866, -0.309016994375, 0.1564344650402, 0.5877852522924, 0.8910065241883}, {1.0, 0.8526401643541, 0.4539904997396, -0.0784590957278, -0.5877852522924, -0.9238795325113, -0.9876883405951, -0.7604059656001, -0.309016994375, 0.2334453638559, 0.7071067811865, 0.9723699203977, 0.9510565162952, 0.6494480483302, 0.1564344650403, -0.382683432365, -0.8090169943749, -0.9969173337331, -0.8910065241884, -0.522498564716}, {-5.1452497022013E-14, 0.5877852522924, 0.9510565162951, 0.9510565162952, 0.5877852522925, 3.3811393307926E-14, -0.5877852522924, -0.9510565162951, -0.9510565162952, -0.5877852522925, -1.6170289593838E-14, 0.5877852522925, 0.9510565162952, 0.9510565162952, 0.5877852522925, -1.47081412025E-15, -0.5877852522925, -0.9510565162952, -0.9510565162951, -0.5877852522925}, {1.9111917834338E-14, 0.6494480483302, 0.9876883405951, 0.8526401643541, 0.3090169943749, -0.3826834323651, -0.8910065241884, -0.9723699203977, -0.5877852522925, 0.0784590957279, 0.7071067811866, 0.9969173337331, 0.8090169943749, 0.2334453638559, -0.4539904997396, -0.9238795325113, -0.9510565162951, -0.5224985647159, 0.1564344650403, 0.7604059656}, {1.0, 0.7071067811865, -2.2052308113565E-14, -0.7071067811866, -1.0, -0.7071067811865, 1.1271702397248E-14, 0.7071067811866, 1.0, 0.7071067811865, -4.9109668093212E-16, -0.7071067811865, -1.0, -0.7071067811866, -1.0289509035384E-14, 0.7071067811865, 1.0, 0.7071067811866, 2.10701147517E-14, -0.7071067811865}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeClassDefinition" class="CompositeClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 180.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{105.0, 225.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="IterateOverArray.port" relation="relation"/>
+    <link port="IterateOverArray.port2" relation="relation2"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="InstanceOfCompositeClassDefinition.port" relation="relation"/>
+    <link port="InstanceOfCompositeClassDefinition.port2" relation="relation3"/>
+</entity>

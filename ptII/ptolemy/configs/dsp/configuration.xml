@@ -1,0 +1,138 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+  <doc>Configuration to use for DSP-only applications.</doc>
+
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/dsp/intro.htm"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/doc/docs.htm"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
+  </entity>
+
+  <!-- The state and transition refinements. Use SDF director version. -->
+  <input source="ptolemy/configs/sdfRefinements.xml"/>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Use a custom graph editor with an SDF director already in it. -->
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="SDF Director" 
+                  class="ptolemy.domains.sdf.kernel.SDFDirector">
+          <property name="iterations"
+                    class="ptolemy.data.expr.Parameter" value="1">
+          </property>
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          </property>
+        </property>
+      </entity>
+    </entity>
+    <!-- Import HTML viewer, text editor, etc. -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main default library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Default utilities library. -->
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/basicUtilities.xml"/>
+            <!-- Blank composite actor. -->
+            <entity name="typed composite actor"
+                    class="ptolemy.actor.TypedCompositeActor"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+    <!-- Default entity library to appear in the library browser. -->
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <doc>default entity library</doc>
+<!-- BEGIN sources -->
+<entity name="Sources" class="ptolemy.moml.EntityLibrary">
+  <configure>
+      <group>
+<entity name="Const" class="ptolemy.actor.lib.Const"/>
+<entity name="Interpolator" class="ptolemy.actor.lib.Interpolator"/>
+<entity name="Pulse" class="ptolemy.actor.lib.Pulse"/>
+<entity name="Ramp" class="ptolemy.actor.lib.Ramp"/>
+<entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource"/>
+<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
+      </group>
+  </configure>
+</entity>
+<!-- END sources -->
+<!-- BEGIN sinks -->
+<entity name="Sinks" class="ptolemy.moml.EntityLibrary">
+  <configure>
+      <group>
+<entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
+<entity name="Discard" class="ptolemy.actor.lib.Discard"/>
+<entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
+<entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
+<entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer"/>
+<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>
+<entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope"/>
+<entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
+<entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
+      </group>
+  </configure>
+</entity>
+<!-- END sinks -->
+
+            <input source="ptolemy/actor/lib/io/io.xml"/>
+            <input source="ptolemy/actor/lib/math.xml"/>
+            <input source="ptolemy/actor/lib/randomNoColt.xml"/>
+            <input source="ptolemy/actor/lib/flowcontrol.xml"/>
+            <input source="ptolemy/actor/lib/realtime.xml"/>
+            <input source="ptolemy/actor/lib/logic/logic.xml"/>
+            <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+            <input source="ptolemy/actor/lib/array.xml"/>
+            <input source="ptolemy/actor/lib/busses.xml"/>
+            <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+
+          </group>
+        ?>
+      </configure>
+    </entity>
+  </entity>
+</entity>

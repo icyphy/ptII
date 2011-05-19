@@ -1,0 +1,34 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Discrete Time</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Discrete Time</h1>
+
+The Discrete Time (DT) domain is a timed extension of the Synchronous Dataflow
+(SDF) domain.  Like SDF, it has static scheduling of the dataflow graph
+model. Likewise, DT requires that the rates on the ports of all actors be
+known beforehand and fixed. DT handles feedback systems in the same way that
+SDF does, but with additional constraints on initial tokens.
+<p>
+Because of the inherent concurrency occurring within SDF dataflow graph models,
+there are two notions of time in DT -- global time and local time.  Global time
+increases steadily as execution progresses.  Moreover, global time increments by
+fixed discrete chunks of time based on the value of the <i>period</i> parameter.
+On the other hand, local time applies to each of the actors in the model. All the
+actors have distinct local times as an iteration proceeds. The local time of
+an actor during an iteration depends on the global time, period, firing count,
+port rates, and the schedule. These local times obey the following constraint:
+
+<center>Global Time  <=  Local Time <= (Global Time + period)</center>
+
+The exact way that local time increments during an iteration is described in
+detail in the DTReceiver documentation.
+
+<p>The DT domain is an experimental domain, the code has not
+been reviewed, and the interfaces are likely to change.
+</body>
+</html>

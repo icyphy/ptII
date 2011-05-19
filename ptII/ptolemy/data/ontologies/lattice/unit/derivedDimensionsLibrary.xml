@@ -1,0 +1,170 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+  
+  <entity name="Velocity" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="TimeConcept" class="ptolemy.data.expr.Parameter"/>
+	<property name="m_per_sec" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ft_per_sec" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;ft&quot;}, TimeConcept = {&quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="kph" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;km&quot;}, TimeConcept = {&quot;hr&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="mph" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;mi&quot;}, TimeConcept = {&quot;hr&quot;} }">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Acceleration" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}"/>  	
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -2} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="TimeConcept" class="ptolemy.data.expr.Parameter"/>	
+	<property name="m_per_sec2" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;sec&quot;, &quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="cm_per_sec2" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;cm&quot;}, TimeConcept = {&quot;sec&quot;, &quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ft_per_sec2" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;ft&quot;}, TimeConcept = {&quot;sec&quot;, &quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="kph_per_sec" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;km&quot;}, TimeConcept = {&quot;hr&quot;, &quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="mph_per_sec" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;mi&quot;}, TimeConcept = {&quot;hr&quot;, &quot;sec&quot;} }">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Volume" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 3} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="mLFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LFactor" class="ptolemy.data.expr.Parameter" value="1000.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="galCanadianFactor" class="ptolemy.data.expr.Parameter" value="4546.09*mLFactor"> <!--Canadian and UK-->
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="galUSFactor" class="ptolemy.data.expr.Parameter" value="3785.412*mLFactor"> <!--APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="barrelFactor" class="ptolemy.data.expr.Parameter" value="42*galUSFactor">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="ozFluidUSFactor" class="ptolemy.data.expr.Parameter" value="galUSFactor/128">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="TbspFactor" class="ptolemy.data.expr.Parameter" value="ozFluidUSFactor/2">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="tspFactor" class="ptolemy.data.expr.Parameter" value="ozFluidUSFactor/6">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="cupFactor" class="ptolemy.data.expr.Parameter" value="8*ozFluidUSFactor">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="pintFactor" class="ptolemy.data.expr.Parameter" value="2*cupFactor"> <!--Liquid-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="quartFactor" class="ptolemy.data.expr.Parameter" value="2*pintFactor"> <!--Liquid-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="mL" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ LengthConcept = {&quot;cm&quot;, &quot;cm&quot;, &quot;cm&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="L" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = LFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="galCanadian" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = galCanadianFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="galUS" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = galUSFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="barrel" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = barrelFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ozFluidUS" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = ozFluidUSFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="Tbsp" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = TbspFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="tsp" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = tspFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="cup" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = cupFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="pint" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = pintFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="quart" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="mL.merge({Factor = quartFactor}, mL)">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="cord" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = 128.0, LengthConcept = {&quot;ft&quot;, &quot;ft&quot;, &quot;ft&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="VolumetricFlowRate" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;VolumeConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="VolumeConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="TimeConcept" class="ptolemy.data.expr.Parameter"/>
+	<property name="mL_per_sec" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ VolumeConcept = {&quot;mL&quot;}, TimeConcept = {&quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="L_per_sec" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ VolumeConcept = {&quot;L&quot;}, TimeConcept = {&quot;sec&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Force" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.2,0.0,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;MassConcept&quot;, Exponent = 1}, {Dimension = &quot;AccelerationConcept&quot;, Exponent = 1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="MassConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="AccelerationConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="earthGravity_m_per_sec2" class="ptolemy.data.expr.Parameter" value="9.80665"> <!--APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="N" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ MassConcept = {&quot;kg&quot;}, AccelerationConcept = {&quot;m_per_sec2&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="dyne" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ MassConcept = {&quot;g&quot;}, AccelerationConcept = {&quot;cm_per_sec2&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="lbf" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = earthGravity_m_per_sec2, MassConcept = {&quot;lbm&quot;}, AccelerationConcept = {&quot;m_per_sec2&quot;} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+
+</group>

@@ -1,0 +1,32 @@
+danglingPortsOkay;
+
+Adder is {
+	inport[] inA;
+	inport[] inB;
+	outport[] sum;
+	outport carryOut;
+	
+	actor constant = ptolemy.actor.lib.Const;
+	actor fullAdder = ptalonActor:ptolemy.actor.ptalon.test.adder.FullAdder;
+	
+	parameter N;
+	
+	if [[N >= 1]] {
+		relation carryOut0;
+		constant(output := carryOut0, value := [[false]]);
+		
+		transparent relation A;
+		transparent relation B;
+		transparent relation S;
+		this(inA := A, inB := B, sum := S);
+		
+		for a initially [[1]] [[a <= N]] {
+			relation carryOut[[a]];
+			fullAdder(inA := A, inB := B, carryIn := carryOut[[a - 1]], sum := S,
+					carryOut := carryOut[[a]]);
+		} next [[a + 1]]
+		
+		this(carryOut := carryOut[[N]]);
+	} else {
+	}
+}

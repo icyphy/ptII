@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Parallel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <entity name="Parallel" class="ptolemy.actor.ptalon.PtalonActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 155.0]">
+        </property>
+        <configure>
+            <ptalon file="ptolemy.actor.ptalon.test.Parallel">
+                <ptalonParameter name="repeater" value="ptolemy.actor.lib.Scale"/>
+                <ptalonExpressionParameter name="n" value="3"/>
+            </ptalon>
+        </configure>
+    </entity>
+</entity>

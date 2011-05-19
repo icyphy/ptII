@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="testAudioReaderAudioPlayer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, 100]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="233.0, 44.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 64, 811, 563}}">
+    </property>
+    <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 205.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
+        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="8000">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
+                </property>
+                <property name="11025" class="ptolemy.kernel.util.StringAttribute" value="11025">
+                </property>
+                <property name="22050" class="ptolemy.kernel.util.StringAttribute" value="22050">
+                </property>
+                <property name="44100" class="ptolemy.kernel.util.StringAttribute" value="44100">
+                </property>
+                <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
+                </property>
+            </property>
+        </property>
+        <property name="bitsPerSample" class="ptolemy.data.expr.Parameter" value="16">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
+                </property>
+                <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
+                </property>
+            </property>
+        </property>
+        <property name="channels" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute" value="2">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 205.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AudioReader.output" relation="relation"/>
+    <link port="AudioPlayer.input" relation="relation"/>
+</entity>

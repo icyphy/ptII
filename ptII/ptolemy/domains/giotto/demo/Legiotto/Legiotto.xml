@@ -1,0 +1,100 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Legiotto" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </property>
+    <entity name="lego1" class="ptolemy.domains.giotto.demo.Legiotto.lego">
+        <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
+            </property>
+        </property>
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
+        </property>
+        <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="{3, 3, 3, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
+        </property>
+        <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="{2, 0, 3, 3, 3, 1, 1, 1, 4, 4, 4, 0}">
+        </property>
+    </entity>
+    <entity name="lego2" class="ptolemy.domains.giotto.demo.Legiotto.lego">
+        <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
+            </property>
+        </property>
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
+        </property>
+        <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}">
+        </property>
+        <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="{2, 0, 4, 4, 4, 1, 1, 1, 3, 3, 3, 0}">
+        </property>
+    </entity>
+    <entity name="lego3" class="ptolemy.domains.giotto.demo.Legiotto.lego">
+        <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
+            </property>
+        </property>
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
+        </property>
+        <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}">
+        </property>
+        <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="{2, 0, 3, 3, 3, 1, 1, 1, 4, 4, 4, 0}">
+        </property>
+    </entity>
+    <entity name="arbiter" class="ptolemy.apps.lego.Arbiter">
+        <port name="bump" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="leader" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0">
+        </vertex>
+    </relation>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="lego1.leader" relation="r1"/>
+    <link port="lego1.bumped" relation="r2"/>
+    <link port="lego2.leader" relation="r1"/>
+    <link port="lego2.bumped" relation="r3"/>
+    <link port="lego3.leader" relation="r1"/>
+    <link port="lego3.bumped" relation="r4"/>
+    <link port="arbiter.bump" relation="r2"/>
+    <link port="arbiter.bump" relation="r3"/>
+    <link port="arbiter.bump" relation="r4"/>
+    <link port="arbiter.leader" relation="r1"/>
+</entity>

@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Filtering" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+<entity name="DelayLine" class="ptolemy.domains.sdf.lib.DelayLine"/>
+<entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample"/>
+<entity name="FIR" class="ptolemy.domains.sdf.lib.FIR"/>
+<entity name="GradientAdaptiveLattice" class="ptolemy.actor.lib.GradientAdaptiveLattice"/>
+<entity name="IIR" class="ptolemy.actor.lib.IIR"/>
+<entity name="Lattice" class="ptolemy.actor.lib.Lattice"/>
+<entity name="LinearDifferenceEquationSystem" class="ptolemy.actor.lib.LinearDifferenceEquationSystem"/>
+<entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
+<entity name="RecursiveLattice" class="ptolemy.actor.lib.RecursiveLattice"/>
+<entity name="UpSample" class="ptolemy.domains.sdf.lib.UpSample"/>
+<entity name="VariableFIR" class="ptolemy.domains.sdf.lib.VariableFIR"/>
+<entity name="VariableLattice" class="ptolemy.domains.sdf.lib.VariableLattice"/>
+<entity name="VariableRecursiveLattice" class="ptolemy.domains.sdf.lib.VariableRecursiveLattice"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

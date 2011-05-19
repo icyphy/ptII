@@ -1,0 +1,64 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<entity name="Continuous" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Continuous actors</doc>
+  <entity name="Signal Generators" class="ptolemy.moml.EntityLibrary">
+        <entity name="ContinuousClock"
+                class="ptolemy.domains.continuous.lib.ContinuousClock"/>
+		<entity name="ContinuousSinewave"
+                class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
+        <entity name="DiscreteClock"
+                class="ptolemy.actor.lib.DiscreteClock"/>
+  </entity>
+  <entity name="Continuous to Discrete" class="ptolemy.moml.EntityLibrary">
+        <entity name="LevelCrossingDetector"
+                class="ptolemy.domains.continuous.lib.LevelCrossingDetector"/>
+        <entity name="PeriodicSampler"
+                class="ptolemy.domains.continuous.lib.PeriodicSampler"/>
+        <entity name="Sampler"
+                class="ptolemy.actor.lib.Sampler"/>
+  </entity>
+  <entity name="Discrete to Continuous" class="ptolemy.moml.EntityLibrary">
+          <entity name="ZeroOrderHold"
+                class="ptolemy.domains.continuous.lib.ZeroOrderHold"/>
+  </entity>
+  <entity name="Dynamics" class="ptolemy.moml.EntityLibrary">
+        <entity name="ContinuousTransferFunction"
+                class="ptolemy.domains.continuous.lib.ContinuousTransferFunction"/>
+        <entity name="Derivative"
+                class="ptolemy.domains.continuous.lib.Derivative"/>
+        <entity name="DifferentialSystem"
+                class="ptolemy.domains.continuous.lib.DifferentialSystem"/>
+        <entity name="Integrator"
+                class="ptolemy.domains.continuous.lib.Integrator"/>
+        <entity name="LinearStateSpace"
+                class="ptolemy.domains.continuous.lib.LinearStateSpace"/>
+  </entity>
+  <entity name="Random" class="ptolemy.moml.EntityLibrary">
+        <entity name="BandlimitedNoise"
+                class="ptolemy.domains.continuous.lib.BandlimitedNoise"/>
+        <entity name="ContinuousSpectrum"
+                class="ptolemy.domains.continuous.lib.ContinuousSpectrum"/>
+        <entity name="Noise"
+                class="ptolemy.domains.continuous.lib.Noise"/>
+	<!-- Don't include ptolemy/actor/lib/random.xml here because it
+             imports colt.xml which means that Continuous would require colt-->
+  </entity>
+  <entity name="Miscellaneous" class="ptolemy.moml.EntityLibrary">
+		<entity name="ResettableTimer"
+				class="ptolemy.actor.lib.ResettableTimer"/>
+		<entity name="Merge"
+                class="ptolemy.domains.continuous.lib.ContinuousMerge"/>
+		<entity name="Discrete TimeDelay"
+                class="ptolemy.actor.lib.TimeDelay"/>
+  </entity>
+      </group>
+    ?>
+  </configure>
+</entity>
+

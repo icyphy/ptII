@@ -1,0 +1,21 @@
+#!/bin/sh
+dirs=domains/sc/demo/doc
+for dir in $dirs
+do
+	cd /users/cxh/ptII/ptolemy/$dir
+	if [ ! -f index.html ]; then
+	echo $dir
+
+	echo "$dir/README" > README
+	echo "Version:\$Id\$" >> README
+	echo "" >> README
+	echo "This directory contain documentation for the Java files" >> README
+	echo "in the parent directory." >> README
+	echo "The codeDoc directory is created by running 'make javadocs'">> README
+	echo "while in the directory above this directory." >> README
+	echo "This file is present to avoid problems with 'cvs update -P'">> README
+	echo "removing the otherwise empty doc directory.">> README
+	cvs add README
+	cvs commit -m "Added README so that 'cvs update -P' does not remove the doc dir" README
+	fi
+done

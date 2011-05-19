@@ -1,0 +1,809 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DiningPhilosophers" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="runUntilDeadlockInOneIteration" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <property name="n" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 30.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 25.0]">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 22, 743, 720}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[743, 614]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{371.5, 307.0}">
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Run this model to generate a new model in the Rendezvous domain with n (should be >= 2)
+philosophers sitting around a table with a fork between each two of them. Run that generated
+model to observe the behavior of those dining philosophers. Each must obtain 2 forks before he
+can dine for 1 second.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 360.0]">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">Dining Philosophers</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 335.0]">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates the use of TransformationRule actors together with PortParameters.
+Initially, an empty model named "DiningPhilosophers" is generated by the ModelGenerator. A
+single dining philosopher with a fork is added to that empty model with the TransformationRule
+actor named "CreateFirst." The model is then passed to a loop, which adds n-1 philosophers and
+n-1 forks to it, one of each in each iteration. Each created philosopher is assigned a unique ID,
+which is generated by the Ramp and read into the second TransformationRule actor via a
+PortParameter. The up-to-date value of the PortParameter is used by the AttributeOperation in
+the Philosopher CompositeActor in the Replacement part. (Open the CreateOne actor, switch to
+the Replacement tab, right click on the Philosopher actor, and choose Customize->Operations.)</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 440.0]">
+        </property>
+    </property>
+    <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
+        <property name="ModelGeneratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 95.0]">
+        </property>
+    </entity>
+    <entity name="ModelView" class="ptolemy.actor.gt.ModelView">
+        <property name="ModelViewIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input &gt;= n">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 280.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+        <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 205.0]">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
+    </entity>
+    <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+        <property name="DDFBooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, -12, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="CreateFirst" class="ptolemy.actor.gt.TransformationRule">
+        <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace first">
+        </property>
+        <property name="TransformationRuleIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={172, 152, 823, 515}, maximized=false}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 95.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 59, 825, 560}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><rect x="0" y="0" width="60" height="40" style="fill:#FF0000"></rect><rect x="2" y="2" width="56" height="36" style="fill:#C0C0C0"></rect><rect x="6" y="17" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><rect x="38" y="25" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><line x1="26" y1="22" x2="30" y2="22" style="stroke:#404040"></line><line x1="30" y1="22" x2="30" y2="30" style="stroke:#404040"></line><line x1="30" y1="30" x2="34" y2="30" style="stroke:#404040"></line><text x="16" y="14" style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+            </property>
+            <property name="Rendezvous Director" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 65.0}">
+                </property>
+            </property>
+            <entity name="ResourcePool2" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
+                </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 225.0]">
+                </property>
+            </entity>
+            <entity name="Philosopher" class="ptolemy.actor.TypedCompositeActor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 75.0]">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 255, 764, 457}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 350]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 175.0}">
+                </property>
+                <property name="ID" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <port name="leftIn" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                </port>
+                <port name="rightIn" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 270.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                    </property>
+                </port>
+                <port name="leftOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 125.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                </port>
+                <port name="rightOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 270.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                    </property>
+                </port>
+                <entity name="Philosopher" class="ptolemy.actor.lib.Sleep">
+                    <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="1000L">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 50.0]">
+                    </property>
+                </entity>
+                <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={203, 208, 342, 243}, maximized=false}">
+                    </property>
+                    <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 50.0]">
+                    </property>
+                </entity>
+                <entity name="Barrier1" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
+                    </property>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Philosopher &quot; + ID + &quot; dines.&quot;">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 50.0]">
+                    </property>
+                </entity>
+                <entity name="ResourcePool1" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                    <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
+                    </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 125.0]">
+                    </property>
+                </entity>
+                <entity name="ResourcePool2" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                    <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
+                    </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 270.0]">
+                    </property>
+                </entity>
+                <entity name="Barrier2" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="{405.0, 50.0}">
+                    </vertex>
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[215.0, 50.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[195.0, 125.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[195.0, 270.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="{435.0, 125.0}">
+                    </vertex>
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[435.0, 270.0]">
+                    </vertex>
+                </relation>
+                <link port="leftIn" relation="relation4"/>
+                <link port="rightIn" relation="relation2"/>
+                <link port="leftOut" relation="relation3"/>
+                <link port="rightOut" relation="relation6"/>
+                <link port="Philosopher.input" relation="relation5"/>
+                <link port="Philosopher.output" relation="relation"/>
+                <link port="Display.input" relation="relation"/>
+                <link port="Barrier1.input" relation="relation5"/>
+                <link port="Barrier1.input" relation="relation4"/>
+                <link port="Barrier1.input" relation="relation2"/>
+                <link port="Const.output" relation="relation5"/>
+                <link port="ResourcePool1.grant" relation="relation3"/>
+                <link port="ResourcePool1.release" relation="relation4"/>
+                <link port="ResourcePool2.grant" relation="relation6"/>
+                <link port="ResourcePool2.release" relation="relation2"/>
+                <link port="Barrier2.input" relation="relation3"/>
+                <link port="Barrier2.input" relation="relation"/>
+                <link port="Barrier2.input" relation="relation6"/>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="ResourcePool2.grant" relation="relation2"/>
+            <link port="ResourcePool2.grant" relation="relation3"/>
+            <link port="ResourcePool2.release" relation="relation4"/>
+            <link port="ResourcePool2.release" relation="relation"/>
+            <link port="Philosopher.leftIn" relation="relation3"/>
+            <link port="Philosopher.rightIn" relation="relation2"/>
+            <link port="Philosopher.leftOut" relation="relation"/>
+            <link port="Philosopher.rightOut" relation="relation4"/>
+        </entity>
+    </entity>
+    <entity name="CreateOne" class="ptolemy.actor.gt.TransformationRule">
+        <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace first">
+        </property>
+        <property name="TransformationRuleIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={172, 152, 823, 515}, maximized=false}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 205.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="id" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <port name="id" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
+            <entity name="PreviousPhilosopher" class="ptolemy.actor.gt.AtomicActorMatcher">
+                <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;leftIn&quot;/false//true/true/true/false/true/false/true/&quot;leftIn&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;leftOut&quot;/false//true/false/true/true/true/false/true/&quot;leftOut&quot;)">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 95.0]">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                </property>
+            </entity>
+            <entity name="NextPool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
+                </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[435.0, 50.0]">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="PreviousPhilosopher.leftIn" relation="relation2"/>
+            <link port="PreviousPhilosopher.leftOut" relation="relation"/>
+            <link port="NextPool.grant" relation="relation2"/>
+            <link port="NextPool.release" relation="relation"/>
+        </entity>
+        <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><rect x="0" y="0" width="60" height="40" style="fill:#FF0000"></rect><rect x="2" y="2" width="56" height="36" style="fill:#C0C0C0"></rect><rect x="6" y="17" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><rect x="38" y="25" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><line x1="26" y1="22" x2="30" y2="22" style="stroke:#404040"></line><line x1="30" y1="22" x2="30" y2="30" style="stroke:#404040"></line><line x1="30" y1="30" x2="34" y2="30" style="stroke:#404040"></line><text x="16" y="14" style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+            </property>
+            <entity name="PreviousPhilosopher" class="ptolemy.actor.gt.AtomicActorMatcher">
+                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="PreviousPhilosopher">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 105.0}">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                </property>
+            </entity>
+            <entity name="Philosopher" class="ptolemy.actor.TypedCompositeActor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 260.0]">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 330, 772, 464}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 294]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 147.0}">
+                </property>
+                <property name="ID" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/false/&quot;ID&quot;/false//false/&quot;$(id)&quot;)">
+                </property>
+                <port name="leftIn" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                </port>
+                <port name="rightIn" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 270.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                    </property>
+                </port>
+                <port name="leftOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 125.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                </port>
+                <port name="rightOut" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 270.0]">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                    </property>
+                </port>
+                <entity name="Philosopher" class="ptolemy.actor.lib.Sleep">
+                    <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="1000L">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 50.0]">
+                    </property>
+                </entity>
+                <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={203, 208, 342, 243}, maximized=false}">
+                    </property>
+                    <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 50.0]">
+                    </property>
+                </entity>
+                <entity name="Barrier1" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
+                    </property>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Philosopher &quot; + ID + &quot; dines.&quot;">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 50.0]">
+                    </property>
+                </entity>
+                <entity name="ResourcePool1" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                    <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
+                    </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 125.0]">
+                    </property>
+                </entity>
+                <entity name="ResourcePool2" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                    <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
+                    </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 270.0]">
+                    </property>
+                </entity>
+                <entity name="Barrier2" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="{405.0, 50.0}">
+                    </vertex>
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[215.0, 50.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[195.0, 125.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[195.0, 270.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="{435.0, 125.0}">
+                    </vertex>
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[435.0, 270.0]">
+                    </vertex>
+                </relation>
+                <link port="leftIn" relation="relation4"/>
+                <link port="rightIn" relation="relation2"/>
+                <link port="leftOut" relation="relation3"/>
+                <link port="rightOut" relation="relation6"/>
+                <link port="Philosopher.input" relation="relation5"/>
+                <link port="Philosopher.output" relation="relation"/>
+                <link port="Display.input" relation="relation"/>
+                <link port="Barrier1.input" relation="relation5"/>
+                <link port="Barrier1.input" relation="relation4"/>
+                <link port="Barrier1.input" relation="relation2"/>
+                <link port="Const.output" relation="relation5"/>
+                <link port="ResourcePool1.grant" relation="relation3"/>
+                <link port="ResourcePool1.release" relation="relation4"/>
+                <link port="ResourcePool2.grant" relation="relation6"/>
+                <link port="ResourcePool2.release" relation="relation2"/>
+                <link port="Barrier2.input" relation="relation3"/>
+                <link port="Barrier2.input" relation="relation"/>
+                <link port="Barrier2.input" relation="relation6"/>
+            </entity>
+            <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
+                </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 130.0}">
+                </property>
+            </entity>
+            <entity name="NextPool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
+                </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 220.0]">
+                </property>
+                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="NextPool">
+                </property>
+            </entity>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[480.0, 60.0]">
+                </vertex>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="PreviousPhilosopher.leftIn" relation="relation7"/>
+            <link port="PreviousPhilosopher.leftOut" relation="relation3"/>
+            <link port="Philosopher.leftIn" relation="relation"/>
+            <link port="Philosopher.rightIn" relation="relation2"/>
+            <link port="Philosopher.leftOut" relation="relation4"/>
+            <link port="Philosopher.rightOut" relation="relation5"/>
+            <link port="ResourcePool.grant" relation="relation7"/>
+            <link port="ResourcePool.grant" relation="relation2"/>
+            <link port="ResourcePool.release" relation="relation3"/>
+            <link port="ResourcePool.release" relation="relation5"/>
+            <link port="NextPool.grant" relation="relation"/>
+            <link port="NextPool.release" relation="relation4"/>
+        </entity>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="DiningPhilosophers">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 105.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[490.0, 320.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[525.0, 195.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[485.0, 95.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[485.0, 140.0]">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[170.0, 140.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[170.0, 320.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[315.0, 280.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ModelGenerator.model" relation="relation13"/>
+    <link port="ModelGenerator.modelName" relation="relation"/>
+    <link port="ModelView.input" relation="relation7"/>
+    <link port="SampleDelay.input" relation="relation2"/>
+    <link port="SampleDelay.output" relation="relation6"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation16"/>
+    <link port="Expression.output" relation="relation4"/>
+    <link port="Expression.input" relation="relation16"/>
+    <link port="BooleanSwitch.input" relation="relation14"/>
+    <link port="BooleanSwitch.control" relation="relation4"/>
+    <link port="BooleanSwitch.trueOutput" relation="relation7"/>
+    <link port="BooleanSwitch.falseOutput" relation="relation5"/>
+    <link port="DDFBooleanSelect.trueInput" relation="relation11"/>
+    <link port="DDFBooleanSelect.falseInput" relation="relation12"/>
+    <link port="DDFBooleanSelect.control" relation="relation6"/>
+    <link port="DDFBooleanSelect.output" relation="relation15"/>
+    <link port="Stop.input" relation="relation8"/>
+    <link port="Const2.output" relation="relation8"/>
+    <link port="Const2.trigger" relation="relation7"/>
+    <link port="CreateFirst.modelInput" relation="relation13"/>
+    <link port="CreateFirst.modelOutput" relation="relation9"/>
+    <link port="CreateOne.modelInput" relation="relation15"/>
+    <link port="CreateOne.modelOutput" relation="relation14"/>
+    <link port="CreateOne.id" relation="relation16"/>
+    <link port="StringConst.output" relation="relation"/>
+    <link relation1="relation5" relation2="relation12"/>
+    <link relation1="relation9" relation2="relation10"/>
+    <link relation1="relation10" relation2="relation11"/>
+</entity>

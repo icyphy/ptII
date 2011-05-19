@@ -1,0 +1,67 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AbstractInterpretationScalarSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={541, 303, 837, 593}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 476]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.8906249999999, 234.5203598484849}">
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="(factor1 == Zero &amp;&amp; factor2 &lt; Undefined) || (factor2 == Zero &amp;&amp; factor1 &lt; Undefined) ? Zero :&#10; factor1 &lt;= Unknown || factor2 &lt;= Unknown ? Unknown :&#10; (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Positive) || (factor1 &lt;= Negative &amp;&amp; factor2 &lt;= Negative) ? Positive :&#10;  (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Negative) || (factor2 &lt;= Positive &amp;&amp; factor1 &lt;= Negative) ? Negative :&#10;   Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="abstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 60.0]">
+        </property>
+    </property>
+    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend &lt;= Unknown || divisor &lt;= Zero ? Unknown :&#10; dividend &lt;= Zero &amp;&amp; (divisor &lt;= Positive || divisor &lt;= Zero || divisor &lt;= Negative) ? Zero :&#10;  (dividend &lt;= Positive &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Negative &amp;&amp; divisor &lt;= Negative) ? Positive :&#10;   (dividend &lt;= Negative &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Positive &amp;&amp; divisor &lt;= Negative) ? Negative :&#10;    Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="abstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 105.0]">
+        </property>
+    </property>
+    <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 &lt;= Unknown || addend2 &lt;= Unknown ? Unknown :&#10; addend1 &lt;= Positive &amp;&amp; (addend2 &lt;= Positive || addend2 &lt;= Zero) ? Positive :&#10;  addend1 &lt;= Negative &amp;&amp; (addend2 &lt;= Negative || addend2 &lt;= Zero) ? Negative :&#10;   addend2 &lt;= Positive &amp;&amp; (addend1 &lt;= Positive || addend1 &lt;= Zero) ? Positive :&#10;    addend2 &lt;= Negative &amp;&amp; (addend1 &lt;= Negative || addend1 &lt;= Zero) ? Negative :&#10;     addend1 &lt;= Zero &amp;&amp; addend2 &lt;= Zero ? Zero :&#10;      Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="abstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 210.0]">
+        </property>
+    </property>
+    <property name="subtractFunction" class="ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addFunction(subtractor, negateFunction(subtractee))">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="abstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 265.0]">
+        </property>
+    </property>
+    <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Positive ? Negative :&#10;  arg &lt;= Negative ? Positive :&#10;   arg &lt;= Zero ? Zero :&#10;    Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="abstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 320.0]">
+        </property>
+    </property>
+    <property name="reciprocalFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Zero ? Unknown :&#10;  arg &lt;= Positive ? Positive :&#10;   arg &lt;= Negative ? Negative :&#10;    Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="abstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
+        </property>
+    </property>
+    <entity name="abstractInterpretation" class="ptolemy.data.ontologies.lattice.adapters.abstractInterpretation.abstractInterpretationScalar">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
+        </property>
+    </entity>
+</entity>

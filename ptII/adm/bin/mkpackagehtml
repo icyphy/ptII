@@ -1,0 +1,64 @@
+#!/bin/sh
+# $Id$
+# Given a package name, create the corresponding package.html file
+# Usage: mkpackagehtml package1 [package2 ...]
+# Where each package name is a dot separated package name
+#
+# One way to find the packages:
+# grep package `find . -name "*.java" -print`  | awk '{print $NF}' | sort | uniq 
+
+# See also the chkpackagehtml rule in $PTII/doc
+
+packages=$@
+for package in $packages
+do 
+  #echo $package
+  directory=`echo $package | sed 's@\.@/@g'`
+  if [ ! -d $directory ]; then
+      echo "$0: $directory does not exist, skipping"
+  else
+      packagefile=$directory/package.html
+      if [ -f $packagefile ]; then
+	  echo "$0: $packagefile exists, skipping"
+      else 
+
+	  since="@since Ptolemy II 8.1" 
+	  if [ "$since" = "" ]; then 
+	      since=`grep -h @since */*.java | sort | uniq | head -1`
+	  fi    
+
+cat > $packagefile << EoF
+<!-- \$Id\$ -->
+<html>
+<head>
+<title>$package</title>
+</head>
+<body>
+The $package package.
+<p>
+$since
+</body>
+</html>
+EoF
+         echo "$packagefile"
+	 #svn add $packagefile
+	 #svn commit -m "Added package.html" $packagefile 
+      fi 
+
+
+      READMEfile=$directory/README.txt
+      if [ -f $READMEfile ]; then
+	  echo "$0: $READMEfile exists, skipping"
+      else 
+cat > $READMEfile << EoF2
+\$Id\$
+See package.html
+EoF2
+         echo "$READMEfile"
+	 #svn add $READMEfile
+	 #svn commit -m "Added README.html" $READMEfile 
+      fi
+
+
+  fi
+done

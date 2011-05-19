@@ -1,0 +1,61 @@
+#!/bin/sh
+# $Id$
+# Fix comments
+
+tmpfile=/tmp/fixcomments.$$
+for file in $@
+do
+	classname=`basename $file .java`
+	cat $file |
+	sed -e 's@^// *//////*$@@g' \
+	    -e 's@^    // *//////*$@    ///////////////////////////////////////////////////////////////////@g' \
+	    -e 's@^    // *// *inner classes * ////[ ]*$@@g' \
+	    -e 's@^    // *// *inner class * ////[ ]*$@@g' \
+	    -e 's@^    // *// *ports and parameters* ////[ ]*$@@g' \
+	    -e 's@^    // *// *public methods * ////[ ]*$@@g' \
+	    -e 's@^    // *// *protected methods * ////[ ]*$@@g' \
+	    -e 's@^    // *// *private methods * ////[ ]*$@@g' \
+	    -e 's@^    // *// *public variables * ////[ ]*$@@g' \
+	    -e 's@^    // *// *protected variables * ////[ ]*$@@g' \
+	    -e 's@^[ 	]*////////*$@    ///////////////////////////////////////////////////////////////////@g' \
+	    -e 's@^[ 	]*//// *inner classes * ////[ ]*$@@g' \
+	    -e 's@^[ 	]*//// *inner class * ////[ ]*$@@g' \
+	    -e 's@^[ 	]*//// *ports and parameters* ////[ ]*$@@g' \
+	    -e 's@^[ 	]*//// *public methods * ////[ ]*$@@g' \
+	    -e 's@^[ 	]*//// *protected methods * ////[ ]*$@@g' \
+	    -e 's@^[ 	]*//// *private methods * ////[ ]*$@@g' \
+	    -e 's@^[ 	]*//// *public variables * ////[ ]*$@@g' \
+	    -e 's@^[ 	]*//// *protected variables * ////[ ]*$@@g' |
+	    awk -v classname=$classname '
+	    BEGIN {commentline = "    ///////////////////////////////////////////////////////////////////"}
+	    { if ($0 ~ / *public/) {
+              if ($0 ~ / *public [A-Za-z]*Parameter [^()]*;^/) {
+	      	  if (!printedPortsAndParameters) {
+	       	      printedPortsAndParameters = 1
+	       	      print $commentline
+		      print "    ////                     ports and parameters                  ////"
+   	      	  } 
+              } else if ($0 ~ / *public [^(]*;^/) {
+	      	  if (!printedPublicVariables) {
+	       	      printedPublicVariables = 1
+	       	      print $commentline
+		      print "    ////                     public variables                     ////"
+   	      	  } 
+              } else if ($0 ~ / *public class /) {
+	      	  if (!printedPublicInnerClasses) {
+	       	      printedPublicInnerClasses = 1
+	       	      print $commentline
+		      print "    ////                     public inner classes                 ////"
+   	      	  } 
+              } else if ($0 ~ / *public .*(/) {
+	      	  if (!printedPublicMethods) {
+	       	      printedPublicMethods = 1
+	       	      print $commentline
+		      print "    ////                     public inner classes                 ////"
+   	      	  } 
+	      }
+            }
+	    ' > $tmpfile
+       diff $file $tmpfile
+done
+

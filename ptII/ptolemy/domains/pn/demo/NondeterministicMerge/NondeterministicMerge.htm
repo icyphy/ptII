@@ -1,0 +1,37 @@
+<!-- : ptmkmodel,v 1.6 1999/06/13 21:47:21 cxh Exp $
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Nondeterministic Merge</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Nondeterministic Merge</H1>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+NondeterministicMerge is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "NondeterministicMerge.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="NondeterministicMergeVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model generates events with the time between events roughly
+given by the two timeStep parameters, which are in units of milliseconds.
+It then merges the two event sequences using a NondeterministicMerge,
+which is a PN-specific actor that passes data from any number of input
+streams to the output. Notice that this actor extends PN to support
+nondeterministic models. It should be used with caution.</p>
+
+</BODY>
+</HTML>

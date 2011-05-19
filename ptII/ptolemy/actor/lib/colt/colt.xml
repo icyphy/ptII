@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Colt" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Actors that generate random data.</doc>
+
+	<entity name="ColtBeta" class="ptolemy.actor.lib.colt.ColtBeta">
+		<doc>Create a sequence of Beta random variables</doc>
+	</entity>
+	<entity name="ColtBinomial"
+	        class="ptolemy.actor.lib.colt.ColtBinomial">
+		<doc>Create a sequence of Binomial random variables</doc>
+	</entity>
+	<entity name="ColtBinomialSelector"
+	        class="ptolemy.actor.lib.colt.ColtBinomialSelector">
+		<doc> Assign trials from several populations using a
+	conditional Binomial selection process.</doc>
+	</entity>
+	<entity name="ColtBreitWigner"
+	        class="ptolemy.actor.lib.colt.ColtBreitWigner">
+		<doc>Create a sequence of BreitWigner random variables</doc>
+	</entity>
+	<entity name="ColtChiSquare"
+	        class="ptolemy.actor.lib.colt.ColtChiSquare">
+		<doc>Create a sequence of ChiSquare random variables</doc>
+	</entity>
+	<entity name="ColtExponential"
+                class="ptolemy.actor.lib.colt.ColtExponential">
+		<doc>Create a sequence of Exponential random variables</doc>
+	</entity>
+	<entity name="ColtExponentialPower"
+                class="ptolemy.actor.lib.colt.ColtExponentialPower">
+		<doc>Create a sequence of Exponential Power random variables</doc>
+	</entity>
+	<entity name="ColtGamma"
+	        class="ptolemy.actor.lib.colt.ColtGamma">
+		<doc>Create a sequence of Gamma random variables</doc>
+	</entity>
+	<entity name="ColtHyperGeometric"
+                class="ptolemy.actor.lib.colt.ColtHyperGeometric">
+		<doc>Create a sequence of HyperGeometric random variables</doc>
+	</entity>
+	<entity name="ColtLogarithmic"
+                class="ptolemy.actor.lib.colt.ColtLogarithmic">
+		<doc>Create a sequence of Logarithmic random variables</doc>
+	</entity>
+	<entity name="ColtNegativeBinomial"
+                class="ptolemy.actor.lib.colt.ColtNegativeBinomial">
+		<doc>Create a sequence of Negative Binomial random variables</doc>
+	</entity>
+	<entity name="ColtNormal"
+                class="ptolemy.actor.lib.colt.ColtNormal">
+		<doc>Create a sequence of Normal random variables</doc>
+	</entity>
+	<entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
+		<doc>Create a sequence of Poisson random variables</doc>
+	</entity>
+	<entity name="ColtPoissonSlow"
+                class="ptolemy.actor.lib.colt.ColtPoissonSlow">
+		<doc>Create a sequence of PoissonSlow random variables</doc>
+	</entity>
+	<entity name="ColtStudentT"
+                class="ptolemy.actor.lib.colt.ColtStudentT">
+		<doc>Create a sequence of StudentT random variables</doc>
+	</entity>
+	<entity name="ColtVonMises"
+                class="ptolemy.actor.lib.colt.ColtVonMises">
+		<doc>Create a sequence of VonMises random variables</doc>
+	</entity>
+	<entity name="ColtZeta" class="ptolemy.actor.lib.colt.ColtZeta">
+		<doc>Create a sequence of Zeta random variables</doc>
+	</entity>
+      </group>
+    ?>
+  </configure>
+</entity>

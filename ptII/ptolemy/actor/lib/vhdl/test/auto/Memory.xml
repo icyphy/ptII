@@ -1,0 +1,95 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Memory" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 40, 815, 644}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 526]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 263.0}">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 100.0]">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0 (U1:0)&quot;, &quot;0 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="FixCounter" class="ptolemy.actor.lib.vhdl.FixCounter">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1:0">
+        </property>
+        <property name="outputOverflow" class="ptolemy.data.expr.StringParameter" value="WRAP">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="Memory" class="ptolemy.actor.lib.vhdl.Memory">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1:0">
+        </property>
+        <property name="outputOverflow" class="ptolemy.data.expr.StringParameter" value="WRAP">
+        </property>
+        <property name="latency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="capacity" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="True" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1.0">
+        </property>
+        <property name="outputOverflow" class="ptolemy.data.expr.StringParameter" value="WRAP">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="FixToString" class="ptolemy.actor.lib.vhdl.FixToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 270.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[260.0, 305.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[140.0, 260.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation3"/>
+    <link port="FixCounter.output" relation="relation4"/>
+    <link port="FixCounter.increment" relation="relation2"/>
+    <link port="Memory.output" relation="relation5"/>
+    <link port="Memory.writeEnable" relation="relation2"/>
+    <link port="Memory.address" relation="relation4"/>
+    <link port="Memory.dataIn" relation="relation4"/>
+    <link port="True.output" relation="relation2"/>
+    <link port="FixToString.input" relation="relation5"/>
+    <link port="FixToString.output" relation="relation3"/>
+</entity>

@@ -1,0 +1,502 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Transmission" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+        </property>
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="500.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 860, 584}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[647, 474]">
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Steve Neuendorffer</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 430.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.5, 237.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the &quot;car model&quot; actor&#10;to see how function closures are&#10;used to simplify the model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model represents an automobile transmission,&#10;a classic example of a hybrid system.&#10;&#10;The inputs to &quot;car model&quot; hybrid system are the current applied&#10;gear and the current throttle position.  In this model, the gear&#10;shift sequence is predetermined, and the throttle is applied&#10;constantly.  It is assumed that shifts from one gear to another&#10;occur instantaneously.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of &quot;function closures&quot; to compact&#10;the states of the hybrid system.  Instead of having one mode for each gear,&#10;the model contains only one mode.  The reset actions of transitions set the&#10;efficiency function for the current gear.  The efficiency function determines&#10;the amount of the engine's power that is available to accelerate the vehicle.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 295.0]">
+        </property>
+    </property>
+    <entity name="Plot position" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 414, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 205.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Position vs. Time</title>
+<xLabel>Time (seconds)</xLabel>
+<yLabel>Position</yLabel>
+<xRange min="0.0" max="500.0"/>
+<yRange min="0.0" max="11485.845822022271"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="car model" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 215.0]">
+        </property>
+        <port name="position" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="gear" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <port name="throttle" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+        </port>
+        <port name="velocity" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 192, 813, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 405]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 202.5}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the inGear state&#10;to see how the function closure&#10;&quot;efficiencyFunction&quot; is applied.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 130.0]">
+                </property>
+            </property>
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 145.0]">
+                </property>
+            </port>
+            <port name="gear" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 140.0]">
+                </property>
+            </port>
+            <port name="throttle" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
+                </property>
+            </port>
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 205.0]">
+                </property>
+            </port>
+            <entity name="inGear" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 170.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="gear_isPresent">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction =&#10;   function(rpm:double) 1/(1+((rpm-300*gear)/100)^2)">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4311731218682806">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.214480631422191">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction =&#10;   function(rpm:double) 1/(1+((rpm-300)/100)^2)">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.3077625089165776">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.11152199101145541">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="inGear.incomingPort" relation="relation"/>
+            <link port="inGear.incomingPort" relation="relation2"/>
+            <link port="inGear.outgoingPort" relation="relation"/>
+            <link port="init.outgoingPort" relation="relation2"/>
+        </entity>
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                </property>
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
+                </property>
+            </property>
+            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="(function(rpm:double) (1/(1+((rpm-1800)/100)^2)))">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 25.0">
+                </property>
+            </property>
+            <property name="mass" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 137, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The &quot;efficiencyFunction&quot; parameter is set each time this mode is entered to&#10;the efficiency function of a particular gear. The Expression actor (named&#10;&quot;Compute Acceleration&quot;) applies the function to its other inputs (throttle&#10;and rpm).  The integrators model the inertia of the vehicle.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 70.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Convert velocity to revolutions per minute (rpm).">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 290.0]">
+                </property>
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 275.0">
+                </property>
+            </port>
+            <port name="gear" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 175.0">
+                </property>
+            </port>
+            <port name="throttle" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 220.0">
+                </property>
+            </port>
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 345.0">
+                </property>
+            </port>
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 230.0">
+                </property>
+            </entity>
+            <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 275.0">
+                </property>
+            </entity>
+            <entity name="Compute Acceleration" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="efficiencyFunction(rpm)*throttle*mass">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 230.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                    </property>
+                </port>
+                <port name="throttle" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                </port>
+                <port name="rpm" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input*100">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 275.0]">
+                </property>
+                <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="455.0, 275.0">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="position" relation="relation2"/>
+            <link port="throttle" relation="relation5"/>
+            <link port="velocity" relation="relation6"/>
+            <link port="Integrator.derivative" relation="relation4"/>
+            <link port="Integrator.state" relation="relation6"/>
+            <link port="Integrator2.derivative" relation="relation6"/>
+            <link port="Integrator2.state" relation="relation2"/>
+            <link port="Compute Acceleration.output" relation="relation4"/>
+            <link port="Compute Acceleration.throttle" relation="relation5"/>
+            <link port="Compute Acceleration.rpm" relation="relation"/>
+            <link port="Expression2.output" relation="relation"/>
+            <link port="Expression2.input" relation="relation6"/>
+        </entity>
+        <relation name="positionRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="gearRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="throttleRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="velocityRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="position" relation="positionRelation"/>
+        <link port="gear" relation="gearRelation"/>
+        <link port="throttle" relation="throttleRelation"/>
+        <link port="velocity" relation="velocityRelation"/>
+        <link port="_Controller.position" relation="positionRelation"/>
+        <link port="_Controller.gear" relation="gearRelation"/>
+        <link port="_Controller.throttle" relation="throttleRelation"/>
+        <link port="_Controller.velocity" relation="velocityRelation"/>
+        <link port="state.position" relation="positionRelation"/>
+        <link port="state.gear" relation="gearRelation"/>
+        <link port="state.throttle" relation="throttleRelation"/>
+        <link port="state.velocity" relation="velocityRelation"/>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 265.0">
+        </property>
+    </entity>
+    <entity name="Plot velocity" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 414, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 270.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Speed vs. Time</title>
+<xLabel>time (seconds)</xLabel>
+<yLabel>speed</yLabel>
+<xRange min="0.0" max="500.0"/>
+<yRange min="0.0" max="28.591719809995602"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Gear Shift" class="ptolemy.domains.continuous.lib.EventSource">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2000">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 20.0,40.0,60.0,90.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2,3,4,6}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 190.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Plot position.input" relation="relation3"/>
+    <link port="car model.position" relation="relation3"/>
+    <link port="car model.gear" relation="relation5"/>
+    <link port="car model.throttle" relation="relation2"/>
+    <link port="car model.velocity" relation="relation4"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="Plot velocity.input" relation="relation4"/>
+    <link port="Gear Shift.output" relation="relation5"/>
+</entity>

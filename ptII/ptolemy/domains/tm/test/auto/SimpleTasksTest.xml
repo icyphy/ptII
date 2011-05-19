@@ -1,0 +1,283 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SimpleTasksTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="TM" class="ptolemy.domains.tm.kernel.TMDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12.0">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="defaultTaskExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="displaySchedule" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 32.0">
+        </property>
+    </property>
+    <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 295.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows two independent tasks on a
+single CPU machine. The TM scheduler preemptive
+parameter determines the scheduling policy. 
+The schedule will be different depending on
+whether preemptive is true or false.
+To run the demo, start the run window and set the 
+preemptive parameter to true or false.
+</text>
+           </svg>
+           </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
+    </property>
+    <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_editorFactory" class="ptolemy.domains.tm.kernel.SchedulePlotter$SchedulePlotterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 340.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 80, 819, 570}}">
+    </property>
+    <entity name="Clock: period = 1" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 140.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Clock: period = 4" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{-1}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 205.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Task1: (p = mid, t = 2/10)" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 70.0">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Task2: (p = low, t = 2)" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 265.0">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 140.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 70.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 265.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 205.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2,1.2,2.2,3.2,4.2,5.2,6.2,7.2,8.2,9.2,10.2,11.2}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 140.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2,1.2,2.2,3.2,4.2,5.2,6.2,7.2,8.2,9.2,10.2,11.2}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 70.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2,4.2,8.2}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 205.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.6,6.6,10.6}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 265.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="165.0, 140.0">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="170.0, 205.0">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock: period = 1.output" relation="relation4"/>
+    <link port="Clock: period = 4.output" relation="relation"/>
+    <link port="Task1: (p = mid, t = 2/10).output" relation="relation2"/>
+    <link port="Task1: (p = mid, t = 2/10).trigger" relation="relation4"/>
+    <link port="Task2: (p = low, t = 2).output" relation="relation9"/>
+    <link port="Task2: (p = low, t = 2).trigger" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation5"/>
+    <link port="CurrentTime.trigger" relation="relation4"/>
+    <link port="CurrentTime2.output" relation="relation3"/>
+    <link port="CurrentTime2.trigger" relation="relation2"/>
+    <link port="CurrentTime4.output" relation="relation7"/>
+    <link port="CurrentTime4.trigger" relation="relation9"/>
+    <link port="CurrentTime3.output" relation="relation6"/>
+    <link port="CurrentTime3.trigger" relation="relation"/>
+    <link port="Test2.input" relation="relation5"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test3.input" relation="relation6"/>
+    <link port="Test4.input" relation="relation7"/>
+</entity>

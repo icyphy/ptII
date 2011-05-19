@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RegressionTest" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+			<entity name="GetCausalityInterface" class="ptolemy.actor.lib.GetCausalityInterface"/>
+			<entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest"/>
+			<entity name="Test" class="ptolemy.actor.lib.Test"/>
+			<property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector"/>
+			<entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth"/>
+			<entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler"/>
+			<entity name="TypeTest" class="ptolemy.actor.lib.TypeTest"/>
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,56 @@
+<html>
+<head>
+<!-- $Id$ -->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Viptos Installation documentation</h1>
+<p>
+Viptos is an interface between TinyOS and Ptolemy II.
+ <p>To get started, you must have the AVR tools, TinyOS and Nesc installed
+and some environment variables must be set.
+
+ <p>For details, see <a href="../../../ptolemy/domains/ptinyos/doc/installation.htm"><CODE>$PTII/ptolemy/domains/ptinyos/doc/installation.htm</CODE></a>
+
+<h2>The quick installation guide</h2>
+
+<ol>
+<li> Set the <CODE>PTII</CODE> environment variable to
+the top level Viptos directory.
+ <br>Viptos is based on Ptolemy II.  For details about
+installing Ptolemy II, see
+<a href="../../../doc/install.htm">$PTII/doc/install.htm</a>
+
+<li> Install the AVR tools, TinyOS, NesC as per 
+<a href="../../../ptolemy/domains/ptinyos/doc/installation.htm"><CODE>$PTII/ptolemy/domains/ptinyos/doc/installation.htm</CODE></a>
+ <p>At the minimum, you should have the
+<CODE>TOSROOT</CODE>,
+<CODE>TOSDIR</CODE>, and
+<CODE>PTINYOS_MOMLROOT</CODE>
+ environment variables set.
+
+<li> Configure Ptolemy II with:
+<pre>
+cd $PTII	
+./configure
+</pre>
+
+<li> Build Ptolemy II:
+<pre>
+make fast
+</pre>
+
+<li> Start up Viptos:
+<pre>
+$PTII/bin/viptos
+</pre>
+
+</ol>
+
+<h2>Further information</h2>
+ <p>For information about using Viptos, see the 
+<a href="docs.htm">Viptos documentation</a> and
+<a href="help.htm">Viptos help</a>.
+
+</body>
+</html>

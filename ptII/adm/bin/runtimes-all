@@ -1,0 +1,21 @@
+#!/bin/sh
+# Run the first argument in all the ptII* directories
+
+if [ $# -lt 2 ]; then
+    echo "$0: Usage: $0 script [ptIIdir] [ptIIdir . . .]"
+fi
+
+script=$1
+if [ ! -x $script ]; then
+    echo "$0: '$script' is not executable or cannot be found"
+fi	
+shift
+
+startdir=`pwd`
+for dir in $@
+do
+    cd $dir
+    # Set PTII and let the script rip
+    PTII=`pwd` $script
+    cd $startdir
+done

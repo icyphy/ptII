@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SequenceSinks" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Sinks for inputs that are sequences of tokens. </doc>
+<entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter"/>
+<entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
+<entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
+<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>
+<entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope"/>
+      </group>
+    ?>
+  </configure>
+</entity>

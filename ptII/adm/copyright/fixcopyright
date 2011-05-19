@@ -1,0 +1,182 @@
+#!/bin/sh
+# Fix the copyright date
+#  $Id$
+#
+# The way to run this is to use $PTII/adm/bin/ptIItxtfiles to generate
+# a list of files and then run this script on that over and over
+# again until all the bogus copyrights have been found
+
+# 1. Check out a fresh tree in a separate directory 
+#    PtII:  cd ~/tmp; svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
+#    Metro: cd ~/tmp; cvs -d  :ext:ic:/projects/hwsw/hwsw/common/src co metro)
+#
+# 2. Remove ptII/vendors
+#    PtII: cd ptII; export PTII=`pwd`; ./configure; make cleanDerivedJavaFiles clean_shipping
+#
+#    Remove files with copyrights by others
+#    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java
+#
+# 3. Generate a list of text files
+#    Ptolemy: cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
+#    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
+#
+# 4. Find files modified since the start of the year
+#    NOTE: this requires that ~/.subversion/config has
+#    use-commit-times = yes
+#
+#    find . -name .svn -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | sort > /tmp/new
+#    
+#    Note that if you wanted files since the start of last year, use run
+#    "date +%j" and add that number to the number of days in the last year.
+#    For example, if "date +%j" is 27, then 27+365 is 392, so use
+#    -mtime -392 in the find command
+#    
+#    Then, create a list of text files that are new:
+#    sort /tmp/f > /tmp/f.sort
+#    comm -12 /tmp/new /tmp/f.sort > /tmp/f.new
+#
+# 5. Update the script
+#    - Update the year regex in the lines marked 'EVERY_YEAR' below
+#
+# 6. Run the script in testing mode:
+#    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
+#    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright -n >& /tmp/fc.txt
+#
+# 6. Check the output in /tmp/fc.txt
+#
+# 7. Run it for real:
+#    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
+#    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
+#
+# 8. Do a clean checkout somewhere and rebuild and test
+#    cd ~/tmp_2; cvs -d :ext:gigasource:/home/cvs co ptII
+#    make fast
+
+printonly=no
+
+while getopts nd-- opt
+do
+    case $opt in
+	d) 	set -x;;
+	n) 	printonly=yes;;
+	\?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
+		echo " -n  Print only, do not modify any files "
+		echo " -d  debug"
+		exit 3;;
+    esac
+done
+shift `expr $OPTIND - 1`
+
+filesupdated=/tmp/fixcopyright_filesupdated.$$
+
+search() {
+topdir=`pwd`
+echo "************ $EGREPMATCH: $topdir"
+
+for fullfile in $@
+do
+    cd $topdir
+    echo "Now processing: $fullfile"
+    egrep "$EGREPMATCH" $fullfile
+    retval=$?
+    if [ $retval = 0 ]; then
+	# There was a difference, so we might want to check this sucker out
+	file=`basename $fullfile`
+	dirname=`dirname $fullfile`
+	cd $dirname
+	doit
+	if [ "$printonly" = "no" ]; then
+	    cp /tmp/fixcopyright.tmp $file
+            echo "Not running svn commit, just copying"
+	    #svn commit -m "Removing tabs" $file
+	    echo $fullfile >> $filesupdated
+	else
+	    echo "Would update and commit"
+	fi	
+    fi
+done
+rm -f /tmp/fixcopyright.tmp
+cd $topdir
+}
+
+doit() {
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2010\2/' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
+LOGMESSAGE="Changed copyright to 2010"
+
+search $@
+
+doit() {
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2010/' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+EGREPMATCH="199[0-8]-199[0-9]"
+LOGMESSAGE="Changed copyright to 2010"
+
+search $@
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+doit() {
+    sed 's/Copyright (c) \(199[0-9]\)-200[0-9]/Copyright (c) \1-2010/' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+EGREPMATCH='Copyright \(c\) 199[0-9]-200[0-9]'
+LOGMESSAGE="Changed copyright to 2010"
+
+search $@
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+doit() {
+    sed 's/Copyright (c) \(200[0-9]\)-200[0-9] /Copyright (c) \1-2010 /' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+EGREPMATCH='Copyright \(c\) 200[0-9]-200[0-9]'
+LOGMESSAGE="Changed copyright to 2010"
+
+search $@
+
+doit() {
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2010 /' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+EGREPMATCH="Copyright \(c\) 199[0-9] "
+LOGMESSAGE="Changed copyright to 2010"
+
+search $@
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+doit() {
+    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2010 /' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+EGREPMATCH="Copyright \(c\) 200[0-9] "
+LOGMESSAGE="Changed copyright to 2010"
+
+search $@
+
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
+
+rm -f $filesupdated

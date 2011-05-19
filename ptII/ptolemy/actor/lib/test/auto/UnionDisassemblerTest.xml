@@ -1,0 +1,187 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UnionDisassemblerTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 27, 932, 711}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[717, 595]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.5, 297.5}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 55.0]">
+        </property>
+    </property>
+    <entity name="UnionMerge" class="ptolemy.domains.de.lib.UnionMerge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 160.0]">
+        </property>
+        <port name="cloth" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="car" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="record" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="UnionDisassembler" class="ptolemy.actor.lib.UnionDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 140.0]">
+        </property>
+        <port name="cloth" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="car" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="record" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 190.0}">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;b&quot;">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;, &quot;abbbb&quot;, &quot;abbbbb&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{|cloth = 1|}, {|car = 0|}, {|money = &quot;a&quot;|}, {|record = {car = 0, cloth = 1, money = &quot;a&quot;}|}, {|cloth = 0|}, {|car = 1|}, {|money = &quot;ab&quot;|}, {|record = {car = 1, cloth = 0, money = &quot;ab&quot;}|}, {|cloth = 1|}, {|car = 2|}, {|money = &quot;abb&quot;|}, {|record = {car = 2, cloth = 1, money = &quot;abb&quot;}|}, {|cloth = 0|}, {|car = 3|}, {|money = &quot;abbb&quot;|}, {|record = {car = 3, cloth = 0, money = &quot;abbb&quot;}|}, {|cloth = 1|}, {|car = 4|}, {|money = &quot;abbbb&quot;|}, {|record = {car = 4, cloth = 1, money = &quot;abbbb&quot;}|}, {|cloth = 0|}, {|car = 5|}, {|money = &quot;abbbbb&quot;|}, {|record = {car = 5, cloth = 0, money = &quot;abbbbb&quot;}|}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[532.0461273193359, 59.300743103027344]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 380.0]">
+        </property>
+        <port name="cloth" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="car" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{car = 0, cloth = 1, money = &quot;a&quot;}, {car = 1, cloth = 0, money = &quot;ab&quot;}, {car = 2, cloth = 1, money = &quot;abb&quot;}, {car = 3, cloth = 0, money = &quot;abbb&quot;}, {car = 4, cloth = 1, money = &quot;abbbb&quot;}, {car = 5, cloth = 0, money = &quot;abbbbb&quot;}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.30908203125, 339.92919921875]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[430.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[125.0, 120.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[260.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[275.0, 250.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="UnionMerge.output" relation="relation5"/>
+    <link port="UnionMerge.cloth" relation="relation"/>
+    <link port="UnionMerge.car" relation="relation9"/>
+    <link port="UnionMerge.money" relation="relation2"/>
+    <link port="UnionMerge.record" relation="relation8"/>
+    <link port="UnionDisassembler.input" relation="relation5"/>
+    <link port="UnionDisassembler.cloth" relation="relation4"/>
+    <link port="UnionDisassembler.car" relation="relation6"/>
+    <link port="UnionDisassembler.money" relation="relation7"/>
+    <link port="UnionDisassembler.record" relation="relation3"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="Ramp.output" relation="relation9"/>
+    <link port="Ramp.trigger" relation="relation"/>
+    <link port="Ramp2.output" relation="relation2"/>
+    <link port="Ramp2.trigger" relation="relation"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test2.input" relation="relation6"/>
+    <link port="Test3.input" relation="relation7"/>
+    <link port="Test4.input" relation="relation5"/>
+    <link port="RecordAssembler.output" relation="relation8"/>
+    <link port="RecordAssembler.cloth" relation="relation"/>
+    <link port="RecordAssembler.car" relation="relation9"/>
+    <link port="RecordAssembler.money" relation="relation2"/>
+    <link port="Test5.input" relation="relation3"/>
+</entity>

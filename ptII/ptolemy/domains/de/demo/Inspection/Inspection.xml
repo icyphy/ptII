@@ -1,0 +1,553 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="executionTime">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 35.0">
+        </property>
+    </property>
+    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100.0">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 500]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[72, 77]">
+    </property>
+    <property name="regularBusArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="poissonBusArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="passengerArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1013, 610}, maximized=false}">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 460.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DE Modeling">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 25.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In discrete-event modeling,&#10;components communicate via&#10;signals consisting of events&#10;placed on a time line. The&#10;DE director ensures that&#10;events are processed in&#10;chronological order. This&#10;model of computation is well-&#10;suited for modeling digital&#10;circuits, communication&#10;networks, business processes,&#10;etc.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 55.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a famous paradox&#10;in probability called the inspection&#10;paradox. Passengers arrive randomly at a&#10;bus stop, according to a Poisson process.&#10;Busses also arrive, and waiting time of&#10;the passengers is recorded. Two&#10;situations are compared: Busses arrive at&#10;regular intervals, and busses arrive&#10;according to a Poisson process. The&#10;expected waiting time is double for the&#10;second case as the first, even though the&#10;average arrival rate of busses is the same.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 20.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The discrete-event director uses a&#10;sophisticated priority queue to sort&#10;events by time, and executes a model&#10;by processing events in chronological&#10;order.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 50.0}">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.0, 250.0}">
+    </property>
+    <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 265.0">
+        </property>
+    </entity>
+    <entity name="Passenger Arrivals" class="ptolemy.actor.lib.PoissonClock">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="passengerArrivalRate">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 330.0">
+        </property>
+    </entity>
+    <entity name="Poisson Waiting Time" class="ptolemy.domains.de.lib.WaitingTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 255.0">
+        </property>
+    </entity>
+    <entity name="Timed Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="passenger, wait time, bus (Regular), bus (Poisson)">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 515, 508, 259}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 204]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 165.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Arrival Times and Waiting Times</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="5.188792482775604"/>
+<noGrid/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Histogram" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, Regular">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 512, 508, 260}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 205]">
+        </property>
+        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 275.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Waiting Time Histogram</title>
+<xLabel>waiting times</xLabel>
+<yLabel>passengers</yLabel>
+<xRange min="0.1" max="5.199999999999999"/>
+<yRange min="0.0" max="26.0"/>
+<noGrid/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="0.2" offset="0.1"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Regular Bus Arrivals" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="regularBusArrivalRate">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
+        </property>
+    </entity>
+    <entity name="Regular Waiting Time" class="ptolemy.domains.de.lib.WaitingTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 318.5">
+        </property>
+    </entity>
+    <entity name="Report Poisson Average" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 345.0]">
+        </property>
+        <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Poisson busses): &quot;">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This submodel collects a running average of the incoming data,&#10;and when a trigger is received, samples that data, converts&#10;it to a string, and appends it to a caption to report the final&#10;result.  This technique for constructing a string leverages&#10;the polymorphic data type system in Ptolemy II.  The AddSubtract&#10;actor, for example, adds strings by appending them.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 45.0}">
+            </property>
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 205.0">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="67.21065998077393, 341.9994239807129">
+            </property>
+        </port>
+        <port name="report" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 265.0">
+            </property>
+        </port>
+        <entity name="Average" class="ptolemy.actor.lib.Average">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
+            </property>
+        </entity>
+        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
+            </property>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 265.0">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="171.0, 310.0">
+            </vertex>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="data" relation="relation1"/>
+        <link port="trigger" relation="relation9"/>
+        <link port="report" relation="relation15"/>
+        <link port="Average.input" relation="relation1"/>
+        <link port="Average.output" relation="relation3"/>
+        <link port="Sampler.input" relation="relation3"/>
+        <link port="Sampler.output" relation="relation13"/>
+        <link port="Sampler.trigger" relation="relation9"/>
+        <link port="AddSubtract.plus" relation="relation12"/>
+        <link port="AddSubtract.plus" relation="relation13"/>
+        <link port="AddSubtract.output" relation="relation15"/>
+        <link port="Const.output" relation="relation12"/>
+        <link port="Const.trigger" relation="relation9"/>
+    </entity>
+    <entity name="Display Average Waiting Times" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 432, 103}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="60">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent0" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="executionTime">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 420.0">
+        </property>
+    </entity>
+    <entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 410.0">
+        </property>
+        <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This submodel collects a running average of the incoming data,&#10;and when a trigger is received, samples that data, converts&#10;it to a string, and appends it to a caption to report the final&#10;result.  This technique for constructing a string leverages&#10;the polymorphic data type system in Ptolemy II.  The AddSubtract&#10;actor, for example, adds strings by appending them.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 45.0}">
+            </property>
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 205.0">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="67.21065998077393, 341.9994239807129">
+            </property>
+        </port>
+        <port name="report" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 265.0">
+            </property>
+        </port>
+        <entity name="Average" class="ptolemy.actor.lib.Average">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
+            </property>
+        </entity>
+        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
+            </property>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 265.0">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="171.0, 310.0">
+            </vertex>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="data" relation="relation1"/>
+        <link port="trigger" relation="relation9"/>
+        <link port="report" relation="relation15"/>
+        <link port="Average.input" relation="relation1"/>
+        <link port="Average.output" relation="relation3"/>
+        <link port="Sampler.input" relation="relation3"/>
+        <link port="Sampler.output" relation="relation13"/>
+        <link port="Sampler.trigger" relation="relation9"/>
+        <link port="AddSubtract.plus" relation="relation12"/>
+        <link port="AddSubtract.plus" relation="relation13"/>
+        <link port="AddSubtract.output" relation="relation15"/>
+        <link port="Const.output" relation="relation12"/>
+        <link port="Const.trigger" relation="relation9"/>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="165.0, 190.0">
+        </vertex>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="275.0, 420.0">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="330.0, 300.0">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="150.0, 265.0">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="135.0, 330.0">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="310.0, 255.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Poisson Bus Arrivals.output" relation="relation5"/>
+    <link port="Passenger Arrivals.output" relation="relation6"/>
+    <link port="Poisson Waiting Time.output" relation="relation7"/>
+    <link port="Poisson Waiting Time.waiter" relation="relation6"/>
+    <link port="Poisson Waiting Time.waitee" relation="relation5"/>
+    <link port="Timed Plotter.input" relation="relation6"/>
+    <link port="Timed Plotter.input" relation="relation7"/>
+    <link port="Timed Plotter.input" relation="relation2"/>
+    <link port="Timed Plotter.input" relation="relation5"/>
+    <link port="Histogram.input" relation="relation7"/>
+    <link port="Histogram.input" relation="relation4"/>
+    <link port="Regular Bus Arrivals.output" relation="relation2"/>
+    <link port="Regular Waiting Time.output" relation="relation4"/>
+    <link port="Regular Waiting Time.waiter" relation="relation6"/>
+    <link port="Regular Waiting Time.waitee" relation="relation2"/>
+    <link port="Report Poisson Average.data" relation="relation7"/>
+    <link port="Report Poisson Average.trigger" relation="relation"/>
+    <link port="Report Poisson Average.report" relation="relation27"/>
+    <link port="Display Average Waiting Times.input" relation="relation27"/>
+    <link port="Display Average Waiting Times.input" relation="relation3"/>
+    <link port="SingleEvent0.output" relation="relation"/>
+    <link port="Report Regular Average.data" relation="relation4"/>
+    <link port="Report Regular Average.trigger" relation="relation"/>
+    <link port="Report Regular Average.report" relation="relation3"/>
+</entity>

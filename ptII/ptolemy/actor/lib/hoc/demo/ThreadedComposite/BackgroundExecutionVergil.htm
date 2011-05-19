@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>BackgroundExecution</title>
+</head>
+<body>
+<h1>BackgroundExecution</h1>
+This page contains an applet that should appear as a separate window.
+<p>The ThreadedComposite in this model has delay 2.0, so executing this model produces exactly
+the same result as if the ThreadedComposite were replaced by a TimedDelay with delay 2.0.</p>
+
+<p>However, in this implementation, the ThreadedComposite takes a full 1.5 seconds to execute
+(this implemented with a Sleep actor inside). That execution occurs in the background and does
+not block firings of the other actors, except as necessary to preserve timed DE semantics.
+Thus, notice that the lower actors react to events at times 0, 0.25, 1, and 1.25 before the
+ThreadedComposite has completed its execution.</p>
+
+<p>This illustrates that ThreadedComposite can be used to execute actors that take a while to execute.
+For example, if you have an actor that will block on I/O, wrapping it in a ThreadedComposite may be
+a good idea. Also, on a multicore machine, the ThreadedComposite can execute on another core, thus
+exploiting parallelism.</p>
+
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- PT SIMPLE APPLET CONVERTER -->
+<APPLET 
+ code = "ptolemy.vergil.VergilApplet"
+ codebase = "../../../../../.."
+  archive = "ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <!-- PARAM name="jnlp_href" value="ptolemy/actor/lib/hoc/demo/ThreadedComposite/BackgroundExecution.jnlp" -->
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer BackgroundExecution.xml">
+ <PARAM NAME = "NAME" VALUE = "BackgroundExecution" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "BackgroundExecution.xml" > \
+ <a href="BackgroundExecution.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT SIMPLE APPLET CONVERTER -->
+</CENTER>
+</p>
+</body>
+</html>

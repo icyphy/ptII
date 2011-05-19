@@ -1,0 +1,161 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="testPythonClass" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 12, 754, 673}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[539, 556]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{269.5, 278.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for Actor oriented classes that use the PythonScript actor.&#10;&#10;Norbert Podhorszki writes:&#10;I am seemingly getting used to the jython actor. I have now two of them.&#10;I have tried to make a class from a jython actor and to use instances in the&#10;workflow but it seems not to work: only one of them (the latest instance)&#10;works. Here is a simple pass-it-on actor made to be a class with two&#10;instances. You will see that only the second instance produces output.&#10;&#10;If you change the PN director to SDF, you get exception for the buffer size&#10;at the first instance, so it looks it is not fired by SDF at all.&#10;&#10;Do you have any idea why the &quot;classification&quot; does not work with&#10;PythonScript?&#10;&#10;Currently, I have copies of the actor in the workflow and it works that way.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 215.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 40}">
+        </property>
+    </property>
+    <class name="Signaler" extends="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="class Main :&#10;  &quot;&quot;&quot;Pass on any token.&quot;&quot;&quot;&#10;  def fire(self) :&#10;    # consume the input first&#10;    if not self.input.hasToken(0) :&#10;      return&#10;    t=self.input.get(0)&#10;    self.output.broadcast(t)         # pass on token&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="entityId" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:localhost:entity:1:1">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.lib.python.PythonScript">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="null">
+            </property>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 45.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </class>
+    <entity name="Signaler1" class="Signaler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{223.0, 105.0}">
+        </property>
+    </entity>
+    <entity name="Signaler2" class="Signaler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{223.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Yuhong Xiong, Edward A. Lee</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure><p>The Ramp actor is the equivalent of the "for loop" in many traditional computer languages. Its parameters include an intial value, the amount the value is incremented each time the actor fires (the 'step'), and the upper limit of the value (the firingCountLimit). The actor outputs an integer each time it is fired. </p>
+
+<p>The actor's output can be used as a counter (increasing or decreasing), or as a parameter used in an incremented workflow. For example, the output of a Ramp actor can be input to an Expression actor to create file names that are unique for each iteration (e.g., 'file1', 'file2', etc.) The Ramp actor is also particularly useful with PN directed workflows where there is no way to set the number of iterations as a Director parameter. </p>
+
+<p>The first time the actor fires, it outputs the value of its init parameter. The increment value, specified with either the step port or parameter, will only be added on the following iteration. To add an increment to the first iteration, use the Accumulator actor.</p>
+
+<p>The actor accepts values of any type that support addition.</p></configure></property>
+<property name="port:output" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An output port that broadcasts the incremented value.</configure></property>
+<property name="port:trigger" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An input port that has no declared type (in other words, the port can accept any data type: double, int, array, etc.) If the port is connected, the actor will not fire until the trigger port receives an input token. Connecting the port is optional, but useful when scheduling the actor to perform at a certain time.</configure></property>
+<property name="port:step" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An input port that accepts the amount by which the output is incremented on each iteration. The port accepts a value of any type that supports addition. The value is an integer and defaults to 1.</configure></property>
+<property name="prop:firingCountLimit" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The number of iterations that transpire before the actor indicates that it is finished. If firingCountLimit is set to zero, the actor has no limit imposed.</configure></property>
+<property name="prop:step" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The amount by which the output is incremented on each iteration. The port accepts a value of any type that supports addition. The default is the integer 1.</configure></property>
+<property name="prop:init" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The value produced by the Ramp on its first iteration. The default value is the integer 0.</configure></property>
+</property>        <property name="entityId" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:actor:5:1">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.lib.Ramp">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:881:1">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 3, 4, 5}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 3, 4, 5}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 115.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[165.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Signaler1.input" relation="relation3"/>
+    <link port="Signaler1.output" relation="relation2"/>
+    <link port="Signaler2.input" relation="relation3"/>
+    <link port="Signaler2.output" relation="relation5"/>
+    <link port="Ramp.output" relation="relation3"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="SequenceToArray2.input" relation="relation5"/>
+    <link port="SequenceToArray2.output" relation="relation4"/>
+    <link port="SequenceToArray.input" relation="relation2"/>
+    <link port="SequenceToArray.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>

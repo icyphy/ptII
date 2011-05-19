@@ -1,0 +1,161 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+
+
+
+  <!-- NOTE:  If you add .xml files to this directory, be sure to
+       add them to the makefile
+    -->
+
+
+
+
+  <doc>Configuration for VisualSense</doc>
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/visualsense/about.htm"/>
+
+  <!-- Specify copyright, used by actor/gui/GenerateCopyrights.java -->
+  <property name="_applicationCopyright"
+            class="ptolemy.kernel.util.StringAttribute"
+            value="ptolemy/configs/visualsense/copyright.htm"/>
+
+  <!-- Specify name of this application, used by actor/gui/HTMLAbout.java -->
+  <property name="_applicationName"
+            class="ptolemy.kernel.util.StringAttribute"
+            value="VisualSense"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/visualsense/help.htm"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
+
+  <!-- The state and transition refinements. Use full version. -->
+  <input source="ptolemy/configs/defaultRefinements.xml"/>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Use a custom graph editor with a CT director already in it. -->
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="Wireless Director"
+                  class="ptolemy.domains.wireless.kernel.WirelessDirector">
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          </property>
+        </property>
+      </entity>
+    </entity>
+    <!-- We need an FSM editor, but do not want it to appear in the -->
+    <!-- File->New menu. -->
+    <entity name="FSM Editor"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.modal.kernel.FSMActor">
+	<input source="ptolemy/configs/fsmController.xml"/>
+      </entity>
+    </entity>
+    <entity name="Modal Model"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.modal.modal.ModalModel">
+	<input source="ptolemy/configs/modalController.xml"/>
+      </entity>
+    </entity>
+
+    <!-- Import HTML viewer, text editor, etc. -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/modalTableauFactory.xml"/>
+    <!--input source="ptolemy/configs/fsmTableauFactory.xml"/-->
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main actor library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Override utilities library. -->
+	<entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+	  <class name="WirelessCompositeClass" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
+		<!-- The inside MUST have a director, so we create one. -->
+		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+			<property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
+		</property>
+	  </class>
+	  <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+		<!-- The inside MUST have a director, so we create one. -->
+		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+			<property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
+		</property>
+	  </entity>
+      <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
+      <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+      <input source="ptolemy/configs/utilityModalModel.xml"/>      
+      <input source="ptolemy/configs/basicUtilities.xml"/>
+      <!-- Do not include this as singleton parameters are buggy. -->
+      <!-- input source="ptolemy/configs/customize.xml"/ -->
+      <input source="ptolemy/data/unit/unitSystems.xml"/>
+    </entity>
+
+    <!-- director library. -->
+    <input source="ptolemy/configs/visualsense/directors.xml"/>
+
+    <!-- channels -->
+    <input source="ptolemy/domains/wireless/lib/channels.xml"/>
+
+    <!-- Default actor library. -->
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/domains/wireless/lib/wirelessentities.xml"/>
+            <input source="ptolemy/configs/basicActorLibrary.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+  
+    <!-- Optional packages that may or may not be present  -->
+    <!-- Alphabetize these  -->
+    <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
+	    <!-- matlab depends on Matlab being present -->
+            <input source="ptolemy/matlab/matlab.xml"/>
+            <input source="ptolemy/actor/lib/python/python.xml"/>
+            <input source="ptolemy/actor/lib/test.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
+            <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+  </entity>
+</entity>

@@ -1,0 +1,50 @@
+<!-- $Id$
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Sketch</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Sketch</H1>
+<P>
+<p>Using the right mouse button, sketch a signal in the plot window.</p>
+<p>The signal is multiplied by a sine wave.
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Sketch is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Sketch.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="SketchVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>Notice that you can zoom in with the left mouse button
+and very precisely control the sketched curve.
+You can also update just portion of the curve by sketching over
+only a subset of the horizontal axis.
+<!-- FIXME: The following doesn't work.
+You can undo your updates by typing Control-Z (the undo history is infinite).
+You can redo what you have undone by typing Control-Y.  For undo and
+redo to work, you have to make sure the focus is in the plot window
+(clicking on the fill button will do this).
+--></p>
+<p>This model is implemented by a
+<a href="SketchApplet.java">custom applet</a>,
+which uses as a basis a <a href="SketchVergil.htm">block diagram</a>
+constructed in Vergil.
+The applet extends the Vergil implementation to make the
+sketched source and the plotter share the same graphical object
+on screen.</p>
+</body>
+</html>

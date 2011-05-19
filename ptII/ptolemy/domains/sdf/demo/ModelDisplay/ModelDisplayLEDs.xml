@@ -1,0 +1,1007 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModelDisplayLEDs" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="Ellipse_0" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_1" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_5" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_6" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_7" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_8" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_9" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 10}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_10" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_11" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_12" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_13" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_14" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_15" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_16" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_17" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_18" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_19" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 30}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_20" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_21" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_22" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_23" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_24" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_25" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_26" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_27" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_28" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_29" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 50}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_30" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_31" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_32" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_33" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_34" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_35" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_36" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_37" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_38" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_39" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 70}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_40" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_41" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_42" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_43" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_44" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_45" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_46" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_47" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_48" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_49" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 90}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_50" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_51" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_52" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_53" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_54" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_55" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_56" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_57" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_58" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_59" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 110}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_60" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_61" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_62" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_63" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_64" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_65" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_66" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_67" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_68" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_69" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 130}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_70" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_71" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_72" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_73" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_74" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_75" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_76" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_77" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_78" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_79" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 150}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_80" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_81" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_82" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_83" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_84" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_85" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_86" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_87" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_88" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_89" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 170}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_90" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_91" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_92" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_93" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_94" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_95" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_96" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_97" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_98" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse_99" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 190}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+    </property>
+</entity>

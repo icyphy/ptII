@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<FUNCTION_BLOCK>
+  <VAR_INPUT NAME="propulsion" TYPE="REAL" RANGE="0 2" />
+  <VAR_OUTPUT NAME="cost" TYPE="REAL" RANGE="20000 60000" />
+  <FUZZIFY NAME="propulsion">
+    <TERM NAME="Solar" POINTS="1 0 0 2" />
+    <TERM NAME="Electrical" POINTS="0 0 0 1" />
+  </FUZZIFY>
+  <DEFUZZIFY METHOD="CoG" ACCU="MAX" NAME="cost">
+    <TERM NAME="low" POINTS="20000 0 0 25000" />
+    <TERM NAME="high" POINTS="40000 0 0 60000" />
+  </DEFUZZIFY>
+  <RULEBLOCK AND="MIN" OR="MAX">
+    <RULE NUMBER="1" TEXT="if propulsion is Electrical then cost is low" />
+    <RULE NUMBER="2" TEXT="if propulsion is Solar then cost is high" />
+  </RULEBLOCK>
+</FUNCTION_BLOCK>

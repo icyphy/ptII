@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+  <doc>Configuration to run but not edit Ptolemy II models</doc>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <entity name="Run Panel"
+            class="ptolemy.actor.gui.PtolemyEffigy$Factory"/>
+    <entity name="HTML Viewer"
+            class="ptolemy.actor.gui.HTMLEffigyFactory"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <property name="Run Panel"
+              class="ptolemy.actor.gui.RunTableau$Factory"/>
+    <property name="HTML Viewer"
+              class="ptolemy.actor.gui.HTMLViewerTableau$Factory"/>
+  </property>
+</entity>

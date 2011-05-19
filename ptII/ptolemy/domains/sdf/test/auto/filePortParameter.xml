@@ -1,0 +1,144 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="filePortParameter" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 220, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that DirectoryListing returns the contents&#10;of the directory in a different order depending&#10;on whether one is using the Sun JVM or the IBM JVM.&#10;Thus, we use an ArraySort actor here.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 200}">
+        </property>
+    </property>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="filePortParameterTest">
+        </property>
+        <property name="pattern" class="ptolemy.data.expr.StringParameter" value=".*\.txt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 125.0}">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+            </property>
+        </property>
+        <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="C:\workspace\ptII\ptolemy\kernel\util">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#00BB00" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 95.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 518}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="fileName" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 90.0}">
+            </property>
+        </port>
+        <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$fileName">
+            </property>
+            <property name="newline" class="ptolemy.data.expr.Parameter" value="&quot;\n\r&quot;">
+            </property>
+            <doc>Read an entire file and output as a string</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 155.0}">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1&#10;&quot;, &quot;2&#10;&quot;, &quot;3&#10;&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 145.0}">
+            </property>
+        </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 145.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="FileReader.output" relation="relation2"/>
+        <link port="Test.input" relation="relation"/>
+        <link port="StringReplace.stringToEdit" relation="relation2"/>
+        <link port="StringReplace.output" relation="relation"/>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="ArrayToSequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 125.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[325.0, 125.0]">
+        </vertex>
+    </relation>
+    <link port="DirectoryListing.output" relation="relation3"/>
+    <link port="CompositeActor.fileName" relation="relation2"/>
+    <link port="ArrayToSequence.input" relation="relation"/>
+    <link port="ArrayToSequence.output" relation="relation2"/>
+    <link port="ArraySort.input" relation="relation3"/>
+    <link port="ArraySort.output" relation="relation"/>
+</entity>

@@ -1,0 +1,100 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Math" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Arithmetic and mathematical functions</doc>
+
+  <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+  </entity>
+
+  <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+  </entity>
+
+  <entity name="DotProduct" class="ptolemy.domains.sdf.lib.DotProduct">
+  </entity>
+
+  <entity name="Expression" class="ptolemy.actor.lib.Expression">
+    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+        <property name="attributeName" value="expression"/>
+        <property name="displayWidth" value="60"/>
+    </property>
+  </entity>
+
+  <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
+  </entity>
+
+  <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
+  </entity>
+
+  <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
+    <property name="function">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="exp" value="exp"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="log" value="log"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="modulo" value="modulo"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="sign" value="sign"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="square" value="square"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="sqrt" value="sqrt"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="function"/>
+    </property>
+  </entity>
+
+  <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
+  </entity>
+
+  <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+  </entity>
+
+  <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+  </entity>
+
+  <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
+  </entity>
+
+  <entity name="Remainder" class="ptolemy.actor.lib.Remainder">
+  </entity>
+
+  <entity name="Scale" class="ptolemy.actor.lib.Scale">
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="factor"/>
+    </property>
+  </entity>
+
+  <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+    <property name="function">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="acos" value="acos"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="asin" value="asin"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="atan" value="atan"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="cos" value="cos"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="sin" value="sin"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="tan" value="tan"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="function"/>
+    </property>
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

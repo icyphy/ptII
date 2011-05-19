@@ -1,0 +1,121 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NonStrictThreeBitAdder2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 48.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 99, 819, 570}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="263.0, 154.0">
+        </property>
+    </entity>
+    <entity name="Const = 1" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 117.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+        <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="int">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
+                </property>
+                <property name="complex" class="ptolemy.kernel.util.StringAttribute" value="complex">
+                </property>
+                <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                </property>
+                <property name="fix" class="ptolemy.kernel.util.StringAttribute" value="fix">
+                </property>
+                <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                </property>
+                <property name="long" class="ptolemy.kernel.util.StringAttribute" value="long">
+                </property>
+                <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 193.0">
+        </property>
+    </entity>
+    <entity name="Const = 0" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 300.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="198.0, 283.0">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 50.0">
+        </property>
+    </entity>
+    <entity name="NonStrictTest6" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="496.0, 281.0">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="NonStrictThreeBitAdder.inputBits" relation="relation5"/>
+    <link port="NonStrictThreeBitAdder.inputBits" relation="relation2"/>
+    <link port="NonStrictThreeBitAdder.inputBits" relation="relation6"/>
+    <link port="NonStrictThreeBitAdder.highBit" relation="relation4"/>
+    <link port="NonStrictThreeBitAdder.lowBit" relation="relation"/>
+    <link port="Const = 1.output" relation="relation5"/>
+    <link port="Absent.output" relation="relation2"/>
+    <link port="Const = 0.output" relation="relation3"/>
+    <link port="NonStrictDelay.input" relation="relation3"/>
+    <link port="NonStrictDelay.output" relation="relation6"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="NonStrictTest6.input" relation="relation"/>
+</entity>

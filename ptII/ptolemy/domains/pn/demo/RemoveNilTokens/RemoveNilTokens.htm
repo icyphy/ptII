@@ -1,0 +1,45 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>RemoveNilTokens</TITLE>
+</HEAD>
+<BODY>
+<H1>RemoveNilTokens</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+RemoveNilTokens is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "RemoveNilTokens.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="RemoveNilTokensVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model tests handling nil tokens.
+The RemoveNilTokens actor removes tokens that have no value. </p>
+
+<p>Null or missing tokens are common in analytical systems like
+R and SAS where they are used to handle sparsely populated 
+data sources.  In database parlance, missing tokens are 
+sometimes called null tokens.  Since null is a Java keyword, 
+we use the term "nil".</p>               
+
+<p>We can generate these nil tokens by using the "nil" Constant 
+in the expression language.</p>
+
+</BODY>
+</HTML>

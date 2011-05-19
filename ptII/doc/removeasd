@@ -1,0 +1,42 @@
+#!/bin/sh
+# Remove the asd() definition and call which causes problems in 
+# JEditorPane.  What happens is that the HTMLViewer ends up displaying
+# lines like 
+#    function asd() {parent.document.title="NamedObj";}
+# For details, see
+# http://developer.java.sun.com/developer/bugParade/bugs/4761273.html
+#
+#
+
+# Use temporary filenames that have $$ so that if multiple
+# users run the script on the same machine, it will not be a problem
+
+filenames=/tmp/removeasd.filenames.$$
+find $1 -name "*.html" -print > $filenames
+for file in `cat $filenames`
+do
+  # Solaris bin/grep and egrep do not have -q
+  # /bin/dev does not work reliably under Cygwin
+  grepoutput=/tmp/removeasd.grep.$$
+  grep 'function asd\(\)' $file > $grepoutput
+  status=$?
+  if [ $status -eq 0 ]; then
+      echo $file
+      tmpfile=/tmp/removeasd.tmp.$$
+      awk '{
+          if ($0 ~ /function asd()/) {
+             sawasd = 1
+          }
+          if (sawasd == 0) {
+             print $0
+          } else {
+             if ($1 = /^}/) {
+                 sawasd = 0;
+             }
+          }
+      }' < $file | sed 's/onload="asd();"//' > $tmpfile
+      cp $tmpfile $file 
+  fi
+done
+
+rm -f $filenames $grepoutput $tmpfile

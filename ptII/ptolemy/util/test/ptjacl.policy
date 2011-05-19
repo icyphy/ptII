@@ -1,0 +1,23 @@
+/** $Id$
+ List of properties necessary to run Jacl
+ If you have problem, edit jacl1.4.1/src/jacl/tcl/lang/Interp.java
+ and print out the stack trace for SecurityExceptions
+ See also http://java.sun.com/j2se/1.5.0/docs/guide/security/permissions.html
+*/
+grant {
+  /** JavaScope needs to read user.dir and user.home */
+  permission java.util.PropertyPermission "user.dir", "read";
+  permission java.util.PropertyPermission "user.home", "read";
+  permission java.util.PropertyPermission "java.home", "read";
+  permission java.util.PropertyPermission "java.vendor.url.bug", "read";
+  /** JavaScope needs to be able to write */	
+  permission java.io.FilePermission "<<ALL FILES>>", "read, write, delete, execute";
+  permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+  permission java.lang.RuntimePermission "getClassLoader";
+  permission java.lang.RuntimePermission "createClassLoader";
+  permission java.lang.RuntimePermission "setContextClassLoader";
+  permission java.lang.RuntimePermission "accessDeclaredMembers";
+  permission java.lang.RuntimePermission "readFileDescriptor";
+
+};
+

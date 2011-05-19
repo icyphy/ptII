@@ -1,0 +1,69 @@
+if {[string compare test [info procs test]] == 1} then {
+    source testDefs.tcl
+} {}
+
+if {[string compare sdfModel [info procs sdfModel]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
+
+test LevelXing-1.1 {Create a model with level crossing links} {
+    #  Create a model with level crossing links
+    set e0 [sdfModel 5]
+    $e0 allowLevelCrossingConnect true
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 "e1"]
+    $e1 allowLevelCrossingConnect true
+    set ramp [java::new ptolemy.actor.lib.Ramp $e1 "ramp"]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 "rec"]
+
+    # Create a level crossing link where the relation is in the top level
+    $e0 connect \
+	    [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    [$e0 getManager] execute
+    list [enumToTokenValues [$rec getRecord 0]]
+} {{0 1 2 3 4}}
+
+test LevelXing-1.2 {export the model and try to load it} {
+    # Uses 1.1 above
+    set moml [$e0 exportMoML]
+    # This fails because the inner composite refers to a relation that
+    # is not yet created
+    catch {set parser [java::new ptolemy.moml.MoMLParser]} errMsg
+    set top [$parser parse $moml]
+    [$top getManager] execute
+    list $errMsg
+} {} {Known failure, parsing the file should work}
+
+
+test LevelXing-2.1 {Create a model with a level crossing link where the relation is inside the inner composite} {
+    #  Create a model with level crossing links
+    set e0 [sdfModel 5]
+    $e0 allowLevelCrossingConnect true
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 "e1"]
+    $e1 allowLevelCrossingConnect true
+    set ramp [java::new ptolemy.actor.lib.Ramp $e1 "ramp"]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 "rec"]
+
+    # Instead of putting the relation in e0, we put it in e1
+    $e1 connect \
+	    [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    [$e0 getManager] execute
+    list [enumToTokenValues [$rec getRecord 0]]
+} {{0 1 2 3 4}}
+
+test LevelXing-2.2 {export the model and try to load it} {
+    # Uses 2.1 above
+    set moml [$e0 exportMoML]
+
+    # This fails because the outer composite uses a fully qualified
+    # path to the relation inside the model, which fails
+    catch {set parser [java::new ptolemy.moml.MoMLParser]} errMsg
+    set top [$parser parse $moml]
+    [$top getManager] execute
+    list $errMsg
+} {} {Known failure, parsing the file should work}
+

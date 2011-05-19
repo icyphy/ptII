@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="_library" class="ptolemy.moml.LibraryAttribute">
+  <configure>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity">
+      <input source="ptolemy/configs/basicUtilities.xml"/>
+      <entity name="State" class="ptolemy.domains.modal.kernel.State">
+        <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
+      </entity>
+    </entity>
+  </configure>
+</property>

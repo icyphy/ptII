@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ImageProcessing" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Image processing actors</doc>  
+
+<input source="ptolemy/actor/lib/image/generic.xml"/>
+<input source="ptolemy/actor/lib/jai/jai.xml"/>
+<input source="ptolemy/actor/lib/jmf/jmf.xml"/>
+<input source="ptolemy/domains/sdf/lib/vq/sdfvqentities.xml"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>

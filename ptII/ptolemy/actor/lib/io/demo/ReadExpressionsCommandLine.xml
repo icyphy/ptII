@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ReadExpressionsCommandLine" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 87, 815, 544}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 426]">
+    </property>
+    <property name="FOO" class="ptolemy.data.expr.Parameter" value="&quot;doesNotExist.ptd&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 70}">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 213.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates how to use a command line &#10;argument to set a FileParameter.&#10;&#10;In this model, ExpressionReader has a fileOrURL parameter&#10;that is set to $FOO.  This model does not run because the&#10;initial default value of the top level parameter is&#10;&quot;doesNotExist.ptd&quot;.  However, if the model is run with&#10;  $PTII/bin/ptexecute -FOO \\\&quot;data2.ptd\\\&quot; ReadExpressionCommandLine.xml&#10;the the value of FOO will be set to &quot;data.ptd&quot;, which does&#10;exist and the model will run.&#10;The backslashes are necessary because the ptexecute shell&#10;script tends to strip off double quotes.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 185.0]">
+        </property>
+    </property>
+    <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$FOO">
+        </property>
+        <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 140.0">
+        </property>
+    </entity>
+    <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+        <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="System.out">
+        </property>
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 140.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ExpressionReader.output" relation="relation"/>
+    <link port="LineWriter.input" relation="relation"/>
+</entity>

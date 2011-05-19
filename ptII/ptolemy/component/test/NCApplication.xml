@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NCTest" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <entity name="Couter" class="ptolemy.component.test.Counter">
+        <port name="increment" class="ptolemy.component.test.Counter$1">
+        </port>
+        <port name="decrement" class="ptolemy.component.MethodCallPort">
+        </port>
+        <port name="output" class="ptolemy.component.MethodCallPort">
+        </port>
+    </entity>
+    <entity name="Leds" class="ptolemy.component.test.Leds">
+        <port name="display" class="ptolemy.component.test.Leds$1">
+        </port>
+    </entity>
+    <relation name="R1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="Couter.output" relation="R1"/>
+    <link port="Leds.display" relation="R1"/>
+</entity>
+

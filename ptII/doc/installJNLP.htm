@@ -1,0 +1,156 @@
+<html>
+<head>
+<title>Vergil Web Start Download</title>
+<SCRIPT LANGUAGE="Javascript"> 
+	var javawsInstalled = 0; 
+	isIE = "false"; 
+
+        if (navigator.mimeTypes && navigator.mimeTypes.length) { 
+        	x = navigator.mimeTypes['application/x-java-jnlp-file']; 
+                if (x) javawsInstalled = 1; 
+        } else { 
+                isIE = "true"; 
+        } 
+
+        function insertLink(url, name) { 
+        	if (javawsInstalled) { 
+                	document.write("<li> <a href=" + url + ">"  + name + "</a>"); 
+                } else { 
+                	document.write("<li> You need to <a href=http://java.sun.com/cgi-bin/javawebstart-platform.sh?>Install Web Start from Sun</a> before installing <a href=" + url + ">"  + name + "</a>"); 
+                } 
+        } 
+ </SCRIPT> 
+<SCRIPT LANGUAGE="VBScript"> 
+          on error resume next 
+          If isIE = "true" Then 
+            If Not(IsObject(CreateObject("JavaWebStart.IsInstalled"))) Then 
+                  javawsInstalled = 0 
+            Else 
+                  javawsInstalled = 1 
+            End If 
+          End If 
+      </SCRIPT>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Vergil Web Start Downloads</h1>	
+<a href="http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136112.html">Web Start</a>
+is a product from Sun that uses the Web to download applications.
+ <p>Click on the links below to install different versions of Ptolemy
+II on your local machine.  These Web Start installers do not include
+sources, so users who want to write their own actors should install
+from source rather than installing these versions.
+
+ <p>These downloads contain signed jar files so that Ptolemy II
+can access local files on your machine.  The Ptiny Sandbox version is
+more restricted than the other installers, the Ptiny Sandbox version
+runs in a Java sandbox, which allows Ptolemy II to read files from 
+the local machine, but is not as permissive as the other installers.
+Thus, the Ptiny Sandbox should be used for testing models that may
+have security issues.
+
+<menu>
+<SCRIPT LANGUAGE="Javascript"> 
+
+
+             <!-- 
+             insertLink("../vergil.jnlp", 
+                        "Vergil (Full Runtime) Web Start Download"); 
+             // --> 
+             <!-- 
+             insertLink("../vergilPtiny.jnlp", 
+                        "Vergil (Ptiny version) Web Start Download"); 
+             // --> 
+             <!-- 
+             insertLink("../vergilPtinySandbox.jnlp", 
+                        "Vergil (Ptiny Sandbox version) Web Start Download"); 
+             // --> 
+             <!-- 
+             insertLink("../vergilDSP.jnlp", 
+                        "Vergil (DSP only) Web Start Download"); 
+             // --> 
+
+</SCRIPT> 
+</menu>
+
+
+<h2>Notes</h2>
+<h3>Netscape 6</h3>
+If you are running under Netscape 6, then the links above
+may state that you need to install Web Start from Sun even if you
+already have it installed.  The reason is that the Java Script 
+code fails to detect Java Web Start under Netscape 6.
+
+ <p>A quick test is to click on one of the Vergil downloads and if you
+have Java Web start installed, either: 
+<menu>
+<li> the Java Web Start splash screen
+should come up and the download should start.
+
+<li> or you should see a window that asks if you want to download
+the file or start up javaws.  Click on <CODE>Open using javaws.exe</CODE>
+and then <CODE>OK</CODE>, and the Java Web Start splash screen should come up.
+
+</menu>
+
+
+ <p>The Java Web Start FAQ at
+<a href="http://download.oracle.com/javase/1.5.0/docs/guide/javaws/developersguide/faq.html#111"><CODE>http://download.oracle.com/javase/1.5.0/docs/guide/javaws/developersguide/faq.html#111</CODE></a> says:
+<BLOCKQUOTE>
+<b>What are the supported browsers? </b> 
+
+JavaTM Web Start supports primarily Internet Explorer 4 or higher and Netscape 4.X. However JNLP files can be launched from any browser if the mime-type association is done correctly. Please note that JavaTM Web Start uses the browsers settings and may launch a browser to show a URL these may/may not work with unsupported browsers.
+
+ <p>JavaTM Web Start works with Netscape 6. However, you will manually need to register JavaTM Web Start with NS6. This is done in the Navigator/Applications section of the Navigator/Helper Application section.
+
+This will be done automatically in a later version of the JavaTM Web Start installer. back to top
+</BLOCKQUOTE>
+
+
+<h4>Netscape 6 Java Web Start Set up Instructions</h4>
+
+<ol>
+
+<li> If necessary, download Java Web Start from
+<a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?"><CODE>http://java.sun.com/cgi-bin/javawebstart-platform.sh?</CODE></a>
+
+<li> Go to the preferences window: <CODE>Edit -&gt; Preferences</CODE>
+
+<li> Click on <CODE>Navigator</CODE> in the left hand <CODE>Category</CODE> pane
+
+<li> Click on <CODE>Helper Applications</CODE>
+
+<li> The File type <CODE>application/x-java-jnlp-file</CODE> should
+be listed.  If it is, you are done, click on <CODE>OK</CODE>
+
+<li> If <CODE>application/x-java-jnlp-file</CODE> was not
+listed, click on <CODE>New Type</CODE>
+<dl>
+<dt> <CODE>Description of type:</CODE>
+<dd> <CODE>Java Web Start</CODE>
+
+<dt> <CODE>File extension:</CODE>
+<dd> <CODE>JNLP</CODE>
+
+<dt> <CODE>MIME Type:</CODE>
+<dd> <CODE>application/x-java-jnlp-file</CODE>
+
+<dt> <CODE>Application to use</CODE>
+<dd> Choose
+to the <CODE>javaws.exe</CODE> binary, usually
+<CODE>c:\Program Files\Java Web Start\javaws.exe</CODE>
+
+</dl>
+
+<li> Click on <CODE>OK</CODE> to close the <CODE>New Type</CODE> window
+
+<li> Click on <CODE>OK</CODE> to close the <CODE>Preference</CODE> window
+
+
+<li> You should now be able to download Java Web Start applications.
+</ol>
+
+
+</body>
+</html>
+

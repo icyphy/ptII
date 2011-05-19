@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Esoteric" class="ptolemy.moml.EntityLibrary">
+	<configure>
+		<?moml <group>
+			<entity name="Exec" class="ptolemy.actor.lib.Exec"/>
+
+			<entity name="CalInterpreter" class="ptolemy.caltrop.actors.CalInterpreter">
+    			<property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+      			<property name="attributeName" value="calCode"/>
+    			</property>
+			</entity>
+			<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge"/>
+			<entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens"/>
+
+      </group>
+    ?>
+	</configure>
+</entity>

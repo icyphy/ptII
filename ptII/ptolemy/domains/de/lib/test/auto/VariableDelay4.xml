@@ -1,0 +1,61 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="VariableDelay4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 45}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The variable delay actor should produce two tokens at time 10.0.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 170.0]">
+        </property>
+    </property>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 2.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{10.0, 8.0}">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 8.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 125.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{125.0, 125.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="relation"/>
+    <link port="VariableDelay.input" relation="relation"/>
+    <link port="VariableDelay.output" relation="relation2"/>
+    <link port="VariableDelay.delay" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+</entity>

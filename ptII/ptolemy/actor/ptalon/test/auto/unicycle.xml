@@ -1,0 +1,138 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="unicycle" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="35.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This NonlinearStateSpace actor is written in Ptalon.  The model simulates a &#10;unicycle.  The first input is the linear velocity of the unicycle, and the &#10;second input is the angular velocity of the unicycle.  The first output is&#10;the x position, and the second output is the y position.  The initial position &#10;of the unicylce is (0, 0), and the initial heading angle is 0 degrees.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 175.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To create your own NonlinearStateSpace actor (in Ptalon), go to More Libraries...&#10;Ptalon and drag out a PtalonActor.  Set its ptalonCodeLocation FileParameter&#10;to $PTII/ptolemy/actor/ptalon/test/NonlinearStateSpace.ptln.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Adam Catalo">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 365.0]">
+        </property>
+    </property>
+    <entity name="AnythingToDouble" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0 / ( 2 * pi)">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 80.0]">
+        </property>
+    </entity>
+    <entity name="AnythingToDouble2" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="NonlinearStateSpace" class="ptolemy.actor.ptalon.PtalonActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 85.0]">
+        </property>
+        <configure>
+            <ptalon file="ptolemy.actor.ptalon.demo.Unicycle.NonlinearStateSpace">
+                <ptalonExpressionParameter name="numberOfInputs" value="2"/>
+                <ptalonExpressionParameter name="numberOfStates" value="3"/>
+                <ptalonExpressionParameter name="numberOfOutputs" value="2"/>
+                <ptalonExpressionParameter name="f0" value="&quot;u(0,0) * cos(x(0,2))&quot;"/>
+                <ptalonExpressionParameter name="f1" value="&quot;u(0,0) * sin(x(0,2))&quot;"/>
+                <ptalonExpressionParameter name="f2" value="&quot;u(0,1)&quot;"/>
+                <ptalonExpressionParameter name="h0" value="&quot;x(0,0)&quot;"/>
+                <ptalonExpressionParameter name="h1" value="&quot;x(0,1)&quot;"/>
+                <ptalonExpressionParameter name="initialStates" value="[0.0; 0.0; 0.0]"/>
+            </ptalon>
+        </configure>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0, 0.0}, {0.0999957783272, 7.9575931769009E-4}, {0.599088478921, 0.0286270015675}, {1.0547757996558, 0.0891682887167}, {1.5059186762501, 0.1831361281439}, {1.9508225097438, 0.3105246918703}, {2.3877785798987, 0.4713965138145}, {2.8150246314378, 0.6658902240406}, {3.2307264100918, 0.8942367340015}, {3.6329546162781, 1.1567837778506}, {4.0196551237526, 1.454032543238}, {4.388609056058, 1.7866926888388}, {4.7373771516776, 2.1557667166406}, {5.0567609068316, 2.5539109556612}, {5.3365507162448, 2.966630213036}, {5.5782790794257, 3.3916271929012}, {5.7831651688994, 3.8269071794774}, {5.9521213194432, 4.2705874110499}, {6.085841307722, 4.7208690988577}, {6.1848583351132, 5.1760166223213}, {6.2495836000749, 5.6343405317307}, {6.2803322567517, 6.0941831207545}, {6.2773407307627, 6.5539056651796}, {6.2407777463074, 7.0118766205229}, {6.1707504284822, 7.4664601792942}, {6.0673061792866, 7.916004628299}, {5.9304305146167, 8.3588299242319}, {5.7600405788812, 8.7932138169571}, {5.5559735247631, 9.2173756756467}, {5.3179682401541, 9.6294568745883}, {5.0456378424287, 10.027496099952}, {4.7384286238066, 10.4093971091683}, {4.3955581052285, 10.7728850459688}, {4.01591926269, 11.1154448490163}, {3.6133746723452, 11.4234060285806}, {3.1969563802692, 11.692235347377}, {2.7688405092025, 11.9233876397866}, {2.3309865013721, 12.1179835376411}, {1.8852508602896, 12.2768658551458}, {1.4334125054892, 12.4006778622379}, {0.9771923425125, 12.4899148201605}, {0.5182694223731, 12.5449584330499}, {0.0582948142339, 12.5661000336115}, {-0.4010959715696, 12.5535559242926}, {-0.858271341362, 12.5074768997187}, {-1.3115921753036, 12.4279531012494}, {-1.7594000242827, 12.3150147467935}, {-2.200004346836, 12.1686287896359}, {-2.6316680759066, 11.988691083005}, {-3.0525906008321, 11.7750130616114}, {-3.460886905044, 11.5273011671016}, {-3.8545610273813, 11.2451260321084}, {-4.2314710501575, 10.9278764165603}, {-4.5892811381289, 10.5746893081288}, {-4.9253930948088, 10.1843408644149}, {-5.2218950971438, 9.7775131953777}, {-5.4796972116337, 9.3575044566579}, {-5.7001806937189, 8.9263772480227}, {-5.8843758841795, 8.4860578817868}, {-6.0330612763298, 8.038378163626}, {-6.1468329562758, 7.5850984072106}, {-6.2261503992087, 7.1279258773744}, {-6.2713671982872, 6.6685301886009}, {-6.2827517061687, 6.2085566818234}, {-6.2605005316199, 5.7496385581922}, {-6.2047466246296, 5.2934084059884}, {-6.1155629056085, 4.8415096895191}, {-5.9929618332992, 4.3956087646993}, {-5.8368908302488, 3.9574080450051}, {-5.6472229930546, 3.5286610759162}, {-5.4237419015589, 3.1111905148562}, {-5.1661184599107, 2.7069104129341}, {-4.8738763066936, 2.3178548589483}, {-4.5463399610031, 1.9462161740235}, {-4.1825555990079, 1.5943978315569}, {-4.1087415152034, 1.5295821566401}, {-4.1087415152034, 1.5295821566401}, {-4.1087415152034, 1.5295821566401}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 130.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="AnythingToDouble.input" relation="relation"/>
+    <link port="AnythingToDouble.output" relation="relation5"/>
+    <link port="Const2.output" relation="relation4"/>
+    <link port="Const.output" relation="relation3"/>
+    <link port="AnythingToDouble2.input" relation="relation2"/>
+    <link port="AnythingToDouble2.output" relation="relation6"/>
+    <link port="NonlinearStateSpace.input" relation="relation3"/>
+    <link port="NonlinearStateSpace.input" relation="relation4"/>
+    <link port="NonlinearStateSpace.output" relation="relation"/>
+    <link port="NonlinearStateSpace.output" relation="relation2"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="Test.input" relation="relation6"/>
+</entity>

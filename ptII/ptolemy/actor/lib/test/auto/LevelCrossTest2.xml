@@ -1,0 +1,75 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="broken" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={422, 312, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <class name="SourceClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 100.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 99, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 50.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+	    <property name="correctValues" value="{1}"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 105.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{75.0, 50.0}">
+            </vertex>
+        </relation>
+        <link port="Const.output" relation="relation2"/>
+        <link port="Test.input" relation="relation2"/>
+    </class>
+    <class name="SinkClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 100.0]">
+        </property>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+	    <property name="correctValues" value="{1}"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 70.0]">
+            </property>
+        </entity>
+    </class>
+    <entity name="InstanceOfSourceClass" class="SourceClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfSinkClass" class="SinkClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 185.0]">
+        </property>
+    </entity>
+    <link port="InstanceOfSinkClass.Test.input" relation="InstanceOfSourceClass.relation2"/>
+</entity>

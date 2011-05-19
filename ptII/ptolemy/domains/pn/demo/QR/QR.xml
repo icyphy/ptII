@@ -1,0 +1,289 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="QR" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="Process Network Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="maximumQueueCapacity" class="ptolemy.data.expr.Parameter" value="65536">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 35.0">
+        </property>
+    </property>
+    <property name="Antennas" class="ptolemy.data.expr.Parameter" value="6">
+        <doc>The number of Antennas from which data is read.</doc>
+    </property>
+    <property name="Updates" class="ptolemy.data.expr.Parameter" value="10">
+        <doc>The number of QR opdates to perform on the antenna data.</doc>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[672, 452]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[97, 100]">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a Process Network &#10;(PN) that executes the QR-algorithm on a &#10;continuous stream of data, coming from an&#10;array of antennas. The processes in the &#10;network execute in parallel on the new&#10;samples of data from the antennas. The &#10;update parameter indicates how many sets &#10;of samples need to be processed.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 5.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Zeros are used to initialize&#10;the Rotate and Vectorize processes &#10;with value zero.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 300.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The matrix shown, is the&#10;resulting R matrix for the number &#10;of antennas used.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 335.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={97, 99, 672, 558}, maximized=false}">
+    </property>
+    <property name="AnnotationUpdated4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Bart Kienhuis">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 410.0}">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.0, 226.0}">
+    </property>
+    <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 190.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="20.0"/>
+<yRange min="-89.09954694329122" max="270.84312802801554"/>
+<noGrid/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Zeros" class="ptolemy.domains.pn.demo.QR.ND_1">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
+        </property>
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 95.0">
+        </property>
+    </entity>
+    <entity name="Antenna Data" class="ptolemy.domains.pn.demo.QR.ND_2">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
+        </property>
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 210.0">
+        </property>
+    </entity>
+    <entity name="Vectorize" class="ptolemy.domains.pn.demo.QR.ND_3">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
+        </property>
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 95.0">
+        </property>
+    </entity>
+    <entity name="Rotate" class="ptolemy.domains.pn.demo.QR.ND_4">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
+        </property>
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 210.0">
+        </property>
+    </entity>
+    <entity name="Data Collector" class="ptolemy.domains.pn.demo.QR.ND_5">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
+        </property>
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 190.0">
+        </property>
+    </entity>
+    <entity name="StreamToMatrix" class="ptolemy.domains.pn.demo.QR.StreamToMatrix">
+        <property name="dimension" class="ptolemy.data.expr.Parameter" value="Antennas">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="427.1428527832031, 280.0">
+        </property>
+    </entity>
+    <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={259, 33, 454, 157}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[454, 113]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="300">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="536.7142944335938, 280.0">
+        </property>
+    </entity>
+    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="430.0, 190.0">
+        </vertex>
+    </relation>
+    <relation name="_R13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="170.0, 35.0">
+        </vertex>
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="150.0, 280.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="162.0, 268.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="160.0, 135.0">
+        </vertex>
+    </relation>
+    <link port="plot.input" relation="_R12"/>
+    <link port="Zeros.WP_2" relation="_R0"/>
+    <link port="Zeros.WP_6" relation="_R1"/>
+    <link port="Antenna Data.WP_4" relation="_R2"/>
+    <link port="Antenna Data.WP_8" relation="_R3"/>
+    <link port="Vectorize.RP_1" relation="relation0"/>
+    <link port="Vectorize.RP_2" relation="_R0"/>
+    <link port="Vectorize.RP_3" relation="_R9"/>
+    <link port="Vectorize.RP_4" relation="_R2"/>
+    <link port="Vectorize.WP_1" relation="relation0"/>
+    <link port="Vectorize.WP_11" relation="_R5"/>
+    <link port="Vectorize.WP_10" relation="_R6"/>
+    <link port="Rotate.RP_5" relation="relation3"/>
+    <link port="Rotate.RP_6" relation="_R1"/>
+    <link port="Rotate.RP_7" relation="relation2"/>
+    <link port="Rotate.RP_8" relation="_R3"/>
+    <link port="Rotate.RP_9" relation="relation1"/>
+    <link port="Rotate.RP_10" relation="_R6"/>
+    <link port="Rotate.WP_5" relation="relation3"/>
+    <link port="Rotate.WP_12" relation="_R8"/>
+    <link port="Rotate.WP_3" relation="_R9"/>
+    <link port="Rotate.WP_7" relation="relation2"/>
+    <link port="Rotate.WP_9" relation="relation1"/>
+    <link port="Data Collector.RP_11" relation="_R5"/>
+    <link port="Data Collector.RP_12" relation="_R8"/>
+    <link port="Data Collector.out0" relation="_R12"/>
+    <link port="StreamToMatrix.input" relation="_R12"/>
+    <link port="StreamToMatrix.output" relation="_R13"/>
+    <link port="MatrixViewer.input" relation="_R13"/>
+</entity>

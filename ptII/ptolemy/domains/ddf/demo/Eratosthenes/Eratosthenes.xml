@@ -1,0 +1,289 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Eratosthenes" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 815, 489}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 382]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 191.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes prime numbers using the sieve of Eratosthenes.&#10;It uses the ActorRecursion actor, which clones a composite actor into&#10;itself upon firing, thus dynamically expanding the topology of the model.&#10;Each iteration outputs one prime number. Change the parameter&#10;iterations in DDF Director to specify number of iterations desired.   ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gang Zhou &#10;(based on Ptolemy Classic demo)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 290.0]">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 480, 332, 232}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[324, 184]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 220.0]">
+        </property>
+        <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </entity>
+    <entity name="Prime_Number_Filter" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 220.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 214, 815, 507}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 260.0]">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 260.0]">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 260.0]">
+            </property>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                </property>
+            </port>
+        </entity>
+        <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+            <property name="DDFBooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, -12, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 260.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 370.0]">
+            </property>
+        </entity>
+        <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{false}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 370.0]">
+            </property>
+        </entity>
+        <entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion">
+            <property name="recursionActor" class="ptolemy.data.expr.StringParameter" value="Prime_Number_Filter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 95.0]">
+            </property>
+            <port name="in" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+            </port>
+            <port name="out" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="{1}">
+                </property>
+            </port>
+        </entity>
+        <entity name="DDFBooleanSelect2" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+            <property name="DDFBooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, -12, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 205.0]">
+            </property>
+        </entity>
+        <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 45.0]">
+            </property>
+            <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                </property>
+            </port>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in2%in1==0?true:false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 100.0]">
+            </property>
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+            <port name="in2" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+            <port name="in1" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+        </entity>
+        <entity name="Discard" class="ptolemy.actor.lib.Discard">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 90.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="{215.0, 325.0}">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[140.0, 270.0]">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[170.0, 150.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[120.0, 45.0]">
+            </vertex>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="out" relation="relation7"/>
+        <link port="in" relation="relation3"/>
+        <link port="BooleanSwitch.input" relation="relation3"/>
+        <link port="BooleanSwitch.control" relation="relation"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation6"/>
+        <link port="BooleanSwitch.falseOutput" relation="relation2"/>
+        <link port="DDFBooleanSelect.trueInput" relation="relation10"/>
+        <link port="DDFBooleanSelect.falseInput" relation="relation2"/>
+        <link port="DDFBooleanSelect.control" relation="relation"/>
+        <link port="DDFBooleanSelect.output" relation="relation7"/>
+        <link port="Const.output" relation="relation5"/>
+        <link port="SampleDelay.input" relation="relation5"/>
+        <link port="SampleDelay.output" relation="relation"/>
+        <link port="ActorRecursion.in" relation="relation8"/>
+        <link port="ActorRecursion.out" relation="relation10"/>
+        <link port="DDFBooleanSelect2.trueInput" relation="relation4"/>
+        <link port="DDFBooleanSelect2.falseInput" relation="relation2"/>
+        <link port="DDFBooleanSelect2.control" relation="relation"/>
+        <link port="DDFBooleanSelect2.output" relation="relation4"/>
+        <link port="BooleanSwitch2.input" relation="relation6"/>
+        <link port="BooleanSwitch2.control" relation="relation9"/>
+        <link port="BooleanSwitch2.trueOutput" relation="relation11"/>
+        <link port="BooleanSwitch2.falseOutput" relation="relation8"/>
+        <link port="Expression.output" relation="relation9"/>
+        <link port="Expression.in2" relation="relation6"/>
+        <link port="Expression.in1" relation="relation4"/>
+        <link port="Discard.input" relation="relation11"/>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Prime_Number_Filter.out" relation="relation2"/>
+    <link port="Prime_Number_Filter.in" relation="relation"/>
+</entity>

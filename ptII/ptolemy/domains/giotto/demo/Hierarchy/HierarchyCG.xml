@@ -1,0 +1,217 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HierarchyCG" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+            <doc>Number of iterations in an execution.</doc>
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 46.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes two submodels, each of which has its&#10;own Giotto scheduler. The lower composite and the plotter&#10;have a frequency of two, so they run twice as often as the&#10;source and the upper composite.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 10.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Frequency = 2.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 235.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Frequency = 2.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{389.0, 193.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 154, 798, 467}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 175.0}">
+    </property>
+    <property name="CodeGenerator" class="ptolemy.domains.giotto.kernel.GiottoCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 245}">
+        </property>
+    </property>
+    <entity name="Source" class="ptolemy.actor.lib.Const">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 155.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="Upper Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 35.0">
+            </property>
+            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 135.0">
+        </property>
+    </entity>
+    <entity name="Lower Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 35.0">
+            </property>
+            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 210.0">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </entity>
+    <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="upper, lower">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 210, 508, 348}, maximized = false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 170.0}">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="2.0" max="9.5"/>
+<yRange min="1.0" max="16.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Plotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="upper, lower">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 210, 508, 348}, maximized = false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 235.0]">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="2.0" max="9.5"/>
+<yRange min="1.0" max="16.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="165.0, 165.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Source.output" relation="r1"/>
+    <link port="Upper Composite.input" relation="r1"/>
+    <link port="Upper Composite.output" relation="relation3"/>
+    <link port="Lower Composite.input" relation="r1"/>
+    <link port="Lower Composite.output" relation="relation"/>
+    <link port="Plotter.input" relation="relation3"/>
+    <link port="Plotter2.input" relation="relation"/>
+</entity>

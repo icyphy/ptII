@@ -1,0 +1,29 @@
+<!-- DocML DTD Version 1.1, UC Berkeley -->
+<!-- $Id$ -->
+<!-- If you update this file, please also update:  -->
+<!--    ptweb/xml/dtd/DocML_1.dtd, -->
+<!--    ptII/doc/design/src/DocML.fm (if it exists), -->
+<!--    the static field DocML_DTD_1 in vergil/actor/DocManager.java. -->
+<!-- The top-level element is doc. -->
+
+<!ELEMENT doc (author | description | port | property | Pt.AcceptedRating | Pt.ProposedRating | since | version)*>
+<!ATTLIST doc name CDATA #REQUIRED
+              class CDATA #REQUIRED>
+
+<!ELEMENT author (#PCDATA)>
+
+<!ELEMENT description (#PCDATA)>
+
+<!ELEMENT port (#PCDATA)>
+<!ATTLIST port name CDATA #REQUIRED>
+
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property name CDATA #REQUIRED>
+
+<!ELEMENT Pt.AcceptedRating (#PCDATA)>
+
+<!ELEMENT Pt.ProposedRating (#PCDATA)>
+
+<!ELEMENT since (#PCDATA)>
+
+<!ELEMENT version (#PCDATA)>

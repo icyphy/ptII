@@ -1,0 +1,47 @@
+/*
+ * A DE domain "split" actor which breaks a file containing
+ * key-value data into tokens.  At each 1.0 seconds in DE,
+ * this actor produces a token on each channel of the
+ * keys output and each channel of the values output.  The number 
+ * of outputs is set by the user with the numberOfOutputs parameter.  
+ * The file is specified with the file parameter. The timing in 
+ * DE is irrelvant, but it serves as an ordering on time.
+ * The actor emits a true value on the done port when the file is
+ * done being read.
+ * @author Adam Cataldo
+ */
+
+danglingPortsOkay;
+
+Split is {
+	actor clock = ptolemy.actor.lib.Clock;
+	actor reader = ptolemy.actor.ptalon.lib.SplitReader;
+	actor converter = ptolemy.actor.ptalon.lib.StringToKeyValue;
+	
+	outport[] keys;
+	outport[] values;
+	outport doneReading;
+	
+	parameter file;
+	parameter numberOfOutputs;
+	
+	relation clockOut;
+	clock(output := clockOut, period := [[1.0]], offsets := [[ {0.0} ]],
+			values := [[ {true} ]]);
+	
+	transparent relation readerOutput;
+	reader(input := clockOut, output := readerOutput, endOfFile :=
+			doneReading, blockSize := [[2]], fileOrURL := 
+			[[file]], numberOfOutputs := [[numberOfOutputs]]);
+	
+
+	transparent relation keyRelation;
+	transparent relation valueRelation;
+	this(keys := keyRelation, values := valueRelation);
+	
+	for a initially [[ 0 ]] [[ a < numberOfOutputs ]] {
+		converter(input := readerOutput, key := keyRelation,
+				value := valueRelation, keyType := [[keyTemplate]],
+				valueType := [[valueTemplate]]);
+	} next [[ a + 1 ]]
+}

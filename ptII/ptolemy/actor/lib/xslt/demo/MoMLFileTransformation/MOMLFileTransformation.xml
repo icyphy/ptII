@@ -1,0 +1,439 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MOMLFileTransformation" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 70.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1688, 1024}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1473, 898]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{764.1654829545455, 452.5561079545454}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The XMLFileTransformer Demo takes in a directory of demo files (sampleMOMLFile1.xml,&#10;sampleMOMLFile2.xml, etc. are just XML files created to run this demo) and condenses &#10;all the files into one file through a cascade of transformations.   &#10;&#10;1st Transformation (XSLTransformer): Removed unnecessary information from the &#10;MOML file&#10;- Kept name and URL of demo file&#10;- Kept the entities (actors), their name, and class&#10; &#10;2nd Transformation(XSLTransformer2): Removed repetitious entities&#10;- Each file can have more than one of the same actor&#10;- Kept one actor from each class&#10;&#10;StringReplace: Each file had a declaration that needed to be removed&#10;&#10;There are N Demo Files (6 in this demo)&#10;- Accumulator and Downsample: Combined the N transformed files - no longer a &#10;valid XML file&#10;- Added one declaration at the top and added a root node &lt;entities&gt; to make it &#10;into a valid XML file&#10;&#10;3rd Transformation(XSLTransformer3): Inverted hierarchy of file&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 325.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demo created by Christine Avanessians">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 30.0]">
+        </property>
+    </property>
+    <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="StringToXML2" class="ptolemy.actor.lib.conversions.StringToXML">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Display - Remove Redundancy" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 30, 511, 412}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[503, 349]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 95.0]">
+        </property>
+    </entity>
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\Documents and Settings\Armineh\workspace\ptII.cvs\ptolemy\actor\lib\xslt\demo\MoMLFileTransformation\momlFilesForDemo\SampleMOMLFile6.xml">
+        </property>
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="100000">
+        </property>
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="momlFilesForDemo/">
+        </property>
+        <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="ArrayToSequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="25.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, 0.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="7.0">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="{,,,,}">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-23.0, -10.0]">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="7.0">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="7.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 0.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -3.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3.0">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, 0.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3.0">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="arrayLength">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, 1.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="DownSampleIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, -4.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="35.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="35.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -2.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -12.0]">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -2.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;&lt;?xml version=\&quot;1.0\&quot; standalone=\&quot;no\&quot;?&gt;&#10;  &lt;entities&gt;XYZ&#10;  &lt;/entities&gt;&#10;&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="XYZ">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace3" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\\">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="/">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 220.0]">
+        </property>
+        <port name="URLparam" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="&lt;\?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;\?&gt;">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[855.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Display2 - Remove Repetition" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={557, 34, 510, 410}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[502, 347]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="Display3 - File Combination " class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 459, 512, 410}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[504, 347]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="StringToXML3" class="ptolemy.actor.lib.conversions.StringToXML">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="Display4 - Rearrange Hierarchy" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={559, 458, 511, 411}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[503, 348]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1100.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;C:/Documents and Settings/Armineh/workspace/ptII.cvs/ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/momlFilesForDemo/SampleMOMLFile6.xml&quot;}">
+        </property>
+        <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRedundancy.xsl">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="XSLTransformer2" class="ptolemy.actor.lib.xslt.XSLTransformer">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{className = &quot;xzy&quot;}">
+        </property>
+        <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRepetition.xsl">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="XSLTransformer3" class="ptolemy.actor.lib.xslt.XSLTransformer">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;xyz&quot;}">
+        </property>
+        <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RearrangeHierarchy.xsl">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 245.0]">
+        </property>
+    </entity>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[520.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[230.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[735.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[845.0, 235.0]">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="StringToXML.input" relation="relation6"/>
+    <link port="StringToXML.output" relation="relation"/>
+    <link port="StringToXML2.input" relation="relation8"/>
+    <link port="StringToXML2.output" relation="relation7"/>
+    <link port="Display - Remove Redundancy.input" relation="relation8"/>
+    <link port="FileReader.output" relation="relation6"/>
+    <link port="FileReader.fileOrURL" relation="relation9"/>
+    <link port="DirectoryListing.output" relation="relation5"/>
+    <link port="ArrayToSequence.input" relation="relation5"/>
+    <link port="ArrayToSequence.output" relation="relation9"/>
+    <link port="Accumulator.input" relation="relation10"/>
+    <link port="Accumulator.output" relation="relation20"/>
+    <link port="DownSample.input" relation="relation20"/>
+    <link port="DownSample.output" relation="relation11"/>
+    <link port="Const2.output" relation="relation12"/>
+    <link port="StringReplace2.replacement" relation="relation11"/>
+    <link port="StringReplace2.stringToEdit" relation="relation12"/>
+    <link port="StringReplace2.output" relation="relation3"/>
+    <link port="StringReplace3.stringToEdit" relation="relation9"/>
+    <link port="StringReplace3.output" relation="relation14"/>
+    <link port="RecordAssembler.output" relation="relation4"/>
+    <link port="RecordAssembler.URLparam" relation="relation14"/>
+    <link port="StringReplace.stringToEdit" relation="relation2"/>
+    <link port="StringReplace.output" relation="relation10"/>
+    <link port="Display2 - Remove Repetition.input" relation="relation2"/>
+    <link port="Display3 - File Combination .input" relation="relation3"/>
+    <link port="StringToXML3.input" relation="relation3"/>
+    <link port="StringToXML3.output" relation="relation13"/>
+    <link port="Display4 - Rearrange Hierarchy.input" relation="relation15"/>
+    <link port="XSLTransformer.input" relation="relation"/>
+    <link port="XSLTransformer.output" relation="relation8"/>
+    <link port="XSLTransformer.styleSheetParameters" relation="relation4"/>
+    <link port="XSLTransformer2.input" relation="relation7"/>
+    <link port="XSLTransformer2.output" relation="relation2"/>
+    <link port="XSLTransformer3.input" relation="relation13"/>
+    <link port="XSLTransformer3.output" relation="relation15"/>
+</entity>

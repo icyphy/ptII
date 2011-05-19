@@ -1,0 +1,42 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II DE Demo</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Illustration of an Embedded System Timing Anomaly</H1>
+
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+TimingParadox is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "TimingParadox.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="TimingParadoxVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>The applet uses the Ptolemy II Discrete Event (DE) domain
+to illustrate an anomaly that can occur in an embedded system interacting with the physical world.
+The anomaly occurs when an embedded system is reading data from a sensor to which it is poorly synchronized.  In this case, we have considered a sensor and an embedded system which are both approximately periodic with the same period.  Nominally, the embedded system would read the value of the sensor immediately after the sensor produces a value.  This would result in completing the computation at the earliest possible time.  However, we consider that both the production of sensor data and the reading of that data to start the computation have a small, random delay.  For instance, there might be unknown processing delay internal to the sensor itself, resulting in a random delay of the arrival of sensor data.  Similarly, the embedded system might be implemented using a multithreaded Real-Time operating system which introduces small delays through preemption.  Strangely, the result of these small delay may be that the embedded computation is performed on data that is extremely old!</p>
+
+<p> This situation is illustrated in the above histogram, where the sensor and computation operate nominally every second.  The histogram in red plots, for every computation, the time since the most recent sensor reading.  The delay applied to each is an independant, identically distributed rayleigh random variable.  When the delay applied to the sensor is greater than that of the computational process, the computational process must used the most recent data from the previous sensor reading.  When this happens the time since the most recent sensor reading is inevitably greater than the cycle time of the computation.</p>
+
+<p> This anomaly can have significant impact, especially in embedded digital control systems.  In such systems, the delay in the controller has a great impact on the stability of the closed loop system.  If the delay is small, then it is much easier to ensure that the closed loop system is asymptotically stable.  It is common in such systems to build controllers that are <i>robust</i>, meaning that they are still stable in the presence of small errors in sensor values and small variations in the delay of the system.  This anomaly illustrates one way in which even small variations in the timing of an embedded system can greatly increase the delay around a closed-loop system.  A control engineer must be aware of these implementation issues in order to select the correct robustness margins for a control system design.</p>
+
+<p> One solution to the problem is to artifically delay the computation, reducing (but not eliminating) the probability that the computation will begin before a new sensor reading is present.  This is shown in the above diagram by histograms in different colors, each representing a different delay time.  In this case, a artifical delay of 0.4 seconds places the most likely overall delay directly between two computational cycles.  It also virtually eliminates the chance of a extremely large delay.  Unfortunately, in a control system, the introduction of artifical delay can also make the closed loop system unstable.  Part of the design and implementation of a good embedded control system must take this tradeoff into account.</p>
+</BODY>
+</HTML>

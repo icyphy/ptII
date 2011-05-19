@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="factoryPtera" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <property name="Ptera Editor" class="ptolemy.vergil.ptera.PteraGraphTableau$Factory">
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+      <configure>
+        <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity">
+          <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
+          <input source="ptolemy/domains/ptera/lib/pteraLibrary.xml"/>
+        </entity>
+      </configure>
+    </property>
+  </property>
+  <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+  <property name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
+</property>

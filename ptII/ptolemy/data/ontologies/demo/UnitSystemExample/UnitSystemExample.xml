@@ -1,0 +1,813 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UnitSystemExample" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="UnitSystemOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/unitSystem/UnitSystemSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={191, 112, 1303, 897}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1088, 780]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{544.0, 390.0}">
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="kilometersValue &gt;= Position_km">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 25.0]">
+        </property>
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="inchesValue &gt;= Position_inch">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 45.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
+        </property>
+    </property>
+    <property name="kilometersValue" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 20.0]">
+        </property>
+    </property>
+    <property name="inchesValue" class="ptolemy.data.expr.Parameter" value="39000.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 40.0]">
+        </property>
+    </property>
+    <property name="CelsiusValue" class="ptolemy.data.expr.Parameter" value="25.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 60.0]">
+        </property>
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="CelsiusValue &gt;= Temperature_C">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 65.0]">
+        </property>
+    </property>
+    <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+    </property>
+    <property name="velocityMetersPerSecValue" class="ptolemy.data.expr.Parameter" value="1000.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 90.0]">
+        </property>
+    </property>
+    <property name="velocityMPHValue" class="ptolemy.data.expr.Parameter" value="50.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 110.0]">
+        </property>
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityMetersPerSecValue &gt;= Velocity_m_per_sec">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 90.0]">
+        </property>
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityMPHValue &gt;= Velocity_mph">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 110.0]">
+        </property>
+    </property>
+    <property name="accelerationGravity" class="ptolemy.data.expr.Parameter" value="9.8">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 130.0]">
+        </property>
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint6" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationGravity &gt;= Acceleration_m_per_sec2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 130.0]">
+        </property>
+    </property>
+    <property name="millilitersValue" class="ptolemy.data.expr.Parameter" value="3786.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 150.0]">
+        </property>
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint7" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="millilitersValue &gt;= Volume_mL">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 150.0]">
+        </property>
+    </property>
+    <property name="poundForceValue" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 170.0]">
+        </property>
+    </property>
+    <property name="UnitSystemOntologyAnalysis::constraint8" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="poundForceValue &gt;= Force_lbf">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 170.0]">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="kilometersValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="inchesValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 64, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="kilometersValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="inchesValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 435.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 59, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Position">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="inch">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="km">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 435.0]">
+        </property>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="CelsiusValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 530.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter2" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Temperature">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="C">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="C">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 530.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={886, 60, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 530.0]">
+        </property>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="CelsiusValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 595.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter3" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Temperature">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="C">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="K">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 595.0]">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1259, 61, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 595.0]">
+        </property>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="CelsiusValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 660.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter4" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Temperature">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="C">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="F">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 660.0]">
+        </property>
+    </entity>
+    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 367, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 660.0]">
+        </property>
+    </entity>
+    <entity name="Const8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="velocityMetersPerSecValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter5" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Velocity">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="m_per_sec">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="mph">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="Const9" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="velocityMPHValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter6" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Velocity">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="mph">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="kph">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={94, 669, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 376, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 340.0]">
+        </property>
+    </entity>
+    <entity name="Const10" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="accelerationGravity">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 450.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter7" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Acceleration">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="m_per_sec2">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="ft_per_sec2">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="Display8" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={864, 371, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 425.0]">
+        </property>
+    </entity>
+    <entity name="Const11" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="millilitersValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 555.0]">
+        </property>
+    </entity>
+    <entity name="Display9" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1287, 383, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 560.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter8" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Volume">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="mL">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="quart">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 620.0]">
+        </property>
+    </entity>
+    <entity name="Const12" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="poundForceValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 685.0]">
+        </property>
+    </entity>
+    <entity name="Display10" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1171, 660, 334, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 695.0]">
+        </property>
+    </entity>
+    <entity name="UnitsConverter9" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
+        </property>
+        <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Force">
+        </property>
+        <property name="inputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="lbf">
+        </property>
+        <property name="outputUnitConcept" class="ptolemy.kernel.util.StringAttribute" value="N">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="conversionLabel">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 720.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Const2.output" relation="relation3"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.minus" relation="relation3"/>
+    <link port="AddSubtract.output" relation="relation"/>
+    <link port="Const3.output" relation="relation5"/>
+    <link port="Const4.output" relation="relation7"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="AddSubtract2.plus" relation="relation5"/>
+    <link port="AddSubtract2.minus" relation="relation6"/>
+    <link port="AddSubtract2.output" relation="relation4"/>
+    <link port="UnitsConverter.input" relation="relation7"/>
+    <link port="UnitsConverter.output" relation="relation6"/>
+    <link port="Const5.output" relation="relation8"/>
+    <link port="UnitsConverter2.input" relation="relation8"/>
+    <link port="UnitsConverter2.output" relation="relation9"/>
+    <link port="Display3.input" relation="relation9"/>
+    <link port="Const6.output" relation="relation10"/>
+    <link port="UnitsConverter3.input" relation="relation10"/>
+    <link port="UnitsConverter3.output" relation="relation11"/>
+    <link port="Display4.input" relation="relation11"/>
+    <link port="Const7.output" relation="relation12"/>
+    <link port="UnitsConverter4.input" relation="relation12"/>
+    <link port="UnitsConverter4.output" relation="relation13"/>
+    <link port="Display5.input" relation="relation13"/>
+    <link port="Const8.output" relation="relation14"/>
+    <link port="UnitsConverter5.input" relation="relation14"/>
+    <link port="UnitsConverter5.output" relation="relation15"/>
+    <link port="Const9.output" relation="relation17"/>
+    <link port="UnitsConverter6.input" relation="relation17"/>
+    <link port="UnitsConverter6.output" relation="relation16"/>
+    <link port="Display6.input" relation="relation15"/>
+    <link port="Display7.input" relation="relation16"/>
+    <link port="Const10.output" relation="relation19"/>
+    <link port="UnitsConverter7.input" relation="relation19"/>
+    <link port="UnitsConverter7.output" relation="relation18"/>
+    <link port="Display8.input" relation="relation18"/>
+    <link port="Const11.output" relation="relation21"/>
+    <link port="Display9.input" relation="relation20"/>
+    <link port="UnitsConverter8.input" relation="relation21"/>
+    <link port="UnitsConverter8.output" relation="relation20"/>
+    <link port="Const12.output" relation="relation23"/>
+    <link port="Display10.input" relation="relation22"/>
+    <link port="UnitsConverter9.input" relation="relation23"/>
+    <link port="UnitsConverter9.output" relation="relation22"/>
+</entity>

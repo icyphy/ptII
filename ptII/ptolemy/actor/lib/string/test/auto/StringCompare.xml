@@ -1,0 +1,614 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="StringCompare" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 1, 1032, 739}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 630]">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 45.0">
+        </property>
+    </property>
+    <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 50.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Ptolemy starts&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 200.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 145.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Ends Ptolemy&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 255.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;The Ptolemy Project&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 305.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="StringCompare2" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 330.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringCompare3" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="startsWith">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 105.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringCompare5" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="startsWith">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ends Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 380.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringCompare6" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="endsWith">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ends Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 155.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringCompare4" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="endsWith">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 440.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringCompare7" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="contains">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;The Ptolemy Project&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 210.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringCompare8" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="contains">
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;The Ptolemy Project&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
+        </property>
+        <doc>Output a comparison function of 2 strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 505.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 45.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 100.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 145.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything4" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 210.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything5" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 310.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything7" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 435.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything8" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 500.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything6" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;false&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 380.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="655.0, 115.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="640.0, 245.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="645.0, 390.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;truetruetruetruefalsefalsefalsefalse&quot;}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="755.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="200.0, 145.0">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="215.0, 200.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="230.0, 255.0">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="250.0, 305.0">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="715.0, 275.0">
+        </vertex>
+    </relation>
+    <link port="StringCompare.firstString" relation="relation3"/>
+    <link port="StringCompare.secondString" relation="relation3"/>
+    <link port="StringCompare.output" relation="relation5"/>
+    <link port="Const2.output" relation="relation"/>
+    <link port="Const.output" relation="relation3"/>
+    <link port="Const3.output" relation="relation2"/>
+    <link port="Const4.output" relation="relation4"/>
+    <link port="StringCompare2.firstString" relation="relation3"/>
+    <link port="StringCompare2.secondString" relation="relation"/>
+    <link port="StringCompare2.output" relation="relation9"/>
+    <link port="StringCompare3.firstString" relation="relation"/>
+    <link port="StringCompare3.secondString" relation="relation3"/>
+    <link port="StringCompare3.output" relation="relation6"/>
+    <link port="StringCompare5.firstString" relation="relation2"/>
+    <link port="StringCompare5.secondString" relation="relation3"/>
+    <link port="StringCompare5.output" relation="relation10"/>
+    <link port="StringCompare6.firstString" relation="relation2"/>
+    <link port="StringCompare6.secondString" relation="relation3"/>
+    <link port="StringCompare6.output" relation="relation7"/>
+    <link port="StringCompare4.firstString" relation="relation"/>
+    <link port="StringCompare4.secondString" relation="relation3"/>
+    <link port="StringCompare4.output" relation="relation11"/>
+    <link port="StringCompare7.firstString" relation="relation4"/>
+    <link port="StringCompare7.secondString" relation="relation3"/>
+    <link port="StringCompare7.output" relation="relation8"/>
+    <link port="StringCompare8.firstString" relation="relation4"/>
+    <link port="StringCompare8.secondString" relation="relation"/>
+    <link port="StringCompare8.output" relation="relation12"/>
+    <link port="BooleanToAnything.input" relation="relation5"/>
+    <link port="BooleanToAnything.output" relation="relation13"/>
+    <link port="BooleanToAnything2.input" relation="relation6"/>
+    <link port="BooleanToAnything2.output" relation="relation14"/>
+    <link port="BooleanToAnything3.input" relation="relation7"/>
+    <link port="BooleanToAnything3.output" relation="relation15"/>
+    <link port="BooleanToAnything4.input" relation="relation8"/>
+    <link port="BooleanToAnything4.output" relation="relation16"/>
+    <link port="BooleanToAnything5.input" relation="relation9"/>
+    <link port="BooleanToAnything5.output" relation="relation17"/>
+    <link port="BooleanToAnything7.input" relation="relation11"/>
+    <link port="BooleanToAnything7.output" relation="relation19"/>
+    <link port="BooleanToAnything8.input" relation="relation12"/>
+    <link port="BooleanToAnything8.output" relation="relation20"/>
+    <link port="BooleanToAnything6.input" relation="relation10"/>
+    <link port="BooleanToAnything6.output" relation="relation18"/>
+    <link port="AddSubtract.plus" relation="relation13"/>
+    <link port="AddSubtract.plus" relation="relation14"/>
+    <link port="AddSubtract.plus" relation="relation15"/>
+    <link port="AddSubtract.plus" relation="relation16"/>
+    <link port="AddSubtract.output" relation="relation21"/>
+    <link port="AddSubtract3.plus" relation="relation21"/>
+    <link port="AddSubtract3.plus" relation="relation22"/>
+    <link port="AddSubtract3.output" relation="relation24"/>
+    <link port="AddSubtract2.plus" relation="relation17"/>
+    <link port="AddSubtract2.plus" relation="relation18"/>
+    <link port="AddSubtract2.plus" relation="relation19"/>
+    <link port="AddSubtract2.plus" relation="relation20"/>
+    <link port="AddSubtract2.output" relation="relation22"/>
+    <link port="NonStrictTest.input" relation="relation24"/>
+</entity>

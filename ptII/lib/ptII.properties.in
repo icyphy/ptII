@@ -1,0 +1,58 @@
+# $PTII/lib/ptII.properties
+# $Id$
+# Properties set by configure for use when starting up.
+# 
+# If this file is named "ptII.properties", don't edit it!
+# Instead edit ptII.properties.in and run "cd $PTII;./configure"
+# configure reads in $PTII/lib/ptII.properties.in,
+# substitutes in variables that are surrounded with @,
+# and generated $PTII/lib/ptII.properties.in
+#
+# We use a properties file here so that we can easily start Ptolemy II
+# without passing lots of command line arguments.  However, when
+# running "vergil -sandbox" or "vergil -policyfile ...", merging
+# properties from ptII.properties.in might not work.
+#
+# The format of this file is documented in the java.util.Properties
+# Javadoc page, for example
+# http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html
+#
+# This file is read in by StringUtilities.mergePropertiesFile().
+# Properties listed in this file do not override preexisting properties.
+# To view the properties, start up vergil, do 
+# File -> New -> Graph Editor -> View -> JVM Properties
+
+####
+# Location of the the PTII directory
+ptolemy.ptII.dir=@PTII@
+
+####
+# Start up with the US Locale so as to avoid problems with , instead
+# of . in floating point numbers in German and Swedish locales
+user.language=en
+user.region=US
+
+####
+# These properties are used by PtinyOS
+#
+
+# PTJAVA_HOME: The directory where the Java distribution can be found
+# Don't use PTJAVA_DIR here, it is likely to be set to /usr under Solaris.
+ptolemy.ptII.java.home=@PTJAVA_HOME@
+
+# Architecture that where jni includes can be found, for example:
+#    ptolemy.ptII.java.dir + /include/ + ptolemy.ptII.jni.architecture
+# Usually one of win32, linux or solaris
+ptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@
+
+# Viptos requires TOSROOT and TOSDIR
+# TOSROOT without /cygdrive
+ptolemy.ptII.tosroot=@TOSROOT_NO_CYGDRIVE@
+
+# TOSDIR without /cygdrive
+ptolemy.ptII.tosdir=@TOSDIR_NO_CYGDRIVE@
+
+# Override the default choice of browser, see 
+# $PTII/ptolemy/actor/gui/BrowserLauncher.java
+#ptolemy.ptII.browser=c:\\Program\ Files\\Internet\ Explorer\\iexplore.exe
+#ptolemy.ptII.browser=c:\\Program\ Files\\Mozilla\ Firefox\\firefox.exe

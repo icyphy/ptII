@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id: modelJnlp-ssi.htm.in 57580 2010-04-11 20:21:29Z cxh $
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css"/>
+<title>FuelSystemQuantityManager</title>
+<!--#include virtual="/ssi/toppremenu.htm" -->
+<!--#include virtual="toc.htm" -->
+<!--#include virtual="/ssi/toppostmenu.htm" -->
+<!-- /head -->
+<!-- body -->
+<h1>FuelSystemQuantityManager</h1>
+<p>
+This model uses
+the quantity manager concept to model contention for resouces on a network.
+This contention has an effect on timing, captured by the model.
+</p>
+<p>
+The FuelMover receives inputs through a network component, the Bus. The Bus 
+has a parameter for the service time, i.e. the time it takes to transfer a message
+on the network. This service time has an influence on the behavior of the model
+as messages get delayed.
+</p>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>Click on the Launch button to start the model:</p>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../doc/deployJava.js" type="text/javascript"></script>
+<script type="text/javascript">
+   var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+   var url = dir + "FuelSystemQuantityManager.jnlp";
+   deployJava.createWebStartLaunchButton(url);
+</script>
+</ul>
+<p>See <a href="../../../doc/webStartHelp.htm">Web Start Help</a> for details.</p>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+<!--#include virtual="/ssi/bottom.htm" -->

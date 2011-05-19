@@ -1,0 +1,79 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Endian Examples</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Endian Examples</h1>
+<p>
+"Endian" refers to the unfortunate fact of modern computing that
+data that requires multiple bytes to represent is stored differently
+on different computers.  The bytes can be high-order first or
+low-order first.  Binary data stored in the pxgraph format will
+depend on the computer that generates it.  Thus, the pxgraph
+compatibility features of the plot package permit you to specify
+the endianness of the data.
+<p>
+The three plots show the same data with different endian
+arguments.  The correct rendition looks like the
+<a href="Binary.htm">binary data demo</a>.
+If you are running on a little-endian machine such as a machine
+with an Intel x86 processor, then the <i>-binary</i> and
+<i>-littleendian</i> plots will be incorrect.
+If you are running on a big-endian machine, such as a Sun SPARC,
+then the <i>-littleendian</i> plot will be incorrect.
+See the
+<a href="../doc/ptplotfaq.htm#endian">Ptplot FAQ</a> for further details.
+
+<h2>-binary</h2>
+The plot below uses the <code>-binary</code> argument.
+
+<p>
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar" 
+ width = "500" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-binary -t \'Integrator Demo\' -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<h2>-bigendian</h2>
+The plot below uses the <code>-bigendian</code> argument.
+<p>
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar" 
+ width = "500" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-bigendian -t \'Integrator Demo\' -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<h2>-littleendian</h2>
+The plot below uses the <code>-littleendian</code> argument.
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar" 
+ width = "500" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-littleendian -t \'Integrator Demo\' -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<p>&nbsp;
+</body>
+</html>
+
+

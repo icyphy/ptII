@@ -1,0 +1,47 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<Title>Editable Plot</Title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Editable Plot</h1>
+<p>
+One of the classes in the plot package, EditablePlot, extends
+the Plot class with a facility for graphically
+editing the data being plotted.
+The following plot is editable:
+<p>
+ <APPLET 
+ code = "ptolemy.plot.plotml.EditablePlotMLApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/plotmlapplet.jar" 
+ width = "600" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "dataurl" VALUE = "bargraph.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+</p>
+<p>
+At the bottom, you can select one of the three data sets.
+Then, by dragging the right mouse button, you can change the values
+plotted for the corresponding data set.
+<p>
+This demonstration is implementing using the
+<a href="../../../doc/codeDoc/ptolemy/plot/plotml/EditablePlotMLApplet.html">
+EditablePlotMLApplet</a>
+class in the ptolemy.plot.plotml package.  That applet has
+an applet parameter, <i>dataurl</i>, that specifies the initial data to
+be plotted and the format information (the fact that it is
+a bar graph, the title, the axis labels, etc.).  It creates the choice menu
+at the bottom and implements the plot using the
+<a href="../../../doc/codeDoc/ptolemy/plot/EditablePlot.html">
+EditablePlot</a>
+class instead of the base class Plot.
+
+<p>&nbsp;
+</body>
+</html>

@@ -1,0 +1,798 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstComparatorLTEDemo" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="ConstAbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$PTII/ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const12.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const15.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator9.left&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const11.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const6.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display7.rowsDisplayed&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator6.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const29.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const30.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Constant4&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display7.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const11.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display8.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator4.right&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator8.left&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const14.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display9.rowsDisplayed&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const10.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator8.right&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator7.right&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const9.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display4.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display6.rowsDisplayed&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display4.input&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator8.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const.value&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display6.input&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Constant3&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const16.output&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator2.right&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display9.columnsDisplayed&quot;}, {Concept = &quot;BooleanConst&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display2.input&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const13.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator.right&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator5.right&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display7.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display3.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const15.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator6.right&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const4.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display9.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display6.suppressBlankLines&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const3.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display3.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const7.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display9.suppressBlankLines&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const8.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator3.left&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display4.suppressBlankLines&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator3.right&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator7.left&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator7.output&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display8.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display6.columnsDisplayed&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display5.suppressBlankLines&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const6.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const10.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const29.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator4.left&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const13.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const4.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display3.columnsDisplayed&quot;}, {Concept = &quot;BooleanConst&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator4.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display2.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator.left&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator5.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const9.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const3.value&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display5.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display5.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display2.rowsDisplayed&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator5.left&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Constant2&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const12.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const30.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const5.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator9.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Constant1&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display5.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const5.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const7.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display8.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display7.columnsDisplayed&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display8.suppressBlankLines&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display4.rowsDisplayed&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const16.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display.rowsDisplayed&quot;}, {Concept = &quot;BooleanConst&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display3.input&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const2.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator6.left&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const8.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator2.left&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const2.value&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator2.output&quot;}, {Concept = &quot;BooleanConst&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator3.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Display2.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Const14.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Comparator9.right&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstComparatorLTEDemo.Constant5&quot;}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 55.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 221, 1012, 810}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 693]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.4943181818181, 419.9588068181818}">
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
+        </property>
+    </property>
+    <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
+        </property>
+    </property>
+    <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
+        </property>
+    </property>
+    <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
+        </property>
+    </property>
+    <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
+        </property>
+    </property>
+    <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
+        </property>
+    </property>
+    <entity name="Display8" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 725.0]">
+        </property>
+    </entity>
+    <entity name="Const29" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 680.0]">
+        </property>
+    </entity>
+    <entity name="Const30" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 755.0]">
+        </property>
+    </entity>
+    <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 725.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 445.0]">
+        </property>
+    </entity>
+    <entity name="Comparator2" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1380.0, 420.0]">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1045.0, 375.0]">
+        </property>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1040.0, 450.0]">
+        </property>
+    </entity>
+    <entity name="Comparator3" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1185.0, 420.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1375.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1040.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1035.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="Comparator4" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1180.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 570.0]">
+        </property>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 525.0]">
+        </property>
+    </entity>
+    <entity name="Const8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 610.0]">
+        </property>
+    </entity>
+    <entity name="Comparator5" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 570.0]">
+        </property>
+    </entity>
+    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="Const9" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="Const10" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 445.0]">
+        </property>
+    </entity>
+    <entity name="Comparator6" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 570.0]">
+        </property>
+    </entity>
+    <entity name="Const11" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 525.0]">
+        </property>
+    </entity>
+    <entity name="Const12" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 600.0]">
+        </property>
+    </entity>
+    <entity name="Comparator7" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 570.0]">
+        </property>
+    </entity>
+    <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="Const13" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Const14" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="Comparator8" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="Display9" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="Const15" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Const16" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Comparator9" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 270.0]">
+        </property>
+    </entity>
+    <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation37" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation38" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display8.input" relation="relation36"/>
+    <link port="Const29.output" relation="relation38"/>
+    <link port="Const30.output" relation="relation37"/>
+    <link port="Comparator.left" relation="relation38"/>
+    <link port="Comparator.right" relation="relation37"/>
+    <link port="Comparator.output" relation="relation36"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="Const.output" relation="relation3"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="Comparator2.left" relation="relation3"/>
+    <link port="Comparator2.right" relation="relation2"/>
+    <link port="Comparator2.output" relation="relation"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="Const3.output" relation="relation6"/>
+    <link port="Const4.output" relation="relation5"/>
+    <link port="Comparator3.left" relation="relation6"/>
+    <link port="Comparator3.right" relation="relation5"/>
+    <link port="Comparator3.output" relation="relation4"/>
+    <link port="Display3.input" relation="relation7"/>
+    <link port="Const5.output" relation="relation9"/>
+    <link port="Const6.output" relation="relation8"/>
+    <link port="Comparator4.left" relation="relation9"/>
+    <link port="Comparator4.right" relation="relation8"/>
+    <link port="Comparator4.output" relation="relation7"/>
+    <link port="Display4.input" relation="relation10"/>
+    <link port="Const7.output" relation="relation12"/>
+    <link port="Const8.output" relation="relation11"/>
+    <link port="Comparator5.left" relation="relation12"/>
+    <link port="Comparator5.right" relation="relation11"/>
+    <link port="Comparator5.output" relation="relation10"/>
+    <link port="Display5.input" relation="relation13"/>
+    <link port="Const9.output" relation="relation15"/>
+    <link port="Const10.output" relation="relation14"/>
+    <link port="Comparator6.left" relation="relation15"/>
+    <link port="Comparator6.right" relation="relation14"/>
+    <link port="Comparator6.output" relation="relation13"/>
+    <link port="Display6.input" relation="relation16"/>
+    <link port="Const11.output" relation="relation18"/>
+    <link port="Const12.output" relation="relation17"/>
+    <link port="Comparator7.left" relation="relation18"/>
+    <link port="Comparator7.right" relation="relation17"/>
+    <link port="Comparator7.output" relation="relation16"/>
+    <link port="Display7.input" relation="relation19"/>
+    <link port="Const13.output" relation="relation21"/>
+    <link port="Const14.output" relation="relation20"/>
+    <link port="Comparator8.left" relation="relation21"/>
+    <link port="Comparator8.right" relation="relation20"/>
+    <link port="Comparator8.output" relation="relation19"/>
+    <link port="Display9.input" relation="relation22"/>
+    <link port="Const15.output" relation="relation24"/>
+    <link port="Const16.output" relation="relation23"/>
+    <link port="Comparator9.left" relation="relation24"/>
+    <link port="Comparator9.right" relation="relation23"/>
+    <link port="Comparator9.output" relation="relation22"/>
+</entity>

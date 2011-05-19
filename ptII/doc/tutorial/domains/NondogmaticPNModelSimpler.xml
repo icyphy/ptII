@@ -1,0 +1,96 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NondogmaticPNModelSimpler" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={110, 254, 964, 608}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 498]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.5, 249.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of the NondogmaticPNDirector. This model&#10;is nondeterminate, because the AddSubtract actor adds whatever&#10;tokens are available at its inputs when it fires, and the director&#10;fires it repeatedly in its own thread.&#10;&#10;Note that the two input ports of the AddSubtract actor have&#10;a parameter &quot;tellTheTruth&quot; which instructs the receiver to&#10;return false when the actor calls hasToken() if there is no token.&#10;By default, the PN receiver always returns true, whether there&#10;is a token or not, which is how it maintains determinacy.&#10;&#10;Drag in a PNDirector to see how the output is a constant zero&#10;for the deterministic model. With the NondogmaticPNDirector,&#10;the output wanders, depending on thread scheduling.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 195.0]">
+        </property>
+    </property>
+    <property name="NondogmaticPNDirector" class="doc.tutorial.domains.NondogmaticPNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        </property>
+    </property>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="tellTheTruth" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="tellTheTruth" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 90.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 45.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[290.0, 90.0]">
+        </vertex>
+    </relation>
+    <link port="AddSubtract.plus" relation="relation4"/>
+    <link port="AddSubtract.minus" relation="relation3"/>
+    <link port="AddSubtract.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Ramp2.output" relation="relation3"/>
+    <link port="MonitorValue.input" relation="relation2"/>
+    <link port="MonitorValue2.input" relation="relation4"/>
+</entity>

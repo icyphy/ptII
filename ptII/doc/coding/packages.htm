@@ -1,0 +1,94 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Ptolemy II Package Design</title>
+</head>
+<body>
+<h1><A NAME="java">Ptolemy II Package Design</A></h1>
+<p>
+Ptolemy II uses the Java package system to group classes.
+</p>
+<menu>
+<li> Packages are (roughly) small enough that the UML static structure
+diagram for the package fits on one page.  Larger packages are possible
+when there is a compelling reason to keep classes together, or when
+the classes have such a regular structure that their architecture is
+easily grasped.
+
+<li> Bidirectional dependencies between packages should be avoided.
+If two packages
+are dependent upon each other, it makes it hard to determine which
+package to compile first.  Below are the possibilities
+	<ul>
+	<li> Remove the dependency
+	<li> Combine the two packages into one package
+	<li> Move the dependency into a third package, which
+	will probably be a subpackage of one of the packages.
+	</ul>
+
+<li> A subpackage is a package that is beneath a parent package in the
+directory hierarchy.  For example <CODE>ptolemy.kernel.util</CODE> is a
+subpackage of <CODE>ptolemy.kernel</CODE>.  The makefiles are structured so
+that we run make in the subdirectories first so in general, it is best
+if subpackages do not depend on the parent package (the reverse is OK).
+
+
+<li> The test suite for a package should only use packages that
+are already depended upon by the package under test.  This rule
+cannot always be followed, but if it is followed, it makes it much
+easier to reuse a package since the tests will not require extra
+packages.
+</menu>
+
+<menu>
+<li> compile time dependencies
+
+<menu>
+<li> A class explicitly imports a class from another package
+
+<li> A class explicitly uses a class from another package by
+    using the fully qualified dot separated name
+
+</menu>
+
+
+<li> run time dependencies
+<menu>
+<li> A class uses reflection at runtime.
+     <br>ptolemy.data.expr.MatlabUtilities is an example of how
+    we use reflection to use the ptolemy.matlab classes at
+    runtime so that we can compile ptolemy.data.expr and not
+    necessary have ptolemy.matlab present
+
+<li> A class parses MoML at runtime that invokes other classes.
+
+</menu>
+
+
+<li> test time dependencies
+<menu>
+<li> It is better to write Unit tests before writing System tests.
+
+<li> Unit tests will usually get you better coverage and test
+      the code more thourougly.  
+<li> System tests are useful, but they are more like browsing
+      the code than actually reading it.  For example, 
+think of a System test
+      as something like running through a library, looking at
+      the title of the books and and opening up an occasional book
+      to a random page.  Unit tests are more like opening up
+      each book and reading it.
+
+<li> A good unit test will only use other packages compile time
+    dependencies of the package under test.  
+
+    <br> This is important if someone else wants to use the package
+      and not include all of Ptolemy
+</menu>
+
+</menu>
+
+</body>
+</html>

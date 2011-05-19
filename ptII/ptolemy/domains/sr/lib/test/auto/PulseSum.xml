@@ -1,0 +1,95 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PulseSum" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 48.0">
+        </property>
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 99, 819, 572}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 124.0">
+        </property>
+    </entity>
+    <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{1, 2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="91.0, 229.0">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 346.0">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="437.0, 244.0">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="464.0, 359.0">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 138.0">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="209.0, 129.0">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="255.0, 234.0">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Pulse.output" relation="relation5"/>
+    <link port="Pulse2.output" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation6"/>
+    <link port="AddSubtract.output" relation="relation"/>
+    <link port="Test2.input" relation="relation6"/>
+    <link port="Test3.input" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
+</entity>

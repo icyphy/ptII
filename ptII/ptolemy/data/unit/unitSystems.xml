@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UnitSystems" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <input source="ptolemy/data/unit/BasicUnits.xml"/>
+        <input source="ptolemy/data/unit/CGSUnitBase.xml"/>
+        <input source="ptolemy/data/unit/ElectronicUnitBase.xml"/>
+        <input source="ptolemy/data/unit/SI.xml"/>
+        <input source="ptolemy/data/unit/UnitConversions.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>

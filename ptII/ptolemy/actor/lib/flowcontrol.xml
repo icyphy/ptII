@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FlowControl" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Actors that route tokens or otherwise affect the flow of control.</doc>
+  <input source="ptolemy/actor/lib/aggregators.xml"/>
+  <input source="ptolemy/actor/lib/booleanflowcontrol.xml"/>
+  <input source="ptolemy/actor/lib/sequencecontrol.xml"/>
+  <input source="ptolemy/actor/lib/executioncontrol.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>

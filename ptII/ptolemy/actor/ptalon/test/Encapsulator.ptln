@@ -1,0 +1,4 @@
+Encapsulator is {
+	actorparameter a;
+	a();
+}

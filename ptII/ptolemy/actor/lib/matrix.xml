@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Matrix" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>matrix actors</doc>
+<entity name="MatrixJoin" class="ptolemy.domains.sdf.lib.MatrixJoin"/>
+<entity name="MatrixSplit" class="ptolemy.domains.sdf.lib.MatrixSplit"/>
+<entity name="MatrixToSequence" class="ptolemy.domains.sdf.lib.MatrixToSequence"/>
+<entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer"/>
+<entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix"/>
+<entity name="SubMatrix" class="ptolemy.actor.lib.SubMatrix"/>
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,602 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstScaleDemo" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="ConstAbsIntObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constAbsIntObservable/ConstAbsIntObservableSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;ObservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemo.Scale13.input&quot;}, {Concept = &quot;UnobservableConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale10.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale8.factor&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Constant5&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Constant3&quot;}, {Concept = &quot;UnobservableConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale6.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Display.input&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const5.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const6.output&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Const3.value&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const7.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale5.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Constant4&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const10.value&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale6.factor&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale2.input&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const7.value&quot;}, {Concept = &quot;UnobservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemo.Scale14.input&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const12.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const.output&quot;}, {Concept = &quot;UnobservableConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale9.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale4.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale5.factor&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale10.input&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale14.factor&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Display5.input&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Display6.input&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale7.input&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const2.output&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale8.input&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale5.input&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const12.value&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const9.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const9.value&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Const8.value&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const.value&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale4.input&quot;}, {Concept = &quot;UnobservableConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale8.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const10.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const4.output&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale2.output&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale2.factor&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale.input&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale7.factor&quot;}, {Concept = &quot;ObservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemo.Scale13.output&quot;}, {Concept = &quot;UnobservableConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale7.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale11.factor&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale6.input&quot;}, {Concept = &quot;UnobservableConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale12.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale12.factor&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale3.factor&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale9.input&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale11.input&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Const8.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale.factor&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Constant1&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const6.value&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale3.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Display4.input&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale4.factor&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale10.factor&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Display2.input&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale11.output&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale3.input&quot;}, {Concept = &quot;UnobservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemo.Scale14.output&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Scale.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale9.factor&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const11.value&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Display3.input&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Const3.output&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Scale12.input&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const11.output&quot;}, {Concept = &quot;ObservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemo.Display7.input&quot;}, {Concept = &quot;ConstZero&quot;, NamedObj = &quot;.ConstScaleDemo.Scale13.factor&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Constant2&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const2.value&quot;}, {Concept = &quot;ConstPositive&quot;, NamedObj = &quot;.ConstScaleDemo.Const4.value&quot;}, {Concept = &quot;ConstNegative&quot;, NamedObj = &quot;.ConstScaleDemo.Const5.value&quot;}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -10.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -15.0]">
+        </property>
+    </property>
+    <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 50.0]">
+        </property>
+    </property>
+    <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 70.0]">
+        </property>
+    </property>
+    <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 90.0]">
+        </property>
+    </property>
+    <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 45.0]">
+        </property>
+    </property>
+    <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 65.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 109, 1237, 962}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1022, 845]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{487.4698057432432, 358.5500422297297}">
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 550.0]">
+        </property>
+    </entity>
+    <entity name="Scale3" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 575.0]">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[812.75, 152.5]">
+        </property>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[507.75, 152.5]">
+        </property>
+    </entity>
+    <entity name="Scale4" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[677.75, 197.5]">
+        </property>
+    </entity>
+    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Scale5" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 375.0]">
+        </property>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="Scale6" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="Scale7" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 445.0]">
+        </property>
+    </entity>
+    <entity name="Const8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 620.0]">
+        </property>
+    </entity>
+    <entity name="Scale8" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 650.0]">
+        </property>
+    </entity>
+    <entity name="Const9" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[507.75, 237.5]">
+        </property>
+    </entity>
+    <entity name="Scale9" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[682.75, 282.5]">
+        </property>
+    </entity>
+    <entity name="Const10" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 425.0]">
+        </property>
+    </entity>
+    <entity name="Scale10" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 470.0]">
+        </property>
+    </entity>
+    <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="Const11" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 545.0]">
+        </property>
+    </entity>
+    <entity name="Scale11" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 590.0]">
+        </property>
+    </entity>
+    <entity name="Const12" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 640.0]">
+        </property>
+    </entity>
+    <entity name="Scale12" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 680.0]">
+        </property>
+    </entity>
+    <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 745.0]">
+        </property>
+    </entity>
+    <entity name="Scale13" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 745.0]">
+        </property>
+    </entity>
+    <entity name="Scale14" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 740.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Scale.input" relation="relation2"/>
+    <link port="Scale.output" relation="relation"/>
+    <link port="Display3.input" relation="relation3"/>
+    <link port="Const2.output" relation="relation7"/>
+    <link port="Scale2.input" relation="relation7"/>
+    <link port="Scale2.output" relation="relation3"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="Const3.output" relation="relation5"/>
+    <link port="Scale3.input" relation="relation5"/>
+    <link port="Scale3.output" relation="relation4"/>
+    <link port="Display4.input" relation="relation6"/>
+    <link port="Const4.output" relation="relation8"/>
+    <link port="Scale4.input" relation="relation8"/>
+    <link port="Scale4.output" relation="relation6"/>
+    <link port="Display5.input" relation="relation9"/>
+    <link port="Const5.output" relation="relation10"/>
+    <link port="Scale5.input" relation="relation10"/>
+    <link port="Scale5.output" relation="relation9"/>
+    <link port="Const6.output" relation="relation11"/>
+    <link port="Scale6.input" relation="relation11"/>
+    <link port="Const7.output" relation="relation13"/>
+    <link port="Scale7.input" relation="relation13"/>
+    <link port="Const8.output" relation="relation15"/>
+    <link port="Scale8.input" relation="relation15"/>
+    <link port="Const9.output" relation="relation12"/>
+    <link port="Scale9.input" relation="relation12"/>
+    <link port="Const10.output" relation="relation14"/>
+    <link port="Scale10.input" relation="relation14"/>
+    <link port="Display6.input" relation="relation16"/>
+    <link port="Const11.output" relation="relation17"/>
+    <link port="Scale11.input" relation="relation17"/>
+    <link port="Scale11.output" relation="relation16"/>
+    <link port="Const12.output" relation="relation18"/>
+    <link port="Scale12.input" relation="relation18"/>
+    <link port="Display7.input" relation="relation19"/>
+    <link port="Scale13.output" relation="relation19"/>
+</entity>

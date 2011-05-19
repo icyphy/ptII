@@ -1,0 +1,91 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="InitializationBug" class="ptolemy.actor.gt.controller.ModelBasedTransformation">
+    <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{310.7171717171717, 193.5454545454545}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this model once should create a model that has a&#10;single actor. Running it multiple times should have the same result, but&#10;now you get a model with more actors. It seems the model variable is no&#10;longer initialized to empty at the beginning of each run. ">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 275.0]">
+            </property>
+        </property>
+        <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 140.0]">
+            </property>
+            <configure>
+                <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
+                    <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace first">
+                    </property>
+                    <property name="repeatUntilFixpoint" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="repeatCount" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="GTDirector" class="ptolemy.actor.gt.TransformationRule$TransformationDirector">
+                        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                        </property>
+                    </property>
+                    <port name="matched" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                        </property>
+                    </port>
+                    <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+                        <entity name="Const" class="ptolemy.actor.lib.Const">
+                            <doc>Create a constant sequence.</doc>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 155}">
+                            </property>
+                        </entity>
+                    </entity>
+                </entity>
+            </configure>
+        </entity>
+        <entity name="TestModel" class="ptolemy.actor.gt.controller.TestModel">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;?xml version=\&quot;1.0\&quot; standalone=\&quot;no\&quot;?&gt;\n&lt;!DOCTYPE entity PUBLIC \&quot;-//UC Berkeley//DTD MoML 1//EN\&quot;\n    \&quot;http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\&quot;&gt;\n&lt;entity name=\&quot;\&quot; class=\&quot;ptolemy.actor.TypedCompositeActor\&quot;&gt;\n    &lt;property name=\&quot;_createdBy\&quot; class=\&quot;ptolemy.kernel.attributes.VersionAttribute\&quot; value=\&quot;8.1.devel.cxh\&quot;&gt;\n    &lt;/property&gt;\n    &lt;entity name=\&quot;Const\&quot; class=\&quot;ptolemy.actor.lib.Const\&quot;&gt;\n        &lt;doc&gt;Create a constant sequence.&lt;/doc&gt;\n        &lt;property name=\&quot;_location\&quot; class=\&quot;ptolemy.kernel.util.Location\&quot; value=\&quot;{170, 155}\&quot;&gt;\n        &lt;/property&gt;\n    &lt;/entity&gt;\n&lt;/entity&gt;\n&quot;}">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{195, 205}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4650865098102996">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6875806881161123">
+            </property>
+        </relation>
+        <link port="InitModel.outgoingPort" relation="relation"/>
+        <link port="Transform.incomingPort" relation="relation"/>
+        <link port="Transform.outgoingPort" relation="relation2"/>
+        <link port="TestModel.incomingPort" relation="relation2"/>
+    </entity>
+</entity>

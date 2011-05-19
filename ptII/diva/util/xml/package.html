@@ -1,0 +1,64 @@
+<!-- Copyright (c) 1998-2005 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+
+<html>
+<head>
+<title>diva.util.xml</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+A package of utilities for the XML parsing and printing.  The central
+class in this package is the XmlDocument class.  Each XmlDocument
+contains a tree of XML elements, represented by XmlElement
+objects. The XmlDocument knows how to print itself and perform other
+useful operations. However, it does not know how to parse itself into
+existence. For that, an XmlReader object must be used to populate the
+XmlDocument.
+
+<P> The XmlReader class will parse any legal XML file (containing a
+reference to its DTD) and produce a parsed tree of XmlElements which
+it inserts into the document. The application can then traverse the
+tree to extract data or to build its own internal data structure.
+Here is an example illustrating a typical use of the XmlReader to
+process an XML file:
+
+<pre>
+XmlDocument document = new XmlDocument(new URL("file:/..."));
+XmlReader reader = new XmlReader();
+reader.setVerbose(true);
+reader.parse(document);
+if (reader.errorCount > 0) {
+    ...do something...
+    return;
+}
+XmlElement root = document.getRoot();
+for (Iterator i = root.elements(); i.hasNext();) {
+    ... process each child element... 
+}
+</pre>
+
+<P>
+
+<P>
+To create an XML file, the application creates a tree of
+XmlElements and inserts it into an XmlDocument. It then
+calls the write() method with a Writer object. 
+Here is an example illustrating a typical use:
+
+<pre>
+XmlElement root = new XmlElement();
+... Add child elements to the root ...
+
+XmlDocument document = new XmlDocument("file:/...");
+document.setRoot(root);
+XmlWriter writer = new XmlWriter();
+writer.setVerbose(true);
+writer.write(document);
+</pre>
+
+</body>
+</html>
+
+
+

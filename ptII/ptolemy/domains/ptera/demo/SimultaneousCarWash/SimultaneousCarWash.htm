@@ -1,0 +1,38 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>SimultaneousCarWash</TITLE>
+</HEAD>
+<BODY>
+<H1>SimultaneousCarWash</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+SimultaneousCarWash is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "SimultaneousCarWash.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="SimultaneousCarWashVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>Look inside PteraModalModel to perceive its internal design, which contains a Simulate event
+with an Ptera refinement. The Simulate event is processed twice at model time 0, causing two
+instances of the refinement's initial event to be scheduled in the refinement's own event
+queue. The streams of events occurring in the two simulations are merged in that event
+queue and are processed in their time stamp orders.</p>
+</BODY>
+</HTML>

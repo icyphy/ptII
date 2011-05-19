@@ -1,0 +1,43 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Expression Demo</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Expression Evaluation</H1>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Expression is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Expression.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="ExpressionVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>
+The <i>slow</i> signal is a ramp that starts at zero and increments by
+PI/100 on each firing. The <i>fast</i> signal is a ramp that starts
+at zero and increments by PI/10 on each firing.
+Try changing the expression in the box to "cos(slow)*cos(fast)"
+and clicking on the "Go" button.
+Other interesting alternatives include:
+<UL>
+<LI> "cos(fast*cos(slow))"
+<LI> "0.2*slow + cos(fast)"
+</UL>
+For more information about the Ptolemy Expression language, see the
+ <a href="../../../../../doc/expressions.htm">Expression Language Documentation</a></p>
+</BODY>
+</HTML>

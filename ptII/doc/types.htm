@@ -1,0 +1,35 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Domains</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Ptolemy II Type System</h1>
+<p>
+
+Ptolemy II has a sophisticated type system that supports extensive
+polymorphism. The basis for the type system is a complete partial order
+(CPO) representing the relationships between types. The ordering
+relationship is one of lossless convertibility. I.e., type <i>a</i> is
+less than type <i>b</i> if an instance of type <i>a</i> can be
+converted losslessly to an instance of type <i>b</i>. For example, type
+<i>IntToken</i> is less than type <i>DoubleToken</i> which is less than
+<i>ComplexToken</i>. However, <i>BooleanToken</i> is incomparable to
+all of these (it is neither less than nor greater than them). A lesser
+type is <i>more specific</i> than a greater type, or a greater type is
+<i>more general</i>. Type constraints in an actor are specified as
+inequalities with respect to this CPO. Thus, for example, an actor may
+declare that its output type is at least the type of one of its
+parameters. The type resolution mechanism finds the least types (the
+most specific types) in the CPO that satisfy all the constraints.
+
+<ul>
+  <li><a href="../ptolemy/domains/sdf/demo/Type/Type.htm">Applet demonstrating type resolution</a></li>
+  <li> <a href="../ptolemy/data/type/demo/Router/Router.htm">Record Types applet</a><br>
+  <li> <a href="../ptolemy/data/unit/demo/StaticUnits/NonAppletStaticUnits.htm" target="main">StaticUnits</a><br>
+  <li> <a href="../ptolemy/data/unit/demo/Units/Units.htm" target="main">Units</a><br>
+</ul>
+</body>
+</html>

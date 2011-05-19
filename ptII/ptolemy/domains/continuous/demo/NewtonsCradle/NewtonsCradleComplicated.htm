@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>NewtonsCradleComplicated</title>
+</head>
+<body>
+<h1>NewtonsCradleComplicated</h1>
+This variant starts with a more 
+complicated initial condition.
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+NewtonsCradleComplicated is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "NewtonsCradleComplicated.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="NewtonsCradleComplicatedVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+</p>
+<p>This is a modified version of the Newton's cradle demo that
+shows a more complicated dynamic behavior. The key change 
+is the initial states of balls. In this demo, both ball #1 and 
+ball #2 are moved away from their equilibrium positions 
+but start at different angles of PI/8 and PI/16.</p>
+
+<p>Because the period of a pendulum depends on not only its 
+sizes but also the initial angle, ball #1 and #2 do not reach 
+their equilibrium positions at the same time. Therefore, 
+the collisions between ball #1 and #2 and between ball #2 
+and #3 do not happen at the exactly same time. This makes 
+the model's dynamics complicated.</p>
+
+<p>In particular, because ball #2 has a smaller initial angle than
+that of ball #1, its period is smaller. Therefore, ball #2 first 
+collides with ball #3, then with ball #1, and then with ball #3 
+again. All these collisions happen at different times. Zoom in 
+the velocities plot for a better understanding of this.</p>
+</body>
+</htm>

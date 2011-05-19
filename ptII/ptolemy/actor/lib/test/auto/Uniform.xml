@@ -1,0 +1,260 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Uniform" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Test the Uniform actor by generating
+random numbers between -10.0 and 10.0
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 15.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-6.3727224057646, 4.196254009982, -5.5308947484123, 0.3094805490444, -4.9588213613653, 5.2771251386447, 5.1826644013903, 5.9786799112764, -6.118439015445, 7.3882488767196, -5.4311258142741, -9.4134802119054, -5.5163748955992, -6.1044858270036, -4.3799690453808, 4.8931768003771, 9.8168184479327, -4.4181574869769, 8.3084015710505, 2.8006787090796}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 200.0">
+        </property>
+    </entity>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="-10.0">
+        </property>
+        <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="10.0">
+        </property>
+        <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="61.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 31, 1169, 928}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[954, 821]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="50">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-23.0, -13.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="24">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[7.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-23.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[13.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="line13" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -1.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </property>
+            <property name="line14" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -7.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </property>
+            <property name="line15" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -13.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </property>
+            <property name="line16" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, 11.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, -1.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="25.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="24.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,1.0,1.0}">
+                </property>
+            </property>
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 200.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Test.input" relation="relation"/>
+    <link port="Uniform.output" relation="relation"/>
+</entity>

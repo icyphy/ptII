@@ -1,0 +1,104 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ListenToStop" class="ptolemy.domains.ptera.kernel.PteraController">
+    <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+        </property>
+    </property>
+    <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Stop this Ptera the first time when&#10;data is received at stopInput.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 330.0]">
+        </property>
+    </property>
+    <property name="_alternateGetMomlAction" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.DesignPatternGetMoMLAction">
+    </property>
+    <property name="_designPatternIcon" class="ptolemy.vergil.icon.DesignPatternIcon">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </property>
+    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+    </property>
+    <port name="stopInput" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
+        </property>
+    </port>
+    <entity name="Start" class="ptolemy.domains.ptera.kernel.Event">
+        <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 315}">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.domains.ptera.kernel.Event">
+        <property name="isFinalEvent" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 315.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.10371433342281927">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+<display name="initialize"/>        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
+        </property>
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+        </property>
+        <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+        </property>
+        <property name="triggers" class="ptolemy.data.expr.StringParameter" value="stopInput">
+        </property>
+    </relation>
+    <link port="Start.outgoingPort" relation="relation"/>
+    <link port="Stop.incomingPort" relation="relation"/>
+</entity>

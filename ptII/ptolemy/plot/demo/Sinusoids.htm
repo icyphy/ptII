@@ -1,0 +1,49 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Sinusoids</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Plot data generated in Java</h1>
+
+The plot below shows a collection
+of sinusoids plotted with each sample explicitly shown with a
+vertical line.
+Like the <a href="FourierSeries.htm">Fourier series demo</a>,
+this one uses Java code to compute the data on the fly.
+<p>
+<p>
+<APPLET
+ code = "ptolemy.plot.demo.PlotDemo"
+ codebase = "../../.."
+ archive = "ptolemy/plot/plotapplet.jar,ptolemy/plot/demo/demo.jar"
+ width = "500"
+ height = "250"
+>
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a>
+</APPLET>
+
+
+<p> The <a href="PlotDemo.java">source code</a> defines a class
+<code>PlotDemo</code> derived from <code>Plot</code>. This class
+contains a sequence of Java statements in its <code>init()</code>
+method that configures and constructs the plot. This particular
+example also demonstrates a number of features. In particular, the X
+and Y ranges are given explicitly in the Java code, but note that the
+Y (vertical) range is insufficient to contain all the points. The
+lines are clipped at the boundary of the range. Clicking on the "fill"
+button at the upper right brings all data within range. Note further
+that the Y axis is labeled with explicitly given tick marks, this time
+placed at non-integer positions, and again given string labels. Notice
+also that the "impulses" or &quot;stems&quot; feature is turned on,
+causing a line to drawn from each plotted point down to the x
+axis. This is sometimes called a &quot;stem plot;&quot; it provides an
+alternative way to explicitly show each sample being plotted
+(vs. marks as in the <A HREF="Marks.htm">marks demo</A>).
+
+<p>&nbsp;
+</body>
+</html>

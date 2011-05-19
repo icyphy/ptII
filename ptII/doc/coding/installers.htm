@@ -1,0 +1,281 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Installers</title>
+</head>
+<body>
+<h1>Installers</h1>
+
+<h2>Features Ptolemy II needs</h2>
+<ul>
+<li> Ability to install a custom, bundled JRE
+<li> Multiple programs in the Start Menu.
+</ul>
+
+<h2>List of installers</h2>
+<ul>
+<li> <a href="http://java-source.net/open-source/installer-generators" target="_top">java-source.net - List of Open Source Installers written in Java</a>
+<li> <a href="http://javatoolbox.com/categories/deployment-installation" target="_top">javatoolbox - Java deployment and installation tools</a>
+<li> <a href="http://www.excelsior-usa.com/articles/java-to-exe.html" target="_top">Excelsior-usa: Java to exe</a>
+</ul>
+
+<h2>Free Installers</h2>
+<dl>
+<dt><a href="http://www.izforge.com/izpack/" target="_top">izPack</a>
+<dd> <a href="http://www.velocityreviews.com/forums/t302544-free-java-installer-with-capability-to-bundle-jvm.html" target="_top">velocityreviews.com</a> says:
+<blockquote>
+The IzPack native launcher will first check for a JRE on the target
+system. If one is found, then it will launch the installer. If no JRE
+can be found, then it will help the user in installing one either from
+the internet or from a bundled one. To sum-up, the IzPack native
+launcher will allow your users to install your software even if they
+don't have a JRE at first sight.
+<blockquote>
+The IzPack native launcher is a .exe file that looks for a file called
+<code>launcher.ini</code> in the current directory.  The
+<code>launcher.ini</code> specifies:
+<ul>
+<li> which jar file contains the IzPack installer.  
+<li> The setup .exe or script to run to install the JRE.
+<br> Unfortunately, this does not meet our needs, since we want to use
+a custom JRE that includes packages like Java3D etc.  For us to use
+this, we would need to create a JRE setup script.
+</ul>
+<a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>
+
+<dt><a href="http://launch4j.sourceforge.net/" target="_top">launch4j</a>
+<dd>Can include a JRE, but really only for one application?
+We need to add multiple apps to the Start Menu.
+
+</dl>
+
+<h2>Commercial installers</h2>
+<ul>
+<li> <a href="http://www.advancedinstaller.com/java.html" target="_top">Advanced Installer</a>
+<li> <a href="http://www.denova.com" target="_top">Denova JExpress</a>
+<li> <a href="http://www.dobysoft.com/products/nativej/features.html" target="_top">Dobysoft NativeJ</a> $49.95/$89.95
+<li> <a href="http://www.ej-technologies.com/products/install4j/features.html" target="_top">Install4J</a>  edu pricing: $199/$349
+
+</ul>
+
+<h2>Ptolemy installers</h2>
+To install Ptolemy under Windows, we require an optional custom JRE.
+<p>The way we do this is based on
+<a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>.
+<ol>
+<li>We create an 
+<a href="http://www.izforge.com/izpack/" target="_top">izPack</a>
+installer that installs Ptolemy II
+<li>We use 
+<a href="http://launch4j.sourceforge.net/" target="_top">launch4j</a>
+to invoke the izPack installer.  The launch4j installer includes
+an optional JRE.
+</ol>
+
+<ol>
+<li>Create a jre that has JAI, Java 3D, Joystick  JMF, JavaComm, X10 etc.
+in it.
+See <a href="../install.htm#notshippedPackages">Optional packages not shipped with Ptolemy used at runtime</a>
+<li>Copy this jre to <code>$PTII/adm/gen-<i>X.Y</i>/jre</code>
+</ol>
+
+<h2>IzPack notes</h2>
+<h3>Things I wish were different</h2> 
+These notes are for IzPack 3.9.0-M1, from September 9, 2006.  
+<ul>
+<li>IzPack should be easier to use with a custom JRE.
+The IzPack native launcher will allow me to invoke the JRE installer,
+but I want to use a JRE that is in the current directory.
+<a href="http://www.izforge.com/izpack/wiki/native_launcher_and_alternatives">the IzPack wiki</a> (see also
+<a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>) describe
+using <a href="http://launch4j.sourceforge.net/" target="_top">Launch4j</a>.
+<br>I ended up using Launch4j to create a .exe that invokes
+the jar file created by IzPack.  I also used Launch4j to create
+my .exe files that are added to the Start menu.
+
+<li>There should be an easy way to ask the user if they want to
+invoke a binary after the installation is complete.
+
+<li>I'd like to add a message to the TargetPanel that describes why
+the default location in C:/Program Files won't work.
+
+<li>In HTMLInfoPanel, the packing seems to change depending on
+my html file.  Sometimes the pane that displays the HTML does not
+fill the width of the screen.  It seem like using style sheets
+causes problems here
+
+<li>I'd like there to be a JREPathPanel that is like the JDKPathPanel.
+In one of the installers, I provide a custom JRE that includes JAI,
+Java 3D, Joystick JMF, JavaComm, and X10.  I'd like to give the user
+the opportunity to use the custom JRE, or to choose their own JRE or
+JDK.
+
+<li>It would be nice if there was a way for the installer to unjar
+files on command.  I provide source in a jar file, if the user
+chooses to install the sources, then that file should be uninstalled.
+The reason I use a jar file is because it makes it easier (faster) to
+build installers - my sources are a few thousand files, it is
+faster to copy one file around at installer build time than
+it is to copy lots of files.
+
+<li> The <a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a> should state clearly how to build.  Yah, I know, if you don't
+know svn, you probably can't devel, but I find quick instructions useful.
+The instructions should point to an online copy of the most recent 
+Eclipse instructions.  I found the TeX docs, but is there
+an online version of the manual? 
+ 
+<br>There should also be a link to 
+<a href="http://www.izforge.com/izpack/wiki/building_native_launcher">How to build the native launcher</a>
+
+<h3>Building IzPack</h2> 
+<a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a>
+<ol>
+<li> Download from the trunk
+<pre>
+svn co http://svn.berlios.de/svnroot/repos/izpack/izpack-src/trunk
+</pre>
+<li> I followed the Eclipse instructions from the IzPack 3.9.0-M1 release
+One change was that when setting up the debug, I used
+<pre>
+c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.xml \
+-b c:\cxh\ptII\adm\gen-6.0 \
+-o c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.jar \
+-h c:\cxh\src\izpack\trunk
+<pre>
+Where
+<dl>
+<dt> <code>c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.xml</code>
+<dd> My IzPack configuration file, usually called <code>install.xml</code>
+<dt> <code>-b c:\cxh\ptII\adm\gen-6.0</code>
+<dd> The base for my build
+<dt> <code>-o c:\cxh\ptII\adm\gen-6.0\ptII6_0-devel_setup.jar</code>
+<dd> The file to output
+<dt> <code>-h c:\cxh\src\izpack\trunk</code>
+<dd> The IzPack source directory.  
+
+</dl>
+
+<li> <b>Problems</b>:
+<dl>
+<dt> <code>No valid IzPack home directory found</code>
+<dd>
+Building in Eclipse fails with:
+<pre>
+-> Fatal error :
+   No valid IzPack home directory found
+java.lang.IllegalArgumentException: No valid IzPack home directory found
+	at com.izforge.izpack.compiler.CompilerConfig.resolveIzPackHome(CompilerConfig.java:1908)
+	at com.izforge.izpack.compiler.CompilerConfig.main(CompilerConfig.java:1835)
+	at com.izforge.izpack.compiler.Compiler.main(Compiler.java:622)
+</pre>
+The solution is to copy <code>ShellLink.dll</code>
+<pre>
+cp c:/Pro*/izpack/bin/native/izpack/ShellLink.dll izpack
+</pre>
+
+<dt><code>Uninstaller not found: c:\cxh\src\izpack\trunk\lib\uninstaller.jar</code>
+<dd> Building in Eclipse fails with:
+<pre>
+-> Fatal error :
+   c:\cxh\ptII\adm\gen-6.0\ptII6_0_devel_setup.xml:18: Uninstaller not found: c:\cxh\src\izpack\trunk\lib\uninstaller.jar
+com.izforge.izpack.compiler.CompilerException: c:\cxh\ptII\adm\gen-6.0\ptII6_0_devel_setup.xml:18: Uninstaller not found: c:\cxh\src\izpack\trunk\lib\uninstaller.jar
+	at com.izforge.izpack.compiler.CompilerConfig.parseError(CompilerConfig.java:1523)
+	at com.izforge.izpack.compiler.CompilerConfig.findIzPackResource(CompilerConfig.java:1488)
+	at com.izforge.izpack.compiler.CompilerConfig.addInfo(CompilerConfig.java:1199)
+	at com.izforge.izpack.compiler.CompilerConfig.executeCompiler(CompilerConfig.java:316)
+	at com.izforge.izpack.compiler.CompilerConfig.main(CompilerConfig.java:1854)
+	at com.izforge.izpack.compiler.Compiler.main(Compiler.java:622)
+</pre>
+Solution, use ant:
+<pre>
+cd trunk/src
+ant dist
+</pre>
+I'm not sure how to do this from Eclipse.  Eclipse can run ant but
+the setup instructions have us include files from <code>src/lib</code>,
+not <code>src</code>.
+
+<dt>Problems with the uninstaller
+<dd>The Uninstaller was failing for me, see
+<a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html">The Unistaller.jar is not working</a>
+<pr>I had a problem with <code>OsVersion</code> missing when I ran
+<pre>
+java -version uninstaller.jar
+</pre>
+The solution was to check out the 3.9 branch and rebuild:
+<pre>
+svn co http://svn.berlios.de/svnroot/repos/izpack/izpack-src/branches/branch-3.9/
+cd 3.9.0-M1/src
+ant
+</pre>
+I also had to edit <code>build.xml</code> so that we included izpack/util/os/*.class as per <a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html">The Unistaller.jar is not working</a>
+
+<p>It turns out that part of the install process updates <code>uninstaller.jar</code>.  So, I had to copy the <code>uninstaller.jar</code> file
+over to the installed version of IzPack - copying <code>uninstaller.jar</code>
+to the installed application will not do it.
+ 
+
+</dl>
+
+</ol>
+
+<h3>Setting up IzPack to unjar source files</h3>
+We want to IzPack to unjar the source file because it is faster to create
+an installer that has one jar file in it than it is to create an installer
+that has multiple (many thousand) files.
+<p>The solution is to use the ProcessPanel and define our own class
+that does the extraction.
+<h4>Problems</h4
+<dl>
+<dt><code>Cannot find Resource ProcessPanel.Spec.xml for language eng</code>
+<dd>
+<pre>
+com.izforge.izpack.installer.ResourceNotFoundException: Can not find Resource ProcessPanel.Spec.xml for language eng
+	at com.izforge.izpack.installer.ResourceManager.getLanguageResourceString(ResourceManager.java:137)
+	at com.izforge.izpack.installer.ResourceManager.getInputStream(ResourceManager.java:154)
+	at com.izforge.izpack.installer.ProcessPanelWorker.readSpec(ProcessPanelWorker.java:109)
+	at com.izforge.izpack.installer.ProcessPanelWorker.run(ProcessPanelWorker.java:233)
+	at java.lang.Thread.run(Unknown Source)
+Error parsing XML specification for processing.
+</pre>
+Solution:
+<br>Add the following to the configuration file
+<pre>
+        &lt;res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/&gt;
+</pre>
+
+<dt>"Cannot find processing class"
+<dd>The class needs to be present in the jar file that is created
+by IzPack.  We use the <code>-u</code> command:
+<pre>
+jar -fu c:/Program\ Files/IzPack/lib/installer.jar ExtractJarFile.class 
+</pre>
+</dl>
+
+We also have to update the <code>standalone-compiler.jar</code> file
+with the new <code>installer.jar</code> file.  My solution was to rebuild
+izPack and run
+<pre>
+cd izpack/trunk/src
+rm ../lib/installer.jar
+ant build.installer
+jar -uf ../lib/installer.jar ExtractJarFile.class
+ant build.standalone-compiler
+cp ../lib/standalone-compiler.jar ../../izpack3.9.0/lib/standalone-compiler.jar
+</pre>
+However, a better solution is to use 
+<code>&ltjar src="ExtractJarFile.jar"&gt;</code> in the
+<code>install.xml</code> file
+
+<dt><code>Error accessing processing class</code>
+<dd>I modified <code>src/lib/com/izforge/izpack/installer/ProcessPanelWorker.java</code> so that it printed the exception, which was
+<code>Class com.izforge.izpack.installer.ProcessPanelWorker$ExecutableClass
+can not access a member of class ExtractJarFile with modifiers "private".</code>
+<br> The fix was to change ExtractJarFile so it no longer had a private
+constructor.
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>

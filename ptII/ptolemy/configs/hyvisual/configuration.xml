@@ -1,0 +1,170 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+
+
+
+  <!-- NOTE:  If you add .xml files to this directory, be sure to
+       add them to the makefile
+    -->
+
+
+
+
+  <doc>Configuration for Hybrid Systems</doc>
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/hyvisual/about.htm"/>
+
+  <!-- Specify copyright, used by actor/gui/GenerateCopyrights.java -->
+  <property name="_applicationCopyright"
+            class="ptolemy.kernel.util.StringAttribute"
+            value="ptolemy/configs/hyvisual/copyright.htm"/>
+
+  <!-- Specify name of this application, used by actor/gui/HTMLAbout.java -->
+  <property name="_applicationName"
+            class="ptolemy.kernel.util.StringAttribute"
+            value="HyVisual"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/hyvisual/help.htm"/>
+
+  <!-- Use the Kieler graph layout algorithms. -->
+  <!--  Used in BasicGraphFrame.java-->
+  <property name="_layoutGraphDialog"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.layout.KielerLayoutGUIFactory"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
+
+  <!-- NOTE: we must do this as an input to avoid expanding the actors -->
+  <!-- in cases where the Matlab actor does not exist -->
+  <input source="ptolemy/configs/hyvisual/hyvisualRefinements.xml"/>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Import HSIF, Graph Editor w/ CT Director, FSM Editor, Modal Model -->
+    <!-- NOTE: we must do this as an input to avoid expanding the actors -->
+    <!-- in cases where the Matlab actor does not exist -->
+    <input source="ptolemy/configs/hyvisual/hyvisualEffigies.xml"/>
+    <!-- Import HTML viewer, text editor, etc. -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/modalTableauFactory.xml"/>
+    <input source="ptolemy/configs/fsmTableauFactory.xml"/>
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main actor library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <input source="ptolemy/configs/hyvisual/utilitiesLibrary.xml"/>
+
+    <!-- Domains library for HyVisual . -->
+    <entity name="Directors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+	    <property name="Continuous Director"
+	              class="ptolemy.domains.continuous.kernel.ContinuousDirector"/>
+            <property name="DE Director"
+                      class="ptolemy.domains.de.kernel.DEDirector"/>
+            <property name="FSM Director"
+                      class="ptolemy.domains.modal.kernel.FSMDirector"/>
+            <property name="GR Director"
+    	          class="ptolemy.domains.gr.kernel.GRDirector"/>
+            <property name="SDF Director"
+    	          class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+    <!-- Custom actor library. -->
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+<!-- Sources list is custom. -->
+<input source="ptolemy/configs/hyvisual/sources.xml"/>
+
+<!-- Sinks list is custom. -->
+<input source="ptolemy/configs/hyvisual/sinks.xml"/>
+
+<!---------------------------------------------------------------------------->
+<!-- Continuous-time actors. -->
+<input source="ptolemy/domains/continuous/lib/continuousentities.xml"/>
+
+<!-- Discrete library is added to include a few useful actors. -->
+<input source="ptolemy/configs/hyvisual/discrete.xml"/>
+
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/array.xml"/>
+
+  <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
+
+  <input source="ptolemy/domains/gr/gr.xml"/>
+
+<!-- Modified library -->
+  <input source="ptolemy/actor/lib/hoc/hocSimple.xml"/>
+
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/io.xml"/>
+
+  <input source="ptolemy/actor/lib/logic/logic.xml"/>
+
+<!-- Math list is custom. -->
+<input source="ptolemy/configs/hyvisual/math.xml"/>
+
+<!-- Matlab depends on Matlab being present -->
+<input source="ptolemy/matlab/matlab.xml"/>
+
+  <input source="ptolemy/actor/lib/matrix.xml"/>
+
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/random.xml"/>
+  
+<!-- OMIT: input source="ptolemy/actor/lib/realtime.xml"/-->
+
+<!-- OMIT: selected actors included in the discrete library."/-->
+  <!-- input source="ptolemy/actor/lib/signalprocessing.xml"/-->
+  
+  <input source="ptolemy/actor/lib/string/string.xml"/>
+  <!-- omit: input source="ptolemy/domains/ptinyDomains.xml"/-->
+
+          </group>
+        ?>
+      </configure>
+    </entity>
+  </entity>
+
+</entity>

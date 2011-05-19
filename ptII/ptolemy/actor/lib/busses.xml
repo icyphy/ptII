@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Bus" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <entity name="BusAssembler" class="ptolemy.actor.lib.BusAssembler"/>
+        <entity name="BusDisassembler" class="ptolemy.actor.lib.BusDisassembler"/>
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,171 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Task" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="ThreadDirector" class="ptolemy.domains.taskpt.kernel.ThreadDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example allocates some shared memory and&#10;passes the addresses to a Task. Task is executed&#10;and the value in the memory that are read and &#10;written by the task are displayed.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 20.0]">
+        </property>
+    </property>
+    <entity name="Alloc" class="ptolemy.domains.taskpt.lib.Alloc">
+        <property name="size" class="ptolemy.actor.parameters.PortParameter" value="3">
+        </property>
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 170.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+        </property>
+    </entity>
+    <entity name="Load" class="ptolemy.domains.taskpt.lib.Load">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 245.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="4">
+        </property>
+    </entity>
+    <entity name="Task" class="ptolemy.domains.taskpt.lib.Task">
+        <property name="TaskDirector" class="ptolemy.domains.taskpt.kernel.TaskDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 50.0]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 170.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 380.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </port>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 295.0]">
+            </property>
+            <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="1">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 255.0]">
+            </property>
+            <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+            </property>
+        </entity>
+        <entity name="DisplayAll" class="ptolemy.domains.taskpt.lib.gui.DisplayAll">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 277, 342, 245}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 190.0]">
+            </property>
+            <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation3"/>
+        <link port="port2" relation="relation2"/>
+        <link port="Const.output" relation="relation3"/>
+        <link port="Const2.output" relation="relation2"/>
+        <link port="DisplayAll.input" relation="relation"/>
+    </entity>
+    <entity name="Alloc2" class="ptolemy.domains.taskpt.lib.Alloc">
+        <property name="size" class="ptolemy.actor.parameters.PortParameter" value="2">
+        </property>
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 240.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="1">
+        </property>
+    </entity>
+    <entity name="DisplayAll" class="ptolemy.domains.taskpt.lib.gui.DisplayAll">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={636, 316, 342, 245}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[466.6669158935547, 244.99861907958984]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="5">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{85.0, 65.0}">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Alloc.ptr" relation="relation5"/>
+    <link port="Load.ptr" relation="relation6"/>
+    <link port="Load.data" relation="relation"/>
+    <link port="Task.port" relation="relation5"/>
+    <link port="Task.port2" relation="relation2"/>
+    <link port="Alloc2.ptr" relation="relation2"/>
+    <link port="Alloc2.ptr" relation="relation6"/>
+    <link port="DisplayAll.input" relation="relation"/>
+</entity>

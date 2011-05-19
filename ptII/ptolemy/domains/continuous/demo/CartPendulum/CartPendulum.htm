@@ -1,0 +1,37 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>CartPendulum</TITLE>
+</HEAD>
+<BODY>
+<H1>CartPendulum</H1>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+CartPendulum is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "CartPendulum.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="CartPendulumVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+<p>This model models a pendulum on a moving cart. The card moves in the x dimension and the pendulum
+moves in x-z plane, as shown in the image above. The pendulum collides with the surface of the cart and
+bounces back with some energy loss, specified by the lambda parameter. There is no extra force except
+the gravity force applied on the pendulum. In the 3D animation, the x dimension is coming out of the screen.</p>
+
+<p>This model is a Zeno model, where an infinite number of events occur in a finite time.
+The model has two modes, one for pre-Zeno and for post-Zeno dynamics. This illustrates the
+ability to model Zeno systems in a reasonable way.</p>
+</BODY>
+</HTML>

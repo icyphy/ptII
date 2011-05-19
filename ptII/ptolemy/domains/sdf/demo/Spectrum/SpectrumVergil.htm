@@ -1,0 +1,49 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Spectrum</TITLE>
+<LINK href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<H1>Spectrum of a Modulated Sinusoid</H1>
+<p>
+This model illustrates calculation and display of the spectrum of a
+modulated sinusoid with noise.</p>
+<p>
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+-->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/sdf/demo/Spectrum/Spectrum.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/Spectrum/Spectrum.jnlp">
+<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Spectrum.xml">
+  <PARAM NAME = "NAME" VALUE = "Spectrum" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Spectrum.xml" > \
+  <a href="Spectrum.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</center>
+</p>
+<p>This model shows a simple periodogram spectral estimate of a
+modulated sinusoid in noise. The top-level parameters control
+the carrier frequency, the signal frequency, and the noise
+level. Notice that the two peaks are centered at the carrier
+frequency, with their distance from the carrier given by the
+signal frequency. The sample rate is assumed to be 8kHz.</p>
+
+</BODY>
+</HTML>

@@ -1,0 +1,155 @@
+<html>
+<head>
+<!-- $Id$ -->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table>
+<tr>
+<td>
+<img vspace="6" align="left" src="visualsense.gif" alt="VisualSense">
+</td>
+<td>
+<h1>
+VisualSense 8.1.devel - Modeling of Wireless Sensor Networks
+</h1>
+<i>Visual editor and simulator for wireless sensor network systems</i>.
+<ul>
+<li><a href="docs.htm" target="_blank">Documentation</a></li>
+<li><a href="authors.htm" target="_blank">Authors</a></li>
+<li><a href="about:copyright"  target="_blank">Copyright</a></li>
+</ul>
+To start immediately by creating a wireless sensor networks model, select File, New,
+Graph Editor from the menu bar.  Select Help from the Help menu for
+instructions on creating a model.
+</td>
+</tr>
+</table>
+Modeling of wireless sensor networks requires sophisticated modeling
+of communication channels, sensor channels, ad-hoc networking protocols,
+localization strategies,
+media access control protocols, energy consumption in sensor nodes, etc.
+This modeling framework is designed to support a component-based
+construction of such models.  It is intended to enable the research
+community to share models of disjoint aspects of the sensor nets
+problem and to build models that include sophisticated elements from
+several aspects.
+<p>
+Below are simple demonstrations of this modeler (see also the
+<a href="completeDemos.htm">complete list of demos</a>):
+<ul>
+<li><a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+Wireless Sound Detection</a>.
+<br> This example models a sound localization problem. A single sound source
+moves through a field of sound sensors. The sound sensors detect the sound
+and communicate via a radio channel to a sensor fusion component that
+localizes the sound by triangulation.
+</li>
+<li><a href="../../domains/wireless/demo/SmallWorld/SmallWorld.xml">
+Small World</a>.
+<br> This example illustrates a phenomenon where ad hoc networks achieve
+connectivity with fewer hops on average with a network that is less reliable
+but where ranges are larger than with a network that is more reliable but
+ranges are shorter.
+
+<li><a href="../../domains/wireless/demo/SmartParking/SmartParking.xml">SmartParking</a>
+
+<br> Sensors placed in a parking lot can be used to collect data
+(including which parking spot is taken, how long a car has parked on a
+spot). The parking lot can process the collected data and provide
+some services to clients to guide their parking. This demo illustrates
+these ideas. When a sensor detects a car arriving or leaving a spot,
+it sends an update to the server of the parking lot, which collects
+and processes sensor updates to provide information to parking
+clients. The &quot;car model&quot; component models when a car arrives
+or leaves, and where to park based on the information the server
+provides. It is a abstraction for all the cars dynamics during a
+specific time.
+
+<li><a href="../../domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml">
+Evader and Pursuer</a>.
+<br> This model shows an "evader"
+and a "pursuer" moving through
+a sensor network. The "evader"
+emits sounds that are detected
+by the sensor nodes, and the
+sensor nodes relay information
+to the pursuer. Running the
+model shows the evader moving
+at random and the pursuer
+seeking to track it based
+on the information from the
+sensors.
+</li>
+<li><a href="../../domains/wireless/demo/CircularRange/CircularRange.xml">
+Circular Range Channel</a>.
+<br> This simple example illustrates a transmitter with a battery model, where
+its transmission range decreases (randomly) over time. In this case, a simple
+channel model with a circular range is used, and the receiver passes in and
+out of range.
+</li>
+<li><a href="../../domains/wireless/demo/PowerVariability/PowerVariability.xml">
+Power Loss Channel</a>.
+<br>
+This model shows a transmitter and a receiver
+where the receiver moves as the model executes and the receive
+power density is plotted over time.
+The channel is a PowerLossChannel with a limited range. When the
+receiver is in range, the power depends on the distance to the
+transmitter, according to a formula that is a parameter in the model.
+</li>
+<li><a href="../../domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml">
+Transmit Antenna Gain</a>.
+<br>
+This model illustrates the modeling of transmit antenna gain using
+a <i>property transformer</i> model that is registered with the channel.
+In this model, the receiver moves in a circular pattern around the
+transmitter and measures and plots the received power. The transmitter
+has an 8-element phased-array antenna with steering.
+See also <a href="../../domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml">Antenna Pattern (Receiver)</a> and
+<a href="../../domains/wireless/demo/AntennaPattern/AntennaGainTest.xml">Antenna Gain Calculation</a>.
+</li>
+<li><a href="../../domains/wireless/demo/Collisions/Collisions.xml">
+Collisions</a>.
+<br>
+This model illustrates the modeling of collisions, where multiple
+transmitters send messages with non-zero duration, and collisions can
+result in loss of one or both messages, depending on the received
+power levels.
+</li>
+<li><a href="../../domains/wireless/demo/TerrainModel/TerrainModel.xml">
+Terrain Model</a>.
+<br>
+This model illustrates simple terrain effects, where a TerrainModel
+object can block transmission if the transmission path crosses its
+geometric shape.
+</li>
+<li><a href="../../domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml">
+Link Visualizer</a>.
+<br>
+This model is a version of Terrain Model that shows the capabilities of 
+LinkVisualizer, which displays links between communicating nodes whenever
+a transmission is made.
+</li>
+<li><a href="../../domains/wireless/demo/Intersections/Intersections.xml">
+Intersections</a>.
+<br>
+A simulation of a set of automobile intersections that use wireless to
+communicate between traffic signals.  See also the Synchronous/Reactive (SR) 
+domain 
+<a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">Traffic Light</a> and 
+<a href="../../domains/sr/demo/TrafficLight/WirelessDeployment.xml">Traffic Light Wireless Deployment</a>.  
+</li>
+<li><a href="../../domains/wireless/demo/Zigbee/Zigbee.xml">Zigbee</a>.
+<br>A simulation of a Zigbee radio.
+</li>
+</ul>
+<p>
+This wireless sensor network modeler is built using Ptolemy II, which is a software
+framework developed as part of the Ptolemy project at the University of
+California at Berkeley. See the
+<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web
+page</a> for more information.
+
+</body>
+</html>

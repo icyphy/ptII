@@ -1,0 +1,125 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MicaBoard" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.25E-6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 205.0]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={203, 297, 822, 509}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+        <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 0.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="31.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="MicaLeds::red">
+            </property>
+            <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 0.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="31.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="MicaLeds::yellow">
+            </property>
+            <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="31.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="MicaLeds::green">
+            </property>
+            <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 256, 822, 509}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+        </property>
+    </property>
+    <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_ledRed" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
+                </property>
+            </property>
+            <property name="_ledYellow" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="MicaCompositeActor" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
+        <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
+            <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 150.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="MicaLeds.ledRed" relation="relation"/>
+    <link port="MicaLeds.ledGreen" relation="relation2"/>
+    <link port="MicaLeds.ledYellow" relation="relation3"/>
+    <link port="MicaCompositeActor.ledRed" relation="relation"/>
+    <link port="MicaCompositeActor.ledGreen" relation="relation2"/>
+    <link port="MicaCompositeActor.ledYellow" relation="relation3"/>
+</entity>

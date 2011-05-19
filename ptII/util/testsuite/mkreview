@@ -1,0 +1,269 @@
+#!/bin/sh
+# Version: $Id$
+# Author: Christopher Hylands
+#
+# @Copyright (c) 1997-2006 The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+
+# Generate the materials for a review
+# It is unlikely that this script will work anywhere but at UCB
+
+# This script expects as its arguments:
+if [ $# -lt 1 ]; then
+    echo "$0: Usage: $0 reviewtopdir packagename reviewname file1 [file2...]"
+    echo "reviewtopdir should be of the form: /users/ptII/public_html/reviews"
+    echo "packagename should be of the form: ptolemy/actor"
+    echo "reviewname should be of the form: YYYYMMDD-design or YYYYMMDD-code"
+    echo "file should be of the form: foo.java or util/bar.java"
+    echo "For example:"
+    echo "mkreview ~/ptIIweb/reviews ptolemy/kernel 20000724-code {Port,ComponentPort,CompositeEntity}.java util/CrossRefList.java"
+    echo "Source files will be loaded from $PTII/packagename/file and a review created in reviewtopdir/packagename/reviewname"
+    exit 2
+fi
+
+# It generates PostScript and PDF versions of the source file
+
+# The name of the directory that the review materials will reside in
+reviewtopdir=$1
+packagename=$2
+reviewname=$3
+reviewdate=`basename $reviewname`
+
+shift
+shift
+shift
+
+files=$@
+
+# This directory will contain the docs
+reviewdir=$reviewtopdir/$packagename/$reviewname
+if [ -d $reviewdir ]; then
+    echo "$0: $reviewdir exists, will not overwrite it, exiting."
+    exit 3
+fi
+
+# Name of the HTML page that refers to the review materials
+# Note that this page is in the directory above the review materials
+reviewfile=$reviewtopdir/$packagename/$reviewname.htm
+
+
+echo "Will generate review materials in $reviewdir"
+echo "The file '$reviewfile'"
+echo " contains links to the review materials."
+echo "Please edit this file and check in to CVS"
+
+mkdir $reviewdir
+
+#
+# Generate PostScript of the code
+cd $PTII/$packagename
+# Remove the directories from the filenames.
+
+# We only handle classes in one directory at a time so that each review
+# is for only the classes in that package.  If you are combining
+# classes from two packages into one review, then create two review pages
+# and add hyperlinks between the two
+
+shortfiles=""
+for file in $files
+do
+   shortfiles=" $shortfiles `basename $file`"
+done
+
+echo "   Printing using enscript . . ."
+#enscript -Gp - $shortfiles > $reviewdir/javafiles.ps
+
+# Line numbers
+enscript --media=Letter -C -Gp - $shortfiles > $reviewdir/javafiles.ps
+
+# Pretty print + line numbers
+#enscript -E -C -Gp - $shortfiles > $reviewdir/javafiles.ps
+
+echo "   Converting to 2up using psnup . . ."
+cd $reviewdir
+psnup -n 2 < javafiles.ps > javafiles2up.ps
+
+echo "   Generating PDF using distill . . ."
+distill javafiles2up.ps
+
+date=`date +"%h %e, %Y "`
+title="$date: Review of `echo $files | sed 's/.java//g'`"
+####################################
+echo "    Generating an html file with the appropriate links . . ."
+cat >$reviewfile <<EoF
+<!-- \$Id$
+
+This file should be of the form yyyymmdd-design.htm, for example
+19990402-design.htm or 19990402-code.htm
+
+Links are relative, not absolute.
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+ <!-- Be sure to fix the date to the date of the review itself -->
+<title>$title</title>
+</head>
+<body>
+ <!-- Replace all the italic text, including the <I></I> directives -->
+ <!-- Be sure to fix the date to the date of the review itself -->
+<h1>$title</h1>
+
+<p>
+<ul>
+<li><a href="#preliminary">Preliminary notes</a>
+<li><a href="#identified">Identified defect</a>
+<li><a href="#related">Related issues</a>
+<li><a href="#concluding">Concluding notes</a>
+</ul>
+
+
+<h2><a name="preliminary">Preliminary notes</a></h2>
+<I>If necessary, a few paragraphs about the review</I>
+<menu>
+<li>Source code:
+  <menu>
+EoF
+
+
+# Note that we are not including the .java files in the review tree (cxh 9/00)
+for file in $files
+do
+     echo "  <li><code>$file</code></a>" >>$reviewfile
+done
+
+# We don't include the 1 up pdf files
+cat >>$reviewfile <<EOF
+  <li> <a href="$reviewdate/javafiles2up.pdf" target="_top">2 up PDF</a>
+  </menu>
+<li> <i>UML Diagram</i>
+</menu>
+
+<p>
+<ul>
+<li>Moderator: <I>loginname</I>
+<li>Scribe: <I>loginname</I>
+<li>Author: <I>loginname</I>
+<li>Reader: <I>loginname</I>
+<li>Reviewers: <I>loginname</I>
+</ul>
+
+<p>
+Review started: <I>time</I>
+<br>
+Review ended: <I>time</I>
+
+
+
+<h2><a name="identified">Identified defects</a></h2>
+
+<ul>
+EOF
+
+# Generate a section for each file
+for file in $files
+do
+    echo "<li> <code>`basename $file .java`</code>" >>$reviewfile 
+    echo "<ol>" >> $reviewfile
+    echo "<li><I>method name</I>: <I>description of error</I> [<B><I>login</I></B>]" >>$reviewfile
+    echo "</ol>"  >>$reviewfile
+done
+
+
+cat >>$reviewfile <<EOF2
+</ul>
+
+
+<h2><a name="related">Related issues </a></h2>
+
+<ol>
+
+<li><I>description</I>
+[<B><I>login</I></B>]
+</ol>
+
+
+<h2><a name="concluding">Concluding notes</a></h2>
+
+<ol>
+</ol>
+
+<p>
+<br>
+<I>login of moderator and date</I>
+<br>
+<p><font size="2" color="#cc0000">Last Updated: \$Date$</font>
+ <br>comments to: <address><a href="mailto:ptresearch@eecs.berkeley.edu">ptresearch@eecs.berkeley.edu</a></address>
+
+</body>
+</html>
+EOF2
+
+
+# Do a little checking
+retval=0
+outputfiles="javafiles.ps javafiles2up.ps javafiles2up.pdf"
+for outputfile in $outputfiles
+do
+    if [ ! -f $outputfile ]; then
+	echo "$0: Warning: '$outputfile' does not exist in `pwd`."
+	retval=3
+    fi
+done
+
+
+echo "Fix the date and add the following to the top of the list of reviews in"
+echo "$reviewtopdir/$packagename/index.htm"
+echo ""
+echo "<li><a href=\"$reviewname.htm\">$title</a>"
+echo ""
+
+echo "Add similar lines to $reviewtopdir/index.htm"
+echo ""
+echo "<tr>"
+echo "<td>$date</td>"
+echo "<td><a href=\"$packagename/$reviewname.htm\">$title</a>"
+echo "</td>"
+echo "<td><i>design or code??</i></td>"
+echo "<td>`whoami`</td>"
+echo "</tr>"
+echo ""
+
+echo "After reviewing "
+echo "   $reviewname.htm and"
+echo "   $reviewname/javafiles2up.pdf"
+echo "The commands to run are:"
+echo "   cd $reviewtopdir/$packagename"
+echo "   cvs add $reviewname.htm $reviewname"
+echo "   cvs add -kb $reviewname/javafiles2up.pdf"
+echo "   cvs commit -m \"Added review material for $date\" $reviewname.htm $reviewname"
+
+# Fix the permissions
+chmod g+ws .
+chmod -R g+w . $reviewfile
+chgrp -R ptolemy . $reviewfile
+
+echo "Done."
+exit $retval

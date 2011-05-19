@@ -1,0 +1,550 @@
+/* Code generator helper for modal controller.
+
+ Copyright (c) 2005-2010 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMActor.TransitionRetriever;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.StringUtilities;
+
+//////////////////////////////////////////////////////////////////////////
+//// ModalController
+
+/**
+ Code generator helper for modal controller.
+
+ @author Shanna-Shaye Forbes, based on the code generator helper for modal controllers 
+ @version $Id$
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating red (sssf)
+ @Pt.AcceptedRating red (sssf)
+ */
+public class ModalController
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
+
+    /** Construct the code generator helper associated
+     *  with the given modal controller.
+     *  @param component The associated component.
+     */
+    public ModalController(ptolemy.domains.modal.modal.ModalController component) {
+        super(component);
+        _myController = component;
+    }
+
+    /**
+     * Generate the preinitialization code for the director.
+     * @return string containing the preinitializaton code
+     * @exception IllegalActionException If thrown by the superclass or thrown
+     * while generating code for the director.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+
+        _createControllerVariables(code);
+
+        code.append(_generateActorCode());
+        return code.toString();
+    }
+
+    public String generateFireCode() throws IllegalActionException {
+        NamedProgramCodeGeneratorAdapter controller = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(_myController);
+        FSMActor controllerHelper;
+        try {
+            controllerHelper = new FSMActor(_myController);
+        } catch (NameDuplicationException ndx) {
+            throw new IllegalActionException(ndx.toString());
+        }
+        StringBuffer code = new StringBuffer();
+        code.append(_eol + "/* Transfer tokens to the inside */" + _eol);
+
+        List<IOPort> inputPorts = _myController.inputPortList();
+        for (int i = 0; i < inputPorts.size(); i++) {
+            IOPort inputPort = inputPorts.get(i);
+            if (!inputPort.isOutput()) {
+
+                generateTransferInputsCode(inputPort, code);
+            }
+        }
+
+        // generate code for preemptive transition
+        code.append(_eol + "/* Preemptive Transition */" + _eol + _eol);
+        controllerHelper.generateTransitionCode(code, new PreemptiveTransitions());
+        code.append(_eol);
+
+        // check to see if a preemptive transition is taken
+        code.append("if ("
+                + controller.processCode("$actorSymbol(transitionFlag)")
+                + " == 0) {" + _eol);
+
+        // generate code for refinements
+        _generateRefinementCode(code);
+
+        // generate code for non-preemptive transition
+        code.append(_eol + "/* Nonpreemptive Transition */" + _eol + _eol);
+        // generateTransitionCode(code);
+        controllerHelper.generateTransitionCode(code, new NonPreemptiveTransitions());
+        code.append("}" + _eol);
+        code.append(_eol + "/* Transfer tokens to the outside */" + _eol);
+        List<IOPort> outputPorts = _myController.outputPortList();
+        for (int i = 0; i < outputPorts.size(); i++) {
+            IOPort outputPort = outputPorts.get(i);
+
+            generateTransferOutputsCode(outputPort, code);
+
+        }
+        return code.toString();
+
+    }
+
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. Each actor's firing code is in a
+     *  function with the same name as that of the actor.
+     *
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionCode() throws IllegalActionException {
+
+        StringBuffer code = new StringBuffer();
+        Actor actor;
+        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
+                .getContainer();
+        getCodeGenerator().getAdapter(container);
+
+        // Reset the offset for all of the contained actors' input ports.
+        Iterator<?> actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+
+            actor = (Actor) actors.next();
+            getAdapter(actor);
+            //if (actor.getDisplayName().contains("_Controller")) {
+                //actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                //      .getAdapter(actor);
+                //code.append(actorHelper.generateFireFunctionCode());
+            //}
+ 
+        }
+        return code.toString();
+    }
+
+    /** Generate code for transferring enough tokens to complete an internal
+         *  iteration.
+         *  @param inputPort The port to transfer tokens.
+         *  @param code The string buffer that the generated code is appended to.
+         *  @exception IllegalActionException If thrown while transferring tokens.
+         */
+    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+            throws IllegalActionException {
+
+        //FIXME Figure out how to deal with multiports
+        List<IOPort> connectedPorts = inputPort.sinkPortList();
+        for (int i = 0; i < connectedPorts.size(); i++) {
+            IOPort t = connectedPorts.get(i);
+            if (t.isInput()) {
+                code.append(_getName(t.getFullName()) + " = ");
+
+            }
+        }
+        String name = inputPort.getFullName();
+        int i = name.indexOf("_Controller");
+        name = name.substring(0, i) + name.substring(i + 12);
+        code.append(_getName(inputPort.getFullName()) + " = " + _getName(name)
+                + "; ");
+
+    }
+
+    /** Generate code for transferring enough tokens to fulfill the output
+     *  production rate.
+     *  @param outputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+            throws IllegalActionException {
+
+        for (int i = 0; i < outputPort.getWidthInside(); i++) {
+            if (i < outputPort.getWidth()) {
+                String name = outputPort.getName();
+
+                if (outputPort.isMultiport()) {
+                    name = name + '#' + i;
+                }
+
+                code.append(name + " = ");
+                code.append("@" + name);
+                code.append(";" + _eol);
+
+            }
+        }
+
+        // The offset of the ports connected to the output port is
+        // updated by outside director.
+        _updatePortOffset(outputPort, code, 1);
+    }
+
+    public Set<String> getHeaderFiles() {
+        Set<String> headerFiles;
+        headerFiles = new HashSet<String>();
+        return headerFiles;
+    }
+
+    /** Generate code for the firing of refinements.
+    *
+    *  @param code The string buffer that the generated code is appended to.
+    *  @exception IllegalActionException If the helper associated with
+    *   an actor throws it while generating fire code for the actor.
+    */
+    protected void _generateRefinementCode(StringBuffer code)
+            throws IllegalActionException {
+
+        ProgramCodeGeneratorAdapter controllerHelper = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(_myController);
+
+        int depth = 1;
+        code.append(_getIndentPrefix(depth));
+        code.append("switch ("
+                + controllerHelper.processCode("$actorSymbol(currentState)")
+                + ") {" + _eol);
+
+        Iterator states = _myController.entityList().iterator();
+        int stateCount = 0;
+        depth++;
+
+        while (states.hasNext()) {
+            code.append(_getIndentPrefix(depth));
+            code.append("case " + stateCount + ":" + _eol);
+            stateCount++;
+
+            depth++;
+
+            State state = (State) states.next();
+            Actor[] actors = state.getRefinement();
+
+            if (actors != null) {
+                for (int i = 0; i < actors.length; i++) {
+                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                            .getAdapter(actors[i]);
+
+                    // fire the actor
+
+                    code.append(actorHelper.generateFireCode());
+
+                    List<IOPort> outputPorts = actors[i].outputPortList();
+                    for (IOPort outputPort : outputPorts) {
+
+                        String source = outputPort.getFullName().substring(1)
+                                .replace(".", "_");
+                        int k = source.lastIndexOf("_");
+                        int l = source.substring(0, k).lastIndexOf("_");
+                        String destination = source.substring(0, l)
+                                + "__Controller" + source.substring(k);
+                        //update controller outputs
+                        code.append(_eol + destination + " = " + source + ";"
+                                + _eol);
+                    }
+
+                }
+            }
+
+            code.append(_getIndentPrefix(depth));
+
+            code.append("break;" + _eol); //end of case statement
+            depth--;
+        }
+        depth--;
+        code.append(_getIndentPrefix(depth));
+        code.append("}" + _eol); //end of switch statement
+
+    }
+
+    /** Update the read offsets of the buffer associated with the given port.
+    *
+    *  @param port The port whose read offset is to be updated.
+    *  @param code The string buffer that the generated code is appended to.
+    *  @param rate The rate, which must be greater than or equal to 0.
+    *  @exception IllegalActionException If thrown while reading or writing
+    *   offsets, or getting the buffer size, or if the rate is less than 0.
+    */
+    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("_updatePortOffset in Modal controller called");
+        }
+        if (rate == 0) {
+            return;
+        } else if (rate < 0) {
+            throw new IllegalActionException(port, "the rate: " + rate
+                    + " is negative.");
+        }
+        NamedProgramCodeGeneratorAdapter portHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(port);
+        String str;
+        Receiver rec[][] = port.getRemoteReceivers();
+
+        for (int i = 0; i < rec.length; i++) {
+            for (int j = 0; j < rec[i].length; j++) {
+                str = rec[i][j].toString();
+                str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
+                str = str.replace('.', '_');
+
+                code.append(str + " = ");
+            }
+        }
+
+        code.append(portHelper.getDisplayName() + ";" + _eol);
+    }
+
+    /** Update the offsets of the buffers associated with the ports connected
+     *  with the given port in its downstream.
+     *
+     *  @param port The port whose directly connected downstream actors update
+     *   their write offsets.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @param rate The rate, which must be greater than or equal to 0.
+     *  @exception IllegalActionException If thrown while reading or writing
+     *   offsets, or getting the buffer size, or if the rate is less than 0.
+     */
+    protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
+            int rate) throws IllegalActionException {
+
+        if (rate == 0) {
+            return;
+        } else if (rate < 0) {
+            throw new IllegalActionException(port, "the rate: " + rate
+                    + " is negative.");
+        }
+        NamedProgramCodeGeneratorAdapter portHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(port);
+        String str;
+        Receiver rec[][] = port.getRemoteReceivers();
+
+        for (int i = 0; i < rec.length; i++) {
+            for (int j = 0; j < rec[i].length; j++) {
+                str = rec[i][j].toString();
+                str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
+                str = str.replace('.', '_');
+
+                code.append(str + " = ");
+            }
+        }
+
+        code.append(portHelper.getDisplayName() + ";" + _eol);
+    }
+
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line character so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    protected final static String _eol;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * @throws IllegalActionException 
+     * 
+     */
+    private void _createControllerVariables(StringBuffer code)
+            throws IllegalActionException {
+
+        List<TypedIOPort> inputPorts = _myController.inputPortList();
+        List<TypedIOPort> outputPorts = _myController.outputPortList();
+        String name = _myController.getFullName().substring(1);
+        String modalName = name.replace("._Controller", "");
+        name = name.replace('.', '_');
+        modalName = modalName.replace('.', '_');
+        TypedIOPort inputPort;
+        TypedIOPort outputPort;
+        code.append(_eol + "//Begining of create controller variables" + _eol);
+        for (int i = 0; i < inputPorts.size(); i++) {
+
+            inputPort = inputPorts.get(i);
+            if (!outputPorts.contains(inputPort)) {
+                int width = inputPort.getWidth();
+                code.append(inputPort.getType() + " " + name + "_"
+                        + inputPort.getName());
+                if (width > 1) {
+                    code.append("[" + width + "]");
+                }
+                code.append(";" + _eol);
+
+            }
+
+        }
+
+        for (int i = 0; i < outputPorts.size(); i++) {
+            outputPort = outputPorts.get(i);
+            int width = outputPort.getWidth();
+            code.append(outputPort.getType() + " " + name + "_"
+                    + outputPort.getName());
+            if (width > 1) {
+                code.append("[" + width + "]");
+            }
+            code.append(";" + _eol);
+
+            code.append(outputPort.getType() + " " + modalName + "_"
+                    + outputPort.getName());
+            if (width > 1) {
+                code.append("[" + width + "]");
+            }
+            code.append(";" + _eol);
+        }
+
+        //code.append("int " + name + "__currentState;" + _eol);
+        // code.append("int " + name + "__transitionFlag;" + _eol);
+        //add in inputs for all the states
+
+        Iterator states = _myController.entityList().iterator();
+        int j = 0;
+        while (states.hasNext()) {
+
+            State state = (State) states.next();
+            code.append("static final int STATE"
+                    + state.getFullName().replace(".", "_") + " = " + j + ";"
+                    + _eol);
+            j++;
+
+        }
+
+        code.append(_eol + "//end of create controller variables" + _eol);
+    }
+
+    private String _getName(String name) {
+        String newName = name.substring(1);
+        newName = newName.replace(".", "_");
+        return newName;
+    }
+
+    /**
+     * Generate code for all the actors associated with the given FSMDirector.
+     * @return String containing the actor code.
+     * @exception IllegalActionException If throw while accessing the model.
+     */
+    private String _generateActorCode() throws IllegalActionException {
+        if (_debugging) {
+            _debug("_generateActorCode in Modal controller called");
+        }
+        StringBuffer code = new StringBuffer();
+
+        int depth = 1;
+        Iterator states = _myController.deepEntityList().iterator();
+        int stateCount = 0;
+        depth++;
+
+        while (states.hasNext()) {
+            // code.append(_getIndentPrefix(depth));
+            //code.append("case " + stateCount + ":" + _eol);
+            stateCount++;
+
+            depth++;
+
+            State state = (State) states.next();
+            Actor[] actors = state.getRefinement();
+            Set<Actor> actorsSet = new HashSet();
+            ;
+            if (actors != null) {
+                for (int i = 0; i < actors.length; i++) {
+                    actorsSet.add(actors[i]);
+                }
+            }
+
+            if (actors != null) {
+                //for (int i = 0; i < actors.length; i++) {
+                Iterator actorIterator = actorsSet.iterator();
+                Actor actor;
+                while (actorIterator.hasNext()) {
+                    actor = (Actor) actorIterator.next();
+                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                            .getAdapter(actor);
+
+                    //_getHelper((NamedObj) actors2);
+
+                    if (actor.getDirector().getFullName().contains("Giotto") == false) {
+                        //code.append("void "+_getActorName(actors2)+"(){");
+                        //                       code.append(actorHelper.generateFireFunctionCode()); // this was there initially and it works with SDF
+
+                        code.append(actorHelper.generateTypeConvertFireCode());
+                        //code.append(_eol+"}"+_eol);
+                    } else {
+                        code.append(_eol
+                                + "//modal model contains giotto director"
+                                + _eol);
+
+                    }
+                }
+            }
+        }
+        return code.toString();
+    }
+
+    /** Retrieve the nonpreemtive transitions. */
+    private static class NonPreemptiveTransitions implements TransitionRetriever {
+        // Findbugs wants this to be static.
+        /** Retrieve the nonpreemtive transitions.
+         *  @param state The state
+         *  @return An iterator that refers to the nonpreemptive transitions.
+         */
+        public Iterator retrieveTransitions(State state) {
+            return state.nonpreemptiveTransitionList().iterator();
+        }
+    }
+
+    /** Retrieve the nonpreemtive transitions. */
+    private static class PreemptiveTransitions implements TransitionRetriever {
+        // Findbugs wants this to be static.
+        /** Retrieve the prepemtive transitions.
+         *  @param state The state
+         *  @return An iterator that refers to the preemptive transitions.
+         */
+        public Iterator retrieveTransitions(State state) {
+            return state.preemptiveTransitionList().iterator();
+        }
+    }
+
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
+    ptolemy.domains.modal.modal.ModalController _myController;
+
+}

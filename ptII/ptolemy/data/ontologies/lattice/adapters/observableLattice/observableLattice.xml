@@ -1,0 +1,48 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="observableLattice" extends="ptolemy.data.ontologies.Ontology">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+        <configure>
+		<entity name="library" class="ptolemy.data.ontologies.Ontology"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
+	      </configure>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 385, 1201, 653}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 536]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="3.814697265625">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.5, 190.0038581010101}">
+    </property>
+    <entity name="Unobservable" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Observable" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 155.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0858167438913182">
+        </property>
+    </relation>
+    <link port="Unobservable.abovePort" relation="relation"/>
+    <link port="Observable.belowPort" relation="relation"/>
+</class>

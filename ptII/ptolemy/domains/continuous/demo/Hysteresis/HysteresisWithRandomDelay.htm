@@ -1,0 +1,44 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>HysteresisWithRandomDelay</TITLE>
+</HEAD>
+<BODY>
+<H1>HysteresisWithRandomDelay</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+HysteresisWithRandomDelay is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "HysteresisWithRandomDelay.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="HysteresisWithRandomDelayVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This is a stochastic hybrid system modeling hysteresis where the
+time it takes to react to a threshold crossing is
+random. Specifically, when the sinewave crosses the lowThreshold going
+down, then after a random delay, the output goes low. When the
+sinewave crosses the highThreshold going up, then after another random
+delay, the output goes high. Some hybrid systems formalisms define
+guards so that when a guard is true, a transition is enabled. In such
+a formalism, the time between when a guard becomes true and the
+transition is taken is nondeterministic. This model illustrates how to
+get the same effect using the Ptolemy II semantics, where as soon as a
+guard becomes true, the transition is always taken.</p>
+</BODY>
+</HTML>

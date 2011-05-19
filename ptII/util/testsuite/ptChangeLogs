@@ -1,0 +1,29 @@
+#! /bin/sh
+# $Id$
+# Create a ChangeLog
+
+# We use svn2cl, which is a bit slow because it uses XSLT and we have
+# 50,000+ revisions.  The idea is that we create ChangeLogs for each
+# year and then only update the ChangeLog for the current year
+
+# svn2cl, by Arthur de Jong, from http://ch.tudelft.nl/~arthur/svn2cl/
+SVN2CLDIR=svn2cl-0.10
+
+REPOSITORY=svn://source.eecs.berkeley.edu/chess/ptII/
+STARTYEAR=1996
+THISYEAR=`date +%Y`
+YEAR=$STARTYEAR
+
+# Always recreate this year's ChangeLog
+rm ChangeLog.$THISYEAR
+
+# Loop through the years, create ChangeLogs as necessary
+while [ $YEAR -le $THISYEAR ]; do
+      if [ ! -f "ChangeLog.$YEAR" ]; then
+         echo "Creating $PTII/ChangeLogs/ChangeLog.$YEAR"
+         $SVN2CLDIR/svn2cl.sh --include-rev -r "{$YEAR-12-31}:{$YEAR-01-01}" --stdout $REPOSITORY> ChangeLog.$YEAR
+      fi
+      YEAR=`expr $YEAR + 1`
+done
+
+cat `ls -1 ChangeLog.[12][0-9][0-9][0-9] | sort -nr` > ChangeLog

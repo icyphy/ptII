@@ -1,0 +1,608 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Domains</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Ptolemy II Domains</h1>
+<ul>
+<li> <a href="#ci">CI (Component Interaction, or push/pull)</a>
+<li> <a href="#continuous">Continuous (Continuous Time)</a>
+<li> <a href="#csp">CSP (Communicating Sequential Processes)</a>
+<li> <a href="#ct">CT (Continuous Time for use with the FSM domain)</a>
+<li> <a href="#de">DE (Discrete Events)</a>
+<li> <a href="#dde">DDE (Distributed Discrete Events)</a>
+<li> <a href="#ddf">DDF (Dynamic Dataflow)</a>
+<li> <a href="#dt">DT (Discrete Time)</a>
+<li> <a href="#fsm">FSM (Finite State Machines)</a>
+<li> <a href="#giotto">Giotto (Synchronous Periodic Systems)</a>
+<li> <a href="#gr">GR (Three-D Graphics)</a>
+<li> <a href="#hdf">HDF (Heterochronous Dataflow)</a>
+<li> <a href="#modal">Modal (Modal, for use with the Continuous domain)</a>
+<li> <a href="#pn">PN (Process Networks)</a>
+<li> <a href="#psdf">PSDF (Parameterized Synchronous Dataflow)</a>
+<li> <a href="#ptera">Ptera (Ptolemy Event Relationship Actor)</a>
+<li> <a href="#ptinyos">Ptinyos</a>
+<li> <a href="#rendezvous">Rendezvous</a>
+<li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
+<li> <a href="#sr">SR (Synchronous/Reactive)</a>
+<li> <a href="#tm">TM (Timed Multitasking)</a>
+<li> <a href="#wireless">Wireless</a>
+</ul>
+<h2><a name="ci">CI</h2>
+<P>
+The component interaction (CI) domain models systems that blend
+data-driven and demand-driven styles of computation. As an example,
+the interaction between a web server and a browser is mostly
+demand-driven. When the user clicks on a link in the browser, it pulls
+the corresponding page from the web server. A stock-quote service can
+use a data-driven style of computation. The server generates events
+when stock prices change. The data drive the clients to update their
+displayed information. Such push/pull interaction between a data producer
+and consumer is common in distributed systems, and has been included in
+middleware services, most notably in the CORBA event service. These
+services motivated the design of this domain to study the interaction
+models in distributed systems, such as stock-quote services, traffic or
+weather information systems. Other applications include database
+systems, file systems, and the Click modular router.
+<p>
+An actor in a CI model can be active, which means it possesses its own
+thread of execution. For example, an interrupt source of an embedded
+system can be modeled as an active source actor. Such a source
+generates events asynchronously with respect to the software execution
+on the embedded processor. CI models can be used to simulate and study
+how the embedded software handles the asynchronous events, such as
+external interrupts and asynchronous I/O.
+<p> The CI domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="continuous">Continuous</a></h2>
+The Continuous Domain is a redesign of the Continuous Time (CT) domain with
+a rigorous semantics documented in the following papers:
+
+<ul>
+<li> Edward A. Lee, Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browse" target="_top">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT,  September 30 - October 2, 2007, Salzburg, Austria.
+
+<li> Haiyang Zheng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-68.html#in_browser" target="_top">Operational Semantics of Hybrid Systems</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2007-68, May 18, 2007.
+
+<li> Edward A. Lee and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics" target="_top">Operational Semantics of Hybrid Systems</a>," Invited paper in <i>Proceedings of Hybrid Systems:  Computation and Control</i> (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
+</ul>
+
+The domain models systems with continuous dynamics, including
+for example analog circuits and mechanical systems, but also
+cleanly supports discrete events, modal behaviors, and signals that
+mix continuous-time behaviors with discrete events.
+Models for continuous dynamics are equivalent to linear or nonlinear
+integral equations. A sophisticated numerical solver for these equations
+is integrated with the director.
+The clean semantics of the Continuous domain enables its integration
+in hierarchical heterogeneous models that use the Synchronous/Reactive (SR)
+and Discrete Event (DE) domains. Arbitrary hierarchical mixtures of these
+domains are supported, although if SR is at the top level, then the
+<i>period</i> parameter of the director must be used so that time advances.
+Domain interactions are documented in the following paper:
+
+<ul>
+<li> A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html#in_browser" target="_top">Heterogeneous Composition of Models of Computation</a>," EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
+</ul>
+
+<h2><a name="csp">CSP</a></h2>
+
+<p>
+In the CSP domain (communicating sequential processes), created by Neil
+Smyth, actors represent concurrently executing processes,
+implemented as Java threads. These processes communicate by atomic,
+instantaneous actions called "rendezvous" (or sometimes, "synchronous
+message passing"). If two processes are to communicate, and one reaches
+the point first at which it is ready to communicate, then it stalls
+until the other process is ready to communicate. “Atomic? means that
+the two processes are simultaneously involved in the exchange, and that
+the exchange is initiated and completed in a single uninterruptable
+step. Examples of rendezvous models include Hoare’s communicating
+sequential processes (CSP) and Milner’s calculus of communicating
+systems (CCS). This model of computation has been realized in a
+number of concurrent programming languages, including Lotos and Occam.
+<p> The CSP domain is experimental and is shipped only with the full Ptolemy II release.
+
+<p>
+Rendezvous models are particularly well-matched to applications where
+resource sharing is a key element, such as client-server database
+models and multitasking or multiplexing of hardware resources. A key
+feature of rendezvous-based models is their ability to cleanly model
+nondeterminate interactions. The CSP domain implements both conditional
+send and conditional receive. It also includes an experimental timed
+extension.
+<p> The CSP domain is shipped only with the full Ptolemy II release.
+
+<h2><a name="ct">CT</a></h2>
+<p>
+
+In the CT domain (continuous time), created Jie Liu, actors
+represent components that interact via continuous-time signals. Actors
+typically specify algebraic or differential relations between inputs
+and outputs. The job of the director in the domain is to find a
+fixed-point, i.e., a set of continuous-time functions that satisfy all
+the relations.
+
+<p>
+The CT domain includes an extensible set of differential equation
+solvers. The domain, therefore, is useful for modeling physical systems
+with linear or nonlinear algebraic/differential equation descriptions,
+such as analog circuits and many mechanical systems. Its model of
+computation is similar to that used in Simulink, Saber, and VHDL-AMS,
+and is closely related to that in Spice circuit simulators.
+
+<p>
+Embedded systems frequently contain components that are best modeled
+using differential equations, such as MEMS and other mechanical
+components, analog circuits, and microwave circuits. These components,
+however, interact with an electronic system that may serve as a
+controller or a recipient of sensor data. This electronic system may be
+digital. Joint modeling of a continuous subsystem with digital
+electronics is known as mixed signal modeling. The CT domain is
+designed to interoperate with other Ptolemy domains, such as DE, to
+achieve mixed signal modeling. To support such modeling, the CT domain
+models of discrete events as Dirac delta functions. It also includes
+the ability to precisely detect threshold crossings to produce discrete
+events. Physical systems often have simple models that are only valid
+over a certain regime of operation. Outside that regime, another model
+may be appropriate. A modal model is one that switches between these
+simple models when the system transitions between regimes. The CT
+domain interoperates with the FSM domain to create modal models.
+
+<h2><a name="de">DE</a></h2>
+<p>
+In the discrete-event (DE) domain, created by Lukito Muliadi, the
+actors communicate via sequences of events placed in time, along a real
+time line. An event consists of a value and time stamp. Actors can
+either be processes that react to events (implemented as Java threads)
+or functions that fire when new events are supplied. This model of
+computation is popular for specifying digital hardware and for
+simulating telecommunications systems, and has been realized in a large
+number of simulation environments, simulation languages, and hardware
+description languages, including VHDL and Verilog.
+
+<p>
+DE models are excellent descriptions of concurrent hardware, although
+increasingly the globally consistent notion of time is problematic. In
+particular, it over-specifies (or over-models) systems where
+maintaining such a globally consistent notion is difficult, including
+large VLSI chips with high clock rates. Every event is placed precisely
+on a globally consistent time line.
+
+<p>
+The DE domain implements a fairly sophisticated discrete-event
+simulator. DE simulators in general need to maintain a global queue of
+pending events sorted by time stamp (this is called a priority queue).
+This can be fairly expensive, since inserting new events into the list
+requires searching for the right position at which to insert it. The DE
+domain uses a calendar queue data structure for the global event
+queue. A calendar queue may be thought of as a hashtable that uses
+quantized time as a hashing function. As such, both enqueue and dequeue
+operations can be done in time that is independent of the number of
+events in the queue.
+<p>
+
+In addition, the DE domain gives deterministic semantics to
+simultaneous events, unlike most competing discrete-event simulators.
+This means that for any two events with the same time stamp, the order
+in which they are processed can be inferred from the structure of the
+model. This is done by analyzing the graph structure of the model for
+data precedences so that in the event of simultaneous time stamps,
+events can be sorted according to a secondary criterion given by their
+precedence relationships. VHDL, for example, uses delta time to
+accomplish the same objective.
+
+<h2><a name="dde">DDE</a></h2>
+<p>
+
+The distributed discrete-event (DDE) domain, created by John Davis, can
+be viewed either as a variant of DE or as a variant of PN (described
+below). Still highly experimental, it addresses a key problem with
+discrete-event modeling, namely that the global event queue imposes a
+central point of control on a model, greatly limiting the ability to
+distribute a model over a network. Distributing models might be
+necessary either to preserve intellectual property, to conserve network
+bandwidth, or to exploit parallel computing resources.
+<p>
+
+The DDE domain maintains a local notion of time on each connection
+between actors, instead of a single globally consistent notion of time.
+Each actor is a process, implemented as a Java thread, that can advance
+its local time to the minimum of the local times on each of its input
+connections. The domain systematizes the transmission of null events,
+which in effect provide guarantees that no event will be supplied with
+a time stamp less than some specified value.
+<p> The DDE domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="ddf">DDF</a></h2>
+<p>
+The Dynamic Dataflow (DDF) domain, created by Gang Zhou,
+is a superset of the Synchronous Dataflow (SDF) and Boolean dataflow (BDF) domains.
+In the SDF domain, an actor consumes and produces a fixed number of tokens per firing.
+This static information makes possible compile-time scheduling. In the DDF domain, 
+an actor could change the production and consumption rates after each firing. 
+The scheduler makes no attempt to construct a compile-time schedule, neither does it
+attempt to statically answer questions about deadlock and boundedness, which are
+fundamentally undecidable. Instead, each actor has a set of sequential firing 
+rules (patterns) and can be fired if one of them is satisfied, i.e., one particular 
+firing pattern forms a prefix of sequences of unconsumed tokens at input ports. 
+The scheduler dynamically schedules the firing of actors according to some criteria.  
+The canonical actors in the DDF domain include Select and Switch, which consume 
+or produce tokens on different channels based on the token received from the 
+control port.
+
+<p> The DDF domain is experimental and is shipped only with the full Ptolemy II release.
+
+
+<h2><a name="dt">DT</a></h2>
+<p>
+
+The discrete-time (DT) domain, created by Chamberlain Fong,
+extends the SDF domain (described below) with a notion of time between
+tokens. Communication between actors takes the form of a sequence of
+tokens where the time between tokens is uniform. Multirate models,
+where distinct connections have distinct time intervals between tokens,
+are supported.  The model of computation ensures that computations
+are always causal, meaning that output tokens that depend on input
+tokens are always produced with time values greater than or equal
+to those of the input tokens.  In order to ensure causal semantics,
+this domain automatically introduces delays in multirate models.
+
+<p> The DT domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="fsm">FSM</a></h2>
+<p>
+
+The finite-state machine (FSM) domain, created by Xiaojun Liu,
+is radically different from the other Ptolemy II
+domains. The entities in this domain represent not actors but rather
+state, and the connections represent transitions between states.
+Execution is a strictly ordered sequence of state transitions. The FSM
+domain leverages the built-in expression language in Ptolemy II to
+evaluate guards, which determine when state transitions can be taken.
+<p>
+
+FSM models are excellent for control logic in embedded systems,
+particularly safety-critical systems. FSM models are amenable to
+in-depth formal analysis, and thus can be used to avoid surprising
+behavior.
+<p>
+
+FSM models have a number of key weaknesses. First, at a very
+fundamental level, they are not as expressive as the other models of
+computation described here. They are not sufficiently rich to describe
+all partial recursive functions. However, this weakness is acceptable
+in light of the formal analysis that becomes possible. Many questions
+about designs are decidable for FSMs and undecidable for other models
+of computation. A second key weakness is that the number of states can
+get very large even in the face of only modest complexity. This makes
+the models unwieldy.
+<p>
+
+Both problems can often be solved by using FSMs in combination
+with concurrent models of computation. This was first noted by David
+Harel, who introduced that Statecharts formalism. Statecharts combine a
+loose version of synchronous-reactive modeling (described below) with
+FSMs. FSMs have also been combined with differential equations,
+yielding the so-called hybrid systems model of computation.
+<p>
+
+The FSM domain in Ptolemy II can be hierarchically combined with other
+domains. We call the resulting formalism ?*charts? (pronounced
+“starcharts?) where the star represents a wildcard. Since most other
+domains represent concurrent computations, *charts model concurrent
+finite state machines with a variety of concurrency semantics. When
+combined with CT, they yield hybrid systems and modal models. When
+combined with SR (described below), they yield something close to
+Statecharts. When combined with process networks, they resemble SDL.
+
+<h2><a name="giotto">Giotto</a></h2>
+<p>
+The Giotto domain, created by Christoph Meyer Kirsch, is an
+experimental domain designed for synchronous periodic systems. It is a
+timed domain, where each invocation of a component occurs at a well
+defined time instant, and its results are made available at the
+beginning of its next periodic cycle. The number of times that a
+component executes per iteration is called its frequency. The frequency
+defaults to one, but can be specified to be some other value, with
+certain technical constraints (frequencies in a model must be
+harmonically related).
+</p>
+<p> The Giotto domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="gr">GR</a></h2>
+<p>
+The GR domain, created by Chamberlain Fong, is an
+experimental domain designed for three dimensional graphical
+animations. It is an untimed domain with particular optimizations
+aimed at reducing recomputations of scene graph components.
+A model consists of a set of three dimensional graphical elements,
+such as spheres, cylinders, etc., composed and transformed to
+form a scene graph.  It is particularly interesting and useful
+to couple this domain with others, where the
+other domains provide the transformations for the graphical
+elements.  For example, a model of a physical system might
+be constructed in CT and animated in GR.
+</p>
+<p> The GR domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="hdf">HDF</a></h2>
+<p>
+The Heterochronous Dataflow (HDF) domain, created by Ye Zhou,
+is an extension of the Synchronous Dataflow (SDF) domain.
+In SDF, the set of port rates (called rate signatures) of an actor are
+constant. In HDF, however, rate signatures are allowed to change between
+iterations of the HDF schedule. The change of rate signatures can
+be modeled by state transitions of a modal model, in which each state
+refinement infers a set of rate signatures. Within each state, the HDF
+model behaves like an SDF model.
+
+<p> The HDF domain is experimental and is shipped only with the full Ptolemy II release.
+
+
+<h2><a name="modal">Modal</a></h2>
+<p>Ptolemy II 8.0 includes a substantial rework of modal models and
+the underlying finite state machine infrastructure to make them work
+predictably and consistently across domains.</p>
+
+<p>Ptolemy II 8.0 includes a new implementation of continuous-time models
+based on the semantics given in "<a href="#LeeZheng:07:Leveraging">Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>." In particular, the Continuous domain cleanly supports
+continuous-time models (using an ODE solver), discrete-event models,
+and arbitrary mixtures of the two, including signals that combine
+continuous-time segments with discrete events. It also interoperates
+cleanly with most other domains (pretty much all except PN and
+Rendezvous, for which there does not appear to be reasonable semantic
+model of such an interaction). Modal models are also cleanly supported
+with the Continuous domain, enabling hybrid system modeling with a
+rigorous semantics. The Continuous domain is expected to eventually
+replace CT.</p> 
+<ul>
+<li><a name="LeeZheng:07:Leveraging">Edward A. Lee, Haiyang Zheng</a>. <a
+href="http://chess.eecs.berkeley.edu/pubs/430.html#in_browser" target="_top">Leveraging
+Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>, Proceedings of the
+7th ACM & IEEE international conference on Embedded
+software, Christoph M. Kirsch,  Reinhard Wilhelm (eds.),
+ACM, 114-123, 2007.
+</ul>
+
+<h2><a name="pn">PN</a></h2>
+<p>
+
+In the process networks (PN) domain, created by Mudit Goel,
+processes communicate by sending messages through channels that can
+buffer the messages. Each actor is implemented as a Java thread.
+An actor that is a sender of a message need not wait for the
+receiver to be ready to receive the message. This style of
+communication is often called asynchronous message passing. There are
+several variants of this technique, but the PN domain specifically
+implements one that ensures determinate computation, namely Kahn
+process networks.
+<p>
+
+In the PN model of computation, the arcs represent sequences of data
+values (tokens), and the entities represent functions that map input
+sequences into output sequences. Certain technical restrictions on
+these functions are necessary to ensure determinacy, meaning that the
+sequences are fully specified. In particular, the function implemented
+by an entity must be prefix monotonic. The PN domain realizes a
+subclass of such functions, first described by Kahn and MacQueen,
+where blocking reads ensure monotonicity.
+<p>
+
+PN models are loosely coupled, and hence relatively easy to parallelize
+or distribute. They can be implemented efficiently in both software and
+hardware, and hence leave implementation options open. A key weakness
+of PN models is that they are awkward for specifying control logic,
+although much of this awkwardness may be ameliorated by combining them
+with FSM.
+<p>
+
+The PN domain in Ptolemy II has a highly experimental timed extension.
+This adds to the blocking reads a method for stalling processes until
+time advances. We anticipate that this timed extension will make
+interoperation with timed domains much more practical.
+
+<h2><a name="#psdf">PSDF (Parameterized Synchronous Dataflow)</a></h2>
+<p>
+   The Parameterized Synchronous Dataflow (PSDF) domain,
+   created by Steve Neuendorffer, and
+   Shuvra S. Bhattacharyya (University of Maryland at College Park)
+   is an
+   extension of the Synchronous Dataflow (SDF) domain that allows for
+   more extensive reconfiguration of models.  The SDF domain uses
+   static analysis of variable dependence to detect cases where rate
+   parameters may change.  By default, SDF disallows reconfiguration
+   of all rate parameters.  If rate parameters are allowed to change,
+   then SDF checks that rate parameters do not change during execution
+   of the schedule, and declares that inferred rate parameters for
+   external ports change as often as the internal rate parameters.
+
+   <p>This domain offers two key extensions:
+   <ol>
+   <li> Dependence analysis is used to determine if the modification to the
+   rate parameters occurs during execution of the SDF schedule.  If
+   this test passes, then a parameterized schedule is constructed.
+
+   <li> The generated schedule is checked for local synchrony, to determine
+   if external rate parameters may change.  The correct dependency
+   information for external ports is then declared.
+
+   </ol>
+
+   Note that the resulting behavior is identical to the SDF scheduler,
+   with rate parameter changes allowed, except much more efficient, since
+   scheduling on the fly is not necessary during every reconfiguration.
+   Additionally, code can be generated for the PSDF domain that allows
+   for efficient reconfiguration.  The added precision of dependency analysis
+   for external rate parameters also means that some hierarchical models that
+   would be ruled out by the SDF checks are allowed.
+
+<p> The PSDF domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="ptera">Ptera</a></h2>
+
+   <p>The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model of computation. A model in Ptera is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
+at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
+queue to be emptied after their actions are performed, and therefore no more events can be processed.
+
+<p>The Ptera domain supports a different kind of modal models called PteraModalModels, compared to modal models using FSMs (Finite State Machines) as the control. A PteraModalModel uses Ptera at the top level, and each event is refined into a sub-model. The refinements can use Ptera and any other Ptolemy models of computation.
+
+<p>A Ptera model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or Ptera domain itself are recommended. When embedded in those domains, the scheduling of the Ptera model is delegated to the container by calling the fireAt() function of its director.
+
+<p>There are many useful additional features for Ptera, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
+Events may also have parameters, and the actual values for those parameters are specified by the expressions on the edges that schedule them. Those expressions are evaluated at run-time. The events may refer to the values of those parameters in their actions by parameter names.
+
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html#in_browser" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley. UCB/EECS-2009-77. May 2009.
+<li>Lee W. Schruben, "<a href="http://doi.acm.org/10.1145/182.358460#in_browser">Simulation Modeling with Event Graphs</a>," Communications of the ACM (CACM), 26(11): 957-963, 1983.
+</ul>
+
+<h2><a name="ptinyos">Ptinyos</a></h2>
+<p>Viptos is an integration of a collection of Ptolemy II domains and
+<a href="http://www.tinyos.net/" target="_top">TinyOS</a>.  The main
+domain behind Viptos is the PtinyOS domain, which supports the
+construction and simulation of programs in <a
+href="http://nescc.sourceforge.net#in_browser"
+target="_top">nesC</a>.
+
+The nesC web page at <a href="http://nescc.sourceforge.net#in_browser"
+target="_top">http://nescc.sourceforge.net</a> describes nesC as
+<blockquote>
+&quot;an extension to the C programming
+language designed to embody the structuring concepts and execution
+model of TinyOS. TinyOS is an event-driven operating system designed
+for sensor network nodes that have very limited resources (e.g., 8K
+bytes of program memory, 512 bytes of RAM).&quot;
+</blockquote>
+
+<p>The PtinyOS domain leverages existing nesC libraries, using a tool
+called nc2moml to create the Ptolemy II libraries of components that
+are used to assemble models. Models are converted into nesC code by
+the PtinyOSDirector. TinyOS provides a rich library of nesC
+components. If you install TinyOS 1.x in $PTII/vendors/ptinyos, then
+the Ptolemy II configure script will find it and automatically make
+the TinyOS libraries available.</p>
+
+<p>In order to leverage another existing library of nesC components,
+you have to run nc2moml on that library.</p>
+
+
+<h2><a name="rendezvous">Rendezvous</a></h2>
+
+<p>
+In the rendezvous domain, actors represent concurrently executing processes,
+implemented as Java threads.
+These processes communicate by atomic,
+instantaneous actions called "rendezvous" (or sometimes, "synchronous
+message passing"). If two processes are to communicate, and one reaches
+the point first at which it is ready to communicate, then it stalls
+until the other process is ready to communicate. "Atomic" means that
+the two processes are simultaneously involved in the exchange, and that
+the exchange is initiated and completed in a single uninterruptable
+step. Examples of rendezvous models include Hoare’s communicating
+sequential processes (CSP) and Milner’s calculus of communicating
+systems (CCS). This implementation supports both conditional
+rendezvous (where an actor is willing to rendezvous nondeterministically
+with any of a set of other actors) and multiway rendezvous (where
+a rendezvous involves more than two actors).
+<p>
+Rendezvous models are particularly well-matched to applications where
+resource sharing is a key element, such as client-server database
+models and multitasking or multiplexing of hardware resources. A key
+feature of rendezvous-based models is their ability to cleanly model
+nondeterminate interactions.
+
+<h2><a name="sdf">SDF</a></h2>
+<p>
+
+The synchronous dataflow (SDF) domain, created by Steve Neuendorffer,
+handles regular computations that operate on streams. Dataflow models,
+popular in signal processing, are a special case of process networks.
+Dataflow models
+construct processes of a process network as sequences of atomic actor
+firings. Synchronous dataflow (SDF) is a particularly restricted
+special case with the extremely useful property that deadlock and
+boundedness are decidable. Moreover, the schedule of firings, parallel
+or sequential, is computable statically, making SDF an extremely useful
+specification formalism for embedded real-time software and for
+hardware.
+<p>
+
+Certain generalizations sometimes yield to similar analysis. Boolean
+dataflow (BDF) models sometimes yield to deadlock and boundedness
+analysis, although fundamentally these questions are undecidable.
+Dynamic dataflow (DDF) uses only run-time analysis, and thus makes no
+attempt to statically answer questions about deadlock and boundedness.
+
+<h2><a name="sr">SR</a></h2>
+<p>
+
+In the synchronous/reactive (SR) model of computation , the arcs
+represent data values that are aligned with global clock ticks. Thus,
+they are discrete signals, but unlike discrete time, a signal need not
+have a value at every clock tick. The entities represent relations
+between input and output values at each tick, and are usually partial
+functions with certain technical restrictions to ensure determinacy.
+Examples of languages that use the SR model of computation include
+Esterel, Signal, Lustre, and Argos.
+<p>
+SR models are excellent for applications with concurrent and complex
+control logic. Because of the tight synchronization, safety-critical
+real-time applications are a good match. However, also because of the
+tight synchronization, some applications are overspecified in the SR
+model, limiting the implementation alternatives. Moreover, in most
+realizations, modularity is compromised by the need to seek a global
+fixed point at each clock tick. 
+</p>
+<h2><a name="tm">TM</a></h2>
+<p>
+The timed multitasking (TM) domain, created by Jie Liu, offers a model
+of computation based on priority-driven multitasking, as common in
+real-time operating systems (RTOSs), but with more deterministic
+behavior. In TM, actors (conceptually) execute as concurrent threads in
+reaction to inputs. The domain provides an event dispatcher, which
+maintains a prioritized event queue. The execution of an actor is
+triggered by the event dispatcher by invoking first its prefire()
+method. The actor may begin execution of a concurrent thread at this
+time. Some time later, the dispatcher will invoke the fire() and
+postfire() methods of the actor (unless prefire() returns false).
+
+ <p>The amount of time that elapses between the invocation of prefire() and
+fire() depends on the declared <i>executionTime</i> and <i>priority</i>
+of the actor (or more specifically, of the port of the port receiving
+the triggering event). The domain assumes there is a single resource,
+the CPU, shared by the execution of all actors. At one particular time,
+only one of the actors can get the resource and execute. Execution of
+one actor may be preempted by another eligible actor with a higher
+priority input event. If an actor is not preempted, then the amount of
+time that elapses between prefire() and fire() equals the declared.
+<i>executionTime</i>. If it is preempted, then it equals the sum of the
+<i>executionTime</i> and the execution times of the actors that preempt
+it. The model of computation is more deterministic than the usual
+priority-driven multitasking because the actor produces outputs (in its
+fire() method) only after it has been assured access to the CPU for its
+declared <i>executionTime</i>. In this domain, the model time may be
+synchronized to real time or not.
+
+<p> The TM domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="wireless">Wireless</a></h2>
+<p>
+        Modeling of wireless sensor networks requires sophisticated
+        modeling of communication channels, sensor channels, ad-hoc
+        networking protocols, localization strategies, media access
+        control protocols, energy consumption in sensor nodes,
+        etc. This modeling framework is designed to support a
+        component-based construction of such models. It is intended to
+        enable the research community to share models of disjoint
+        aspects of the sensor nets problem and to build models that
+        include sophisticated elements from several aspects.
+<p> The Wireless domain is experimental and is shipped only with the full Ptolemy II release.
+
+</body>
+</html>

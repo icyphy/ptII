@@ -1,0 +1,534 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LevelCrossingDetectorDetectingDirections" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 917, 598}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 488]">
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows that level crossing
+detectors can be configured to detect
+different directions of level crossings
+with the "direction" parameter.
+
+When the direction is configured to be
+"rising" (or "falling"), the level crossing 
+detector only detects the level crossings 
+when the input signal is rising (or falling). 
+For example, the second (or third) level 
+crossing detector. 
+
+By default, the direction is configured to
+be "both", meaning any level crossing will
+be detected no matter the signal is rising
+or falling.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 80.0]">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Levels and directions detected by the level 
+crossing detectors.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 25.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.0, 244.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 390.0]">
+        </property>
+    </property>
+    <property name="direction1" class="ptolemy.data.expr.StringParameter" value="both">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 20.0]">
+        </property>
+    </property>
+    <property name="direction2" class="ptolemy.data.expr.StringParameter" value="rising">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 55.0]">
+        </property>
+    </property>
+    <property name="direction3" class="ptolemy.data.expr.StringParameter" value="falling">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 90.0]">
+        </property>
+    </property>
+    <property name="level1" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 35.0]">
+        </property>
+    </property>
+    <property name="level2" class="ptolemy.data.expr.Parameter" value="0.95">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 70.0]">
+        </property>
+    </property>
+    <property name="level3" class="ptolemy.data.expr.Parameter" value="-0.4">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 105.0]">
+        </property>
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        </property>
+    </property>
+    <entity name="Signals" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 384, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 100.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Continuous Sinusoidal Wave</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="5.0"/>
+<yRange min="-0.9936448498136213" max="0.9821292310235255"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Events" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="both, rising, falling, both">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 384, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 260.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>output from level crossing detectors</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="5.0"/>
+<yRange min="-0.5" max="1.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="LevelCrossingDetector1" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="level1">
+        </property>
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="$direction1">
+        </property>
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="4.0, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="67.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="level">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 1.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="50">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.0, 13.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, 13.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-25.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, -12.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="direction">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="7">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, -14.0]">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="level2">
+        </property>
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="$direction2">
+        </property>
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="4.0, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="67.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="level">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 1.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="50">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.0, 13.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, 13.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-25.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, -12.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="direction">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="7">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, -14.0]">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector3" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="level3">
+        </property>
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="$direction3">
+        </property>
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="4.0, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="67.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="level">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 1.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="50">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.0, 13.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, 13.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-25.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, -12.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="direction">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="7">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, -14.0]">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="ContinuousSinewave2" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 185.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="145.0, 185.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Signals.input" relation="relation4"/>
+    <link port="Events.input" relation="relation3"/>
+    <link port="Events.input" relation="relation2"/>
+    <link port="Events.input" relation="relation5"/>
+    <link port="Events.input" relation="relation"/>
+    <link port="LevelCrossingDetector1.output" relation="relation3"/>
+    <link port="LevelCrossingDetector1.trigger" relation="relation4"/>
+    <link port="LevelCrossingDetector2.output" relation="relation2"/>
+    <link port="LevelCrossingDetector2.trigger" relation="relation4"/>
+    <link port="LevelCrossingDetector3.output" relation="relation5"/>
+    <link port="LevelCrossingDetector3.trigger" relation="relation4"/>
+    <link port="LevelCrossingDetector.output" relation="relation"/>
+    <link port="LevelCrossingDetector.trigger" relation="relation4"/>
+    <link port="ContinuousSinewave2.output" relation="relation4"/>
+</entity>

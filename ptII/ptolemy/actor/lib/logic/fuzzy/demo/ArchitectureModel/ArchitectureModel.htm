@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>ArchitectureModel</title>
+</head>
+<body>
+<h1>ArchitectureModel</h1>
+This Ptolemy II model was created by the created by the TSSTtoPTII ModelCreator to  enable use of Ptolemy II as a simulation environment
+for the Trade Space Specification Tool underdevelopment at the NASA Jet Propulsion Labratory.
+The model results will help determine performance, mass, costs, risk, and other trends based on architectures selected for the spacecraft.
+
+Since there can be multiple variants as well as multiple architecture options specified by the Trade Space Specification Tool, 
+we used a generic fuzzy logic actor that can be customized for each architecture option.
+
+Fuzzy Logic is multi-valued logic derived from Fuzzy Set Theory by Lotfi Zadeh. In fuzzy logic, reasoning is approximate instead of
+precise and takes on values between 0 and 1.
+
+Each fuzzy logic actor needs an xml file the specifies how is should interpret values. The xml file is expected to be specified
+in XML/FCL Fuzzy Control Language XML.
+
+The model uses a generic Ptolemy II directorto fire the fuzzy logic actors from left to right.
+
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+ArchitectureModel is available as:
+<ul>
+<script src="../../../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "ArchitectureModel.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="ArchitectureModelVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+</p>
+
+</body>
+</htm>

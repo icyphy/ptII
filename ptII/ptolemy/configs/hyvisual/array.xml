@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Array" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Array manipulation actors</doc>
+
+<entity name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend"/>
+<entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement"/>
+<entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract"/>
+<entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

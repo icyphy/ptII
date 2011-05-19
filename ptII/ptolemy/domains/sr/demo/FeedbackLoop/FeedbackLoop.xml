@@ -1,0 +1,105 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FeedbackLoop" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 29, 813, 460}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
+    </property>
+    <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that a NonStrictDelay actor &#10;breaks a feedback loop in a SR model, even when it&#10;has no initial value.&#10;&#10;Author: Haiyang Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
+        </property>
+    </property>
+    <entity name="NonStrictDisplay3" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 495, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="output from Ramp">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 125.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={167, 493, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="output from NonStrictDelay">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialValue">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 493, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="output from AddSubtract">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 45.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[290.0, 125.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[380.0, 155.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{150.0, 110.0}">
+        </vertex>
+    </relation>
+    <link port="NonStrictDisplay3.input" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="NonStrictDisplay.input" relation="relation5"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="NonStrictDelay.input" relation="relation3"/>
+    <link port="NonStrictDelay.output" relation="relation5"/>
+    <link port="NonStrictDisplay2.input" relation="relation3"/>
+</entity>

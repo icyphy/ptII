@@ -1,0 +1,287 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PreemptionHierarchy" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[L_SyncChart_918158682]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 145.0}">
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="PreemptionHierarchy.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 65.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 314, 660, 457}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[445, 350]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{251.5377358490566, 142.8254716981132}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christian Motika">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 260.0]">
+        </property>
+    </property>
+    <entity name="SyncChart_918158682_region_1" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 70.0]">
+        </property>
+        <port name="L_SyncChart_918158682i" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="1" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <port name="L_SyncChart_918158682o" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="2" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <port name="L_SyncChart_918158682i" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="L_SyncChart_918158682o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 210.0]">
+                </property>
+            </port>
+            <entity name="MacroState_200586989" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="MacroState_200586989">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="originalName" class="ptolemy.kernel.util.StringAttribute" value="MacroState (MacroState)">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@innerStates.0/@regions.0/@innerStates.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 170.0]">
+                </property>
+            </entity>
+            <relation name="MacroState_200586989_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.497319395673836">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.03337979317763652">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="EmfFragmentURI" class="ptolemy.kernel.util.StringAttribute" value="//@innerStates.0/@regions.0/@innerStates.0/@outgoingTransitions.0">
+                </property>
+                <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+            </relation>
+            <link port="MacroState_200586989.incomingPort" relation="MacroState_200586989_transition_1"/>
+            <link port="MacroState_200586989.outgoingPort" relation="MacroState_200586989_transition_1"/>
+        </entity>
+        <entity name="MacroState_200586989" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+                <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[]">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 330.0]">
+                </property>
+            </property>
+            <port name="L_SyncChart_918158682i" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 265.0]">
+                </property>
+            </port>
+            <port name="L_SyncChart_918158682o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 265.0]">
+                </property>
+            </port>
+            <entity name="MacroState_200586989_region_1" class="ptolemy.domains.modal.modal.ModalModel">
+                <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{181.7109375, 206.1328125}">
+                </property>
+                <port name="L_SyncChart_918158682i" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="input"/>
+                    <property name="environment_input" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                    </property>
+                    <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                </port>
+                <port name="L_SyncChart_918158682o" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="output"/>
+                    <property name="environment_output" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                    </property>
+                    <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                </port>
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 581, 246}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[366, 137]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{158.1873421717172, 216.7673611111112}">
+                    </property>
+                    <port name="L_SyncChart_918158682i" class="ptolemy.domains.modal.modal.ModalPort">
+                        <property name="input"/>
+                        <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                        </property>
+                        <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                        </property>
+                    </port>
+                    <port name="L_SyncChart_918158682o" class="ptolemy.domains.modal.modal.ModalPort">
+                        <property name="output"/>
+                        <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                        </property>
+                        <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 205.0]">
+                        </property>
+                    </port>
+                    <entity name="Initial_375787636" class="ptolemy.domains.modal.kernel.State">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@innerStates.0/@regions.0/@innerStates.0/@regions.0/@innerStates.0">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 245.0]">
+                        </property>
+                    </entity>
+                </entity>
+                <relation name="L_SyncChart_918158682iRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <relation name="L_SyncChart_918158682oRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <link port="L_SyncChart_918158682i" relation="L_SyncChart_918158682iRelation"/>
+                <link port="L_SyncChart_918158682o" relation="L_SyncChart_918158682oRelation"/>
+                <link port="_Controller.L_SyncChart_918158682i" relation="L_SyncChart_918158682iRelation"/>
+                <link port="_Controller.L_SyncChart_918158682o" relation="L_SyncChart_918158682oRelation"/>
+            </entity>
+            <relation name="L_SyncChart_918158682i_RELATION" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="L_SyncChart_918158682i" relation="L_SyncChart_918158682i_RELATION"/>
+            <link port="L_SyncChart_918158682o" relation="relation2"/>
+            <link port="MacroState_200586989_region_1.L_SyncChart_918158682i" relation="L_SyncChart_918158682i_RELATION"/>
+            <link port="MacroState_200586989_region_1.L_SyncChart_918158682o" relation="relation2"/>
+        </entity>
+        <relation name="L_SyncChart_918158682iRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="L_SyncChart_918158682oRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="L_SyncChart_918158682i" relation="L_SyncChart_918158682iRelation"/>
+        <link port="L_SyncChart_918158682o" relation="L_SyncChart_918158682oRelation"/>
+        <link port="_Controller.L_SyncChart_918158682i" relation="L_SyncChart_918158682iRelation"/>
+        <link port="_Controller.L_SyncChart_918158682o" relation="L_SyncChart_918158682oRelation"/>
+        <link port="MacroState_200586989.L_SyncChart_918158682i" relation="L_SyncChart_918158682iRelation"/>
+        <link port="MacroState_200586989.L_SyncChart_918158682o" relation="L_SyncChart_918158682oRelation"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 25.0]">
+        </property>
+    </entity>
+    <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 25.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[65.0, 25.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[175.0, 25.0]">
+        </vertex>
+    </relation>
+    <link port="SyncChart_918158682_region_1.L_SyncChart_918158682i" relation="relation2"/>
+    <link port="SyncChart_918158682_region_1.L_SyncChart_918158682o" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="IsPresent.input" relation="relation3"/>
+    <link port="IsPresent.output" relation="relation"/>
+    <link relation1="relation2" relation2="relation3"/>
+</entity>

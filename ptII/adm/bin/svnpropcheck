@@ -1,0 +1,31 @@
+#!/bin/sh
+# $Id$
+# Script to check for proper svn properties in text files.
+# Usage $PTII/adm/bin/svnpropcheck textfile
+#   where textfile is a Java file or other text file that should have
+#   svn properties set.
+#
+# Sample Usage:
+#
+# bash-3.2$ cd src/kepler/util
+# bash-3.2$ find . -type f | egrep -v "/.svn/|.class$|.jar$" > /tmp/f
+# bash-3.2$ cat /tmp/f | xargs ../ptolemy/adm/bin/svnpropcheck
+# ./src/org/geon/DBConnectionToken.java  keywords: 
+# ./src/org/geon/DBConnectionToken.java  eolstyle: 
+#
+# The above indicates that src/org/geon/DBConnectionToken.java does not have its
+# properties set.
+
+while [ $# -gt 0 ];
+do
+    keywords=`svn propget svn:keywords $1`
+    if [ "$keywords" != "Author Date Id Revision" ] ;then
+       echo "$1  keywords: $keywords"
+    fi
+
+    eolstyle=`svn propget svn:eol-style $1`
+    if [ "$eolstyle" != "native" ] ;then
+       echo "$1  eolstyle: $eolstyle"
+    fi
+    shift
+done

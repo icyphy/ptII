@@ -1,0 +1,147 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConcurrentExecutionTimeSDF" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 390, 865, 460}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 350]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.0, 175.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 40.0]">
+        </property>
+    </property>
+    <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="includeName" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 90.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100L">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 90}">
+            </property>
+        </entity>
+    </entity>
+    <entity name="ThreadedComposite2" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="includeName" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 175.0}">
+        </property>
+        <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100L">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 90}">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 100.0}">
+        </property>
+    </entity>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7}, {8, 8}, {9, 9}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 105.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[105.0, 130.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="ThreadedComposite.output" relation="relation"/>
+    <link port="ThreadedComposite.trigger" relation="relation2"/>
+    <link port="ThreadedComposite2.output" relation="relation3"/>
+    <link port="ThreadedComposite2.trigger" relation="relation2"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp2.output" relation="relation4"/>
+    <link port="Ramp2.trigger" relation="relation"/>
+    <link port="Ramp3.output" relation="relation5"/>
+    <link port="Ramp3.trigger" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation5"/>
+</entity>

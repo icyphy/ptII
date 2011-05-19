@@ -1,0 +1,223 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IfThenElse" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 804, 490}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[591, 380]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.5, 190.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demos DDF domain inside SDF domain. The&#10;requiredFiringsPerIteration parameter of DDFBooleanSelect&#10;actor in DDF domain defines one iteration of +1/-1 Gain actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gang Zhou &#10;(based on Ptolemy Classic demo)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 320.0]">
+        </property>
+    </property>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="+1/-1 Gain" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 200.0]">
+        </property>
+        <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The requiredFiringsPerIteration &#10;parameter for this DDFBooleanSelect &#10;is set to 2, which defines one &#10;iteration of this inside DDF domain.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 15.0]">
+            </property>
+        </property>
+        <port name="ramp" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 165.0]">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 250.0]">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 165.0]">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 165.0]">
+            </property>
+        </entity>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 120.0]">
+            </property>
+        </entity>
+        <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 205.0]">
+            </property>
+        </entity>
+        <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+            <property name="DDFBooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, -12, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
+            </property>
+            <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[145.0, 250.0]">
+            </vertex>
+        </relation>
+        <link port="ramp" relation="relation"/>
+        <link port="control" relation="relation7"/>
+        <link port="out" relation="relation6"/>
+        <link port="BooleanSwitch.input" relation="relation"/>
+        <link port="BooleanSwitch.control" relation="relation7"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation2"/>
+        <link port="BooleanSwitch.falseOutput" relation="relation3"/>
+        <link port="Scale.input" relation="relation2"/>
+        <link port="Scale.output" relation="relation4"/>
+        <link port="Scale2.input" relation="relation3"/>
+        <link port="Scale2.output" relation="relation5"/>
+        <link port="DDFBooleanSelect.trueInput" relation="relation4"/>
+        <link port="DDFBooleanSelect.falseInput" relation="relation5"/>
+        <link port="DDFBooleanSelect.control" relation="relation7"/>
+        <link port="DDFBooleanSelect.output" relation="relation6"/>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 366, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 200.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="49.0"/>
+<yRange min="-49.0" max="45.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 285.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Uniform.output" relation="relation4"/>
+    <link port="Ramp.output" relation="relation3"/>
+    <link port="+1/-1 Gain.ramp" relation="relation3"/>
+    <link port="+1/-1 Gain.control" relation="relation5"/>
+    <link port="+1/-1 Gain.out" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="Comparator.left" relation="relation4"/>
+    <link port="Comparator.right" relation="relation"/>
+    <link port="Comparator.output" relation="relation5"/>
+    <link port="Const.output" relation="relation"/>
+</entity>

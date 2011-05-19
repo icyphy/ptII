@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id: modelJnlp-ssi.htm.in 57580 2010-04-11 20:21:29Z cxh $
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css"/>
+<title>FuelSystemSingleTankImproved</title>
+<!--#include virtual="/ssi/toppremenu.htm" -->
+<!--#include virtual="toc.htm" -->
+<!--#include virtual="/ssi/toppostmenu.htm" -->
+<!-- /head -->
+<!-- body -->
+<h1>FuelSystemSingleTankImproved</h1>
+<p>
+Improved model with a single Tank. Like the
+<a href="FuelSystem.htm">chattering model</a>, this one limits
+the input and output flows when the tank becomes full or empty,
+but it does so without introducing chattering behavior.
+This is a modal model that leverages the rigorous Ptolemy II
+semantics for hybrid systems.
+See the <a href="FuelSystem2Tanks.htm">two-tank model</a> for a more interesting
+test case for this tank model.
+</p>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>Click on the Launch button to start the model:</p>
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../doc/deployJava.js"></script>
+<script >
+   var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+   var url = dir + "FuelSystemSingleTankImproved.jnlp";
+   deployJava.createWebStartLaunchButton(url);
+</script>
+<p>See <a href="../../../doc/webStartHelp.htm">Web Start Help</a> for details.</p>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+<!--#include virtual="/ssi/bottom.htm" -->

@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Factory for graph rewriting rule editor.  -->
+<property name="gtTableauFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <!-- These will appear in the View menu of a graph rewriting rule tableau. -->
+  <property name="Transformation Editor"
+            class="ptolemy.vergil.gt.GTTableau$Factory">
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+      <configure>
+        <entity name="library" class="ptolemy.kernel.CompositeEntity">
+          <input source="ptolemy/configs/gtLibrary.xml"/>
+        </entity>
+      </configure>
+    </property>
+    <property name="state" class="ptolemy.moml.LibraryAttribute">
+      <configure>
+        <entity name="stateLibrary" class="ptolemy.kernel.CompositeEntity">
+          <input source="ptolemy/configs/gtStateLibrary.xml"/>
+        </entity>
+      </configure>
+    </property>
+  </property>
+  <property name="Tree View"
+            class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML view"
+            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+  <property name="JVM Properties"
+            class="ptolemy.actor.gui.JVMTableau$Factory"/>
+</property>

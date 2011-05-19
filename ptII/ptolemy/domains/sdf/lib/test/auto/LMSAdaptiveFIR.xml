@@ -1,0 +1,866 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LMSAdaptiveFIR" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 30.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 662]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="stepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, -10, 1032, 780}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 331.0}">
+    </property>
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="GaussianIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -2.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="23.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 4.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="49.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -9.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -16.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 10.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="20.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line13" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 350, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 110.0">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5528341326751, -0.3015589649856, -0.261830864239, 0.0845709674582, -0.4362925939242, -1.8272451521598, -1.0271451677604, -0.4735187685871, -0.971005429017, 0.8081203371532, 2.3254077492572, -1.0458225959717, -1.0625172431903, 1.2868925299959, 0.4130240895114, 1.0852378672726, -0.446202523487, -1.6750582255965, -0.1120805592488, -0.2456729172677, -0.8655880587457, -2.1344249026162, 0.599667783249, -0.0490463596897, 1.1517972158519, -0.2291634941319, 0.2694615020896, -0.053006447742, 0.5921430861454, 0.9888820788302, 0.1880038458582, 0.5743031495905, 0.7902233800127, -0.489290514838, 1.1839217364705, -0.2646826337823, 0.7163609262168, -0.9059601548079, -0.7875676637782, 1.2744211403056, 0.2317612687543, 0.303976228149, -0.5170177856483, -1.1194043766066, -0.967376513861, -0.2961905018145, -0.7879156619255, 0.9695740336128, 0.9149366208865, 0.1150846558976, 0.2753986797947, -1.0668571466846, 0.8802921867787, -0.5349346871217, 0.3987006895868, -0.4344275125058, 0.1749384085707, -0.2013146272197, 0.455576365574, 0.4698196606285, 0.2724088397419, -0.4940404200491, 0.7350966305077, -1.0341600816538, 0.2699120660766, -0.0856230596642, -0.0589009457303, 0.0378124006509, -0.2797246485098, -0.4011831743003, 0.0599855450381, -0.0709127251255, -0.3491955670194, 0.0292797452214, -0.5050700940532, -0.1356803467326, -0.2251044378561, 0.4975726691842, -0.9233990198423, -0.1010543980129, 0.2641188704642, -0.7512503016482, 0.1141618891333, -0.2081172729062, 0.1481685856117, -0.3979576439911, -0.1899818068155, -0.7115781551938, -0.4601775136403, 0.2949670247383, 0.4596704546364, -0.1018403825333, -0.5024445290646, 0.1152741470791, 0.1244945796917, -0.875913831327, 0.1199792523267, 0.2243939162554, -0.5825096197519, 0.0081738992435, 0.6093765034931, -0.5828763672137, -0.1931318266965, 0.0271959187313, -0.1392882931536, -0.0440016897473, -0.3048849828645, 0.2146997255154, 0.2118139058586, 0.1889335341791, -0.0270648409545, 0.0965928268749, -0.1435276480331, -0.082481954611, 0.0647143104128, 0.0918012323792, 0.0420827973659, 0.0471883813663, -0.0687036233295, -0.261713415369, -0.0602763247424, 0.0159125460005, -0.2980020863117, -0.1063709208342, 0.0217989016618, -0.1650436459545, 0.3074300267833, 0.0215239871002, -0.1604833040704, 0.1000461607646, -0.4595838271422, -0.1360348465904, -0.2270240840784, 0.2030215967236, 0.2957381037246, -0.2036254629481, -0.3037592043504, -0.0537183935454, -0.1474229075983, -0.443642118316, 0.2683198809682, 0.5677274916884, 0.0993037875749, -0.0072810495478, -0.3522265938639, 0.0033758006494, -0.0715516824812, -0.0400044381039, -0.3927186341548, 0.174326047373, -0.1108446296908, -0.0777692609529, 0.2076469533898, 0.0867931626952, -0.1564689624147, -0.3317903263813, -0.2643714493722, -0.1898618111486, 0.0643647490726, -0.03826881861, -0.1702478312661, 0.0274862437519, 0.0796762416947, 0.0183851054311, -0.0245326819792, 0.0463690561709, -0.0913730075662, 0.0759980091086, -0.2511485487356, 0.074525581141, 0.2024019818569, 0.0565753996322, 0.1257929946277, 0.0449267073864, 0.2095675629675, 0.0245247628712, 0.3154928380019, 0.1324556920253, 0.045321633957, 0.1333162565442, 0.0177649516013, 0.1119326687236, -0.1150230189943, -0.0256837530543, 0.2369286354863, 0.0335336631927, 0.055873503844, 0.1789429193807, 0.0797774946082, -0.1424992085115, -0.0827408329938, -0.068479702415, -0.0062477030459, -0.2468533886411, -0.0372750838578, 0.1126857961801, 0.0420800263897, -0.1305795287369, 0.1016176227417, -0.0247545102235, 0.1213345287774, -0.0780191357835, -0.16435018684, 0.0361051649495, -0.0811294971582, -0.0451259515279, 0.0275196625866, 0.0474249674212, 0.284605346264, 0.0065775459502, -0.0860002007188, 0.1375123254949, 0.0152887081926, -0.0385319715437, -0.0480192535028, 0.1234540709086, -0.0754025298319, -0.1319102995091, -0.0403668237985, 0.0906050397659, -0.0242104588555, -0.0427808308929, 0.0832611708981, 0.209908468806, -0.2101624834288, 9.5081491491877E-4, 0.0692219183801, 0.0549635204004, 0.1325842536533, 0.025750571521, 0.1247615296692, -8.2967909172871E-4, -0.0796353065, 0.0298525663934, -0.0129830343339, 0.0165160158958, -0.0666218061667, 0.0825394139028, -0.041460415164, -0.0329496145355, -0.068741909389, -0.0074093811939, 0.0197351448609, 0.0589734141426, 0.0163860258401, 0.0031235518685, 0.0879099203171, 0.0315732218581, 0.1349077331357, -0.1274576585811, 0.0140006665574, 0.0097761043722, 0.0010869232837, -0.017672148698, -0.0149740342482, -0.0633305802595, -0.0155156609555, 0.1133052097099, -0.0038028162154, -0.0257572833272, -0.13723757535, 0.0728228414071, -0.0409801667483, 0.0382425363695, -0.0103937656669, -0.0154577029209, 0.039156280984, -0.0108557841392, -0.0105829793414, 0.1247989752626, -0.0211931086631, -0.0349656100133, 0.0988656946228, -0.0304704400585, -0.035275186634, 0.0024833597241, 0.0585470785064, -0.0020562454207, -0.0611313167912, 0.0141707432699, -0.0619699932841, 0.0196852810332, -0.0377802220705, 0.0152567563086, 0.1035982215325, -0.0615506184114, 0.0117552463488, 0.0128124635228, -9.0358481794406E-4, -0.0253600739969, -0.0032375730949, -0.0234076543901, 0.0197334622251, -0.0355669766945, 0.039029861982, -0.0229681124304, -0.0603498466373, 0.069894763579, -0.0634552432665, 0.0499161114129, -0.016589490432, -0.0518882361788, 0.0236529181697, -0.0449955908164, 0.0147380025618, -0.0064383108939, -0.0406277475219, 0.0336930988397, -0.053377435724, -0.0135598091796, 0.0671741220373, -0.0158908074103, 0.0118232581522, 0.0236660860759, 0.0058669056752, 0.0768723133857, -0.0410547755777, -0.0194605412839, 0.016193439721, -0.0231754351622, 0.0627006960828, -0.0036281799377, -0.0037435206497, 0.0129513139435, -0.0070251027236, -0.0412805397415, 0.032484702056, 0.003666538568, 0.0304145581232, -0.0555636769735, 0.0689606136157, -0.0315144817151, 0.0429796165807, 0.0166704125802, -0.0040606113019, 0.0016342810749, 9.2841554521339E-4, -0.0249672075065, -0.0074424768717, -0.0078532928787, -0.0155705602955, 0.0025931553579, 0.0038867105299, -0.0325034293636, 0.0283056818008, -0.0012084429863, -0.0290459269336, -0.0042567423694, 0.0170155217281, 0.0130042087424, -0.0071231450548, -0.0032006745828, 0.0076066425183, -0.0031785038179, -0.0085480855866, 1.2278096783587E-4, 0.01317113078, -0.0078119117819, 0.0030479437331, -0.0048974475037, 0.0088098867618, -0.0042250055209, -0.0141210480477, -8.8605811681686E-5, -0.0163002712163, 0.0162628280186, -0.0134923336401, 0.0101822834409, 0.0317535552625, 5.0680558031593E-4, -0.0112496131585, -0.0069130827669, -0.0175875277687, -0.0199808091147, -0.0087632548174, 0.0066191520343, 0.0170657324229, -0.0169326753246, 0.0138166211742, 0.0036852640996, -0.0115663922161, -0.0052408426561, 0.0026822237444, 0.0164582099994, 0.0118211272929, -6.577795837939E-4, 0.0094882592157, -0.0013102729205, -0.0204908600111, -0.0073005234927, 0.0064497207062, 0.0091532416438, 0.007821442264, -0.0071568954939, 1.5193982873196E-5, -0.0113136052467, -0.0193193602732, 0.0096852787459, 0.0124061415838, 0.0029233094505, -0.0062323669711, -0.0120273821439, -0.0107218632, 0.0021705355214, -0.0160241896289, 0.006932311184, 0.0129585961512, 0.0027765147478, 0.004043514964, -7.9276089065189E-4, -0.0093199918415, 0.0127604069789, 0.0034568295162, 0.0113897924954, 0.0019833872992, 0.0123576128049, -0.0082624571972, 0.0112093222904, -0.0086089354486, -0.0032076066866, 0.0116692313267, 0.0061816688686, 6.5830226961394E-4, -0.0187286062806, -0.0090297307094, -0.0045486808032, 0.0050746344464, -0.0065468485883, -0.0056597518473, 0.0070926091173, 0.0106015766614, -0.012832971743, 0.0068795769351, -0.0075828151471, -0.0162903440847, 0.0098829193535, 0.0088798867739, 8.2037483044001E-4, 0.0030801379639, 0.002320397287, 0.0085584929614, 0.0156362294355, -0.0191287026205, -0.012881720763, 0.0119927627449, 0.0123626897983, -0.0041191196465, 0.0034049242918, 0.0133633741295, 0.0086126172488, -0.01786565868, -0.0098862051233, 0.0114450779564, 0.010426873181, -0.0098020523354, -0.0083743226323, 0.0093878854259, -0.0036082243514, -0.0103639691395, 0.0049195364298, 0.0040346792386, 0.0024492082676, -0.0014009493701, -0.0068279423101, -0.0021713646927, 0.0074351623214, 6.8495270335478E-5, 0.0028876280824, -7.2143084630927E-4, -0.0010087081266, 0.0063835199658, 4.0646141959844E-4, -0.0049391828694, 0.0050361073674, 0.010993292369, -0.002641397103, -0.0045691669017, -0.0024274883404, 0.0039291588614, -0.0063555520458, -0.0075391004986, -0.0041694870435, 0.0016460203187, 7.3826748717906E-4, -0.0040892293257, 0.0023865252022, -0.0015409917434, -0.0050996922617, 3.778336343353E-4, 0.0039941640735, 0.0034936676808, -2.2574971727385E-4, 0.0042160618305, 3.733149759918E-4, -0.0018811796855, -9.1204100999734E-4, -0.0066591509209, 0.0012765467435, -0.0023514326785, -0.0019449163785, 9.2851243990466E-4, -0.0029471968223, 6.3567228169786E-4, 0.0030735602832, -0.0094889710908, 0.002102111063, 8.4931060774412E-4, 0.002599168216, 0.0025839980061, -0.0053689463008, 6.5273142281419E-4, -0.0039630836538, -0.0023199107908, -7.4668588250659E-4, -0.003437764387, 0.002390505642, -0.0055465317522, 4.3290421228614E-4, -0.003373943041, 8.7444578704103E-4, 0.0034954349638, 0.0018321642648, -7.3212688069793E-4, 0.0039948061908, 0.0048181501978, 0.0052331097791, 2.6491369033388E-4, -0.0019348563604, -0.0029871046131, 0.0048733343281, 0.0019930405957, 0.0029691135178, -0.0025340460272, -1.3780731058832E-4, -0.0026629144133, -1.7913808477495E-4, -0.0014542597964, 0.0010850136299, 6.6435429407705E-4, -0.0015951771615, -0.0025447314348, 0.002459785542, 8.6619256220263E-4, -6.535742727973E-4, 0.0012744330314, -5.5568293353292E-4, 0.0013739695481, 0.0021732463389, 0.0017487022365, -0.0024695495476, -7.6425387223511E-4, -2.1544221488923E-5, -1.4136516379581E-4, -0.0012142038518, -1.5327022104954E-4, 0.0033497848188, 0.0016002567415, -0.0022641886363, -0.002323595958, 0.0016431016647, 0.0035741559098, -0.0016378320953, -0.0018116885903, -0.0013443761295, -4.9861461315137E-5, 0.0030342160561, -0.0038379641207, -0.0042218545269, 0.0013691013008, 4.5976660640989E-4, -0.0011813584881, -0.0021829621574, 0.0015522317866, 0.0018141317504, -0.0024915624217, -0.0035068181995, 0.0034240793961, 0.001167868666, -0.003504073808, -0.0042608514362, 0.0038795460369, 0.0016907440173, -0.0027078837413, 6.1421540157203E-5, 7.628618388853E-4, -0.0015665441369, -0.0013158582665, 0.0015103905692, 0.0031250162245, 0.0010328159093, 1.8013408580364E-4, 0.0010098705726, 6.2838335106202E-4, -4.7732564974334E-4, -6.8973545019912E-4, 5.2280921702264E-4, -0.0013227649706, 2.164333194537E-4, 2.3178598646618E-4, -0.0011385679025, 0.0012836249137, 9.1317996855378E-4, -7.1719444335427E-4, -0.001720796632, 2.3114047776052E-4, -4.3267855147811E-4, 1.4096669078367E-5, -3.1870916617494E-4, 0.0027453595745, -8.1777656331494E-4, -7.2052159450421E-4, 0.0014064995743, -4.2656589560508E-4, 6.8362583275539E-4, 4.0288477816675E-5, -0.0021927390283, 0.001831365471, -0.001682555321, -0.0010059823535, -7.525256243589E-4, 0.002283007938, 4.5271192850105E-4, -0.0019819225768, 0.0014303424783, 1.8236606432054E-4, -5.1221042985061E-4, -2.1326520694176E-4, 1.8745623385638E-4, 9.2586973159742E-4, -0.0024162607897, -2.4215075000944E-4, 0.0037215394574, -0.0019649360432, -0.0031533399484, 0.001751803174, 0.0032924526209, -0.0015527103691, -0.0030403398135, 2.2863502989257E-4, 0.0033832247218, 5.4314783387532E-4, -0.0021384340053, -1.3961711628763E-4, 0.0026452330995, 0.0022584276532, -0.0010882436128, 5.9175718853943E-6, 0.0020008210643, 4.5689944397043E-4, 4.7501572031505E-4, -0.0019700226633, -5.3158094571537E-4, 0.0011773273902, -9.8030741106436E-4, -0.0012183309647, -9.5163263172893E-4, 0.0020490525422, 2.519962970422E-4, -0.0024169232707, -9.2825429296617E-5, 0.0016293527781, -8.1049117658077E-4, -0.0016760629129, 2.1272223688662E-4, 0.0017153844586, -2.0450947504647E-4, -0.0011649742194, 0.0015960331977, 8.6319332312867E-4, -6.7635023382839E-4, -5.7984663027971E-4, -3.9179853203242E-4, 0.0018627382419, -7.1054473550602E-4, -0.001968494327, 0.0012068599732, 0.0014320674215, -6.2047602146853E-4, -0.0021807306089, 0.0010379259655, 0.0011404730998, -0.0014842208808, -3.1456262450116E-4, 8.2918071083427E-4, 8.5346326175784E-4, -0.0010810775992, -4.6447519538906E-4, 6.4970994101524E-4, -5.0584677400844E-4, -3.3379887914994E-4, 2.6293571550706E-4, 5.7400014809239E-4, -2.5886035394934E-4, -3.6314948984439E-4, -3.0657186316674E-5, -3.092009685195E-4, -2.543117941346E-4, -1.1130054759038E-4, -7.5647764439607E-5, 2.9407414417279E-4, -2.6573153972287E-4, -3.7902122424049E-5, 1.605865266302E-5, -2.0461275914196E-4, 1.973033837136E-4, 2.5198441755636E-5, -3.9658001801571E-5, 6.8016586337327E-4, -4.8720121410523E-5, -6.128683589206E-4, 6.0548133990097E-5, -1.2446835922675E-4, 4.0489943596478E-4, -6.7890467413523E-4, 6.3229426938483E-5, 6.7442643104243E-4, 3.8754651589645E-5, -2.3368195851292E-4, -1.0774628347376E-4, 6.3062235579769E-4, -9.1413490822478E-5, -2.6651941291767E-4, 4.0845806562051E-4, 1.3134030940631E-4, 2.993907514427E-4, -3.5357296093141E-4, 4.3250465950026E-4, -1.5869262862667E-4, 8.8484143358436E-5, -3.5347317542977E-4, -2.5580091139221E-4, 3.4341651991356E-4, -3.7807884439722E-4, -1.0462926783728E-4, -8.9607383456536E-5, 9.7597709960353E-5, 1.4646383568534E-4, -3.9858449600016E-4, -2.0739821521243E-4, 3.5833517880322E-4, 1.1108940463522E-4, -1.6209187905411E-4, -2.7615019162952E-4, 4.8734449972176E-4, -1.9615662333416E-4, -2.584733158324E-4, -1.2396978720919E-4, 1.6158620387852E-4, 5.3974089839448E-4, -2.9600298670518E-4, 2.3435569089481E-4, 1.3387283065291E-4, 2.1502698418541E-4, 1.4823227789051E-4, -3.2684765701971E-4, 9.7968205816645E-6, 2.5847803249324E-4, -5.040117334415E-5, 1.3782740506185E-4, -1.1074092532012E-4, -6.084755189173E-5, 3.6208966542883E-5, 2.0028521659388E-4, -9.069602352052E-5, -3.1903103751274E-4, -1.0274404315913E-4, 9.9985225319621E-5, -5.3038480135825E-5, 9.3795355836424E-5, -2.7471405615614E-4, 3.6355856049032E-4, -2.45379574319E-4, 1.1074828650254E-4, 5.4360948628984E-5, -7.8016781597023E-5, -3.6640503337182E-5, -4.5533771750095E-5, -1.9593221270209E-5, 2.5726842353913E-5, -1.4884676776594E-4, 8.0491922028081E-5, -7.5578611239302E-5, -1.8576867095577E-4, 1.2839295269851E-5, 2.1325006653528E-4, -3.3963439216023E-4, 6.0784816211745E-5, 1.6172931819167E-4, 1.7479486786875E-5, 1.8378531856145E-4, -5.3869862957275E-4, 6.3012581386401E-4, -2.6365919065599E-4, 7.9838077930994E-5, -7.0114445447134E-5, -2.6267534793428E-4, 5.1724084621407E-4, -4.397637844118E-4, -6.4430766793411E-5, 8.9460531088159E-5, 6.7521285461503E-5, 1.4004532153122E-4, -4.3254149919503E-4, 2.5247959882957E-4, -3.7403169170336E-5, -1.1519177255581E-4, 7.2812485217177E-5, -6.646443352798E-5, -7.5090889527285E-5, -5.8310482563551E-5, -7.5330062027049E-5, 1.6524673221574E-4, -3.8458758146043E-4, 1.6476513740594E-4, -1.1448443220408E-4, -1.29593881254E-4, -2.3946065240699E-6, -6.3600044597933E-5, 1.4568839285163E-4, -2.0995307253446E-4, -1.6679594189162E-4, 1.7306484214116E-4, 6.1068489662586E-5, -7.9812935125934E-5, -4.8833407868376E-5, 2.8341270019439E-5, 8.4825815687001E-5, -6.9458214942086E-5, -1.0149122763314E-4, -3.5464495833692E-5, 1.3655969896686E-4, 4.2060231621233E-5, -2.1643530678406E-4, -9.3041719623876E-5, 1.1714635187893E-4, 1.0482652823085E-4, -2.1232250818226E-4, -1.5255620244514E-4, 8.5252503104705E-5, 1.7744223840699E-4, -1.3099708005337E-5, -2.0680549128271E-4, 2.0904549296952E-4, 9.7879771819853E-6, -2.9948431517601E-5, -1.1392786910047E-4, 4.4199839211848E-5, 5.0139022115203E-5, -6.451016555431E-5, 4.1754262959159E-5, 1.1656079280314E-4, -2.5435813324926E-5, -6.093359567938E-5, 4.2079310538456E-5, 5.5883705709192E-5, -1.1135287605757E-4, -5.7663806115826E-5, 6.5807225900327E-5, 4.4216005263359E-5, -1.6358700489272E-5, -1.2252563989712E-4, 2.1421622817619E-4, -3.9782348909667E-5, 1.115604341182E-4, -6.4657045513838E-5, 1.5195993395667E-4, -9.070738392114E-5, 1.5318691949484E-5, 2.2789685703462E-5, 7.273071978664E-5, -1.2515690211401E-4, 6.5904585604182E-5, 6.6482691353009E-5, -2.3789232372895E-7, -9.1414438162407E-5, 1.7437524953427E-5, 1.3000949887054E-4, -3.3219461532119E-5, -3.473901810902E-5, 1.1931085554329E-4, 4.4584121469571E-5, -3.2579379821485E-5, -9.5381974718312E-5, 8.0228276608363E-5, 3.8554362503662E-6, -1.4031850898144E-4, 5.4528976928814E-5, 6.6769159541291E-6, 4.761338373125E-5, -4.6877574533047E-5, 1.2866802548084E-4, 6.7891377938056E-5, -1.1071404932314E-4, -1.1438738336928E-5, -1.4198950869626E-5, 1.1626103435725E-4, -1.9677617231206E-5, -1.2233767381353E-5, -1.4506663939873E-5, -3.9008153433856E-5, 7.5332433831066E-5, -4.2228239524156E-5, 2.3865088134567E-6, -1.7677232830859E-5, -1.093318283818E-4, 1.1111956291732E-4, -3.0263730425917E-5, 2.7857685056254E-6, 5.2895042067513E-5, -5.6072292631271E-6, -6.547816355007E-6, -6.455459913024E-5, -2.8873573889365E-5, 6.4158771217182E-5, -5.4064769714271E-5, 1.2366732069835E-5, -8.8748360939417E-5, 2.9860256484771E-5, 2.843469104441E-5, -1.4859226959318E-5, 3.1641714687058E-5, 2.5296847718986E-5, -3.6568794621439E-5, 4.6272314415896E-5, -1.9446017241354E-5, -1.0032798768652E-5, -1.9301537757171E-5, 2.1576631998144E-5, -3.6697550592324E-5, 2.1186204358647E-6, 3.7734037979686E-5, -4.7064555306564E-5, 1.1996045902463E-5, 9.2646416907094E-6, 1.5746385863213E-5, -5.2304992430141E-5, 6.1492936469287E-5, 7.2292037651245E-5, -8.4591586628546E-5, -9.0054591463051E-5, -1.0098272659409E-5, 3.9585947642307E-5, -1.0017319531919E-4, -1.4986679694379E-5, 3.6852110771424E-5, 9.3374840488436E-5, -5.2117418318315E-5, -8.3120886390287E-5, 1.1711495187217E-4, -2.6229160793645E-5, -1.6216849205036E-5, -8.6571636148669E-6, 4.8446137757285E-6, 7.5576346759692E-5, -9.1423390522705E-5, 2.5798070447891E-5, -6.9338915727468E-6, 2.5781077781506E-5, 5.0726718656469E-5, -8.8029443325199E-5, 7.7577372611604E-5, -2.4557029489225E-5, -3.1591747112425E-5, -4.6664491846204E-6, -5.7304163440408E-5, 3.0530376007309E-5, -3.89336346307E-5, 4.4223622006234E-5, 2.6572207001307E-5, -2.6170463247099E-5, 3.0192425844566E-5, -2.5359622757681E-5, 2.8055174169872E-5, -3.1049929078653E-5, -1.3944114732101E-5, 3.5084502215343E-5, -1.9070587004011E-6, 3.5359823028491E-6, 1.8172123657068E-5, -9.05945273455E-6, 1.6529547524069E-6, -1.472644696332E-5, 1.5823460389197E-5, 2.2201593669946E-5, -7.975938617899E-6, 1.3204024098101E-5, 1.5722643786908E-6, -5.7018278228904E-6, 1.6889684853805E-5, -2.2079932442409E-5, 1.4298667216583E-5, -1.0957489285757E-5, -3.8616799374891E-6, 4.1105264718677E-5, -5.3075852616935E-5, 5.8441567732936E-6, 6.4984476830787E-6, 1.6731560434691E-5, 2.0400132151099E-5}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 120.0}">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="LMSAdaptiveFIR" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 606]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[5, 45]">
+        </property>
+        <property name="initialTaps" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="numTaps" class="ptolemy.data.expr.Parameter" value="initialTaps.length()">
+        </property>
+        <property name="mu" class="ptolemy.data.expr.Parameter" value="stepSize">
+        </property>
+        <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[201.0, 30.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 26, 1015, 715}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2832521795838">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.7080230712891, 238.2438274765015}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 175.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="location1" class="ptolemy.kernel.util.Location" value="[15.0, 95.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="location1" class="ptolemy.kernel.util.Location" value="[665.0000305175781, 105.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="taps" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="location1" class="ptolemy.kernel.util.Location" value="[595.0, 195.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="error" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 195.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="VariableFIR" class="ptolemy.domains.sdf.lib.VariableFIR">
+            <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="taps" class="ptolemy.data.expr.Parameter" value="{1.0}">
+            </property>
+            <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="VariableFIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, -10.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -15.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -15.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                    </property>
+                </property>
+                <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -15.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                    </property>
+                </property>
+                <property name="line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -10.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="8.0">
+                    </property>
+                </property>
+                <property name="line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -5.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="25.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                </property>
+                <property name="line13" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 0.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                </property>
+                <property name="line15" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 0.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="-25.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                </property>
+                <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 0.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 10.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, -5.0}">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -10.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{.7, .7, .7, 1.0}">
+                    </property>
+                </property>
+                <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 5.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="line16" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 10.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="line17" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 0.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line18" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, -5.0}">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line19" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 5.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 0.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7,0.7,0.7, 1.0}">
+                    </property>
+                </property>
+                <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -5.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                </property>
+                <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 0.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line14" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 10.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line20" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 10.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="25.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="-25.0">
+                    </property>
+                </property>
+                <property name="line21" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, -15.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="3.0">
+                    </property>
+                </property>
+                <property name="line22" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, -15.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="-3.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0000305175781, 105.0]">
+            </property>
+        </entity>
+        <entity name="DelayLine" class="ptolemy.domains.sdf.lib.DelayLine">
+            <property name="initialValues" class="ptolemy.data.expr.Parameter" value="repeat(numTaps,0.0)">
+            </property>
+            <property name="DelayLineIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-30.0, 0.0}">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -16.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="20.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -15.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                </property>
+                <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -16.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="3.0">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                </property>
+                <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -3.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 7.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -8.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -13.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{.7, .7, .7, 1.0}">
+                    </property>
+                </property>
+                <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 2.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="line16" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 7.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="line17" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -3.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line18" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -8.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="line19" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 2.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, 0.0]">
+                    </property>
+                    <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="}">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -18.0]">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 140.0}">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+        </entity>
+        <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 140.0}">
+            </property>
+        </entity>
+        <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{initialTaps}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 195.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+            </port>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="oldTaps + oldInputs.elementMultiply(mu*error)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 150.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <port name="oldInputs" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="error" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="oldTaps" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[45.0, 95.0]">
+            </vertex>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[550.0, 195.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="relation14"/>
+        <link port="output" relation="relation6"/>
+        <link port="taps" relation="relation8"/>
+        <link port="error" relation="relation4"/>
+        <link port="VariableFIR.input" relation="relation14"/>
+        <link port="VariableFIR.output" relation="relation6"/>
+        <link port="VariableFIR.newTaps" relation="relation8"/>
+        <link port="DelayLine.input" relation="relation2"/>
+        <link port="DelayLine.output" relation="relation"/>
+        <link port="SampleDelay2.input" relation="relation14"/>
+        <link port="SampleDelay2.output" relation="relation2"/>
+        <link port="SampleDelay.input" relation="relation8"/>
+        <link port="SampleDelay.output" relation="relation3"/>
+        <link port="Expression.output" relation="relation8"/>
+        <link port="Expression.oldInputs" relation="relation"/>
+        <link port="Expression.error" relation="relation4"/>
+        <link port="Expression.oldTaps" relation="relation3"/>
+    </entity>
+    <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="stepSize" class="ptolemy.data.expr.Parameter" value="stepSize">
+        </property>
+        <property name="initialTaps" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 466.25]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 430.0]">
+        </property>
+    </entity>
+    <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 430.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5528341326751, -0.3015589649856, -0.261830864239, 0.0845709674582, -0.4362925939242, -1.8272451521598, -1.0271451677604, -0.4735187685871, -0.971005429017, 0.8081203371532, 2.3254077492572, -1.0458225959717, -1.0625172431903, 1.2868925299959, 0.4130240895114, 1.0852378672726, -0.446202523487, -1.6750582255965, -0.1120805592488, -0.2456729172677, -0.8655880587457, -2.1344249026162, 0.599667783249, -0.0490463596897, 1.1517972158519, -0.2291634941319, 0.2694615020896, -0.053006447742, 0.5921430861454, 0.9888820788302, 0.1880038458582, 0.5743031495905, 0.7902233800127, -0.489290514838, 1.1839217364705, -0.2646826337823, 0.7163609262168, -0.9059601548079, -0.7875676637782, 1.2744211403056, 0.2317612687543, 0.303976228149, -0.5170177856483, -1.1194043766066, -0.967376513861, -0.2961905018145, -0.7879156619255, 0.9695740336128, 0.9149366208865, 0.1150846558976, 0.2753986797947, -1.0668571466846, 0.8802921867787, -0.5349346871217, 0.3987006895868, -0.4344275125058, 0.1749384085707, -0.2013146272197, 0.455576365574, 0.4698196606285, 0.2724088397419, -0.4940404200491, 0.7350966305077, -1.0341600816538, 0.2699120660766, -0.0856230596642, -0.0589009457303, 0.0378124006509, -0.2797246485098, -0.4011831743003, 0.0599855450381, -0.0709127251255, -0.3491955670194, 0.0292797452214, -0.5050700940532, -0.1356803467326, -0.2251044378561, 0.4975726691842, -0.9233990198423, -0.1010543980129, 0.2641188704642, -0.7512503016482, 0.1141618891333, -0.2081172729062, 0.1481685856117, -0.3979576439911, -0.1899818068155, -0.7115781551938, -0.4601775136403, 0.2949670247383, 0.4596704546364, -0.1018403825333, -0.5024445290646, 0.1152741470791, 0.1244945796917, -0.875913831327, 0.1199792523267, 0.2243939162554, -0.5825096197519, 0.0081738992435, 0.6093765034931, -0.5828763672137, -0.1931318266965, 0.0271959187313, -0.1392882931536, -0.0440016897473, -0.3048849828645, 0.2146997255154, 0.2118139058586, 0.1889335341791, -0.0270648409545, 0.0965928268749, -0.1435276480331, -0.082481954611, 0.0647143104128, 0.0918012323792, 0.0420827973659, 0.0471883813663, -0.0687036233295, -0.261713415369, -0.0602763247424, 0.0159125460005, -0.2980020863117, -0.1063709208342, 0.0217989016618, -0.1650436459545, 0.3074300267833, 0.0215239871002, -0.1604833040704, 0.1000461607646, -0.4595838271422, -0.1360348465904, -0.2270240840784, 0.2030215967236, 0.2957381037246, -0.2036254629481, -0.3037592043504, -0.0537183935454, -0.1474229075983, -0.443642118316, 0.2683198809682, 0.5677274916884, 0.0993037875749, -0.0072810495478, -0.3522265938639, 0.0033758006494, -0.0715516824812, -0.0400044381039, -0.3927186341548, 0.174326047373, -0.1108446296908, -0.0777692609529, 0.2076469533898, 0.0867931626952, -0.1564689624147, -0.3317903263813, -0.2643714493722, -0.1898618111486, 0.0643647490726, -0.03826881861, -0.1702478312661, 0.0274862437519, 0.0796762416947, 0.0183851054311, -0.0245326819792, 0.0463690561709, -0.0913730075662, 0.0759980091086, -0.2511485487356, 0.074525581141, 0.2024019818569, 0.0565753996322, 0.1257929946277, 0.0449267073864, 0.2095675629675, 0.0245247628712, 0.3154928380019, 0.1324556920253, 0.045321633957, 0.1333162565442, 0.0177649516013, 0.1119326687236, -0.1150230189943, -0.0256837530543, 0.2369286354863, 0.0335336631927, 0.055873503844, 0.1789429193807, 0.0797774946082, -0.1424992085115, -0.0827408329938, -0.068479702415, -0.0062477030459, -0.2468533886411, -0.0372750838578, 0.1126857961801, 0.0420800263897, -0.1305795287369, 0.1016176227417, -0.0247545102235, 0.1213345287774, -0.0780191357835, -0.16435018684, 0.0361051649495, -0.0811294971582, -0.0451259515279, 0.0275196625866, 0.0474249674212, 0.284605346264, 0.0065775459502, -0.0860002007188, 0.1375123254949, 0.0152887081926, -0.0385319715437, -0.0480192535028, 0.1234540709086, -0.0754025298319, -0.1319102995091, -0.0403668237985, 0.0906050397659, -0.0242104588555, -0.0427808308929, 0.0832611708981, 0.209908468806, -0.2101624834288, 9.5081491491877E-4, 0.0692219183801, 0.0549635204004, 0.1325842536533, 0.025750571521, 0.1247615296692, -8.2967909172871E-4, -0.0796353065, 0.0298525663934, -0.0129830343339, 0.0165160158958, -0.0666218061667, 0.0825394139028, -0.041460415164, -0.0329496145355, -0.068741909389, -0.0074093811939, 0.0197351448609, 0.0589734141426, 0.0163860258401, 0.0031235518685, 0.0879099203171, 0.0315732218581, 0.1349077331357, -0.1274576585811, 0.0140006665574, 0.0097761043722, 0.0010869232837, -0.017672148698, -0.0149740342482, -0.0633305802595, -0.0155156609555, 0.1133052097099, -0.0038028162154, -0.0257572833272, -0.13723757535, 0.0728228414071, -0.0409801667483, 0.0382425363695, -0.0103937656669, -0.0154577029209, 0.039156280984, -0.0108557841392, -0.0105829793414, 0.1247989752626, -0.0211931086631, -0.0349656100133, 0.0988656946228, -0.0304704400585, -0.035275186634, 0.0024833597241, 0.0585470785064, -0.0020562454207, -0.0611313167912, 0.0141707432699, -0.0619699932841, 0.0196852810332, -0.0377802220705, 0.0152567563086, 0.1035982215325, -0.0615506184114, 0.0117552463488, 0.0128124635228, -9.0358481794406E-4, -0.0253600739969, -0.0032375730949, -0.0234076543901, 0.0197334622251, -0.0355669766945, 0.039029861982, -0.0229681124304, -0.0603498466373, 0.069894763579, -0.0634552432665, 0.0499161114129, -0.016589490432, -0.0518882361788, 0.0236529181697, -0.0449955908164, 0.0147380025618, -0.0064383108939, -0.0406277475219, 0.0336930988397, -0.053377435724, -0.0135598091796, 0.0671741220373, -0.0158908074103, 0.0118232581522, 0.0236660860759, 0.0058669056752, 0.0768723133857, -0.0410547755777, -0.0194605412839, 0.016193439721, -0.0231754351622, 0.0627006960828, -0.0036281799377, -0.0037435206497, 0.0129513139435, -0.0070251027236, -0.0412805397415, 0.032484702056, 0.003666538568, 0.0304145581232, -0.0555636769735, 0.0689606136157, -0.0315144817151, 0.0429796165807, 0.0166704125802, -0.0040606113019, 0.0016342810749, 9.2841554521339E-4, -0.0249672075065, -0.0074424768717, -0.0078532928787, -0.0155705602955, 0.0025931553579, 0.0038867105299, -0.0325034293636, 0.0283056818008, -0.0012084429863, -0.0290459269336, -0.0042567423694, 0.0170155217281, 0.0130042087424, -0.0071231450548, -0.0032006745828, 0.0076066425183, -0.0031785038179, -0.0085480855866, 1.2278096783587E-4, 0.01317113078, -0.0078119117819, 0.0030479437331, -0.0048974475037, 0.0088098867618, -0.0042250055209, -0.0141210480477, -8.8605811681686E-5, -0.0163002712163, 0.0162628280186, -0.0134923336401, 0.0101822834409, 0.0317535552625, 5.0680558031593E-4, -0.0112496131585, -0.0069130827669, -0.0175875277687, -0.0199808091147, -0.0087632548174, 0.0066191520343, 0.0170657324229, -0.0169326753246, 0.0138166211742, 0.0036852640996, -0.0115663922161, -0.0052408426561, 0.0026822237444, 0.0164582099994, 0.0118211272929, -6.577795837939E-4, 0.0094882592157, -0.0013102729205, -0.0204908600111, -0.0073005234927, 0.0064497207062, 0.0091532416438, 0.007821442264, -0.0071568954939, 1.5193982873196E-5, -0.0113136052467, -0.0193193602732, 0.0096852787459, 0.0124061415838, 0.0029233094505, -0.0062323669711, -0.0120273821439, -0.0107218632, 0.0021705355214, -0.0160241896289, 0.006932311184, 0.0129585961512, 0.0027765147478, 0.004043514964, -7.9276089065189E-4, -0.0093199918415, 0.0127604069789, 0.0034568295162, 0.0113897924954, 0.0019833872992, 0.0123576128049, -0.0082624571972, 0.0112093222904, -0.0086089354486, -0.0032076066866, 0.0116692313267, 0.0061816688686, 6.5830226961394E-4, -0.0187286062806, -0.0090297307094, -0.0045486808032, 0.0050746344464, -0.0065468485883, -0.0056597518473, 0.0070926091173, 0.0106015766614, -0.012832971743, 0.0068795769351, -0.0075828151471, -0.0162903440847, 0.0098829193535, 0.0088798867739, 8.2037483044001E-4, 0.0030801379639, 0.002320397287, 0.0085584929614, 0.0156362294355, -0.0191287026205, -0.012881720763, 0.0119927627449, 0.0123626897983, -0.0041191196465, 0.0034049242918, 0.0133633741295, 0.0086126172488, -0.01786565868, -0.0098862051233, 0.0114450779564, 0.010426873181, -0.0098020523354, -0.0083743226323, 0.0093878854259, -0.0036082243514, -0.0103639691395, 0.0049195364298, 0.0040346792386, 0.0024492082676, -0.0014009493701, -0.0068279423101, -0.0021713646927, 0.0074351623214, 6.8495270335478E-5, 0.0028876280824, -7.2143084630927E-4, -0.0010087081266, 0.0063835199658, 4.0646141959844E-4, -0.0049391828694, 0.0050361073674, 0.010993292369, -0.002641397103, -0.0045691669017, -0.0024274883404, 0.0039291588614, -0.0063555520458, -0.0075391004986, -0.0041694870435, 0.0016460203187, 7.3826748717906E-4, -0.0040892293257, 0.0023865252022, -0.0015409917434, -0.0050996922617, 3.778336343353E-4, 0.0039941640735, 0.0034936676808, -2.2574971727385E-4, 0.0042160618305, 3.733149759918E-4, -0.0018811796855, -9.1204100999734E-4, -0.0066591509209, 0.0012765467435, -0.0023514326785, -0.0019449163785, 9.2851243990466E-4, -0.0029471968223, 6.3567228169786E-4, 0.0030735602832, -0.0094889710908, 0.002102111063, 8.4931060774412E-4, 0.002599168216, 0.0025839980061, -0.0053689463008, 6.5273142281419E-4, -0.0039630836538, -0.0023199107908, -7.4668588250659E-4, -0.003437764387, 0.002390505642, -0.0055465317522, 4.3290421228614E-4, -0.003373943041, 8.7444578704103E-4, 0.0034954349638, 0.0018321642648, -7.3212688069793E-4, 0.0039948061908, 0.0048181501978, 0.0052331097791, 2.6491369033388E-4, -0.0019348563604, -0.0029871046131, 0.0048733343281, 0.0019930405957, 0.0029691135178, -0.0025340460272, -1.3780731058832E-4, -0.0026629144133, -1.7913808477495E-4, -0.0014542597964, 0.0010850136299, 6.6435429407705E-4, -0.0015951771615, -0.0025447314348, 0.002459785542, 8.6619256220263E-4, -6.535742727973E-4, 0.0012744330314, -5.5568293353292E-4, 0.0013739695481, 0.0021732463389, 0.0017487022365, -0.0024695495476, -7.6425387223511E-4, -2.1544221488923E-5, -1.4136516379581E-4, -0.0012142038518, -1.5327022104954E-4, 0.0033497848188, 0.0016002567415, -0.0022641886363, -0.002323595958, 0.0016431016647, 0.0035741559098, -0.0016378320953, -0.0018116885903, -0.0013443761295, -4.9861461315137E-5, 0.0030342160561, -0.0038379641207, -0.0042218545269, 0.0013691013008, 4.5976660640989E-4, -0.0011813584881, -0.0021829621574, 0.0015522317866, 0.0018141317504, -0.0024915624217, -0.0035068181995, 0.0034240793961, 0.001167868666, -0.003504073808, -0.0042608514362, 0.0038795460369, 0.0016907440173, -0.0027078837413, 6.1421540157203E-5, 7.628618388853E-4, -0.0015665441369, -0.0013158582665, 0.0015103905692, 0.0031250162245, 0.0010328159093, 1.8013408580364E-4, 0.0010098705726, 6.2838335106202E-4, -4.7732564974334E-4, -6.8973545019912E-4, 5.2280921702264E-4, -0.0013227649706, 2.164333194537E-4, 2.3178598646618E-4, -0.0011385679025, 0.0012836249137, 9.1317996855378E-4, -7.1719444335427E-4, -0.001720796632, 2.3114047776052E-4, -4.3267855147811E-4, 1.4096669078367E-5, -3.1870916617494E-4, 0.0027453595745, -8.1777656331494E-4, -7.2052159450421E-4, 0.0014064995743, -4.2656589560508E-4, 6.8362583275539E-4, 4.0288477816675E-5, -0.0021927390283, 0.001831365471, -0.001682555321, -0.0010059823535, -7.525256243589E-4, 0.002283007938, 4.5271192850105E-4, -0.0019819225768, 0.0014303424783, 1.8236606432054E-4, -5.1221042985061E-4, -2.1326520694176E-4, 1.8745623385638E-4, 9.2586973159742E-4, -0.0024162607897, -2.4215075000944E-4, 0.0037215394574, -0.0019649360432, -0.0031533399484, 0.001751803174, 0.0032924526209, -0.0015527103691, -0.0030403398135, 2.2863502989257E-4, 0.0033832247218, 5.4314783387532E-4, -0.0021384340053, -1.3961711628763E-4, 0.0026452330995, 0.0022584276532, -0.0010882436128, 5.9175718853943E-6, 0.0020008210643, 4.5689944397043E-4, 4.7501572031505E-4, -0.0019700226633, -5.3158094571537E-4, 0.0011773273902, -9.8030741106436E-4, -0.0012183309647, -9.5163263172893E-4, 0.0020490525422, 2.519962970422E-4, -0.0024169232707, -9.2825429296617E-5, 0.0016293527781, -8.1049117658077E-4, -0.0016760629129, 2.1272223688662E-4, 0.0017153844586, -2.0450947504647E-4, -0.0011649742194, 0.0015960331977, 8.6319332312867E-4, -6.7635023382839E-4, -5.7984663027971E-4, -3.9179853203242E-4, 0.0018627382419, -7.1054473550602E-4, -0.001968494327, 0.0012068599732, 0.0014320674215, -6.2047602146853E-4, -0.0021807306089, 0.0010379259655, 0.0011404730998, -0.0014842208808, -3.1456262450116E-4, 8.2918071083427E-4, 8.5346326175784E-4, -0.0010810775992, -4.6447519538906E-4, 6.4970994101524E-4, -5.0584677400844E-4, -3.3379887914994E-4, 2.6293571550706E-4, 5.7400014809239E-4, -2.5886035394934E-4, -3.6314948984439E-4, -3.0657186316674E-5, -3.092009685195E-4, -2.543117941346E-4, -1.1130054759038E-4, -7.5647764439607E-5, 2.9407414417279E-4, -2.6573153972287E-4, -3.7902122424049E-5, 1.605865266302E-5, -2.0461275914196E-4, 1.973033837136E-4, 2.5198441755636E-5, -3.9658001801571E-5, 6.8016586337327E-4, -4.8720121410523E-5, -6.128683589206E-4, 6.0548133990097E-5, -1.2446835922675E-4, 4.0489943596478E-4, -6.7890467413523E-4, 6.3229426938483E-5, 6.7442643104243E-4, 3.8754651589645E-5, -2.3368195851292E-4, -1.0774628347376E-4, 6.3062235579769E-4, -9.1413490822478E-5, -2.6651941291767E-4, 4.0845806562051E-4, 1.3134030940631E-4, 2.993907514427E-4, -3.5357296093141E-4, 4.3250465950026E-4, -1.5869262862667E-4, 8.8484143358436E-5, -3.5347317542977E-4, -2.5580091139221E-4, 3.4341651991356E-4, -3.7807884439722E-4, -1.0462926783728E-4, -8.9607383456536E-5, 9.7597709960353E-5, 1.4646383568534E-4, -3.9858449600016E-4, -2.0739821521243E-4, 3.5833517880322E-4, 1.1108940463522E-4, -1.6209187905411E-4, -2.7615019162952E-4, 4.8734449972176E-4, -1.9615662333416E-4, -2.584733158324E-4, -1.2396978720919E-4, 1.6158620387852E-4, 5.3974089839448E-4, -2.9600298670518E-4, 2.3435569089481E-4, 1.3387283065291E-4, 2.1502698418541E-4, 1.4823227789051E-4, -3.2684765701971E-4, 9.7968205816645E-6, 2.5847803249324E-4, -5.040117334415E-5, 1.3782740506185E-4, -1.1074092532012E-4, -6.084755189173E-5, 3.6208966542883E-5, 2.0028521659388E-4, -9.069602352052E-5, -3.1903103751274E-4, -1.0274404315913E-4, 9.9985225319621E-5, -5.3038480135825E-5, 9.3795355836424E-5, -2.7471405615614E-4, 3.6355856049032E-4, -2.45379574319E-4, 1.1074828650254E-4, 5.4360948628984E-5, -7.8016781597023E-5, -3.6640503337182E-5, -4.5533771750095E-5, -1.9593221270209E-5, 2.5726842353913E-5, -1.4884676776594E-4, 8.0491922028081E-5, -7.5578611239302E-5, -1.8576867095577E-4, 1.2839295269851E-5, 2.1325006653528E-4, -3.3963439216023E-4, 6.0784816211745E-5, 1.6172931819167E-4, 1.7479486786875E-5, 1.8378531856145E-4, -5.3869862957275E-4, 6.3012581386401E-4, -2.6365919065599E-4, 7.9838077930994E-5, -7.0114445447134E-5, -2.6267534793428E-4, 5.1724084621407E-4, -4.397637844118E-4, -6.4430766793411E-5, 8.9460531088159E-5, 6.7521285461503E-5, 1.4004532153122E-4, -4.3254149919503E-4, 2.5247959882957E-4, -3.7403169170336E-5, -1.1519177255581E-4, 7.2812485217177E-5, -6.646443352798E-5, -7.5090889527285E-5, -5.8310482563551E-5, -7.5330062027049E-5, 1.6524673221574E-4, -3.8458758146043E-4, 1.6476513740594E-4, -1.1448443220408E-4, -1.29593881254E-4, -2.3946065240699E-6, -6.3600044597933E-5, 1.4568839285163E-4, -2.0995307253446E-4, -1.6679594189162E-4, 1.7306484214116E-4, 6.1068489662586E-5, -7.9812935125934E-5, -4.8833407868376E-5, 2.8341270019439E-5, 8.4825815687001E-5, -6.9458214942086E-5, -1.0149122763314E-4, -3.5464495833692E-5, 1.3655969896686E-4, 4.2060231621233E-5, -2.1643530678406E-4, -9.3041719623876E-5, 1.1714635187893E-4, 1.0482652823085E-4, -2.1232250818226E-4, -1.5255620244514E-4, 8.5252503104705E-5, 1.7744223840699E-4, -1.3099708005337E-5, -2.0680549128271E-4, 2.0904549296952E-4, 9.7879771819853E-6, -2.9948431517601E-5, -1.1392786910047E-4, 4.4199839211848E-5, 5.0139022115203E-5, -6.451016555431E-5, 4.1754262959159E-5, 1.1656079280314E-4, -2.5435813324926E-5, -6.093359567938E-5, 4.2079310538456E-5, 5.5883705709192E-5, -1.1135287605757E-4, -5.7663806115826E-5, 6.5807225900327E-5, 4.4216005263359E-5, -1.6358700489272E-5, -1.2252563989712E-4, 2.1421622817619E-4, -3.9782348909667E-5, 1.115604341182E-4, -6.4657045513838E-5, 1.5195993395667E-4, -9.070738392114E-5, 1.5318691949484E-5, 2.2789685703462E-5, 7.273071978664E-5, -1.2515690211401E-4, 6.5904585604182E-5, 6.6482691353009E-5, -2.3789232372895E-7, -9.1414438162407E-5, 1.7437524953427E-5, 1.3000949887054E-4, -3.3219461532119E-5, -3.473901810902E-5, 1.1931085554329E-4, 4.4584121469571E-5, -3.2579379821485E-5, -9.5381974718312E-5, 8.0228276608363E-5, 3.8554362503662E-6, -1.4031850898144E-4, 5.4528976928814E-5, 6.6769159541291E-6, 4.761338373125E-5, -4.6877574533047E-5, 1.2866802548084E-4, 6.7891377938056E-5, -1.1071404932314E-4, -1.1438738336928E-5, -1.4198950869626E-5, 1.1626103435725E-4, -1.9677617231206E-5, -1.2233767381353E-5, -1.4506663939873E-5, -3.9008153433856E-5, 7.5332433831066E-5, -4.2228239524156E-5, 2.3865088134567E-6, -1.7677232830859E-5, -1.093318283818E-4, 1.1111956291732E-4, -3.0263730425917E-5, 2.7857685056254E-6, 5.2895042067513E-5, -5.6072292631271E-6, -6.547816355007E-6, -6.455459913024E-5, -2.8873573889365E-5, 6.4158771217182E-5, -5.4064769714271E-5, 1.2366732069835E-5, -8.8748360939417E-5, 2.9860256484771E-5, 2.843469104441E-5, -1.4859226959318E-5, 3.1641714687058E-5, 2.5296847718986E-5, -3.6568794621439E-5, 4.6272314415896E-5, -1.9446017241354E-5, -1.0032798768652E-5, -1.9301537757171E-5, 2.1576631998144E-5, -3.6697550592324E-5, 2.1186204358647E-6, 3.7734037979686E-5, -4.7064555306564E-5, 1.1996045902463E-5, 9.2646416907094E-6, 1.5746385863213E-5, -5.2304992430141E-5, 6.1492936469287E-5, 7.2292037651245E-5, -8.4591586628546E-5, -9.0054591463051E-5, -1.0098272659409E-5, 3.9585947642307E-5, -1.0017319531919E-4, -1.4986679694379E-5, 3.6852110771424E-5, 9.3374840488436E-5, -5.2117418318315E-5, -8.3120886390287E-5, 1.1711495187217E-4, -2.6229160793645E-5, -1.6216849205036E-5, -8.6571636148669E-6, 4.8446137757285E-6, 7.5576346759692E-5, -9.1423390522705E-5, 2.5798070447891E-5, -6.9338915727468E-6, 2.5781077781506E-5, 5.0726718656469E-5, -8.8029443325199E-5, 7.7577372611604E-5, -2.4557029489225E-5, -3.1591747112425E-5, -4.6664491846204E-6, -5.7304163440408E-5, 3.0530376007309E-5, -3.89336346307E-5, 4.4223622006234E-5, 2.6572207001307E-5, -2.6170463247099E-5, 3.0192425844566E-5, -2.5359622757681E-5, 2.8055174169872E-5, -3.1049929078653E-5, -1.3944114732101E-5, 3.5084502215343E-5, -1.9070587004011E-6, 3.5359823028491E-6, 1.8172123657068E-5, -9.05945273455E-6, 1.6529547524069E-6, -1.472644696332E-5, 1.5823460389197E-5, 2.2201593669946E-5, -7.975938617899E-6, 1.3204024098101E-5, 1.5722643786908E-6, -5.7018278228904E-6, 1.6889684853805E-5, -2.2079932442409E-5, 1.4298667216583E-5, -1.0957489285757E-5, -3.8616799374891E-6, 4.1105264718677E-5, -5.3075852616935E-5, 5.8441567732936E-6, 6.4984476830787E-6, 1.6731560434691E-5, 2.0400132151099E-5}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 540.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="115.0, 110.0">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[145.0, 225.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[135.0, 500.0]">
+        </vertex>
+    </relation>
+    <link port="Gaussian.output" relation="relation"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="SampleDelay.input" relation="relation4"/>
+    <link port="SampleDelay.output" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.minus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation4"/>
+    <link port="LMSAdaptiveFIR.input" relation="relation"/>
+    <link port="LMSAdaptiveFIR.output" relation="relation2"/>
+    <link port="LMSAdaptiveFIR.error" relation="relation5"/>
+    <link port="LMSAdaptive.input" relation="relation"/>
+    <link port="LMSAdaptive.output" relation="relation3"/>
+    <link port="LMSAdaptive.error" relation="relation7"/>
+    <link port="AddSubtract2.plus" relation="relation"/>
+    <link port="AddSubtract2.minus" relation="relation3"/>
+    <link port="AddSubtract2.output" relation="relation6"/>
+    <link port="SampleDelay2.input" relation="relation6"/>
+    <link port="SampleDelay2.output" relation="relation7"/>
+    <link port="Test2.input" relation="relation7"/>
+</entity>

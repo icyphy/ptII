@@ -1,0 +1,608 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TokenRing" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 630]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[2, 12]">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 22, 1014, 740}, maximized=false}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Elaine Cheong and Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 575.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.5, 315.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A cyclic token-ring system composed of three blocks.  This system arbitrates&#10;fairly among requests for exclusive access to a shared resource by marching&#10;a token around a ring.  At each &quot;tick&quot; of the clock, the arbiter grants access&#10;to the first requestor downstream of the block with the token.&#10;&#10;In this model, InstanceOfArbiter1 starts with the token (see the parameter&#10;of the instance).&#10;&#10;This example is from:&#10;    Stephen A. Edwards and Edward A. Lee&#10;    &quot;The Semantics and Execution of a Synchronous Block-Diagram Language&quot;&#10;    Technical Memorandum UCB/ERL M01/33, &#10;    University of California, Berkeley, CA 94720, &#10;    October 25, 2001.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Arbiter class definition">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 160.0]">
+        </property>
+    </property>
+    <class name="Arbiter" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[130, 140]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 11, 1019, 746}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 315.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Request the token">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 125.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass in ownership of the token">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 320.0]">
+            </property>
+        </property>
+        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass in permission&#10;to use the token">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 175.0]">
+            </property>
+        </property>
+        <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If this owns the token and a request is made, then grant access.&#10;If this owns the token and no request is made, then pass out permission&#10;to use the token.  If this does not own the token, but the permission&#10;to use the token is passed in, then if a request is made, grant access.&#10;Otherwise, pass the permission to use the token out.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 360.0]">
+            </property>
+        </property>
+        <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass out ownership of the token">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 320.0]">
+            </property>
+        </property>
+        <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pass out permission&#10;to use the token">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 200.0]">
+            </property>
+        </property>
+        <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Grant access">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 120.0]">
+            </property>
+        </property>
+        <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 60.0]">
+            </property>
+        </property>
+        <port name="passIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 240.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="tokenIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 300.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="passOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 180.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="tokenOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 300.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 110.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="grant" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 110.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                    </property>
+                    <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                    </property>
+                    <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                    </property>
+                    <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                    </property>
+                    <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                    </property>
+                    <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 110.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictLogicFunction2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                    </property>
+                    <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                    </property>
+                    <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                    </property>
+                    <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                    </property>
+                    <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                    </property>
+                    <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 180.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictLogicFunction3" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                    </property>
+                    <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                    </property>
+                    <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                    </property>
+                    <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                    </property>
+                    <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                    </property>
+                    <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 180.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictLogicFunction4" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="or">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                    </property>
+                    <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                    </property>
+                    <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                    </property>
+                    <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                    </property>
+                    <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                    </property>
+                    <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 240.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+            <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initiallyOwnsToken">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialValue">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 300.0]">
+            </property>
+        </entity>
+        <relation name="1:relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[355.0, 240.0]">
+            </vertex>
+        </relation>
+        <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[180.0, 110.0]">
+            </vertex>
+        </relation>
+        <relation name="1:relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[180.0, 300.0]">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="passIn" relation="relation2"/>
+        <link port="tokenIn" relation="1:relation9"/>
+        <link port="passOut" relation="relation6"/>
+        <link port="tokenOut" relation="relation"/>
+        <link port="request" relation="1:relation8"/>
+        <link port="grant" relation="relation4"/>
+        <link port="NonStrictLogicFunction.input" relation="1:relation8"/>
+        <link port="NonStrictLogicFunction.input" relation="1:relation4"/>
+        <link port="NonStrictLogicFunction.output" relation="relation4"/>
+        <link port="NonStrictLogicFunction2.input" relation="1:relation4"/>
+        <link port="NonStrictLogicFunction2.input" relation="relation5"/>
+        <link port="NonStrictLogicFunction2.output" relation="relation6"/>
+        <link port="NonStrictLogicFunction3.input" relation="1:relation8"/>
+        <link port="NonStrictLogicFunction3.output" relation="relation5"/>
+        <link port="NonStrictLogicFunction4.input" relation="relation2"/>
+        <link port="NonStrictLogicFunction4.input" relation="1:relation9"/>
+        <link port="NonStrictLogicFunction4.output" relation="1:relation4"/>
+        <link port="NonStrictDelay.input" relation="1:relation9"/>
+        <link port="NonStrictDelay.output" relation="relation"/>
+    </class>
+    <entity name="Request1" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 405.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 128, 292, 229}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 485.0]">
+        </property>
+    </entity>
+    <entity name="Request2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 405.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="Request3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 405.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="BooleanToString" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 1 denied access&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 1 granted access&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 485.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfArbiter1" class="Arbiter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 365.0]">
+        </property>
+        <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="passIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="tokenIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="passOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="tokenOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="grant" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+    </entity>
+    <entity name="InstanceOfArbiter2" class="Arbiter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 365.0]">
+        </property>
+        <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="passIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="tokenIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="passOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="tokenOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="grant" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+    </entity>
+    <entity name="InstanceOfArbiter3" class="Arbiter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 365.0]">
+        </property>
+        <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="passIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="tokenIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="passOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="tokenOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="grant" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Clock tick number &quot; + input">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 535.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 535.0]">
+        </property>
+    </entity>
+    <entity name="BooleanToString2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 2 denied access&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 2 granted access&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 455.0]">
+        </property>
+    </entity>
+    <entity name="BooleanToString3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 3 denied access&quot;">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 3 granted access&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 455.0]">
+        </property>
+    </entity>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[640.0, 290.0]">
+        </vertex>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[110.0, 300.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Request1.output" relation="relation6"/>
+    <link port="NonStrictDisplay.input" relation="relation15"/>
+    <link port="NonStrictDisplay.input" relation="relation3"/>
+    <link port="NonStrictDisplay.input" relation="relation9"/>
+    <link port="NonStrictDisplay.input" relation="relation10"/>
+    <link port="Request2.output" relation="relation"/>
+    <link port="Request3.output" relation="relation4"/>
+    <link port="BooleanToString.input" relation="relation2"/>
+    <link port="BooleanToString.output" relation="relation3"/>
+    <link port="InstanceOfArbiter1.passIn" relation="relation17"/>
+    <link port="InstanceOfArbiter1.tokenIn" relation="relation16"/>
+    <link port="InstanceOfArbiter1.passOut" relation="relation5"/>
+    <link port="InstanceOfArbiter1.tokenOut" relation="relation11"/>
+    <link port="InstanceOfArbiter1.request" relation="relation6"/>
+    <link port="InstanceOfArbiter1.grant" relation="relation2"/>
+    <link port="InstanceOfArbiter2.passIn" relation="relation5"/>
+    <link port="InstanceOfArbiter2.tokenIn" relation="relation11"/>
+    <link port="InstanceOfArbiter2.passOut" relation="relation14"/>
+    <link port="InstanceOfArbiter2.tokenOut" relation="relation12"/>
+    <link port="InstanceOfArbiter2.request" relation="relation"/>
+    <link port="InstanceOfArbiter2.grant" relation="relation8"/>
+    <link port="InstanceOfArbiter3.passIn" relation="relation14"/>
+    <link port="InstanceOfArbiter3.tokenIn" relation="relation12"/>
+    <link port="InstanceOfArbiter3.passOut" relation="relation17"/>
+    <link port="InstanceOfArbiter3.tokenOut" relation="relation16"/>
+    <link port="InstanceOfArbiter3.request" relation="relation4"/>
+    <link port="InstanceOfArbiter3.grant" relation="relation7"/>
+    <link port="Expression.output" relation="relation15"/>
+    <link port="Expression.input" relation="relation13"/>
+    <link port="Ramp.output" relation="relation13"/>
+    <link port="BooleanToString2.input" relation="relation8"/>
+    <link port="BooleanToString2.output" relation="relation9"/>
+    <link port="BooleanToString3.input" relation="relation7"/>
+    <link port="BooleanToString3.output" relation="relation10"/>
+</entity>

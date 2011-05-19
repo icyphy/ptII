@@ -1,0 +1,144 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModularCodeGenPubSub4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 40.0]">
+        </property>
+    </property>
+    <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 53, 815, 615}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 505]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.972503617945">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0104166666667, 261.7641369047619}">
+    </property>
+    <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+        <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 195.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 125.0]">
+            </property>
+        </port>
+        <configure>
+            <group>
+                <entity name="A" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 125.0]">
+                    </property>
+                    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
+                        </property>
+                    </property>
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                    </property>
+                    <port name="port3" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 125.0]">
+                        </property>
+                    </port>
+                    <configure>
+                        <group>
+                            <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
+                                <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+                                </property>
+                                <property name="global" class="ptolemy.data.expr.Parameter" value="true">
+                                </property>
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 125.0]">
+                                </property>
+                            </entity>
+                            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                            </relation>
+                            <link port="port3" relation="relation"/>
+                            <link port="Subscriber.output" relation="relation"/>
+                        </group>
+                    </configure>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="port3" relation="relation"/>
+                <link port="A.port3" relation="relation"/>
+            </group>
+        </configure>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
+        <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 115.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[135.0, 115.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{355.0, 115.0}">
+        </vertex>
+    </relation>
+    <link port="A1.port3" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Publisher.input" relation="relation2"/>
+</entity>

@@ -1,0 +1,22 @@
+#!/bin/sh
+#$Id$
+# Script to insert files to fix make checkjunk
+
+# output of "cd $PTII/ptolemy; make checkjunk"
+cj=/tmp/cj
+if [ ! -f $cj ]; then
+   cd $PTII/ptolemy; make checkjunk 2>&1 > $cj
+fi
+
+toBeFixed=/tmp/toBeFixed
+if [ ! -f $toBeFixed ]; then
+ awk '{ if ($0 ~ /Extra files in/) {
+           # get rid of trailing :
+           directory=substr($NF,1, length($NF) - 1)
+           sawExtraFilesIn = 1
+       } else if (sawExtraFilesIn == 1) {
+           sawExtraFilesIn = 0
+	   print directory, $0
+       }
+     }' $cj > $toBeFixed
+fi

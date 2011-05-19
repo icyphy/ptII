@@ -1,0 +1,165 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SDFDDI" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 58, 654, 603}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[654, 497]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates the SDF DDI plugin.
+[DDI: domain-dependent interpreter]
+
+The SDF DDI plugin configures the input/output token rates for each port depending
+on a simple analysis of the actor definition. It will detect non-SDF actors and 
+create an error message.
+
+Modify the parameters of the A, B, and Upsample actors and try to run the model.
+
+As the A actor shows, whether an actor in fact *is* an SDF actor may depend on 
+its parameter values. Therefore the SDF DDI will test this condition when the 
+model is about to be run, and signal an error if it is found to be violated.
+
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 235.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.0, 248.5}">
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={681, 185, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) ==&gt; Out :&#10;&#10;  v := init;&#10;&#10;  action ==&gt; [old v]&#10;  do&#10;    v := v + step;&#10;  end&#10;end ">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 125.0">
+        </property>
+        <port name="Out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="B" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor B (k) X1, X2 ==&gt; Y :&#10;&#10;  action [x1], [x2] ==&gt; [x1, x2] repeat k end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="k" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 135.0">
+        </property>
+        <port name="X1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="X2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="Y" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="A" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor A (k1, k2) A ==&gt; B :&#10;&#10;  action [x] repeat k1 ==&gt; [x] &#10;  guard #x = k2 end&#10;&#10;  action [x] repeat k2 ==&gt; [x] end &#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="k1" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="k2" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 125.0">
+        </property>
+        <port name="A" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="B" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Upsample" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Upsample (k) X ==&gt; Y :&#10;&#10;  function up(x, k) :&#10;    if k = 0 then [] &#10;    else [x] + up(x, k - 1) end&#10;  end&#10;&#10;  action [x] ==&gt; [up(x, k)] repeat k end&#10;end">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="k" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 200.0">
+        </property>
+        <port name="X" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="Y" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="245.0, 125.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation4"/>
+    <link port="Ramp.Out" relation="relation3"/>
+    <link port="B.X1" relation="relation2"/>
+    <link port="B.X2" relation="relation"/>
+    <link port="B.Y" relation="relation4"/>
+    <link port="A.A" relation="relation3"/>
+    <link port="A.B" relation="relation2"/>
+    <link port="Upsample.X" relation="relation2"/>
+    <link port="Upsample.Y" relation="relation"/>
+</entity>

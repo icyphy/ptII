@@ -1,0 +1,395 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Array" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 977, 597}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 487]">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the Ptolemy II&#10;expression language has&#10;extensive support for&#10;arrays, but this is&#10;not shown here.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 290.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Many operations on arrays&#10;are best done by converting&#10;the arrays to a sequences&#10;and back again. Here, a&#10;sequence of random numbers&#10;is converted to an array.&#10;An alternative would be to&#10;use a Const actor with the&#10;expression random(100).">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 395.0}">
+        </property>
+    </property>
+    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 430.0">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="280.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="39.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of some simple array actors.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 440.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.0, 243.5}">
+    </property>
+    <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 80.0">
+        </property>
+    </entity>
+    <entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 145.0">
+        </property>
+    </entity>
+    <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 215.0">
+        </property>
+    </entity>
+    <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="random, ascending, descending">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 480, 500, 277}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 233]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 265.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Random and Sorted Random Data</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="99.0"/>
+<yRange min="0.0014234211981495326" max="0.9998059819797708"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Maximum Value" class="ptolemy.actor.lib.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.9998059819798">
+        </property>
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 35.0">
+        </property>
+    </entity>
+    <entity name="Minimum Value" class="ptolemy.actor.lib.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0014234211981">
+        </property>
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 100.0">
+        </property>
+    </entity>
+    <entity name="ArraySort2" class="ptolemy.actor.lib.ArraySort">
+        <property name="ascending" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 305.0">
+        </property>
+    </entity>
+    <entity name="Minimum Index" class="ptolemy.actor.lib.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="44">
+        </property>
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 155.0">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 90.0">
+        </property>
+    </entity>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
+        </property>
+        <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 90.0">
+        </property>
+    </entity>
+    <entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 370.0">
+        </property>
+    </entity>
+    <entity name="Average Value" class="ptolemy.actor.lib.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4990646290028">
+        </property>
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 370.0">
+        </property>
+    </entity>
+    <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 225.0">
+        </property>
+    </entity>
+    <entity name="Minimum Value2" class="ptolemy.actor.lib.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0014234211981">
+        </property>
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 225.0">
+        </property>
+    </entity>
+    <entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract">
+        <property name="extractLength" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <property name="outputArrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 290.0">
+        </property>
+    </entity>
+    <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="random, ascending, descending">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={513, 479, 500, 277}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 233]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="630.0, 290.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Lowest 10 Random Numbers</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="9.0"/>
+<yRange min="0.0014234211981495326" max="0.08678357641324441"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 300.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="195.0, 125.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="310.0, 215.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ArrayMaximum.input" relation="relation"/>
+    <link port="ArrayMaximum.output" relation="relation3"/>
+    <link port="ArrayMinimum.input" relation="relation"/>
+    <link port="ArrayMinimum.output" relation="relation4"/>
+    <link port="ArrayMinimum.index" relation="relation6"/>
+    <link port="ArraySort.input" relation="relation"/>
+    <link port="ArraySort.output" relation="relation9"/>
+    <link port="ArrayPlotter.input" relation="relation5"/>
+    <link port="ArrayPlotter.input" relation="relation"/>
+    <link port="ArrayPlotter.input" relation="relation9"/>
+    <link port="Maximum Value.input" relation="relation3"/>
+    <link port="Minimum Value.input" relation="relation4"/>
+    <link port="ArraySort2.input" relation="relation"/>
+    <link port="ArraySort2.output" relation="relation5"/>
+    <link port="Minimum Index.input" relation="relation6"/>
+    <link port="SequenceToArray.input" relation="relation7"/>
+    <link port="SequenceToArray.output" relation="relation"/>
+    <link port="Uniform.output" relation="relation7"/>
+    <link port="ArrayAverage.input" relation="relation"/>
+    <link port="ArrayAverage.output" relation="relation8"/>
+    <link port="Average Value.input" relation="relation8"/>
+    <link port="ArrayElement.input" relation="relation9"/>
+    <link port="ArrayElement.output" relation="relation2"/>
+    <link port="Minimum Value2.input" relation="relation2"/>
+    <link port="ArrayExtract.input" relation="relation9"/>
+    <link port="ArrayExtract.output" relation="relation10"/>
+    <link port="ArrayExtract.extractLength" relation="relation12"/>
+    <link port="ArrayPlotter2.input" relation="relation10"/>
+    <link port="Const.output" relation="relation12"/>
+</entity>

@@ -1,0 +1,12 @@
+#!/bin/sh
+# $Id$
+# Check the svn properties of text files
+
+textfilenames=/tmp/ptIItxtfiles.txt
+
+if [ ! -f $textfilenames ]; then
+   echo "Creating $textfilenames"
+   $PTII/adm/bin/ptIItxtfiles > $textfilenames
+fi
+
+cat $textfilenames | xargs $PTII/adm/bin/svnpropcheck

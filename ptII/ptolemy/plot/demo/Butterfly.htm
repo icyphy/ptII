@@ -1,0 +1,38 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Butterfly</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Butterfly</h1>
+
+The plot below illustrates the Butterfly curve, invented by T. Fay
+(American Mathematical Monthly, v96, n5 (May, 1989) :442 ).
+The data for this curve is plotted from a 90k file that contains 10,000 4 byte
+floating point X,Y pairs.
+
+<p>
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar" 
+ width = "500" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-bigendian -t Butterfly -0 xy -tk data/butterfly.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<p>
+For information about the binary format, see the
+<A HREF="../../../doc/codeDoc/ptolemy/plot/compat/PxgraphParser.html">
+PxgraphParser</A> Java class documentation.
+For information about endian issues, see the
+<a href="Endian.htm">Endian Examples</a>.
+
+<p>&nbsp;
+</body>
+</html>

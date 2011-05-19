@@ -1,0 +1,310 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MathFunction" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 98, 817, 564}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 95}">
+        </property>
+    </property>
+    <entity name="MathFunction1" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="exp">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 75.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 135.0">
+        </property>
+    </entity>
+    <entity name="MathFunction8" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="log">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 135.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="MathFunction9" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="square">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 195.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="MathFunction10" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sqrt">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 255.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="MathFunction11" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="exp">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 315.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="Test16" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.718281828459, 7.3890560989306}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 70.71428680419922">
+        </property>
+    </entity>
+    <entity name="Test20" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 4.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="507.0, 191.1428565979004">
+        </property>
+    </entity>
+    <entity name="Test40" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.6931471805599}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 134.57142639160156">
+        </property>
+    </entity>
+    <entity name="Test42" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.4142135623731}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="513.0, 253.0">
+        </property>
+    </entity>
+    <entity name="MathFunction2" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sign">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+                <property name="sign" class="ptolemy.kernel.util.StringAttribute" value="sign">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 375.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="Pulse5" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{-1.8,3.6, 4.0, 0.0,5.0,-10008.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="267.0, 370.0">
+        </property>
+    </entity>
+    <entity name="Clock7" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 225.0">
+        </property>
+    </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, 1.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 374.4285659790039">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex" value="340.0, 135.0">
+        </vertex>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex" value="491.0, 314.8571428571429">
+        </vertex>
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex" value="180.0, 225.0">
+        </vertex>
+    </relation>
+    <link port="MathFunction1.firstOperand" relation="relation5"/>
+    <link port="MathFunction1.output" relation="relation26"/>
+    <link port="Pulse2.output" relation="relation5"/>
+    <link port="Pulse2.trigger" relation="relation10"/>
+    <link port="MathFunction8.firstOperand" relation="relation5"/>
+    <link port="MathFunction8.output" relation="relation27"/>
+    <link port="MathFunction9.firstOperand" relation="relation5"/>
+    <link port="MathFunction9.output" relation="relation28"/>
+    <link port="MathFunction10.firstOperand" relation="relation5"/>
+    <link port="MathFunction10.output" relation="relation29"/>
+    <link port="MathFunction11.firstOperand" relation="relation5"/>
+    <link port="MathFunction11.output" relation="relation30"/>
+    <link port="Test16.input" relation="relation26"/>
+    <link port="Test20.input" relation="relation28"/>
+    <link port="Test40.input" relation="relation27"/>
+    <link port="Test42.input" relation="relation29"/>
+    <link port="MathFunction2.firstOperand" relation="relation6"/>
+    <link port="MathFunction2.output" relation="relation1"/>
+    <link port="Pulse5.output" relation="relation6"/>
+    <link port="Pulse5.trigger" relation="relation10"/>
+    <link port="Clock7.output" relation="relation10"/>
+    <link port="Test12.input" relation="relation1"/>
+</entity>

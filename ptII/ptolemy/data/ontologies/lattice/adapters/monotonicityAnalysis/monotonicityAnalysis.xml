@@ -1,0 +1,145 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="monotonicityAnalysis" extends="ptolemy.data.ontologies.Ontology">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 126, 1199, 647}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 536]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="3.814697265625">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.5, 190.0038581010101}">
+    </property>
+    <entity name="Monotonic" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 180}">
+            </property>
+        </property>
+    </entity>
+    <entity name="Antimonotonic" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 190.0]">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 185}">
+            </property>
+        </property>
+    </entity>
+    <entity name="General" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 130.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 50}">
+            </property>
+        </property>
+    </entity>
+    <entity name="Constant" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 250.0]">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 325}">
+            </property>
+        </property>
+    </entity>
+    <relation name="r6" class="ptolemy.data.ontologies.ConceptRelation">
+    </relation>
+    <relation name="r9" class="ptolemy.data.ontologies.ConceptRelation">
+    </relation>
+    <relation name="r1" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+    </relation>
+    <relation name="r4" class="ptolemy.data.ontologies.ConceptRelation">
+    </relation>
+    <link port="Monotonic.belowPort" relation="r1"/>
+    <link port="Monotonic.abovePort" relation="r6"/>
+    <link port="Antimonotonic.belowPort" relation="r4"/>
+    <link port="Antimonotonic.abovePort" relation="r9"/>
+    <link port="General.belowPort" relation="r6"/>
+    <link port="General.belowPort" relation="r9"/>
+    <link port="Constant.abovePort" relation="r1"/>
+    <link port="Constant.abovePort" relation="r4"/>
+</class>

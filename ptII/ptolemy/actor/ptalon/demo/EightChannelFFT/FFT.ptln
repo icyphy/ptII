@@ -1,0 +1,83 @@
+/* A decimation-in-time FFT actor.
+ * 
+ * This is a decimation-in-time FFT actor.  This actor is
+ * explained in detail in Chapter 9 of the second edition
+ * of Oppenheim, Schafer, and Buck's "Discrete-Time Signal
+ * Processing", 2nd edition.  The actor has a parameter N
+ * which is the number of channels to perform the FFT over.
+ *
+ * In this simple implementation, N must be a positive power
+ * of two.  If this is the case, the actor will create
+ * an input multiport x, and an output multiport X.  A user
+ * can connect N channels to either of these ports.  At
+ * each firing, {X(0), X(1), ..., X(N-1)} is the FFT of
+ * {x(0), x(1), ..., x(N-1)}.
+ *
+ * By Adam Cataldo
+ *
+ */
+
+FFT is {
+	parameter N;
+	actor gain = ptolemy.actor.lib.Scale;
+	actor adder = ptolemy.actor.ptalon.lib.ComplexAddSubtract;
+	if [[ (N >= 2) && ((N % 2) == 0) ]] {
+		inport[] x;
+		outport[] X;
+		if [[ N == 2 ]] {
+			relation x0;
+			relation x1;
+			this(x := x0);
+			this(x := x1);
+			port reference sum0;
+			port reference sum1;
+			adder(plus := sum0, output := X);
+			adder(plus := sum1, output := X);
+			this(sum0 := x0);
+			this(sum1 := x0);
+			gain(input := x1, output := sum0, factor := [[ 1 ]]);
+			gain(input := x1, output := sum1, factor := [[ -1 ]]);
+		} else {
+			port reference xFromInput;
+			this(x := xFromInput);
+			port reference xEven;
+			port reference xOdd;
+			port reference G;
+			port reference H;
+			FFT(x := xEven, X := G, N := [[N / 2]]);
+			FFT(x := xOdd, X := H, N := [[N / 2]]);
+			
+			for n initially [[0]] [[n < N / 2]] {
+				relation G[[n]];
+				relation H[[n]];
+				this(G := G[[n]], H := H[[n]]);
+			} next [[n + 1]]
+			
+			for n initially [[0]] [[n < N]] {
+				relation x[[n]];
+				this(xFromInput := x[[n]]);
+				if [[ (n % 2) == 0 ]] {
+					this(xEven := x[[n]]);
+				} else {
+					this(xOdd := x[[n]]);
+				}
+
+				port reference sum[[n]];
+				adder(plus := sum[[n]], output := X);
+				
+				if [[ n < N / 2]] {
+					gain(input := H[[n]], output := sum[[n]], 
+							factor :=[[ exp(-j*2*n*pi/N) ]]);
+					this(sum[[n]] := G[[n]]);
+				} else {
+					gain(input := H[[n - N/2]], output := sum[[n]], 
+							factor :=[[ exp(-j*2*n*pi/N) ]]);
+					this(sum[[n]] := G[[n - N/2]]);
+				}
+			} next [[n + 1]]			
+		}
+	} else {
+		/* Do nothing if N is not a power of 2. */
+	}
+}
+

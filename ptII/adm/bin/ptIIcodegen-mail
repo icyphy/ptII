@@ -1,0 +1,309 @@
+#!/bin/sh
+# $Id$
+# Script to mail a message about the codegen nightly builds
+
+
+#mailto=ealtech
+#mailto=cxh
+if [ $# -ne 1 ]; then
+    nomail=1
+else
+    mailto=$1
+fi
+
+
+ADMDIR=/users/ptII/adm
+if [ "$USER" = "cxh" -o "$USERNAME" = "cxh" ]; then
+    ADMDIR=$PTII/adm
+fi
+    
+
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+    ADMDIR=/home/bldmastr/ptII/adm
+fi
+
+# If you change the version number, then edit 
+# ptII/adm/bin/ptIInightly
+# ptII/adm/gen-xxx/makefile
+# buildmaster/web/adm/makefile
+GENVERSION=gen-6.1
+GENDIR=$ADMDIR/$GENVERSION
+cd $GENDIR
+
+DEEPLOG=$GENDIR/logs/remote4.out
+if [ ! -r "$DEEPLOG" ]; then
+    DEEPLOG=$PTII/ptolemy/copernicus/java/test/make2.out
+fi
+SHALLOWLOG=$GENDIR/logs/remote5.out
+
+
+# Generate the mail message
+mailmsg=$ADMDIR/logs/ptIIcodegen_mail.txt
+#mailmsg=$PTII/adm/logs/ptIIcodegen_mail.txt
+
+echo "`date`" > $mailmsg
+
+echo "" >> $mailmsg
+echo "Summary" >> $mailmsg
+echo "-------" >> $mailmsg
+
+if [ -r "$DEEPLOG" ]; then
+    echo "Deep codegen test results:" >> $mailmsg
+    echo "$DEEPLOG" >> $mailmsg
+    egrep '^Failed:' "$DEEPLOG" >> $mailmsg
+    echo "" >> $mailmsg
+else
+    echo "WARNING: Deep Log '$DEEPLOG' not found" >> $mailmsg 
+fi
+
+if [ -r "$SHALLOWLOG" ]; then
+    echo "Shallow codegen test results:" >> $mailmsg
+    echo "$SHALLOWLOG" >> $mailmsg
+    egrep '^Failed:' "$SHALLOWLOG" >> $mailmsg
+    echo "" >> $mailmsg
+else
+    echo "WARNING: Shallow Log '$SHALLOWLOG' not found" >> $mailmsg 
+fi
+echo "To get the copernicus/java logs, do:" >> $mailmsg
+echo "    scp `hostname`:$GENDIR/logs/remote4.out.old /tmp" >> $mailmsg
+echo "" >> $mailmsg
+echo "To get the copernicus/shallow logs, do:" >> $mailmsg
+echo "    scp `hostname`:$GENDIR/logs/remote5.out.old /tmp" >> $mailmsg
+
+echo "" >> $mailmsg
+echo "The output below consists of the names of the models"  >> $mailmsg
+echo "that failed, followed by the two subsequent lines " >> $mailmsg
+echo "Failures that are similar are grouped together " >> $mailmsg
+echo "" >> $mailmsg
+
+# Shell proc that parses the log file for us.
+parseLog() {  
+
+gawk '
+      sawFailed == 1 {
+			    if ( $1 != "Because:" ) {
+				sawFailed--
+				errorMessage = firstLine "\n" $0
+				print "modelName: " modelName
+				errors[errorMessage] = errors[errorMessage] " " modelName
+                                #print "sawFailed==1: " errors[errorMessage]
+			    }
+	             } 		    
+      sawFailed == 2 {
+			    firstLine = $0
+			    sawFailed--
+		     }	    
+
+    $0  ~/ failed:$/ {
+			    # Print one lines
+			    sawFailed = 2
+			    # Print out only the model name after ptolemy/
+			    nf = split($4, f, "/")
+			    okToPrint = 0
+			    modelName = ""
+			    for (i = 1; i < nf; i++) {
+				if (okToPrint == 1) {
+				    modelName = modelName f[i] "/"
+				}
+				if (f[i] == "ptolemy") {
+				    okToPrint = 1
+				}    
+			    }
+			    modelName = modelName substr(f[nf], 1, length(f[nf])-1)
+	              }		    
+
+      sawTestGeneratedError == 4 {
+			    if ($0 ~ /ptolemy.copernicus.kernel.Copernicus/) {
+				# Skip "Test generated error" followed
+				# by the invocation of Copernicus and instead
+				# look for 
+				# "Exception occurred during processing"
+				sawTestGeneratedError = 0
+			    }
+			    if ($0 ~ /WatchDogTimer.internalTransform\(wjtp.watchDog/) {
+				sawTestGeneratedError = 0
+				sawTestGeneratedErrorAndWatchDogTimer = 1
+			    }
+                       }
+      sawTestGeneratedError == 1 {
+			    sawTestGeneratedError--
+			    sawTestGeneratedErrorAndWatchDogTimer = 0
+			    completedSawTestGeneratedError = 1
+			    tmp = errorLine2 "\n" $0
+			    errorLine2 = tmp
+			    # Skip any lines that contain
+			    # "Return value was: 2"
+			    # we will have proccessed better error messages
+			    # above
+			    if (errorLine2 !~ /Problem executing command. Return value was: 2. Command was:/) {
+			        if ( length(modelName2) < 1) {
+				    print "modelName2 is empty at line " NR
+                                }
+				errors[errorLine2] = errors[errorLine2] " " modelName2
+                                #print "sawTestGeneratedError==1: " errors[errorLine2] , errorLine2 
+                                #print
+			    }
+	             } 		    
+
+    sawTestGeneratedError > 1 {
+			    if ($0 ~ /Entering directory /) {
+				skip = 4
+			    } 
+
+			    if (skip > 0) {
+				skip--
+			    } else {
+				inputLine = $0
+				# Some errors include info that changes
+ 				# for each model, so we only print the reason,
+				# not the details
+				if (inputLine ~ /Failed to parse/) {
+				    inputLine = "Failed to parse"
+				    sawTestGeneratedError +=2
+				    skip = 1
+			        } 
+
+				if (inputLine ~ /Could not determine the static value of tmp/) {
+				    inputLine = "Could not determine the static value of tmp"
+			        } 
+				sawTestGeneratedError--
+				if ( length(errorLine2) > 0) {
+				    tmp = errorLine2 "\n" inputLine
+				    errorLine2 = tmp
+				} else {
+				    errorLine2 = inputLine
+				}
+			    }
+		      }	
+
+    $0  ~/---- testing / {
+                            # Reset the name if we see ---- testing
+                            # This handled errors that occur while parsing
+ 
+			    # Print out only the model name after ptolemy/
+			    nf = split($3, f, "/")
+			    okToPrint = 0
+			    modelName2 = ""
+			    for (i = 1; i < nf; i++) {
+				if (okToPrint == 1) {
+				    modelName2 = modelName2 f[i] "/"
+				}
+				if (f[i] == "ptolemy") {
+				    okToPrint = 1
+				}    
+			    }
+			    modelName2 = modelName2 f[nf]
+			    sawCommandFailed=0 
+			    sawTestGeneratedErrorAndWatchDogTimer = 0
+			    completedSawTestGeneratedError = 0
+	              }		    
+    $0  ~/ Auto Automatic test in file/ {
+
+			    # Print out only the model name after ptolemy/
+			    nf = split($7, f, "/")
+			    okToPrint = 0
+			    modelName2 = ""
+			    for (i = 1; i < nf; i++) {
+				if (okToPrint == 1) {
+				    modelName2 = modelName2 f[i] "/"
+				}
+				if (f[i] == "ptolemy") {
+				    okToPrint = 1
+				}    
+			    }
+			    modelName2 = modelName2 f[nf]
+			    sawCommandFailed=0 
+			    sawTestGeneratedErrorAndWatchDogTimer = 0
+			    completedSawTestGeneratedError = 0
+	              }		    
+    $0 ~ /^====/ {
+		    if ($0 !~ /Auto Automatic test in file/ \
+			&& $0 !~ /Contents of test case:/ \
+			&& $0 !~ /Test generated error/ ) {
+			# Non-automatic test, like from QuickSmoke.tcl
+			modelName2 = $2
+		        sawCommandFailed=0 
+			sawTestGeneratedErrorAndWatchDogTimer = 0
+			completedSawTestGeneratedError = 0
+		    }
+		}		      
+    $0  ~/Command failed/ {
+			   # vq test1.xml will come up twice unless
+			   # we avoid Command Failed after Test Generated Err.
+			   if(completedSawTestGeneratedError == 0) {
+				sawCommandFailed=1 
+				sawTestGeneratedError=2
+				errorLine2=""
+			   }
+                      }
+    $0  ~/Exception occurred:/ {
+                           sawTestGeneratedError=2
+    			   errorLine2=$0
+                      }	
+    $0  ~/Exception occurred during parsing/ {
+                           sawTestGeneratedError=2
+    			   errorLine2=$0
+                      }
+    $0  ~/Caused by/ {	      
+			    # DifferentialSystem.xml needs this
+			    if (sawTestGeneratedErrorAndWatchDogTimer == 1 && sawTestGeneratedError == 0) {
+				sawTestGeneratedErrorAndWatchDogTimer = 0
+    			        sawTestGeneratedError=3
+                           }
+                     }
+    $0  ~/ Test generated error:/ {
+    			    sawTestGeneratedError=4
+    			    errorLine2=""
+                      }
+    $0  ~/WatchDogTime went off,/ {
+    			    sawTestGeneratedError=4
+    			    errorLine2=""
+                      }
+    END               {
+			count = 1
+			for( error in errors) {
+			    files = errors[error]
+			    nf = split(files, f, " ")
+			    for(i = 1; i <= nf; i++) {
+				# Remove duplicates
+				sawItAlready = 0
+				for(j = 1; j < i; j++) {
+				    if ( f[i] == f[j]) {
+					sawItAlready = 1
+				    }
+				}
+				if (sawItAlready == 0) {
+				    print count ". " f[i]
+				    count++
+				}
+			    }
+			    print error
+			    printf("\n\n")
+			}
+                       }' $1 >> $mailmsg
+}
+
+
+if [ -r "$DEEPLOG" ]; then
+    echo "" >> $mailmsg
+    echo "Deep Codegen Details" >> $mailmsg
+    echo "--------------------" >> $mailmsg
+    parseLog  "$DEEPLOG"
+else
+    echo "WARNING: DEEP Log '$DEEPLOG' not found" >> $mailmsg 
+fi
+
+if [ -r "$SHALLOwLOG" ]; then
+    echo "" >> $mailmsg
+    echo "Shallow Codegen Details" >> $mailmsg
+    echo "--------------------" >> $mailmsg
+    parseLog  "$SHALLOWLOG"
+else
+    echo "WARNING: Shallow Log '$SHALLOWLOG' not found" >> $mailmsg 
+fi
+
+if [ $nomail = 1 ]; then
+    cat $mailmsg
+else
+    cat $mailmsg | /usr/ucb/Mail -s "Ptolemy II Codegen Nightly Build" $mailto
+fi

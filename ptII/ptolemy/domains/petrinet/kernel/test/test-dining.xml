@@ -1,0 +1,323 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="test-dining" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[749, 533]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[11, 32]">
+    </property>
+    <property name="PTN" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 482.0">
+        </property>
+    </property>
+    <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="336.0, 97.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="371.0, 164.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="373.0, 36.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Place3" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 180.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Place4" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="448.0, 170.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor5" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="266.0, 251.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Place6" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="237.0, 333.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor7" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="361.0, 333.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Place8" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="448.0, 335.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor9" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="476.0, 245.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Place10" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 246.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor11" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 248.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Place12" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="342.0, 396.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor13" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 462.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Place14" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="571.0, 246.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor15" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="701.0, 246.0">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation38" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation39" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Place.input" relation="relation18"/>
+    <link port="Place.output" relation="relation19"/>
+    <link port="typed composite actor.in1" relation="relation16"/>
+    <link port="typed composite actor.in1" relation="relation17"/>
+    <link port="typed composite actor.out1" relation="relation18"/>
+    <link port="typed composite actor2.in1" relation="relation19"/>
+    <link port="typed composite actor2.out1" relation="relation20"/>
+    <link port="typed composite actor2.out1" relation="relation21"/>
+    <link port="Place3.input" relation="relation21"/>
+    <link port="Place3.input" relation="relation27"/>
+    <link port="Place3.output" relation="relation16"/>
+    <link port="Place3.output" relation="relation22"/>
+    <link port="Place4.input" relation="relation20"/>
+    <link port="Place4.input" relation="relation2"/>
+    <link port="Place4.output" relation="relation17"/>
+    <link port="Place4.output" relation="relation36"/>
+    <link port="typed composite actor5.in1" relation="relation22"/>
+    <link port="typed composite actor5.in1" relation="relation23"/>
+    <link port="typed composite actor5.out1" relation="relation24"/>
+    <link port="Place6.input" relation="relation26"/>
+    <link port="Place6.input" relation="relation33"/>
+    <link port="Place6.output" relation="relation23"/>
+    <link port="Place6.output" relation="relation28"/>
+    <link port="typed composite actor7.in1" relation="relation28"/>
+    <link port="typed composite actor7.in1" relation="relation29"/>
+    <link port="typed composite actor7.out1" relation="relation30"/>
+    <link port="Place8.input" relation="relation32"/>
+    <link port="Place8.input" relation="relation34"/>
+    <link port="Place8.output" relation="relation29"/>
+    <link port="Place8.output" relation="relation35"/>
+    <link port="typed composite actor9.in1" relation="relation35"/>
+    <link port="typed composite actor9.in1" relation="relation36"/>
+    <link port="typed composite actor9.out1" relation="relation38"/>
+    <link port="Place10.input" relation="relation24"/>
+    <link port="Place10.output" relation="relation25"/>
+    <link port="typed composite actor11.in1" relation="relation25"/>
+    <link port="typed composite actor11.out1" relation="relation26"/>
+    <link port="typed composite actor11.out1" relation="relation27"/>
+    <link port="Place12.input" relation="relation30"/>
+    <link port="Place12.output" relation="relation31"/>
+    <link port="typed composite actor13.in1" relation="relation31"/>
+    <link port="typed composite actor13.out1" relation="relation32"/>
+    <link port="typed composite actor13.out1" relation="relation33"/>
+    <link port="Place14.input" relation="relation"/>
+    <link port="Place14.input" relation="relation"/>
+    <link port="Place14.input" relation="relation38"/>
+    <link port="Place14.output" relation="relation39"/>
+    <link port="typed composite actor15.in1" relation="relation39"/>
+    <link port="typed composite actor15.out1" relation="relation34"/>
+    <link port="typed composite actor15.out1" relation="relation2"/>
+</entity>

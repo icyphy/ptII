@@ -1,0 +1,162 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DatagramDE" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    </property>
+    <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 80.0">
+        </property>
+    </property>
+    <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">This demo shows the datagram actors used in the DE domain.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 15.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 273, 292, 222}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 335.0">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 123.5">
+        </property>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 214.5">
+        </property>
+    </entity>
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 155.0">
+        </property>
+    </entity>
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
+        </property>
+        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter" value="8192">
+        </property>
+        <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="defaultReturnAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="defaultReturnSocketNumber" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="{0ub}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 295.0">
+        </property>
+    </entity>
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 125.0">
+        </property>
+    </entity>
+    <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 140.0">
+        </property>
+    </entity>
+    <entity name="UnsignedByteArrayToString" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 305.0">
+        </property>
+    </entity>
+    <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 335.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation7"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation3"/>
+    <link port="Clock.output" relation="relation3"/>
+    <link port="DatagramWriter.data" relation="relation5"/>
+    <link port="DatagramReader.output" relation="relation"/>
+    <link port="TokenToExpression.input" relation="relation2"/>
+    <link port="TokenToExpression.output" relation="relation4"/>
+    <link port="StringToUnsignedByteArray.input" relation="relation4"/>
+    <link port="StringToUnsignedByteArray.output" relation="relation5"/>
+    <link port="UnsignedByteArrayToString.input" relation="relation"/>
+    <link port="UnsignedByteArrayToString.output" relation="relation6"/>
+    <link port="ExpressionToToken.input" relation="relation6"/>
+    <link port="ExpressionToToken.output" relation="relation7"/>
+</entity>

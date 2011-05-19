@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="NCComponent" extends="ptolemy.domains.ptinyos.lib.NCComponentBase">
+    <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+        <property name="attributeName" value="source">
+        </property>
+    </property>
+</class>

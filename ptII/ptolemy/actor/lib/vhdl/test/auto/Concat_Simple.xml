@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Concat_Simple" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 240}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 196, 815, 507}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{fix(3,3,3), fix(3,3,3), fix(3,3,3), fix(3,3,3), fix(3,3,3)}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380, 100}">
+        </property>
+    </entity>
+    <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U2.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="FixConst2" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="U1.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="Concat" class="ptolemy.actor.lib.vhdl.Concat">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="S3.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 100}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation3"/>
+    <link port="FixConst.output" relation="relation2"/>
+    <link port="FixConst2.output" relation="relation"/>
+    <link port="Concat.output" relation="relation3"/>
+    <link port="Concat.input" relation="relation"/>
+    <link port="Concat.input" relation="relation2"/>
+</entity>

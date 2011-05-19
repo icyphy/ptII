@@ -1,0 +1,591 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModalModel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0/440.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 40}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 305.0]">
+        </property>
+    </property>
+    <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 345.0]">
+        </property>
+    </property>
+    <property name="averageEventInterval" class="ptolemy.data.expr.Parameter" value="2.0/440.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 285.0]">
+        </property>
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 325.0]">
+        </property>
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee, Contributor: Christopher Brooks">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 375.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This modal model has two modes, &quot;clean&quot; and &quot;noisy&quot;.&#10;In the &quot;clean&quot; mode, it generates samples of a clean&#10;(noiseless) sinusoid at regular sample intervals.&#10;In the &quot;noisy&quot; mode, it generates a noisy sinusoid.&#10;It switches modes at random times according to a&#10;Poisson process.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 10.0]">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the ModalModel and&#10;select &quot;Open Actor&quot; to see how this model works.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 205.0]">
+        </property>
+    </property>
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the Sinewave and&#10;select &quot;Open Instance&quot; to see how we modified&#10;the Sinewave Actor Oriented Class.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 250.0]">
+        </property>
+    </property>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="averageEventInterval">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 175.0}">
+        </property>
+        <port name="event" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mode switches are triggered by the presence of an &quot;event&quot; input.&#10;On each transition, the phase of the sinusoid is updated in the&#10;refinement of the destination state so that the phase is continuous.&#10;An alternative design would have put the Ramp outside the modal model.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 15.0]">
+                </property>
+            </property>
+            <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each bubble represents a &quot;mode&quot; of operation&#10;of this modal component.  Each mode has a&#10;&quot;refinement&quot; which gives the behavior of the&#10;component when the component is in this mode.&#10;In the Debug menu, you can turn on animation&#10;to view the mode switching.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 280.0]">
+                </property>
+            </property>
+            <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the states and select&#10;&quot;Look Inside&quot; to see the mode refinements.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 230.0]">
+                </property>
+            </property>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 150.0]">
+                </property>
+            </port>
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 215.0]">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 165.0]">
+                </property>
+            </port>
+            <entity name="clean" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="clean">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 180.0}">
+                </property>
+            </entity>
+            <entity name="noisy" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noisy">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 180.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6266125484246227">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.113492164603889">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.017719378148562885">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="clean.incomingPort" relation="relation"/>
+            <link port="clean.outgoingPort" relation="relation2"/>
+            <link port="noisy.incomingPort" relation="relation2"/>
+            <link port="noisy.outgoingPort" relation="relation"/>
+        </entity>
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
+            </port>
+        </entity>
+        <entity name="clean" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
+                </property>
+            </property>
+            <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this mode, the model simply passes the&#10;data from the input to the output without&#10;any modification.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 110.0}">
+                </property>
+            </property>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 240.0]">
+                </property>
+            </port>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="input" relation="relation"/>
+            <link port="output" relation="relation"/>
+        </entity>
+        <entity name="noisy" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={542, 340, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this mode, the model adds Gaussian noise&#10;to the signal.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 60.0]">
+                </property>
+            </property>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 250.0]">
+                </property>
+            </port>
+            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[181.5, 250.0]">
+                </property>
+            </entity>
+            <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
+                </property>
+                <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+                </property>
+                <doc>Create a sequence of gaussian random variables</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
+                </property>
+            </entity>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="input" relation="relation"/>
+            <link port="output" relation="relation5"/>
+            <link port="AddSubtract.plus" relation="relation4"/>
+            <link port="AddSubtract.plus" relation="relation"/>
+            <link port="AddSubtract.output" relation="relation5"/>
+            <link port="Gaussian.output" relation="relation4"/>
+        </entity>
+        <relation name="eventRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="event" relation="eventRelation"/>
+        <link port="input" relation="inputRelation"/>
+        <link port="output" relation="outputRelation"/>
+        <link port="_Controller.event" relation="eventRelation"/>
+        <link port="_Controller.input" relation="inputRelation"/>
+        <link port="_Controller.output" relation="outputRelation"/>
+        <link port="state.event" relation="eventRelation"/>
+        <link port="state.input" relation="inputRelation"/>
+        <link port="state.output" relation="outputRelation"/>
+        <link port="clean.event" relation="eventRelation"/>
+        <link port="clean.input" relation="inputRelation"/>
+        <link port="clean.output" relation="outputRelation"/>
+        <link port="noisy.event" relation="eventRelation"/>
+        <link port="noisy.input" relation="inputRelation"/>
+        <link port="noisy.output" relation="outputRelation"/>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 410, 653, 369}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 325]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 175.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="0.0340833606"/>
+<yRange min="-1.3771517875586397" max="1.4955394015514865"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="sampleRate">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
+            </property>
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="frequency">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 215.0]">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an instance of an Actor Oriented Class.&#10;In this instance, we overrode the period parameter&#10;of the SDF Director.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 345.0]">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="PoissonClock.output" relation="relation"/>
+    <link port="ModalModel.event" relation="relation"/>
+    <link port="ModalModel.input" relation="relation2"/>
+    <link port="ModalModel.output" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="Sinewave.output" relation="relation2"/>
+</entity>

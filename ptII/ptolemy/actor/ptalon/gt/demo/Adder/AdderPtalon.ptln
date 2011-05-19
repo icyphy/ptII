@@ -1,0 +1,35 @@
+    Transformation is {
+      parameter num = [[n]];
+      actor X = ptolemy.actor.lib.Const;
+      actor Y = ptolemy.actor.lib.AddSubtract;
+    
+      relation r[[0]];
+      a[[0]] := X(output:=r[[0]]);
+      for k initially [[1]] [[k < num]] {
+        relation r[[k * 2 - 1]];
+        a[[k * 2 - 1]] := X(output:=r[[k * 2 - 1]]);
+        relation r[[k * 2]];
+        port reference yInput[[k]];
+        a[[k * 2]] := Y(plus:=yInput[[k]], output:=r[[k * 2]]);
+        this(yInput[[k]]:=r[[k * 2 - 2]]);
+        this(yInput[[k]]:=r[[k * 2 - 1]]);
+      } next [[k + 1]]
+    } => {
+      preserve r[[0]];
+      preserve a[[0]];
+      for k initially [[1]] [[k < num]] {
+        preserve r[[k * 2 - 1]];
+        preserve a[[k * 2 - 1]];
+      } next [[k + 1]]
+      preserve r[[num * 2 - 2]];
+    
+      port reference newYInput;
+      Y(plus:=newYInput, output:=r[[num * 2 - 2]]);
+      for k initially [[0]] [[k < num]] {
+        if [[k == 0]] {
+          this(newYInput:=r[[0]]);
+        } else {
+          this(newYInput:=r[[k * 2 - 1]]);
+        }
+      } next [[k + 1]]
+    }

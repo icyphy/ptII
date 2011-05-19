@@ -1,0 +1,75 @@
+<criteria><pattern><entity name="Pattern" class="ptolemy.actor.gt.Pattern">
+    <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute">
+    </property>
+    <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute">
+    </property>
+    <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute">
+    </property>
+    <property name="editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </property>
+    <property name="StringParameter" class="ptolemy.data.expr.StringParameter" value="">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>      <svg>        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>      </svg>    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 170}">
+        </property>
+    </property>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 200}">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 240}">
+        </property>
+    </entity>
+    <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405, 285}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="StringConst.output" relation="relation"/>
+    <link port="StringConst2.output" relation="relation2"/>
+    <link port="StringConst2.trigger" relation="relation"/>
+    <link port="StringConst3.trigger" relation="relation2"/>
+</entity>
+</pattern><attributes><attribute name="author" value="alek" /><attribute name="asdf" value="tttt" /><attribute name="weqwer" value="asdf" /></attributes><modelname value="test" /></criteria>

@@ -1,0 +1,82 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JAITranspose" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="JAITranspose" class="ptolemy.actor.lib.jai.JAITranspose">
+        <property name="transposeType" class="ptolemy.kernel.util.StringAttribute" value="flip horizontal">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="flip antidiagonal" class="ptolemy.kernel.util.StringAttribute" value="flip antidiagonal">
+                </property>
+                <property name="flip diagonal" class="ptolemy.kernel.util.StringAttribute" value="flip diagonal">
+                </property>
+                <property name="flip horizontal" class="ptolemy.kernel.util.StringAttribute" value="flip horizontal">
+                </property>
+                <property name="flip vertical" class="ptolemy.kernel.util.StringAttribute" value="flip vertical">
+                </property>
+                <property name="rotate 90" class="ptolemy.kernel.util.StringAttribute" value="rotate 90">
+                </property>
+                <property name="rotate 180" class="ptolemy.kernel.util.StringAttribute" value="rotate 180">
+                </property>
+                <property name="rotate 270" class="ptolemy.kernel.util.StringAttribute" value="rotate 270">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 180.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII.jpg">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 135.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 200, 728, 624}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[720, 576]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 240.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JAITranspose.input" relation="relation"/>
+    <link port="JAITranspose.output" relation="relation2"/>
+    <link port="JAIImageReader.output" relation="relation"/>
+    <link port="ImageDisplay.input" relation="relation2"/>
+</entity>

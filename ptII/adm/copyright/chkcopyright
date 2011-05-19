@@ -1,0 +1,31 @@
+#!/bin/sh
+# Check the copyright
+#-[Mon May 24 22:21:34 1999 by cxh]-
+year=`date +%Y`
+for fullfile in $@
+do
+	copyright=`egrep Copyright $fullfile`
+	status=$? 
+	if [ $status -eq 1 ]; then
+		echo "$fullfile does not contain a Copyright"
+	else 
+		echo "$copyright" | egrep -s $year
+		status=$? 
+		if [ $status -eq 1 ]; then
+			echo "$fullfile is not Copyright $year"
+			echo "    $fullfile: $copyright"
+		fi
+		awk ' $0 ~ /Copyright (c)/ { sawcopyright = 1 }
+                      length($0) == 0      { numberOfBlankLines++}
+                      $1 ~ /\*/ && NF == 1 { numberOfBlankLines++}
+                      $0 ~ /ENHANCEMENTS, / { sawcopyright = 0
+                                             if (numberOfBlankLines < 2) {
+                                                 print FILENAME ": saw only " numberOfBlankLines " blank lines in copyright, expected 2"  
+                                             } 
+                                            exit
+                                            }
+                    END { if (sawcopyright == 1) {print FILENAME ": did not see ENHANCEMENTS in copyright?"}
+                      }    
+                ' $fullfile
+	fi
+done 

@@ -1,0 +1,195 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExecNonZeroReturnOutput" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={460, 119, 934, 687}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 599]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.5, 299.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remove any double quotes&#10;in the classpath.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 85.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test Exec sends only 1 output when return&#10;value is non-zero.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 365.0]">
+        </property>
+    </property>
+    <entity name="Exec" class="ptolemy.actor.lib.Exec">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="throwExceptionOnNonZeroReturn" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="waitForProcess" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 335.0}">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 160.0}">
+        </property>
+    </entity>
+    <entity name="DoubleQuoteConst" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;\&quot;&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 125.0}">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="property(&quot;java.class.path&quot;)">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 195.0}">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value=" &quot;\&quot; ptolemy.actor.lib.test.ReturnNonZero &quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 245.0}">
+        </property>
+    </entity>
+    <entity name="EmptyStringConst" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 160.0}">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;java -classpath \&quot;&quot; ">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 50.0}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in &gt; 0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 335.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 335.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Exec.output" relation="relation2"/>
+    <link port="Exec.command" relation="relation11"/>
+    <link port="AddSubtract.plus" relation="relation8"/>
+    <link port="AddSubtract.plus" relation="relation9"/>
+    <link port="AddSubtract.plus" relation="relation10"/>
+    <link port="AddSubtract.output" relation="relation11"/>
+    <link port="StringReplace.pattern" relation="relation5"/>
+    <link port="StringReplace.replacement" relation="relation6"/>
+    <link port="StringReplace.stringToEdit" relation="relation7"/>
+    <link port="StringReplace.output" relation="relation9"/>
+    <link port="DoubleQuoteConst.output" relation="relation5"/>
+    <link port="Const.output" relation="relation7"/>
+    <link port="Const2.output" relation="relation10"/>
+    <link port="EmptyStringConst.output" relation="relation6"/>
+    <link port="Const3.output" relation="relation8"/>
+    <link port="Ramp.output" relation="relation3"/>
+    <link port="Ramp.trigger" relation="relation2"/>
+    <link port="Expression.output" relation="relation"/>
+    <link port="Expression.in" relation="relation3"/>
+    <link port="ThrowException.input" relation="relation"/>
+</entity>

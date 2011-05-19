@@ -1,0 +1,265 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LatticeCompositionSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 46, 1562, 1062}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1347, 945]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{680.1458333333333, 382.984375}">
+    </property>
+    <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/observableLattice/ObservableSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 290.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="AbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/abstractInterpretation/AbstractInterpretationScalarSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 290.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 355.0]">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        </property>
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        </property>
+    </property>
+    <property name="ScaleActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<polygon points="-30,-20 30,-4 30,4 -30,20" style="fill:white"></polygon>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 430.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(input, factor, output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyFunction(input, factor)">
+        </property>
+        <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(factor, input, output)">
+        </property>
+        <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="otherFactorZero" class="ptolemy.data.ontologies.ExpressionConceptFunctionDefinitionAttribute">
+        <property name="constrainFunctionToBeMonotonic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservableLattice">
+        </property>
+        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;factor&quot;, &quot;otherFactor&quot;, &quot;product&quot;}">
+        </property>
+        <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;}">
+        </property>
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor &lt; ObservableNonconstantUndefined &amp;&amp;  otherFactor &lt;= ObservableNonconstantZero &amp;&amp;&#10;  (factor != ObservableConstantZero &amp;&amp; factor != ObservableNonconstantZero) &amp;&amp; &#10;   (factor != UnobservableConstantZero &amp;&amp; factor != UnobservableNonconstantZero) ? UnobservableConstantUnknown :&#10;    product &gt;= ObservableConstantUnknown ? ObservableConstantUnknown :&#10;     UnobservableConstantUnknown">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 495.0]">
+        </property>
+    </property>
+    <property name="ConstSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constLattice/ConstNonconstTwoConceptsOnlySolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="(factor1 &lt;= ObservableNonconstantZero &amp;&amp; factor1 &gt;= UnobservableConstantZero &amp;&amp; factor2 &lt; ObservableNonconstantUndefined) || (factor2 &lt;= ObservableNonconstantZero &amp;&amp; factor2 &gt;= UnobservableConstantZero &amp;&amp; factor1 &lt; ObservableNonconstantUndefined) ? UnobservableConstantZero :&#10; factor1 &lt;= ObservableConstantUnknown || factor2 &lt;= ObservableConstantUnknown ? UnobservableConstantUnknown :&#10;  factor1 &lt;= ObservableNonconstantUnknown || factor2 &lt;= ObservableNonconstantUnknown ? UnobservableNonconstantUnknown :&#10;   (factor1 &lt;= ObservableConstantPositive &amp;&amp; factor2 &lt;= ObservableConstantPositive) || (factor1 &lt;= ObservableConstantNegative &amp;&amp; factor2 &lt;= ObservableConstantNegative) ? UnobservableConstantPositive :&#10;    (factor1 &lt;= ObservableNonconstantPositive &amp;&amp; factor2 &lt;= ObservableNonconstantPositive) || (factor1 &lt;= ObservableNonconstantNegative &amp;&amp; factor2 &lt;= ObservableNonconstantNegative) ? UnobservableNonconstantPositive :&#10;     (factor1 &lt;= ObservableConstantPositive &amp;&amp; factor2 &lt;= ObservableConstantNegative) || (factor2 &lt;= ObservableConstantPositive &amp;&amp; factor1 &lt;= ObservableConstantNegative) ? UnobservableConstantNegative :&#10;      (factor1 &lt;= ObservableNonconstantPositive &amp;&amp; factor2 &lt;= ObservableNonconstantNegative) || (factor2 &lt;= ObservableNonconstantPositive &amp;&amp; factor1 &lt;= ObservableNonconstantNegative) ? UnobservableNonconstantNegative :&#10;       factor1 &lt;= ObservableConstantUndefined &amp;&amp; factor2 &lt;= ObservableConstantUndefined ? UnobservableConstantUndefined :&#10;        UnobservableNonconstantUndefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservableLattice">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 605.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the product lattice.&#10;It is composed of the lattices listed under&#10;Right click -&gt; Customize -&gt; Configure&#10;(or double-click)&#10;The lattices, and their solver models, &#10;are below so that the product lattice &#10;can access the concepts and rules.&#10;Right click -&gt; Open Actor will show the concepts&#10;in the product lattice, but a visualization for the&#10;lattice is not yet implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, -70.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These are the sub-lattices and their solver models.&#10;These lattices were created separately with the Ontology Editor&#10;(File -&gt; New -&gt; Ontology Editor)&#10;Right click on the lattice -&gt; Open Actor to see the lattice graph.&#10;&#10;Right click -&gt; Open Model on each solver model to see the rules for this lattice.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 345.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Rules are specified with ActorConstraintsDefinitionAttributes, &#10;and (optionally) ConceptFunctionDefinitionAttributes.  &#10;&#10;ActorConstraintsDefinitionAttributes set up rules for a Ptolemy actor class.&#10;Right click -&gt; Configure to see and set the class.  The icon for that class is imported.&#10;Rules can be added for each port and attribute.  &#10;Rules are specified with expressions, and some keywords.  &#10;INHERIT means to inherit rules from sub-lattices.&#10;IGNORE_ELEMENT means that a concept should not be assigned to this element.&#10;For example, the Const actor has a &quot;firingCountLimit&quot; attribute, &#10;which is not relevant for this analysis.&#10;NO_CONSTRAINTS means that the rule does not give any constraints for this element,&#10;but the element should have a concept assigned to it.&#10;Each solver has some default rules, for example covering connections and expressions,&#10;so the concept might come from those.&#10;&#10;ConceptFunctionDefinitionAttributes are used for long expressions, &#10;and for re-using expressions for multiple actors.  For example, &#10;multiple actors implement a &quot;multiply&quot; operation, such as the Scale actor, &#10;the Expression actor, and the MultiplyDivide actor.  &#10;Instead of writing the same rules 3 times, &#10;we specify a single multiplyFunction that can be used by all of the actors.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, -75.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Const actor inherits rules from sub-lattices.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 340.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Scale actor has two special rules, &#10;one for its input port and factor term (given by otherFactorZero), &#10;and one for its output port (given by multiplyFunction).&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 385.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="otherFactorZero says that if the factor is Zero &#10;and the input is non-Zero and not Undefined,&#10;then the input should be at least Unobservable.&#10;(If both the factor and input are zero, then there is not &#10;a single cause for making the other Unobservable, so nothing happens.)&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 465.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="multiplyFunction says that the result of a multiply operation &#10;where one or both of the factors is zero is at least Constant.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 580.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note:  The ActorCosntraintsDefinitionAttributes almost always set a concept &#10;to be &quot;at least&quot; the result returned by a function &#10;instead of &quot;equal&quot; to the result returned by a function.&#10;This happens because a term can be involved in multiple functions.&#10;A function is only allowed to promote a concept higher in the lattice.  &#10;Setting a term &quot;equal&quot; to a concept might demote the term, violating monotonicity.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 625.0]">
+        </property>
+    </property>
+    <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="constAbsIntObservableLattice" class="ptolemy.data.ontologies.lattice.ProductLatticeOntology">
+        <property name="latticeOntologies" class="ptolemy.data.expr.Parameter" value="{observableLattice, constLattice, abstractInterpretation}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, -15.0}">
+        </property>
+        <entity name="UnobservableNonconstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableNonconstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableNonconstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableNonconstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableNonconstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableConstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableConstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableConstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableConstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="UnobservableConstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableNonconstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableNonconstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableNonconstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableNonconstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableNonconstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableConstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableConstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableConstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableConstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="ObservableConstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+    </entity>
+    <entity name="abstractInterpretation" class="ptolemy.data.ontologies.lattice.adapters.abstractInterpretation.abstractInterpretationScalar">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="constLattice" class="ptolemy.data.ontologies.lattice.adapters.constLattice.constLatticeTwoConceptsOnly">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 180.0]">
+        </property>
+    </entity>
+</entity>

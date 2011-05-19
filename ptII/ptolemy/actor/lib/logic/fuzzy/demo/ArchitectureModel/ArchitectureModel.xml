@@ -1,0 +1,39 @@
+<?xml version= "1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="dummy" class="ptolemy.actor.TypedCompositeActor">
+<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+</property>
+<property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"><property name="iterations" class="ptolemy.data.expr.Parameter" value="1">     </property>
+</property>
+<entity name="Solar_Power" class="ptolemy.actor.lib.logic.fuzzy.FuzzyLogic"><property name="rulesFileName" class="ptolemy.data.expr.Parameter" value="Power.xml"></property><property name="componentType" class="ptolemy.data.expr.Parameter" value="Solar"></property>
+</entity><entity name="High gain_Antenna" class="ptolemy.actor.lib.logic.fuzzy.FuzzyLogic"><property name="rulesFileName" class="ptolemy.data.expr.Parameter" value="Antenna.xml"></property><property name="componentType" class="ptolemy.data.expr.Parameter" value="High gain"></property>
+</entity><entity name="Electrical_Propulsion" class="ptolemy.actor.lib.logic.fuzzy.FuzzyLogic"><property name="rulesFileName" class="ptolemy.data.expr.Parameter" value="Propulsion.xml"></property><property name="componentType" class="ptolemy.data.expr.Parameter" value="Electrical"></property>
+</entity> <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+ </entity><entity name="CumulativeCostDisplay" class="ptolemy.actor.lib.gui.Display">
+</entity>
+ <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+<property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+</property>
+</relation>
+ <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+<property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+</property>
+</relation>
+ <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+<property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+</property>
+</relation>
+ <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+<property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+</property>
+</relation>
+<link port="Solar_Power.output" relation="relation0"/>
+<link port="AddSubtract.plus" relation="relation0"/>
+<link port="High gain_Antenna.output" relation="relation1"/>
+<link port="AddSubtract.plus" relation="relation1"/>
+<link port="Electrical_Propulsion.output" relation="relation2"/>
+<link port="AddSubtract.plus" relation="relation2"/>
+<link port="AddSubtract.output" relation="relation3"/>
+<link port="CumulativeCostDisplay.input" relation="relation3"/>
+</entity>

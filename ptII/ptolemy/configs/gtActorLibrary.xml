@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<entity name="GraphTransformation" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
+        <entity name="ModelCombine" class="ptolemy.actor.gt.ModelCombine"/>
+        <entity name="ModelExecutor" class="ptolemy.actor.gt.ModelExecutor"/>
+        <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator"/>
+        <entity name="ModelView" class="ptolemy.actor.gt.ModelView"/>
+        <!-- <input source="../../actor/gt/controller/ModelUpdateController.xml"/> -->
+        <entity name="ModelUpdater" class="ptolemy.actor.gt.controller.ModelUpdater"/>
+        <entity name="MoMLGenerator" class="ptolemy.actor.gt.MoMLGenerator"/>
+        <!-- <input source="../../actor/gt/controller/TransformationController.xml"/> -->
+        <entity name="TransformationController" class="ptolemy.actor.gt.controller.TransformationController"/>
+        <entity name="TransformationRule" class="ptolemy.actor.gt.TransformationRule"/>
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,257 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SpectrumWebVersion" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="Synchronous Dataflow Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 45.0">
+        </property>
+    </property>
+    <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000">
+    </property>
+    <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="500">
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[89, 152]">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Expression block calculates a mathematical expression, as shown.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 140.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={89, 150, 845, 467}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.0, 175.0}">
+    </property>
+    <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 185.0">
+        </property>
+    </entity>
+    <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="carrierFrequency">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <property name="AnnotationUpdated_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generate a sine wave.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 20.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 115.0">
+        </property>
+    </entity>
+    <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="signalFrequency">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <property name="AnnotationUpdated_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generate a sine wave.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 20.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 43.0">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="signal*carrier + noise">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 115.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <port name="signal" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="carrier" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="noise" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Frequency Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-4000.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 115.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Spectrum</title>
+<xLabel>frequency</xLabel>
+<yLabel>dB</yLabel>
+<xRange min="-4000.0" max="3968.75"/>
+<yRange min="-44.02672277057453" max="12.057949358994495"/>
+<noGrid/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="order" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor produces a magnitude-only&#10;frequency-domain representation of the input.&#10;The number of inputs required to produce any&#10;output is 2^order, and the number of outputs&#10;produced will be 2^order.  The output represents&#10;frequencies from -pi to pi radians per second,&#10;centered at zero frequency.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{406.0, 72.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 115.0">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Noise Source.output" relation="relation2"/>
+    <link port="Carrier Source.output" relation="relation3"/>
+    <link port="Signal Source.output" relation="relation4"/>
+    <link port="Expression.output" relation="relation0"/>
+    <link port="Expression.signal" relation="relation4"/>
+    <link port="Expression.carrier" relation="relation3"/>
+    <link port="Expression.noise" relation="relation2"/>
+    <link port="Frequency Domain Display.input" relation="relation5"/>
+    <link port="Spectrum.input" relation="relation0"/>
+    <link port="Spectrum.output" relation="relation5"/>
+</entity>

@@ -1,0 +1,57 @@
+#!/bin/sh
+
+for file in $@
+do
+    echo $file
+
+    grep "@Pt.AcceptedRating" $file >/dev/null
+    retval=$?
+    if [ $retval = 0 ]; then
+	echo "$file already has @PT.AcceptedRating, skipping"
+	continue
+    fi 
+
+    keytag="@version"
+    grep $keytag $file >/dev/null
+    retval=$?
+    if [ $retval = 1 ]; then
+	echo "$file does not have $keytag, skipping"
+	continue
+    fi 
+    awk '{ if ($0 ~ /@AcceptedRating/) {
+             acceptedRating=$2
+             for(i = 3; i<=NF; i++) {
+                acceptedRating=acceptedRating " " $i
+             }
+         } else if ($0 ~ /@ProposedRating/) {
+             proposedRating=$2
+             for(i = 3; i<=NF; i++) {
+                proposedRating=proposedRating " " $i
+             }
+         } else if ($0 ~ /@version/) {
+             print $0
+	     start = index($0, "@version") -1
+	     indent=substr($0, 1, start)
+	     if (proposedRating == "") { 
+	         print indent "@Pt.ProposedRating Red (cxh@eecs.berkeley.edu)"
+	     }  else {
+	         print indent "@Pt.ProposedRating", proposedRating
+             }
+             proposedRating=""
+	     if (acceptedRating == "") { 
+                 print indent "@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>"
+             } else {
+                 print indent "@Pt.AcceptedRating", acceptedRating
+             }
+             acceptedRating=""		 
+         } else {
+	    print $0
+	 }
+        }
+        ' $file > /tmp/mvratings.tmp
+    diff -c $file /tmp/mvratings.tmp
+    cp /tmp/mvratings.tmp $file 
+    cvs commit -m "Changed @AcceptedRating and @ProposedRating to @Pt.AcceptedRating and @Pt.ProposedRating" $file
+done
+
+rm -f /tmp/mvratings.tmp

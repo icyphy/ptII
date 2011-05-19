@@ -1,0 +1,373 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FFT" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 405]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="TM" class="ptolemy.domains.tm.kernel.TMDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="defaultTaskExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="91.0, 30.0">
+        </property>
+    </property>
+    <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 270.0]">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows the use of background process for long running tasks in 
+the TM domain. There are two composite actors in this model, both 
+implemented in SDF. One of them, the signal generator, has a short
+execution time, and is treated as an atomic execution. The other, 
+implementing the FFT algorithm, has a long execution time, and is 
+executed in a separate thread.</text>
+           </svg>
+           </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 22, 817, 515}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 202.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5, 0.5, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="executionTime = 0.0001&#10;priority = 2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 220.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5, 0.5, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="executionTime = 0.25&#10;priority =&#10;   backgroundProcessPriority">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 215.0]">
+        </property>
+    </property>
+    <property name="backgroundProcessPriority" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 75.0]">
+        </property>
+    </property>
+    <entity name="TMCompositeFacade (FFT)" class="ptolemy.actor.TypedCompositeActor">
+        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.25">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 190.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 214]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 60.0]">
+            </property>
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="backgroundProcessPriority">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Take the FFT of a signal">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 40.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {183, 403, 819, 323}, maximized = false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 107.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 115.0]">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+        </port>
+        <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {9, 401, 508, 348}, maximized = false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="xInit" class="ptolemy.data.expr.Parameter" value="-PI">
+            </property>
+            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="PI/128.0">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+            <property name="persistence" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 125.0]">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequenceScope</title>
+<xRange min="-3.1415926535895693" max="3.117048960983846"/>
+<yRange min="0.602560314483406" max="126.72579299276481"/>
+<wrap/>
+<default marks="pixels"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
+            </property>
+            <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 175.0]">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="relation4"/>
+        <link port="FFT.input" relation="relation"/>
+        <link port="FFT.output" relation="relation3"/>
+        <link port="AbsoluteValue.input" relation="relation3"/>
+        <link port="AbsoluteValue.output" relation="relation7"/>
+        <link port="SequenceScope.input" relation="relation7"/>
+        <link port="MultiplyDivide.multiply" relation="relation4"/>
+        <link port="MultiplyDivide.multiply" relation="relation5"/>
+        <link port="MultiplyDivide.output" relation="relation"/>
+        <link port="Pulse.output" relation="relation5"/>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.0078125">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {521, 400, 508, 348}, maximized = false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 120.0">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="1.0E-4" max="9.9922875"/>
+<yRange min="-1.7777457124509248" max="1.6607100040456313"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Atomic Composite Actor (Noisy Sine)" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[611, 242]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        </property>
+        <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="131.0, 39.0">
+            </property>
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0001">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor generates a noisy sinewave.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 30.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {15, 377, 826, 351}, maximized = false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{305.5, 121.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 120.0">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 140.0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="pi/64.0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 130.0">
+            </property>
+        </entity>
+        <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+            <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                    </property>
+                    <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                    </property>
+                    <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                    </property>
+                    <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                    </property>
+                    <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                    </property>
+                    <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 130.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+            </property>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 140.0">
+            </property>
+        </entity>
+        <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
+            </property>
+            <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            </property>
+            <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="0.3">
+            </property>
+            <doc>Create a sequence of gaussian random variables</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="266.0, 204.0">
+            </property>
+        </entity>
+        <relation name="Copy1:relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="relation"/>
+        <link port="output" relation="relation4"/>
+        <link port="Ramp.output" relation="Copy1:relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="TrigFunction.input" relation="Copy1:relation2"/>
+        <link port="TrigFunction.output" relation="relation2"/>
+        <link port="AddSubtract.plus" relation="relation2"/>
+        <link port="AddSubtract.plus" relation="relation3"/>
+        <link port="AddSubtract.output" relation="relation4"/>
+        <link port="Gaussian.output" relation="relation3"/>
+    </entity>
+    <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {515, 28, 508, 348}, maximized = false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 55.0">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>RealTimePlotter</title>
+<xRange min="0.06" max="9.994"/>
+<yRange min="-1.7777457124509248" max="1.6607100040456313"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="340.0, 190.0">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="TMCompositeFacade (FFT).input" relation="relation3"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="Atomic Composite Actor (Noisy Sine).input" relation="relation"/>
+    <link port="Atomic Composite Actor (Noisy Sine).output" relation="relation3"/>
+    <link port="RealTimePlotter.input" relation="relation3"/>
+</entity>

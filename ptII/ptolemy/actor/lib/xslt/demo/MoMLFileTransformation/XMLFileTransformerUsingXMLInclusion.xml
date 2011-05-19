@@ -1,0 +1,263 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="XMLFileTransformerUsingXMLInclusion" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1688, 1024}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1473, 898]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{736.5, 449.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demo created by Christine Avanessians">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 40.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The XMLFileTransformer Demo takes in a directory of demo files (sampleMOMLFile1.xml,&#10;sampleMOMLFile2.xml, etc. are just XML files created to run this demo) and condenses &#10;all the files into one file through a cascade of transformations.   &#10;&#10;IterateOverArray: Modify the input XML files before combining them&#10;&#10;3rd Transformation: Removes entityFromDemo node from to flatten hierarchy of XML file.&#10;&#10;4th Transformation: Inverted hierarchy of file&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
+        </property>
+    </property>
+    <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 150.0]">
+        </property>
+        <port name="File Names" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+        </port>
+        <port name="Condensed XML" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+        </port>
+        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 75}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1688, 1024}, maximized=true}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1473, 898]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{736.5, 449.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="1st Transformation: Removed unnecessary information from the &#10;MOML file&#10;- Kept name and URL of demo file&#10;- Kept the entities (actors), their name, and class&#10; &#10;2nd Transformation: Removed repetitious entities&#10;- Each file can have more than one of the same actor&#10;- Kept one actor from each class">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 300.0]">
+                </property>
+            </property>
+            <port name="File Names" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 155.0]">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Condensed XML" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 190.0]">
+                </property>
+            </port>
+            <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 145.0]">
+                </property>
+            </entity>
+            <entity name="StringToXML2" class="ptolemy.actor.lib.conversions.StringToXML">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 190.0]">
+                </property>
+            </entity>
+            <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\Documents and Settings\Armineh\workspace\ptII.cvs\ptolemy\actor\lib\xslt\demo\MoMLFileTransformation\momlFilesForDemo\SampleMOMLFile6.xml">
+                </property>
+                <doc>Read an entire file and output as a string</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 145.0]">
+                </property>
+            </entity>
+            <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+                <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\\">
+                </property>
+                <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="/">
+                </property>
+                <doc>Replace the patterns that match a regular expression</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 245.0]">
+                </property>
+            </entity>
+            <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 225.0]">
+                </property>
+                <port name="URLparam" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="XSLTransformer - Remove Redundancy" class="ptolemy.actor.lib.xslt.XSLTransformer">
+                <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;C:/Documents and Settings/Armineh/workspace/ptII.cvs/ptolemy/actor/lib/xslt/test/MOMLFileTransformationDemo/momlFilesForDemo/SampleMOMLFile6.xml&quot;}">
+                </property>
+                <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRedundancy.xsl">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 155.0]">
+                </property>
+            </entity>
+            <entity name="XSLTransformer - Remove Repetition" class="ptolemy.actor.lib.xslt.XSLTransformer">
+                <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{className = &quot;xzy&quot;}">
+                </property>
+                <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRepetition2.xsl">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 165.0}">
+                </property>
+            </entity>
+            <entity name="StringToXML3" class="ptolemy.actor.lib.conversions.StringToXML">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 190.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[75.0, 155.0]">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="File Names" relation="relation9"/>
+            <link port="Condensed XML" relation="relation8"/>
+            <link port="StringToXML.input" relation="relation2"/>
+            <link port="StringToXML.output" relation="relation5"/>
+            <link port="StringToXML2.input" relation="relation"/>
+            <link port="StringToXML2.output" relation="relation7"/>
+            <link port="FileReader.output" relation="relation2"/>
+            <link port="FileReader.fileOrURL" relation="relation9"/>
+            <link port="StringReplace.stringToEdit" relation="relation9"/>
+            <link port="StringReplace.output" relation="relation3"/>
+            <link port="RecordAssembler.output" relation="relation6"/>
+            <link port="RecordAssembler.URLparam" relation="relation3"/>
+            <link port="XSLTransformer - Remove Redundancy.input" relation="relation5"/>
+            <link port="XSLTransformer - Remove Redundancy.output" relation="relation"/>
+            <link port="XSLTransformer - Remove Redundancy.styleSheetParameters" relation="relation6"/>
+            <link port="XSLTransformer - Remove Repetition.input" relation="relation7"/>
+            <link port="XSLTransformer - Remove Repetition.output" relation="relation4"/>
+            <link port="StringToXML3.input" relation="relation4"/>
+            <link port="StringToXML3.output" relation="relation8"/>
+        </entity>
+    </entity>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="100000">
+        </property>
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="momlFilesForDemo/">
+        </property>
+        <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="OUTPUT" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 472, 589, 456}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 393]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="XSLTransformer - Rearrange Hierarchy" class="ptolemy.actor.lib.xslt.XSLTransformer">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;xyz&quot;}">
+        </property>
+        <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RearrangeHierarchy.xsl">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="XMLInclusion" class="ptolemy.actor.lib.xslt.XMLInclusion">
+        <property name="template" class="ptolemy.actor.parameters.PortParameter" value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;  &lt;entities&gt;&#10;$$input0,n&#10;  &lt;/entities&gt;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="XSLTransformer - Remove One layer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;xyz&quot;}">
+        </property>
+        <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveOneLayer.xsl">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Combination" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 11, 588, 461}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 398]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 105.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{335.0, 160.0}">
+        </vertex>
+    </relation>
+    <link port="IterateOverArray.File Names" relation="relation"/>
+    <link port="IterateOverArray.Condensed XML" relation="relation3"/>
+    <link port="DirectoryListing.output" relation="relation"/>
+    <link port="OUTPUT.input" relation="relation5"/>
+    <link port="XSLTransformer - Rearrange Hierarchy.input" relation="relation7"/>
+    <link port="XSLTransformer - Rearrange Hierarchy.output" relation="relation5"/>
+    <link port="XMLInclusion.input" relation="relation3"/>
+    <link port="XMLInclusion.output" relation="relation2"/>
+    <link port="XSLTransformer - Remove One layer.input" relation="relation2"/>
+    <link port="XSLTransformer - Remove One layer.output" relation="relation6"/>
+    <link port="StringToXML.input" relation="relation6"/>
+    <link port="StringToXML.output" relation="relation7"/>
+    <link port="Combination.input" relation="relation2"/>
+</entity>

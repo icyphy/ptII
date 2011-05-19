@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="corba actors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+<entity name="PushSupplier" class="ptolemy.actor.corba.PushSupplier"/>
+<entity name="PushConsumer" class="ptolemy.actor.corba.PushConsumer"/>
+<entity name="PullSupplier" class="ptolemy.actor.corba.PullSupplier"/>
+<entity name="PullConsumer" class="ptolemy.actor.corba.PullConsumer"/>
+
+<entity name="TaskCoordinator" class="ptolemy.actor.corba.TaskCoordinator"/>
+<entity name="TaskReceiver" class="ptolemy.actor.corba.TaskReceiver"/>
+<entity name="TaskReporter" class="ptolemy.actor.corba.TaskReporter"/>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

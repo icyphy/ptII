@@ -1,0 +1,178 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="VQSequenceDisplay" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="28">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[505, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 718, 460}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.5, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read in images as matrices and display them.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 25.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Christopher Brooks</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 285.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor reads&#10;in matrices.&#10;These matrices are&#10;also used in the&#10;SDF HTVQ demo.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 145.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor converts&#10;the matrices to&#10;JAIImageTokens.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 225.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model will&#10;run much more&#10;quickly if the &#10;MatrixViewer&#10;actor is deleted.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 85.0]">
+        </property>
+    </property>
+    <entity name="ImageSequence0" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
+        <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
+        </property>
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="startFrame" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
+        <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="byte">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
+                </property>
+                <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                </property>
+                <property name="float" class="ptolemy.kernel.util.StringAttribute" value="float">
+                </property>
+                <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                </property>
+                <property name="short" class="ptolemy.kernel.util.StringAttribute" value="short">
+                </property>
+                <property name="ushort" class="ptolemy.kernel.util.StringAttribute" value="ushort">
+                </property>
+            </property>
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={715, 203, 176, 188}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="JAIRotate" class="ptolemy.actor.lib.jai.JAIRotate">
+        <property name="degrees" class="ptolemy.actor.parameters.PortParameter" value="-90.0">
+        </property>
+        <property name="interpolationType" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="bicubic" class="ptolemy.kernel.util.StringAttribute" value="bicubic">
+                </property>
+                <property name="bicubic2" class="ptolemy.kernel.util.StringAttribute" value="bicubic2">
+                </property>
+                <property name="bilinear" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+                </property>
+                <property name="nearestNeighbor" class="ptolemy.kernel.util.StringAttribute" value="nearestNeighbor">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 404, 1019, 355}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1019, 311]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="800">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="400">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="SubMatrix" class="ptolemy.actor.lib.SubMatrix">
+        <property name="rowSpan" class="ptolemy.actor.parameters.PortParameter" value="20">
+        </property>
+        <property name="columnSpan" class="ptolemy.actor.parameters.PortParameter" value="40">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[170.0, 120.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ImageSequence0.output" relation="relation5"/>
+    <link port="DoubleMatrixToJAI.input" relation="relation5"/>
+    <link port="DoubleMatrixToJAI.output" relation="relation3"/>
+    <link port="ImageDisplay.input" relation="relation"/>
+    <link port="JAIRotate.input" relation="relation3"/>
+    <link port="JAIRotate.output" relation="relation"/>
+    <link port="MatrixViewer.input" relation="relation2"/>
+    <link port="SubMatrix.input" relation="relation5"/>
+    <link port="SubMatrix.output" relation="relation2"/>
+</entity>

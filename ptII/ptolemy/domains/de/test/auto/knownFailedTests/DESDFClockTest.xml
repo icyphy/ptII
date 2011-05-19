@@ -1,0 +1,294 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DESDFClockTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 499]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[172, 107]">
+    </property>
+    <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="97.0, 42.0">
+        </property>
+    </property>
+    <property name="Minutes" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
+    <property name="Seconds" class="ptolemy.data.expr.Parameter" value="2.0">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 616}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 249.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is based on the DE GR Clock demo&#10;in domains/de/demo/Clock/Clock.xml&#10;It throws an exception because the&#10;tokenConsumptionRate is set on the&#10;input.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 380.0]">
+        </property>
+    </property>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Minutes*60 + Seconds">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 197.0">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0/(Minutes*60 + Seconds)">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 220.0">
+        </property>
+    </entity>
+    <entity name="Play Bell" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 300.0]">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        </property>
+        <property name="Copy1:SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 34.0">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="48.5, 342.0">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <entity name="Copy1:Lowpass Filter" class="ptolemy.domains.sdf.lib.FIR">
+            <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
+            </property>
+            <doc name="tooltip">FIR filter</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="198.0, 115.0">
+            </property>
+        </entity>
+        <entity name="Copy1:Allpass Filter" class="ptolemy.actor.lib.IIR">
+            <property name="numerator" class="ptolemy.data.expr.Parameter" value="{0.07317, 1.0}">
+            </property>
+            <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 0.07317}">
+            </property>
+            <doc>IIR filter</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="321.0, 115.0">
+            </property>
+        </entity>
+        <entity name="Copy1:Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="gaussian(0.0, 0.6, 1, 35).toArray()">
+            </property>
+            <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 115.0">
+            </property>
+        </entity>
+        <entity name="Copy1:Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="0.999999999999">
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="418.0, 115.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 348.0">
+            </property>
+        </entity>
+        <entity name="UpSample" class="ptolemy.domains.sdf.lib.UpSample">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="100">
+            </property>
+            <property name="phase" class="ptolemy.data.expr.Parameter" value="factor-1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 341.0">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 275.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="128">
+                </property>
+            </port>
+        </entity>
+        <relation name="Copy1:relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="26.0, 185.0">
+            </vertex>
+        </relation>
+        <relation name="Copy1:relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="Copy1:relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="Copy1:relation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="trigger" relation="relation6"/>
+        <link port="Copy1:Lowpass Filter.input" relation="Copy1:relation1"/>
+        <link port="Copy1:Lowpass Filter.output" relation="Copy1:relation3"/>
+        <link port="Copy1:Allpass Filter.input" relation="Copy1:relation3"/>
+        <link port="Copy1:Allpass Filter.output" relation="Copy1:relation4"/>
+        <link port="Copy1:Delay.input" relation="Copy1:relation5"/>
+        <link port="Copy1:Delay.output" relation="Copy1:relation1"/>
+        <link port="Copy1:Scale.input" relation="Copy1:relation4"/>
+        <link port="Copy1:Scale.output" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation7"/>
+        <link port="AddSubtract.output" relation="Copy1:relation5"/>
+        <link port="UpSample.input" relation="relation6"/>
+        <link port="UpSample.output" relation="relation7"/>
+        <link port="Test.input" relation="Copy1:relation5"/>
+    </entity>
+    <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0001">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="201.0, 346.0">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value=".9999">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 358.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="Switch" class="ptolemy.actor.lib.Switch">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="334.0, 269.0">
+        </property>
+    </entity>
+    <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
+        <property name="table" class="ptolemy.data.expr.Parameter" value="{1,0}">
+        </property>
+        <property name="wordLength" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="289.0, 347.0">
+        </property>
+    </entity>
+    <entity name="Copy1:UpSample" class="ptolemy.domains.sdf.lib.UpSample">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="80">
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="factor-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="446.0, 271.0">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5, 1.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 95.0}">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="235.0, 226.0">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="95.0, 236.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Ramp.trigger" relation="relation2"/>
+    <link port="Play Bell.trigger" relation="relation"/>
+    <link port="Comparator.left" relation="relation4"/>
+    <link port="Comparator.right" relation="relation12"/>
+    <link port="Comparator.output" relation="relation8"/>
+    <link port="Const.output" relation="relation12"/>
+    <link port="Const.trigger" relation="relation2"/>
+    <link port="Switch.input" relation="relation4"/>
+    <link port="Switch.output" relation="relation7"/>
+    <link port="Switch.control" relation="relation3"/>
+    <link port="LineCoder.input" relation="relation8"/>
+    <link port="LineCoder.output" relation="relation3"/>
+    <link port="Copy1:UpSample.input" relation="relation7"/>
+    <link port="Copy1:UpSample.output" relation="relation"/>
+    <link port="Test.input" relation="relation4"/>
+</entity>

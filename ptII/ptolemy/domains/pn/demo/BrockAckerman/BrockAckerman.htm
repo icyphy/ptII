@@ -1,0 +1,43 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>BrockAckerman</TITLE>
+</HEAD>
+<BODY>
+<H1>BrockAckerman</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+BrockAckerman is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "BrockAckerman.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="BrockAckermanVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model illustrates the well-known Brock-Ackerman anomaly.
+The two composite actors ActorA and ActorB implement exactly 
+the same (nondeterministic) input/output relation. That is, given
+any two input sequences at the two input ports, the possible
+output sequences from each actor are the same.  However, when
+wired as shown into two feedback loops, the two actors do not
+behave the same way.  In particular, the upper feedback loop has
+more possible outputs than the bottom one.
+</p>
+
+</BODY>
+</HTML>

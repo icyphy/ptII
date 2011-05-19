@@ -1,0 +1,97 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LevelCrossing5" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 50.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 109, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 120.0}">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="0.4">
+        </property>
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 120.0}">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 120.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.60005}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.domains.continuous.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.4}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 230}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{215.0, 120.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Integrator.impulse" relation="relation5"/>
+    <link port="Integrator.derivative" relation="relation2"/>
+    <link port="Integrator.state" relation="relation3"/>
+    <link port="LevelCrossingDetector.output" relation="relation"/>
+    <link port="LevelCrossingDetector.trigger" relation="relation3"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation5"/>
+</entity>

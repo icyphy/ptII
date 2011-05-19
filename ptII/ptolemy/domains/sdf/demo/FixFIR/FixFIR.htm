@@ -1,0 +1,43 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Fixed-Point FIR Filter</TITLE>
+<LINK href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<H1>Fixed-Point FIR Filter</H1>
+<p>
+This model illustrates fixed-point computation using the data-polymorphic
+FIR filter:
+-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+FixFIR is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "FixFIR.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="FixFIRVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model exploits the fact that the FIR filter actor is data polymorphic
+to feed it fixed-point numbers and fixed-point coefficients.
+The magnitude transfer function is calculated for three scenarios.
+The "exact" scenario uses double-precision floating point computations
+throughout.  The "fixed point" scenario uses fixed-point computations,
+with 6 bits total, of which 2 bits are integer bits.  The "quantized
+coefficients" scenario quantizes the coefficients to 8 bits total,
+of which 2 are integer bits, but then
+performs all calculations using double-precision floating
+point.</p>
+</BODY>
+</HTML>

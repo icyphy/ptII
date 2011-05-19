@@ -1,0 +1,130 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RunDemos" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 214, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model runs all the models in a specified directory&#10;(which is either local, or on the web). It lingers in each&#10;demo for the specified amount of time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 20.0]">
+        </property>
+    </property>
+    <property name="LingerTimeInSeconds" class="ptolemy.data.expr.Parameter" value="120">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 190.0]">
+        </property>
+    </property>
+    <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/Demos">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#00BB00" y="20">-F-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 215.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: It may be hard to stop this execution once&#10;it is started because the window will be buried&#10;under other windows. To stop it, you must get access&#10;to this window and click on the stop button.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 85.0]">
+        </property>
+    </property>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$directoryOrURL">
+        </property>
+        <property name="pattern" class="ptolemy.data.expr.StringParameter" value=".*\.xml">
+        </property>
+        <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="LingerTimeInSeconds * 1000L">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil (full screen)">
+        </property>
+        <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="ArrayToSequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 290, 227}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 345.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{320.0, 290.0}">
+        </vertex>
+    </relation>
+    <link port="DirectoryListing.output" relation="relation"/>
+    <link port="VisualModelReference.modelFileOrURL" relation="relation2"/>
+    <link port="ArrayToSequence.input" relation="relation"/>
+    <link port="ArrayToSequence.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
+</entity>

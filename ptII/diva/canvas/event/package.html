@@ -1,0 +1,40 @@
+<!-- Copyright (c) 1998-2005 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+
+<html>
+<head>
+<title>diva.canvas.event</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+Event-handling support for the Diva canvas.  Because the canvas pane
+and layers in Diva implement an independent, floating-point,
+coordinate system, this package has to re-implement some of the basic
+AWT support for mouse events.  A new event type, <b>LayerEvent</b>,
+which subclasses <b>java.awt.event.MouseEvent</b>, represents on
+layers and on graphical figures. It contains both the original
+screen coordinates of the mouse event and those coordinates 
+translated unto the coordinate system of the containing canvas pane.
+
+<p> Corresponding to the layer event class are two new listener
+classes, <B>LayerListener</b> and <b>LayerMotionListener</b>.  The
+former handles mouse press, drag, and release events, and the latter
+mouse enter, motion, and leave events. This separation avoid needless
+inefficiency in interactive canvases. Events can be received from
+Figure objects, and from the special-purpose <b>EventLayer</b>, which
+dispatches any events it received to its listeners.
+
+<p> An additional class, <b>EventDispatcher</b> is used to dispatch
+events to attached listeners. This class is used by the top-level
+package to group figures into common event-handling classes.
+
+</ul>
+
+
+</body>
+</html>
+
+
+
+

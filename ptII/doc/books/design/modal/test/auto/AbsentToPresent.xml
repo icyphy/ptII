@@ -1,0 +1,106 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AbsentToPresent" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 45}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={153, 75, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="FSMActor2" class="ptolemy.domains.modal.kernel.FSMActor">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+  </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 120.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={339, 328, 813, 511}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
+            </property>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 75.0]">
+            </property>
+        </port>
+        <entity name="State" class="ptolemy.domains.modal.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 80.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true || in &gt; 10">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = true">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.355132731943897">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.0817201992023793">
+            </property>
+        </relation>
+        <link port="State.incomingPort" relation="relation"/>
+        <link port="State.outgoingPort" relation="relation"/>
+    </entity>
+    <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+        <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="int">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
+                </property>
+                <property name="complex" class="ptolemy.kernel.util.StringAttribute" value="complex">
+                </property>
+                <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                </property>
+                <property name="fix" class="ptolemy.kernel.util.StringAttribute" value="fix">
+                </property>
+                <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                </property>
+                <property name="long" class="ptolemy.kernel.util.StringAttribute" value="long">
+                </property>
+                <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 120.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="FSMActor2.in" relation="relation"/>
+    <link port="FSMActor2.out" relation="relation3"/>
+    <link port="Absent.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+</entity>

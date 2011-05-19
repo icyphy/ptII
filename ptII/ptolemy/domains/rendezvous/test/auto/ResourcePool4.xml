@@ -1,0 +1,173 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ResourcePool4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
+    <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 60.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 127, 813, 500}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 382]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.0, 191.0}">
+    </property>
+    <property name="SuppressDeadlockReporting" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+              <svg>
+                <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-D-</text>
+              </svg>
+            </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 40}">
+        </property>
+    </property>
+    <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+        <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{1,2,3,4,5}">
+        </property>
+        <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="Barrier" class="ptolemy.domains.rendezvous.lib.Barrier">
+        <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 215.0}">
+        </property>
+    </entity>
+    <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException">
+        <property name="message" class="ptolemy.kernel.util.StringAttribute" value="Got more than one token, but shouldn't have.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in &gt; 0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[377.375, 215.46875]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Merge" class="ptolemy.domains.rendezvous.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 315}">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="5">
+        </property>
+        <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1, 2, 3, 4, 5}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{500, 325}">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[185.0, 255.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="ResourcePool.grant" relation="relation3"/>
+    <link port="ResourcePool.grant" relation="relation"/>
+    <link port="Barrier.input" relation="relation4"/>
+    <link port="Barrier.input" relation="relation3"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Ramp2.output" relation="relation5"/>
+    <link port="Ramp2.trigger" relation="relation3"/>
+    <link port="ThrowException.input" relation="relation6"/>
+    <link port="Expression.output" relation="relation6"/>
+    <link port="Expression.in" relation="relation5"/>
+    <link port="Merge.output" relation="relation7"/>
+    <link port="Merge.input" relation="relation3"/>
+    <link port="Merge.input" relation="relation"/>
+    <link port="SequenceToArray.input" relation="relation7"/>
+    <link port="SequenceToArray.output" relation="relation2"/>
+    <link port="ArraySort.input" relation="relation2"/>
+    <link port="ArraySort.output" relation="relation8"/>
+    <link port="NonStrictTest.input" relation="relation8"/>
+</entity>

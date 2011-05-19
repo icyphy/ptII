@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="EmbeddedTransformationControllerWithPorts" extends="ptolemy.actor.gt.controller.EmbeddedTransformationController">
+    <port name="modelInput" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
+        </property>
+    </port>
+    <port name="modelOutput" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 200.0]">
+        </property>
+    </port>
+</class>

@@ -1,0 +1,50 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Communication Link - Physical Level</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Communication Link - Physical Level</H1>
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Eye is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Eye.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="EyeVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+<p>The plot shows the eye diagram for a received waveform
+for a baseband channel with additive Gaussian noise.</p>p
+
+<p>The default parameters model:
+<P>
+<UL>
+<LI> Additive Gaussian noise with standard deviation 0.1.
+<LI> 100 % excess bandwidth square-root raised-cosine pulse.
+<LI> Matched filter in the receiver.
+</UL>
+<P>
+The <a href="EyeVergil.htm">block diagram</a>
+for the model was constructed using the Ptolemy II schematic editor
+called Vergil.
+</p>
+<p></p>
+</BODY>
+</HTML>

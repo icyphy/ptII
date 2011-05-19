@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="dde" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+		<doc>Resource Actors</doc>
+		<property name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler"/>
+		<property name="Task" class="ptolemy.apps.apes.CTask"/>
+		<property name="TaskExecutionMonitor" class="ptolemy.apps.apes.TaskExecutionMonitor"/>
+		<property name="InterruptServiceRoutine" class="ptolemy.apps.apes.InterruptServiceRoutine"/> 
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,334 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IncreasingRatePoisson" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="400.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is an example of a stochastic hybrid system.&#10;It generates a Poisson process with a linearly&#10;increasing rate using the CT domain. The model plots the&#10;events vs. time and a histogram of the time between events.&#10;The technique here was suggested by John Lygeros.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 330.0]">
+        </property>
+    </property>
+    <property name="rateOfRateIncrease" class="ptolemy.data.expr.Parameter" value="0.005">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the&#10;IncreasingRatePoisson&#10;actor to see how this&#10;is implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.0]">
+        </property>
+    </property>
+    <entity name="IncreasingRatePoisson" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
+        </property>
+        <property name="rateOfRateIncrease" class="ptolemy.data.expr.Parameter" value="rateOfRateIncrease">
+        </property>
+        <port name="event" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that on this transition, only one of the&#10;two integrators is reset, so the rate continues&#10;to increase linearly.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the wait state to&#10;see how this is implemented.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 85.0]">
+                </property>
+            </property>
+            <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="On each transition, generate a new random number with an exponential&#10;distribution. In the &quot;wait&quot; state, wait an amount of time that is the&#10;value of this random variable multiplied by the current (increasing) rate.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 10.0]">
+                </property>
+            </property>
+            <port name="event" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 150.0]">
+                </property>
+            </port>
+            <entity name="wait" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="wait">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 115.0]">
+                </property>
+            </entity>
+            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 115.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random());&#10;wait.Integrator.initialState = 0.0">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.25425894091872997">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random())">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.4230975867282429">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="wait.incomingPort" relation="relation"/>
+            <link port="wait.incomingPort" relation="relation2"/>
+            <link port="wait.outgoingPort" relation="relation"/>
+            <link port="init.outgoingPort" relation="relation2"/>
+        </entity>
+        <entity name="wait" class="ptolemy.domains.fsm.modal.Refinement">
+            <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
+                </property>
+            </property>
+            <property name="threshold" class="ptolemy.data.expr.Parameter" value="5.4632522790577">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 60.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="event" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
+                </property>
+            </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="rateOfRateIncrease">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 195.0]">
+                </property>
+            </entity>
+            <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+                <property name="level" class="ptolemy.data.expr.Parameter" value="threshold">
+                </property>
+                <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
+                </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 195.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="event" relation="relation3"/>
+            <link port="Const.output" relation="relation4"/>
+            <link port="Integrator.input" relation="relation"/>
+            <link port="Integrator.output" relation="relation2"/>
+            <link port="LevelCrossingDetector.output" relation="relation3"/>
+            <link port="LevelCrossingDetector.trigger" relation="relation2"/>
+            <link port="Integrator2.input" relation="relation4"/>
+            <link port="Integrator2.output" relation="relation"/>
+        </entity>
+        <relation name="eventRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="event" relation="eventRelation"/>
+        <link port="_Controller.event" relation="eventRelation"/>
+        <link port="wait.event" relation="eventRelation"/>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 411, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 180.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Events</title>
+<xLabel>time</xLabel>
+<yLabel>elapsed time</yLabel>
+<xRange min="15.4532894759" max="399.9444351867"/>
+<yRange min="0.005166322904077703" max="5.681569465138159"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 414, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 265.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Times Between Events</title>
+<xLabel>amount of time</xLabel>
+<yLabel>number of occurrences</yLabel>
+<xRange min="0.1" max="5.8"/>
+<yRange min="0.0" max="75.0"/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="0.2" offset="0.1"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[220.0, 180.0]">
+        </vertex>
+    </relation>
+    <link port="IncreasingRatePoisson.event" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="HistogramPlotter.input" relation="relation2"/>
+</entity>

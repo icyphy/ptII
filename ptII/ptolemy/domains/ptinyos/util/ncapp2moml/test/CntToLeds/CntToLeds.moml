@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<entity name="CntToLeds" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
+  <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector" />
+  <entity name="Main" class="tos.system.Main" />
+  <entity name="Counter" class="tos.lib.Counters.Counter" />
+  <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds" />
+  <entity name="TimerC" class="tos.system.TimerC" />
+  <relation name="relation1" class="ptolemy.actor.IORelation" />
+  <relation name="relation2" class="ptolemy.actor.IORelation" />
+  <relation name="relation3" class="ptolemy.actor.IORelation" />
+  <link port="Counter.StdControl" relation="relation1" />
+  <link port="Counter.Timer" relation="relation2" />
+  <link port="Counter.IntOutput" relation="relation3" />
+  <link port="TimerC.Timer" relation="relation2" />
+  <link port="TimerC.StdControl" relation="relation1" />
+  <link port="Main.StdControl" relation="relation1" />
+  <link port="IntToLeds.IntOutput" relation="relation3" />
+  <link port="IntToLeds.StdControl" relation="relation1" />
+</entity>
+

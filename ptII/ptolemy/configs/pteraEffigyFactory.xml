@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <entity name="Ptera Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <entity name="blank" class="ptolemy.domains.ptera.kernel.PteraModalModel"/>
+  </entity>
+</group>

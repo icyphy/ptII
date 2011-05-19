@@ -1,0 +1,136 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Brownian" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 667, 533}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[454, 423]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{227.0, 211.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 375.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Brownian motion is the integral of white noise.&#10;This model generates approximations of two&#10;Brownian motion random processes and plots the&#10;value of one vs. the other. This creates a&#10;random walk effect. White noise is approximated&#10;as a signal where any two samples are independent&#10;and identically distributed Gaussian random variables.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
+        </property>
+    </property>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 125.0}">
+        </property>
+    </entity>
+    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 36, 500, 479}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 435]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 195.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Brownian Motion</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-3.3295205021569823" max="0.2146491278705975"/>
+<yRange min="-2.246883006534555" max="0.6435066644410469"/>
+<noGrid/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 527, 500, 234}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 190]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[328.5, 80.5]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>X Axis Brownian Motion</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="100.0"/>
+<yRange min="-3.3295205021569823" max="0.2146491278705975"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 527, 500, 235}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 191]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[218.5, 50.5]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Bandlimited Noise</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="100.0"/>
+<yRange min="-3.269544224031838" max="3.30089968595319"/>
+<noGrid/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="BandlimitedNoise" class="ptolemy.domains.continuous.lib.BandlimitedNoise">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="BandlimitedNoise2" class="ptolemy.domains.continuous.lib.BandlimitedNoise">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 205.0}">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[280.0, 125.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{160.0, 125.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Integrator.derivative" relation="relation2"/>
+    <link port="Integrator.state" relation="relation11"/>
+    <link port="XYPlotter.inputX" relation="relation11"/>
+    <link port="XYPlotter.inputY" relation="relation4"/>
+    <link port="Integrator2.derivative" relation="relation"/>
+    <link port="Integrator2.state" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation11"/>
+    <link port="TimedPlotter2.input" relation="relation2"/>
+    <link port="BandlimitedNoise.output" relation="relation2"/>
+    <link port="BandlimitedNoise2.output" relation="relation"/>
+</entity>

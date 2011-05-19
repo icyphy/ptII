@@ -1,0 +1,41 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>HanoiTower</TITLE>
+</HEAD>
+<BODY>
+<H1>HanoiTower</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+HanoiTower is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "HanoiTower.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="HanoiTowerVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model solves Tower of Hanoi puzzle using the ActorRecursion actor. 
+A tower of disks initially stacked in increasing size on the source tower 
+shall be transferred to the destination tower, moving only at one disk at a 
+time and never a larger one onto a smaller through the third tower. </p>
+
+<p>The number of disks can be adjusted through the parameter numberOfDisks.
+The three towers are indexed as 0,1,2. The animation speed can be adjusted 
+through the parameter interpolationFactor.</p>
+</BODY>
+</HTML>

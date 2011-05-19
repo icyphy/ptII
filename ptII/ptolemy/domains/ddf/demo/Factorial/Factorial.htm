@@ -1,0 +1,38 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Factorial</TITLE>
+</HEAD>
+<BODY>
+<H1>Factorial</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Factorial is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Factorial.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="FactorialVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model computes factorial using a very inefficient recursive algorithm 
+(to demonstrate the use of ActorRecursion). Each iteration outputs one number.
+Configure the parameter iterations in DDF Director to specify desired iteration
+number. Because factorial rises very fast, it is recommended to keep it small
+to prevent from overflowing.</p>
+</BODY>
+</HTML>

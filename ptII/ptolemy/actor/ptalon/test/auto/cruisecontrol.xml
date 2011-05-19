@@ -1,0 +1,89 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="cruisecontrol" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 165, 815, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This LinearStateSpace actor is written in Ptalon.  The model simulates a simple&#10;cruise control system.  The input is the desired speed.  The speed and position&#10;start at zero.  After about one second, the speed pretty much tracks the desired&#10;speed.  The plot is the position of the car.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 145.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To create your own LinearStateSpace actor (in Ptalon), go to More Libraries...&#10;Ptalon and drag out a PtalonActor.  Set its ptalonCodeLocation FileParameter&#10;to $PTII/ptolemy/actor/ptalon/demo/CruiseControl/LinearStateSpace.ptln.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 255.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Adam Cataldo (Concept for LinearStateSpace actor by Jie Liu)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 355.0}">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="LinearStateSpace" class="ptolemy.actor.ptalon.PtalonActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 65.0]">
+        </property>
+        <configure>
+            <ptalon file="ptolemy.actor.ptalon.demo.CruiseControl.LinearStateSpace">
+                <ptalonExpressionParameter name="A" value="[0.0, 1.0; 0.0, -1.0]"/>
+                <ptalonExpressionParameter name="B" value="[0.0; 1.0]"/>
+                <ptalonExpressionParameter name="C" value="[1.0, 0.0]"/>
+                <ptalonExpressionParameter name="D" value="[0.0]"/>
+                <ptalonExpressionParameter name="initialStates" value="[0.0, 0.0]"/>
+            </ptalon>
+        </configure>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0048333333333, 0.0265618706585, 0.0658935381943, 0.122955283685, 0.1980001263304, 0.2914139827935, 0.4037468389231, 0.5357542394869, 0.6884529306687, 0.8631969418382, 1.061783974123, 1.2866081180223, 1.5408859999145, 1.8290045083291, 2.1570810184373, 2.5339215807374, 2.9727960404439, 3.4951207409588, 4.0066320753261, 4.0066320753261, 4.0066320753261}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{500, 75}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Const.output" relation="relation"/>
+    <link port="LinearStateSpace.input" relation="relation"/>
+    <link port="LinearStateSpace.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+</entity>

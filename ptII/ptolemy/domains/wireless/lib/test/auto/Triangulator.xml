@@ -1,0 +1,86 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Triangulator" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.1">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 77, 815, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 70}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The first solution is not necessarily&#10;the best solution.  &#10;Based on information fromSaeid Pashazadeh">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 310.0]">
+        </property>
+    </property>
+    <entity name="Triangulator" class="ptolemy.domains.wireless.lib.Triangulator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 270.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{location = arrayType(double,2), time=double}">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="arrayType(double,2)">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{location={167.62672888217955,159.8245453197601}, time=64.23429176610554},&#10;{location={141.50920038864274,250.55548890080553}, time=64.3035571748275},&#10;{location={132.66372201388654,201.08421064533704}, time=64.17505557594951}}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 270.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{location = {167.6267288821796, 159.8245453197601}, time = 64.2342917661055}, {location = {141.5092003886427, 250.5554889008055}, time = 64.3035571748275}, {location = {132.6637220138865, 201.084210645337}, time = 64.1750555759495}, {location = {167.6267288821796, 159.8245453197601}, time = 64.2342917661055}, {location = {141.5092003886427, 250.5554889008055}, time = 64.3035571748275}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{88.6565260142743, 162.3389876043475}, {88.6565260142743, 162.3389876043475}, {88.6565260142743, 162.3389876043475}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 270.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[180.0, 270.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Triangulator.input" relation="relation"/>
+    <link port="Triangulator.output" relation="relation2"/>
+    <link port="Sequence.output" relation="relation"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+</entity>

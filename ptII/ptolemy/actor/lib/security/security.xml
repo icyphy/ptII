@@ -1,0 +1,64 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Security" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+	<entity name="KeyWriter"
+	        class="ptolemy.actor.lib.security.KeyWriter">
+	  <doc>Read a secret key or public key and write it to a key store.
+	   </doc>
+	</entity>  	  
+
+	<entity name="PublicKeyReader"
+	        class="ptolemy.actor.lib.security.PublicKeyReader">
+	  <doc>Read a public key from a key store and output it.</doc>
+	</entity>  	  
+
+	<entity name="PrivateKeyReader"
+	        class="ptolemy.actor.lib.security.PrivateKeyReader">
+	  <doc>Read a private key from a key store and output it.</doc>
+	</entity>  	  
+
+	<entity name="SecretKey"
+	        class="ptolemy.actor.lib.security.SecretKey">
+	  <doc>Create a secret key and output it.</doc>
+	</entity>  	  
+
+	<entity name="SecretKeyReader"
+	        class="ptolemy.actor.lib.security.SecretKeyReader">
+	  <doc>Read a secret key from a key store and output it.</doc>
+	</entity>  	  
+
+        <entity name="SignatureSigner"
+	        class="ptolemy.actor.lib.security.SignatureSigner">
+	  <doc>Creates a signature for the given piece of data and
+	  creates the key to be sent to the signature verifier.</doc>
+        </entity>
+
+        <entity name="SignatureVerifier"
+                class="ptolemy.actor.lib.security.SignatureVerifier">
+          <doc>Receives a key from an AsymmetricDecryption actor and
+          uses it to encrypt a data input based on a given asymmetric
+          algorithm.</doc>
+        </entity>
+	      
+        <entity name="SymmetricDecryption"
+	        class="ptolemy.actor.lib.security.SymmetricDecryption">
+          <doc>Receives a key from a SymmetricEncryption actor and
+          uses it to decrypt a data input based on a given symmetric
+          algorithm.</doc>
+        </entity>
+
+	<entity name="SymmetricEncryption"
+                class="ptolemy.actor.lib.security.SymmetricEncryption">
+	  <doc>Creates and sends a key to a SymmetricDecryption and
+	  encrypts incoming data based on a given symmetric
+	  algorithm.</doc>
+        </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

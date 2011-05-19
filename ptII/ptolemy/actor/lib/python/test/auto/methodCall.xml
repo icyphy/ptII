@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="methodCall" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 65.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 192, 815, 516}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="# This is a test script.&#10;class Main :&#10;  &quot;test method calls&quot;&#10;  s = &quot;&quot;&#10;  def fire(self) :&#10;    # read input, compute, send output&#10;    self.s = self.s + &quot;fire &quot;&#10;    return&#10;  def initialize(self) :&#10;    self.s = self.s + &quot;initialize &quot;&#10;    return&#10;  def postfire(self) : &#10;    self.s = self.s + &quot;postfire &quot;&#10;    return&#10;  def prefire(self) :&#10;    self.s = self.s + &quot;prefire &quot;&#10;    return 1&#10;  def preinitialize(self) :&#10;    self.s = self.s + &quot;preinitialize &quot;&#10;    return&#10;  def wrapup(self) :&#10;    self.s = self.s + &quot;wrapup &quot;&#10;    #self.actor.debug(self.s)&#10;    #self.actor.debug(self.result.getExpression())&#10;    if self.s != self.result.getExpression() :&#10;      raise Exception, &quot;test failed&quot;&#10;    return&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 175.0">
+        </property>
+        <property name="result" class="ptolemy.kernel.util.StringAttribute" value="preinitialize initialize prefire fire postfire wrapup ">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 175.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <link port="PythonActor.input" relation="relation"/>
+    <link port="Ramp.output" relation="relation"/>
+</entity>

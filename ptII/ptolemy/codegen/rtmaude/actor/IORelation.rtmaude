@@ -1,0 +1,7 @@
+
+/***termBlock($source, $targets)***/
+($source ==> ($targets))/**/
+
+/***scopeBlock($actor_id, $name)***/
+($actor_id ! '$name)
+/**/

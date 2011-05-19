@@ -1,0 +1,32 @@
+load ptolemy-semantics
+
+(tomod PTOLEMY-MODELCHECK is
+    inc TIMED-MODEL-CHECKER .
+    inc INIT .
+
+    sort ActorID .
+    subsort Oid < ActorID .
+    op _\_ : ActorID ActorID -> ActorID [ctor assoc] .
+
+    sort ActorPattern .
+    op @_ : Location -> ActorPattern [ctor] .
+    op |`(_`) : ValueMap -> ActorPattern [ctor] .
+
+    op __ : ActorID ActorPattern -> Prop [ctor] .
+    op _|`(`) : ActorID -> Prop [ctor] .	
+
+
+    var O O' : Oid . var CF INNER : Configuration . 
+    var L : Location . var I : VarId . 
+    var AI : ActorID . var AP : ActorPattern .
+    var V : Value . var VM VM' : ValueMap .
+
+    eq O |() = O | (emptyMap) .	--- if actor exists, always success
+
+    eq {< O : Actor | innerVariables : VM ; VM' > CF} |= O | (VM) = true .
+    eq {< O : FSM-Actor | currState : L > CF} |= O @ L = true .
+
+    eq {< O : CompositeActor | innerActors : INNER > CF} |= (O \ AI) AP
+     = {INNER} |= AI AP .   --- accessing inner actor,, ?
+endtom)
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="VHDL" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+		  <doc>VHDL fixpoint hardwares</doc>
+  
+          <entity name="AddSubtract" class="ptolemy.actor.lib.vhdl.AddSubtract"></entity>
+		  <entity name="Concat" class="ptolemy.actor.lib.vhdl.Concat"></entity>  
+		  <entity name="FixComparator" class="ptolemy.actor.lib.vhdl.FixComparator"></entity> 
+		  <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst"></entity>      
+		  <entity name="IntegerCounter" class="ptolemy.actor.lib.vhdl.IntegerCounter"></entity> 
+		  <entity name="FixSequence" class="ptolemy.actor.lib.vhdl.FixSequence"></entity>
+		  <entity name="FixToString" class="ptolemy.actor.lib.vhdl.FixToString"></entity> 
+		  <entity name="LogicalNot" class="ptolemy.actor.lib.vhdl.LogicalNot"></entity>
+		  <entity name="LogicFunction" class="ptolemy.actor.lib.vhdl.LogicFunction"></entity>     
+		  <entity name="Memory" class="ptolemy.actor.lib.vhdl.Memory"></entity>
+		  <entity name="Multiplexor" class="ptolemy.actor.lib.vhdl.Multiplexor"></entity>
+		  <entity name="Multiplier" class="ptolemy.actor.lib.vhdl.Multiplier"></entity>
+		  <entity name="Register" class="ptolemy.actor.lib.vhdl.Register"></entity>
+		  <entity name="RegisterSR" class="ptolemy.actor.lib.vhdl.RegisterSR"></entity>
+		  <entity name="ROM" class="ptolemy.actor.lib.vhdl.ROM"></entity>
+		  <entity name="Slice" class="ptolemy.actor.lib.vhdl.Slice"></entity>
+		  
+		  <entity name="Clock" class="ptolemy.actor.lib.Clock"></entity>
+		  
+		  <entity name="PtalonActor" class="ptolemy.actor.ptalon.PtalonActor"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>

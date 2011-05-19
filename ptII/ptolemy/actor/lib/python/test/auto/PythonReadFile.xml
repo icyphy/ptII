@@ -1,0 +1,101 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PythonReadFile" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 58, 937, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you get an error:&#10;  ImportError: no module named javaos&#10;&#10;Then make sure that Vergil is invoked with&#10;  -Dpython.home=c:/jython2.2.1&#10;Or that Jython was installed in &quot;standalone&quot;&#10;mode, which creates a jython.jar that&#10;has the javaos module built in.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 230.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.0, 200.0}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The PythonScript actor reads the number of lines&#10;in the file that describes this model and outputs&#10;that number to the Test actor.&#10;&#10;Thus, if you change the model, the Test actor&#10;might need to be updated.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5, 0.5, 0.5, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks.  Based on Python code by Dan Higgins.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 365.0]">
+        </property>
+    </property>
+    <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="import os&#10;from ptolemy.data import IntToken&#10;class Main :&#10;  &quot;Number of lines&quot;&#10;  def fire(self) :&#10;    if not self.input.hasToken(0) :&#10;      return&#10;    t = self.input.get(0)&#10;    fs = t.toString()&#10;    # Note the fs includes quotes at both ends that must be removed !&#10;    print fs[1:len(fs)-1]&#10;    file = open(fs[1:len(fs)-1],'r')&#10;    lines = file.readlines();&#10;    cnt = len(lines)&#10;    cwd = os.getcwd()&#10;    st = IntToken(cnt)&#10;    self.output.broadcast(st)">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 195.0]">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;101&quot;, &quot;101&quot;, &quot;101&quot;, &quot;101&quot;, &quot;101&quot;, &quot;101&quot;, &quot;101&quot;, &quot;101&quot;, &quot;101&quot;, &quot;101&quot;}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="findFile(&quot;ptolemy/actor/lib/python/test/auto/PythonReadFile.xml&quot;)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 195.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="PythonActor.input" relation="relation3"/>
+    <link port="PythonActor.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Expression.output" relation="relation3"/>
+</entity>

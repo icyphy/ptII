@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+
+$outputprefix="$ENV{PTII}/vendors/ptinyos/moml";
+$outputsuffix="ncxml";
+$inputprefix="$ENV{PTII}/vendors/ptinyos/tinyos-1.x";
+$inputsuffix="nc";
+$pathtofile="apps/CntToLeds";
+$file="CntToLeds";
+
+system("mkdir -p $outputprefix/$pathtofile") == 0
+  or die "call to mkdir failed in @args: $?";
+
+$command="ncc -fsyntax-only '-fnesc-dump=components(wiring, file($inputprefix/$pathtofile/$file.$inputsuffix))' '-fnesc-dump=referenced(interfaces)' -fnesc-dumpfile=$outputprefix/$pathtofile/$file.$outputsuffix $inputprefix/$pathtofile/$file.$inputsuffix -I$inputprefix/tos/lib/Counters/";
+
+system("echo $command");
+
+system($command) == 0
+  or die "system call failed in @args: $?";
+
+# ncapp2moml args:
+#/home/celaine/ptII/vendors/ptinyos/tinyos-1.x /home/celaine/ptII/vendors/ptinyos/moml .ncxml /home/celaine/ptII/vendors/ptinyos/moml /home/celaine/ptII/vendors/ptinyos/moml/.harvesttempfile

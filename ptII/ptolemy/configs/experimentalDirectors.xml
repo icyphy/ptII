@@ -1,0 +1,38 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExperimentalDirectors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>experimental director library</doc>
+
+      <property name="CA Director" class="ptolemy.domains.ca.kernel.CADirector"/>
+      <property name="CI Director" class="ptolemy.domains.ci.kernel.CIDirector"/>
+      <property name="Do Nothing Director" class="ptolemy.actor.DoNothingDirector"/>
+      <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
+      <!-- HDE is not shipping in 4.0 -->
+      <!-- property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/-->
+      <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      
+      <!-- Don't include hs domain -->
+      <!-- property name="HS Director" class="ptolemy.domains.hs.kernel.HSMixedSignalDirector" /-->
+
+      <!-- property name="HS Embedded Director" class="ptolemy.domains.hs.kernel.HSEmbeddedDirector" /-->
+      
+      <!-- If you remove TimedPNDirector, then please update the pn chapter -->
+      <property name="Timed PN Director" class="ptolemy.domains.pn.kernel.TimedPNDirector"/>
+      <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
+      <property name="PSDF_Director" class="ptolemy.domains.psdf.kernel.PSDFDirector"/>
+      <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
+      <!-- Don't include RTP -->
+      <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+      <!-- FairDF is not shipping in 4.0 -->
+      <!--property name="FairDF Director" class="ptolemy.domains.fairdf.kernel.FairDFDirector"/-->
+      <!--property name="Distributed SDF Director" class="ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector"/-->
+      <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector"/>
+      <property name="Pthales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector"/>
+      </group>
+    ?>
+  </configure>
+</entity>

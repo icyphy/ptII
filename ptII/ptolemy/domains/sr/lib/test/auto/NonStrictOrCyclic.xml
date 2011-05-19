@@ -1,0 +1,103 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NonStrictOrCyclic" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 38.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 99, 819, 570}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <entity name="True" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="48.0, 215.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="516.0, 223.0">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicalOr" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="or">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 250.0">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="178.0, 126.0">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 76.0">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 327.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="435.0, 256.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="230.0, 156.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="133.0, 259.0">
+        </vertex>
+    </relation>
+    <link port="True.output" relation="relation3"/>
+    <link port="LogicalNot.input" relation="relation"/>
+    <link port="LogicalNot.output" relation="relation2"/>
+    <link port="NonStrictLogicalOr.input" relation="relation2"/>
+    <link port="NonStrictLogicalOr.input" relation="relation3"/>
+    <link port="NonStrictLogicalOr.output" relation="relation"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test2.input" relation="relation2"/>
+    <link port="Test3.input" relation="relation"/>
+</entity>

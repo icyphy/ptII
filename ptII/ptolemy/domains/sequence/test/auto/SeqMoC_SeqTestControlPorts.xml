@@ -1,0 +1,236 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SeqMoC_SeqTestControlPorts" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 101, 813, 786}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 676]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.4341216216216, 382.6546663851352}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Control ports with nothing connected.&#10;The type of these should resolve to Boolean.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Connected control ports.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 380.0]">
+        </property>
+    </property>
+    <property name="Sequence Director" class="ptolemy.domains.sequence.kernel.SequenceDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 120.0]">
+        </property>
+    </property>
+    <entity name="If Then Else" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 450.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 245.0]">
+        </property>
+        <port name="controlport" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="control" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 440.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="1">
+        </property>
+        <property name="output_InitialValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="controlport" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="control" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 525.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="1">
+        </property>
+        <property name="output_InitialValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="controlport" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="control" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 565.0]">
+        </property>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 615.0]">
+        </property>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, false, true, true, false, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[59.922943115234375, 473.30775451660156]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={918, 205, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 245.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="1">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={918, 428, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 440.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={926, 643, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 525.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="4">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[255.0, 565.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[270.0, 615.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="If Then Else.If" relation="relation10"/>
+    <link port="If Then Else.Then" relation="relation4"/>
+    <link port="If Then Else.Else" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Const2.output" relation="relation"/>
+    <link port="AddSubtract2.plus" relation="relation6"/>
+    <link port="AddSubtract2.plus" relation="relation7"/>
+    <link port="AddSubtract2.output" relation="relation8"/>
+    <link port="AddSubtract2.controlport" relation="relation4"/>
+    <link port="AddSubtract3.plus" relation="relation6"/>
+    <link port="AddSubtract3.minus" relation="relation7"/>
+    <link port="AddSubtract3.output" relation="relation9"/>
+    <link port="AddSubtract3.controlport" relation="relation5"/>
+    <link port="Const3.output" relation="relation6"/>
+    <link port="Const4.output" relation="relation7"/>
+    <link port="Sequence.output" relation="relation10"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="Display2.input" relation="relation8"/>
+    <link port="Display3.input" relation="relation9"/>
+</entity>

@@ -1,0 +1,109 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JAIScale" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Scale each dimension by 1.7 and use bilinear interpolation
+to fill in the gaps.  </text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 270.0">
+        </property>
+    </property>
+    <entity name="JAIScale" class="ptolemy.actor.lib.jai.JAIScale">
+        <property name="specifySize" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="800">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="600">
+        </property>
+        <property name="xScaleFactor" class="ptolemy.data.expr.Parameter" value="1.7">
+        </property>
+        <property name="yScaleFactor" class="ptolemy.data.expr.Parameter" value="1.7">
+        </property>
+        <property name="interpolationType" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="bicubic" class="ptolemy.kernel.util.StringAttribute" value="bicubic">
+                </property>
+                <property name="bicubic2" class="ptolemy.kernel.util.StringAttribute" value="bicubic2">
+                </property>
+                <property name="bilinear" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+                </property>
+                <property name="nearestNeighbor" class="ptolemy.kernel.util.StringAttribute" value="nearestNeighbor">
+                </property>
+            </property>
+        </property>
+        <property name="subSampleBits" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 190.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII.jpg">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 170.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, -1, 1232, 1027}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1224, 979]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JAIScale.input" relation="relation"/>
+    <link port="JAIScale.output" relation="relation2"/>
+    <link port="JAIImageReader.output" relation="relation"/>
+    <link port="ImageDisplay.input" relation="relation2"/>
+</entity>

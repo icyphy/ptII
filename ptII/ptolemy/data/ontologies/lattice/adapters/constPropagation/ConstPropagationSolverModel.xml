@@ -1,0 +1,274 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstPropagationSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={415, 266, 1089, 667}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[874, 550]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.2443181818181, 202.5255681818181}">
+    </property>
+    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 15.0]">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
+        </property>
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+    </property>
+    <property name="IntegratorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.lib.Integrator">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.lib.Integrator">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:lightGrey"></rect>
+<circle cx="0" cy="0" r="17" style="fill:white"></circle>
+<line x1="0" y1="-15" x2="0" y2="-13"></line>
+<line x1="0" y1="14" x2="0" y2="16"></line>
+<line x1="-15" y1="0" x2="-13" y2="0"></line>
+<line x1="14" y1="0" x2="16" y2="0"></line>
+<line x1="0" y1="-8" x2="0" y2="0"></line>
+<line x1="0" y1="0" x2="11.26" y2="-6.5"></line>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 110.0]">
+        </property>
+        <property name="impulsePortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="derivativePortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="statePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Nonconstant">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="initialStatePortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="initialStateAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
+                </property>
+            </property>
+        </property>
+    </property>
+    <property name="CurrentTimeActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.CurrentTime">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.CurrentTime">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:lightGrey"></rect>
+<circle cx="0" cy="0" r="17" style="fill:white"></circle>
+<line x1="0" y1="-15" x2="0" y2="-13"></line>
+<line x1="0" y1="14" x2="0" y2="16"></line>
+<line x1="-15" y1="0" x2="-13" y2="0"></line>
+<line x1="14" y1="0" x2="16" y2="0"></line>
+<line x1="0" y1="-8" x2="0" y2="0"></line>
+<line x1="0" y1="0" x2="11.26" y2="-6.5"></line>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 35.0]">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Nonconstant">
+        </property>
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="stopTimeAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="stopTimeIsLocalAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="useLocalTimeAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This ontology is a lattice of concepts.&#10;(A lattice is a directed graph with a common top element,&#10;a common bottom element, and no cycles.)  &#10;&#10;The lattice allows us to use the Ptolemy constraint&#10;solving algorithm to annotate concepts to the model.&#10;&#10;To view the ontology, please right click -&gt; Open Actor ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 115.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Constant Actors">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -40.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Nonconstant Actors">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, -40.0]">
+        </property>
+    </property>
+    <property name="RampActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Ramp">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Ramp">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"></rect>
+<polygon points="-20,10 20,-10 20,10" style="fill:grey"></polygon>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 180.0]">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Nonconstant">
+        </property>
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="stepPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="initAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="stepAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt; Constant ? tokenSubtractFunction(ConstantValue_0, arg) :&#10;  arg &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 415.0]">
+        </property>
+    </property>
+    <property name="reciprocalFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt; Constant ? tokenDivideFunction(ConstantValue_1, arg) :&#10;  arg &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 415.0]">
+        </property>
+    </property>
+    <property name="tokenAddFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;+&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 310.0]">
+        </property>
+    </property>
+    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;+&quot;}">
+    </property>
+    <property name="tokenSubtractFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;-&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 360.0]">
+        </property>
+    </property>
+    <property name="tokenMultiplyFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;*&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 310.0]">
+        </property>
+    </property>
+    <property name="tokenDivideFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;/&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 360.0]">
+        </property>
+    </property>
+    <property name="subtractFunction" class="ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="subtractor == Unused || subtractee == Unused ? Unused :&#10; subtractor &lt; Constant &amp;&amp; subtractee &lt; Constant ? tokenSubtractFunction(subtractor, subtractee) :&#10;  subtractor &lt;= Constant &amp;&amp; subtractee &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 360.0]">
+        </property>
+    </property>
+    <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 == Unused || addend2 == Unused ? Unused :&#10; addend1 &lt; Constant &amp;&amp; addend2 &lt; Constant ? tokenAddFunction(addend1, addend2) :&#10;  addend1 &lt;= Constant &amp;&amp; addend2 &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 310.0]">
+        </property>
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == Unused || factor2 == Unused ? Unused :&#10; factor1 &lt; Constant &amp;&amp; factor2 &lt; Constant ? tokenMultiplyFunction(factor1, factor2) :&#10;  factor1 &lt;= Constant &amp;&amp; factor2 &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 310.0]">
+        </property>
+    </property>
+    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unused || divisor == Unused ? Unused :&#10; dividend &lt; Constant &amp;&amp; divisor &lt; Constant ? tokenDivideFunction(dividend, divisor) :&#10;  dividend &lt;= Constant &amp;&amp; divisor &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 360.0}">
+        </property>
+    </property>
+    <entity name="constPropagation" class="ptolemy.data.ontologies.lattice.adapters.constPropagation.constPropagation">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 40.0]">
+        </property>
+    </entity>
+</entity>

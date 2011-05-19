@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PtinyOSActors" class="ptolemy.moml.EntityLibrary">
+<doc>PtinyOS composite actors</doc>
+  <configure>
+    <?moml
+      <group>
+
+    <entity name="MicaCompositeActor" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor"/>
+    <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds"/>
+    <entity name="SurgeVisualizer" class="ptolemy.domains.ptinyos.lib.SurgeVisualizer"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>

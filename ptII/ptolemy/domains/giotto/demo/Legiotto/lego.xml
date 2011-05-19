@@ -1,0 +1,316 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="lego" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
+        </property>
+    </property>
+    <property name="legoID" class="ptolemy.data.expr.Parameter" value="1">
+    </property>
+    <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
+    </property>
+    <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="4">
+    </property>
+    <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="[1, 1, 2, 2]">
+    </property>
+    <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="4">
+    </property>
+    <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="[3, 1, 4, 0]">
+    </property>
+    <port name="leader" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+    </port>
+    <port name="bumped" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+    </port>
+    <entity name="maneuver" class="ptolemy.actor.TypedCompositeActor">
+        <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="legoID">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
+        </property>
+        <port name="bumped" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="step" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="LegoBumper" class="ptolemy.apps.lego.LegoBumper">
+            <property name="legoID" class="ptolemy.data.expr.Parameter" value="legoID">
+            </property>
+            <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
+            </property>
+            <port name="bumped" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="LegoLink" class="ptolemy.apps.lego.LegoLink">
+            <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
+            </property>
+            <property name="legoID" class="ptolemy.data.expr.Parameter" value="legoID">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="routinePulse" class="ptolemy.actor.lib.Pulse">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+            </property>
+            <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="stepCounter" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="r0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="r2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="bumped" relation="r0"/>
+        <link port="step" relation="r1"/>
+        <link port="LegoBumper.bumped" relation="r0"/>
+        <link port="LegoLink.input" relation="r2"/>
+        <link port="routinePulse.output" relation="r2"/>
+        <link port="stepCounter.output" relation="r1"/>
+    </entity>
+    <entity name="follow" class="ptolemy.actor.TypedCompositeActor">
+        <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="legoID">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
+        </property>
+        <port name="bumped" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="LegoBumper" class="ptolemy.apps.lego.LegoBumper">
+            <property name="legoID" class="ptolemy.data.expr.Parameter" value="legoID">
+            </property>
+            <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
+            </property>
+            <port name="bumped" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="r0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="bumped" relation="r0"/>
+        <link port="LegoBumper.bumped" relation="r0"/>
+    </entity>
+    <entity name="controller" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="initialStateName">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="legoID">
+        </property>
+        <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="leadingSteps">
+        </property>
+        <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="leadingRoutine">
+        </property>
+        <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="evadingSteps">
+        </property>
+        <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="evadingRoutine">
+        </property>
+        <port name="leader" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="step" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="bumped" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <entity name="leading" class="ptolemy.domains.fsm.kernel.State">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="following" class="ptolemy.domains.fsm.kernel.State">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="follow">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="stopping" class="ptolemy.domains.fsm.kernel.State">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="evading" class="ptolemy.domains.fsm.kernel.State">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="leader_isPresent &amp;&amp; leader != legoID">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="leader_isPresent &amp;&amp; leader == legoID">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = {0, 1}; maneuver.routinePulse.values = {0, 0}; maneuver.LegoLink.legoID = 0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="step_isPresent &amp;&amp; step == 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = [0 : 1 : (evadingSteps - 1)].toArray(); maneuver.routinePulse.values = evadingRoutine; maneuver.LegoLink.legoID = legoID">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <relation name="t4" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="step_isPresent &amp;&amp; step == (evadingSteps - 1)">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = [0 : 1 : (leadingSteps - 1)].toArray(); maneuver.routinePulse.values = leadingRoutine; maneuver.routinePulse.repeat = true; maneuver.LegoLink.legoID = 0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <relation name="t5" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="bumped_isPresent &amp;&amp; bumped == 1">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = {0, 1}; maneuver.routinePulse.values = {0, 0}; maneuver.LegoLink.legoID = 0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <link port="leading.incomingPort" relation="t4"/>
+        <link port="leading.outgoingPort" relation="t1"/>
+        <link port="leading.outgoingPort" relation="t5"/>
+        <link port="following.incomingPort" relation="t1"/>
+        <link port="following.outgoingPort" relation="t2"/>
+        <link port="stopping.incomingPort" relation="t2"/>
+        <link port="stopping.incomingPort" relation="t5"/>
+        <link port="stopping.outgoingPort" relation="t3"/>
+        <link port="evading.incomingPort" relation="t3"/>
+        <link port="evading.outgoingPort" relation="t4"/>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="leader" relation="r1"/>
+    <link port="bumped" relation="r2"/>
+    <link port="maneuver.bumped" relation="r2"/>
+    <link port="maneuver.step" relation="r3"/>
+    <link port="follow.bumped" relation="r2"/>
+    <link port="controller.leader" relation="r1"/>
+    <link port="controller.step" relation="r3"/>
+    <link port="controller.bumped" relation="r2"/>
+</class>

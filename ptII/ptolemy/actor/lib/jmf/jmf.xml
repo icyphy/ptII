@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JMF" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>JMF processing actors</doc>
+
+	<entity name="AudioPlayer" class="ptolemy.actor.lib.jmf.AudioPlayer">
+	</entity>
+
+	<entity name="ColorFinder" class="ptolemy.actor.lib.jmf.ColorFinder">
+	</entity>
+
+	<entity name="ImageToJMF" class="ptolemy.actor.lib.jmf.ImageToJMF">
+	</entity>
+
+	<entity name="MovieReader" class="ptolemy.actor.lib.jmf.MovieReader">
+	</entity>	
+
+	<entity name="MovieWriter" class="ptolemy.actor.lib.jmf.MovieWriter">
+	<property name="fileType">
+	  <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="AVI" value="AVI"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="MPEG" value="MPEG"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="QUICKTIME" value="QUICKTIME"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>
+	      </property>  
+	</entity>	
+
+	<entity name="PlaySound" class="ptolemy.actor.lib.jmf.PlaySound">
+	</entity>	
+	
+	<entity name="StreamLoader" class="ptolemy.actor.lib.jmf.StreamLoader">
+	</entity>
+
+	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
+	<property name="formatName">
+	  <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="RGB" value="RGB"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="YUV" value="YUV"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>
+	      </property>   
+	</entity>
+
+	<entity name="VideoPlayer" class="ptolemy.actor.lib.jmf.VideoPlayer">
+	</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

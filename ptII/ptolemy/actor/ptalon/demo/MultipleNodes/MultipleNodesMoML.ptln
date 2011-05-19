@@ -1,0 +1,8 @@
+MultipleNodesMoML is {
+    actor node = ptolemy.domains.wireless.demo.SmallWorld.RelayNode;
+    parameter n;
+    for i initially [[ 1 ]] [[ i <= n ]] {
+        node(    range := [[ 40 + 10 * i ]], 
+             _location := [[ [100*i, 100*i] ]]);
+    } next [[ i + 1 ]]
+}

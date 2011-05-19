@@ -1,0 +1,33 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Modal Model Domain</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Model Model Domain</h1>
+<p>Ptolemy II 8.0 includes a substantial rework of modal models and
+the underlying finite state machine infrastructure to make them work
+predictably and consistently across domains.</p>
+
+<p>Ptolemy II 8.0 includes a new implementation of continuous-time models
+based on the semantics given in "<a href="#LeeZheng:07:Leveraging">Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>." In particular, the Continuous domain cleanly supports
+continuous-time models (using an ODE solver), discrete-event models,
+and arbitrary mixtures of the two, including signals that combine
+continuous-time segments with discrete events. It also interoperates
+cleanly with most other domains (pretty much all except PN and
+Rendezvous, for which there does not appear to be reasonable semantic
+model of such an interaction). Modal models are also cleanly supported
+with the Continuous domain, enabling hybrid system modeling with a
+rigorous semantics. The Continuous domain is expected to eventually
+replace CT.</p> 
+
+<ul>
+<li> Edward A. Lee. "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-151.html#in_browser" target="_top">Finite State Machines and Modal Models in Ptolemy II</a>," Technical report,  EECS Department,
+University of California, Berkeley, UCB/EECS-2009-151,
+December, 2009.
+</ul>
+</body>
+</html>

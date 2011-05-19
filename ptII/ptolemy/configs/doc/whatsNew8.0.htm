@@ -1,0 +1,931 @@
+<html>
+<head>
+<!-- $Id$ -->
+<!--
+
+This file has pointers to tours of what's new in version 8.0
+
+The version number should match
+ptolemy.kernel.attributes.VersionAttribute.CURRENT_VERSION
+so that we can easily find and update the version number
+
+-->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>
+Tour of What's New in Version 8.0.beta
+</h1>
+See also <a href="whatsNew.htm">What's New in other versions</a>.
+
+<p>Contents:
+<ul>
+<li> <a href="#highlights">Highlights</a>
+    <ul>
+    <li><a href="#modelTransformation">Model Transformation</a>
+    <li><a href="#pteraDomain">Ptera Domain</a>
+    <li><a href="#causalityanalysis">Causality Analysis</a>
+    <li><a href="#continuousModal">Continuous and Modal Domains</a>
+ </ul>
+<li> <a href="#other">Other Key New Capabilities</a>
+<li> <a href="#features">Additional features</a>
+<li> <a href="#demos">New demonstrations</a>
+<li> <a href="#libraries">New and Enhanced Actor Libraries</a>
+<li> <a href="#worksinprogress">Works in Progress</a>
+<li> <a href="#bugs">Bug fixes</a>
+</ul>
+
+<h2><a name="highlights">Highlights</a></h2>
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="modelTransformation">Model Transformation</a></h3>
+
+<p>The model transformation facility provides a framework for the
+analysis and transformation of actor models using model transformation
+techniques.
+
+<p>The design of large-scale models poses a number of challenges. As
+the size of the models increases to thousands of actors or hundreds of
+thousands of actors, analysis and consistent modification on the
+models become extremely hard. Furthermore, to maximize component
+reuse, a systematic approach is needed for the specification and
+maintenance of common patterns in the models and the transformation of
+those patterns.
+
+<p>The model transformation framework to be developed in this project
+aims to support the flexible specification of patterns and
+replacements by means of rules in graph grammar. An intuitive
+graphical user interface will be built. For novice users, a set of
+common transformations will be included in a library to facilitate
+their common tasks.
+
+<p>The transformations are models in their own right. They can be
+embedded in larger models hierarchically. Heterogeneous models of
+computation can be used to control the application of individual
+"atomic" transformations. This makes it easy to create sophisticated
+transformations by composing simple ones in a manageable and
+disciplined way. The sophisticated transformations will also take
+advantage of the concurrency inherent in those models of computation.
+
+<p>Model transformation can be applied as an optimization of modal
+models. These are hierarchical state machines with refinements in
+their states, which are sub-models to be executed when those states
+are active. The current implementation includes the complete
+description of each refinement in the model description, even though
+refinements of the states in a state machine tend to have large
+commonality. With the transformation technique, only one refinement
+needs to be stored completely. The others are obtained by
+transformations performed on the stored refinement. This eliminates
+redundancy and eases the job of modifying multiple refinements
+consistently.
+
+<p>Other applications of the model transformation technique include
+recognizing common design patterns in the models in a static analysis,
+replacing exiting design patterns with more efficient ones, and
+reusing design patterns by incorporating them into new models.
+<!-- FIXME: need more about design patterns, including links to models (see ptolemy/actor/designs) --> 
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html#in_browser" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley. UCB/EECS-2009-77. May 2009.
+<li>Christopher Brooks, Chihhong Cheng, Thomas Huining Feng, Edward A. Lee and Reinhard von Hanxleden, "<a href="http://chess.eecs.berkeley.edu/pubs/486.html#in_browser" target="_top">Model Engineering using Multimodeling</a>," In <a href="http://www.info.fundp.ac.be/mccm/2008/?page_id=23#in_browser" target="_top">1st International Workshop on Model Co-Evolution and Consistency Management (MCCM '08)</a>, Toulouse, France, Sep. 2008.
+<li>Thomas Huining Feng and Edward A. Lee, "<a href="http://chess.eecs.berkeley.edu/pubs/487.html#in_browser" target="_top">Scalable Models Using Model Transformation</a>," In <a href="http://www.artist-embedded.org/artist/ACES-MB-08.html#in_browser" target="_top">1st International Workshop on Model Based Architecting and Construction of Embedded Systems (ACESMB 2008)</a>, Toulouse, France, Sep. 2008.
+<li>Thomas Huining Feng, Miriam Zia, and Hans Vangheluwe, "<a href="http://chess.eecs.berkeley.edu/pubs/593.html#in_browser" target="_top">Multi-Formalism Modelling and Model Transformation for the Design of Reactive Systems</a>," In <a href="http://www.sce.carleton.ca/faculty/wainer/SCSC07/#in_browser" target="_top">2007 Summer Computer Simulation Conference (SCSC 2007)</a>, San Diego, CA, USA, Jul. 2007.
+</ul>
+
+<h4>Model Transformation Demonstrations</h4>
+
+<ul>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
+  <li> <a href="../../../ptolemy/actor/ptalon/gt/demo/Adder/Adder.xml">Adder</a> (Requires Ptalon and Antlr)</li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml">BouncingBallX2</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)</li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> (Using Model-Based Transformation) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDE.xml">ConstOptimization DE</a> (With TransformationController) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml">ConstOptimization DDF</a> (Without TransformationController) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml">HierarchyFlattening</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/MapReduce/MapReduce.xml">MapReduce</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.xml">MapReduceDDF</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml">ModelExecution</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ModelGeneration/ModelGenerationDE.xml">ModelGeneration DE</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml">PublisherTest</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a> </li>
+</ul>
+<p>Primary Model Transformation Developer: Thomas Huining Feng
+
+
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="pteraDomain">Ptera (Ptolemy Event Relationship Actor) Domain</a></h3>
+
+<p>The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model of computation. A model in Ptera is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
+at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
+queue to be emptied after their actions are performed, and therefore no more events can be processed.
+
+<p>The Ptera domain supports a different kind of modal models called PteraModalModels, compared to modal models using FSMs (Finite State Machines) as the control. A PteraModalModel uses Ptera at the top level, and each event is refined into a sub-model. The refinements can use Ptera and any other Ptolemy models of computation.
+
+<p>A Ptera model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or Ptera domain itself are recommended. When embedded in those domains, the scheduling of the Ptera model is delegated to the container by calling the fireAt() function of its director.
+
+<p>There are many useful additional features for Ptera, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
+Events may also have parameters, and the actual values for those parameters are specified by the expressions on the edges that schedule them. Those expressions are evaluated at run-time. The events may refer to the values of those parameters in their actions by parameter names.
+
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html#in_browser" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley. UCB/EECS-2009-77. May 2009.
+<li>Lee W. Schruben, "<a href="http://doi.acm.org/10.1145/182.358460#in_browser" target="_top">Simulation Modeling with Event Graphs</a>," Communications of the ACM (CACM), 26(11): 957-963, 1983.
+</ul>
+
+<h4>Ptera Domain Demonstrations</h4>
+
+<ul>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWashFSM.xml">AdaptiveCarWash</a> (With FSM Submodel) </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/CarWash/CarWash.xml">CarWash</a> </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/CarWash/CarWashDE.xml">CarWash</a>  (With DE) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> (Using Model-Based Transformation) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDE.xml">ConstOptimization</a> (With TransformationController) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a> </li>
+  <!-- Don't include demos in apps, we don't ship them ../../../ptolemy/apps/naomi/demo/Intersection/Intersection.xml -->
+  <li> <a href="../../../ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.xml">SimultaneousCarWash</a> </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> </li>
+</ul>
+
+<p>Primary Ptera Developer: Thomas Huining Feng
+
+<!-- a little space -->
+<p> &nbsp;
+
+<h3><a name="causalityanalysis">Causality Analysis</a></h3>
+Ptolemy II 8.0 includes an update to our Causality Analysis framework.
+We identified performance problems with our current
+non-conservative causality analysis for modal models within
+discrete-event (DE) systems. In this scheme, causality analysis is
+performed on the entire model at run time each time there is a mode
+change in the model. This mechanism is far too costly. We are
+investigating techniques for performing the causality analysis in a
+compositional way for the various modes at compile
+time. Unfortunately, brute force solutions result in exponentially
+growing memory requirements for the results of the causality analysis.
+
+<p>We designed, implemented and reviewed an interface that defines a
+causality interfaces for actor networks as described in the paper
+"<a href="#ZhouLee:08:CausalityInterfaces">Causality Interfaces for Actor Networks</a>."
+
+<p>Causality interfaces are also described in Ye Zhou Ph.D. Thesis,
+"<a href="#Zhou:07:Interface">Interface Theories for Causality Analysis in Actor Networks.</a>"
+
+
+<p>Causality interfaces represent dependencies between input and output
+ports of an actor and can be used to perform scheduling or static
+analysis on actor models.  
+
+<p>This substantial new work helps address performance problems in
+large Discrete Event (DE) models.  The new work provides
+more efficient static analysis for directed cycles and scheduling.
+This work solved a bug concerning execution time with DE models
+that had many actors at one level of hierarchy.  The table
+below illustrates the improvement.
+<table>
+  <tr>
+   <th># of actors</th>
+   <th>Total execution time before</th>
+   <th>Total execution time after</th>   
+  </tr>
+  <tr>
+    <td>100</td>
+   <td>~0.2 sec.</td>
+   <td>~0.2 sec.</td>
+ </tr>
+  <tr>
+    <td>600</td>
+   <td>149 sec.</td>
+   <td>0.7 sec.</td>
+ </tr>    
+</table>
+
+<p>    One of the challenges in complex, heterogeneous models is that
+   portions of the model have temporal behavior while other portions
+   are purely functional. We have reworked the interfaces that
+   hierarchically heterogeneous models in Ptolemy II present to one
+   another for managing the passage of time. This rework supports
+   much more robust multithreaded and distributed execution without
+   compromising temporal coherence. Concretely, we have defined a
+   formalism whereby a model requests temporal behavior of its
+   container in the hierarchy, and the container responds with an
+   indication of the extent to which it can honor the request.  If
+   the extent is sufficient for the application, then the models are
+   compatibly composed. Otherwise, they are not, and the model is
+   marked defective.
+<h4>Causality Analysis Demonstrations</h4>
+<ul>
+<li><a href="ptdoc:ptolemy.actor.util.BooleanDependency">BooleanDependency</a>
+<li><a href="ptdoc:ptolemy.actor.util.BreakCausalityInterface">BreakCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.util.CausalityInterface">CausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.util.CausalityInterfaceForComposites">CausalityInterfaceForComposites</a>
+<li><a href="ptdoc:ptolemy.actor.util.DefaultCausalityInterface">DefaultCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.util.Dependency">Dependency</a>
+<li><a href="ptdoc:ptolemy.actor.util.RealDependency">RealDependency</a>
+<li><a href="ptdoc:ptolemy.actor.util.SuperdenseDependency">SuperdenseDependency</a>
+</ul>
+<h4>References</h4>
+<ul>
+<li><a name="ZhouLee:08:CausalityInterfaces">Ye Zhou</a>, Edward A. Lee. <a
+href="http://chess.eecs.berkeley.edu/pubs/473.html#in_browser" target="_top">Causality
+Interfaces for Actor Networks</a>, <i>ACM
+Transactions on Embedded Computing Systems (TECS)</i>,
+7(3):1-35, April 2008.
+<li><a name="Zhou:07:Interface">Ye Zhou</a>
+<a href="http://chess.eecs.berkeley.edu/pubs/302.html#in_browser"><i>Interface Theories for Causality Analysis in Actor Networks</i></a>, PhD thesis,  University of
+California, Berkeley, May, 2007.
+</ul>
+
+<p> &nbsp;
+<h3><a name="continuousModal">Continuous and Modal Domains</a></h3>
+<p>Ptolemy II 8.0 includes a substantial rework of modal models and
+the underlying finite state machine infrastructure to make them work
+predictably and consistently across domains.</p>
+
+<p>Ptolemy II 8.0 includes a new implementation of continuous-time models
+based on the semantics given in "<a href="#LeeZheng:07:Leveraging">Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>." In particular, the Continuous domain cleanly supports
+continuous-time models (using an ODE solver), discrete-event models,
+and arbitrary mixtures of the two, including signals that combine
+continuous-time segments with discrete events. It also interoperates
+cleanly with most other domains (pretty much all except PN and
+Rendezvous, for which there does not appear to be reasonable semantic
+model of such an interaction). Modal models are also cleanly supported
+with the Continuous domain, enabling hybrid system modeling with a
+rigorous semantics. The Continuous domain is expected to eventually
+replace CT.</p> 
+
+<h4>New Continuous and Modal Demonstrations</h4>
+<h5>Continuous</h5>
+<ul>
+<li><a href="../../domains/continuous/demo/BouncingBall/BouncingBallWithoutGR.xml">Bouncing Ball</a> (Does not require Java 3D)
+<li><a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a>
+<li><a href="../../domains/continuous/demo/CartPendulum/CartPendulum.xml">Cart with Pendulum</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/continuous/demo/CarTracking/CarTracking.xml">Car Tracking</a>
+<li><a href="../../domains/continuous/demo/ComparedClocks/ComparedClocks.xml">Compared Clocks</a>
+<li><a href="../../domains/continuous/demo/Transmission/EfficiencyCurve.xml">Efficiency Curve</a>
+<li><a href="../../domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml">Furuta Pendulum</a>
+<li>Hybrid Plant: <a href="../../domains/continuous/demo/HybridPlant/HybridPlant.xml">Deterministic</a>, 
+<a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Random</a>
+<li><a href="../../domains/continuous/demo/Hysteresis/Hysteresis.xml">Hysteresis</a>
+<li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithBernoulliLosses.xml">HysteresisWithBernoulliLosses</a>
+<li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
+<li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomLosses.xml">HysteresisWithRandomLosses</a>
+<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>,
+<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml">Level Crossing Detector Detecting Directions</a> 
+<li><a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a>
+<li><a href="../../domains/continuous/demo/Lorenz/LorenzDifferentialSystem.xml">Lorenz Attractor made with Differential System</a>
+<li><a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">MEMS accelerometer</a>
+
+<!--/vergilDocs-->
+<!-- These Newton's Cradle demos require GR -->
+<li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated.xml">Newton's Cradle with Complicated Dynamics</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml">Newton's Cradle with Nondeterministic State Machine</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml">Newton's Cradle with Perfectly Inelastic Collisions</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml">Newton's Cradle with Configurable Parameters</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml">Newton's Cradle with Balls Having Different Masses</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<!--vergilDocs-->
+<li><a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
+<li><a href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise Spectrum</a>
+<!--/vergilDocs-->
+<li><a href="../../domains/continuous/demo/Pendulum3D/Pendulum3D.xml">3D Pendulum</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<!--vergilDocs-->
+<li><a href="../../domains/continuous/demo/Poisson/Poisson.xml">Poisson</a>,
+ <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
+<li><a href="../../domains/continuous/demo/SampledClocks/SampledClocks.xml">Sampled Clocks</a>
+<li><a href="../../domains/continuous/demo/Satellite/Satellite.xml">Satellite</a>
+<li><a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>
+<li><a href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid In Noise</a>)
+<li><a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">Static Units</a>
+<!--/vergilDocs-->
+<!-- SinuBouncingBall uses PDFAttribute, which is not shipped in ptiny -->
+<li><a href="../../domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.xml">Ball Bouncing on a Sinusoidal Surface</a>
+<!--vergilDocs-->
+<li><a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">Square Wave Response</a>
+</ul>
+
+<h5>Modal</h5>
+The Modal models below are copies of the FSM models with the same name but
+the Modal models use the continuous domain, whereas the FSM models use
+the ct domain.
+<ul>
+<li><a href="../../domains/modal/demo/ABP/ABP.xml">ABP</a>
+<li><a href="../../domains/modal/demo/Blending/Blending.xml">Blending</a>
+<li><a href="../../domains/modal/demo/Case/Case.xml">Case</a>
+<li><a href="../../domains/modal/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a>
+<li><a href="../../domains/modal/demo/ModalBSC/ModalBSC.xml">ModalBSC</a>
+<li><a href="../../domains/modal/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a>
+<li><a href="../../domains/modal/demo/StateTracker/StateTracker.xml">StateTracker</a>
+</ul>
+<h4>References</h4>
+<ul>
+<li><a name="LeeZheng:07:Leveraging">Edward A. Lee, Haiyang Zheng</a>. <a
+href="http://chess.eecs.berkeley.edu/pubs/430.html#in_browser" target="_top">Leveraging
+Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>, Proceedings of the
+7th ACM & IEEE international conference on Embedded
+software, Christoph M. Kirsch,  Reinhard Wilhelm (eds.),
+ACM, 114-123, 2007.
+</ul>
+
+<p>
+
+<h2><a name="other">Other Key New Capabilities</a></h2>
+<ul>
+<li> New width inference algorithm
+<br>Relations have a width specifying the number of channels of that relation.
+Having to explicitly specify this width can be a tedious job. To make it even
+worse, the addition of one relation to a multiport might result in a model
+builder needing to go through the model again to adapt widths. To cope
+with this you can now set the width to <i>Auto</i>. In this case the width of the relation
+is inferred from other relations or other ports with a graph algorithm. This
+algorithm removes a lot of restriction that were present in the previous implementation.
+In this implementation we tried to
+come up with a solution that can infer the width of all relations for most scenarios without
+imposing a large performance cost. The algorithm propagates the widths
+it knows and at multiports tries to infer the widths of other relations from
+these propagated widths.</p>
+<p>For certain actors there is a relation between the widths of the input ports
+and the widths of the output ports. To resolve this problem, <i>width constraints</i> on
+ports have been introduced. There exists two types of width constraints.
+The first one imposes an equality constraints between two different ports. With the second type of constraints you can set the width of a port equal to
+a certain parameter.</p>
+
+<p>The last step of the algorithm is a <i>consistency check</i> in which it is checked
+that the solution obtained by the width inference algorithm is a unique one.
+A non unique solution is treated as a error. </p>
+
+<p>In this release the default width has also been changed from <i>1</i> to <i>Auto</i>.
+<br>(Bert Rodiers) </p>
+</li>
+
+<li> <i>New model generators for verification</i>.
+<p> This release contains capabilities to generate, from Ptolemy models, other types of models,
+suitable for formal verification. In particular, the <i>Formal Model Converter</i> component
+(developed by Chihhong Patrick Cheng) allows to generate models compatible with the SMV or NuSMV 
+model-checkers, from Ptolemy models in the SR domain. Also, the <i>RTMaudeCodeGenerator</i> component
+(developed by Kyungmin Bae) allows to generate models compatible with the Real Time Maude tool,
+from Ptolemy models in the DE domain.
+</p>
+<p>Please see the <a href="../../verification/README.html">Verification README file</a> for details.
+</p>
+
+<h4>References</h4>
+<ul>
+<li>Chihhong Patrick Cheng, Teale Fristoe and Edward A. Lee. <a
+href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-41.html#in_browser" target="_top">Applied Verification: The Ptolemy Approach</a>.
+EECS Department,
+University of California, Berkeley,
+Technical Report No. UCB/EECS-2008-41.
+April 19, 2008.
+</ul>
+(Chihong Patrick Cheng, Teale Fristoe, Kyunming Bae)
+</li>
+
+</ul>
+
+<h2><a name="features">Additional Features</a></h2>
+<ul>
+<li><i>Kieler Graph Layout</i>
+<br>Experiment graph layout support using <a href="http://rtsys.informatik.uni-kiel.de/trac/kieler/wiki/Releases/Layout#in_browser" target="_top">Kieler</a>, from University of Kiel.
+<br>(Miro Spoenemann (University of Kiel), Hauke Fuhrmann (University of Kiel))
+</li>
+
+<li><i><a name="configurableui">Configurable User Interface</a></i>
+<br>GUI (graphical user interface) properties allow Ptolemy II users or redistributors
+to configure the Ptolemy user interface by simply making changes to configuration
+files in the XML format. For example, buttons on the tool bar or menu items specific
+to a certain application domain can be added that trigger user-defined actions. Those
+actions may be defined in Java classes or as MoML change requests to be applied to the
+model being edited.
+<p>Please see the <a href="../../../doc/codeDoc/ptolemy/actor/gui/properties/package-summary.html">
+ptolemy.actor.gui.properties</a> documentation for details.</p>
+<p>(Thomas Huining Feng)</p>
+</li>
+
+<li><i><a name="threadedcomposite">ThreadedComposite</a></i>
+<br>The ThreadedComposite actor supports execution of either an atomic actor
+or a composite actor in a separate thread. It thus brings multithreading
+to Ptolemy domains where the director does not use threads, such as
+DE, SR, and SDF.  The actor can be used to get parallel execution on
+multicore machines, to execute actors that block on I/O without blocking
+the model execution, and to execute actors in the background.
+<p><i>ThreadedComposite demonstrations</i>
+<ul>
+<li> <a href="../../actor/lib/hoc/demo/ThreadedComposite/BackgroundExecution.xml">Background Execution</a></li>
+<li> <a href="../../actor/lib/hoc/demo/ThreadedComposite/ConcurrentChat.xml">Concurrent Chat</a></li>
+<li> <a href="../../actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml">Multicore Execution</a></li>
+<li> <a href="../../actor/lib/hoc/demo/ThreadedComposite/ParallelExecution.xml">Parallel Execution</a></li>
+<li> <a href="../../actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources.xml">Spontaneous Sources</a></li>
+</ul>
+(Edward A. Lee)</p>
+</li>
+
+<li><i>Lazy Opening of Composites</i>
+<br>
+LazyTypedCompositeActor is a replacement for TypedCompositeActor that does lazy evaluation, which means that he contents of a LazyTypedCompositeActor are not evaluated at runtime, instead they are evaluated at start up time.  LazyTypedCompositeActor was developed to improve the opening time of very large models. One issue is that this changes the results slightly because different results will occur if the results depend on the order in which actors are created. Unforuntately, the scheme we have for setting seeds in the random number generator "deterministically" has this property.
+
+<p><i>Lazy Composite classes</i>
+<ul>
+ <li><a href="ptdoc:ptolemy.kernel.util.LazyComposite">LazyComposite</a>
+ <li><a href="ptdoc:ptolemy.actor.LazyTypedCompositeActor">LazyTypedCompositeActor</a>
+ <li><a href="ptdoc:ptolemy.moml.filter.LazyTypedCompositeActorChanges">LazyTypedCompositeActorChanges</a> - a MoMLFilter that may be used to convert models to use LazyTypedCompositeActor
+ <li><a href="ptdoc:ptolemy.moml.ConvertToLazy">ConvertToLazy</a> - A class that converts models to use LazyTypedCompositeActor 
+</ul>
+(Edward A. Lee, Christopher Brooks)</p>
+</li>
+
+<li><i>Java Code Generation</i>
+<br>The code generation can generate Java code for SDF models that use a subset of Ptolemy actors.
+See <a href="../../codegen/java/README.txt">$PTII/ptolemy/codegen/java/README.txt</a> for details.
+<ul>
+  <li><a href="../../codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml">Expression demo with  Java CompiledCompositeActor</a>
+  <li><a href="../../codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml">Scale with Embedded Java</a>
+</ul>
+(Bert Rodiers, Christopher Brooks)</p>
+
+<li><i>printPDF</i>
+<br>Vergil and Ptplot now handle an optional <code>-printPDF</code>
+command line argument.  This option finds the first printer with the
+string <code>PDF</code> in the name and then prints to that printer.
+Thus, <code>-printPDF</code> requires that the full (non-free) version of
+Adobe Acrobat be installed, or some other method of printing to PDF.
+Unfortunately, the location of the resulting PDF file is not easily
+controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
+<br>(Christopher Brooks)
+</li>
+
+</ul>
+
+
+
+<h2><a name="demos">New demonstrations</a></h2>
+<!-- grep "Only in" /tmp/pt78.diff | grep 8.1.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII8.1.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort -->
+
+<h3>Discrete Event (DE)</h3>
+<ul>
+<li><a href="../../domains/de/demo/Clock/Clock.xml">Clock</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li><a href="../../domains/gr/demo/Pong/Pong.xml">Pong</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+
+</ul>
+
+<h3>Process Network (PN)</h3>
+<ul>
+<li><a href="../../domains/pn/demo/Stack/Stack.xml">Stack</a>
+</ul>  
+
+<h3>Synchronous Dataflow (SDF)</h3>
+<ul>
+ <li><a href="../../data/type/demo/Objects/Objects.xml">Objects</a> - A demo for different kinds of ObjectTokens, see
+ <a href="ptdoc:ptolemy.data.type.ObjectType">ObjectType</a>.
+ <li><a href="../../domains/sdf/demo/Gravitation/GravitationWithCollisionDetection.xml">Gravitation With Collision Detection</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+</ul>
+<h3>Synchronous/Reactive (SR) </h3>
+<ul>
+<li><a href="../../verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml">iRobot Hill Climbing</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation</a>)
+<li><a href="../../actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml">MulticoreExecution</a>
+<li><a href="../../verification/demo/RailroadControl/RailroadControl.xml">Railroad System</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation</a>)
+<li><a href="../../verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml">Simple Traffic Light</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation</a>)
+</ul>
+
+<h3><a name="pnCodegen">PN Code Generation</a></h3>
+<ul>
+<!-- Please keep the demos alphabetical -->
+<li><a href="../../codegen/c/domains/pn/demo/Gravitation/Gravitation.xml">Gravitation</a>
+<li><a href="../../codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml">PN Butterfly</a>
+</ul>
+
+<h3><a name="sdfCodegen">SDF Code Generation</a></h3>
+<ul>
+<!-- Please keep the demos alphabetical -->
+<li> <a href="../../codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml">Mod4Counter</a>
+<li><a href="../../actor/lib/jni/demo/Scale/Scale.xml">Scale</a>
+<li><a href="../../actor/lib/jni/demo/Scale/ScaleWithEmbeddedCFileActor.xml">Scale with EmbeddedCFileActor</a>
+<li><a href="../../actor/lib/jni/demo/SimplePassPointer/SimplePassPointer.xml">Simple Pass Pointer</a>
+<li><a href="../../actor/lib/jni/demo/SimplePassPointer/SimplePassPointerWithECFA.xml">Simple Pass Pointer With ECFA</a>
+
+</ul>
+
+<h3>Wireless</h3>
+<ul>
+<li><a href="../../domains/wireless/demo/Intersections/Intersections.xml">Intersections</a>
+<li><a href="../../domains/wireless/demo/Zigbee/Zigbee.xml">Zigbee</a>
+</ul>
+
+
+See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
+
+
+<h2><a name="libraries">New and Enhanced Actor Libraries</a></h2>
+
+<!--
+diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ptII7.0.1 ptII8.0.beta >& /tmp/p.diffs 
+
+grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII8.1.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
+
+<ul>
+<li><i>New Domain Polymorphic actors</i>:
+
+  <ul>
+    <li><a href="ptdoc:ptolemy.actor.lib.ClockSensor">ClockSensor</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.ConfigurationSelect">ConfigurationSelect</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.ConfigurationSwitch">ConfigurationSwitch</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.DiscreteClock">DiscreteClock</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.ExecutionTime">ExecutionTime</a>
+
+    <li><a href="ptdoc:ptolemy.actor.lib.logic.FuzzyLogic">FuzzyLogic</a>
+    (Uses Edward Sarzonov's GPL'd Java Fuzzy Engine.  The FuzzyEngine distribution may be found at
+    <a href="http://people.clarkson.edu/~esazonov/FuzzyEngine.htm#in_browser">http://people.clarkson.edu/~esazonov/FuzzyEngine.htm</a>
+
+    <li><a href="ptdoc:ptolemy.actor.lib.GetCausalityInterface">GetCausalityInterface</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.MovingMaximum">MovingMaximum</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.OrderedRecordAssembler">OrderedRecordAssembler</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.ResettableTimer">ResettableTimer</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.Sampler">Sampler</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.string.StringSimpleReplace">StringSimpleReplace</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.TimeDelay">TimeDelay</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.TopLevelCurrentTime">TopLevelCurrentTime</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.logic.TrueGate">TrueGate</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.gui.ArrowKeyProbe">ArrowKeyProbe</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.hoc.ThreadedComposite">ThreadedComposite</a>
+  </ul>
+
+<li><i>Database actors</i>
+  <br>Ptolemy II 8.0 includes actors that access a database.  We have included a sample application,
+  <a href="../../domains/space/demo/DOPCenter/DOPCenter.xml">DOPCenter</a>, which we use
+  to manage the seating in the <a href="http://embedded.eecs.berkeley.edu/dopcenter#in_browser" target="_top">Donald O. Pederson Center</a>
+  <ul>
+    <li><a href="ptdoc:ptolemy.actor.lib.database.ArrayOfRecordsExporter">ArrayOfRecordsExporter</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.database.ArrayOfRecordsRecorder">ArrayOfRecordsRecorder</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseInsert">DatabaseInsert</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseManager">DatabaseManager</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseQuery">DatabaseQuery</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseQuery">DatabaseSelect</a>
+    <li><a href="ptdoc:ptolemy.actor.lib.database.SQLStatement">SQLStatement</a>
+  </ul>
+
+<li>Codegen
+<ul>
+<li><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">CodegenActor</a>
+<li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCFileActor">EmbeddedCFileActor</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Interpolator">Interpolator</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.OrderedMerge">OrderedMerge</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.conversions.StringToUnsignedByteArray">StringToUnsignedByteArray</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.gui.TimedPlotter">TimedPlotter</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.hoc.MultiCompositePort">MultiCompositePort</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.hoc.RefinementPort">RefinementPort</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.fsm.modal.ModalPort">ModalPort</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.fsm.modal.RefinementPort">RefinementPort</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.fsm.modal.TransitionRefinementPort">TransitionRefinementPort</a>
+<li><a href="ptdoc:ptolemy.codegen.actor.Director">Director</a>
+<li><a href="ptdoc:ptolemy.codegen.kernel.PortCodeGenerator">PortCodeGenerator</a>
+<li>The code generator has been extended so that Java code may be generated for a model.
+  <!-- FIXME: need demos -->
+  <ul>
+  <li><a href="../../../doc/codeDoc/ptolemy/actor/lib/embeddedJava/package-summary.html">ptolemy.actor.lib.embeddedJava</a>
+  <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/actor/package-summary.html">ptolemy.codegen.java.actor</a>
+  <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/kernel/package-summary.html">ptolemy.codegen.java.kernel</a>
+  <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/domains/modal/kernel/package-summary.html">ptolemy.codegen.java.domains.modal.kernel</a>
+  <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/domains/sdf/kernel/package-summary.html">ptolemy.codegen.java.domains.sdf.kernel</a>
+  <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/domains/sdf/lib/package-summary.html">ptolemy.codegen.java.domains.sdf.lib</a>
+  <li><a href="ptdoc:ptolemy.copernicus.applet.JarSigner">JarSigner</a>
+  </ul> 
+</ul>
+</li>
+
+<li><i>New Parameter:</i> 
+  <ul>
+    <li><a href="ptdoc:ptolemy.actor.parameters.Priority">Priority</a>
+  </ul>
+</li>
+
+<li><i>New Continuous actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.BandlimitedNoise">BandlimitedNoise</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.ContinuousMerge">ContinuousMerge</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.PeriodicSampler">PeriodicSampler</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.ContinuousTimeDelay">ContinuousTimeDelay</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.ContinuousTransferFunction">ContinuousTransferFunction</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.LinearStateSpace">LinearStateSpace</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.Noise">Noise</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.PeriodicSampler">PeriodicSampler</a>
+
+</ul>
+
+<li><i>New Discrete Event (DE) actors</i>:
+  <ul>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.AverageOverTime">AverageOverTime</a>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.Derivative">Derivative</a>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.GetCurrentMicrostep">GetCurrentMicrostep</a>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.Integrator">Integrator</a>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.PID">PID</a>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.SharedQueue">SharedQueue</a>
+<li><a href="ptdoc:ptolemy.domains.de.lib.SuppressSimultaneousEvents">SuppressSimultaneousEvents</a>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.TestActorPortDepth">TestActorPortDepth</a>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.TimeCompare">TimeCompare</a>
+  </ul>
+</ul>
+
+
+
+<h3>Other new classes</h3>
+<ul>
+<li>ptolemy.actor
+
+  <ul>
+  <li><a href="ptdoc:ptolemy.actor.CausalityMarker">CausalityMarker</a>
+  <li><a href="ptdoc:ptolemy.actor.DoNothingDirector">DoNothingDirector</a>
+  <li><a href="ptdoc:ptolemy.actor.LazyTypedCompositeActor">LazyTypedCompositeActor</a>
+  <li><a href="ptdoc:ptolemy.actor.RelationWidthInference">RelationWidthInference</a>
+  <li><a href="ptdoc:ptolemy.actor.SuperdenseTimeDirector">SuperdenseTimeDirector</a>
+  </ul>
+</li>
+
+
+
+<li>ptolemy.actor.gt
+<br>The Model Transformation facility (GT) has been substantially updated to support
+Ptera.
+<br>New GT classes include:
+<ul>
+   <li><a href="ptdoc:ptolemy.actor.gt.AttributeMatcher">AttributeMatcher</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.Checkable">Checkable</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ContainerIgnoringAttribute">ContainerIgnoringAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.CreationAttribute">CreationAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.GTAttribute">GTAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.GTCompositeActor">GTCompositeActor</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.IgnoringAttribute">IgnoringAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.IterativeParameter">IterativeParameter</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.MatchingAttribute">MatchingAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.MoMLGenerator">MoMLGenerator</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ModalModelMatcher">ModalModelMatcher</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ModelCombine">ModelCombine</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ModelExecutor">ModelExecutor</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.NegationAttribute">NegationAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.OptionAttribute">OptionAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.PreservationAttribute">PreservationAttribute</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.TransformationListener">TransformationListener</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.TransformationMode">TransformationMode</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.TransitionMatcher">TransitionMatcher</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ValueIterator">ValueIterator</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.data.SequentialTwoWayHashMap">SequentialTwoWayHashMap</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ingredients.criteria.GuardCriterion">GuardCriterion</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ingredients.criteria.NameCriterion">NameCriterion</a>
+   <li><a href="ptdoc:ptolemy.actor.gt.ingredients.criteria.StateTypeCriterion">StateTypeCriterion</a>
+    <li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.BooleanOperationElement">BooleanOperationElement</a>
+    <li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.PortCreationOperation">PortCreationOperation</a>
+    <li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.PortRemovalOperation">PortRemovalOperation</a>
+    <li><a href="ptdoc:ptolemy.actor.gt.util.RecursiveFileFilter">RecursiveFileFilter</a>
+</ul>
+</li>
+
+<li>ptolemy.actor.gui
+  <ul>
+    <li><a href="ptdoc:ptolemy.actor.gui.ArrayOfRecordsPane">ArrayOfRecordsPane</a>
+    <li><a href="ptdoc:ptolemy.actor.gui.ConfigurationApplication">ConfigurationApplication</a>
+    <li><a href="ptdoc:ptolemy.actor.gui.CustomQueryBoxParameter">CustomQueryBoxParameter</a>
+    <li><a href="ptdoc:ptolemy.actor.gui.ModelRepaintController">ModelRepaintController</a>
+    <li><a href="ptdoc:ptolemy.actor.gui.TopPack">TopPack</a>
+  </ul>
+</li>
+
+<li>ptolemy.actor.util:
+  <ul>
+    <li><a href="ptdoc:ptolemy.actor.util.BooleanDependency">BooleanDependency</a>
+    <li><a href="ptdoc:ptolemy.actor.util.BreakCausalityInterface">BreakCausalityInterface</a>
+    <li><a href="ptdoc:ptolemy.actor.util.CausalityInterface">CausalityInterface</a>
+    <li><a href="ptdoc:ptolemy.actor.util.CausalityInterfaceForComposites">CausalityInterfaceForComposites</a>
+    <li><a href="ptdoc:ptolemy.actor.util.DefaultCausalityInterface">DefaultCausalityInterface</a>
+    <li><a href="ptdoc:ptolemy.actor.util.Dependency">Dependency</a>
+    <li><a href="ptdoc:ptolemy.actor.util.PeriodicDirector">PeriodicDirector</a>
+    <li><a href="ptdoc:ptolemy.actor.util.PeriodicDirectorHelper">PeriodicDirectorHelper</a>
+    <li><a href="ptdoc:ptolemy.actor.util.RealDependency">RealDependency</a>
+    <li><a href="ptdoc:ptolemy.actor.util.SuperdenseDependency">SuperdenseDependency</a>
+   </ul>
+</li>
+
+
+<li>ptolemy.data
+  <ul>
+    <li><a href="ptdoc:ptolemy.data.AbsentToken">AbsentToken</a>
+    <li><a href="ptdoc:ptolemy.data.OrderedRecordToken">OrderedRecordToken</a>
+    <li><a href="ptdoc:ptolemy.data.expr.ChoiceParameter">ChoiceParameter</a>
+    <li><a href="ptdoc:ptolemy.data.expr.ContainmentExtender">ContainmentExtender</a>
+    <li><a href="ptdoc:ptolemy.data.type.ObjectType">ObjectType</a>, see the
+      <a href="../../data/type/demo/Objects/Objects.xml">Objects demo</a>.
+  </ul>
+</li>
+
+<li>ptolemy.domains.fsm  
+  <ul>
+    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.ConfigurableEntity">ConfigurableEntity</a>
+    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.Configurer">Configurer</a>
+    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.ContainmentExtender">ContainmentExtender</a>
+    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.FSMCausalityInterface">FSMCausalityInterface</a>
+    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.RefinementActor">RefinementActor</a>
+  </ul>
+
+<li>ptolemy.domains.modal  
+  <ul>
+    <li><a href="ptdoc:ptolemy.domains.fsm.modal.MirrorCausalityInterface">MirrorCausalityInterface</a>
+    <li><a href="ptdoc:ptolemy.domains.fsm.modal.RefinementExtender">RefinementExtender</a>
+    <li><a href="ptdoc:ptolemy.domains.fsm.modal.RefinementSuggestion">RefinementSuggestion</a>
+    <li><a href="ptdoc:ptolemy.gui.PtGUIUtilities">PtGUIUtilities</a>
+  </ul>
+</li>
+<li>ptolemy.gui  
+  <ul>
+    <li><a href="ptdoc:ptolemy.gui.QueryChooser">QueryChooser</a>
+    <li><a href="ptdoc:ptolemy.gui.QueryChooserHelper">QueryChooserHelper</a>
+    <li><a href="ptdoc:ptolemy.gui.SettableQueryChooser">SettableQueryChooser</a>
+    <li><a href="ptdoc:ptolemy.gui.UndeferredGraphicalMessageHandler">UndeferredGraphicalMessageHandler</a>
+    <li><a href="ptdoc:ptolemy.gui.UndoListener">UndoListener</a>
+  </ul>
+</li>
+
+<li>ptolemy.kernel
+  <ul>
+     <li><a href="ptdoc:ptolemy.kernel.undo.UndoActionsList">UndoActionsList</a>
+     <li><a href="ptdoc:ptolemy.kernel.util.DecoratedAttribute">DecoratedAttribute</a>
+     <li><a href="ptdoc:ptolemy.kernel.util.Decorator">Decorator</a>
+     <li><a href="ptdoc:ptolemy.kernel.util.DropTargetHandler">DropTargetHandler</a>
+     <li><a href="ptdoc:ptolemy.kernel.util.Flowable">Flowable</a>
+     <li><a href="ptdoc:ptolemy.kernel.util.LazyComposite">LazyComposite</a>
+  </ul>
+</li>
+
+<li>ptolemy.moml
+  <ul>
+    <li><a href="ptdoc:ptolemy.moml.MoMLCommandLineApplication">MoMLCommandLineApplication</a>
+    <li><a href="ptdoc:ptolemy.moml.MoMLModelAttribute">MoMLModelAttribute</a>
+    <li><a href="ptdoc:ptolemy.moml.MoMLSimpleApplication">MoMLSimpleApplication</a>
+    <li><a href="ptdoc:ptolemy.moml.filter.ChangeFixedWidth1ToAuto">ChangeFixedWidth1ToAuto</a>
+    <li><a href="ptdoc:ptolemy.moml.filter.LazyTypedCompositeActorChanges">LazyTypedCompositeActorChanges</a>
+    <li><a href="ptdoc:ptolemy.moml.filter.RelationWidthChanges">RelationWidthChanges</a>
+    <li><a href="ptdoc:ptolemy.moml.filter.RemoveClasses">RemoveClasses</a>
+    <li><a href="ptdoc:ptolemy.moml.filter.RemoveNonPtinyClasses">RemoveNonPtinyClasses</a>
+  </ul>
+</li>  
+
+<li>ptolemy.util
+  <ul>
+    <li><a href="ptdoc:ptolemy.util.MultiHashMap">MultiHashMap</a>
+    <li><a href="ptdoc:ptolemy.util.MultiMap">MultiMap</a>
+    <li><a href="ptdoc:ptolemy.util.OrderedResourceBundle">OrderedResourceBundle</a>
+    <li><a href="ptdoc:ptolemy.util.RunnableExceptionCatcher">RunnableExceptionCatcher</a>
+  </ul>
+</li>
+
+<li>ptolemy.vergil
+  <ul>
+     <li><a href="ptdoc:ptolemy.vergil.VergilApplet">VergilApplet</a>
+     <li><a href="ptdoc:ptolemy.vergil.actor.lib.MonitorReceiverAttribute">MonitorReceiverAttribute</a>
+     <li><a href="ptdoc:ptolemy.vergil.actor.lib.MonitorReceiverContents">MonitorReceiverContents</a> -
+          Drag this icon into a model to show the contents of the recievers.
+     <li><a href="ptdoc:ptolemy.vergil.basic.BasicGraphPane">BasicGraphPane</a>
+
+     <li><a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">DependencyHighlighter</a>
+     <li><a href="ptdoc:ptolemy.vergil.icon.DesignPatternIcon">DesignPatternIcon</a>
+     <li><a href="ptdoc:ptolemy.vergil.icon.TableIcon">TableIcon</a>
+     <li><a href="ptdoc:ptolemy.vergil.kernel.ListenToAction">ListenToAction</a>
+     <li><a href="ptdoc:ptolemy.vergil.kernel.attributes.ArrowAttribute">ArrowAttribute</a>
+     <li><a href="ptdoc:ptolemy.vergil.kernel.attributes.UpdateAnnotations">UpdateAnnotations</a>
+     <li><a href="ptdoc:ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory">ArrayOfRecordsConfigureFactory</a>
+     <li><a href="ptdoc:ptolemy.vergil.toolbox.MenuItemListener">MenuItemListener</a>
+     <li><a href="ptdoc:ptolemy.vergil.toolbox.RadioMenuActionFactory">RadioMenuActionFactory</a>
+   </ul>
+</ul>
+
+<h2><a name="worksinprogress">Works in Progress</a></h2>
+<ul>
+<li> The experimental UI build in
+  <a href="../../../doc/codeDoc/ptolemy/actor/gui/run/package-summary.html">ptolemy.actor.gui.runJava</a></li>
+
+</ul>
+<h2><a name="bugs">Bug fixes</a></h2>
+For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser" target="_top">Ptolemy II Bugs<a>
+ <br>and
+ <a href="http://bugzilla.ecoinformatics.org/buglist.cgi?product=Kepler&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED" target="_top">Kepler Bugs</a>
+
+<ul>
+ <li> Level-crossing links are now correctly exported
+   to MoML.  The way this works is that the lowest common
+   container of the objects being linked is responsible for
+   producing the MoML description of the link. This ensures
+   that when the MoML is encountered for creating the link,
+   that both objects being linked have already been created. 
+
+  <li>Various classes were moved to make the dependencies between packages cleaner.  In general, the
+  <a href="ptdoc:ptolemy.moml.filter.ClassChanges">ptolemy.moml.filter.ClassChanges</a> to handle the changes
+  that will appear in MoML files.
+<table>
+  <tr>
+    <th>Old Class</th><th>New Class</th>
+  </tr>
+
+  <tr>
+   <td>ptolemy.actor.gui.DependencyHighlighter</td>
+   <td><a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">ptolemy.vergil.basic.DependencyHighlighter</a></td>
+  <tr>
+
+  </tr> 
+    <td>ptolemy.actor.lib.CodegenActor</td>
+    <td><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">ptolemy.actor.lib.jni.CodegenActor</a></td>
+  <tr>
+
+  </tr> 
+    <tr>ptolemy.actor.lib.gui.LEDMatrix</td>
+    <td><a href="ptdoc:ptolemy.vergil.actor.lib.LEDMatrix">ptolemy.vergil.actor.lib.LEDMatrix</a></td>
+  <tr>
+
+  <tr>
+   <td>ptolemy.actor.lib.gui.ModelDisplay</td>
+   <td><a href="ptdoc:ptolemy.vergil.actor.lib.ModelDisplay">ptolemy.vergil.actor.lib.ModelDisplay</a></td>
+  </tr> 
+
+  <tr>
+   <td>ptolemy.codegen.c.actor.lib.CodegenActor was moved to</td>
+   <td><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">ptolemy.actor.lib.jni.CodegenActor</a></td>
+  <tr>
+
+  </tr> 
+    <td>ptolemy.codegen.c.actor.lib.gui.LEDMatrix</td>
+    <td><a href="ptdoc:ptolemy.codegen.c.vergil.actor.lib.LEDMatrix">ptolemy.codegen.c.vergil.actor.lib.LEDMatrix</a></td>
+  <tr>
+
+  </tr> 
+    <td>ptolemy.codegen.kernel.Director</td>
+    <td><a href="ptdoc:ptolemy.codegen.actor.Director">ptolemy.codegen.actor.Director</a></td>
+  </tr> 
+
+  <tr>
+   <td>ptolemy.domains.curriculum.DependencyHighlighter was moved to</td>
+   <td><a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">vergil.actor.basic.DependencyHighlighter</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.domains.sr.lib.AbsentToken</td>
+   <td><a href="ptdoc:ptolemy.data.AbsentToken">ptolemy.data.AbsentToken</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.domains.sr.lib.ButtonTime</td>
+   <td><a href="ptdoc:ptolemy.domains.sr.lib.gui.ButtonTime">ptolemy.domains.sr.lib.gui.ButtonTime</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.domains.sr.lib.NonStrictDisplay</td>
+  <td><a href="ptdoc:ptolemy.domains.sr.lib.gui.NonStrictDisplay">ptolemy.domains.sr.lib.gui.NonStrictDisplay</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.moml.SharedParameter</td>
+   <td><a href="ptdoc:ptolemy.actor.parameters.SharedParameter">ptolemy.actor.parameters.SharedParameter</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.vergil.kernel.ConfigureUnitsAction</td>
+   <td><a href="ptdoc:ptolemy.vergil.kernel.unit.ConfigureUnitsAction">ConfigureUnitsAction</a></td>
+  </tr>
+
+  <tr>
+  <td></td>
+  <td></td>
+</tr> 
+</table>   
+
+<li> Various classes were moved out of ptolemy.data.unit to ptolemy.moml.unit
+
+
+<li> A few features and classes were removed outright.
+<ul>
+ <li>ptolemy/copernicus/{java,c,actor} were removed because the Ptolemy kernel has evolved and maintaining Copernicus
+  was too timeconsuming.
+
+  <li>ptolemy.domains.continuous.lib.ZeroCrossingDetector was removed because it had cloning problems because
+  of how it extended a class and removed a parameter.
+
+  <li>ptolemy.domains.curriculum.DependencyHighlighter was removed, use
+<a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">ptolemy.vergil.basic.DependencyHighlighter</a> instead.
+
+  <li>
+  ptolemy.actor.util.FunctionDependency
+  <br>ptolemy.actor.util.FunctionDependencyOfAtomicActor,
+  <br>ptolemy.actor.util.FunctionDependencyOfCompositeActor,
+  <br>ptolemy.domains.fsm.kernel.FunctionDependencyOfFSMActor,
+  <br>ptolemy.domains.fsm.modal.FunctionDependencyOfModalModel
+  and
+  <br>ptolemy.domains.sr.lib.FunctionDependencyOfEnabledCompositeActor
+  <br>were removed as part of the <a =#"causalityanalysis">Causality Analysis</a> work.
+</body>
+</html>
+

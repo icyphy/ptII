@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="QuickTime actors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>QuickTime actors</doc>
+
+<entity name="MovieViewScreen2D" class="ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D">
+</entity>
+<entity name="MovieViewScreen3D" class="ptolemy.domains.gr.lib.quicktime.MovieViewScreen3D">
+</entity>
+      </group>
+    ?>
+  </configure>
+</entity>

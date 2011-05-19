@@ -1,0 +1,61 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MovieWriter" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 65}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Record 10 frames of video into a file.&#10;This test requires a video camera.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 30.0]">
+        </property>
+    </property>
+    <entity name="MovieWriter" class="ptolemy.actor.lib.jmf.MovieWriter">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jmf/test/test.mov">
+        </property>
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="fileType" class="ptolemy.kernel.util.StringAttribute" value="QUICKTIME">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="AVI" class="ptolemy.kernel.util.StringAttribute" value="AVI">
+                </property>
+                <property name="MPEG" class="ptolemy.kernel.util.StringAttribute" value="MPEG">
+                </property>
+                <property name="QUICKTIME" class="ptolemy.kernel.util.StringAttribute" value="QUICKTIME">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
+        <property name="formatName" class="ptolemy.kernel.util.StringAttribute" value="RGB">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="RGB" class="ptolemy.kernel.util.StringAttribute" value="RGB">
+                </property>
+                <property name="YUV" class="ptolemy.kernel.util.StringAttribute" value="YUV">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 140}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="MovieWriter.input" relation="relation"/>
+    <link port="VideoCamera.output" relation="relation"/>
+</entity>

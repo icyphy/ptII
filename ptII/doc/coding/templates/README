@@ -1,0 +1,6 @@
+This directory contains various templates that can
+be used as a starting point for various files
+
+applet.html	- Used for applets
+text.html	- Used for simple HTML files that contain simple text
+JavaTemplate.html - Template for Java

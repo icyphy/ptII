@@ -1,0 +1,100 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModelDisplay" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 40}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 231, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="fillColor" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="fillColor2" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="fillColor3" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model modifies a pre-existing Ptolemy&#10;model by changing the colors of the circles.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 25.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 370.0}">
+        </property>
+    </property>
+    <entity name="ModelDisplay" class="ptolemy.vergil.actor.lib.ModelDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 416, 274}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[416, 200]">
+        </property>
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplayLEDs.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="INDEX">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 165.0}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;property name=&quot;Ellipse_INDEX&quot;&gt;&#10;    &lt;property name=&quot;fillColor&quot;&#10;              value=&quot;{0.0, 1.0, 0.0, 1.0}&quot;&#10;    /&gt;&#10;&lt;/property&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 250.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ModelDisplay.input" relation="relation3"/>
+    <link port="StringReplace.replacement" relation="relation"/>
+    <link port="StringReplace.stringToEdit" relation="relation2"/>
+    <link port="StringReplace.output" relation="relation3"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="StringConst.output" relation="relation2"/>
+</entity>

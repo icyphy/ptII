@@ -1,0 +1,312 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MatlabExpression" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 667]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, -6]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 147.0">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Matlab Expression Actor Demo
+
+It could be made more interesting
+by using more complex matrix functions 
+from a library and testing against matlab...</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 65.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {106, -4, 812, 776}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.5, 333.5}">
+    </property>
+    <entity name="DoubleMatrixMatlabExpression" class="ptolemy.matlab.Expression">
+        <property name="expression" class="ptolemy.data.expr.StringParameter" value="output=input.*input;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 310.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
+            </property>
+        </port>
+    </entity>
+    <entity name="ComplexMatrixMatlabExpression" class="ptolemy.matlab.Expression">
+        <property name="expression" class="ptolemy.data.expr.StringParameter" value="output=input*iteration">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 450.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0+0i]">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="DoubleMatrixSource" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1,2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{[1.0],[1.0,2,3],[1.0,2,3;4,5,6]}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 275.0">
+        </property>
+    </entity>
+    <entity name="DoubleMatrixExpression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input*2.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 240.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
+            </property>
+        </port>
+    </entity>
+    <entity name="ComplexMatrixExpression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input * iteration">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 380.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0+0i]">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0+0i]">
+            </property>
+        </port>
+    </entity>
+    <entity name="RecordSource" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{x=1.0,y=[2.0,3.0],r={a=0.0}},{x=2.0,y=[4.0,5.0],r={a=0.0}},{x=3.0,y=[6.0,7.0],r={a=0.0}}}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 455.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="MatlabStructWriteRead" class="ptolemy.matlab.Expression">
+        <property name="expression" class="ptolemy.data.expr.StringParameter" value="output=input;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 585.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="CompareRecords" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="reference.isEqualTo(test)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 520.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+        <port name="reference" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
+            </property>
+        </port>
+        <port name="test" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test1" class="ptolemy.actor.lib.Test">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 510.0">
+        </property>
+    </entity>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 380.0">
+        </property>
+    </entity>
+    <entity name="CheckPackageDirectories" class="ptolemy.matlab.Expression">
+        <property name="expression" class="ptolemy.data.expr.StringParameter" value="output=path;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 645.0">
+        </property>
+        <property name="packageDirectories" class="ptolemy.data.expr.Parameter" value="&quot;../ml,ptolemy/matlab/test&quot;">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {366, 273, 292, 222}, maximized = false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="536.0, 406.0">
+        </property>
+    </entity>
+    <entity name="ComplexMatrixSource" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1,2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{[1+0i],[1,2+i,3i],[1i,2,3i;4,5i,6]}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 380.0">
+        </property>
+    </entity>
+    <entity name="MarkIteration" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Iteration &quot;+iteration.toString()+&quot;:&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 240.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="230.0, 275.0">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="245.0, 380.0">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="175.0, 515.0">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="104.0, 380.0">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="285.0, 585.0">
+        </vertex>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DoubleMatrixMatlabExpression.output" relation="relation14"/>
+    <link port="DoubleMatrixMatlabExpression.input" relation="relation"/>
+    <link port="ComplexMatrixMatlabExpression.output" relation="relation16"/>
+    <link port="ComplexMatrixMatlabExpression.input" relation="relation4"/>
+    <link port="DoubleMatrixSource.output" relation="relation"/>
+    <link port="DoubleMatrixSource.trigger" relation="relation13"/>
+    <link port="DoubleMatrixExpression.output" relation="relation12"/>
+    <link port="DoubleMatrixExpression.input" relation="relation"/>
+    <link port="ComplexMatrixExpression.output" relation="relation15"/>
+    <link port="ComplexMatrixExpression.input" relation="relation4"/>
+    <link port="RecordSource.output" relation="relation8"/>
+    <link port="RecordSource.trigger" relation="relation13"/>
+    <link port="MatlabStructWriteRead.output" relation="relation18"/>
+    <link port="MatlabStructWriteRead.input" relation="relation8"/>
+    <link port="CompareRecords.output" relation="relation10"/>
+    <link port="CompareRecords.reference" relation="relation8"/>
+    <link port="CompareRecords.test" relation="relation18"/>
+    <link port="Test1.input" relation="relation10"/>
+    <link port="Pulse.output" relation="relation13"/>
+    <link port="CheckPackageDirectories.output" relation="relation19"/>
+    <link port="CheckPackageDirectories.input" relation="relation13"/>
+    <link port="Display.input" relation="relation11"/>
+    <link port="Display.input" relation="relation12"/>
+    <link port="Display.input" relation="relation14"/>
+    <link port="Display.input" relation="relation15"/>
+    <link port="Display.input" relation="relation16"/>
+    <link port="Display.input" relation="relation8"/>
+    <link port="Display.input" relation="relation18"/>
+    <link port="Display.input" relation="relation19"/>
+    <link port="ComplexMatrixSource.output" relation="relation4"/>
+    <link port="ComplexMatrixSource.trigger" relation="relation13"/>
+    <link port="MarkIteration.output" relation="relation11"/>
+</entity>

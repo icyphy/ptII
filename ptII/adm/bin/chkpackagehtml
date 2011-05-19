@@ -1,0 +1,11 @@
+#! /bin/sh
+# $Id$
+# Check that a directory has README.txt and package.html
+
+for package in $@
+do
+	directory=`echo $package | sed 's@\.@/@g'`
+	if [ ! -f "$directory/README.txt" -o ! "$directory/package.html" ]; then
+	   echo "$package"
+        fi	   
+done

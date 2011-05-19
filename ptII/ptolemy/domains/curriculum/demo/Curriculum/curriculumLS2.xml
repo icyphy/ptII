@@ -1,0 +1,1382 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="curriculumLS2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1287, 874}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1074, 764]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.105035971223">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{489.9570312500023, 303.190104166667}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Color key&#10;(double click to highlight,&#10;alt double click to configure)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, -5.0}">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="_relationSize" class="ptolemy.data.expr.Parameter" value="6.0">
+            <display name="Relation size"/>
+        </property>
+        <property name="_linkBendRadius" class="ptolemy.data.expr.Parameter" value="15.0">
+            <display name="Link bend radius"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, -20.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="clear highlights">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, -20.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities3" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;Math 1A&quot;, &quot;Math 1B&quot;, &quot;Math 54&quot;, &quot;Math 53&quot;,         &quot;Physics 7A&quot;, &quot;Physics 7B&quot;, &quot;Physics 7C&quot;, &quot;Math 55&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Outside Lower Division">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 140.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities4" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;CS 3&quot;, &quot;70&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Other Lower Division">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 105.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities5" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;20&quot;, &quot;40&quot;, &quot;61A&quot;, &quot;61B&quot;, &quot;61C&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Core Lower Division">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 70.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities6" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;100&quot;, &quot;122&quot;, &quot;121&quot;, &quot;120&quot;, &quot;126&quot;, &quot;129&quot;,  &quot;123&quot;, &quot;125&quot;, &quot;117&quot;, &quot;128&quot;, &quot;124&quot;, &quot;145B&quot;, &quot;145M&quot;,   &quot;133&quot;, &quot;131&quot;, &quot;130&quot;, &quot;142&quot;, &quot;145A&quot;,                &quot;118&quot;, &quot;140&quot;, &quot;105&quot;, &quot;141&quot;, &quot;145L&quot;,                &quot;143&quot;, &quot;113&quot;, &quot;192&quot;, &quot;119&quot;, &quot;150&quot;, &quot;152&quot;, &quot;160&quot;, &quot;164&quot;, &quot;169&quot;, &quot;170&quot;,  &quot;162&quot;, &quot;172&quot;, &quot;182&quot;, &quot;184&quot;, &quot;186&quot;, &quot;188&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Upper Division">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 175.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities2" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;Math 1A&quot;, &quot;Math 1B&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Advanced placement">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 580.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities7" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;Math 54&quot;, &quot;Physics 7A&quot;, &quot;Physics 7B&quot;, &quot;61A&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Freshman year">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 615.0}">
+        </property>
+    </property>
+    <property name="HighlightEntities8" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;20&quot;, &quot;Math 53&quot;, &quot;61C&quot;, &quot;61B&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Sophmore year">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 550.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities9" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;120&quot;, &quot;122&quot;, &quot;126&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Junior year">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 585.0]">
+        </property>
+    </property>
+    <property name="HighlightEntities10" class="ptolemy.domains.curriculum.HighlightEntities">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;162&quot;, &quot;121&quot;, &quot;124&quot;}">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
+        </property>
+        <property name="label" class="ptolemy.data.expr.StringParameter" value="Senior year">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 620.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="L&amp;S BA, major in ECE,&#10;concentration on systems.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 560.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sample program:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 530.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Proposed ECE major BA requirements&#10; - Math 1A, 1B, 54&#10; - CS 61A&#10; - Three of 20, 40, 61B, 61C, 70&#10; - 20 units of upper division EECS&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 455.0}">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="General L&amp;S requirements:&#10; - 120 units, 36 upper div., 6 outside EECS&#10; - Reading and composition&#10; - Quantitative reasoning&#10; - Foreign language&#10; - One course from each of:&#10;    + Arts &amp; Literature&#10;    + Biological Science&#10;    + Historical Studies&#10;    + International Studies&#10;    + Philosophy &amp; Values&#10;    + Physical Science&#10;    + Social &amp; Behavioral&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 215.0}">
+        </property>
+    </property>
+    <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{795.0, 630.0}">
+        </property>
+    </property>
+    <entity name="20" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 115.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Signals and Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
+    </entity>
+    <entity name="40" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Microelectronic Circuits">
+        </property>
+    </entity>
+    <entity name="61A" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 385.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Computer Programs">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+    </entity>
+    <entity name="61B" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 385.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Data Structures">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
+    </entity>
+    <entity name="61C" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 415.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Machine Structures">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
+    </entity>
+    <entity name="70" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 460.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Discrete Mathematics and Probability Theory">
+        </property>
+    </entity>
+    <entity name="150" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 305.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Components and Design Techniques for DigitalSystems">
+        </property>
+    </entity>
+    <entity name="152" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 305.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Computer Architecture and Engineering">
+        </property>
+    </entity>
+    <entity name="160" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 330.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="User Interface Design and Development">
+        </property>
+    </entity>
+    <entity name="Math 53" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 90.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Multivariable Calculus">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
+    </entity>
+    <entity name="Math 54" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 65.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Linear Algebra and Differential Equations">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+    </entity>
+    <entity name="162" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 355.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Operating Systems and System Programming">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
+        </property>
+    </entity>
+    <entity name="164" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 385.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Programming Languages and Compilers">
+        </property>
+    </entity>
+    <entity name="169" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 410.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Software Engineering">
+        </property>
+    </entity>
+    <entity name="170" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 440.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Efficient Algorithms and Intractable Problems">
+        </property>
+    </entity>
+    <entity name="172" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 440.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Computability and Complexity">
+        </property>
+    </entity>
+    <entity name="182" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 345.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="The Neural Basis of Thought and Language">
+        </property>
+    </entity>
+    <entity name="184" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 370.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Foundations of Computer Graphics">
+        </property>
+    </entity>
+    <entity name="186" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 470.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Database Systems">
+        </property>
+    </entity>
+    <entity name="188" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 400.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Artificial Intelligence">
+        </property>
+    </entity>
+    <entity name="Physics 7A" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 160.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+    </entity>
+    <entity name="Physics 7B" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 190.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+    </entity>
+    <entity name="100" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -15.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Electronic Techniques for Engineering">
+        </property>
+    </entity>
+    <entity name="113" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 240.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Power Electronics">
+        </property>
+    </entity>
+    <entity name="105" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 215.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microelectronic Devices and Circuits">
+        </property>
+    </entity>
+    <entity name="Math 1A" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -10.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Calculus">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
+    </entity>
+    <entity name="Math 1B" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 15.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Calculus">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
+    </entity>
+    <entity name="117" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 95.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Electromagnetic Fields and Waves">
+        </property>
+    </entity>
+    <entity name="118" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Optical Communication Systems and Networks">
+        </property>
+    </entity>
+    <entity name="Physics 7C" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 230.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
+        </property>
+    </entity>
+    <entity name="119" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 230.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Optical Engineering">
+        </property>
+    </entity>
+    <entity name="120" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 70.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Signals and Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
+    </entity>
+    <entity name="121" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -20.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Communication Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
+        </property>
+    </entity>
+    <entity name="122" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -5.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Communication Networks">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
+    </entity>
+    <entity name="123" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 5.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Digital Signal Processing">
+        </property>
+    </entity>
+    <entity name="125" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 30.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Robotics">
+        </property>
+    </entity>
+    <entity name="128" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 55.0}">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Feedback Control">
+        </property>
+    </entity>
+    <entity name="Or2" class="ptolemy.domains.curriculum.Or">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, -5.0]">
+        </property>
+    </entity>
+    <entity name="130" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 190.0}">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Integrated-Circuit Devices">
+        </property>
+    </entity>
+    <entity name="131" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 135.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Semiconductor Electronics">
+        </property>
+    </entity>
+    <entity name="133" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 145.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microfabrication Equipment Laboratory">
+        </property>
+    </entity>
+    <entity name="140" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 190.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Linear Integrated Circuits">
+        </property>
+    </entity>
+    <entity name="141" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Digital Integrated Circuits">
+        </property>
+    </entity>
+    <entity name="142" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 75.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Integrated Circuits for Communications">
+        </property>
+    </entity>
+    <entity name="143" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 235.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microfabrication Technology">
+        </property>
+    </entity>
+    <entity name="145M" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 285.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introductory Microcomputer Interfacing Laboratory">
+        </property>
+    </entity>
+    <entity name="145L" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 260.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introductory Electronic Transducer Laboratory">
+        </property>
+    </entity>
+    <entity name="192" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 260.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introductory Electronic Transducer Laboratory">
+        </property>
+    </entity>
+    <entity name="CS 3" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 385.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Programming">
+        </property>
+    </entity>
+    <entity name="Or" class="ptolemy.domains.curriculum.Or">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="42" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 15.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Digital Electronics">
+        </property>
+    </entity>
+    <entity name="43" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Digital Electronics Laboratory">
+        </property>
+    </entity>
+    <entity name="126" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 45.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Signals and Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
+    </entity>
+    <entity name="129" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 85.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Neural and Nonlinear Information Processing">
+        </property>
+    </entity>
+    <entity name="145B" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 110.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Image Processing and Reconstruction Tomography">
+        </property>
+    </entity>
+    <entity name="124" class="ptolemy.domains.curriculum.Course">
+        <property name="CourseIcon" class="ptolemy.vergil.icon.NameIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 20.0]">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Signals and Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[210.0, 300.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[420.0, 305.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[235.0, 385.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[235.0, 330.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[215.0, 305.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[320.0, 460.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[125.0, 190.0]">
+        </vertex>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[115.0, 15.0]">
+        </vertex>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[350.0, 215.0]">
+        </vertex>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[230.0, 90.0]">
+        </vertex>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[220.0, 65.0]">
+        </vertex>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[240.0, 115.0]">
+        </vertex>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[335.0, 70.0]">
+        </vertex>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[210.0, 190.0]">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{125.0, 210.0}">
+        </vertex>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{155.0, 385.0}">
+        </vertex>
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{100.0, 615.0}">
+        </vertex>
+    </relation>
+    <link port="20.postrequisites" relation="relation19"/>
+    <link port="20.prerequisites" relation="relation15"/>
+    <link port="40.postrequisites" relation="relation28"/>
+    <link port="40.prerequisites" relation="relation15"/>
+    <link port="40.prerequisites" relation="relation13"/>
+    <link port="61A.postrequisites" relation="relation26"/>
+    <link port="61A.prerequisites" relation="relation11"/>
+    <link port="61B.postrequisites" relation="relation"/>
+    <link port="61B.prerequisites" relation="relation26"/>
+    <link port="61C.postrequisites" relation="relation7"/>
+    <link port="61C.prerequisites" relation="relation26"/>
+    <link port="70.postrequisites" relation="relation3"/>
+    <link port="150.postrequisites" relation="relation4"/>
+    <link port="150.prerequisites" relation="relation2"/>
+    <link port="150.prerequisites" relation="relation7"/>
+    <link port="152.prerequisites" relation="relation4"/>
+    <link port="160.prerequisites" relation="relation6"/>
+    <link port="Math 53.postrequisites" relation="relation17"/>
+    <link port="Math 53.prerequisites" relation="relation15"/>
+    <link port="Math 54.postrequisites" relation="relation18"/>
+    <link port="Math 54.prerequisites" relation="relation15"/>
+    <link port="162.prerequisites" relation="relation3"/>
+    <link port="162.prerequisites" relation="relation"/>
+    <link port="164.prerequisites" relation="relation"/>
+    <link port="169.prerequisites" relation="relation3"/>
+    <link port="169.prerequisites" relation="relation"/>
+    <link port="170.postrequisites" relation="relation5"/>
+    <link port="170.prerequisites" relation="relation3"/>
+    <link port="170.prerequisites" relation="relation"/>
+    <link port="172.prerequisites" relation="relation5"/>
+    <link port="182.prerequisites" relation="relation"/>
+    <link port="184.prerequisites" relation="relation"/>
+    <link port="186.prerequisites" relation="relation"/>
+    <link port="188.prerequisites" relation="relation"/>
+    <link port="Physics 7A.postrequisites" relation="relation12"/>
+    <link port="Physics 7A.prerequisites" relation="relation15"/>
+    <link port="Physics 7B.postrequisites" relation="relation13"/>
+    <link port="Physics 7B.prerequisites" relation="relation12"/>
+    <link port="100.postrequisites" relation="relation21"/>
+    <link port="100.prerequisites" relation="relation15"/>
+    <link port="100.prerequisites" relation="relation13"/>
+    <link port="113.prerequisites" relation="relation16"/>
+    <link port="105.postrequisites" relation="relation16"/>
+    <link port="105.prerequisites" relation="relation28"/>
+    <link port="Math 1A.postrequisites" relation="relation14"/>
+    <link port="Math 1B.postrequisites" relation="relation15"/>
+    <link port="Math 1B.prerequisites" relation="relation14"/>
+    <link port="117.prerequisites" relation="relation18"/>
+    <link port="117.prerequisites" relation="relation17"/>
+    <link port="117.prerequisites" relation="relation28"/>
+    <link port="118.prerequisites" relation="relation19"/>
+    <link port="118.prerequisites" relation="relation28"/>
+    <link port="Physics 7C.postrequisites" relation="relation20"/>
+    <link port="Physics 7C.prerequisites" relation="relation29"/>
+    <link port="119.prerequisites" relation="relation20"/>
+    <link port="120.postrequisites" relation="relation22"/>
+    <link port="120.prerequisites" relation="relation18"/>
+    <link port="120.prerequisites" relation="relation19"/>
+    <link port="121.prerequisites" relation="relation36"/>
+    <link port="121.prerequisites" relation="relation22"/>
+    <link port="122.prerequisites" relation="relation23"/>
+    <link port="123.prerequisites" relation="relation22"/>
+    <link port="125.prerequisites" relation="relation22"/>
+    <link port="128.prerequisites" relation="relation22"/>
+    <link port="Or2.postrequisites" relation="relation23"/>
+    <link port="Or2.prerequisites" relation="relation18"/>
+    <link port="Or2.prerequisites" relation="relation17"/>
+    <link port="130.postrequisites" relation="relation25"/>
+    <link port="130.prerequisites" relation="relation8"/>
+    <link port="130.prerequisites" relation="relation28"/>
+    <link port="131.prerequisites" relation="relation25"/>
+    <link port="133.prerequisites" relation="relation28"/>
+    <link port="140.postrequisites" relation="relation27"/>
+    <link port="140.prerequisites" relation="relation16"/>
+    <link port="141.prerequisites" relation="relation16"/>
+    <link port="142.prerequisites" relation="relation22"/>
+    <link port="142.prerequisites" relation="relation27"/>
+    <link port="143.prerequisites" relation="relation28"/>
+    <link port="145M.prerequisites" relation="relation28"/>
+    <link port="145M.prerequisites" relation="relation6"/>
+    <link port="145L.prerequisites" relation="relation28"/>
+    <link port="192.prerequisites" relation="relation22"/>
+    <link port="192.prerequisites" relation="relation4"/>
+    <link port="CS 3.postrequisites" relation="relation11"/>
+    <link port="Or.postrequisites" relation="relation8"/>
+    <link port="Or.prerequisites" relation="relation21"/>
+    <link port="Or.prerequisites" relation="relation28"/>
+    <link port="42.postrequisites" relation="relation24"/>
+    <link port="42.prerequisites" relation="relation15"/>
+    <link port="43.prerequisites" relation="relation24"/>
+    <link port="126.postrequisites" relation="relation36"/>
+    <link port="126.prerequisites" relation="relation19"/>
+    <link port="129.prerequisites" relation="relation22"/>
+    <link port="145B.prerequisites" relation="relation22"/>
+    <link port="124.prerequisites" relation="relation7"/>
+    <link port="124.prerequisites" relation="relation19"/>
+    <link relation1="relation2" relation2="relation28"/>
+    <link relation1="relation" relation2="relation6"/>
+    <link relation1="relation13" relation2="relation29"/>
+</entity>

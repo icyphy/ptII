@@ -1,0 +1,27 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Synchronous Dataflow</h1>
+<P>
+Synchronous dataflow (SDF) is a special case of dataflow
+where the flow of control is sufficiently regular to be
+completely predictable at compile time.
+An SDF model is an interconnection of actors whose
+firings are enabled by fixed, pre-specified numbers of
+tokens on each of their inputs.  Moreover, when an actor
+fires, it produces a fixed, pre-specified number of tokens
+on each of its outputs.
+The fact that these numbers are fixed makes it possible for
+a scheduler to determine the firing sequence at the time
+the model is initialized.  Thus, SDF models are quite efficient,
+in that there is no multithreading needed, and run-time overhead
+consists only of a very
+simple dispatcher that implements the pre-computed
+schedule.
+</body>
+</html>

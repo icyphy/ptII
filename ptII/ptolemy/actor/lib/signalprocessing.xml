@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SignalProcessing" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Signal processing actors</doc>
+
+        <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
+        <!-- NOTE: javasound actors only work under jdk1.3. -->
+        <input source="ptolemy/actor/lib/javasound/javasound.xml"/>
+        <input source="ptolemy/actor/lib/comm/comm.xml"/>
+        <input source="ptolemy/actor/lib/filtering.xml"/>
+        <input source="ptolemy/actor/lib/spectrum.xml"/>
+        <input source="ptolemy/actor/lib/statistical.xml"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

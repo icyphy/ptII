@@ -1,0 +1,35 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Plotting Binary Data</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Plotting Binary Data</h1>
+
+The plot below obtains its data from two binary files given by a URL address.
+This binary format is used in <code>pxgraph</code>, the X11 plotting
+tool that is part of the
+<A HREF="http://ptolemy.eecs.berkeley.edu" target="_top">Ptolemy Project</A>.
+For information about the binary format, see the
+<A HREF="../../../doc/codeDoc/ptolemy/plot/compat/PxgraphParser.html">
+PxgraphParser</A> Java class documentation.
+For information about endian issues, see the
+<a href="Endian.htm">Endian Examples</a>.
+<p>
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar" 
+ width = "500" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-bigendian -t 'Binary Data' -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<p>&nbsp;
+</body>
+</html>

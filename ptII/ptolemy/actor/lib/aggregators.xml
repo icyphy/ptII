@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Aggregators" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Actors that aggregate or disaggregate signals.</doc>
+  <entity name="BusAssembler" class="ptolemy.actor.lib.BusAssembler"/>
+  <entity name="BusDisassembler" class="ptolemy.actor.lib.BusDisassembler"/>
+  <entity name="Commutator" class="ptolemy.actor.lib.Commutator"/>
+  <entity name="Distributor" class="ptolemy.actor.lib.Distributor"/>
+  <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor"/>
+  <entity name="OrderedRecordAssembler" class="ptolemy.actor.lib.OrderedRecordAssembler"/>
+  <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler"/>
+  <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler"/>
+  <entity name="RecordUpdater" class="ptolemy.actor.lib.RecordUpdater"/>
+  <entity name="Select" class="ptolemy.actor.lib.Select"/>
+  <entity name="SingleTokenCommutator" class="ptolemy.actor.lib.SingleTokenCommutator"/>
+  <entity name="Switch" class="ptolemy.actor.lib.Switch"/>
+  <entity name="Synchronizer" class="ptolemy.actor.lib.Synchronizer"/>
+  <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler"/>
+  <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler"/>
+      </group>
+    ?>
+  </configure>
+</entity>

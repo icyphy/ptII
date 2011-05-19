@@ -1,0 +1,298 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RandomWalk" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 22, 657, 459}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 353]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.5, 176.5}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a random walk with evenly spaced steps. &#10;It demonstrates a three-level nesting of domains, SDF/DDF/SDF.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gang Zhou &#10;(based on Ptolemy Classic demo)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 295.0]">
+        </property>
+    </property>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="-10.0">
+        </property>
+        <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="10.0">
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="Uniform2" class="ptolemy.actor.lib.Uniform">
+        <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="-10.0">
+        </property>
+        <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="10.0">
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="DrawLine" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 200.0]">
+        </property>
+        <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+            <property name="runUntilDeadlockInOneIteration" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
+            </property>
+        </property>
+        <property name="numberOfSteps" class="ptolemy.actor.parameters.PortParameter" value="1">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 115.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Repeat the input step the specified number of times in PortParameter &#10;numberOfSteps. The parameter runUntilDeadlockInOneIteration in DDF &#10;Director is set to true. One iteration of this domain consists of &#10;repeating basic iterations until it is deadlocked.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 15.0]">
+            </property>
+        </property>
+        <port name="numberOfSteps" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 110.0}">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 180.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 250.0]">
+            </property>
+        </port>
+        <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="numberOfSteps">
+            </property>
+            <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 180.0]">
+            </property>
+        </entity>
+        <entity name="Repeat2" class="ptolemy.domains.sdf.lib.Repeat">
+            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="numberOfSteps">
+            </property>
+            <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 250.0]">
+            </property>
+        </entity>
+        <entity name="DisplayLine" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 210.0]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+                </property>
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 115.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 235.0]">
+                </property>
+            </port>
+            <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="Accumulator2" class="ptolemy.actor.lib.Accumulator">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 245.0}">
+                </property>
+            </entity>
+            <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 383, 500, 344}, maximized=false}">
+                </property>
+                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 180.0]">
+                </property>
+                <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYPlotter</title>
+<xRange min="-55.523038823476206" max="-0.14991950435287169"/>
+<yRange min="-30.920567019582332" max="19.390232030882732"/>
+</plot>?>
+                </configure>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="port2" relation="relation2"/>
+            <link port="Accumulator.input" relation="relation"/>
+            <link port="Accumulator.output" relation="relation3"/>
+            <link port="Accumulator2.input" relation="relation2"/>
+            <link port="Accumulator2.output" relation="relation4"/>
+            <link port="XYPlotter.inputX" relation="relation3"/>
+            <link port="XYPlotter.inputY" relation="relation4"/>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation3"/>
+        <link port="port2" relation="relation4"/>
+        <link port="Repeat.input" relation="relation3"/>
+        <link port="Repeat.output" relation="relation"/>
+        <link port="Repeat2.input" relation="relation4"/>
+        <link port="Repeat2.output" relation="relation2"/>
+        <link port="DisplayLine.port" relation="relation"/>
+        <link port="DisplayLine.port2" relation="relation2"/>
+    </entity>
+    <entity name="CartesianToPolar" class="ptolemy.actor.lib.conversions.CartesianToPolar">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 190.0]">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="magnitude" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="angle" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="cos">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="Ceil" class="ptolemy.actor.lib.conversions.Round">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="ceil" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+                </property>
+                <property name="floor" class="ptolemy.kernel.util.StringAttribute" value="floor">
+                </property>
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 145.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[255.0, 200.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Uniform.output" relation="relation"/>
+    <link port="Uniform2.output" relation="relation2"/>
+    <link port="TrigFunction2.input" relation="relation3"/>
+    <link port="TrigFunction2.output" relation="relation5"/>
+    <link port="DrawLine.numberOfSteps" relation="relation7"/>
+    <link port="DrawLine.port" relation="relation4"/>
+    <link port="DrawLine.port2" relation="relation5"/>
+    <link port="CartesianToPolar.x" relation="relation"/>
+    <link port="CartesianToPolar.y" relation="relation2"/>
+    <link port="CartesianToPolar.magnitude" relation="relation6"/>
+    <link port="CartesianToPolar.angle" relation="relation3"/>
+    <link port="TrigFunction.input" relation="relation3"/>
+    <link port="TrigFunction.output" relation="relation4"/>
+    <link port="Ceil.input" relation="relation6"/>
+    <link port="Ceil.output" relation="relation7"/>
+</entity>

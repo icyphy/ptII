@@ -1,0 +1,46 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>RealTimeComposite</TITLE>
+</HEAD>
+<BODY>
+<H1>RealTimeComposite</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+RealTimeComposite is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "RealTimeComposite.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="RealTimeCompositeVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>Here, the RealTimeComposite actor
+has delay set to UNDEFINED, and we
+use the triggering mechanism of the
+Clock actor to throttle model time. 
+Notice however that this mechanism 
+will fail if there is any other 
+open-loop part of the model (e.g. 
+an untriggered Clock actor) because 
+model time will get very far ahead 
+very quickly. The time stamps of 
+the outputs from the RealTimeComposite
+become large quickly.</p>
+
+</BODY>
+</HTML>

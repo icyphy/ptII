@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Sources" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+<entity name="Const" class="ptolemy.actor.lib.Const">
+  <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+    <property name="attributeName" value="value"/>
+    <property name="displayWidth" value="40"/>
+  </property>
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+</entity>
+
+<entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+</entity>
+
+<entity name="ContinuousSinewave"
+        class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
+
+<entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+</entity>
+
+<entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+</entity>
+
+<entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+</entity>
+
+
+<entity name="TriggeredDiscreteClock" class="ptolemy.actor.lib.TriggeredClock">
+</entity>
+
+
+<entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+

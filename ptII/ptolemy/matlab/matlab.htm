@@ -1,0 +1,153 @@
+<html>
+<head>
+<!-- $Id$ -->
+<title>Ptolemy II Matlab Interface</title>
+</head>
+<body>
+<h1>Ptolemy II Matlab Interface</h1>
+</td>
+</tr>
+</table>
+This directory contains the Ptolemy II Matlab Interface for Windows
+written by Zoltan Kemenczy of Research in Motion Limited.
+
+<p>Christopher Hylands wrote the notes below, so any mistakes are his.
+
+<h2>Overview</h2>
+The Ptolemy II Matlab interfaces uses the Java Native Interface to
+invoke the Matlab engine, evaluate Matlab expressions and return
+the results to Ptolemy II.
+
+The Matlab interface works only under Windows, and requires that Matlab
+be installed on your local machine.
+
+<h2>Running</h2>
+
+<p>To use the Matlab interface,
+ you must have ptmatlab.dll in your path, which is initially created in
+this directory, and eventually moved to <code>$PTII/bin</code>.  It is best if
+your path includes <code>$PTII/bin</code>.
+
+<p>The Matlab interface also requires that <code>libeng.dll</code> be in your path.
+<br><code>libeng.dll</code> is located in the <code>bin/win32</code>
+subdirectory of Matlab.
+
+You can either set your path permanently using the Control panel,
+or set it temporarily in your current Bash shell.
+
+ <p>Under Windows 2000, you set the path via
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>
+ <p>Under Cygwin Bash, if your Ptolemy II installation was
+at <CODE>c:/ptII</CODE>, then you might do
+<pre>
+PATH=/cygdrive/c/ptII/bin:$PATH
+export PATH
+</pre>
+
+<h2>Compiling</h2>
+
+The Ptolemy II Matlab interface requires the GNU C compiler.
+
+<p>Instructions about compiling
+the Matlab interface can be found at
+<code>$PTII/doc/install.htm</code></a>
+
+<p>Below are instructions for building the interface at UC Berkeley:
+
+<ol>
+<li> Go to
+   <a href="http://sources.redhat.com/cygwin/#in_browser"><code>http://sources.redhat.com/cygwin/</code></a>
+   and install the Cygwin Setup tool
+
+<li> Start up the Cygwin Setup tool and install
+<pre>
+    Basic
+    Devel:	Needed for gcc
+</pre>
+
+<li> Install or mount the Matlab share.
+   In the UC Berkeley EECS Department, the Matlab binary is at
+   available as \\winsww\public\matlab\matlab-6.0\bin\win32\Matlab.exe
+   <br>To mount this, bring up the Run window with:
+      Start -> Run 
+   <br>Type in \\winsww
+   <br>Right click on sww, select 'Map Network Drive'
+   <br>Click Finish
+
+   <br>For me, this ended up on the e: drive
+
+<li>Add the Matlab directory to your path.  You can either add it
+   permanently to you path, or add it temporarily.
+   If you are on a laptop, and the Matlab installation is a remote
+   file system, you should mount it temporarily:
+<pre>
+   bash-2.05$ PATH=/cygdrive/e/public/matlab/matlab-6.0/bin/win32:$PATH
+</pre>
+
+<li> Verify that matlab is in your path
+<pre>
+   bash-2.05$ type matlab
+   matlab is /cygdrive/e/public/matlab/matlab-6.0/bin/win32/matlab
+</pre>
+
+<li> Reconfigure Ptolemy II so that it knows that you now have matlab:
+<pre>
+   cd $PTII
+   rm config.*
+   ./configure
+</pre>
+
+<li> Build the Matlab interface
+<pre>
+   cd $PTII/ptolemy/matlab
+   make
+</pre>
+
+<li> Run a test:
+<pre>
+   vergil "$PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml" 
+</pre>
+   Note that during the preinitialize phase there may be a delay while
+   the Matlab engine starts up over the network.
+</ol>
+<h2>Troubleshooting</h2>
+Things to try:
+<ul>
+<li> Be sure that you can run Matlab by hand outside of
+Ptolemy II using <CODE>Start</CODE> -&gt; <CODE>Programs</CODE>
+-&gt; <CODE>Matlab <I>N.N</I></CODE> -&gt; <CODE>Matlab <I>N.N</I></CODE>.
+ <br>This will test that Matlab is properly installed on your machine
+and that you have a license
+
+<li> Be sure that ptmatlab.dll is in you path.
+ <br>Under bash, try:
+<pre>
+type ptmatlab.dll
+</pre>
+You should get something like:
+<pre>
+ptmatlab.dll is /cygdrive/c/ptII/bin/ptmatlab.dll
+</pre>
+If <CODE>ptmatlab.dll</CODE> is not found, then set your path
+and be sure to export PATH
+<pre>
+PATH=/cygdrive/c/ptII/bin:$PATH
+export PATH
+</pre>
+
+<li> It is better to start <CODE>vergil</CODE> and then
+use <CODE>File</CODE> -&gt; <CODE>Open</CODE> of a Matlab model
+than it is to pass the Matlab model as a command line argument.
+ <br>The reason is that the failure to load the Matlab
+interface might result in errors and starting vergil with
+a Matlab model as a command line may result in the error message
+being hidden.
+
+
+</ul>
+
+</body>
+</html>

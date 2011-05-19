@@ -1,0 +1,138 @@
+#!/bin/sh
+# $Id$
+# A script to convert from Ptolemy II DocML files
+# from ptII/doc/codeDoc/*/*.xml to Kepler KAR .xml files
+
+# Usage:  To convert all the Ptolemy II DocML files for the Continuous actors:
+#   cd $PTII/doc; make
+#   cd ~/src/kepler/actors/resources/kar
+#   $PTII/adm/bin/docml2karxml $PTII/doc/codeDoc/ptolemy/domains/continuous/lib/*.xml
+
+# Kepler LSID authority and object to use.
+# See https://kepler-project.org/developers/teams/framework/kepler-life-science-identifiers-keplerlsid
+authority=ptolemy.org
+# It is up to you to keep track of the maximum object number.
+object=2
+
+# The ontology type of your actor.  Usually, this should be updated for each group of actors.
+ontologyType=ContinuousActor
+
+# The namespace.  "actor" for actors, "director" for directors
+namespace=actor
+#namespace=director 
+
+for docmlfile in $*
+do
+    basename=`basename $docmlfile .xml`
+    if [ ! -d $basename ]; then
+	mkdir $basename
+    fi	
+
+    # Create the KAR xml file
+    karxml=$basename/`basename $docmlfile`
+    cat $docmlfile |
+    awk -v authority=$authority \
+	-v object=$object \
+	-v ontologyType=$ontologyType \
+	-v namespace=$namespace \
+	'BEGIN { print "<?xml version=\"1.0\"?>"}
+	$0 ~ /^<doc name/ {
+	   split($0, f, "\"")
+	   name = f[2]
+	   class = f[4]
+
+           if (namespace == "actor") {
+	       print "<entity name=\"" name "\" class=\"ptolemy.kernel.ComponentEntity\">"
+           } 
+           if (namespace == "director") {
+	       print "<property name=\"" name "\" class=\"org.kepler.moml.PropertyEntity\">"
+           } 
+
+	   print "<property name=\"class\" value=\"" class "\" class=\"ptolemy.kernel.util.StringAttribute\">"
+	   print "  <property name=\"id\" value=\"urn:lsid:" authority ":class:" object ":1\" class=\"ptolemy.kernel.util.StringAttribute\"/>"
+	   print "</property>"
+	   print "<property name=\"entityId\"  value=\"urn:lsid:" authority ":" namespace ":" object ":1\" class=\"org.kepler.moml.NamedObjId\"/>"
+	   print "<property name=\"KeplerDocumentation\" class=\"ptolemy.vergil.basic.KeplerDocumentationAttribute\">"
+	   print "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>null</configure></property>"
+	}
+	$1 == "<description>" && NF == 1 {
+	   inDescription = 1
+	   print "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>"
+	}
+	inDescription > 1 && $0 !~ /<\/description>$/ {
+	   inDescription++ 
+           print $0		      
+	}
+	inDescription >= 1 && $0 ~ /<\/description>$/ {
+	   inDescription = 0
+	   print substr($0,1, length($0)-15)"</configure></property>"
+        }
+	$1 ~ "<author>" {
+	   author = substr($0, 11, length($0) - 11 - 9)
+	   print "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>" author "</configure></property>"
+	}
+	$1 ~ "<version>" {
+	   version = substr($0, 12, length($0) - 12 - 10)
+	   print "<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>" version "</configure></property>"
+	}
+	$0 ~ /    <property name=/ {
+            inProperty = 1
+	    split($0, f, "\"")
+	    name = f[2]
+	    value = substr($0, index($0, ">") + 1, length($0));
+	    if (value ~ /<\/property>/) {
+	        value = substr(value, 1, length(value) - 11)
+	    }	    
+	    print "<property name=\"prop:" name "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>" value
+        }
+	inProperty > 1 && $0 !~ /<\/property>/ {
+	    inProperty++ 
+            print ":::" $0 ":::"
+        }
+	inProperty == 1 && $0 ~ /<\/property>/ {
+	   inProperty = 0
+	   print "</configure></property>"
+        }             
+	inProperty > 1 && $0 ~ /<\/property>/ {
+	   inProperty = 0
+	   print substr($0,1, length($0)-11)"</configure></property>"
+        }             
+        END {
+	   print "</property>"
+           print "<property name=\"semanticType00\" value=\"urn:lsid:localhost:onto:1:1#" ontologyType "\" class=\"org.kepler.sms.SemanticType\"/>"
+
+           if (namespace == "actor") {
+	       print "</entity>"
+           } 
+           if (namespace == "director") {
+	       print "</property>"
+           } 
+	}' > $karxml
+    if [ $namespace == "actor" ]; then 
+	type=ptolemy.kernel.ComponentEntity
+    fi	
+
+
+    case $namespace in
+	"actor") type=ptolemy.kernel.ComponentEntity
+	    ;;
+	"director") type=org.kepler.moml.PropertyEntity
+	    ;;
+    esac
+
+    # Create the MANIFEST.MF file
+    manifest=$basename/MANIFEST.MF
+    cat >$manifest <<EOF
+Manifest-Version: 1.4.2
+KAR-Version: 2.0
+lsid: urn:lsid:$authority:kar:$object:1
+
+Name: $basename.xml
+lsid: urn:lsid:$authority:$namespace:$object:1
+type: $type
+handler: org.kepler.kar.handlers.ActorMetadataKAREntryHandler
+EOF
+
+    # Increment the object for the next actor
+    object=`expr $object + 1`
+done

@@ -1,0 +1,54 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<Title>Vergil</Title>
+</head>
+<body>
+<h1><a name="vergil classes">Vergil</a></h1>
+<p>
+Vergil is an extensible user interface framework for component-based design
+written by
+<a href="http://ptolemy.eecs.berkeley.edu/~neuendor">Steve Neuendorffer</a>,
+with contributions from
+Brieuc Desoutter,
+Pedro Domecq,
+John Reekie, and
+Guillaume Vibert.
+A vergil window is shown below:
+<p>
+<center>
+<img alt="Screenshot of Vergil" src="img/spectrum.gif">
+</center>
+<p>
+This window shows a block diagram editor for Ptolemy II models.
+At the upper left is a component library browser.  At the lower left
+is a panner.  At the right is the block diagram editor itself.
+<p>
+Vergil is an extensible framework for developing component-based design
+applications.  An application using Vergil, such as the block diagram
+editor shown above, is configured by assembling a collection of tools
+and resources in a <i>configuration</i> file, which is an XML
+file.  In fact, the configuration is represented by a hierarchical
+Ptolemy II model, and can be edited using Vergil.
+<p>
+A window in Vergil is called <i>tableau</i>.
+Any number of tableau types can be combined in an application.
+In the window shown above, the application includes a block diagram
+editor, a finite-state machine editor, a tree view of hierarchical
+models, an HTML renderer, and a simple text editor.
+We expect that the number of tableaux will increase significantly
+over time, offering a variety of editing and display styles.
+<p>
+Vergil can run as a command-line application, or as an applet.
+Here is an on-line
+<a href="../Vergil.htm" target="main">demo applet</a>
+where you can try out some of Vergil's capabilities.
+<p>
+Vergil is based on <a href="http://en.wikipedia.org/wiki/Swing_%28Java%29" target="_top">Swing</a> and
+<a href="../../../doc/ui/diva.htm">Diva</a>,
+an infrastructure for structured graphics and visualization.
+<p>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 48.0">
+        </property>
+    </property>
+    <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="344.0, 152.0">
+        </property>
+        <port name="inputBits" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="highBit" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="lowBit" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="highBitDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="498.0, 143.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="lowBitDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="501.0, 236.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const = 1" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 117.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="int">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
+                </property>
+                <property name="complex" class="ptolemy.kernel.util.StringAttribute" value="complex">
+                </property>
+                <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                </property>
+                <property name="fix" class="ptolemy.kernel.util.StringAttribute" value="fix">
+                </property>
+                <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                </property>
+                <property name="long" class="ptolemy.kernel.util.StringAttribute" value="long">
+                </property>
+                <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 193.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const = 0" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 300.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="initialValue" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="198.0, 283.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="NonStrictThreeBitAdder.inputBits" relation="relation5"/>
+    <link port="NonStrictThreeBitAdder.inputBits" relation="relation2"/>
+    <link port="NonStrictThreeBitAdder.inputBits" relation="relation6"/>
+    <link port="NonStrictThreeBitAdder.highBit" relation="relation"/>
+    <link port="NonStrictThreeBitAdder.lowBit" relation="relation4"/>
+    <link port="highBitDisplay.input" relation="relation"/>
+    <link port="lowBitDisplay.input" relation="relation4"/>
+    <link port="Const = 1.output" relation="relation5"/>
+    <link port="Absent.output" relation="relation2"/>
+    <link port="Const = 0.output" relation="relation3"/>
+    <link port="NonStrictDelay.input" relation="relation3"/>
+    <link port="NonStrictDelay.output" relation="relation6"/>
+</entity>

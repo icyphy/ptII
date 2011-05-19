@@ -1,0 +1,197 @@
+#!/bin/sh
+# $Id$
+# Script to mail a message about nightly build
+# ptIInightly run make nightly which runs this script when everything is done
+# This convoluted system is necessary so we can build on multiple
+# machines simulatneously
+
+#mailto=ealtech
+#mailto=cxh
+#if [ $# -ne 1 ]; then
+#    echo "$0: Usage: $0 email-address"
+#    exit 4
+#fi
+mailto=$1
+
+# The directory that contains build scripts
+ADMDIR=/users/ptII/adm
+
+
+# The log of the build
+ptbuildlog=/users/ptII/adm/test/ptIInightly.txt
+
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
+    ADMDIR=/home/bldmastr/ptII/adm
+    ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
+fi
+
+# If you change the version number, then edit 
+# ptII/adm/bin/ptIInightly
+# ptII/adm/gen-xxx/makefile
+# buildmaster/web/adm/makefile
+GENVERSION=gen-7.2
+GENDIR=$ADMDIR/$GENVERSION
+cd $GENDIR
+
+
+# Generate the mail message
+mailmsg=$ADMDIR/logs/ptIInightly_mail.txt
+
+echo "`date`" > $mailmsg
+echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
+echo "See the failed tests summary at: " >> $mailmsg
+echo "http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/ptIInightly-latest.htm" >> $mailmsg 
+echo "See http://embedded.eecs.berkeley.edu/buildmaster" >> $mailmsg
+
+#(cd /users/ptII/logs; rm -f javalastnight; ln -s java`date  '+%m%d'` javalastnight)
+
+# Remove logs older than 45 days
+#find /users/ptII/logs -name "java[0-9]*" -mtime +45 -exec rm {} \;
+
+
+#echo "The size of the Ptolemy II tar file:" >> $mailmsg
+#ls -l $GENDIR/.gz >> $mailmsg
+#echo "" >> $mailmsg
+#echo "To download the latest build, or see a list of changed files, go to"  >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-2.1"  >> $mailmsg
+#echo "" >> $mailmsg
+#echo "The links below are on the nightly build page:" >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/nightly" >> $mailmsg
+
+#echo "" >> $mailmsg
+echo "------------------------------------------------" >> $mailmsg
+echo "The build started at:" >> $mailmsg
+grep "#ptIInightly-mail#: Starting make clean at" $ptbuildlog >> $mailmsg
+echo "" >> $mailmsg
+
+echo "------------------------------------------------" >> $mailmsg
+echo "Errors during the build and test process in ptII:" >> $mailmsg
+echo "" >> $mailmsg
+echo "To see the complete build and test log, see:" >> $mailmsg
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
+    echo "http://chess.eecs.berkeley.edu/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
+    echo " or, if you have a full account on gigascale, do" >> $mailmsg
+    echo "scp `hostname`:/home/bldmastr/ptII/adm/logs/ptIInightly.txt /tmp" >> $mailmsg
+else
+    echo "$ptbuildlog on `hostname`" >> $mailmsg
+fi
+echo "" >> $mailmsg
+
+AWK=awk
+if [ -f /usr/local/bin/gawk ]; then
+    AWK=/usr/local/bin/gawk
+fi
+# Find the first 100 lines that contain *** but not compileDemo or runDemo
+# Print out the Entering directory line that precedes the *** line as well
+$AWK ' $0 ~ /Entering directory/ { indir=$0 }
+      $0 ~ /^Error/ {
+			if ( $0 !~ /Encountered \"/ && $0 !~ /no files matched glob patterns \"compat\/*.xml compat2\/*.xml\"/) {
+			    print "WARNING: there was a problem with the test harness:" 
+			    print indir
+			    print $0
+			}
+		      }
+      $0 ~ /\*\*\*/ { 	if ( $0 !~ /runTreeShakeWithoutCodegen/ && $0 !~ /treeShakeAndRunSnapshots/ && $0 !~ /runTreeShakeCodegen/ && $0 !~ /compileDemo/ && $0 !~ /ignored/) {
+			    print indir
+			    print $0
+			}
+		      }' $ptbuildlog | head -100 >> $mailmsg
+
+echo "" >> $mailmsg
+# Note that in JDK1.4, the warning message format from javadoc changed
+echo "javadoc had the following `grep ': warning -' $ptbuildlog | grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer" | wc -l` warnings" >> $mailmsg
+
+grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer
+" | $AWK ' $0 ~ /^Generating/ { indir=$0 }
+      { if ($0 ~ /: warning -/) {
+	    print indir
+	    print $0
+	    sawjavadocwarning=1
+        } else {
+	    if (sawjavadocwarning == 1) {
+		sawjavadocwarning=0
+		if ( $0 ~ /^	/) {
+		    print $0
+		}
+   	        print ""
+	    }
+	}
+      }' >> $mailmsg
+
+
+echo "" >> $mailmsg
+
+# The deprecated section works with jdk1.3 and probably won't work with jdk1.2
+echo "The build had the following `egrep 'warning: \[deprecation\]' $ptbuildlog| egrep 'in (diva|ptolemy).' | wc -l ` warnings for using deprecated diva or ptolemy methods" >> $mailmsg
+echo "The warnings are broken down as:" >> $mailmsg
+egrep 'warning: \[deprecation\]' $ptbuildlog | egrep 'in (diva|ptolemy).' | $AWK '{printf("%35s in %-35s\n", $3,$5)}'  | sort | uniq -c | sort -nr >> $mailmsg
+
+echo "" >> $mailmsg
+echo "The uniq deprecation warnings themselves are:" >> $mailmsg
+egrep 'warning: \[deprecation\]' $ptbuildlog | egrep 'in (diva|ptolemy).' | sort | uniq >> $mailmsg
+
+# egrep '\*\*\*' $ptbuildlog >> $mailmsg
+
+#echo "" >> $mailmsg
+#echo "------------------------------------------------" >> $mailmsg
+#echo "Errors during the tar file build, code coverage statistics " >> $mailmsg
+#echo "process, jdk1.4 build:" >> $mailmsg
+#echo "" >> $mailmsg
+#echo "To see the complete tar file build and coverage log, view:" >> $mailmsg
+#echo "/users/ptII/adm/test/ptIInightly.txt" >> $mailmsg
+#echo "or" >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/test/ptIInightly.txt" >> $mailmsg
+#echo "" >> $mailmsg
+
+#egrep '\*\*\*' $ADMDIR/test/ptIInightly.txt >> $mailmsg
+
+#echo "" >> $mailmsg
+#echo "------------------------------------------------" >> $mailmsg
+#echo "Diffs between tonight's build and lastnight's build" >> $mailmsg
+# cat $ADMDIR/test/ptIInightly.diffs >> $mailmsg
+
+echo "" >> $mailmsg
+echo "------------------------------------------------" >> $mailmsg
+echo "Test results during code coverage" >> $mailmsg
+echo "" >> $mailmsg
+echo "............................................................" >> $mailmsg
+echo "|To add a directory to the list of directories to be tested|" >> $mailmsg
+echo "|edit the value of JSALLDIRS in                            |" >> $mailmsg
+echo "| \$PTII/adm/$GENVERSION/makefile |" >> $mailmsg
+echo "............................................................" >> $mailmsg
+echo "" >> $mailmsg
+echo "------------------------------------------------" >> $mailmsg
+echo "Test Failures during code coverage." >> $mailmsg
+echo "" >> $mailmsg
+egrep 'Total Tests' $ptbuildlog |
+    egrep -v '^Failed: 0' >> $mailmsg
+
+# Get the tests from ptdb
+cat $ptbuildlog |
+    awk ' $0 ~ /make.*: Entering/ {entering=$NF}
+          $0 ~ /^Tests run: [0-9]*,  Failures: [0-9]*/ { print $0, entering}' >> $mailmsg
+
+echo "------------------------------------------------" >> $mailmsg
+echo "Tests without Failures during code coverage." >> $mailmsg
+echo "" >> $mailmsg
+egrep 'Total Tests' $ptbuildlog |
+    egrep '^Failed: 0' >> $mailmsg
+
+# Get the tests from ptdb
+cat $ptbuildlog |
+    awk ' $0 ~ /make.*: Entering/ {entering=$NF}
+          $0 ~ /^OK ([0-9]* tests)/ { print $0, entering}' >> $mailmsg
+
+
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
+    echo "" >> $mailmsg
+    echo "------------------------------------------------" >> $mailmsg
+    echo "Code Coverage Summary" >> $mailmsg
+    echo "" >> $mailmsg
+    echo "To see code coverage, view:" >> $mailmsg
+    echo "http://chess.eecs.berkeley.edu/ptexternal/nightly/coverage.html" >> $mailmsg
+    echo "" >> $mailmsg
+    sh $ADMDIR/bin/coveragesummary >> $mailmsg
+fi
+
+cat $mailmsg | mailx -s "Ptolemy II Nightly Build `hostname -s`" $mailto

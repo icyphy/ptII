@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+<!-- PortParameter, a parameter that is also a port. -->
+<property name="PortParameter" class="ptolemy.actor.parameters.PortParameter">
+  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"/>
+      </svg>
+    </configure>
+  </property>
+  <property name="_smallIconDescription"
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20"
+              style="font-size:14; font-family:SansSerif; fill:black"
+              y="20">-P-</text>
+      </svg>
+    </configure>
+  </property>
+  <property name="_editorFactory"
+            class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
+</property>
+
+<!-- FilePortParameter, a file parameter that is also a port. -->
+<property name="FilePortParameter" class="ptolemy.actor.parameters.FilePortParameter">
+  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:green"/>
+      </svg>
+    </configure>
+  </property>
+  <property name="_smallIconDescription"
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20"
+              style="font-size:14; font-family:SansSerif; fill:#00BB00"
+              y="20">-P-</text>
+      </svg>
+    </configure>
+  </property>
+  <property name="_editorFactory"
+            class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
+</property>
+</group>

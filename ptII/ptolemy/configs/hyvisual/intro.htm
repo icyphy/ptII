@@ -1,0 +1,195 @@
+<html>
+<head>
+<!-- $Id$ -->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table>
+<tr>
+<td>
+<img vspace="6" align="left" src="hyvisualPlanet.gif" alt="HyVisual Planet">
+</td>
+<td>
+<h1>
+HyVisual 8.1.devel
+</h1>
+<i>Block-diagram editor and simulator for hybrid systems</i>.
+<ul>
+<!-- FIXME: Need a customized version of the docs here. -->
+<li><a href="docs.htm" target="_blank">Documentation</a>
+<li><a href="authors.htm" target="_blank">Authors</a>
+<li><a href="about:copyright" target="_blank">Copyright</a>
+</ul>
+To start immediately by creating a hybrid system, select File -&gt; New -&gt;
+Graph Editor from the menu bar.  Select Help from the Help menu for
+instructions on creating a model.
+</td>
+</tr>
+</table>
+
+Hybrid systems are systems with continuous-time dynamics, discrete
+events, and discrete mode changes. This visual modeler supports construction of
+hierarchical hybrid systems. It uses a block-diagram representation of
+ordinary differential equations (ODEs) to define continuous
+dynamics. It uses a bubble-and-arc diagram representation of finite state
+machines to define discrete behavior. The semantics of HyVisual are
+described in the following paper:
+<p>
+Edward A. Lee and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics/#in_browser">Operational Semantics of Hybrid Systems</a>," Invited paper in
+Proceedings of Hybrid Systems: Computation and Control (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005.</p>
+<p><i>Note that in Hyvisual 8.0 and later the CT model of computation has been
+replaced with the Continuous domain and the FSM model of computation
+has been replaced with the Modal domain</i.></p>
+
+<p>Below are simple demonstrations of this modeler:
+<ul>
+<li><i>Mode transitions in models of physical systems</i>:
+<a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>.
+<br> This example models a physical system consisting of two point masses
+on springs that stick together when they collide.  It illustrates how
+to model systems when different modes of operation require different
+ODE models. There is also a
+<a href="../../domains/gr/demo/StickyMasses/StickyMasses.xml">Graphical Sticky Masses</a>
+version that shows the model graphically.
+<br><font color="red">NOTE: This graphical model requires that you have
+installed Java 3D from Sun
+(see https://java3d.dev.java.net/).</font>
+
+
+<li><i>Simultaneous events</i>:
+<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml">NewtonsCradle</a>.
+<br>
+This example illustrates a challenging hybrid systems modeling problem
+that requires correctly handling simultaneous events. The example is
+a classic mechanical toy called Newton's cradle, where suspended
+pendulums collide with one another. Multiple simultaneous collisions
+must be correctly handled.
+<br>See also <a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>.
+ <font color="red">NOTE: Requires Java 3D.</font>
+
+<li>
+<i>Stochastic hybrid systems</i>:
+<a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
+<a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomLosses.xml">HysteresisWithRandomLosses</a>.
+<br>This example illustrates how to model random delays and losses 
+associated with state transitions of a hybrid systems.
+
+<li>
+<i>Event detection</i>:
+<a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a>.
+<br> This example illustrates that HyVisual correctly handles
+both continuous-time signals and discrete events, including
+multiple discrete events that occur at the same time.
+It also shows that a piecewise continuous signal has
+multiple values at the time of the discontinuity, and
+that these values are ordered.
+
+<li>
+<i>Discretely changing parameters</i>:
+<a href="../../domains/continuous/demo/Thermostat/Thermostat.xml">Thermostat</a>.
+<br> This example models a thermostat in a simple physical
+environment. It illustrates how to model systems when a single
+ODE model has parameters whose values change discretely.
+
+<li>
+<i>Zeno systems</i>:
+<a href="../../domains/continuous/demo/BouncingBall/BouncingBallWithoutGR.xml">BouncingBall</a>.
+<br> This example shows a bouncing ball model. Like the previous
+example, it has a single ODE model with parameters whose values change
+discretely. Unlike the previous example, however, it exhibits a
+so-called "Zeno condition," where the time between events gets
+arbitrarily small.
+<br>There is also a 
+<a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">Graphical BouncingBall</a>.
+ <font color="red">NOTE: Requires Java 3D.</font>
+
+
+<li>
+<i>Switching continuous-time signals</i>:
+<a href="../../domains/continuous/demo/Switch/Switch.xml">Switch</a>.
+<br> This example shows a switch that selects from one of two
+continuous-time inputs.  It illustrates how to model systems
+where continuous-time signals are mixed with discrete-event signals.
+Such systems are called "mixed-signal" systems.
+
+<li>
+<i>Modal control laws</i>:
+<a href="../../domains/continuous/demo/CarTracking/CarTracking.xml">CarTracking</a>.
+<br>
+This example shows a control system with two control laws, one for normal
+operation and one for degraded operation in the presence of faults. A modal
+model controls the switching between them.
+<br>The <a href="../../domains/gr/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a> demo is a graphical demo of a similar modal model.
+ <font color="red">NOTE: Requires Java 3D.</font>
+
+<li>
+<i>Linear time-invariant systems</i>:
+<a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">SquareWave</a>.
+<br> This example shows a linear transfer function given as a
+rational Laplace transform, and its response to a square wave
+input. This model is not a hybrid system, but a classical continuous-time
+dynamical system.
+
+<li>
+<i>Chaotic systems</i>:
+<a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz</a>.
+<br> This example shows a nonlinear system constructed using
+integrators and expression actors in a feedback loop. Because of
+the nonlinearity, the system exhibits a form of chaotic behavior
+known as a strange attractor.
+This model is not a hybrid system, but a classical nonlinear continuous-time
+dynamical system.
+
+<li>
+<i>Sampling piecewise continuous and discrete signals</i>:
+<a href="../../domains/continuous/demo/SampledClocks/SampledClocks.xml">SampledClocks</a>.
+<br> This example illustrates that piecewise continuous signals
+in HyVisual can be sampled at their discontinuities, and that the
+behavior is consistent and predictable. Discrete signals can also
+be sampled with consistent and predictable behavior.
+
+<li>
+<i>Integrating with MATLAB</i>:
+<a href="../../matlab/demo/MatlabCT/MatlabCT.xml">MatlabCT</a>
+<br>
+This example uses the MATLAB interface created by
+Zoltan Kemenczy and Sean Simmons, of Research in Motion Ltd.,
+to plot a 3-D surface. This works only under Windows and 
+only if Matlab is installed locally.
+In the 8.1.devel release, we ship with a shared library compiled against
+Matlab 6.5.  If you have another version of Matlab, you may need to
+recompile from source.  The Matlab interface requires that Cygwin
+is installed, and works with gcc-3.2, not gcc-3.3.
+
+<li>
+<i>Using function closures</i>:
+<a href="../../domains/continuous/demo/Transmission/Transmission.xml">Transmission</a>
+<br>
+This model shows a model of a car with a transmission.  A transmission
+is generally used when an engine has a relatively narrow band over
+which the maximum power of the engine is available.  In order to
+obtain high torque over a wider range of speeds, the engine is
+connected to a set of gears with different size ratios (the
+transmission). This model uses function closures to
+significantly simplify the model.
+The efficiency function used for this model can be
+seen in <a href="../../domains/continuous/demo/Transmission/EfficiencyCurve.xml">EfficiencyCurve</a>.
+
+<li>
+<i>HSIF importing</i>:
+<a href="../../hsif/demo/Thermostat/Thermostat.xml">Thermostat</a>.
+<br> This example shows a simple thermostat modeled as a hybrid system.
+The purpose of the example is to demonstrate the ability that HyVisual has
+to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
+See the <a href="../../hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
+
+</ul>
+<p>
+This visual modeler is built using Ptolemy II, which is a software
+framework developed as part of the Ptolemy project at the University of
+California at Berkeley. See the
+<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web
+page</a> for more information.
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MultiPort1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DT3" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.71429443359375, 360.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="OnePort4" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="231.4285659790039, 105.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp10" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="94.28571701049805, 225.0">
+        </property>
+    </entity>
+    <entity name="Ramp12" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="162.8571434020996, 315.0">
+        </property>
+    </entity>
+    <entity name="OnePort13" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="outrate" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="231.4285659790039, 225.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract15" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 135.0">
+        </property>
+    </entity>
+    <entity name="OnePort18" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <property name="inrate" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.71429443359375, 90.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="CurrentTime24" class="ptolemy.actor.lib.CurrentTime">
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="437.1428527832031, 225.0">
+        </property>
+    </entity>
+    <entity name="CurrentTime27" class="ptolemy.actor.lib.CurrentTime">
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="437.1428527832031, 345.0">
+        </property>
+    </entity>
+    <entity name="Test30" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.7142791748047, 180.0">
+        </property>
+    </entity>
+    <entity name="Test32" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.7142791748047, 270.0">
+        </property>
+    </entity>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="162.85714721679688, 135.0">
+        </vertex>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="368.5714416503906, 135.0">
+        </vertex>
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="OnePort4.input" relation="relation22"/>
+    <link port="OnePort4.output" relation="relation16"/>
+    <link port="Ramp10.output" relation="relation22"/>
+    <link port="Ramp12.output" relation="relation14"/>
+    <link port="OnePort13.input" relation="relation14"/>
+    <link port="OnePort13.output" relation="relation17"/>
+    <link port="AddSubtract15.plus" relation="relation16"/>
+    <link port="AddSubtract15.plus" relation="relation17"/>
+    <link port="AddSubtract15.output" relation="relation26"/>
+    <link port="OnePort18.input" relation="relation26"/>
+    <link port="CurrentTime24.output" relation="relation31"/>
+    <link port="CurrentTime24.trigger" relation="relation22"/>
+    <link port="CurrentTime27.output" relation="relation33"/>
+    <link port="CurrentTime27.trigger" relation="relation26"/>
+    <link port="Test30.input" relation="relation31"/>
+    <link port="Test32.input" relation="relation33"/>
+</entity>

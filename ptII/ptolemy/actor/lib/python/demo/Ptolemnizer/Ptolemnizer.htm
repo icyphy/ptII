@@ -1,0 +1,38 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Ptolemnizer</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Ptolemnizer</H1>
+
+<P>
+The Ptolemnizer is an interactive model that converts text by adding a "p"
+to any word that begins with a "t" but not with a "th".
+Type a sentence below, such as "The Ptolemy tome takes time to read."
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Ptolemnizer is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Ptolemnizer.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="PtolemnizerVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+</BODY>
+</HTML>

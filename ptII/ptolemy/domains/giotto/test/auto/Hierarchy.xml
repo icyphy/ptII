@@ -1,0 +1,209 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Hierarchy" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    </property>
+    <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+            <doc>Number of iterations in an execution.</doc>
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 80.0]">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 7, 798, 468}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="frequency = 2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 305.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="frequency = 1 &#10;(by default)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 155.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes two submodels, each of which has its&#10;own Giotto scheduler. The lower composite and the plotter&#10;have a frequency of 4, so they run twice as often as the&#10;source and the upper composite.&#10;&#10;The inside frequency of the composite is defined by the &#10;internalFrequency parameter of the composite.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="frequency = 2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 180.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="frequency = 2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 265.0]">
+        </property>
+    </property>
+    <entity name="Source" class="ptolemy.actor.lib.Const">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 230.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="Upper Composite" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 195.0]">
+        </property>
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 55.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a Giotto model that is embedded inside another Giotto model, the period &#10;parameter of the local director is meaningless. So, during the prefire method&#10;of the local Giotto director, the period is set according the frequency of&#10;the embedded Giotto model and the period of the upper level Giotto director.&#10;&#10;Note: due to the possible numerical error introduced by divisions like&#10;1.0 (period) / 3 (frequency) = 0.333333..., a good design will choose an &#10;approciate frequency such that the local period can be represented by a finite&#10;number of digits. &#10;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 175.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We restrict the frequency to be 2^m * 5^n, where n and m are non-negative &#10;integers.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 350.0]">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 125.0]">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 75.0]">
+            </property>
+        </port>
+        <entity name="adder" class="ptolemy.actor.lib.AddSubtract">
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="internalFrequency">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 135.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex0" value="[275.0, 75.0]">
+            </vertex>
+        </relation>
+        <link port="input" relation="relation"/>
+        <link port="output" relation="relation2"/>
+        <link port="adder.plus" relation="relation"/>
+        <link port="adder.plus" relation="relation2"/>
+        <link port="adder.output" relation="relation2"/>
+    </entity>
+    <entity name="Lower Composite" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 275.0]">
+        </property>
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 65.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a Giotto model that is embedded inside another Giotto model, the period &#10;parameter of the local director is meaningless. So, during the prefire method&#10;of the local Giotto director, the period is set according the frequency of&#10;the embedded Giotto model and the period of the upper level Giotto director.&#10;&#10;Note: due to the possible numerical error introduced by divisions like&#10;1.0 (period) / 3 (frequency) = 0.333333..., a good design will choose an &#10;approciate frequency such that the local period can be represented by a finite&#10;number of digits. &#10;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 185.0}">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We restrict the frequency to be 2^m * 5^n, where n and m are non-negative &#10;integers.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 360.0}">
+            </property>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 135.0}">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 90.0]">
+            </property>
+        </port>
+        <entity name="adder" class="ptolemy.actor.lib.AddSubtract">
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="internalFrequency">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 145.0}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex0" value="[290.0, 90.0]">
+            </vertex>
+        </relation>
+        <link port="input" relation="relation"/>
+        <link port="output" relation="relation2"/>
+        <link port="adder.plus" relation="relation"/>
+        <link port="adder.plus" relation="relation2"/>
+        <link port="adder.output" relation="relation2"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 3, 7, 7, 11, 11, 15, 15, 19, 19, 23, 23, 27, 27, 31, 31}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 195.0]">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 275.0]">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="[145.0, 230.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Source.output" relation="r1"/>
+    <link port="Upper Composite.input" relation="r1"/>
+    <link port="Upper Composite.output" relation="relation3"/>
+    <link port="Lower Composite.input" relation="r1"/>
+    <link port="Lower Composite.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="NonStrictTest2.input" relation="relation"/>
+</entity>

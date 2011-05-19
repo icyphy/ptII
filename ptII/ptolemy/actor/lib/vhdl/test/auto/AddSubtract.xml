@@ -1,0 +1,99 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AddSubtract" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 166, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240, 90}">
+        </property>
+    </property>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.vhdl.AddSubtract">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="2:-5">
+        </property>
+        <property name="latency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="FixConst3" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="1:-5">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.275">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 140.0}">
+        </property>
+    </entity>
+    <entity name="FixConst4" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="1:-4">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{fix(0.375,8,3), fix(0.375,8,3), fix(1.03125,8,3)}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 250.0}">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.vhdl.AddSubtract">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="2:-5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="1:-4">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 275.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="AddSubtract2.output" relation="relation"/>
+    <link port="AddSubtract2.A" relation="relation4"/>
+    <link port="AddSubtract2.B" relation="relation5"/>
+    <link port="FixConst3.output" relation="relation4"/>
+    <link port="FixConst4.output" relation="relation5"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation2"/>
+    <link port="AddSubtract.A" relation="relation"/>
+    <link port="AddSubtract.B" relation="relation3"/>
+    <link port="FixConst.output" relation="relation3"/>
+</entity>

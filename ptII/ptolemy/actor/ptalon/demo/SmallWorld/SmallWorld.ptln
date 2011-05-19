@@ -1,0 +1,43 @@
+SmallWorld is {
+    actor node = ptolemy.actor.ptalon.demo.SmallWorld.RelayNode;
+    actor channel = ptolemy.domains.wireless.lib.LimitedRangeChannel;
+    actor initiator = ptolemy.actor.ptalon.demo.SmallWorld.Initiator;
+    actor wirelessToWired = ptolemy.domains.wireless.lib.WirelessToWired;
+    actor nodeRandomizer = ptolemy.domains.wireless.lib.NodeRandomizer;
+
+    parameter channelName;
+    parameter reportChannelName;
+
+    parameter range;
+
+    outport output;
+
+    channel(defaultProperties := [[ {range=range} ]], 
+              lossProbability := [[ 1.0 - probability ]], 
+                         seed := [[ 1L ]], 
+                         name := [[ channelName ]]);
+    channel(seed := [[ 1L ]], 
+            name := [[ reportChannelName ]]);
+
+    wirelessToWired(inputChannelName := [[ reportChannelName ]], 
+                             payload := output, 
+                           _location := [[ [0.0, 0.0] ]]);
+
+    initiator(_location := [[ [230.0, 345.0] ]]);
+
+    nodeRandomizer(
+                     maxPrecision := [[ 3 ]], 
+            randomizeInInitialize := [[ true ]], 
+                   resetOnEachRun := [[ resetOnEachRun ]], 
+                            range := [[ {{100.0, 400.0}, {200.0, 500.0}} ]], 
+                             seed := [[ 1L ]] );
+
+    parameter n;
+    for i initially [[ 1 ]] [[ i <= n ]] {
+        node(nodePropagationDelay := [[ nodePropagationDelay ]], 
+                            range := [[ range ]], 
+                        haloColor := [[ {0.0, 0.5, 0.5, probability*visualDensity} ]], 
+                        randomize := [[ randomize ]], 
+                        _location := [[ [10.0 * i, 10.0 * i] ]]);
+    } next [[ i + 1 ]]
+}

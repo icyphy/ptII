@@ -1,0 +1,102 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="modulation" class="ptolemy.actor.TypedCompositeActor">
+    <doc>Multiply a low-frequency sine wave (the signal)
+by a higher frequency one (the carrier).</doc>
+    <property name="frequency1" class="ptolemy.data.expr.Parameter" value="PI*0.2">
+        <doc>Frequency of the carrier</doc>
+    </property>
+    <property name="frequency2" class="ptolemy.data.expr.Parameter" value="PI*0.02">
+        <doc>Frequency of the sinusoidal signal</doc>
+    </property>
+    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+            <doc>Number of iterations in an execution.</doc>
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 23.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[175, 147]">
+    </property>
+    <entity name="carrier" class="ptolemy.actor.lib.DoesNotExist">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
+            <doc>The sampling frequency, in the same units as the frequency.</doc>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="frequency1">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="118.0, 204.0">
+        </property>
+    </entity>
+    <entity name="signal" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
+            <doc>The sampling frequency, in the same units as the frequency.</doc>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="frequency2">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="46.0, 89.0">
+        </property>
+    </entity>
+    <entity name="mult" class="ptolemy.actor.lib.DoesNotExist2">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 150.0">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="382.99998474121094, 89.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="182.0, 95.0">
+        </vertex>
+    </relation>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="carrier.output" relation="r1"/>
+    <link port="signal.output" relation="r2"/>
+    <link port="mult.multiply" relation="r1"/>
+    <link port="mult.multiply" relation="r2"/>
+    <link port="mult.output" relation="r3"/>
+    <link port="display.input" relation="r2"/>
+    <link port="display.input" relation="r3"/>
+</entity>

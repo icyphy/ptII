@@ -1,0 +1,92 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NondogmaticPNModel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="NondogmaticPNDirector" class="doc.tutorial.domains.NondogmaticPNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 259, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of the NondogmaticPNDirector. This model&#10;is nondeterminate, because the AddSubtract actor adds whatever&#10;tokens are available at its inputs when it fires, and the director&#10;fires it repeatedly in its own thread.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 25.0]">
+        </property>
+    </property>
+    <entity name="SensorModel" class="SensorModel" source="http://embedded.eecs.berkeley.edu/concurrency/models/SensorModel.xml">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 150.0]">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="samplingPeriod" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </entity>
+    <entity name="SensorModel2" class="SensorModel" source="http://embedded.eecs.berkeley.edu/concurrency/models/SensorModel.xml">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 225.0]">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="samplingPeriod" class="ptolemy.data.expr.Parameter" value="0.75">
+        </property>
+        <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 180.0]">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="tellTheTruth" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={416, 31, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370, 185}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="85.0"/>
+<yRange min="-2.1725595958452217" max="2.1727984249762096"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="SensorModel.output" relation="relation"/>
+    <link port="SensorModel2.output" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+</entity>

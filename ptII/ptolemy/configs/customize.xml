@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Customize" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Attributes that customize components</doc>
+        <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+          <property name="_smallIconDescription" 
+              class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    		<configure>
+      		  <svg>
+      		    <polygon points="-3,-3, 3,0, -3,3" style="fill:white"/>
+      		  </svg>
+    		</configure>
+  		  </property>
+        </property>
+      </group>
+    ?>
+  </configure>
+</entity>

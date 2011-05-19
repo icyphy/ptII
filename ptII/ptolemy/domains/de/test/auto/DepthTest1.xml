@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DepthTest1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 745, 757}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[530, 640]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.0, 320.0}">
+    </property>
+    <entity name="Jobs" class="ptolemy.actor.lib.Clock">
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;.DepthTest1.Jobs: 0\n   output: 0\n   trigger: 0\n   period: 0\n.DepthTest1.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.DepthTest1.Test: 2\n   input: 2\n   output: 2\n&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 120.0]">
+        </property>
+    </entity>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[125.0, 120.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 120.0]">
+        </vertex>
+    </relation>
+    <link port="Jobs.output" relation="relation7"/>
+    <link port="TestActorPortDepth.trigger" relation="relation7"/>
+    <link port="TestActorPortDepth.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>

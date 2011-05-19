@@ -1,0 +1,7 @@
+#!/bin/sh
+# $Id$
+# Check for "Not Found" in wget output
+# wget -np -m http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/index.htm >& /tmp/wget4.out
+#
+awk '$3 ~ /http:/ {lastURL=$0}
+     $0 ~ /Not Found$/ {print lastURL}'

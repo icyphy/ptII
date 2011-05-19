@@ -1,0 +1,207 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>ptolemy.actor.gui</title>
+</head>
+<body>
+Ptolemy GUI components for actors and configurations.
+
+<p>This package consists of several types of classes:
+<ol>
+  <li>Classes that manage the editors
+  <li>Graphical User Interface (GUI) classes that render
+      specific editors.
+  <li>Classes that invoke models
+</ol>
+
+<h2>Classes that manage editors</h2>
+
+A ptolemy application has a configuration which is a xml file found in
+$PTII/ptolemy/configs.  For example, the "Full" configuration is found
+in $PTII/ptolemy/configs/full/configuration.xml.
+
+<p>The configuration.xml file defines a set of properties and entities
+that determine what editors are available to view a model.
+
+<p>It is possible to invoke Ptolemy models without using the
+configuration system, see {@link ptolemy.moml.MoMLSimpleApplication}.
+
+<p>The {@link ptolemy.actor.gui.Configuration} class is in charge of
+the user interface, it coordinates views of multiple models.  The
+Configuration class manages the opening of new models by ensuring
+that the appropriate viewer is used.
+
+<p>The Configuration class contains a {@link
+ptolemy.actor.gui.ModelDirectory}, which is a directory of open
+models.  Each open model is represented by an instance of an
+{@link ptolemy.actor.gui.Effigy}.
+
+<p>An Effigy represents model metadata, such as the location from
+which the model originated, whether the model has been modified.
+See {@link ptolemy.actor.gui.Effigy} for a discussion about
+why the class is called "Effigy".
+
+<p>Each open model has an Effigy.  The Effigy contains a
+{@link ptolemy.actor.gui.Tableau} that is a visual representation
+of the model in a top-level window.  The Tableau contains
+a javax.swing.JFrame, which may be accessed via
+{@link ptolemy.actor.gui.Tableau#getFrame()}.
+
+<h2>How a file is opened using the Configuration class</h2>
+The {@link ptolemy.actor.gui.ConfigurationApplication} uses
+the {@link ptolemy.actor.gui.Configuration} class to open a
+model.
+ConfigurationApplication uses these steps
+<ol>
+  <li>Set up {@link ptolemy.moml.MoMLFilter}s.
+  <li>Parse arguments, look for a configuration file and parse
+  the configuration file.
+  <li>For each model, parse the xml and then open each
+  model with:
+  {@link ptolemy.actor.gui.Configuration#openModel(NamedObj)}.
+  <li>openModel() checks with the ModelDirectory to see
+  if the model is already open.  If the model is open, then
+  the Tableau that contains a reference to the JFrame is returned.
+  <li>If openModel() does not find an open model, then we
+  look for a EffigyFactory and then ask the EffigyFactory to
+  create an Effigy for our model.
+  <li>The EffigyFactory loops through its contained factories
+  and calls {@link
+  ptolemy.actor.gui.EffigyFactory#createEffigy(CompositeEntity, URL,
+  URL)} for each factory.
+  <li>The createEffigy() method determines if it should create
+  an Effigy for the container and urls.  If createEffigy() 
+  for a particular viewer does not want to create an Effigy for
+  a particular model, then it returns null and then next factory
+  gets to try.  Eventually, a createEffigy() method is found
+  that creates an Effigy, or an error is thrown.
+  <li>Once Configuration.openModel() gets an effigy, then
+  {@link ptolemy.actor.gui.Configuration#createPrimaryTableau(Effigy)}
+  is called, which returns a Tableau.  The Tableau contains
+  a reference to the javax.swing.JFrame that is a view on the model.
+</ol>  
+  
+
+
+<h2>Graphical User Interface (GUI) classes that render
+      specific editors.</h2>
+  In general, each view on a model has a corresponding Effigy and
+  Tableau class.  Some viewers also have Viewer and/or Frame classes.
+
+
+
+<h2>Overview of classes used to invoke models</h2>
+ <table>
+  <tr>
+    <th>Class Name</th
+    <th>Uses {@link ptolemy.actor.gui.Configuration}?</th>
+    <th>Optionally reads parameters from the command line?</th>
+    <th>Calls {@link ptolemy.moml.filter.RemoveGraphicalClasses}?</th>
+  </tr>
+
+  <tr>
+ <td>{@link ptolemy.actor.gui.CompositeActorApplication}
+   instantiates a Java class named as an argument.
+   The Java class should extend TypedCompositeActor and
+   have a director.  <i>This class is not often used.</i>
+ </td>
+ <td>No</td>
+ <td>No</td>
+ <td>No</td>
+ </tr>
+
+   <tr>
+ <td>{@link ptolemy.actor.gui.CompositeActorSimpleApplication}
+   is similar to CompositeActorApplication but this class
+   does not handle {@link ptolemy.actor.gui.Placeable} classes.
+   <i>This class is not often used.</i>
+ </td>
+ <td>No</td>
+ <td>No</td>
+ <td>No</td>
+ </tr>
+
+  <tr>
+  <td>{@link ptolemy.moml.MoMLSimpleApplication} is a simple
+    example of how to invoke a model
+  </td>
+  <td>No</td>
+  <td>No</td>
+  <td>Yes</td>
+</tr>
+
+   <tr>
+   <td>{@link ptolemy.actor.gui.MoMLSimpleStatisticalApplication}
+    extends MoMLSimpleApplication and
+     prints out statistics about the run.  See also 
+     {@link ptolemy.kernel.CompositeEntity#statistics(String)}.
+     <i>This class is not often used.</i>
+   </td>
+   <td>No</td>
+   <td>No</td>
+   <td>Yes</td>
+ </tr>
+
+  <tr>
+   <td>{@link ptolemy.moml.MoMLCommandLineApplication}
+       extends MoMLSimpleApplication and optionally sets
+       parameters from the command line.
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+  <td>{@link ptolemy.actor.gui.ConfigurationApplication}</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Optionally, by setting _removeGraphicalClasses</td>
+ </tr>
+
+ <tr>
+  <td>{@link ptolemy.actor.gui.MoMLApplication}</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>No, this class sets the Look and Feel, which invokes
+    Java's UI code</td>
+</tr>
+
+ <tr>
+ <td>{@link ptolemy.actor.gui.PtolemyApplication} extends
+  MoMLApplication and opens a {@link ptolemy.actor.gui.RunTableau}
+  for the specified models. <i>This class is not often used.</i>
+ </td>
+ <td>Yes</td>
+ <td>Yes</td>
+ <td>No, this class sets the Look and Feel, which invokes
+   Java's UI code</td>
+</tr>
+
+ <tr>
+ <td>{@link ptolemy.actor.gui.PtExecuteApplication} extends
+  MoMLApplication and in the default opens a {@link ptolemy.actor.gui.RunTableau}
+  for the specified models and then executes the models.
+   <i>This class is not often used.</i>
+ </td>
+ <td>Yes</td>
+ <td>Yes</td>
+ <td>No, this class sets the Look and Feel, which invokes
+   Java's UI code</td>
+</tr>
+
+
+ <tr>
+  <td>{@link ptolemy.vergil.VergilApplication} extends
+    MoMLApplication and opens the Vergil graphical editor</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>No, this class sets the Look and Feel, which invokes
+    Java's UI code</td>
+ </tr>
+ </table> 
+
+<p>
+    @since Ptolemy II 0.2
+</body>
+</html>

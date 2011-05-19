@@ -1,0 +1,12 @@
+attachDanglingPorts;
+
+Parallel is {
+	actorparameter repeater;
+	parameter n;
+	if [[n <= 1]] {
+		repeater();
+	} else {
+		repeater();
+		Parallel( repeater := repeater(), n := [[n - 1]] );
+	}
+}

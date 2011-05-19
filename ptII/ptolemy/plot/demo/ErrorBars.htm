@@ -1,0 +1,51 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Error Bars</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Plot using Error Bars</h1>
+<p>
+One of the features of the
+<a href="../../../doc/codeDoc/ptolemy/plot/Plot.html">Plot</a> class
+is that the data can show upper and lower error bars.
+An example is below.
+<p>
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar" 
+ width = "500" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-P errorbars.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<P>Error bars can be specified from within the data file or
+by calling Java methods.
+The error bars above are specified in the
+<a href="errorbars.plt">data file</a>
+with a 4 number line:
+<pre>
+<i>x</i>,<i>y</i>,<i>ylow</i>,<i>yhigh</i>
+</pre>
+The numbers can be separated by white space or commas.
+This is the "old syntax," but the PlotML syntax also supports
+error bars.  A point with error bars is given by a element
+of the following form:
+<p>
+<pre>
+&lt;point x="0.1" y="1.0" lowErrorBar="0.9" highErrorBar="1.1"/&gt;
+</pre>
+<p>
+From within Java, error bars can be added by calling
+the addPointWithErrorBars() method in the
+<a href="../../../doc/codeDoc/ptolemy/plot/Plot.html">Plot</a> class.
+
+<p>&nbsp;
+</body>
+</html>

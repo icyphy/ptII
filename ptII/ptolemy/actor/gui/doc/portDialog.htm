@@ -1,0 +1,98 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<!-- $Id$ -->
+<title>Configure Ports</title>
+</head>
+<body>
+<h1>Configure Ports</h1>
+<p>
+The Configure Ports dialog supports adding, removing, and changing key
+properties of ports of an entity. An example is shown below:
+</p>
+<p>
+<center>
+<img src="portDialog.gif" alt="image of a port dialog">
+</center>
+</p>
+<h2>Adding a port</h2>
+<p>
+To add a port, click on the Add button.
+Specify a name for the port.
+If you leave the class blank, then you will get an instance of
+the default port type for the container.  This is usually what you want.
+However, you can also specify a particular port class to create by
+giving the fully qualified class name of the port.
+When a port is added, it is not an input, an output, nor a multiport.
+</p>
+<h2>Removing ports</h2>
+<p>
+To remove a port, click on the Remove button.
+Select the name of the port to remove.
+</p>
+<h2>Changing the properties of a port</h2>
+<p>
+To make a port an input, an output, or a multiport, simply check
+the appropriate button the dialog after adding the port. Any combination
+of these properties may be specified.
+To set the type of a port, specify the type in the type field on the
+right.  You don't often have to specify the type of a port, since
+it will be inferred from the way the port is used.
+However, sometimes, ports in a hierarchical model need to have
+designated types.  This is particularly true of ports of a
+finite state machine or modal model.
+<p>
+The type can be given by any expression that can be evaluated
+(this expression is called a "prototype").
+For example, you can specify the type to be double by giving
+the string "0.0" (or any other number with a decimal point).
+However, this does not look very good as
+a designator for a type.  The Ptolemy II expression language
+defines the constant "double" to equal "0.0".  Thus, the preferred
+way to specify that a port has type double is to give its type
+as "double".
+<p>
+The primitive types you might specify are:
+<ul>
+<li> boolean,
+<li> complex,
+<li> double,
+<li> fixedpoint,
+<li> general,
+<li> int,
+<li> long,
+<li> matrix,
+<li> object,
+<li> scalar,
+<li> string, and
+<li> unknown.
+</ul>
+The constant "unknown" has a rather special behavior, in that
+it sets the type of the port to be unknown, allowing type resolution
+to infer it.  The constant "matrix" designates a matrix
+without specifying an element type, in contrast to, for example,
+"[double]", which specifies a double matrix (see below).
+Similarly, the constant "scalar" designates a scalar of any type
+(double, int, long, etc.).
+The constant "general" designates any type.
+<p>
+Since the type is given by a "prototype",
+any data type that can be given in an expression
+can be specified as a type. For structured types, follow the
+same syntax as in expressions. For example:
+<pre>
+    {double} - double array
+    [int]    - int matrix
+    {field1 = string, field2 = int} - record with two fields
+</pre>
+
+<p>The Cardinal Direction determines which side of the icon the
+port is located on.  
+Below are the defaults:
+<ul>
+<li>Input ports are usually on the West side.
+<li>Output ports are usually on the East side.
+<li>Ports that are both an input and an output are located on the South side.
+</p>
+</body>
+</html>

@@ -1,0 +1,97 @@
+#!/bin/sh
+# @version: Christopher Hylands
+# $Id$
+# javadiff -  Compare two jar files and report the differences
+#
+# 1) prints out files that are only present in the first jar file,
+# 2) prints out files that are only present in the second jar file
+# 3) runs javap on any common classes and prints the difference
+#
+# Example usage:
+# cd $PTII
+# cvs update
+# make install
+# $PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/actor/lib/lib.jar" "$PTII/ptolemy/actor/lib/lib.jar"
+
+# or 
+# $PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/ptsupport.jar" "$PTII/ptolemy/ptsupport.jar"
+
+# or
+# $PTII/adm/bin/jardiff {/vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0/ptII1.0/ptolemy,$PTII/adm/dists/ptII2.0devel/ptolemy}/actor/lib/lib.jar
+
+if [ $# -ne 2 ]; then
+    echo "$0: Wrong number of arguments, got $#, expected 2"
+    echo "$0: Usage jardiff foo.jar bar.jar"
+    exit 45
+fi	
+
+jarfile1="$1"
+jarfile2="$2"
+if [ ! -r "$jarfile1" ]; then
+    echo "$0: '$jarfile1' does not exist or is not readable"
+    exit 46
+fi
+
+if [ ! -r "$jarfile2" ]; then
+    echo "$0: '$jarfile3' does not exist or is not readable"
+    exit 46
+fi
+
+# First pass, report class files that are not found in either jar file
+tmpfile=/tmp/jardiff_$$
+contents1=${tmpfile}_contents1
+contents2=${tmpfile}_contents2
+
+jar -tf "$jarfile1" | sort > $contents1
+jar -tf "$jarfile2" | sort > $contents2
+echo "# Files found only in $jarfile1":
+comm -23 $contents1 $contents2| awk ' {print "Only in <", $0}'
+
+echo "# Files found only in $jarfile2":
+comm -13 $contents1 $contents2 | awk ' {print "Only in >", $0}'
+
+classpathseparator=:
+case "${OSTYPE-no}" in
+# Cygwin Bash
+    cygwin*)
+    classpathseparator=";" ;;
+# Tcsh
+    Windows*)
+    classpathseparator=";" ;;
+esac
+
+echo "# Print a + for non .class files such as directories"
+echo "# Print a . for .class files that had the same javap output"
+description1=${tmpfile}_desc1
+description2=${tmpfile}_desc2
+files=`comm -12 $contents1 $contents2`
+
+echo=/bin/echo
+
+if [ -f /usr/ucb/echo ]; then
+    echo=/usr/ucb/echo
+fi
+
+for file in $files
+do
+    if [ "`basename $file`" = "`basename $file .class`" ]; then 
+	# $file does not end with .class
+        $echo -n "+"
+	continue
+    fi
+    $echo -n "."
+    class=`echo $file | sed -e 's@/@.@g' -e 's@.class@@'`
+    # FIXME: note that we could have problems here if the kernel
+    # has changed signicantly and we are not comparing ptsupport.jar
+    javap -classpath "$jarfile1${classpathseparator}${PTII}" $class > $description1
+    javap -classpath "$jarfile2${classpathseparator}${PTII}" $class > $description2
+    diff $description1 $description2 > /dev/null 2>&1
+    retval=$? 
+    if [ $retval -eq 1 ]; then
+        echo ""
+	echo "$class has differences:"
+	diff $description1 $description2
+    fi
+done
+
+rm -f $contents1 $contents2 $description1 $description2

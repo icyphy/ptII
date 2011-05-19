@@ -1,0 +1,374 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ImageReconstruction" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: James Yeh, Christopher Brooks</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 370.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 862, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.5, 200.0}">
+    </property>
+    <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read in two images, combine them, recover one.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 15.0]">
+        </property>
+    </property>
+    <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/jai/demo/ImageReconstruction/PtolemyII256x256.png">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="JAIImageReader2" class="ptolemy.actor.lib.jai.JAIImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/jai/demo/ImageReconstruction/Helen256x256.png">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="JAIBorder" class="ptolemy.actor.lib.jai.JAIBorder">
+        <property name="leftPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="rightPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="topPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="bottomPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="borderType" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="Constant" class="ptolemy.kernel.util.StringAttribute" value="Constant">
+                </property>
+                <property name="Copy" class="ptolemy.kernel.util.StringAttribute" value="Copy">
+                </property>
+                <property name="Reflect" class="ptolemy.kernel.util.StringAttribute" value="Reflect">
+                </property>
+                <property name="Wrap" class="ptolemy.kernel.util.StringAttribute" value="Wrap">
+                </property>
+                <property name="Zero" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+                </property>
+            </property>
+        </property>
+        <property name="constants" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 85.0]">
+        </property>
+    </entity>
+    <entity name="JAIBorder2" class="ptolemy.actor.lib.jai.JAIBorder">
+        <property name="leftPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="rightPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="topPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="bottomPadding" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="borderType" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="Constant" class="ptolemy.kernel.util.StringAttribute" value="Constant">
+                </property>
+                <property name="Copy" class="ptolemy.kernel.util.StringAttribute" value="Copy">
+                </property>
+                <property name="Reflect" class="ptolemy.kernel.util.StringAttribute" value="Reflect">
+                </property>
+                <property name="Wrap" class="ptolemy.kernel.util.StringAttribute" value="Wrap">
+                </property>
+                <property name="Zero" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+                </property>
+            </property>
+        </property>
+        <property name="constants" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
+        <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="none">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="dimensions" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
+                </property>
+                <property name="unitary" class="ptolemy.kernel.util.StringAttribute" value="unitary">
+                </property>
+                <property name="none" class="ptolemy.kernel.util.StringAttribute" value="none">
+                </property>
+            </property>
+        </property>
+        <property name="dataNature" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="complexToComplex" class="ptolemy.kernel.util.StringAttribute" value="complexToComplex">
+                </property>
+                <property name="complexToReal" class="ptolemy.kernel.util.StringAttribute" value="complexToReal">
+                </property>
+                <property name="realToComplex" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 85.0]">
+        </property>
+    </entity>
+    <entity name="JAIDFT2" class="ptolemy.actor.lib.jai.JAIDFT">
+        <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="none">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="dimensions" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
+                </property>
+                <property name="unitary" class="ptolemy.kernel.util.StringAttribute" value="unitary">
+                </property>
+                <property name="none" class="ptolemy.kernel.util.StringAttribute" value="none">
+                </property>
+            </property>
+        </property>
+        <property name="dataNature" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="complexToComplex" class="ptolemy.kernel.util.StringAttribute" value="complexToComplex">
+                </property>
+                <property name="complexToReal" class="ptolemy.kernel.util.StringAttribute" value="complexToReal">
+                </property>
+                <property name="realToComplex" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="JAIMagnitude" class="ptolemy.actor.lib.jai.JAIMagnitude">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 85.0]">
+        </property>
+    </entity>
+    <entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="JAIIDFT" class="ptolemy.actor.lib.jai.JAIIDFT">
+        <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="dimensions" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
+                </property>
+                <property name="unitary" class="ptolemy.kernel.util.StringAttribute" value="unitary">
+                </property>
+                <property name="none" class="ptolemy.kernel.util.StringAttribute" value="none">
+                </property>
+            </property>
+        </property>
+        <property name="dataNature" class="ptolemy.kernel.util.StringAttribute" value="complexToReal">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="complexToComplex" class="ptolemy.kernel.util.StringAttribute" value="complexToComplex">
+                </property>
+                <property name="complexToReal" class="ptolemy.kernel.util.StringAttribute" value="complexToReal">
+                </property>
+                <property name="realToComplex" class="ptolemy.kernel.util.StringAttribute" value="realToComplex">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 340.0]">
+        </property>
+    </entity>
+    <entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
+        <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="byte">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
+                </property>
+                <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                </property>
+                <property name="float" class="ptolemy.kernel.util.StringAttribute" value="float">
+                </property>
+                <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                </property>
+                <property name="short" class="ptolemy.kernel.util.StringAttribute" value="short">
+                </property>
+                <property name="ushort" class="ptolemy.kernel.util.StringAttribute" value="ushort">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 340.0]">
+        </property>
+    </entity>
+    <entity name="JAICrop" class="ptolemy.actor.lib.jai.JAICrop">
+        <property name="xOrigin" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="yOrigin" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="256">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="256">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 340.0]">
+        </property>
+    </entity>
+    <entity name="Recovered Helen" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={776, 460, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 340.0]">
+        </property>
+    </entity>
+    <entity name="Original Helen" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={259, 459, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="Original Ptolemy" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 459, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Combined Images" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 460, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="JAIBandCombine2" class="ptolemy.actor.lib.jai.JAIBandCombine">
+        <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.333,0.333,0.33, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="JAIBandSelect2" class="ptolemy.actor.lib.jai.JAIBandSelect">
+        <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="JAIBandCombine" class="ptolemy.actor.lib.jai.JAIBandCombine">
+        <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.333,0.333,0.33, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
+        <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 35.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[240.0, 205.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[255.0, 85.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[510.0, 295.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JAIImageReader.output" relation="relation15"/>
+    <link port="JAIImageReader2.output" relation="relation13"/>
+    <link port="JAIBorder.input" relation="relation"/>
+    <link port="JAIBorder.output" relation="relation4"/>
+    <link port="JAIBorder2.input" relation="relation2"/>
+    <link port="JAIBorder2.output" relation="relation3"/>
+    <link port="JAIDFT.input" relation="relation4"/>
+    <link port="JAIDFT.output" relation="relation5"/>
+    <link port="JAIDFT2.input" relation="relation3"/>
+    <link port="JAIDFT2.output" relation="relation6"/>
+    <link port="JAIMagnitude.input" relation="relation5"/>
+    <link port="JAIMagnitude.output" relation="relation7"/>
+    <link port="JAIPhase.input" relation="relation6"/>
+    <link port="JAIPhase.output" relation="relation8"/>
+    <link port="JAIPolarToComplex.magnitude" relation="relation7"/>
+    <link port="JAIPolarToComplex.phase" relation="relation8"/>
+    <link port="JAIPolarToComplex.output" relation="relation9"/>
+    <link port="JAIIDFT.input" relation="relation9"/>
+    <link port="JAIIDFT.output" relation="relation10"/>
+    <link port="JAIDataConvert.input" relation="relation10"/>
+    <link port="JAIDataConvert.output" relation="relation11"/>
+    <link port="JAICrop.input" relation="relation11"/>
+    <link port="JAICrop.output" relation="relation12"/>
+    <link port="Recovered Helen.input" relation="relation12"/>
+    <link port="Original Helen.input" relation="relation2"/>
+    <link port="Original Ptolemy.input" relation="relation"/>
+    <link port="Combined Images.input" relation="relation9"/>
+    <link port="JAIBandCombine2.input" relation="relation13"/>
+    <link port="JAIBandCombine2.output" relation="relation14"/>
+    <link port="JAIBandSelect2.input" relation="relation14"/>
+    <link port="JAIBandSelect2.output" relation="relation2"/>
+    <link port="JAIBandCombine.input" relation="relation15"/>
+    <link port="JAIBandCombine.output" relation="relation16"/>
+    <link port="JAIBandSelect.input" relation="relation16"/>
+    <link port="JAIBandSelect.output" relation="relation"/>
+</entity>

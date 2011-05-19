@@ -1,0 +1,315 @@
+<d!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>Setting up Ptolemy II using Maven</title>
+<link href="../default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Setting up Ptolemy II using Maven</h1>
+
+Note that building Ptolemy II with Maven <b>requires an Internet
+  connection</b>.  The <code>mvn compile</code> step will download
+  modules from the net.
+
+<p>These notes are based on Tristan King's work, see his July 21, 2008
+  ptolemy-hackers post:
+<a href="http://tech.groups.yahoo.com/group/ptolemy-hackers/message/3201"
+   target="_top">updates on ptII maven and actor.io work</a>.
+
+<h2>Setting up Maven</h2>
+<ol>
+<li> Download Maven
+  from <a href="http://maven.apache.org/download.html" target="_top"><code>http://maven.apache.org/download.html</code></a>
+</ol>
+
+
+<h2>Install</h2>
+
+<ol>
+  <li> <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">Download Ptolemy II using svn</a> and set the <code>$PTII</code> environment variable.
+
+     <br>	     example:
+<pre>
+		cd /path/to/working/directory/
+		svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk ptII
+		export PTII=/path/to/working/directory/ptII
+</pre>
+<li> <i>Optional</i>: Delete $PTII/vendors
+
+  <br>example:
+<pre>
+		rm -r $PTII/vendors
+</pre>
+
+<li> Make sure that when in $PTII, $PTII==pwd:
+<pre>
+                bash-3.2$ cd $PTII
+                bash-3.2$ echo $PTII
+                /Users/cxh/ptII
+                bash-3.2$ pwd
+                /Users/cxh/ptII
+</pre>
+If the current working directory is a symbolic link to the actual
+directory where <code>$PTII</code> is located, then be sure to change
+either <code>$PTII</code> or the current working directory so they
+both match.
+
+<li> Set MAVEN_OPTS to configure maven to use large amounts of memory
+
+        <br>     example:
+<pre>
+		export MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=48m"
+</pre>
+
+<li> Configure Ptolemy II to Exclude the Eclipse plugi:
+<pre>
+               ./configure --without-eclipse
+</pre>
+<b>FIXME: <code>$PTII/pom.xml</code> needs to be extended
+to include support for Eclipse, see below</b>
+
+<li> Tell Maven about the jar files necessary to compile:
+
+<pre>
+mvn install:install-file -DgroupId=jython -DartifactId=jython \
+-Dversion=svn -Dpackaging=jar -Dfile=$PTII/vendors/jython/jython.jar
+mvn install:install-file -DgroupId=javajoystick -DartifactId=joystick \
+-Dversion=0.7 -Dpackaging=jar -Dfile=$PTII/vendors/misc/joystick/Joystick.jar 
+mvn install:install-file -DgroupId=jxta -DartifactId=jxta -Dversion=1.0 \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxta.jar
+mvn install:install-file -DgroupId=jxta -DartifactId=jxtasecurity -Dversion=1.0 \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxtasecurity.jar
+mvn install:install-file -DgroupId=soot -DartifactId=sootclasses -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/lib/sootclasses.jar
+mvn install:install-file -DgroupId=mapss -DartifactId=mapss -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/lib/mapss.jar
+mvn install:install-file -DgroupId=caltrop -DartifactId=ptCal -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/lib/ptCal.jar
+mvn install:install-file -DgroupId=chic -DartifactId=chic -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/lib/chic.jar
+mvn install:install-file -DgroupId=jacl -DartifactId=jacl -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/lib/ptjacl.jar
+mvn install:install-file -DgroupId=dbxml -DartifactId=db -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/ptdb/lib/db.jar
+mvn install:install-file -DgroupId=dbxml -DartifactId=dbxml -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/ptdb/lib/dbxml.jar
+mvn install:install-file -DgroupId=jogl -DartifactId=jogl -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/jogl.jar
+mvn install:install-file -DgroupId=jogl -DartifactId=gluegen-rt -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/gluegen-rt.jar
+</pre>
+
+
+<li> Run vergil! This can be done in a few different ways:
+
+   <ol>
+   <li> Run vergil using maven.
+
+       	 <br>    example:
+<pre>
+		cd /path/to/ptII-maven/
+		mvn compile
+		mvn exec:exec
+</pre>
+Note that <code>mvn exec:exec</code> requires net access.  To run 
+offline, run: <code>mvn -o exec:exec</code>
+
+   <li> Build a ptolemy II jar and run vergil from run-vergil.sh.
+<br><code>run-vergil.sh</code> would look like:
+<pre>
+#!/bin/bash
+java -classpath $PTII/target/ptII-7.1.devel-SNAPSHOT.jar:~/.m2/repository/caltrop/ptCal/unknown/ptCal-unknown.jar:~/.m2/repository/net/jini/jini-core/2.1/jini-core-2.1.jar:~/.m2/repository/antlr/antlr/2.7.6/antlr-2.7.6.jar:~/.m2/repository/javax/jms/jms/1.1/jms-1.1.jar:~/.m2/repository/jdom/jdom/1.0/jdom-1.0.jar:/usr/lib/jvm/java-1.5.0-sun-1.5.0.15/jre/../lib/tools.jar:~/.m2/repository/chic/chic/unknown/chic-unknown.jar:~/.m2/repository/jxta/jxtasecurity/1.0/jxtasecurity-1.0.jar:~/.m2/repository/jxta/jxta/1.0/jxta-1.0.jar:~/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar:~/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:~/.m2/repository/net/jini/jini-ext/2.1/jini-ext-2.1.jar:~/.m2/repository/jython/jython/svn/jython-svn.jar:~/.m2/repository/java3d/j3d-core/1.3.1/j3d-core-1.3.1.jar:~/.m2/repository/jacl/jacl/ptII/jacl-ptII.jar:~/.m2/repository/colt/colt/1.0.3/colt-1.0.3.jar:~/.m2/repository/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar:~/.m2/repository/javajoystick/joystick/0.7/joystick-0.7.jar:~/.m2/repository/mapss/mapss/unknown/mapss-unknown.jar:~/.m2/repository/javax/mail/mail/1.4/mail-1.4.jar:~/.m2/repository/com/sun/jmx/jmxri/1.2.1/jmxri-1.2.1.jar:~/.m2/repository/java3d/vecmath/1.3.1/vecmath-1.3.1.jar:~/.m2/repository/javax/media/jai_core/1.1.2_01/jai_core-1.1.2_01.jar:~/.m2/repository/soot/sootclasses/ptII/sootclasses-ptII.jar:~/.m2/repository/com/sun/jdmk/jmxtools/1.2.1/jmxtools-1.2.1.jar
+ptolemy.vergil.VergilApplication
+</pre>
+
+       	<br>     example:
+<pre>  
+	        # run these two steps only once
+		cd /path/to/ptII-maven/	
+		mvn package
+		# then
+		/path/to/run-vergil.sh
+</pre>
+Note that the version numbers are hardwired into the path, which is
+why this file is not checked in.  Another issue is that this command
+build a jar file, which slows down the build/test cycle.
+
+    </ol>
+</ol>
+
+<h2>maven compile fails</h2>
+Below are various issues that occurred during the build.
+<dl>
+<dt><b>What about "make maven"?</b>
+<dd><code>mk/ptcommon.mk</code> includes a rule that will create a <code>ptII/src</code>
+directory.  The current <code>ptII/pom.xml<code> file does not use this directory,
+so there is no need to run <code>make maven</code>
+
+<dt><b>Problem: you need to be on line to compile</b>
+<pre>
+[INFO] artifact org.apache.maven.plugins:maven-resources-plugin: checking for updates from central
+[WARNING] repository metadata for: 'artifact org.apache.maven.plugins:maven-resources-plugin' could not be retrieved from repository: central due to an error: Error transferring file
+[INFO] Repository 'central' will be blacklisted
+</pre>
+<dd>This can happen if there is no network connection when <code>mvn
+  compile</code> is run.
+<br>Solution:
+<br>Remove <code>~/.m2/repository/org/apache/maven/plugins/maven-resources-plugin</code>
+or just remove all of <code>~/.m2</code>.
+
+<dt><b>Problem: antlr not found</b>
+<pre>
+Missing:
+----------
+1) antlr:antlr:jar:2.9.9
+
+  Try downloading the file manually from the project website.
+
+  Then, install it using the command: 
+      mvn install:install-file -DgroupId=antlr -DartifactId=antlr \
+          -Dversion=2.9.9 -Dpackaging=jar -Dfile=/path/to/file
+
+  Path to dependency: 
+  	1) edu.berkeley.eecs.ptolemy:ptII:jar:7.1.devel-SNAPSHOT
+  	2) antlr:antlr:jar:2.9.9
+</pre>
+<dd>Solution:
+<br><code>mvn install:install-file -DgroupId=antlr -DartifactId=antlr -Dversion=svn -Dpackaging=jar -Dfile=$PTII/ptolemy/actor/ptalon/antlr/antlr.jar</code>
+<p>Then rerun <code>mvn compile</code>
+
+<dt><b>Problem: antlr still not found</b>
+<dd>Solution: Edit <code>pom.xml</code> and change the antlr version
+number from <code>2.9.9</code> to <code>2.7.7</code>
+
+<dt><b>Problem: ptalon</b>
+<pre>
+[INFO] The grammar '/Users/cxh/Documents/workspace/ptII/src/main/antlr/ptolemy/actor/ptalon/parser.g' doesnt exist.
+</pre>
+<dd>Solution: copy the files
+<pre>
+cd $PTII
+mkdir -p src/main/antlr/ptolemy/actor/ptalon
+cp $PTII/ptolemy/actor/ptalon/*.g src/main/antlr/ptolemy/actor/ptalon
+</pre>
+However, it turned out that none of the files were being copied
+because <code>$PTII</code> was a symbolic link.  See below.
+
+
+<dt><b>Problem: can't start</b>
+<pre>
+Exception in thread "main" java.lang.NoClassDefFoundError: ptolemy/vergil/VergilApplication
+</pre>
+</ol>
+It turns out that the java files were not copied to the right
+location.  <code>$PTII/target/ptII-7.1.devel-SNAPSHOT.jar</code> only
+  contained the antlr classes.   The problem was that the toplevel directory where <code>make maven</code> was run was a symbolic link to the actual <code>$PTII</code> directory.  The fix was to make sure that in $PTII, $PTII==pwd:
+<pre>
+bash-3.2$ cd $PTII
+bash-3.2$ echo $PTII
+/Users/cxh/ptII
+bash-3.2$ pwd
+/Users/cxh/ptII
+</pre>
+and then to run
+<pre>
+
+make maven
+mvn compile
+</pre>
+<dt><b>Problem: compilation fails</b>
+<pre>
+/Users/cxh/Documents/workspace/ptII/src/main/java/ptolemy/moml/jxta/JXTALibrary.java:[44,27] package net.jxta.credential does not exist
+</pre>
+<dd>Solution:
+<br>Edit <code>$PTII/pom.xml</code> and uncomment the jxta section
+
+<dt>Problem: compilation fails on Eclipse files
+<pre>
+/Users/cxh/Documents/workspace/ptII/src/main/java/ptolemy/backtrack/eclipse/ast/transform/PackageRule.java:[36,32] package org.eclipse.jdt.core.dom does not exist
+</pre>
+<dd>Proposed Solution:
+We use the <a href="http://maven.apache.org/plugins/maven-eclipse-plugin/usage.html"
+       target="_top">Maven Eclipse Plugin</a>
+<pre>
+mvn -Declipse.workspace=/Applications/eclipse eclipse:add-maven-repo
+mvn -DeclipseDir=/Applications/eclipse eclipse:to-maven
+</pre
+   However, the problem is telling Maven where to find the Eclipse jars.
+   One idea would be to add dependencies for each jar
+   via <code>configure</code>.   However, our workaround is to just
+   not copy the Eclipse plugin files to <code>$PTII/src</code> by
+   running <code>./configure --without-eclipse</code>.
+   
+
+<dt>"mvn package" fails because of backtracking
+<pre>
+/Users/cxh/ptII/ptolemy/backtrack/eclipse/plugin/editor/PtolemyEditor.java:[52,35] cannot find symbol
+</pre>
+Solution: disable test-compile:
+<pre>
+  <properties>
+    <!-- skip test-compile when doing "maven package" -->
+    <maven.test.skip>true</maven.test.skip>
+  </properties> 
+</pre>
+
+</dl>
+
+<h2>Maven and Web Start</h2>
+<ol>
+<li>Install 
+<pre>
+mvn install webstart:jnlp
+</pre>
+<li>
+</ol>
+
+<dl>
+<dt><b>has no matching file, why? Check the logs</b>
+<dd> 
+When running <code>maven webstart:jnlp</code>, I get
+<pre>
+Embedded error: artifact org.ptolemy:ptII:jar:7.2.devel has no matching file, why? Check the logs...
+</pre>
+See "3.5.3. Maven Coordinates" of the maven manual, which describes the naming for artifacts.
+It turns out that the jnlp rule needed to have:
+<pre>
+	&lt;artifactItems&gt;
+	  &lt;artifactItem&gt;
+	    &lt;groupId&gt;org.ptolemy&lt;/groupId&gt;
+	    &lt;artifactId&gt;ptII-7.2.devel.jar&lt;/artifactId&gt;
+	    &lt;version&gt;7.2.devel&lt;/version&gt;
+	    &lt;type&gt;jar&lt;/type&gt;                            
+	  &lt;/artifactItem&gt;
+	&lt;/artifactItems&gt;
+</pre>
+
+</dl>
+<h2>Maven and OSGI</h2>
+<a href="http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html">Bundle Plugin for Maven</a>
+
+<h2>Maven Notes</h2>
+<ul>
+<li>Why does <code>make maven</code> copy the .java files?  This means
+  that we have yet another copy of the code and that changes to the
+  master .java files are not propagated?
+<li>Having resources separate from the sources makes no sense for a
+  componetized architecture.  Every time a package is moved, the
+  resources need to be moved.  The resources should be in the
+  jar that uses the resources.
+
+<li>Don't run "mvn clean" it will remove $PTII!
+
+<li> The <code>$PTII/pom.xml</code> file lists <code>dev.archer.edu.au</code>
+as the repository, this should probably be changed.
+<li> What if not all optional components are available?  Should there
+  be a configure stage?
+<li>Can we automatically generate <code>run-vergil.sh</code>?  That
+  file has version numbers hard coded in.
+<li>What about the Eclipse jar files for backtracking?
+</ul>
+
+
+</body>
+</html>

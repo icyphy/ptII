@@ -1,0 +1,36 @@
+<!-- : $Id$
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>HocDE</title>
+</head>
+<body>
+<H1>HocDE</H1>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+HocDE is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "HocDE.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="HocDEVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>A simple example of the use of a higher-order component.
+The "Bank of N Counters" component will replicate its inside
+model N times and route each of N input channels of data to
+the corresponding replicate.  In this case, the submodels
+simply count the events sent their way.  The Switch actor
+randomly routes events to each of the N submodels.</p>
+</body>
+</html>

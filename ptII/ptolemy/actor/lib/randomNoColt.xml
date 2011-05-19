@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Random" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Actors that generate random data.</doc>
+
+        <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+	  <doc>Create a sequence of bernoulli random variables</doc>
+	</entity>
+
+	<entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
+       	</entity>
+
+	<entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+	  <doc>Create a sequence of gaussian random variables</doc>
+	</entity>
+
+        <entity name="Rician" class="ptolemy.actor.lib.Rician">
+          <doc>Create an array of rician random variables</doc>
+        </entity>
+
+	<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+	  <doc>Create a sequence of uniformly distributed random numbers</doc>
+	</entity>
+
+	<entity name="Triangular" class="ptolemy.actor.lib.Triangular">
+	  <doc>Create a sequence of random numbers with a triangular distribution</doc>
+	</entity>
+
+        <!-- Colt actors generate random numbers -->
+        <!-- Don't include colt here, the dsp configuration does
+	     not include Colt
+	     input source="ptolemy/actor/lib/colt/colt.xml"/ -->
+
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Pthales" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml <group>
+      <doc>PThales actors</doc>
+      <entity name="PthalesGenericActor" class="ptolemy.domains.pthales.lib.PthalesGenericActor"/>
+      <entity name="PthalesCompositeActor" class="ptolemy.domains.pthales.lib.PthalesCompositeActor"/>
+      <!-- entity name="PthalesExcelActor" class="ptolemy.domains.pthales.lib.PthalesExcelActor"/ -->
+      <entity name="PthalesAddHeaderActor" class="ptolemy.domains.pthales.lib.PthalesAddHeaderActor"/>
+      <entity name="PthalesRemoveHeaderActor" class="ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor"/>
+      </group>
+    ?>
+  </configure>
+</entity>

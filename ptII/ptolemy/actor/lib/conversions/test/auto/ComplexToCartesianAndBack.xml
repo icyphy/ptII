@@ -1,0 +1,83 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ComplexToCartesianAndBack" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </property>
+    <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0.1 - 0.1*i">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ComplexToCartesian1" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="CartesianToComplex2" class="ptolemy.actor.lib.conversions.CartesianToComplex">
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0+0i + 0.0i, 0.1+0i - 0.1i, 0.2+0i - 0.2i}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp0.output" relation="relation5"/>
+    <link port="ComplexToCartesian1.input" relation="relation5"/>
+    <link port="ComplexToCartesian1.x" relation="relation7"/>
+    <link port="ComplexToCartesian1.y" relation="relation9"/>
+    <link port="CartesianToComplex2.x" relation="relation7"/>
+    <link port="CartesianToComplex2.y" relation="relation9"/>
+    <link port="CartesianToComplex2.output" relation="relation11"/>
+    <link port="Test3.input" relation="relation11"/>
+</entity>

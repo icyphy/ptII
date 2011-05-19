@@ -1,0 +1,58 @@
+<!ELEMENT model (doc | manager | director | setParameter | parameter |
+          actor | clone | connection | link | placement | icon | configure)*>
+<!ATTLIST model name NMTOKEN "top">
+<!ATTLIST model class NMTOKEN "ptolemy.actor.TypedCompositeActor">
+
+  <!ELEMENT doc (#PCDATA)>
+
+  <!ELEMENT actor (doc | director | setParameter | parameter | actor |
+	 clone | connection | link | placement | icon | configure)*>
+  <!ATTLIST actor name NMTOKEN #REQUIRED>
+  <!ATTLIST actor class NMTOKEN "ptolemy.actor.TypedCompositeActor">
+
+  <!ELEMENT clone (doc | director | setParameter | placement |
+         icon | configure)*>
+  <!ATTLIST clone name NMTOKEN #REQUIRED>
+  <!ATTLIST clone master NMTOKEN #REQUIRED>
+  <!ATTLIST clone source NMTOKEN #REQUIRED>
+
+  <!ELEMENT director (setParameter | configure)*>
+  <!ATTLIST director name NMTOKEN "director">
+  <!ATTLIST director class NMTOKEN #REQUIRED>
+
+  <!ELEMENT connection (vertex*)>
+  <!ATTLIST connection name NMTOKEN #IMPLIED>
+  <!ATTLIST connection port1 NMTOKEN #REQUIRED>
+  <!ATTLIST connection port2 NMTOKEN #REQUIRED>
+
+  <!ELEMENT link (vertex*)>
+  <!ATTLIST link port NMTOKEN #REQUIRED>
+  <!ATTLIST link connection NMTOKEN #REQUIRED>
+  <!ATTLIST link vertex NMTOKEN #IMPLIED>
+
+    <!ELEMENT vertex EMPTY>
+    <!ATTLIST vertex name NMTOKEN #IMPLIED>
+    <!ATTLIST vertex xpos CDATA #IMPLIED>
+    <!ATTLIST vertex ypos CDATA #IMPLIED>
+
+  <!ELEMENT setParameter EMPTY>
+  <!ATTLIST setParameter name NMTOKEN #REQUIRED>
+  <!ATTLIST setParameter value CDATA #REQUIRED>
+
+  <!ELEMENT parameter (doc | configure)*>
+  <!ATTLIST parameter class NMTOKEN "ptolemy.data.expr.Parameter">
+  <!ATTLIST parameter name NMTOKEN #REQUIRED>
+  <!ATTLIST parameter value CDATA #REQUIRED>
+
+  <!ELEMENT icon (configure)*>
+  <!ATTLIST icon class NMTOKEN "ptolemy.actor.gui.GenericIcon">
+  <!ATTLIST icon xpos CDATA #IMPLIED>
+  <!ATTLIST icon ypos CDATA #IMPLIED>
+
+    <!ELEMENT configure EMPTY>
+    <!ATTLIST configure src ENTITY #REQUIRED>
+
+  <!ELEMENT port (doc | configure)*>
+  <!ATTLIST port name NMTOKEN #REQUIRED>
+  <!ATTLIST port class NMTOKEN "ptolemy.actor.TypedIOPort">
+  <!ATTLIST port direction (input | output | both) "output">

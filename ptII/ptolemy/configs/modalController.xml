@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+  <!-- Annotate with instructions. -->
+  <property name="annotation" class="ptolemy.kernel.util.Attribute">
+    <property name="_hideName"
+	      class="ptolemy.kernel.util.SingletonAttribute"/>
+    <property name="_iconDescription"
+	      class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states.  Create transitions
+by holding the (Mac: command key, Windows: control key)
+and dragging from one state to another.  
+Right click to configure the properties 
+of this model, including setting the final state(s).
+Then delete this annotation.</text>
+    </svg></configure></property>
+    <property name="_location"
+	      class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
+    <property name="_controllerFactory"
+	      class="ptolemy.vergil.basic.NodeControllerFactory"/>
+    <property name="_editorFactory"
+	      class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+  </property>
+  <property name="_library" class="ptolemy.moml.LibraryAttribute">
+    <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+	<input source="ptolemy/configs/basicUtilities.xml"></input>
+	<entity name="state" class="ptolemy.domains.modal.kernel.State">
+	  <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+	  </property>
+	  <property name="_controllerFactory"
+		    class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+	  </property>
+	</entity>
+      </entity>
+    </configure>
+  </property>
+</entity>

@@ -1,0 +1,123 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="SRCombineIcon" class="ptolemy.vergil.icon.EditorIcon">
+    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="58.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="38.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, 0.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="22.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="21.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="22">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="f">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-11.0, -12.0}">
+        </property>
+    </property>
+    <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 0.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="dashArray" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="17">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+    </property>
+    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[21.0, -4.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="dashArray" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="3.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+    </property>
+    <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[21.0, 4.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="dashArray" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-3.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="pres">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[7.0, -18.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="val">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[13.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="36">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-31.0, -21.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={275, 393, 815, 507}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+    </property>
+</property>

@@ -1,0 +1,77 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Network Integration</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Network Integration</H1>
+
+The following plot shows the networked diagram for a received waveform
+for a baseband channel with additive Gaussian noise.
+<P>
+<font color="#cc0000">This applet will only work if this HTML file
+resides on the <code>http://ptolemy.eecs.berkeley.edu</code>
+web server.</font> See below for details.
+
+
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../.."
+   archive = "ptolemy/moml/demo/Networked/Networked.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/moml/demo/Networked/Networked.jnlp">
+<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Networked.xml">
+  <PARAM NAME = "NAME" VALUE = "Networked" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Networked.xml" > \
+  <a href="Networked.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</CENTER>
+This model contains a component that is defined on the Ptolemy project
+website.  When you open the model, you will be alerted to the fact
+that it requires loading a model definition from a remote source.
+If you agree to proceed, then you will have a model with a remotely
+defined component.  The component itself is at
+<a href="http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml">
+http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
+You can open that definition by clicking on the hyperlink, or by
+using the "Open URL" command in the File menu.
+ <p>
+This applet will only work if this HTML file
+resides on the <code>http://ptolemy.eecs.berkeley.edu</code>
+web server.
+The reason is that the default applet security policy
+only permits connections to the machine where the applet originated.
+Thus, if this applet is on your local machine, you will get a
+SecurityException when the applet tries to connect to
+<code>http://ptolemy.eecs.berkeley.edu</code> to download part of 
+the model.
+ <br>This restriction applies only to running this model as an applet,
+the model will run without this restriction under vergil or Web Start.
+
+<P>
+The <a href="NetworkedVergil.htm">block diagram</a>
+for the model was constructed using the Ptolemy II schematic editor
+called Vergil.
+</p>
+<p></p>
+</BODY>
+</HTML>

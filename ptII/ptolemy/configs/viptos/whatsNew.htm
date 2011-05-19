@@ -1,0 +1,47 @@
+<html>
+<head>
+<!-- $Id$ -->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>What's New in Viptos 1.0</h1>
+
+<h2> <a name="highlights">Highlights</a></h2>
+<ul>
+<li> First non-beta release!
+</ul>
+
+<h2> <a name="changelog">Detailed change log</a></h2>
+<ul>
+<li> Reviewed design for all Java code in ptinyos/kernel and ptinyos/lib.
+<li> Reviewed code for major portions of Java code in ptinyos/kernel and ptinyos/lib.
+<li> Cleaned up APIs in Java and C code.
+<li> Implemented JNI exception handling in C code that calls Java.
+<li> Implemented Java exception handling in Java code that is called from C.  Displays the exception in a MessageHandler and allows execution to continue.
+<li> Changed PtinyOSDirector to call super() in preinitialize(), initialize(), fire(), postfire(), and wrapup() (overridden methods of Director) to conform to Ptolemy II execution flow.
+<li> Added documentation that describes control flow between Java and C in the Viptos kernel.
+<li> Node IDs in Surge demo are now displayed correctly.
+</ul>
+
+
+<h1>What's New in Viptos 1.0-beta</h1>
+
+<h2> <a name="highlights">Highlights</a></h2>
+<ul>
+<li> Viptos is now compatible with Cygwin!
+<li> Added Surge demo to show multihop routing using TinyOS Surge protocol.
+<li> Changed version number to more accurately reflect development level of Viptos.
+</ul>
+
+<h2> <a name="changelog">Detailed change log</a></h2>
+<ul>
+<li> Automatic commandPort and eventPort socket numbering.
+<li> Automatic node numbering.
+<li> Compatible with nesc version 1.2.2 and higher: Using a copy of nesc/tools/nesc.jar, and removed create-nescdumpjar.sh
+<li> Replaced all pthread constructs with JNI constructs for cygwin compatibility.
+<li> New icon look-and-feel: using rotated ports and NameIcon.
+<li> ncapp2moml now compatible with Ptolemy II relation groups.
+</ul>
+
+</body>
+</html>

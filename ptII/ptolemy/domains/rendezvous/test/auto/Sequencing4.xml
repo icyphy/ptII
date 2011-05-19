@@ -1,0 +1,192 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Sequencing4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
+    <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 161, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="SuppressDeadlockReporting" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+              <svg>
+                <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-D-</text>
+              </svg>
+            </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 30.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example comes from:&#10;Arbab, Farhad (2006), &quot;A Behavioral Model for Composition&#10;of Software Components,&quot; to appear, L'Object.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 345.0]">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 140}">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 90.0]">
+        </property>
+    </entity>
+    <entity name="Barrier" class="ptolemy.domains.rendezvous.lib.Barrier">
+        <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="Buffer" class="ptolemy.domains.rendezvous.lib.Buffer">
+        <property name="BufferIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, -1, 2, 3, -2, 4, 5, -3, 6, 7, -4, 8, 9, -5, 10}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="Merge" class="ptolemy.domains.rendezvous.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+        <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 300}">
+        </property>
+    </entity>
+    <entity name="Barrier2" class="ptolemy.domains.rendezvous.lib.Barrier">
+        <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Buffer2" class="ptolemy.domains.rendezvous.lib.Buffer">
+        <property name="BufferIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Merge2" class="ptolemy.domains.rendezvous.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 215.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[300.0, 140.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{190.0, 300.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{325.0, 300.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[450.0, 90.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[470.0, 330.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{470.0, 300.0}">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Ramp2.output" relation="relation3"/>
+    <link port="Barrier.input" relation="relation"/>
+    <link port="Barrier.input" relation="relation8"/>
+    <link port="Buffer.input" relation="relation5"/>
+    <link port="Buffer.output" relation="relation2"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Merge.output" relation="relation4"/>
+    <link port="Merge.input" relation="relation3"/>
+    <link port="Merge.input" relation="relation"/>
+    <link port="ResourcePool.grant" relation="relation5"/>
+    <link port="ResourcePool.release" relation="relation6"/>
+    <link port="Barrier2.input" relation="relation3"/>
+    <link port="Barrier2.input" relation="relation7"/>
+    <link port="Buffer2.input" relation="relation2"/>
+    <link port="Buffer2.output" relation="relation7"/>
+    <link port="Merge2.output" relation="relation8"/>
+    <link port="Merge2.input" relation="relation5"/>
+    <link port="Merge2.input" relation="relation2"/>
+    <link relation1="relation6" relation2="relation7"/>
+</entity>

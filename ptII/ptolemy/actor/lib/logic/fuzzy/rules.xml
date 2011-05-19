@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<FUNCTION_BLOCK>
+  <VAR_INPUT NAME="angle" TYPE="REAL" RANGE="-3.14 3.14" />
+  <VAR_OUTPUT NAME="power" TYPE="REAL" RANGE="-2 2" />
+  <FUZZIFY NAME="angle">
+    <TERM NAME="negative" POINTS="-3.14 -3.14 0 0" />
+    <TERM NAME="positive" POINTS="0 0 3.14 3.14" />
+  </FUZZIFY>
+  <DEFUZZIFY METHOD="CoG" ACCU="MAX" NAME="power">
+    <TERM NAME="decreased" POINTS="-2 -1 -1 0" />
+    <TERM NAME="increased" POINTS="0 1 1 2" />
+  </DEFUZZIFY>
+  <RULEBLOCK AND="MIN" OR="MAX">
+    <RULE NUMBER="1" TEXT="if angle is negative then power is decreased" />
+    <RULE NUMBER="2" TEXT="if angle is positive then power is increased" />
+  </RULEBLOCK>
+</FUNCTION_BLOCK>

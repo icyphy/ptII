@@ -1,0 +1,48 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>NondeterministicMergeWithFeedback</TITLE>
+</HEAD>
+<BODY>
+<H1>NondeterministicMergeWithFeedback</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+NondeterministicMergeWithFeedback is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "NondeterministicMergeWithFeedback.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="NondeterministicMergeWithFeedbackVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>In this highly nondeterministic model,
+the Ramp actor generates 10 tokens,
+numbered 0 through 9, and then stops.
+The NondeterministicMerge merges this
+stream with the stream resulting from
+the merge. The Ramp2 actor counts the
+output tokens from the NondeterministicMerge,
+and when 10 of them have been provided to
+the Expression actor, that actor signals the
+Stop actor to stop the execution. Since the
+Stop actor runs in its own thread, as does
+the SequencePlotter actor, the number of
+tokens that are displayed before the model
+stops is nondeterministic, as is, of course,
+the exact sequence of their values.</p>
+</BODY>
+</HTML>

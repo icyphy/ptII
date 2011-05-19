@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExecutionControl" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>Actors that stop execution of the model.</doc>
+        <entity name="Exit" class="ptolemy.actor.lib.Exit"/>
+        <entity name="Stop" class="ptolemy.actor.lib.Stop"/>
+        <entity name="ThrowException"
+	class="ptolemy.actor.lib.ThrowException"/>
+        <entity name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError"/>
+      </group>
+    ?>
+  </configure>
+</entity>

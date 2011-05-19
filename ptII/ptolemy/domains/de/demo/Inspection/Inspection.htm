@@ -1,0 +1,72 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II DE Demo</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Illustration of the Inspection Paradox</H1>
+<!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Inspection is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Inspection.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="InspectionVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p> The model uses the Ptolemy II Discrete Event (DE) domain 
+to illustrate the inspection paradox. 
+The inspection paradox concerns Poisson arrivals of events. 
+The metaphor used in this applet is that of busses and passengers. 
+Passengers arrive according to a Poisson process. 
+Busses arrive at regular intervals and according to a Poisson 
+process, and the model collects statistics on waiting time for both
+cases.</p>
+
+<p>The inspection paradox concerns the average time that a passenger
+waits for a bus (more precisely, the expected value).  If the busses
+arrive at regular intervals with interarrival time equal to <i>T</i>,
+then the expected waiting time is <i>T</i>/2, which is perfectly
+intuitive.  Counterintuitively, however, if the busses arrive
+according to a Poisson process with mean interarrival time equal
+<i>T</i>, the expected waiting time is <i>T</i>, not <i>T</i>/2.
+These expected waiting times are approximated in this applet by
+the average waiting time.  The applet also plots actual
+arrival times for both passengers and busses, and the waiting
+time of each passenger for Poisson arrival of busses.<p>
+
+<p>The top plot shows the passengers' and busses' arrival times, and
+the waiting times for the case of Poisson bus arrivals (the waiting
+times for regular arrivals are not shown).
+The bottom plot shows the distribution histogram of all wait times.
+The bin width used is equal to 0.2.
+The display at the bottom shows the average waiting time for the two
+cases.</p>
+
+<p>The intuition that resolves the paradox is as follows.
+If the busses are arriving according to a Poisson process,
+then some intervals between busses are larger than other intervals.
+A particular passenger is more likely to arrive at the bus stop
+during one of these larger intervals than during one of the smaller
+intervals.  Thus, the expected waiting time is larger if the bus
+arrival times are irregular.</p>
+
+<p>This paradox is called the <i>inspection paradox</i> because the
+passengers are viewed as inspecting the Poisson process of
+bus arrivals.</p>
+
+</BODY>
+</HTML>

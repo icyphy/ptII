@@ -1,0 +1,55 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Set BreakPoints</title>
+</head>
+<body>
+<H1>Set Breakpoints</H1>
+<h2><a name="Set Breakpoints">Set Breakpoints context menu choice</a></h2>
+The context menu for actors includes a "Set Breakpoints" menu
+choice.
+
+ <p>"Set Breakpoints" is currently only implemented for the SDF
+domain.  Currently, only "before iterate" and "after iterate" work.
+
+ <p>The Set Breakpoints facility will stop the model at a specific
+point in a specific actor.  This is helpful if there are multiple
+instances of an actor within a model.
+
+<ol>
+<li> Start vergil from within a debugger
+<li> Open an SDF model
+
+ <br>Warning: you should save your model before running with
+breakpoints set since saving in the middle of a debugging session may
+not work.
+
+<li> Right click on an actor in an SDF model, select 
+Set Breakpoints -&gt; before iterate.
+
+<li> Run the model
+
+<li> The model will stop when it hits the breakpoint.
+ <br>A message will appear in the status bar at the bottom of the
+Vergil graph display. 
+ <br>The actor with the breakpoint will be highlighted in magenta.
+
+
+<li> Click on the Run button again to continue execution.
+</ol>
+
+Some related features that you may wish to use are:
+
+<menu>
+<li> Debug -&gt; Listen to Director
+
+<li> Right click on actor -&gt; Listen to Actor
+
+<li> Debug -&gt; Animate Execution (set to something visible like 500 ms)
+</menu>
+
+<p>See also <a href="../../../doc/coding/debugging.htm"><code>$PTII/doc/coding/debugging.htm</code></a>
+
+</body>
+</html>

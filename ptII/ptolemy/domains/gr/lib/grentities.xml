@@ -1,0 +1,67 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Graphics" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>3D Graphics actors</doc>
+
+<entity name="Box3D" class="ptolemy.domains.gr.lib.Box3D">
+</entity>
+
+<entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
+</entity>
+
+<entity name="Cone3D" class="ptolemy.domains.gr.lib.Cone3D">
+</entity>
+
+<entity name="Cylinder3D" class="ptolemy.domains.gr.lib.Cylinder3D">
+</entity>
+
+<entity name="PolyCylinder3D" class="ptolemy.domains.gr.lib.PolyCylinder3D">
+</entity>
+
+<entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
+</entity>
+
+<entity name="TextString3D" class="ptolemy.domains.gr.lib.TextString3D">
+</entity>
+
+<entity name="Torus3D" class="ptolemy.domains.gr.lib.Torus3D">
+</entity>
+
+<entity name="Rotate3D" class="ptolemy.domains.gr.lib.Rotate3D">
+</entity>
+
+<entity name="Scale3D" class="ptolemy.domains.gr.lib.Scale3D">
+</entity>
+
+<entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
+</entity>
+
+<entity name="Translate2D" class="ptolemy.domains.gr.lib.Translate2D">
+</entity>
+
+<entity name="KeyInput3D" class="ptolemy.domains.gr.lib.KeyInput3D">
+</entity>
+
+<entity name="MouseInput3D" class="ptolemy.domains.gr.lib.MouseInput3D">
+</entity>
+
+<entity name="ThreeAxisRotator3D" class="ptolemy.domains.gr.lib.ThreeAxisRotator3D">
+</entity>
+
+<entity name="ViewScreen2D" class="ptolemy.domains.gr.lib.ViewScreen2D">
+</entity>
+
+<entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
+</entity>
+
+<entity name="MovableViewScreen3D" class="ptolemy.domains.gr.lib.MovableViewScreen3D">
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

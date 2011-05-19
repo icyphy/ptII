@@ -1,0 +1,65 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+  <doc>Configuration including all domains, used to view, not edit models.</doc>
+
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/fullViewer/intro.htm"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/doc/docs.htm"/>
+
+  <!-- Disable File:New, read in TableauFrame -->
+  <property name="_disableFileNew"
+            class="ptolemy.data.expr.Parameter"
+            value="true"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
+  </entity>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <input source="ptolemy/configs/graphEffigyFactory.xml"/>
+    <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
+    <input source="ptolemy/configs/pteraEffigyFactory.xml"/>
+    <input source="ptolemy/configs/gtEffigyFactory.xml"/>
+    <input source="ptolemy/configs/iaEffigyFactory.xml"/>
+    <!-- input source="ptolemy/configs/fmvEffigyFactory.xml"/ -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/gtTableauFactory.xml"/>
+    <input source="ptolemy/configs/pteraTableauFactory.xml"/>
+    <input source="ptolemy/configs/iaTableauFactory.xml"/>
+    <!-- input source="ptolemy/configs/fmvTableauFactory.xml"/ -->
+    <input source="ptolemy/configs/modalTableauFactory.xml"/>
+    <input source="ptolemy/configs/fsmTableauFactory.xml"/>
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/caseTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main default library. -->
+  <!--input source="ptolemy/configs/basicLibrary.xml"/-->
+</entity>

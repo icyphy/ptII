@@ -1,0 +1,27 @@
+#!/bin/sh
+# $Id$
+# Script to build Ptolemy II tar files and run the tests and generate
+# code coverage stats.
+
+# Run nightly from ptII's cron file, the source of which is
+# at ~ptdesign/adm/crontab.ptuser
+
+if [ $USER != ptII ]; then
+    echo "$0: You must run this as the ptII user, not as $USER"
+    exit 5
+fi
+
+ADMDIR=/users/ptII/adm
+cd $ADMDIR/gen-7.2
+
+# Make sure that only ptII can write to the log files
+chmod g-w $ADMDIR/test
+
+# Rotate the log files
+/usr/local/etc/rotate_log -L $ADMDIR/test -n 20 ptIInightly.txt
+
+# Build the tar file, run the tests, when done, call ptIInightly-mail
+#gmake -k nightly EMAILTO=$1 >$ADMDIR/test/ptIInightly.txt 2>&1
+# Strip out the jnlp passwds
+gmake -k nightly EMAILTO=$1 2>&1 | sed -e 's/-storepass.*$/-storepass substituted.by.ptIInightly/' -e 's/-keypass.*$/-keypass substituted.by.ptIInightly/' >$ADMDIR/test/ptIInightly.txt 
+

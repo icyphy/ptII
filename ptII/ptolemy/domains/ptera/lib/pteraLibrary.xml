@@ -1,0 +1,143 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <property name="Tableau" class="ptolemy.domains.ptera.lib.TableauParameter">
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+      <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, -9.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8, 0.8, 0.8, 1.0}">
+        </property>
+      </property>
+      <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-13.0, -9.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="Debug" class="ptolemy.domains.ptera.lib.DebuggerParameter">
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+      <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, -9.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8, 0.8, 0.8, 1.0}">
+        </property>
+      </property>
+      <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-13.0, -9.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.6, 0.0, 1.0}">
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="SynchronizeToRealtime" class="ptolemy.domains.ptera.lib.SynchronizeToRealtime">
+    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+      <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+      </property>
+    </property>
+    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+      <configure>
+        <svg>
+          <circle cx="3" cy="3" r="2" style="fill:#0000FF"/>
+        </svg>
+      </configure>
+    </property>
+    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+    </property>
+  </property>
+  <property name="EventQueueDebugger" class="ptolemy.domains.ptera.lib.EventQueueDebugger">    
+  </property>
+  <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+          <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
+          <input source="ptolemy/configs/basicUtilities.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+  <entity name="DesignPatterns" class="ptolemy.moml.EntityLibrary">
+    <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
+      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+      </property>
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <configure>
+      <?moml
+        <group>
+          <input source="ptolemy/domains/ptera/lib/ListenToInput.xml"/>
+          <input source="ptolemy/domains/ptera/lib/ListenToStop.xml"/>
+          <input source="ptolemy/domains/ptera/lib/ParallelTasks.xml"/>
+          <input source="ptolemy/domains/ptera/lib/RepeatForCount.xml"/>
+          <input source="ptolemy/domains/ptera/lib/SendOutput.xml"/>
+          <input source="ptolemy/domains/ptera/lib/SingleQueueMultipleServers.xml"/>
+          <input source="ptolemy/domains/ptera/lib/SingleQueueMultipleServersTE.xml"/>
+          <input source="ptolemy/domains/ptera/lib/TrafficLight.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+  <entity name="ExecutionControl" class="ptolemy.moml.EntityLibrary">
+    <entity name="Sleep" class="ptolemy.domains.ptera.lib.Sleep">
+    </entity>
+    <entity name="Stop" class="ptolemy.domains.ptera.lib.Stop">
+    </entity>
+    <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
+    </entity>
+  </entity>
+  <entity name="IO" class="ptolemy.moml.EntityLibrary">
+    <entity name="ListDirectory" class="ptolemy.domains.ptera.lib.ListDirectory">
+    </entity>
+  </entity>
+  <entity name="UserInteraction" class="ptolemy.moml.EntityLibrary">
+    <entity name="Configure" class="ptolemy.domains.ptera.lib.Configure">
+    </entity>
+    <entity name="Plot" class="ptolemy.domains.ptera.lib.Plot">
+    </entity>
+    <entity name="ReceiveInput" class="ptolemy.domains.ptera.lib.ReceiveInput">
+    </entity>
+    <entity name="Report" class="ptolemy.domains.ptera.lib.Report">
+    </entity>
+    <entity name="SetTableau" class="ptolemy.domains.ptera.lib.SetTableau">
+    </entity>
+  </entity>
+  <entity name="Event" class="ptolemy.domains.ptera.kernel.Event">
+    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"/>
+  </entity>
+</group>

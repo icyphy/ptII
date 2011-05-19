@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Simulator" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>LBNL Simulator Interface. </doc>
+<entity name="Simulator" class="lbnl.actor.lib.Simulator"/>
+<entity name="SystemCommand" class="lbnl.actor.lib.SystemCommand"/>
+      </group>
+    ?>
+  </configure>
+</entity>

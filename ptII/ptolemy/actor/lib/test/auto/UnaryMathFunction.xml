@@ -1,0 +1,150 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UnaryMathFunction" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
+        </property>
+    </property>
+    <entity name="UnaryMathFunction1" class="ptolemy.actor.lib.UnaryMathFunction">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 135.0">
+        </property>
+    </entity>
+    <entity name="UnaryMathFunction8" class="ptolemy.actor.lib.UnaryMathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="log">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="UnaryMathFunction9" class="ptolemy.actor.lib.UnaryMathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="square">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="UnaryMathFunction10" class="ptolemy.actor.lib.UnaryMathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sqrt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="Test16" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.71828,7.38905}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="Test20" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,4.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Test40" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.6931472}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 135.0}">
+        </property>
+    </entity>
+    <entity name="Test42" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.4142136}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="UnaryMathFunction2" class="ptolemy.actor.lib.UnaryMathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sign">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="Pulse5" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{-1.8,3.6, 4.0, 0.0,5.0,-10008.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="267.0, 370.0">
+        </property>
+    </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0,1.0,1.0,0.0,1.0,-1.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 370.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="[340.0, 135.0]">
+        </vertex>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="UnaryMathFunction1.input" relation="relation5"/>
+    <link port="UnaryMathFunction1.output" relation="relation26"/>
+    <link port="Pulse2.output" relation="relation5"/>
+    <link port="UnaryMathFunction8.input" relation="relation5"/>
+    <link port="UnaryMathFunction8.output" relation="relation27"/>
+    <link port="UnaryMathFunction9.input" relation="relation5"/>
+    <link port="UnaryMathFunction9.output" relation="relation28"/>
+    <link port="UnaryMathFunction10.input" relation="relation5"/>
+    <link port="UnaryMathFunction10.output" relation="relation29"/>
+    <link port="Test16.input" relation="relation26"/>
+    <link port="Test20.input" relation="relation28"/>
+    <link port="Test40.input" relation="relation27"/>
+    <link port="Test42.input" relation="relation29"/>
+    <link port="UnaryMathFunction2.input" relation="relation"/>
+    <link port="UnaryMathFunction2.output" relation="relation1"/>
+    <link port="Pulse5.output" relation="relation"/>
+    <link port="Test12.input" relation="relation1"/>
+</entity>

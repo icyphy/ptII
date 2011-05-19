@@ -1,0 +1,204 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LocalZenoTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="90.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 55.140625">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 124]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 219, 815, 507}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Clock" class="ptolemy.domains.dde.demo.LocalZeno.ListenClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="20.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 10.0, 15.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="UpperJoin" class="ptolemy.domains.dde.demo.LocalZeno.ListenWire">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="UpperFork" class="ptolemy.domains.dde.demo.LocalZeno.ListenFork">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="UpperFeedBack" class="ptolemy.domains.dde.demo.LocalZeno.ListenFeedBackDelay">
+        <property name="nullDelay" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="LowerJoin" class="ptolemy.domains.dde.demo.LocalZeno.ListenWire">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="LowerFork" class="ptolemy.domains.dde.demo.LocalZeno.ListenFork">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="LowerFeedBack" class="ptolemy.domains.dde.demo.LocalZeno.ZenoDelay">
+        <property name="nullDelay" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="UpperRcvr" class="ptolemy.domains.dde.demo.LocalZeno.ListenSink">
+        <property name="numTokens" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="LowerRcvr" class="ptolemy.domains.dde.demo.LocalZeno.ListenSink">
+        <property name="numTokens" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="1:CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <doc>Write out tokens to a file or stdout</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="4:FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <doc>Write out tokens to a file or stdout</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="UpperTime" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="LowerTime" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 265.0]">
+        </property>
+    </entity>
+    <relation name="_R" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="[80.0, 200.0]">
+        </vertex>
+    </relation>
+    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Clock.output" relation="_R"/>
+    <link port="UpperJoin.output" relation="relation5"/>
+    <link port="UpperJoin.input" relation="_R"/>
+    <link port="UpperJoin.input" relation="_R5"/>
+    <link port="UpperFork.output1" relation="_R3"/>
+    <link port="UpperFork.output1" relation="relation2"/>
+    <link port="UpperFork.output2" relation="_R4"/>
+    <link port="UpperFork.input" relation="relation5"/>
+    <link port="UpperFeedBack.input" relation="_R4"/>
+    <link port="UpperFeedBack.output" relation="_R5"/>
+    <link port="LowerJoin.output" relation="_R6"/>
+    <link port="LowerJoin.input" relation="_R"/>
+    <link port="LowerJoin.input" relation="_R9"/>
+    <link port="LowerFork.output1" relation="_R7"/>
+    <link port="LowerFork.output1" relation="relation4"/>
+    <link port="LowerFork.output2" relation="_R8"/>
+    <link port="LowerFork.input" relation="_R6"/>
+    <link port="LowerFeedBack.input" relation="_R8"/>
+    <link port="LowerFeedBack.output" relation="_R9"/>
+    <link port="UpperRcvr.input" relation="_R3"/>
+    <link port="LowerRcvr.input" relation="_R7"/>
+    <link port="CurrentTime.output" relation="relation12"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="1:CurrentTime.output" relation="relation13"/>
+    <link port="1:CurrentTime.trigger" relation="relation"/>
+    <link port="FileWriter.input" relation="relation12"/>
+    <link port="4:FileWriter.input" relation="relation13"/>
+    <link port="UpperTime.output" relation="relation3"/>
+    <link port="UpperTime.trigger" relation="relation2"/>
+    <link port="LowerTime.output" relation="relation"/>
+    <link port="LowerTime.trigger" relation="relation4"/>
+</entity>

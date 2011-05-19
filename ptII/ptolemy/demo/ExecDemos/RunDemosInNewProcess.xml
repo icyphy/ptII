@@ -1,0 +1,175 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RunDemosInNewProcess" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 0, 815, 647}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 529]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 264.5}">
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model runs all the models in a specified directory&#10;(which is either local, or on the web).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: It may be hard to stop this execution once&#10;it is started because the window will be buried&#10;under other windows. To stop it, you must get access&#10;to this window and click on the stop button.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 100.0]">
+        </property>
+    </property>
+    <property name="demoDirectory" class="ptolemy.data.expr.FileParameter" value="Demos">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#00BB00" y="20">-F-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 80.0]">
+        </property>
+    </property>
+    <property name="LingerTimeInSeconds" class="ptolemy.data.expr.Parameter" value="15">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 100.0]">
+        </property>
+    </property>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$demoDirectory">
+        </property>
+        <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="ArrayToSequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Exec" class="ptolemy.actor.lib.Exec">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="sh">
+        </property>
+        <property name="directory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={712, 79, 290, 227}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[552.5, 285.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={712, 327, 290, 227}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[552.5, 345.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;sh &quot; + PTII + &quot;/bin/vergil -runThenExit &quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 200.0}">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\\">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="\\\\">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 290.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DirectoryListing.output" relation="relation"/>
+    <link port="ArrayToSequence.input" relation="relation"/>
+    <link port="ArrayToSequence.output" relation="relation6"/>
+    <link port="Exec.output" relation="relation3"/>
+    <link port="Exec.command" relation="relation7"/>
+    <link port="Exec.error" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Display2.input" relation="relation3"/>
+    <link port="Const.output" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation4"/>
+    <link port="AddSubtract.output" relation="relation7"/>
+    <link port="StringReplace.stringToEdit" relation="relation6"/>
+    <link port="StringReplace.output" relation="relation4"/>
+</entity>

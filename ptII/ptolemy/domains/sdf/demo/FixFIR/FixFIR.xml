@@ -1,0 +1,263 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FixFIR" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="67.71429443359375, 39.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 22, 818, 460}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model compares three realizations of an FIR filter.&#10;The top one has fixed-point inputs and coefficients.&#10;The middle one uses only double precision.&#10;The bottom one has quantized coefficients, but performs&#10;arithmetic using double precision.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 10.0]">
+        </property>
+    </property>
+    <entity name="Impulse" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 225.0">
+        </property>
+    </entity>
+    <entity name="FIR Double Precision" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
+        </property>
+    </entity>
+    <entity name="FIR Quantized Coefficients" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{quantize(-.040609, 8, 2), quantize(-.001628, 8, 2), quantize(.17853, 8, 2), quantize(.37665, 8, 2), quantize(.37665, 8, 2), quantize(.17853, 8, 2), quantize(-.001628, 8, 2), quantize(-.040609, 8, 2)}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 285.0">
+        </property>
+    </entity>
+    <entity name="FIR Fixed Point" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{fix(-.040609, 6, 2), fix(-.001628, 6, 2), fix(.17853, 6, 2), fix(.37665, 6, 2), fix(.37665, 6, 2), fix(.17853, 6, 2), fix(-.001628, 6, 2), fix(-.040609, 6, 2)}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="fixed point, exact, quantized coefs">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={481, 352, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-1.5707963">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.0122718">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 225.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Fixed Point FIR Filter Transfer Function</title>
+<xLabel>angular frequency</xLabel>
+<yLabel>amplitude (DB)</yLabel>
+<xRange min="-1.5707963" max="1.5585126999999903"/>
+<yRange min="-100.0" max="-23.859746627809713"/>
+<noGrid/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Spectrum1" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor produces a magnitude-only&#10;frequency-domain representation of the input.&#10;The number of inputs required to produce any&#10;output is 2^order, and the number of outputs&#10;produced will be 2^order.  The output represents&#10;frequencies from -pi to pi radians per second,&#10;centered at zero frequency.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{406.0, 72.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 165.0}">
+        </property>
+    </entity>
+    <entity name="Spectrum2" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor produces a magnitude-only&#10;frequency-domain representation of the input.&#10;The number of inputs required to produce any&#10;output is 2^order, and the number of outputs&#10;produced will be 2^order.  The output represents&#10;frequencies from -pi to pi radians per second,&#10;centered at zero frequency.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{406.0, 72.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 225.0">
+        </property>
+    </entity>
+    <entity name="Spectrum3" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor produces a magnitude-only&#10;frequency-domain representation of the input.&#10;The number of inputs required to produce any&#10;output is 2^order, and the number of outputs&#10;produced will be 2^order.  The output represents&#10;frequencies from -pi to pi radians per second,&#10;centered at zero frequency.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{406.0, 72.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 285.0">
+        </property>
+    </entity>
+    <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
+        <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 145.0]">
+        </property>
+    </entity>
+    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="101.85714721679688, 225.0">
+        </vertex>
+    </relation>
+    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Impulse.output" relation="_R0"/>
+    <link port="FIR Double Precision.input" relation="_R0"/>
+    <link port="FIR Double Precision.output" relation="relation4"/>
+    <link port="FIR Quantized Coefficients.input" relation="_R0"/>
+    <link port="FIR Quantized Coefficients.output" relation="relation7"/>
+    <link port="FIR Fixed Point.input" relation="relation6"/>
+    <link port="FIR Fixed Point.output" relation="_R4"/>
+    <link port="FixToDouble.input" relation="_R4"/>
+    <link port="FixToDouble.output" relation="relation1"/>
+    <link port="plot.input" relation="relation0"/>
+    <link port="plot.input" relation="relation2"/>
+    <link port="plot.input" relation="relation3"/>
+    <link port="Spectrum1.input" relation="relation1"/>
+    <link port="Spectrum1.output" relation="relation0"/>
+    <link port="Spectrum2.input" relation="relation4"/>
+    <link port="Spectrum2.output" relation="relation2"/>
+    <link port="Spectrum3.input" relation="relation7"/>
+    <link port="Spectrum3.output" relation="relation3"/>
+    <link port="DoubleToFix.input" relation="_R0"/>
+    <link port="DoubleToFix.output" relation="relation6"/>
+</entity>

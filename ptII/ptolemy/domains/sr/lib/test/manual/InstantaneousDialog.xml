@@ -1,0 +1,80 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 47.0">
+        </property>
+    </property>
+    <entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="133.0, 235.0">
+        </property>
+        <port name="dataInput" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="indexOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="dataOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
+        <property name="table" class="ptolemy.data.expr.Parameter" value="{1, 2, 4, 8, 16}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="364.0, 85.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="363.0, 291.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstantaneousDialogGenerator.dataInput" relation="relation2"/>
+    <link port="InstantaneousDialogGenerator.indexOutput" relation="relation"/>
+    <link port="InstantaneousDialogGenerator.dataOutput" relation="relation3"/>
+    <link port="LookupTable.input" relation="relation"/>
+    <link port="LookupTable.output" relation="relation2"/>
+    <link port="NonStrictDisplay.input" relation="relation3"/>
+</entity>

@@ -1,0 +1,391 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TimeUnitIntegration" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={558, 76, 916, 883}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 766]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 383.0}">
+    </property>
+    <property name="TestUnitsOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="solvers/TestUnitsSolver.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.velocityValue&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.fillOnWrapup&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.startingDataset&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.useLocalTime&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.state&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.Const3.output&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.initialState&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.startingDataset&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.fillOnWrapup&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.Const.value&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.derivative&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.accelerationMetersSec2Value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.automaticRescale&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.startingDataset&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const4.output&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.state&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.initialState&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.accelerationMPHSecValue&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.dimensionlessValue&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.initialState&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.state&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.fillOnWrapup&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.automaticRescale&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.startingDataset&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const4.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.fillOnWrapup&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.initialState&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.useLocalTime&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.initialState&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.state&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.Const.output&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.derivative&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.useLocalTime&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.initialState&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.useLocalTime&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.derivative&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.initialState&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const2.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.initialState&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.Const3.value&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const2.value&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.derivative&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.automaticRescale&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.automaticRescale&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.input&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.input&quot;}}">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 55.0]">
+        </property>
+    </property>
+    <property name="dimensionlessValue" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 105.0]">
+        </property>
+    </property>
+    <property name="TestUnitsOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="dimensionlessValue &gt;= Dimensionless">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 655.0]">
+        </property>
+    </property>
+    <property name="TestUnitsOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityValue &gt;= Velocity_m_per_sec">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 675.0]">
+        </property>
+    </property>
+    <property name="velocityValue" class="ptolemy.data.expr.Parameter" value="30.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 105.0}">
+        </property>
+    </property>
+    <property name="accelerationMetersSec2Value" class="ptolemy.data.expr.Parameter" value="9.8">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 105.0]">
+        </property>
+    </property>
+    <property name="TestUnitsOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMetersSec2Value &gt;= Acceleration_m_per_sec2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 695.0]">
+        </property>
+    </property>
+    <property name="accelerationMPHSecValue" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 125.0]">
+        </property>
+    </property>
+    <property name="TestUnitsOntologyAnalysis::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMPHSecValue &gt;= Acceleration_mph_per_sec">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 715.0]">
+        </property>
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="dimensionlessValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1314, 121, 503, 450}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 205.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="106.2"/>
+<yRange min="0.0" max="318.6"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="velocityValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={355, 548, 503, 450}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 320.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="106.2"/>
+<yRange min="0.0" max="3186.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="accelerationMetersSec2Value">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 405.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={214, 647, 503, 450}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 440.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="106.2"/>
+<yRange min="0.0" max="1040.7600000000007"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 440.0]">
+        </property>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="accelerationMPHSecValue">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 520.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 251, 503, 450}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 560.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="106.2"/>
+<yRange min="0.0" max="6372.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Integrator4" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 560.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="Integrator.derivative" relation="relation"/>
+    <link port="Integrator.state" relation="relation2"/>
+    <link port="Const2.output" relation="relation3"/>
+    <link port="TimedPlotter2.input" relation="relation4"/>
+    <link port="Integrator2.derivative" relation="relation3"/>
+    <link port="Integrator2.state" relation="relation4"/>
+    <link port="Const3.output" relation="relation5"/>
+    <link port="TimedPlotter3.input" relation="relation6"/>
+    <link port="Integrator3.derivative" relation="relation5"/>
+    <link port="Integrator3.state" relation="relation6"/>
+    <link port="Const4.output" relation="relation7"/>
+    <link port="TimedPlotter4.input" relation="relation9"/>
+    <link port="Integrator4.derivative" relation="relation7"/>
+    <link port="Integrator4.state" relation="relation9"/>
+</entity>

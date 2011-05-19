@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+
+<entity name="FuzzyLogic" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Fuzzy Logic Actors</doc>
+
+<entity name="FuzzyLogic"
+        class="ptolemy.actor.lib.logic.fuzzy.FuzzyLogic">
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

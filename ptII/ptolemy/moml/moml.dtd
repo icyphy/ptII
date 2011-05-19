@@ -1,0 +1,117 @@
+<!-- MoML DTD Version 1.4, UC Berkeley -->
+<!-- $Id$ -->
+<!-- If you update this file, please also update:  -->
+<!--    ptweb/xml/dtd/MoML_1.dtd, -->
+<!--    ptII/doc/design/src/MoML.fm, -->
+<!--    the static field MoML_DTD_1 in MoMLParser.java. -->
+<!-- The top-level element can be either model or class. -->
+<!-- NOTE: To ensure backward compatibility with other version 1.x DTDs, -->
+<!-- there are quite a few deprecated entries here. The documentation    -->
+<!-- does not mention these deprecated entries. -->
+
+<!-- The model element is deprecated.  Use entity instead. -->
+<!ELEMENT model (class | configure | deleteEntity | deletePort |
+		deleteRelation | director | display | doc | entity | group | import |
+                input | link | property | relation | rename | rendition |
+		unlink)*>
+<!ATTLIST model name CDATA #REQUIRED
+                class CDATA #IMPLIED>
+
+<!ELEMENT class (class | configure | deleteEntity | deletePort |
+		 deleteRelation | director | display | doc |
+                 entity | group | import | input | link | port |
+                 property | relation | rename | rendition | unlink)*>
+<!ATTLIST class name CDATA #REQUIRED
+                extends CDATA #IMPLIED
+		source CDATA #IMPLIED>
+
+<!ELEMENT configure (#PCDATA)>
+<!ATTLIST configure source CDATA #IMPLIED>
+
+<!ELEMENT deleteEntity EMPTY>
+<!ATTLIST deleteEntity name CDATA #REQUIRED>
+
+<!ELEMENT deletePort EMPTY>
+<!ATTLIST deletePort name CDATA #REQUIRED>
+
+<!ELEMENT deleteProperty EMPTY>
+<!ATTLIST deleteProperty name CDATA #REQUIRED>
+
+<!ELEMENT deleteRelation EMPTY>
+<!ATTLIST deleteRelation name CDATA #REQUIRED>
+
+<!-- NOTE: deprecated.  Use property instead. -->
+<!ELEMENT director (configure | doc | property)*>
+<!ATTLIST director name CDATA "director"
+                   class CDATA #REQUIRED>
+
+<!ELEMENT display EMPTY>
+<!ATTLIST display name CDATA #REQUIRED>
+
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc name CDATA #IMPLIED>
+
+<!ELEMENT entity (class | configure | deleteEntity | deletePort |
+		  deleteRelation | director | display | doc |
+                  entity | group | import | input | link | port |
+                  property | relation | rename | rendition | unlink)*>
+<!ATTLIST entity name CDATA #REQUIRED
+                 class CDATA #IMPLIED
+		 source CDATA #IMPLIED>
+
+<!ELEMENT group ANY>
+<!ATTLIST group name CDATA #IMPLIED>
+
+<!-- The import element is deprecated.  Use the source attribute instead. -->
+<!ELEMENT import EMPTY>
+<!ATTLIST import source CDATA #REQUIRED
+                 base CDATA #IMPLIED>
+
+<!-- The base attribute is deprecated. -->
+<!ELEMENT input EMPTY>
+<!ATTLIST input source CDATA #REQUIRED
+                base CDATA #IMPLIED>
+
+<!ELEMENT link EMPTY>
+<!ATTLIST link insertAt CDATA #IMPLIED
+               insertInsideAt CDATA #IMPLIED
+               port CDATA #IMPLIED
+               relation CDATA #IMPLIED
+               relation1 CDATA #IMPLIED
+               relation2 CDATA #IMPLIED
+               vertex CDATA #IMPLIED>
+
+<!-- Deprecated.  Use a property instead. -->
+<!ELEMENT location EMPTY>
+<!ATTLIST location value CDATA #REQUIRED>
+
+<!ELEMENT port (configure | display | doc | property | rename)*>
+<!ATTLIST port class CDATA #IMPLIED
+               name CDATA #REQUIRED>
+
+<!ELEMENT property (configure | display | doc | property | rename)*>
+<!ATTLIST property class CDATA #IMPLIED
+                    name CDATA #REQUIRED
+                    value CDATA #IMPLIED>
+
+<!ELEMENT relation (configure | display | doc | property | rename | vertex)*>
+<!ATTLIST relation name CDATA #REQUIRED
+                   class CDATA #IMPLIED>
+
+<!ELEMENT rename EMPTY>
+<!ATTLIST rename name CDATA #REQUIRED>
+
+<!-- Deprecated.  Use a property instead. -->
+<!ELEMENT rendition (configure | location | property)*>
+<!ATTLIST rendition class CDATA #REQUIRED>
+
+<!ELEMENT unlink EMPTY>
+<!ATTLIST unlink index CDATA #IMPLIED
+                 insideIndex CDATA #IMPLIED
+                 port CDATA #REQUIRED
+                 relation CDATA #IMPLIED>
+
+<!ELEMENT vertex (configure | display | doc | location | property | rename)*>
+<!ATTLIST vertex name CDATA #REQUIRED
+                 pathTo CDATA #IMPLIED
+                 value CDATA #IMPLIED>

@@ -1,0 +1,162 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LongRuns" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 89, 813, 628}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 518]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 259.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates that time in Ptolemy II is unbounded.&#10;This model can be run forever, beyond the point where time can&#10;be resolved as a double relative to the time precision (1E-10).&#10;In principle, it can even be run beyond the point where the&#10;double representation of time is larger than what can be&#10;represented in a double, although it would take a truly long&#10;time to prove this. Note that the time gap that is reported&#10;remains accurate regardless of how large time gets.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee and Haiyang Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 415.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The timeResolution&#10;parameter of the&#10;director specifies&#10;the resolution w.r.t.&#10;which time values are&#10;given.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 60.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All time-valued&#10;parameters, such&#10;as the period of&#10;the Clock actor,&#10;are given relative&#10;to the Director's&#10;timeResolution precision. They&#10;cannot be so large that accuracy w.r.t&#10;this resolution is lost. Try increasing&#10;the period, for example.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 250.0]">
+        </property>
+    </property>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1E5">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
+        <property name="TimeGapIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="LineWriter2" class="ptolemy.actor.lib.io.LineWriter">
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Time gap: ">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Current time: ">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 200.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[115.0, 220.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[215.0, 220.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[230.0, 300.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="relation"/>
+    <link port="LineWriter.input" relation="relation7"/>
+    <link port="CurrentTime.output" relation="relation2"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="TimeGap.input" relation="relation"/>
+    <link port="TimeGap.output" relation="relation4"/>
+    <link port="LineWriter2.input" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation7"/>
+    <link port="StringConst2.output" relation="relation5"/>
+    <link port="StringConst2.trigger" relation="relation4"/>
+    <link port="AddSubtract2.plus" relation="relation5"/>
+    <link port="AddSubtract2.plus" relation="relation4"/>
+    <link port="AddSubtract2.output" relation="relation6"/>
+    <link port="StringConst.output" relation="relation3"/>
+    <link port="StringConst.trigger" relation="relation2"/>
+</entity>

@@ -1,0 +1,31 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>LMS Adaptive Demo</TITLE>
+<BODY>
+<H1>LMS Adaptive</H1>
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+LMSAdaptive is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "LMSAdaptive.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="LMSAdaptiveVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model illustrates an LMS (least mean square) adaptive filter
+that learns the response of a fixed FIR (finite impulse response)
+filter by observing the input and noisy output of the filter.</p>
+</BODY>
+</HTML>

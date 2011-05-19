@@ -1,0 +1,353 @@
+--------------------------
+--- Ptolemy Expression ---
+--------------------------
+
+fmod PtolemyExpSyntax is
+    protecting RAT + FLOAT .
+    sort Exp VarId .
+    subsort VarId < Exp .
+
+--------------------------------
+--- Value
+--------------------------------
+    sort Value .
+    subsort Value < Exp .
+    op #r : Rat -> Value [ctor] .
+    op #f : Float -> Value [ctor] .
+    op #b : Bool -> Value [ctor] .
+    op (|_|) : ValueList -> Value .	--- array
+    op {_} : ValueRow -> Value .	--- record
+    op [_] : ValueMatrix -> Value .	--- matrix
+
+--------------------------------
+--- Syntax
+--------------------------------
+
+    --- comparison operators
+    op _lessThan_ : Exp Exp -> Exp [prec 37] .
+    op _greaterThan_ : Exp Exp -> Exp [prec 37] .
+    op _<=_ : Exp Exp -> Exp [prec 37] .
+    op _>=_ : Exp Exp -> Exp [prec 37] .
+    op _equals_ : Exp Exp -> Exp [prec 51] .
+    op _!=_ : Exp Exp -> Exp [prec 51] .
+
+    --- shift operators
+    op _<<_ : Exp Exp -> Exp [prec 35 gather (E e)] .
+    op _>>_ : Exp Exp -> Exp [prec 35 gather (E e)] .
+    op _>>>_ : Exp Exp -> Exp [prec 35 gather (E e)] .
+
+    --- bitwise operators
+    op ~_ : Exp -> Exp [prec 51] .
+    op _&_ : Exp Exp -> Exp [prec 53 gather (E e)] .
+    op _|_ : Exp Exp -> Exp [prec 57 gather (E e)] .
+    op _#_ : Exp Exp -> Exp [prec 55 gather (E e)] .
+
+    --- logic operators
+    op !_ : Exp -> Exp [prec 53] .
+    op _&&_ : Exp Exp -> Exp [prec 55 gather (E e)] .
+    op _||_ : Exp Exp -> Exp [prec 59 gather (E e)] .
+
+    --- numerical operators
+    op -_ : Exp -> Exp [prec 15] .
+    op _+_ : Exp Exp -> Exp [prec 33 gather (E e)] .
+    op _-_ : Exp Exp -> Exp [prec 33 gather (E e)] .
+    op _*_ : Exp Exp -> Exp [prec 31 gather (E e)] .
+    op _/_ : Exp Exp -> Exp [prec 31 gather (E e)] .
+    op _%_ : Exp Exp -> Exp [prec 31 gather (E e)] .
+    op _^_ : Exp Exp -> Exp [prec 29 gather (E e)] .
+
+    --- conditional expression
+    op _?_:_ : Exp Exp Exp -> Exp [prec 60] .
+
+    --- function expression
+    op _$_ : Exp ExpList -> Exp [prec 10] .   --- function/array/matrix app
+    op _.._ : Exp Exp -> Exp [prec 12 gather (E e)] .   --- method call
+
+    op _$() : Exp -> Exp [prec 10] .
+    eq E:Exp $() = E:Exp $ emptyList .
+
+    --- function definition
+    op function(_)_ : VarIdList Exp -> Exp .
+
+    --- data types
+    op (|_|) : ExpList -> Exp .  --- array
+    op {_} : ExpRow -> Exp .  --- record
+    op [_] : Matrix -> Exp .	--- matrix
+
+--------------------------------
+--- auxiliary data structures
+--------------------------------
+
+    --- exp list
+    sort ExpList .
+    subsort Exp < ExpList .
+    op emptyList : -> ValueList [ctor] .
+    op _,_ : ExpList ExpList -> ExpList [ctor assoc id: emptyList prec 121] .
+
+    sort ValueList .	--- for values
+    subsort Value < ValueList < ExpList .
+    op _,_ : ValueList ValueList -> ValueList [ditto] .
+
+    sort VarIdList .	--- for function argument
+    subsort VarId < VarIdList < ExpList .
+    op _,_ : VarIdList VarIdList -> VarIdList [ditto] .
+
+    --- matrix items
+    sort Matrix .
+    subsort ExpList < Matrix .
+    op emptyMatrix : -> ValueMatrix [ctor] .
+    op _;_ : Matrix Matrix -> Matrix [ctor assoc id: emptyMatrix prec 125] .
+
+    sort ValueMatrix .	--- for values
+    subsort ValueList < ValueMatrix < Matrix .
+    op _;_ : ValueMatrix ValueMatrix -> ValueMatrix [ditto] .
+
+    --- record items
+    sort RecordItem ExpRow .
+    subsort RecordItem < ExpRow .
+    op _<-_ : VarId Exp -> RecordItem [ctor prec 110] .
+    op emptyRecord : -> ValueRow [ctor] .
+    op _,_ : ExpRow ExpRow -> ExpRow [assoc comm id: emptyRecord prec 121] .
+
+    sort ValueItem ValueRow .	--- for values
+    subsort ValueItem < RecordItem ValueRow < ExpRow .
+    op _<-_ : VarId Value -> ValueItem [ctor prec 110] .
+    op _,_ : ValueRow ValueRow -> ValueRow [ditto] .
+endfm
+
+--- Ptolemy Exp Definition
+fmod PtolemyExpDef is
+    inc PtolemyExpSyntax + CONVERSION .
+
+    var I : VarId .  
+    vars V1 V2 : Value . vars VL VL' : ValueList .
+    vars E E1 E2 : Exp .  vars EL : ExpList . 
+    var ER : ExpRow . var EM : Matrix .
+    var N1 N2 : Nat . vars R1 R2 : Rat .
+    vars F1 F2 : Float . vars B1 B2 : Bool .
+
+-----------------------------
+--- comparison operators
+-----------------------------
+    eq #f(F1) lessThan #f(F2) = #b(F1 < F2) .
+    eq #r(R1) lessThan #r(R2) = #b(R1 < R2) .
+    eq #r(R1) lessThan #f(F2) = #b(float(R1) < F2) .
+    eq #f(F1) lessThan #r(R2) = #b(F1 < float(R2)) .
+
+    eq #f(F1) greaterThan #f(F2) = #b(F1 > F2) .
+    eq #r(R1) greaterThan #r(R2) = #b(R1 > R2) .
+    eq #r(R1) greaterThan #f(F2) = #b(float(R1) > F2) .
+    eq #f(F1) greaterThan #r(R2) = #b(F1 > float(R2)) .
+
+    eq #f(F1) equals #f(F1) = #b(F1 == F1) .
+    eq #r(R1) equals #r(R1) = #b(R1 == R1) .
+    eq #r(R1) equals #f(F2) = #b(float(R1) == F2) .
+    eq #f(F1) equals #r(R2) = #b(F1 == float(R2)) .
+    eq #b(B1) equals #b(B1) = #b(B1 == B1) .
+    eq V1 equals V2 = #b(false) [owise] .
+
+    eq V1 <= V2 = ! V1 greaterThan V2 .
+    eq V1 >= V2 = ! V1 lessThan V2 .
+    eq V1 != V2 = ! V1 equals V2 .
+
+-----------------------------
+--- shift operators
+-----------------------------
+    eq #r(N1) << #r(N2) = #r(N1 << N2) .
+    eq #r(N1) >> #r(N2) = #r(N1 >> N2) .
+    eq #r(N1) >>> #r(N2) = #r(N1 >> N2) .  --- >>> ?
+
+-----------------------------
+--- bitwise operators
+-----------------------------
+    eq ~ #r(N1) = #r(N1 xor -1) .
+    eq #r(N1) & #r(N2) = #r(N1 & N2) .
+    eq #r(N1) | #r(N2) = #r(N1 | N2) .
+    eq #r(N1) # #r(N2) = #r(N1 xor N2) .
+
+-----------------------------
+--- logic operators
+-----------------------------
+    eq ! #b(B1) = #b(not B1) .
+    eq #b(B1) && #b(B2) = #b(B1 and B2) .
+    eq #b(B1) || #b(B2) = #b(B1 or B2) .
+
+-----------------------------
+--- numerical operators
+-----------------------------
+    eq - (#f(F1)) = #f(- F1) .
+    eq - (#r(R1)) = #r(- R1) .
+
+    eq #f(F1) + #f(F2) = #f(F1 + F2) .
+    eq #r(R1) + #r(R2) = #r(R1 + R2) .
+    eq #r(R1) + #f(F2) = #r(R1 + rat(F2)) .
+    eq #f(F1) + #r(R2) = #r(rat(F1) + R2) .
+
+    eq #f(F1) - #f(F2) = #f(F1 - F2) .
+    eq #r(R1) - #r(R2) = #r(R1 - R2) .
+    eq #r(R1) - #f(F2) = #r(R1 - rat(F2)) .
+    eq #f(F1) - #r(R2) = #r(rat(F1) - R2) .
+
+    eq #f(F1) * #f(F2) = #f(F1 * F2) .
+    eq #r(R1) * #r(R2) = #r(R1 * R2) .
+    eq #r(R1) * #f(F2) = #r(R1 * rat(F2)) .
+    eq #f(F1) * #r(R2) = #r(rat(F1) * R2) .
+
+    eq #f(F1) / #f(F2) = #f(F1 / F2) .
+    eq #r(R1) / #r(R2) = #r(R1 / R2) .
+    eq #r(R1) / #f(F2) = #r(R1 / rat(F2)) .
+    eq #f(F1) / #r(R2) = #r(rat(F1) / R2) .
+
+    eq #r(R1) % #r(R2) = #r(R1 rem R2) .
+    eq #f(F1) % #f(F2) = #r(rat(F1) rem rat(F2)) .
+    eq #r(R1) % #f(F2) = #r(R1 rem rat(F2)) .
+    eq #f(F1) % #r(R2) = #r(rat(F1) rem R2) .
+
+    eq #f(F1) ^ #f(F2) = #f(F1 ^ F2) .
+    eq #r(R1) ^ #r(R2) = #r(R1 ^ R2) .
+    eq #r(R1) ^ #f(F2) = #r(R1 ^ rat(F2)) .
+    eq #f(F1) ^ #r(R2) = #r(rat(F1) ^ R2) .
+
+-----------------------------
+--- conditional expression
+-----------------------------
+    eq #b(true) ? E1 : E2 = E1 .
+    eq #b(false) ? E1 : E2 = E2 .
+
+    *** required : default functions like sin
+
+-----------------------------
+--- data structures
+-----------------------------
+    *** required : basic operation for data structures such as *
+    *** required : default methods for data structures
+
+    --- array
+    eq (| E, EL |) $ #r(0) = E .
+    ceq (| E, EL |) $ #r(N1) = (| EL |) $ #r(N1 - 1) if N1 > 0 .
+
+    --- record
+    eq {(I <- E), ER} .. I = E .
+    eq {(I <- E), ER} .. (I $ emptyList) = E .
+
+    --- matrix
+    eq [(E, EL) ; EM] $ (#r(0), #r(0)) = E .
+    ceq [(E, EL) ; EM] $ (#r(N1), #r(0)) 
+      = [EL ; EM] $ (#r(N1 - 1), #r(0)) if N1 > 0 .
+    ceq [EL ; EM] $ (#r(N1), #r(N2)) 
+      = [EM] $ (#r(N1), #r(N2 - 1)) if N2 > 0  .
+endfm
+
+--- semantics
+fmod PtolemyExp is
+    inc PtolemyExpDef .
+
+-----------------------------
+--- environment
+-----------------------------
+    sort VarAssignment ValueAssignment .
+    subsort ValueAssignment < VarAssignment .
+    op _|->_ : VarId Exp -> VarAssignment [ctor prec 80] .
+    op _|->_ : VarId Value -> ValueAssignment [ditto] .
+
+    sort AssignMap ValueMap .    --- set of variable assignments
+    subsort ValueAssignment < VarAssignment ValueMap < AssignMap .
+    op emptyMap : -> ValueMap [ctor] .
+    op _;_ : AssignMap AssignMap -> AssignMap 
+	[ctor assoc comm id: emptyMap prec 90] .
+    op _;_ : ValueMap ValueMap -> ValueMap [ditto] .
+
+    --- expension from lists
+    op _|->_ : VarIdList ValueList -> ValueMap [ditto] .
+    eq (I, IL) |-> (V, VL) = (I |-> V) ; (IL |-> VL) .
+    eq emptyList |-> VL = emptyMap .
+
+    --- extension of Map
+    op _<+_ : AssignMap AssignMap -> AssignMap .
+
+    vars AM1 AM2 : AssignMap .
+
+    eq ((I |-> E1) ; AM1) <+ ((I |-> E2) ; AM2) = ((I |-> E1) ; AM1) <+ AM2 .
+    eq AM1 <+ AM2 = AM1 ; AM2 [owise] .
+
+    --- closure
+    sort Closure .
+    subsort Closure < Value .
+    op closure : VarIdList Exp ValueMap -> Closure .
+
+-----------------------------
+--- semantics function
+-----------------------------
+    op [[_]]_ : Exp ValueMap ~> Value [prec 0] .
+
+    vars V V1 V2 : Value .  var S S' : ValueMap . 
+    var VL : ValueList . var VR : ValueRow . var VM : ValueMatrix .
+    vars E E1 E2 : Exp .  var EL : ExpList . var ER : ExpRow . var EM : Matrix .
+    var I : VarId . var IL : VarIdList . 
+
+    eq [[V]] S = V .
+    eq [[I]] ((I |-> V) ; S) = V .
+
+    --- comparison operators
+    eq [[E1 lessThan E2]] S = [[E1]] S lessThan [[E2]] S .
+    eq [[E1 greaterThan E2]] S = [[E1]] S greaterThan [[E2]] S .
+    eq [[E1 <= E2]] S = [[E1]] S <= [[E2]] S .
+    eq [[E1 >= E2]] S = [[E1]] S >= [[E2]] S .
+    eq [[E1 equals E2]] S = [[E1]] S equals [[E2]] S .
+    eq [[E1 != E2]] S = [[E1]] S != [[E2]] S .
+
+    --- shift operators
+    eq [[E1 << E2]] S = [[E1]] S << [[E2]] S .
+    eq [[E1 >> E2]] S = [[E1]] S >> [[E2]] S .
+    eq [[E1 >>> E2]] S = [[E1]] S >>> [[E2]] S .
+
+    --- bitwise operators
+    eq [[~ E]] S = ~ [[E]] S .
+    eq [[E1 & E2]] S = [[E1]] S & [[E2]] S .
+    eq [[E1 | E2]] S = [[E1]] S | [[E2]] S .
+    eq [[E1 # E2]] S = [[E1]] S # [[E2]] S .
+
+    --- logic operators
+    eq [[! E]] S = ! [[E]] S .
+    eq [[E1 && E2]] S = [[E1]] S && [[E2]] S .
+    eq [[E1 || E2]] S = [[E1]] S || [[E2]] S .
+
+    --- numerical operators
+    eq [[- E]] S = - [[E]] S .
+    eq [[E1 + E2]] S = [[E1]] S + [[E2]] S .
+    eq [[E1 - E2]] S = [[E1]] S - [[E2]] S .
+    eq [[E1 * E2]] S = [[E1]] S * [[E2]] S .
+    eq [[E1 / E2]] S = [[E1]] S / [[E2]] S .
+    eq [[E1 % E2]] S = [[E1]] S % [[E2]] S .
+    eq [[E1 ^ E2]] S = [[E1]] S ^ [[E2]] S .
+
+    --- conditional expression
+    eq [[E ? E1 : E2]] S = ([[E]] S) ? ([[E1]] S) : ([[E2]] S) .
+
+    --- function expression
+    eq [[E $ EL]] S = [[E]] S $ [[EL]] S .
+    eq [[E .. E1]] S = [[E]] S .. [[E1]] S .
+
+    --- static semantics of function
+    eq [[closure(IL, E, S') $ VL]] S = [[E]] ((IL |-> VL) <+ S') . 
+
+    --- function definition
+    eq [[function(IL) E]] S = closure(IL, E, S) .
+
+    --- data types
+    op @struct : Value Value ~> Value .
+    op @struct : VarId Value Value ~> Value .
+
+    eq @struct(V, (| VL |)) = (| V, VL |) .
+    eq @struct(I, V, {VR}) = {I <- V, VR} .
+    eq @struct( (| VL |), [VM]) = [VL ; VM] .
+
+    eq [[ (| E, EL |) ]] S =  @struct( [[E]] S , [[ (| EL |) ]] S ).
+    eq [[ (| emptyList |) ]] S = (| emptyList |) .
+
+    eq [[ {I <- E, ER} ]] S = @struct(I , [[E]] S, [[ {ER} ]] S ) .
+    eq [[ {emptyRecord} ]] S = {emptyRecord} .
+
+    eq [[ [EL ; EM] ]] S = @struct([[ (| EL |) ]] S , [[ [EM] ]] S) .
+    eq [[ [emptyMatrix] ]] S = [emptyMatrix] .
+endfm

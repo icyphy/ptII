@@ -1,0 +1,470 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Debugging Ptolemy II Actors</title>
+</head>
+<body>
+<H1>Debugging Ptolemy II Actors</H1>
+This page discusses debugging Ptolemy II actors using GNU Emacs and jdb.
+ <p>Zoltan Kemenczy of Research In Motion Ltd. contributed changes
+to <CODE>$PTII/bin/ptinvoke.in</CODE> that use
+<a href="../../util/lisp/gud.el"><CODE>$PTII/util/lisp/gud.el</CODE></a>
+to provide source level debugging of Ptolemy II.
+ <p>Christopher Hylands modified Zoltan's original notes. 
+ <p>Note that the debugger works best on distributions of Ptolemy II
+that include the Ptolemy II source files.  The Windows installer 
+and the WebStart versions of
+Ptolemy II do not include source files, so the debugger will be
+of little use under WebStart.  Because the Windows installer
+and the WebStart editions do
+not include the source files, some of the hyperlinks below
+may be invalid.
+ <p> See also the <a href="eclipse.htm">Ptolemy II Eclipse Page</a>.
+<h2>Contents</h2>
+<menu>
+<li> <a href="#Emacs">Emacs</a>
+<li> <a href="#SettingUpEmacs">Setting up Emacs</a>
+<li> <a href="#InvokingTheDebugger">Invoking the debugger</a>
+<li> <a href="#debuggerExample">Debugger Example</a>
+<li> <a href="../../ptolemy/vergil/debugger/breakpoints.htm">Set Breakpoints context menu choice</a>
+</menu>
+
+
+<h2><a name="Emacs">Emacs</a></h2>
+
+This page includes documentation on how to use the Java Debugger 
+<code>jdb</code> and GNU Emacs to debug Java code.
+
+<p>GNU Emacs is a powerful and complex editing and development
+environment.  If you are unfamiliar with GNU Emacs, you should try
+running the GNU Emacs tutorial.  In theory, it should be possible
+to debug Ptolemy using other debuggers, but we have not tried them.
+
+<p>The <CODE>gud.el</CODE> file included in Ptolemy II
+requires a version of GNU emacs more recent than Emacs-20.7.1.
+
+<p>The <code>gud.el</code> file 
+will not work with Emacs-20.7.1 because <CODE>M-x jdb</CODE>
+results in:
+<pre>
+Symbol's function definition is void: easy-mmode-define-keymap
+</pre>
+We have tested the interface under Emacs-21.2.1.
+
+<pre>
+
+</pre>
+Below are the steps necessary to install Emacs under Windows.
+<ol>
+<li> 
+Emacs for Windows can be found at
+<a href="ftp://ftp.gnu.org/gnu/windows/emacs/latest" target="_top"><CODE>ftp://ftp.gnu.org/gnu/windows/emacs/latest</CODE></a>
+ <p>The file to download is<CODE>emacs-<I>xx.x</I>-bin-i386.tar.gz</CODE>
+
+<li> Untar or unzip the file in <CODE>c:\Program Files</CODE> so
+that <CODE>c:\Program Files\emacs-<I>xx.xx</I></CODE> is created
+
+<li> The <CODE>c:\Program Files\emacs-<I>xx.xx</I>\README.W32</CODE> file
+says:
+<BLOCKQUOTE>
+To install Emacs, simply unpack all the files into a directory of your
+  choice, but note that you might encounter minor problems if there is a
+  space anywhere in the directory name.  To complete the installation
+  process, you can optionally run the program addpm.exe in the bin
+  subdirectory.  This will add some entries to the registry that tell
+  Emacs where to find its support files, and put an icon for Emacs in
+  the Start Menu under "Start -&gt; Programs -&gt; Gnu Emacs -&gt; Emacs".
+</BLOCKQUOTE>
+So, go ahead and click on the <code>addpm.exe</code> icon, which 
+will add an Emacs icon to the start menu.
+</ol>
+
+ <p>The GNU Emacs FAQ For Windows 95/98/ME/NT/XP and 2000 can be found at
+<a href="http://www.gnu.org/software/emacs/windows/ntemacs.html" target="_top"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a>
+
+<h2><a name="SettingUpEmacs">Setting up Emacs</a></h2>
+Emacs reads the file <CODE>$HOME/.emacs</CODE> at start up time.
+
+ <p>Under Windows 2000, you set the environment variables via
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>
+ <p>The <CODE>HOME</CODE> variable name your home directory using
+the DOS drive name with backslashes.  For example, if your
+home directory is in <CODE>c:\users\yourname</CODE>, then you would
+enter the value <CODE>c:\users\yourname</CODE>
+
+ <p>While you are editing environment variables, be sure that
+<CODE>$PTII</CODE> is set.  For details, see
+<a href="../install.htm#settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
+
+ <p>The GNU Emacs FAQ For Windows 95/98/ME/NT/XP and 2000
+at <a href="http://www.gnu.org/software/emacs/windows/ntemacs.html" target="_top"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a> discusses
+the <CODE>.emacs</CODE> file further.
+
+ <p>To debug Ptolemy II, Emacs needs to be told where to find the
+<code>gud.el</code>
+ file.  Start up Emacs by using
+Start -&gt; Programs -&gt; Gnu Emacs -&gt; Emacs
+and add the following to your <CODE>$HOME/.emacs</CODE> file.
+
+<pre>
+(setq load-path (append
+                 (list
+                  (expand-file-name 
+		   (concat (getenv "PTII") "/util/lisp")))
+                 load-path
+                 ))
+</pre>
+A more complete example <CODE>.emacs</CODE> file can be found at
+<a href="../../util/lisp/ptemacs.el"><CODE>$PTII/util/lisp/ptemacs.el</CODE></a>
+If you wish, you can copy this file to your <CODE>$HOME/.emacs</CODE>
+file. This file includes support for
+<dl>
+<dt> <CODE>M-x shell</CODE>
+<dd> Brings up a bash shell
+
+<dt> (TODO) Java indentation
+<dd> Java indentation that follows the
+<a href="style.htm">Ptolemy II Style guide</a>
+
+</dl>
+
+<h3><a name="UsingEmacsAsATextEditorWithinPtolemyII">Using Emacs as
+a Text Editor Within Ptolemy II</a>
+</h3>
+Optionally, you may want to associate Emacs as the text editor
+to use when text files are viewed within Ptolemy II.
+
+<p>This feature is especially nice while running a vergil -debug
+session from within emacs and the user wants to set a breakpoint in an
+actor or director.  Typical, one starts up vergil with <code>vergil
+-debug</code< looks inside an actor, finds a source line, and hits
+<code>Control-x SPACE</code> to set a break point.
+
+
+<p>To do this, you need to have Gnuserv installed and do some other set up.
+<br><a href="http://www.gnu.org/software/emacs/windows/faq2.html#assoc" target="_top"><code>http://www.gnu.org/software/emacs/windows/faq2.html#assoc</code></a>
+discusses how to install gnuserv/gnuclient
+<ol>
+<li>Download 
+<a href="http://www.wyrdrune.com/Files/gnuserv.zip"><code>http://www.wyrdrune.com/Files/gnuserv.zip</code></a>
+<li>Unzip it anywhere, for example <code>c:/tmp/gnuserv</code>
+<li>Install <code>gnuserv.el</code> into emacs' load-path, in this case
+<pre>
+cd c:/tmp/gnuserv
+cp gnuserv.el $PTII/util/lisp
+</pre>
+<li>Install the executables into your path 
+<pre>
+cp Release/*.exe $PTII/bin
+</pre>
+<li>Make sure that <code>$PTII/bin</code> is in your path.
+<br>Under Windows XP, it is best if you add <code>$PTII/bin</code>
+(Under Windows XP, you set the environment variable via
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; 
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>)
+<br>The value that is added to the path should either be
+<pre>
+%PTII%\bin
+</pre>
+or you should expand <code>PTII</code> by hand
+<pre>
+c:\ptII\bin
+</pre>
+
+<li>Add 
+<pre>
+(load "gnuserv")
+(gnuserv-start)
+</pre>
+to your <code>~/.emacs</code> file
+<li>Edit <code>$PTII/bin/ptinvoke.in</code>
+and uncomment the line
+<pre>
+USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
+</pre>
+and then run
+<pre>
+make
+</pre>
+to update <code>$PTII/bin/vergil</code> etc.
+
+</ol>
+To test the facility start up emacs and then start up <code>vergil</code>
+and try File -&gt; New -&gt Text Editor.
+
+
+<h2><a name="InvokingTheDebugger">Invoking the debugger</a></h2>
+
+The Ptolemy II start up scripts in <code>$PTII/bin</code>
+have the following options that interact with the debugger.
+
+<br>Under Windows, these options will <b>not</b> work with the DOS
+scripts, you must run the shell script versions of these scripts.
+<br>The easiest way to run these scripts under Windows is to start up
+the Cygwin bash shell.  
+<br>Another way is to use the DOS shell and
+preface the commands with <code>bash -C</code>:
+<pre>
+cd %PTI%
+bash -C ptolemy -debug ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
+</pre>
+
+<dl>
+<dt> <CODE>-debug</CODE>
+<dd> This starts the java VM in a mode that allows debugger
+connections. The nice thing is that you can run e.g. vergil, load
+models, run without a debugger until you encounter a problem
+(exception :-). Then you attach jdb to your vergil process, set to
+catch the exception and re-run... The exception is now caught by jdb
+in Emacs with all the source files and call stack available for
+examination.
+
+ <p>Notes: 
+<ol>
+<li> vergil runs a bit slower with this option.
+
+<li> I have only tested the JVM attach on Windows with shared memory attaches
+(I would have preferred the socket approach but Sun didn't do it on
+Windows...)  Someone should try the socket connection method on
+Solaris/Linux and update ptinvoke to select based on the system type...
+</ol>
+
+<dt> <CODE>-jdb</CODE>
+<dd> This starts using jdb instead of java to allow debugger control right from
+the start. Typically you provide this option in response to Emacs' M-x jdb
+prompt Run jdb (like this):
+<pre>
+ptolemy -jdb .../my.xml
+</pre>
+
+
+<dt> <CODE>-q</CODE>
+<dd> for "quiet" - it is not really a debug option, but eliminates the echo of
+the command line constructed by ptinvoke to start java.
+
+ <br>Note: Don't use <CODE>-q</CODE> with <CODE>-jdb</CODE> within
+Emacs.  If you do, then the Emacs GUD mode will not be able to get the
+classpath.
+
+<dt> <CODE>-profiler</CODE>
+<dd> has the java profiler startup options canned (these could be passed using
+JAVAFLAGS, but then you have to remember and set/type them every time). Very
+useful to find out where ptolemy is spending most of the CPU time...
+
+</dl>
+
+<h2>Emacs GUD updates</h2>
+
+ <p>These have already been submitted to Richard Stallman and incorporated into
+the www.gnu.org Emacs CVS, but there are not yet in 21.2
+
+ <p>The following is a useful addition to a user's .emacs file (for the Windows
+shared memory attach)
+(setq gud-jdb-command-name "jdb -attach javadebug")
+
+ <p>The documentation of changes is in the gud-jdb-use-classpath and
+gud-jdb-classpath (and other gud-jdb-xxx) variables. The new method of
+finding java source files through the classpath of the JVM is automatically
+enabled so no special setup is needed.  
+
+ <p>There are two primary ways to use the Emacs interface to debug
+Ptolemy: 
+<ol>
+<li> Use the -debug flag so that java starts up Ptolemy II and synchronizes
+with Emacs
+
+<li> Use the -jdb flag so that jdb starts up Ptolemy II.  
+
+</ol>
+
+<h3>-debug</h3>
+The <CODE>-debug</CODE> option is more commonly used than <CODE>-jdb</CODE>
+because with <CODE>-debug</CODE>, you can attach the debugger at any
+point during the run.  
+
+To use <CODE>-debug</CODE>, just start your vergil from a bash or Emacs shell
+with:
+
+<pre>
+vergil -debug &
+</pre>
+
+You should see a message:
+<pre>
+Listening for transport dt_shmem at address: javadebug
+</pre>
+and the vergil window should come up.
+
+ <p>when you'd like to debug (e.g set breakpoints or catch exceptions),
+start jdb from Emacs by:
+
+<pre>
+M-x jdb
+</pre>
+
+Then type
+
+<pre>
+jdb -attach javadebug
+</pre>
+
+
+if you're on windows (on Unix "javadebug" would be replaced by the JVM debug
+server socket port number). 
+
+ <p>You should get a buffer named *gud-...*  with the Initializing jdb...
+message. After that switch to any Emacs buffer holding a source and go to a
+function that will be used during a run (e.g. Manager.run()).  On a source
+line, press C-x SPACE.  In the *gud-...* buffer, a breakpoint command is
+automatically entered for you  (this is GUD at work).
+
+ <p>Now run the model... When the breakpoint is hit the source file
+(Manager.java) will be positioned at the breakpoint with a "=&gt;" at the
+beginning of the line where the stop occurred.  Now you can use C-c C-n
+(for "next" or "step-over") or C-c C-s (for "step" or "step-into") and a
+bunch of other short-cuts (like call stack browsing up/down)...  An the "=&gt;"
+follows your steps and brings up source files as needed (GUD again...:).
+
+ <p>Most of the standard
+gud-style commands are supported (check out the "GUD" menu in the *gud-..*
+
+
+<h3>-jdb</h3>
+
+The difference between <CODE>-debug</CODE> and <CODE>-jdb</CODE> is
+that 
+<CODE>-jdb</CODE> can be used to debug initialization code that would
+have already been run by the time the application comes up.
+
+ <p>You can start <CODE>ptolemy -jdb</CODE>
+ from a bash shell within Emacs, but that doesn't get you into GUD
+mode, which allows for easy breakpoint setting etc.
+
+ <p>To start vergil or ptolemy (or other) with jdb instead of java, enter
+start jdb from Emacs by:
+
+<pre>
+M-x jdb
+</pre>
+
+and then type:
+
+<pre>
+bash -C ptolemy -jdb ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
+</pre>
+
+ <p>Don't use the -q flag here because that will prevent GUD from getting the
+classpath (it finds it in the command line echo provided by ptinvoke. If you
+used a manual way of starting jdb (instead of ptinvoke), you would normally
+have to provide a -classpath argument which is what GUD is looking for).
+
+ <p>The windows version of Emacs is not cygwin-aware and it uses its own win32
+api to start any subprocess and this looks for an ".exe" (or .bat)... This
+is why we have to insert "bash -C" (which is an exe in the path) to make
+sure that the ptolemy link will be caught and processed...
+
+ <p>If you then switch to a java source (that is in the classpath and/or
+sourcepath) and do C-x SPC, a breakpoint will be set.  
+
+
+<h2><a name="debuggerExample">Debugger Example</a></h2>
+Below is an example of how to use the debugger
+<ol>
+<li>Install emacs as per the <a href="#Emacs">Emacs</a> step above.
+<li>Set the Emacs load path as per the
+    <a href="#SettingUpEmacs">Setting up Emacs</a> step above.
+<li>Type <code>M-x shell</code>.  In Emacs, <code>M-x</code> means
+    <br>"Hit the <code>Esc</code> key and then the <code>x</code> key."
+<li>You will now be in a buffer named <code>*shell*</code>.  In
+    this buffer, start up vergil with
+<pre>
+$PTII/bin/vergil -debug $PTII/ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml
+</pre>
+<li>Run the simulation by doing 
+    <code>View</code> -&gt; <code>Run</code> -&gt; <code>Go</code>
+<li>Start up the debugger by typing <code>M-x jdb</code>.
+    If your <code>.emacs</code> file contains:
+<pre>
+(setq gud-jdb-command-name "jdb -attach javadebug")
+</pre>
+then after typing <code>M-x jdb</code>, the following lines should
+appear in the minibuffer at the bottom of the emacs window:
+<pre>
+Run jdb (like this): jdb -attach javadebug 
+</pre>
+If <code>jdb -attach javadebug</code> does not appear, then type it 
+in.
+After the minibuffer contains <code>jdb -attach javadebug</code>
+hit <code>Enter</code> and jdb starts up.
+
+
+<li>Now we will set a break point in the <code>iterate()</code> method
+of the Ramp actor.   To do this, type in the following in
+the <code>*gud-javadebug*</code> buffer
+<pre>
+stop in ptolemy.actor.lib.Ramp.iterate
+</pre>
+
+<li>Then rerun the model with
+<code>View</code> -&gt; <code>Run</code> -&gt; <code>Go</code>
+<li>The debugger will stop execution in the <code>iterate()</code>
+method
+<li>The Emacs debugger interface can bring up the source file
+where the break point is set, but the interface sometimes needs
+help finding the file.  The quickest way is to view the file
+by typing <code>C-x C-f</code>
+and then <code>$PTII/ptolemy/actor/lib/Ramp.java</code>
+In Emacs documentation, <code>C-x</code> means
+<br>"Hold the <code>Control</code> key down and then hit the <code>x</code> key"
+and then typing
+<pre>
+up
+down
+where
+</pre>
+in the <code>*gud-javadebug*</code> buffer
+<li> To step through the code, type <code>next</code>
+<li> To view the value of a variable, type <code>print <i>variable name</i></code>
+<br>In the example below, I typed <code>next</code> twice, and
+then viewed the value of the <code>i</code> variable:
+<pre>
+  [7] java.lang.Thread.run (Thread.java:536)
+Thread-5[1] next
+&gt; 
+Step completed: "thread=Thread-5", ptolemy.actor.lib.Ramp.iterate(), line=186 bci=17
+186    	for (int i = 0; i &lt; count; i++) {
+
+Thread-5[1] next
+&gt; 
+Step completed: "thread=Thread-5", ptolemy.actor.lib.Ramp.iterate(), line=187 bci=22
+187    	    _resultArray[i] = _stateToken;
+
+Thread-5[1] print i
+ i = 0
+Thread-5[1] 
+</pre>
+</ol>
+<p>To get further help with <code>jdb</code>, type <code>help</code>
+while in the <code>*gud-javadebug*</code> buffer.
+<br>For further information about <code>jdb</code>, see
+<a href="http://java.sun.com/javase/technologies/core/toolsapis/jpda/" target="_top">Java<SUP><FONT SIZE="-2">TM</FONT></SUP> Platform Debugger Architecture</a>.
+
+<p>For further information about the Emacs Grand Unified Debugger (GUD) Interface,
+use the GNU Emacs Info help system.
+<ol>
+<li>Click on the <code>Help</code> menu, or type <code>M-x info</code>
+<li>Move the cursor to the <code>Emacs</code> line and type a <code>m</code>
+followed by hitting the <code>Enter</code> key.
+<li>Move the cursor down to the <code>Starting GUD</code> line and
+type a <code>m</code> and hit return
+</ol>
+
+</body>
+</html>

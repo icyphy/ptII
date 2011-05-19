@@ -1,0 +1,59 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SenseToLeds" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.25E-6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 103, 834, 521}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[618, 399]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 199.5}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Elaine Cheong</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 345.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is a Ptalon version of the model in &#10;$PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWireless.xml&#10;&#10;The PtalonActor (named SenseToLeds) generates a PhotoSource and n nodes,&#10;as well as a LimitedRangeChannel for transmitting photo data.&#10;&#10;Each of the nodes runs a TinyOS program which sense the light level and displays&#10;the value in binary on the LEDs.&#10;&#10;If you look inside the PtalonActor, you can see the node(s) and PhotoSource.&#10;Move the sensor node (MicaBoard) towards/away from the PhotoSource.  &#10;When the PhotoSource is out of range, the LEDs do not change.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 140.0]">
+        </property>
+    </property>
+    <entity name="SenseToLeds" class="ptolemy.actor.ptalon.PtalonActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 90.0]">
+        </property>
+        <configure>
+            <ptalon file="ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.SenseToLeds">
+                <ptalonExpressionParameter name="channelName" value="&quot;PhotoChannel&quot;"/>
+                <ptalonExpressionParameter name="n" value="2"/>
+            </ptalon>
+        </configure>
+    </entity>
+</entity>

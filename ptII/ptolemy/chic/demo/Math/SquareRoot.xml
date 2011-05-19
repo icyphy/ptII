@@ -1,0 +1,115 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SquareRoot2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 50.0">
+        </property>
+    </property>
+    <property name="chic" class="ptolemy.chic.ChicInvoker">
+        <property name="InterfaceName" class="ptolemy.kernel.util.StringAttribute" value="synag">
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="625.0, 120.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-6, 0, 1036, 720}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 612]">
+    </property>
+    <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface MathFunction__Ramp__AbsoluteValue&#10;input .SquareRoot2.Ramp.step, .SquareRoot2.Ramp.trigger;&#10;output .SquareRoot2.MathFunction.output, .SquareRoot2.Ramp.output, .SquareRoot2.AbsoluteValue.output;&#10;&#10;state a__a__a&#10;assume (1) &#10;guarantee ((.SquareRoot2.AbsoluteValue.output=1)((.SquareRoot2.MathFunction.output=1)((.SquareRoot2.Ramp.output=0)) ) ) &#10;&#10;&#10;end&#10;">
+    </property>
+    <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sqrt">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+                <property name="sign" class="ptolemy.kernel.util.StringAttribute" value="sign">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 245.0">
+        </property>
+        <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface MathFunction&#10;&#10;input firstOperand;&#10;output output;&#10;&#10;state a&#10;assume firstOperand;&#10;guarantee output;&#10;&#10;end&#10;">
+        </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 173, 512, 347}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 245.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="99.0"/>
+<yRange min="0.0" max="0.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 245.0">
+        </property>
+        <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Ramp&#10;&#10;input step, trigger;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee !output;&#10;&#10;end">
+        </property>
+    </entity>
+    <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 245.0">
+        </property>
+        <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface AbsoluteValue&#10;&#10;input input;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee output;&#10;&#10;end&#10;">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="MathFunction.firstOperand" relation="relation3"/>
+    <link port="MathFunction.output" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="AbsoluteValue.input" relation="relation2"/>
+    <link port="AbsoluteValue.output" relation="relation3"/>
+</entity>

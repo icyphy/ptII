@@ -1,0 +1,389 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="ErrorGenerator" extends="ptolemy.domains.ptera.kernel.PteraModalModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <port name="ErrorIn" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="input"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="OkIn" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="input"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="ErrorOut" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="output"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="OkOut" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="output"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="Error" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 30.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 229, 827, 591}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 477]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 238.5}">
+        </property>
+        <property name="MeanFailureTime" class="ptolemy.data.expr.Parameter" value="200.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 30.0]">
+            </property>
+        </property>
+        <property name="FailureDuration" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 50.0]">
+            </property>
+        </property>
+        <port name="ErrorOut" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 220.0]">
+            </property>
+        </port>
+        <port name="OkOut" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 285.0]">
+            </property>
+        </port>
+        <port name="ErrorIn" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 225.0]">
+            </property>
+        </port>
+        <port name="OkIn" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
+            </property>
+        </port>
+        <entity name="init" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=0">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 70.0]">
+            </property>
+        </entity>
+        <entity name="error" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=1;&#10;  ErrorOut=1">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 250.0]">
+            </property>
+        </entity>
+        <entity name="interact" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 185.0]">
+            </property>
+        </entity>
+        <entity name="pasvError" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=1;&#10;  ErrorOut=1">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 255.0]">
+            </property>
+        </entity>
+        <entity name="ok" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=0;&#10;  OkOut=1">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 400.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4612974107904771">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.306341254733026">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="- log(1 - random()) * MeanFailureTime">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.1789504255386933">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4617754476273435">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggers" class="ptolemy.data.expr.StringParameter" value="ErrorIn, OkIn">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==0&#10;&amp;&amp; ErrorIn_isPresent">
+                <display name="condition"/>
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42302937080469905">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.658187147214215">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==1&#10;&amp;&amp; OkIn_isPresent">
+                <display name="condition"/>
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.5053197973926118">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.101408345872705">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3691676089242395">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.8860447513202603">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggers" class="ptolemy.data.expr.StringParameter" value="ErrorIn, OkIn">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==0&#10;&amp;&amp; ErrorIn_isPresent">
+                <display name="condition"/>
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.22724458090317992">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.09368217665959318">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.7157603195197797">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="FailureDuration">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation9" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4526279688533228">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="- log(1 - random()) * MeanFailureTime">
+            </property>
+            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+            </property>
+            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <link port="init.outgoingPort" relation="relation"/>
+        <link port="init.outgoingPort" relation="relation2"/>
+        <link port="error.incomingPort" relation="relation"/>
+        <link port="error.incomingPort" relation="relation3"/>
+        <link port="error.incomingPort" relation="relation9"/>
+        <link port="error.outgoingPort" relation="relation8"/>
+        <link port="interact.incomingPort" relation="relation2"/>
+        <link port="interact.incomingPort" relation="relation5"/>
+        <link port="interact.outgoingPort" relation="relation3"/>
+        <link port="interact.outgoingPort" relation="relation4"/>
+        <link port="interact.outgoingPort" relation="relation5"/>
+        <link port="interact.outgoingPort" relation="relation6"/>
+        <link port="pasvError.incomingPort" relation="relation6"/>
+        <link port="ok.incomingPort" relation="relation8"/>
+        <link port="ok.incomingPort" relation="relation4"/>
+        <link port="ok.outgoingPort" relation="relation9"/>
+    </entity>
+    <relation name="ErrorInRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="OkInRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="ErrorOutRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="OkOutRelation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ErrorIn" relation="ErrorInRelation"/>
+    <link port="OkIn" relation="OkInRelation"/>
+    <link port="ErrorOut" relation="ErrorOutRelation"/>
+    <link port="OkOut" relation="OkOutRelation"/>
+    <link port="_Controller.ErrorOut" relation="ErrorOutRelation"/>
+    <link port="_Controller.OkOut" relation="OkOutRelation"/>
+    <link port="_Controller.ErrorIn" relation="ErrorInRelation"/>
+    <link port="_Controller.OkIn" relation="OkInRelation"/>
+</class>

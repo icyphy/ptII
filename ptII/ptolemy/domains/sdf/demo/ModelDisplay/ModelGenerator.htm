@@ -1,0 +1,33 @@
+<!-- $Id$-->
+<html>
+<head>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Model Display</TITLE>
+<body>
+<h1>Model Generator</h1>
+<p>
+The model below generates a Ptolemy model by producing
+MoML text and sending it to the ModelGenerator actor.
+The <a href="ModelDisplay.htm">ModelDisplay</a> example
+modifies this model.
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+        <applet 
+            code = "ptolemy.vergil.MoMLViewerApplet" 
+            codebase = "../../../../.." 
+            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" 
+            width = "750" 
+            height = "650" 
+            > 
+            <param name="NAME" value="ModelGenerator" > 
+	    <param name="background" value="#ffffff" > 
+	    <param name="controls" value="buttons" > 
+	    <param name="includeRunPanel" value="true" > 
+	    <param name="modelURL" value="ModelGenerator.xml" > 
+            <a href="ModelGenerator.xml">MoML specification for this model.</a> 
+        </applet> 
+</center>
+</body>
+</html>

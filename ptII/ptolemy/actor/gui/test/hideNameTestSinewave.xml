@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="hideNameTestSinewave" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="viewer" class="ptolemy.vergil.basic.DocViewerFactory">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="-50" y="-20" width="100" height="20" style="fill:yellow"></rect>
+        <text x="-40" y="-5" style="font-size:12; font-family:SansSerif; fill:black">Documentation</text>
+      </svg>
+            </configure>
+        </property>
+    </property>
+</class>

@@ -1,0 +1,37 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Spectrum</TITLE>
+<LINK href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<H1>Spectrum of a Modulated Sinusoid</H1>
+<p>This model illustrates calculation and display of the spectrum of a
+modulated sinusoid with noise.
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Spectrum is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Spectrum.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="SpectrumVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model shows a simple periodogram spectral estimate of a
+modulated sinusoid in noise. The top-level parameters control
+the carrier frequency, the signal frequency, and the noise
+level. Notice that the two peaks are centered at the carrier
+frequency, with their distance from the carrier given by the
+signal frequency. The sample rate is assumed to be 8kHz.</p>
+</BODY>
+</HTML>

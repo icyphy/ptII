@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="directory">
+  <entity name="doc" class="ptolemy.actor.gui.HTMLEffigy">
+    <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
+      <!-- If you adjust the size, be sure to try it under Java 1.5 -->
+      <property name="size" value="[600, 220]"/>
+      <property name="url" value="ptolemy/configs/fullViewer/intro.htm"/>
+    </entity>
+  </entity>
+</entity>

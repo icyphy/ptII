@@ -1,0 +1,154 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LinearDifferenceEquationSystem" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[75, 102]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 50.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={263, 241, 874, 568}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.5, 225.0}">
+    </property>
+    <entity name="LinearDifferenceEquationSystem" class="ptolemy.actor.lib.LinearDifferenceEquationSystem">
+        <property name="A" class="ptolemy.data.expr.Parameter" value="[-0.1, 0.1; 0.0, 0.5]">
+        </property>
+        <property name="B" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0; 0.0, 1.0]">
+        </property>
+        <property name="C" class="ptolemy.data.expr.Parameter" value="[0.5, 0.5]">
+        </property>
+        <property name="D" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+        </property>
+        <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[1.0; 1.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 115.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="1:Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 215.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 2.25, 2.4, 2.4725, 2.509, 2.527225, 2.53634, 2.54089725, 2.5431759, 2.5443152225}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 45.0">
+        </property>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.05, 1.07, 1.0805, 1.0857, 1.088305, 1.089607, 1.09025805, 1.09058357}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 220.0">
+        </property>
+    </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.5, 1.75, 1.875, 1.9375, 1.96875, 1.984375, 1.9921875, 1.99609375, 1.998046875}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 385.0">
+        </property>
+    </entity>
+    <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 305.0">
+        </property>
+    </entity>
+    <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 180.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 180.0">
+        </property>
+    </entity>
+    <entity name="MatrixToSequence" class="ptolemy.domains.sdf.lib.MatrixToSequence">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 280.0]">
+        </property>
+    </entity>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="LinearDifferenceEquationSystem.input" relation="relation"/>
+    <link port="LinearDifferenceEquationSystem.output" relation="relation8"/>
+    <link port="LinearDifferenceEquationSystem.state" relation="relation3"/>
+    <link port="Const.output" relation="relation15"/>
+    <link port="1:Const.output" relation="relation14"/>
+    <link port="Test.input" relation="relation8"/>
+    <link port="Test9.input" relation="relation10"/>
+    <link port="Test12.input" relation="relation11"/>
+    <link port="Distributor.input" relation="relation2"/>
+    <link port="Distributor.output" relation="relation10"/>
+    <link port="Distributor.output" relation="relation11"/>
+    <link port="Commutator.input" relation="relation14"/>
+    <link port="Commutator.input" relation="relation15"/>
+    <link port="Commutator.output" relation="relation13"/>
+    <link port="DoubleToMatrix.input" relation="relation13"/>
+    <link port="DoubleToMatrix.output" relation="relation"/>
+    <link port="MatrixToSequence.input" relation="relation3"/>
+    <link port="MatrixToSequence.output" relation="relation2"/>
+</entity>

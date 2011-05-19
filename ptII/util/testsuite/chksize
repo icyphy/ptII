@@ -1,0 +1,4 @@
+#! /bin/sh
+# Invoke util.testsuite.CheckSize to check for size problems in .xml files
+
+$PTII/bin/ptinvoke ptolemy.actor.gui.CheckModelSize $@

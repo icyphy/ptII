@@ -1,0 +1,150 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1806, 107, 819, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 514]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{266.10101010101, 250.1565656565656}">
+    </property>
+    <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 130.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="TaskExecutionMonitor" class="ptolemy.apps.apes.TaskExecutionMonitor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 40.0]">
+        </property>
+    </entity>
+    <entity name="ISR_A" class="ptolemy.apps.apes.InterruptServiceRoutine">
+        <property name="triggerTarget" class="ptolemy.data.expr.StringParameter" value="CTaskA">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 325.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+    </entity>
+    <entity name="ISR_B" class="ptolemy.apps.apes.InterruptServiceRoutine">
+        <property name="triggerTarget" class="ptolemy.data.expr.StringParameter" value="CTaskB">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 400.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+    </entity>
+    <entity name="ISR_C" class="ptolemy.apps.apes.InterruptServiceRoutine">
+        <property name="triggerTarget" class="ptolemy.data.expr.StringParameter" value="CTaskC">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 470.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="16.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 8.0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="16.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 9.0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="Clock3" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="8.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0,6.0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 470.0]">
+        </property>
+    </entity>
+    <entity name="CTaskB" class="ptolemy.apps.apes.demo.CTaskB">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 195.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </entity>
+    <entity name="CTaskC" class="ptolemy.apps.apes.demo.CTaskC">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 270.0}">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+    </entity>
+    <entity name="CTaskA" class="ptolemy.apps.apes.demo.CTaskA">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 125.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </entity>
+    <entity name="OSEK_API" class="ptolemy.apps.apes.OSEKActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 210.0]">
+        </property>
+    </entity>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <link port="ISR_A.input" relation="relation14"/>
+    <link port="ISR_B.input" relation="relation12"/>
+    <link port="ISR_C.input" relation="relation15"/>
+    <link port="Clock.output" relation="relation14"/>
+    <link port="Clock2.output" relation="relation12"/>
+    <link port="Clock3.output" relation="relation15"/>
+</entity>

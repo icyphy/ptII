@@ -1,0 +1,13 @@
+<group>
+    <!-- Use a custom graph editor with a DatabaseManager already in it. -->
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="Database Manager"
+                  class="ptolemy.actor.lib.database.DatabaseManager">
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          </property>
+        </entity>
+      </entity>
+    </entity>
+</group>

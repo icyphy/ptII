@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     @PTII_LOCALURL@.
+-->
+<!-- href is needed so that web start can cache the app and
+     it will appear in the desktop icon
+-->
+<jnlp codebase="@PTII_LOCALURL@"
+      href="@PTII_LOCALURL@/vergilSpace.jnlp"> 
+  <information>
+	  <title>Ptolemy II @PTVERSION@, Space Edition </title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description kind="tooltip">Office Space Runtime Release of the Simulation Environment</description>
+	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <homepage href="@PTII_LOCALURL@"/>
+	  <offline-allowed/>
+  </information>
+  <security> 
+        <all-permissions/> 
+  </security> 
+  <resources>
+        <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
+  	<j2se version="1.6+" max-heap-size="128m" />
+	<!-- Start Jars -->
+	<!-- End Jars -->
+  </resources>
+  <application-desc main-class="ptolemy.actor.gui.jnlp.SpaceApplication">
+	<argument>-space</argument>
+	<argument>-run</argument>
+	<argument>ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml</argument>
+  </application-desc>
+</jnlp>

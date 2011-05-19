@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Random" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Actors that generate random data.</doc>
+
+        <entity name="BandlimitedNoise"
+                class="ptolemy.domains.continuous.lib.BandlimitedNoise"/>
+
+        <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+	  <doc>Create a sequence of bernoulli random variables</doc>
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+	</entity>
+
+        <entity name="ContinuousSpectrum"
+                class="ptolemy.domains.continuous.lib.ContinuousSpectrum"/>
+
+	<entity name="DiscreteRandomSource"
+	        class="ptolemy.actor.lib.DiscreteRandomSource">
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+	</entity>
+
+	<entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+	  <doc>Create a sequence of gaussian random variables</doc>
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+	</entity>
+
+        <entity name="Noise"
+                class="ptolemy.domains.continuous.lib.Noise"/>
+
+	<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+	  <doc>Create a sequence of uniformly distributed random numbers</doc>
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+	</entity>
+
+
+      </group>
+    ?>
+  </configure>
+</entity>

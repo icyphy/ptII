@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="StringParameterDialogBug" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
+    <property name="p1" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 100}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="center" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3915&#10;&#10;           Summary: The error dialogue won't go away.&#10;           Product: Kepler&#10;           Version: 1.x dev&#10;          Platform: Other&#10;        OS/Version: All&#10;            Status: NEW&#10;          Severity: normal&#10;          Priority: P1&#10;         Component: general&#10;        AssignedTo: berkley@nceas.ucsb.edu&#10;        ReportedBy: jianwu@sdsc.edu&#10;         QAContact: kepler-dev@kepler-project.org&#10;&#10;&#10;Workflow: There are two composite actors, one called CompositeActor1 on the top&#10;level, another called CompositeActor2, in CompositeActor1. There are two String&#10;Parameters: one called p1 on the top level, another called p2 with value&#10;'$p1/l', in CompositeActor1. p2 is used in actors in CompositeActor1, such as&#10;expression, file open.&#10;&#10;Steps: &#10;1) Open the whole workflow,&#10;2) Open CompositeActor1,&#10;3) Open CompositeActor2,&#10;4) Close CompositeActor2,&#10;5) Delete CompositeActor2,&#10;6) Change the value of p1.&#10;&#10;There will be an error saying that: &quot;Error evaluating expression: $p1/l in&#10;.CompositeActor2.p2 Because The ID p1 is undefined.&quot;&#10;&#10;There is no way to close the error except closing Kepler by force, which will&#10;lost all unsaved modification.&#10;&#10;I found the bug with Kepler version 16865 and ptolemy version 52661, but I&#10;think this bug is always there.&#10;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 205}">
+        </property>
+    </property>
+    <entity name="CompositeActor1" class="ptolemy.actor.TypedCompositeActor">
+        <property name="p3" class="ptolemy.data.expr.Parameter" value="$p1/l">
+	       <property name="_stringMode" class="ptolemy.kernel.util.Attribute"/>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 130.0]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 40.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
+            <property name="p2" class="ptolemy.data.expr.Variable" value="$p1/j">
+	       <property name="_stringMode" class="ptolemy.kernel.util.Attribute"/>
+	       <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+		 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+		 </property>
+	       </property>
+	       <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+	       </property>
+	       <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 100}">
+	       </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+        </entity>
+    </entity>
+</entity>

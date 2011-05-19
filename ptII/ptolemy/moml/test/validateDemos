@@ -1,0 +1,17 @@
+#!/bin/sh
+# $Id$
+
+# Valididate all the demos listed in ptolemy/configs/doc/completeDemos.htm
+# See $PTII/ptolemy/configs/doc/validDemos.tcl for a Tcl test
+
+tmpDemo=/tmp/validateDemos$$.xml
+export CLASSPATH=$PTII
+allDemos=`cat $PTII/ptolemy/configs/doc/models.txt`
+for demo in $allDemos
+do
+	demo=$PTII/`echo $demo | sed 's@\$CLASSPATH@@'`
+	echo $demo
+	$PTII/ptolemy/moml/test/removeconfigure $demo > $tmpDemo
+	xmllint --valid --dtdvalid ../MoML_1.dtd --noout $tmpDemo
+done
+rm -f $tmpDemo

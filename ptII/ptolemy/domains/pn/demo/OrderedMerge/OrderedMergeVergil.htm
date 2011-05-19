@@ -1,0 +1,49 @@
+<!-- $Id$
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Process Network Demo</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Process Network Demo</H1>
+<P>Calculate all multiples of 2, 3, and 5, with no redundancies.</p>
+<CENTER>
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.jar,ptolemy/data/data.jar,ptolemy/domains/pn/pn.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.jnlp">
+<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer OrderedMerge.xml">
+  <PARAM NAME = "NAME" VALUE = "OrderedMerge" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "OrderedMerge.xml" > \
+  <a href="OrderedMerge.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</CENTER>
+</p>
+<p>
+This model, whose structure is due to Kahn and MacQueen, calculates
+integers whose prime factors are only 2, 3, and 5, with no
+redundancies.  It uses the OrderedMerge actor, which takes two
+monotonically increasing input sequences and merges them into one
+monotonically increasing output sequence.
+
+<p>In the PN domain, each actor executes
+in its own Java thread. That thread
+iteratively reads inputs, performs
+computation, and produces outputs.</p>
+
+</BODY>
+</HTML>

@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Library of generic utilities such as annotations, visible   -->
+<!-- parameters, and other items that might appear in any model. -->
+<!-- Note that this library is included in modal models as part  -->
+<!-- of its custom library.  -->
+<property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+</property>

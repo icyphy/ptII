@@ -1,0 +1,48 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<Title>Live Plot</Title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Live, Animated Plot</h1>
+
+The following plot illustrates a dynamically updated plot:
+ <APPLET 
+ code = "ptolemy.plot.demo.PlotLiveDemoApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/plotapplet.jar,ptolemy/plot/demo/demo.jar" 
+ width = "400" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<p>Click on the stop button to stop the plotting.  The animation on this
+plot has been slowed down for visual aesthetics.  On a reasonable
+computer, plotting is quite fast.
+
+<p>Such a plot is created by defining a class derived from
+<a href="../../../doc/codeDoc/ptolemy/plot/PlotLive.html">PlotLive</a>
+(which is abstract).  The example shown here is the
+<a href="PlotLiveDemo.java">PlotLiveDemo</a> class.
+It defines two methods, init() and addPoints().  The init() method
+sets static properties of the plot (title, labels, etc.)  while the
+addPoints() method is called repeatedly from the body of the run()
+method in the parent class.
+
+<p>There are still some problems with PlotLive.  The most
+annoying is that this class uses the "exclusive or" drawing mode to
+allow it to easily erase old points as it adds new ones.  This mode,
+however, introduces a number of artifacts in the graph.  In
+particular, if marks are made at the plotted points, and lines are
+drawn between points, the lines effectively erase the marks where they
+intersect.  Moreover, if lines or points overlap, they erase each
+other. In the future we hope to replace this mechanism with one that
+treats marks on the screen as graphical objects.
+
+<p>&nbsp;
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Adding An Actor to Ptolemy II</title>
+</head>
+<body>
+<H1>Adding An Actor to Ptolemy II</H1>
+Below are instructions for adding an actor to Ptolemy II
+and making it visible in Vergil.  
+ <p>Chapter 5, "Designing Actors," of
+the Volume 1: Introduction to Ptolemy II of the
+Ptolemy II Design Document at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm</CODE></a>
+discusses how to design actors, but the design document does
+not discuss compiling the actor and adding it to Vergil.  The reason
+for this omission is because we are hoping to eventually have a cleaner
+method for adding actors.  The text below is a how-to guide for
+the current environment.
+
+
+<p>There are at least two ways to add an actor:
+<ul>
+<li><a href="#instantiate">Instantiating an actor and saving it the user library</a>
+<li><a href="#editingFiles">Creating a new actor by editing files</a>
+</ul>
+<h2><a name="instantiate">Instantiating an actor and saving it the user library</a></h2>
+If you have already compiled your actor, you can instantiate it using
+Graph -&gt; InstantiateEntity.
+<p>To add it to the user library, right click and select "Save Actor
+in Library"
+<p>See "Sharing Actors Across Models" in the <a
+href="../design/usingVergil/usingVergil.pdf">Using Vergil</a> document.
+
+<h2><a name="editingFiles">Creating a new actor by editing files</a></h2>
+ <p> For this example, we are going to take the Ramp actor
+and change the default step from <CODE>1</CODE> to <CODE>2</CODE>.
+The new actor will be called Ramp2.
+
+<p> The instructions below assume that you have installed
+the Java Development Kit (JDK), which includes the <CODE>javac</CODE>
+binary, that you have a <CODE>make</CODE> binary and other tools installed,
+that Ptolemy II has been installed, and that <CODE>$PTII/configure</CODE>
+and <CODE>make</CODE> have been run.  For details about the
+installation process, see
+<a href="../install.htm"><CODE>$PTII/doc/install.htm</CODE></a>
+ <p>Under Windows XP with JDK1.4 and Cygwin, to do the setup, I did:
+<pre>
+bash-2.04$ PTII=c:/ptII4.0
+bash-2.04$ export PTII
+bash-2.04$ cd "$PTII"
+bash-2.04$ ./configure
+bash-2.04$ make fast &gt;&amp; make.out
+</pre>
+Configure and make usually generate a few warnings.
+
+ <p>Below are the steps necessary to add an actor:
+<ol>
+
+<li> Create the new <CODE>.java</CODE> file that implements your actor:
+	<ol>
+	<li> In this case, we are just copying a <CODE>Ramp.java</CODE> to
+	<CODE>Ramp2.java</CODE>
+	<pre>
+	cd $PTII/ptolemy/actor/lib	
+	cp -p Ramp.java Ramp2.java
+	</pre>
+	Note that if we had copied our java code from a <i>different
+	directory</i>, we would also have to change the package
+	statement (usually near line 31) in the java code.
+	This is good to keep in mind since
+	there is no error message to clue you in to this particular error.<p>
+	
+	<li> Edit <CODE>Ramp2.java</CODE> and change:
+	<menu>
+<li> <pre>
+public class Ramp extends SequenceSource {
+</pre>
+to
+<pre>
+public class Ramp<B>2</B> extends SequenceSource {
+</pre>
+
+<li> <pre>
+    public Ramp(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+</pre>
+to
+<pre>
+    public Ramp<B>2</B>(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+</pre>
+
+<li> <pre>
+        step.setExpression("1");
+</pre>
+to
+<pre>
+        step.setExpression("<B>2</B>");
+</pre>
+
+<li> <pre>
+        Ramp newObject = (Ramp)super.clone(workspace);
+</pre>
+to
+<pre>
+        Ramp<B>2</B> newObject = (Ramp<B>2</B>)super.clone(workspace);
+</pre>
+
+</menu>
+	</ol>
+
+<li> Edit the <CODE>$PTII/ptolemy/actor/lib/makefile</CODE>
+and add <CODE>Ramp2.java</CODE> to the value of <CODE>JSRCS</CODE>.
+A good place for this is just after the <CODE>Ramp.java \</CODE>
+line:
+<pre>
+	Quantizer.java \
+	Ramp.java \
+	RandomSource.java \
+</pre>
+<pre>
+	Quantizer.java \
+	Ramp.java \
+	<B>Ramp2.java \</B>
+	RandomSource.java \
+
+</pre>
+This step is not strictly necessary, but it is good programming
+practice to put all source files in the makefile.
+Another reason we add it to the makefile is so that our new actor
+will be included in the <CODE>lib.jar</CODE> file.<p>
+
+<li> Run <CODE>make</CODE> in the <CODE>$PTII/ptolemy/actor/lib</CODE>
+directory (which is where you should already be).  <CODE>make</CODE>
+will descend into the subdirectories and compile any needed files
+and eventually run
+<pre>
+rm -f `basename Ramp2.java .java`.class
+CLASSPATH="../../.." "/cygdrive/c/j2sdk1.4.2_06/bin/javac" -g -O Ramp2.java
+</pre>
+and <CODE>Ramp2.class</CODE> will be produced.<p>
+
+<li> Edit <CODE>$PTII/ptolemy/actor/lib/sequencesources.xml</CODE>
+and add Ramp2 just after the lines for Ramp
+ <br>Change:
+<pre>
+&lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
+&lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
+&lt;/entity&gt;
+
+&lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
+
+</pre>
+To:
+<pre>
+&lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
+&lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
+&lt;/entity&gt;
+
+<B>&lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
+&lt;doc&gt;Create a sequence of tokens with increasing value 2&lt;/doc&gt;
+&lt;/entity&gt;
+</B>
+&lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
+
+</pre>
+
+<li> Start up Vergil.
+<pre>
+bash-2.04$ vergil
+</pre>
+
+If this does not work, you may not have created an alias for vergil.
+Try specifying the full path name, like this.
+
+<pre>
+bash-2.04$ "$PTII/bin/vergil"
+</pre>
+
+<li> In Vergil, click on
+<code>File</code> -&gt; <code>New</code> -&gt; <code>Graph
+Editor</code><p>
+
+<li> In the Graph Editor window, click on <code>actor
+library</code> -&gt; <code>sources</code> -&gt; <code>SequenceSources</code.
+The Ramp2 actor will appear. <p>
+
+<li>  To test the Ramp2 actor:
+<ol>
+<li> Drag the Ramp2 actor over to the main canvas on the right
+
+<li> Clock on <code>actor library</code> -&gt; <code>sinks</code> 
+-&gt; <code>GenericSinks</code>
+and drag a Display actor over to the main canvas
+
+<li> Connect the two actors by left clicking on the output
+of the ramp2 actor and dragging over to the input of the Display actor
+
+<li> Select <code>director library</code> -&gt; <code>SDF</code> and
+drag the SDF director over to the right window
+
+<li> Select <code>View</code> -&gt; <code>Run</code> and change the
+number of iterations from <CODE>0</CODE> to <CODE>10</CODE>, then hit
+the Run button.
+
+<li> You should see the numbers from 0 to 18 in the display
+
+</ol>
+
+
+</ol>
+
+<h2>Adding a new palette</h2>
+
+ <p>To add a new set of actors, we first create a .xml file
+that lists the actor.  In this case, the file
+is called <CODE>$PTII/ptolemy/actor/lib/myactors.xml</CODE>,
+and it contains one actor, <CODE>Ramp2</CODE>:
+
+
+<pre>
+&lt;?xml version="1.0" standalone="no"?&gt;
+&lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;entity name="myactors" class="ptolemy.moml.EntityLibrary"&gt;
+  &lt;configure&gt;
+    &lt;?moml
+      &lt;group&gt;
+&lt;doc&gt;My Actors&lt;/doc&gt;
+&lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
+&lt;doc&gt;Create a sequence of tokens with increasing value of 2&lt;/doc&gt;
+&lt;/entity&gt;
+
+      &lt;/group&gt;
+    ?&gt;
+  &lt;/configure&gt;
+&lt;/entity&gt;
+
+</pre>
+Below we discuss two ways of adding the configuration:
+<ol>
+<li>Adding a palette to the user configuration
+<br>Easier to do, works with the Windows installer version,
+makes your new palette visible in all configurations
+
+<li>Adding a palette to the default configuration
+<br>Harder to do, but useful for developers
+</ol>
+
+<h3>Adding a palette to the user configuration</h3>
+When vergil starts up, it opens the user library, which is located
+at <code>$HOME/.ptolemyII/UserLibrary</code>.
+
+<p>Under Windows XP, <code>$HOME</CODE> might be found at
+ <code>c:/Documents and Settings/<i>yourlogin</i></code>, so
+the UserLibrary.xml file would be at
+ <code>c:/Documents and Settings/<i>yourlogin</i>/.ptolemyII/UserLibrary.xml</code>
+<p>Edit UserLibrary.xml and change:
+<pre>
+&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"/&gt;
+</pre>
+to:
+<pre>
+&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"&gt;
+&lt;group&gt;
+  &lt;input source="ptolemy/actor/lib/myactors.xml"/&gt;
+&lt;/group&gt;
+&lt;/entity&gt;
+</pre>
+Note that you must remove the slash in the first line:
+<pre>
+&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"<b>/</b>&gt;
+</pre>
+becomes:
+<pre>
+&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"&gt;
+</pre>
+<p>After changing UserLibrary.xml, restart vergil and the myactors
+sub-palette will appear under UserLibrary.
+
+<h3>Adding a palette to the default configuration</h3>
+The palette on the left side of the Graph editor lists the utilities,
+directors and actors available for use in Vergil.
+
+ <p>The palette and menus are determined by configuration files.
+
+<p>The default configuration for <code>$PTII/bin/vergil</code> is located at
+<a href="../../ptolemy/configs/full/configuration.xml"><CODE>$PTII/ptolemy/configs/full/configuration.xml</CODE></a>.
+(For further information about how the configuration is specified, see the
+<a href="../codeDoc/ptolemy/vergil/VergilApplication.html">VergilApplication
+class documentation</a>.)
+
+<p><a href="../../ptolemy/configs/full/configuration.xml"><CODE>$PTII/ptolemy/configs/full/configuration.xml</CODE></a>.  
+includes
+<a href="../../ptolemy/configs/defaultFullConfiguration.xml"><CODE>$PTII/ptolemy/configs/defaultFullConfiguration.xml</CODE></a>.  
+Eventually, we includ
+<a href="../../ptolemy/configs/basicActorLibrary.xml"><CODE>$PTII/ptolemy/configs/basicActorLibrary.xml</CODE></a>.  
+
+We want to add our new palette, <code>myactors.xml</code>,
+to the actor library palette so we will add <code>myactors.xml</code> to
+<CODE>$PTII/ptolemy/configs/basicActorLibrary.xml</CODE>.
+Note that we want our new palette to be a sub pallet of the actor
+library palette, just as the sources palette is.  The
+<CODE>input</CODE> statements below do not cause the palette
+named by the <code>source</code> parameter
+to be a sub palette.  Sub-paletting is caused by the
+<CODE>entity</CODE> statement in the 4th line of your myactors.xml
+file.
+
+ <p>In <CODE>ptolemy/configs/basicActorLibrary.xml</CODE> we change
+<pre>
+            &lt;input source="ptolemy/actor/lib/sources.xml"/&gt;
+</pre>
+to:
+<pre>
+            <b>&lt;input source="ptolemy/actor/lib/myactors.xml"/&gt;</b>
+            &lt;input source="ptolemy/actor/lib/sources.xml"/&gt;
+</pre>
+
+Then restart vergil, and your myactors sub-palette will appear under
+'actor library'.
+
+</body>
+</html>

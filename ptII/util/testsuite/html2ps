@@ -1,0 +1,600 @@
+#!/bin/sh
+# the next line restarts using tclsh \
+exec tclsh "$0" "$@"
+
+# Convert html files to PostScript by using netscape
+#
+# @Author: Christopher Hylands
+#
+# @Version: $Id$
+#
+# @Copyright (c) 1996-2005 The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the above
+# copyright notice and the following two paragraphs appear in all copies
+# of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+#                                        PT_COPYRIGHT_VERSION_2
+#                                        COPYRIGHTENDKEY
+#######################################################################
+
+#
+# html2ps uses netscape to convert a tree of html files to one PostScript
+# file.  Usage:
+# 	html2ps htmlfile PostScriptfile
+# For example, the following will read in index.html and produce a
+# PostScript file that contains index.html and all the local html files
+# referred to by index.html.
+# 	html2ps index.html index.ps
+
+# This script is used to convert javadoc html output to pdf
+# so that we can print it out in 2up format.  Ideally javadoc would
+# do this for us.
+# One method would be to use the mif doclet to generate mif javadoc
+# output and then use something like a mif2ps script to generate
+# PostScript.  However, this would require that Frame was installed
+# on the local machine and require some scripting work under Windows
+#
+# Potentially useful links:
+# http://www.geocities.com:0080/SiliconValley/5682/postscript.html
+#                                          - PostScript utilities
+# http://www.tdb.uu.se/~jan/html2psug.html - perl html2ps
+# http://www.easysw.com/htmldoc/           - $99 html2ps utility
+
+# This file can be used as a standalone script, without all of tycho,
+# so it includes ::tycho::expandPath
+
+# Create the tycho namespace
+namespace eval ::tycho {}
+
+#####################################################################
+#### psConcat
+# Concatenate a bunch of PostScript files into one file.
+# This probably only works with PostScript produced by netscape.
+# Typical usage is:
+# psConcat out.ps [glob *.html]
+#
+proc psConcat { outfile files} {
+    # Flag that is set to true if we have the header
+    set haveHeader 0
+    # Page count
+    set pageNum 1
+
+    # The idea is that we read in the header of the first file and copy
+    # it to the output.  Then we copy the body of the first file,
+    # but skip the %%EOF
+    # Then, for each successive file, we copy the body of the file
+    # and increment the page count
+
+    set outfd [open $outfile w]
+    foreach infile $files {
+        set sawEndProlog 0
+	if [catch {set infd [open $infile r]} errmsg] {
+	    puts "failed to open $infile:\n $errmsg"
+	    continue
+	}
+        while {![eof $infd]} {
+            set line [gets $infd]
+            if !$haveHeader {
+		# Print out the header
+                puts $outfd $line
+                if [regexp {%%EndProlog} $line] {
+                    set haveHeader 1
+                    set sawEndProlog 1
+                }
+            } elseif [regexp {%%EndProlog} $line] {
+                set sawEndProlog 1
+            } elseif $sawEndProlog {
+                if {[regexp {%%Page} $line ]} {
+                    puts $outfd "%%Page: $pageNum $pageNum"
+                    incr pageNum
+                } elseif {![regexp {%%EOF} $line ]} {
+                    puts $outfd $line
+                }
+            }
+        }
+        close $infd
+    }
+    puts $outfd "%%EOF"
+    close $outfd
+}
+
+########################################################################
+#### expandPath
+# Expand a filename, returning an absolute filename with the complete path.
+# The argument might begin with an environment variable, a
+# global Tcl variable, or a reference to a user's home directory. If
+# the argument begins with a dollar sign ($), then everything up to
+# the first slash is taken to be a variable name.  If an environment
+# variable exists with that name, then the dollar sign and the variable
+# name are replaced with the value of the environment variable. For
+# example, if the value of of the environment variable TYCHO is
+# /usr/tools/tycho, then
+# <pre>
+#     ::tycho::expandPath \$TYCHO/tmp
+# </pre>
+# returns /usr/tools/tycho/tmp. If there is no such environment
+# variable, but a global Tcl variable with the given name exists, then
+# the value of that variable is substituted. If no such variable is
+# defined as well, then an error is reported. Similarly, "~user/foo"
+# will be expanded (on Unix systems) to "/users/user/foo", assuming
+# that "user" has his or her home directory at "/users/user". If there
+# is no user named "user", or we are not on a Unix system, then an
+# error is reported. In all cases, any extra spaces at the beginning or
+# the end of the given path are removed. Moreover, filenames are
+# normalized before being returned. Symbolic links are followed, as are
+# fields in the path like "/../". Thus, any two references to the same
+# path should return the same string.
+#
+# Formerly, this procedure was in File.itcl, but it was moved so that it
+# could be used in scripts that use itclsh, which does not have windows.#
+#
+proc ::tycho::expandPath { path } {
+    set path [string trim $path]
+    if {[string first \$ $path] == 0} {
+        global ::env
+        set slash [string first / $path]
+        if {$slash > 0} {
+            set envvar [string range $path 1 [expr {$slash-1}]]
+        } {
+            set envvar [string range $path 1 end]
+        }
+        if [info exists env($envvar)] {
+            set envval $env($envvar)
+        } elseif [uplevel #0 info exists $envvar] {
+            global $envvar
+            set envval [set $envvar]
+        } else {
+            # No such variable.
+            error "No such variable: $envvar"
+        }
+        if {$slash > 0} {
+            set path [format "%s%s" $envval [string range $path $slash end]]
+        } {
+            set path $envval
+        }
+    } elseif {[string first ~ $path] == 0} {
+        if [catch {set path [glob $path]}] {
+            # glob failed. Possibly the file does not exist.
+            set dir [file dirname $path]
+            if [catch {set dir [glob $dir]}] {
+                error "Directory does not exist: $dir"
+            }
+            set tail [file tail $path]
+            set path "$dir/$tail"
+        }
+    }
+    # Get a consistent filename using "cd".  Note that this may not work
+    # on non-Unix machines.  The catch is in case the directory does not
+    # exist.
+    catch {
+        set savedir [pwd]
+        # If the filename itself is a directory, normalize it
+        if [file isdirectory $path] {
+            cd $path
+            set path [pwd]
+        } {
+            cd [file dirname $path]
+            set path [format "%s/%s" [pwd] [file tail $path]]
+        }
+        cd $savedir
+    }
+    return $path
+}
+
+#####################################################################
+#### htmlGetTitle
+# Return the HTML title of a file, if it exist.
+# If it does not contain a title, then return the empty string
+#
+proc htmlGetTitle {htmlfile} {
+    set fd [open $htmlfile r]
+    while {![eof $fd]} {
+	set line [gets $fd]
+        if [regexp -nocase {<title>(.*)} $line dummy tag ] {
+	    close $fd
+	    if [regexp -nocase {(.*)</title>} $tag dummy newtag ] {
+		return $newtag
+	    } else {
+		return $tag
+	    }
+	}
+    }
+    close $fd
+    return {}
+}
+
+##############################################################################
+#### rm
+# Remove a file
+# FIXME: In tcl7.6, this should go away
+#
+proc ::tycho::rm { args } {
+    global tcl_platform
+    if { $tcl_platform(platform) != "windows" } {
+	# Unix-ism
+	eval exec rm $args
+    }
+}
+
+#####################################################################
+#### html2ps
+# Use netscape to convert html to PostScript
+# Typical Usage:
+# <tcl><pre>
+# html2ps [glob $TYCHO/doc/*html]
+# </pre></tcl>
+#
+proc html2ps {filelist} {
+    set numfiles [llength $filelist]
+    foreach file $filelist {
+	# count down to 0 to give the user something to look at
+	puts -nonewline " $numfiles"
+	incr numfiles -1
+	flush stdout
+
+	# If the file starts with 'http', then just open it
+	# If the file starts with a slash '/', then prepend file://
+	# If the file starts with anything else, then prepend file:///$PWD/
+	switch -regexp -- $file \
+		^http {set urlfile $file} \
+		^/ {set urlfile "file://$file"} \
+		default {set urlfile "file://[pwd]/$file"}
+
+	# File to save as.  If we don't specify a absolute path,
+        # then the ps file will end up in either the the directory where
+        # netscape started, or the home directory
+        switch -regexp -- $file \
+                ^http {set printfile "[file tail $file].ps"} \
+                ^/ {set printfile "$file.ps"} \
+		default {set printfile "[pwd]/$file.ps"}
+
+        #puts "$urlfile $printfile"
+	if [catch {exec netscape -remote "openURL($urlfile)"} errMsg ] {
+		puts "\nCall to netscape failed to \nopen `$urlfile',\n\
+			 perhaps netscape is not running?:\n $errMsg\n\
+			 About to try starting netscape by hand."
+		exec netscape &
+		#FIXME: we should do this with the tcl clock command
+		exec sleep 10
+
+	}
+	if [catch {exec netscape -remote "saveas($printfile,PostScript)"} \
+		errMsg] {
+		puts "Call to netscape to saveas `$printfile' failed:\n$errMsg"
+	}
+    }
+}
+
+#####################################################################
+#### htmlByDir
+# Given a list of directories, return a list of all the html files.
+# If there is an index.html file present in a directory, then we place that
+# at the front of the list of files in that directory.
+#
+# A good way to find html directories is:
+# find . \( -name html_library -o -name -o -name adm -o -name codeDoc -o -name devel -o -name itclhtml \) -prune -o -name "*.htm*" -exec dirname {} \; | sort -u
+#
+proc htmlByDir {htmldirlist} {
+
+    global filesSeen
+
+    if {[llength $htmldirlist] == 0 } {
+	error "html2ps: internal error, htmlByDir was passed an empty list"
+    }
+
+    foreach htmldir $htmldirlist {
+	set dircontents [glob -nocomplain \
+		[file join $htmldir *.html] \
+		[file join $htmldir *.htm]]
+
+	# Place index.htm* at the start of the list of files for this dir
+	set indexindex [lsearch -regexp $dircontents {.*index.htm(l)?}]
+	if { $indexindex == -1 } {
+	    lappend filesSeen $dircontents
+        } else {
+	    set index [lindex $dircontents $indexindex]
+	    puts "Processing $index"
+	    cd [file dirname $index]
+	    lappend filesSeen [::tycho::expandPath $index]
+	    htmlLinks $index 0 {} 0
+	    #set dircontents [lreplace $dircontents $indexindex $indexindex]
+	    #lappend filesSeen $index $dircontents
+	}
+
+    }
+    set filesSeen [join $filesSeen]
+}
+
+#####################################################################
+#### htmlLinks
+# Given a html file, return a list of the links
+#
+proc htmlLinks {htmlfile {depth 0} {dagfd {}} {recurse 1}} {
+    global filesSeen
+
+    if {$depth > 100} {
+        error "htmlLinks reached a maximum depth of $depth\n\
+                filesSeen was: $filesSeen"
+    }
+
+    set taglist {}
+    # Read in the index file, generate list of links
+    set fd [open $htmlfile r]
+    while {![eof $fd]} {
+        set line [gets $fd]
+        # FIXME: this could be fooled if the <A is not on the same line
+        # as the HREF.
+        if [regexp {<[Aa] [Hh][Rr][Ee][Ff]="([^\"#]*)[^\"]*"} $line dummy tag ] {
+            switch -regexp -- $tag \
+                    {^/} { lappend taglist [::tycho::expandPath $tag]} \
+                    {^\.\.} { lappend taglist [::tycho::expandPath [file dirname $htmlfile]/$tag]} \
+                    {^(http|mailto)} { lappend taglist $tag} \
+                    default { lappend taglist [::tycho::expandPath $tag]}
+        }
+    }
+    close $fd
+
+    #puts "dbg: $htmlfile: $taglist"
+
+    set codeDocRegexp {/codeDoc/}
+    #set codeDocRegexp {/snartlyfarbleblast/}
+
+    foreach tag $taglist {
+	# Only search tags that we have not seen, are .html files
+	# and are not codeDoc files
+	if { [lsearch $filesSeen $tag] == -1 && \
+		[regexp [file extension $tag] ".htm"] && \
+		[file readable $tag] && \
+		![regexp $codeDocRegexp $tag] } {
+	    if { $dagfd != {}} {
+		addToDAG $dagfd $htmlfile $tag
+	    }
+
+	    if $recurse {
+		#puts "dbg: About to call htmlLinks $tag"
+		lappend filesSeen $tag
+		incr depth
+		htmlLinks $tag $depth $dagfd $recurse
+		incr depth -1
+	    } {
+		if { [::tycho::expandPath [file dirname $htmlfile]] == \
+			[::tycho::expandPath [file dirname $tag]] } {
+		    #puts "dbg: About to call htmllinks $tag"
+		    lappend filesSeen [::tycho::expandPath $tag]
+		    htmlLinks $tag $depth $dagfd $recurse
+		}
+	    }
+	}
+    }
+    return $taglist
+}
+
+#####################################################################
+#### htmlTree2ps
+# This command is useful for generating PostScript from an html index file.
+# Given a .html index file, produce a PostScript file that contains
+# PostScript of all of the html files that the index file has links to.
+#
+# Typical Usage:
+# <tcl><pre>
+# htmlTree2ps $TYCHO/doc/index.html index.ps
+# </pre></tcl>
+#
+proc htmlTree2ps {indexfile psfile args} {
+    puts "dbg: htmlTree2ps: $indexfile $psfile $args"
+    global filesSeen
+    set filesSeen {}
+    set startingDir [pwd]
+
+    # If we are printing by directory, set printbydir
+    set printbydir 0
+    if {$args != {} } {
+	set printbydir 1
+    }
+
+    if $printbydir {
+	puts "About to traverse all directories:\n $args"
+	puts " and generate $psfile"
+	htmlByDir $args
+    } else {
+	puts "About to traverse all local files linked from\n $indexfile"
+	puts " and generate $psfile"
+	flush stdout
+	update
+
+	# Insert the index file
+	set filesSeen [linsert $filesSeen 0 $indexfile]
+	cd [file dirname $indexfile]
+	htmlLinks $indexfile
+    }
+
+    puts "  Done ([llength $filesSeen] files seen)"
+    #puts "$filesSeen"
+    flush stdout
+    update
+
+
+    set pslist {}
+    foreach tag $filesSeen {
+        lappend pslist "$tag.ps"
+    }
+
+    puts "About to remove old PostScript"
+    flush stdout
+    update
+
+    if { $pslist != {} } {
+	eval ::tycho::rm -f $pslist
+	#eval file delete -force $pslist
+    }
+
+    puts "About to generate PostScript"
+    flush stdout
+    update
+    html2ps $filesSeen
+
+    cd $startingDir
+    puts "\nAbout to generate concat PostScript into [file join [pwd] $psfile]"
+    flush stdout
+    update
+    psConcat $psfile $pslist
+
+    if { $pslist != {} } {
+	eval ::tycho::rm -f $pslist
+	#eval file delete -force $pslist
+    }
+}
+
+
+#####################################################################
+#### addToDAG
+# Add the links
+proc addToDAG {dagfd htmlfile link} {
+    global daglist
+    lappend daglist($link) $htmlfile
+    #puts "--$htmlfile, $daglist($link), $link--"
+}
+
+#####################################################################
+#### html2DAG
+# Given a html file, generate a Directed Acyclic Graph (DAG) that
+# consists of all of the files that have links to them.
+#
+proc html2DAG {indexfile dagfile} {
+    global filesSeen
+    set filesSeen {}
+
+    puts "About to traverse all local files linked from\n $indexfile"
+    puts " and generate $dagfile"
+    flush stdout
+    update
+
+    # If the file exists and is not writable, then remove it,
+    # it might be a link to the master tree.
+    if {[file exists $dagfile] && \
+	    ! [file writable $dagfile]} {
+	file delete -force $dagfile
+    }
+    set dagfd [open $dagfile w]
+    puts $dagfd "{configure -canvasheight 600} {configure -canvaswidth 800}"
+    puts $dagfd "{titleSet title {HTML links for [file dirname $indexfile]}}"
+    puts $dagfd "{titleSet subtitle {created: [clock format [clock clicks]]}}"
+
+    # Don't cd until after the output file is open
+    cd [file dirname $indexfile]
+    # Start at depth 0, generate a dag
+    puts [htmlLinks $indexfile 0 $dagfd]
+#    puts $dagfd "\{add \{[::tycho::expandPath $indexfile]\} \
+#	    \{label \{[::tycho::expandPath $indexfile]\}\} \{\}\}"
+
+
+    global daglist
+    foreach dagitem [array names daglist] {
+	set title [htmlGetTitle $dagitem]
+	if { $title == {} } {
+	    set title [file tail $dagitem]
+	}
+	puts $dagfd "\{add \{$dagitem\} \{label \{$title\} \
+	    link \{$dagitem \{\}\}\} \{$daglist($dagitem)\}\}"
+    }
+
+    close $dagfd
+}
+
+
+
+#####################################################################
+#### html2psProcessArgs
+# Process argv
+#
+proc html2psProcessArgs {} {
+    global argc argv env
+    set error 0
+    if {$argc < 2 } {
+	puts "html2ps: wrong number of arguments"
+	set error 1
+    }
+    if { $argc >= 3 } {
+	set commandarg [lindex $argv 0]
+	set indexfile [lindex $argv 1]
+	set outputfile [lindex $argv 2]
+    } else {
+	set indexfile [lindex $argv 0]
+	set outputfile [lindex $argv 1]
+    }
+    if {![file readable $indexfile]} {
+	puts "html2ps: $indexfile is not readable"
+	set error 1
+    }
+
+    # Check for -d in the first arg
+    if { $argc == 3 && $commandarg != "-d" && $commandarg != "-dag" } {
+	puts "html2ps: $commandarg not understood, it must be -d or -dag"
+	set error 1
+    } else {
+	set error 0
+    }
+
+
+    if {$error} {
+	puts "Usage: html2ps \[-d\] \[-dag\] <html file> <outputfile> \[htmldirs\]"
+	puts " This script uses netscape to convert an html tree to PostScript"
+	puts " or it can generate a Tycho Directed Acyclic Graph (DAG)."
+        puts " -dag       Produce a DAG"
+        puts " -d         Collect html files from the htmldirs args"
+	puts " If the -d option is not present, then all of the local links"
+	puts " in the html file are followed, and added to the"
+        puts " PostScript file in a depth first order."
+	exit
+    }
+    switch $argc {
+	2 { htmlTree2ps $indexfile $outputfile }
+	3 {
+	    if {"$commandarg" == "-dag" } {
+		html2DAG $indexfile $outputfile
+	    } else {
+		if {"$commandarg" == "-d" } {
+		    set outputfile [lindex $argv 1]
+		    set inputdirectory [lindex $argv 2]
+		    eval htmlTree2ps dummy $outputfile $inputdirectory
+		} else {
+		    error "html2ps: don't understand $commandarg, exiting."
+		}
+	    }
+	  }
+	default {
+	    if {"$commandarg" != "-d" } {
+		error "html2ps: usage: html2ps -d htmlfile outputfile directories "
+	    }
+	    set outputfile [lindex $argv 1]
+	    eval htmlTree2ps dummy $outputfile [lrange $argv 2 end]
+          }
+    }
+}
+
+# If we are not in an interactive tclsh, then call processArgs
+# By doing this, we make it possible to source this file and then
+# call htmlTree2ps by hand for testing
+if {$tcl_interactive != 1 } {
+	html2psProcessArgs
+}
+
+
+

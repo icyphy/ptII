@@ -1,0 +1,33 @@
+<group>
+    <!-- An effigy factory to open HSIF file. -->
+    <entity name="HSIF Opener" class="ptolemy.hsif.HSIFEffigyFactory">
+    </entity>
+    <!-- Use a custom graph editor with a CT director already in it. -->
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="Continuous Director"
+                  class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          </property>
+          <!-- Set the initStepSize and stopTime to get 100 samples. -->
+          <property name="initStepSize" value="0.1"/>
+          <property name="stopTime" value="10.0"/>
+        </property>
+      </entity>
+    </entity>
+    <!-- We need an FSM editor, but do not want it to appear in the -->
+    <!-- File->New menu. -->
+    <entity name="FSM Editor"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.modal.kernel.FSMActor">
+        <input source="ptolemy/configs/fsmLibrary.xml"/>
+      </entity>
+    </entity>
+    <entity name="Modal Model"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.modal.modal.ModalModel">
+	<input source="ptolemy/configs/modalController.xml"/>
+      </entity>
+    </entity>
+</group>

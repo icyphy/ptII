@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Matlab" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+  <doc>Matlab Actor(s)</doc>
+
+  <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
+    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+        <property name="attributeName" value="expression"/>
+        <property name="displayWidth" value="60"/>
+    </property>
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

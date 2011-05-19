@@ -1,0 +1,975 @@
+<!-- $Id$ -->
+<html>
+<head>
+<STYLE TYPE="text/css">
+<!--
+A {text-decoration:none}
+-->
+</STYLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Domain Compatibility</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<h1>Ptolemy II Domain Compatibility</h1>
+In Ptolemy II, domains may be embedded within one another.
+ <p>Below we describe some of the issues and include a
+chart that describes what combinations should work.
+
+<h3>Contents</h3>
+<menu>
+<li> A portion of the "<a href="#Composing">Composing Models of Computation in Kepler/Ptolemy II</a>" paper
+<li> <a href="#DomainCompatibilityGraph">Expanded Domain Compatibility Graph</a>
+<li> <a href="#DEInsideSDF">DE inside SDF</a>
+</menu>
+ <hr>
+
+
+<h2><a name="Composing">Composing Models of Computation in Kepler/Ptolemy II</a></h2>
+
+<i>Below is a portion of a paper:</i>
+<blockquote>
+Antoon Goderis, Christopher Brooks, Ilkay Altintas, Edward
+A. Lee, Carole Goble. <a
+href="http://chess.eecs.berkeley.edu/pubs/193.html#in_browser" target="_top">Composing
+Different Models of Computation in Kepler and Ptolemy
+II</a>, 2007 Proceedings, International Conference on
+Computational Science (ICCS), May, 2007.
+</blockquote>
+See also the <a href="http://www.mygrid.org.uk/wiki/Papers/IccsPaper2007#in_browser" target="_top">ancillary site for the paper</a>.
+
+
+
+<p>Although prior work has offered formalisms for comparing MoCs,
+e.g. [Lee &amp; S.V. 98], MoC compositions have not been well
+treated. To address the void, we develop a classification of valid MoC
+combinations in Kepler/Ptolemy II.  </p>
+
+<p>In the Kepler environment, opaque composite actors can be put into
+workflows with a different type of director, thereby combining
+different models of computation in one workflow. 
+<!-- In the GAMESS
+workflow in Figure 1, the Babel actor is part of a network of actors
+orchestrated by the PN director. The Babel actor internally uses an
+SDF director. In the example, SDF is nested inside PN, which is a
+valid combination, as we will explain below. Nesting PN inside of SDF
+would have been invalid in most cases, however. -->
+
+The choice of director
+determines whether a given actor can be put on the inside or outside
+of other actors. </p>
+
+<p>To determine which combinations are possible, we need to know two things about a director: </p>
+<ol>
+<li>What properties it assumes of the actors under its control, and </li>
+<li>What properties it exports via the opaque composite actor in which it is placed. </li>
+</ol>
+
+<p>If a director’s exported properties match those assumed by another
+director, then it can be used within that other director. Otherwise,
+it cannot. <!-- In the example of Figure 1,--> If the SDF director exports
+properties that match those assumed by the PN director, then the SDF
+can be used inside PN. The properties in question can be formulated in
+terms of actor abstract semantics. </p>
+
+<h3>Actor Abstract Semantics</h3>
+
+<p>All models of computation in Kepler and Ptolemy II share a common
+abstraction that we call the actor abstract semantics.  </p>
+
+<p>Actors and directors are instances of Java classes that implement the Executable interface, which defines <i>action methods</i>. The action methods include two distinct initialization methods: </p>
+<dl>
+
+<dd>1. preinitialize(). invoked prior any static analysis performed on the
+workflow (such as static scheduling, type inference, checking for
+deadlock, etc.). </dd>
+
+<dd>2. initialize(). invoked to initialize an actor or director to its initial conditions. This is invoked after all static analysis has been performed, but it can also be invoked during execution to reinitialize an actor. </dd>
+
+</dl>
+
+<p>The action methods also include three distinct execution methods
+that are invoked in sequence repeatedly during an execution of the
+workflow: </p>
+
+<dl>
+
+<dd>3. prefire(): invoked to check whether an actor is ready to fire (for example, an actor may return false if there are not enough input data tokens). </dd>
+
+<dd>4. fire(). In this method, the actor should read input tokens from input ports and write tokens to output ports, but it should not change its state. That is, if the fire() method is invoked repeatedly with the same input tokens, then the resulting output tokens should be the same. </dd>
+
+<dd>5. postfire(). In this method, the actor can read input tokens and
+update its state. </dd>
+
+</dl>
+
+<p>Finally, there is a finalization method: </p>
+
+<dl>
+<dd>6. wrapup().
+This method is invoked for each actor just prior to finishing execution of a workflow.</dd>
+</dl>
+
+<p>All of the methods are required to be finite (they must eventually
+return).  </p>
+
+<p>The method definitions specify a contract, but not all actors obey
+this contract. Any actor that strictly conforms to this contract is
+said to be <i>domain polymorphic</i>, and the actor may be used by any
+director that operates on actors (which is all the directors above
+except FSM, which operates on states).  </p>
+
+<p>Actors that do not obey the contract are more specialized, and may
+only work with specific directors. They are not domain polymorphic
+(strictly obeying the actor abstract semantics) and come in two
+flavors. The first flavor obeys a looser version of the abstract
+semantics where the fire() method provides no assurance that the state
+of the actor is unchanged.  The second is still looser in that it that
+also provides no assurance that any of these methods is finite.  </p>
+
+<p>Based on these three levels of obeyance to actor abstract
+semantics, we can now classify the directors. </p>
+
+<h4>Abstract semantics assumed by a director of the actors under its control</h4>
+
+<p>The <b>PN</b> director only assumes the loosest of these abstract
+semantics. It does not require that any method be finite because it
+invokes all of these methods, in order, in a thread that belongs
+entirely to the actors. If an actor chooses to run forever in the
+preinitialize() method, that does not create any problems for the
+director. The director will happily let it run. <b>Dataflow</b>
+directors require that actors conform with the loose actor semantics,
+where all methods are finite. But they do not require that actors
+leave the state unchanged in the fire() method. <b>CT</b> requires
+that actors obey the strictest form of the semantics. The director
+iteratively fires actors until some condition is satisfied. The strict
+actor semantics ensures that the answers will always be the same given
+the same inputs. <b>FSM</b> requires loose actor semantics. A firing
+of an FSM in Ptolemy II consists of a firing of the refinement of the
+current state (if there is one), followed by evaluation of the guards
+and a state transition. Clearly, the firing of the refinement must be
+finite for this to be useful. </p>
+
+<h4>Abstract semantics exported by a director via the actor in which it is placed</h4>
+
+<p>A director also implements the <i>Executable</i> interface. If a
+director conforms to the strict actor semantics, then any opaque
+composite actor containing that director also conforms to the
+contract. Such a director can be used safely within opaque composite
+actors that use any of the directors. None ot the directors conforms
+to the strict actor semantics in the current version of Ptolemy II
+(version 6.0). The undiscussed <b>SR</b> director does however and in
+principle <b>CT</b> and <b>DE</b> can be made to conform. Currently these and the <b>dataflow</b> directors all conform to the looser version of the
+abstract semantics, but still guarantee that all methods return after
+finite time. <b>PN</b> only conforms to the loosest version, providing
+no guarantees about methods ever returning. The <b>FSM</b> director
+exports whatever the state refinements export.  </p>
+
+<h3>Director compatibility</h3>
+
+<p>We classify directors according to two criteria. They
+require that the actors they control are either <i>strict</i>,
+<i>looser</i>, or <i>loosest</i>, depending on whether they must
+conform with the strictest, looser, or loosest form of abstract
+semantics. They similarly export either <i>strict</i>, <i>looser</i>,
+or <i>loosest</i>.  Ideally, any director should export the same
+version of the contract it assumes or a stricter version, but this is
+not the case in currently.</p>
+
+<p>The current status of the directors is given in Table 1. The rule
+applied to determine director compatibility is that exported abstract
+semantics should be stricter or equal to required abstract semantics.
+The table is on-line 
+(<a href="http://www.mygrid.org.uk/wiki/Papers/IccsPaper2007#in_browser" target="_top">http://www.mygrid.org.uk/wiki/Papers/IccsPaper2007</a>)
+and will evolve over time. Where available, the on-line version links each entry to example actors.  </p>
+
+<b>Table 1.</b> Rules for hierarchically mixing directors in Kepler and Ptolemy II </p>
+
+<TABLE align="center" border=1 cellspacing=0 cellpadding=2>
+ <TR>
+  <TD rowspan="3" align="left"  valign="top"><FONT size="+1">
+    Inner director <FONT size="+1">&darr; <br>(<B>exports X</B>)
+  </TD>
+  <TD colspan="7" valign="bottom">
+    Outer director &darr;
+     <br>(<I>requires Y</I>)
+  </TD>
+ </TR>
+ <TR>
+   <td>PN</td> 
+   <td>SDF</td>
+   <td>DDF</td>
+   <td>CT</td>
+   <td>DE</td>
+   <td>SR</td>
+   <td>FSM</td>
+ </TR>
+ <TR>
+   <td>(<I>loosest</I>)</td>
+   <td>(<I>loose</I>)</td>
+   <td>(<I>loose</I>)</td>
+   <td>(<I>strict</I>)</td>
+   <td>(<I>loose</I>)</td>
+   <td>(<I>strict</I>)</td>
+   <td>(<I>loose</I>)</td>
+ <TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    PN (<B>loosest</B>)
+  </TD>
+
+  <TD>
+    Yes
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    SDF(<B>loose</B>)
+  </TD>
+
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    DDF(<B>loose</B>)
+  </TD>
+
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    CT (<B>loose</B>)
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    DE (<B>loose</B>)
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    SR (<B>strict</B>)
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    FSM (<B>refinement</B>)
+  </TD>
+  <TD colspan="7">
+    Yes if the refinement is stricter than or equal to <i>Y</i>
+  </TD>
+ </TR>
+
+</TR>
+</TABLE>
+
+<h2>Discussion of PN, Dataflow and FSM Directors</h2>
+
+<p>A key question may arise at this point. If actors can be made
+domain polymorphic by conforming to the strict actor semantics, then
+why not design all directors to conform? In some cases, the semantics
+of the MoC precludes this. In other cases, it would simply be too
+costly. We examine some of these cases. </p>
+
+<p> </p>
+
+<p><b>PN.</b> The PN director is apparently the least restrictive in
+the actors it can manage, but also the least useful in an opaque
+composite actor. The reason for this is very fundamental. If the PN
+director were to define a finite fire() method, what should that
+method do? Each of the actors under its control is executing in its
+own thread of control. How much execution should be performed? One
+possible answer is "as little as possible," but this would
+result in nondeterminate execution. If two actors have threads that
+are able to perform computation, which should be allowed to perform
+computation? The only other obvious answer is "as much as
+possible." This can be made determinate, but typical PN workflows
+can execute forever if given the opportunity. Hence, "as much as
+possible" turns out to be an infinite amount. Sometimes it is
+finite, in that a PN model may deadlock after a finite
+computation. However, PN is sufficiently expressive that determining
+whether a workflow deadlocks is equivalent to solving the famous
+halting problem in computation. Hence, whether a workflow deadlocks is
+undecidable [Buck 93]. </p>
+
+<p><!-- For example, the workflow of Figure 1 with PN on the outside would
+be hard to reuse inside others. It follows that, w--> When a workflow has
+potential to be reused inside others, PN should be avoided and, if
+possible, replaced by a more reusable director.  </p>
+
+<p><b>DDF.</b> DDF is as expressive as PN, and hence potentially
+suffers from the same limitation. However, DDF has an advantage. It
+assumes that all actors under its control have finite firings. Thus,
+it is relatively easy for the designer of a workflow to specify how
+many firings of the component actors constitute a single firing of the
+enclosing opaque composite actor. The DDF director assumes a simple
+default if these numbers are not given by the workflow designer: one
+firing of a DDF opaque composite actor constitutes at most one firing
+of each component actor. The actor is fired if possible, and not fired
+if not, given the available input data. This yields a simple, finite,
+and determinate notion of a finite firing for the director to
+export. </p>
+
+<p><b>SDF.</b> SDF is still simpler in that it is not as expressive as
+PN, and there is a simple unique finite firing that is natural and
+easy to define [Lee &amp; Messerschmitt 87]. However, for both DDF and
+SDF, it is difficult to define a fire() of an opaque composite actor
+that does not update the state of the workflow because data values
+stored on buffers change during the firing of the component actors. In
+order for SDF and DDF to export the strict actor semantics, they would
+have to backtrack or restore the state of these buffers on repeated
+invocations of the fire() method. While this is doable in principle,
+it might be sufficiently computationally expensive that it is not
+worth it. A promising technique, however, that could make it
+computationally attractive is the lightweight backtracking mechanism
+developed in [Feng &amp; Lee 06]. </p>
+
+<p><b>FSM.</b> A particularly interesting case is FSM and modal
+models. Modal models always use opaque composite actors as state
+refinements, and these must at a minimum have finite firings to be
+useful (given the semantics of an FSM in Ptolemy II discussed
+before). Hence, it does not make sense to use PN inside the refinement
+of a state. But any other of the directors described above can be used
+in a Modal Model.  </p>
+
+
+<h2><a name="DomainCompatibilityGraph">Expanded Domain Compatibility Graph</a></h2>
+
+Below is a table that lists heterogenous models by top level 
+domain and second level domain.
+
+<!--  To update this table, see $PTII/adm/bin/findsubdomains.
+      It is usually easiest to check just the new demos in the release. -->
+
+<p>Click on the + or - to see examples that work and don't work.
+
+<p>Note that not all combinations make semantic sense.
+
+
+
+<p>
+<center>
+<table border="1" rules="groups">
+  <thead>
+  <tr>
+   <th colspan="16">
+    Outer Director
+    <br>(<i>requires Y</i>)
+   </th>
+  </tr>
+
+  <tr>
+   <td>&nbsp;</td>
+   <td>&nbsp;</td>
+   <th>CSP</th>
+   <th>Rendezvous</th>
+   <th>PN</th>
+   <th>CT</th>
+   <th>DDF</th>
+   <th>DE</th>
+   <th>FSM</th>
+   <th>Giotto</th>
+   <th>GR</th>
+   <th>PSDF</th>
+   <th>SDF</th>
+   <th>Continuous</th>
+   <th>DE2</th>
+   <th>SR</th>
+  </tr>
+
+  <tr>
+   <td>&nbsp;</td>
+   <td>&nbsp;</td>
+   <th><!--CSP-->(<i>loosest</i>)</th>
+   <th><!--Rendezvous-->(<i>loosest</i>)</th>
+   <th><!--PN-->(<i>loosest</i>)</th>
+   <th><!--CT-->(<i>strict</i>)</th>
+   <th><!--DDF-->(<i>loose</i>)<sup>4</sup></th>
+   <th><!--DE-->(<i>loose</i>)</th>
+   <th><!--FSM-->(<i>loose</i>)</th>
+   <th><!--Giotto-->&nbsp;</th>
+   <th><!--GR-->(<i>loose</i>)<sup>5</sup></th>
+   <th><!--PSDF-->(<i>loose</i>)</th>
+   <th><!--SDF-->(<i>loose</i>)</th>
+   <th><!--Continuous-->(<i>strict</i>)</th>
+   <th><!--DE2-->(<i>strict</i>)</th>
+   <th><!--SR-->(<i>strict</i>)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+   <th rowspan=14>Inner Director <br>(<b>exports X</b>)</th>
+   <th align="left">CSP (<b>loosest</b>)</th>
+   <td>&nbsp;<!-- CSP --></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>&nbsp;<!-- PN --></td>
+   <td>&nbsp;<!-- CT --></td>
+   <td>&nbsp;<!-- DDF --></td>
+   <td>&nbsp;<!-- DE --></td>
+   <td>&nbsp;<!-- FSM --></td>
+   <td>&nbsp;<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
+   <td>&nbsp;<!-- PSDF --></td>
+   <td>&nbsp;<!-- SDF --></td>
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>&nbsp;<!-- SR --></td>
+  </tr>
+
+  <tr>
+   <th align="left">Rendezvous (<b>loosest</b>)</th>
+   <td>&nbsp;<!-- CSP --></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>&nbsp;<!-- PN --></td>
+   <td>&nbsp;<!-- CT --></td>
+   <td>&nbsp;<!-- DDF --></td>
+   <td>&nbsp;<!-- DE --></td>
+   <td>&nbsp;<!-- FSM --></td>
+   <td>&nbsp;<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
+   <td>&nbsp;<!-- PSDF --></td>
+   <td>&nbsp;<!-- SDF --></td>
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>&nbsp;<!-- SR --></td>
+  </tr>
+
+  <tr>
+   <th align="left">PN (<b>loosest</b>)</th>
+   <td>&nbsp;<!-- CSP --></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>PN/PN
+     <a href="../ptolemy/domains/pn/test/PNPNSleep.xml">-</a>
+   </td>
+   <td>&nbsp;<!-- CT --></td>
+   <td>&nbsp;<!-- DDF --></td>
+   <td>DE/PN
+     <a href="../ptolemy/domains/pn/test/PNInsideDE.xml">-</a>
+   </td>
+   <td>&nbsp;<!-- FSM --></td>
+   <td>&nbsp;<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
+   <td>&nbsp;<!-- PSDF --></td>
+   <td>&nbsp;<!-- SDF --></td>
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>&nbsp;<!-- SR --></td>
+  </tr>
+
+
+  <tr>
+   <th align="left">DDF (<b>loose</b>)</th>
+   <td>CSP/DDF</td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>PN/DDF</td>
+   <td>&nbsp;<!-- CT --></td>
+   <td>DDF/DDF</td>
+   <td>DE/DDF</td>
+   <td>FSM/DDF</td>
+   <td>?<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
+   <td>PSDF/DDF</td>
+   <td>SDF/DDF
+      <a href="../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml">+</a>,
+      <a href="../ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml">+</a>,
+      <a href="../ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">+</a>
+
+   </td>
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>&nbsp;<!-- SR --></td>
+  </tr>
+
+
+  <tr>
+   <th align="left">CT (<b>loose</b>)</th>
+   <td>CSP/CT</td>
+   <td>Rendezvous/CT</td>
+   <td>PN/CT</td>
+   <td>CT/CT<sup>3</sup>
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor2.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor3.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor4.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor5.xml">+</a>
+   </td>
+   <td>DDF/CT</td>
+   <td>DE/CT
+     <a href="../ptolemy/domains/ct/demo/CTInsideDE/CTInsideDE.xml">+</a>,
+     <a href="../ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTInsideDESimplel.xml">+</a>
+   </td>
+   <td>FSM/CT</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/CT 
+     <a href="../ptolemy/domains/gr/Pendulum/Pendulum.xml">+</a>
+   </td>
+   <td>PSDF/CT</td>
+   <td>SDF/CT</td>
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>&nbsp;<!-- SR --></td>
+  </tr>
+
+  <tr>
+   <th align="left">SDF (<b>loose</b>)</th>
+   <td>CSP/SDF
+     <a href="../ptolemy/domains/test/auto/CSPSDFtest1.xml">+</a>
+   </td>
+   <td>Rendezvous/SDF
+     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">+</a>,
+     <a href="../ptolemy/backtrack/demo/TrialModule/TrialModuleNonBacktrack.xml">+</a>
+   </td>
+   <td>PN/SDF
+     <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml">-</a>
+     <a href="../ptolemy/actor/lib/io/demo/FilePortParameter.xml">+</a>,
+     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
+   </td>
+   <td>CT/SDF
+      <a href="../ptolemy/domains/ct/demo/CarTracking/CarTracking.xml">+</a>,
+      <a href="../ptolemy/domains/gr/demo/FurutaPendulum/FurutaPendulum.xml">+</a>
+   </td>
+   <td>DDF/SDF
+     <a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">+</a>
+   </td>
+   <td>DE/SDF
+     <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_de.xml">+</a>
+   </td>
+   <td>FSM/SDF</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/SDF
+     <a href="../ptolemy/domains/gr/lib/quicktime/demo/SimpleMovie/SimpleMovie.xml">+</a>
+   </td>
+   <td>PSDF/SDF</td>
+   <td>SDF/SDF
+     <a href="../ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml">+</a>
+   </td>
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>SR/SDF
+     <a href="../ptolemy/domains/test/auto/SRSDFtest3.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/SRSDFtest1.xml">-</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/SRSDFtest2.xml">-</a>
+   </td>
+  </tr>
+
+  <tr>
+   <th align="left">PSDF (<b>loose</b>)</th>
+   <td>CSP/PSDF</td>
+   <td>Rendezvous/PSDF</td>
+   <td>PSDF/PSDF
+     <a href="../ptolemy/domains/psdf/kernel/test/auto/SDFDirector1.xml">+</a>
+   </td>
+   <td>CT/PSDF</td>
+   <td>DDF/PSDF</td>
+   <td>DE/PSDF</td>
+   <td>FSM/PSDF</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/PSDF</td>
+   <td>PN/PSDF
+     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
+   </td>
+   <td>PSDF/PSDF</td>
+
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>SR/PSDF</td>
+  </tr>
+
+  <tr>
+   <th align="left">DE (<b>loose</b>)</th>
+   <td>&nbsp;<!-- CSP --></td>
+   <td>&nbsp;<!-- Rendezvous --></td>
+   <td>PN/DE</td>
+   <td>CT/DE
+     <a href="../ptolemy/domains/de/test/auto/deInCt.xml">+</a>,
+     <a href="../ptolemy/domains/de/test/auto/deInCt2.xml">+</a>
+   </td>
+   <td>DDF/SDF</td>
+   <td>DE/DE
+     <a href="../ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.xml">+</a>
+   </td>
+   <td>FSM/DE</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/DE</td>
+   <td>PSDF/DE</td>
+   <td><a href="../ptolemy/domains/sdf/test/auto/de_in_sdf.xml">?</a>
+   </td>
+   <td>&nbsp;<!-- Continuous--></td>
+   <td>&nbsp;<!-- DE2 --></td>
+   <td>&nbsp;<!-- SR --></td>
+  </tr>
+
+  <tr>
+   <th align="left">FSM (<b>refinement</b>)</th>
+   <td>CSP/FSM<sup>1</sup></td>
+   <td>RendezvousCSP/FSM<sup>1</sup></td>
+   <td>PN/FSM<sup>1</sup></td>
+   <td>CT/FSM<sup>2</sup>
+     <a href="../ptolemy/domains/ct/demo/Switch/Switch.xml">+</a>
+   </td>
+   <td>DDF/FSM<sup>1</sup></td>
+   <td>DE/FSM<sup>1</sup>
+     <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.xml">+</a>
+   </td>
+   <td>FSM/FSM</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/FSM</td>
+   <td>PSDF/FSM<sup>1</sup></td>
+   <td>SDF/FSM<sup>1</sup>
+     <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>
+   </td>
+   <td>Continuous/FSM<sup>1</sup>
+      <a href="../ptolemy/domains/continuous/demo/Switch/Switch.xml">+</a>
+   </td>
+   <td>DE2/FSM<sup>1</sup></td>
+   <td>SR/FSM<sup>1</sup></td>
+  </tr>
+
+  <tr>
+   <th align="left">Giotto</th>
+   <td>?<!-- CSP --></td>
+   <td>?<!-- Rendezvous --></td>
+   <td>?<!-- PN --></td>
+   <td>?<!-- CT --></td>
+   <td>?<!-- DDF --></td>
+   <td>DE/Giotto
+     <a href="../ptolemy/domains/giotto/test/auto/Composite.xml">+</a>
+   </td>
+   <td>?<!-- FSM --></td>
+   <td>Giotto/Giotto
+     <a href="../ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.xml">+</a>
+   </td>
+   <td>?<!-- GR --></td>
+   <td>?<!-- PSDF --></td>
+   <td>?<!-- SDF --></td>
+   <td>?<!-- Continuous --></td>
+   <td>?<!-- DE2 --></td>
+   <td>?<!-- SR --></td>
+  </tr>
+
+  <tr>
+   <th>Continuous(<b>strict</b>)</th>
+   <td>CSP/Continuous</td>
+   <td>Rendezvous/Continuous</td>
+   <td>PN/Continuous</td>
+   <td>CT/Continuous</td>
+   <td>DDF/Continuous</td>
+   <td>DE/Continuous
+       <a href="../ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml">+</a>
+   </td>
+   <td>FSM/Continuous
+       <a href="./ptolemy/domains/continuous/demo/Switch/Switch.xml">+</a>
+   </td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/Continuous</td>
+   <td>PSDF/Continuous</td>
+   <td>SDF/Continuous</td>
+   <td>Continuous/Continuous
+       <a href="../ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml">+</a>
+   </td>
+   <td>DE2/Continuous</td>
+   <td>SR/Continuous</td>
+  </tr>
+
+  <tr>
+   <th align="left">DE2(<b>strict</b>)<sup>6</sup></th>
+   <td>CSP/DE2</td>
+   <td>Rendezvous/DE2</td>
+   <td>PN/DE2</td>
+   <td>CT/DE2</td>
+   <td>DDF/DE2</td>
+   <td>DE/DE2</td>
+   <td>FSM/DE2</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/DE2</td>
+   <td>PSDF/DE2</td>
+   <td>SDF/DE2</td>
+   <td>Continuous/DE2</td>
+   <td>DE2/DE2</td>
+   <td>SR/DE2</td>
+  </tr>
+
+  <tr>
+   <th align="left">GR(<b>strict</b>)</th>
+   <td>CSP/GR</td>
+   <td>Rendezvous/GR</td>
+   <td>PN/GR</td>
+   <td>CT/GR
+      <a href="../ptolemy/domains/ct/demo/BouncingBall/BouncingBall.xml">+</a>,
+      <a href="../ptolemy/domains/ct/demo/CartPendulum/CartPendulum.xml">+</a>,
+      <a href="../ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml">+</a>
+   </td>
+   <td>DDF/GR
+      <a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">+</a>
+   </td>
+   <td>DE/GR
+      <a href="../ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml">+</a>
+   </td>
+   <td>FSM/GR</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/GR</td>
+   <td>PSDF/GR</td>
+   <td>SDF/GR
+      <a href="./ptolemy/domains/sdf/demo/Gravitation/Gravitation.xml">+</a>
+   </td>
+   <td>Continuous/GR
+      <a href="../ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">+</a>
+   </td>
+   <td>DE2/GR</td>
+   <td>SR/GR</td>
+  </tr>
+
+  <tr>
+   <th align="left">SR(<b>strict</b>)</th>
+   <td>CSP/SR
+     <a href="../ptolemy/domains/test/auto/CSPSRtest1.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/CSPSRtest2.xml">+</a>
+   </td>
+   <td>Rendezvous/SR</td>
+   <td>PN/SR
+     <a href="../ptolemy/domains/test/auto/PNSRtest1.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/PNSRtest2.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRTimedtest.xml">-</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml">-</a>   </td>
+   <td>CT/SR</td>
+   <td>DDF/SR</td>
+   <td>DE/SR
+     <a href="../ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml">+</a>   </td>
+   </td>
+   <td>FSM/SR</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/SR</td>
+   <td>PSDF/SR</td>
+   <td>SDF/SR
+     <a href="../ptolemy/domains/test/auto/SDFSRtest1.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/SDFSRtest3.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml">-</a>
+   </td>
+   <td>Continuous/SR</td>
+   <td>DE2/SR</td>
+   <td>SR/SR
+     <a href="../ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml">+</a>
+   </td>
+  </tr>
+  </tbody>
+</table>
+</center>
+<sup>1</sup> iff FSM has no CSP, Rendezvous, or PN refinement
+<br><sup>2</sup> iff FSM has continuous, DE2 or SR (all export strict) 
+<br><sup>3</sup> CT inside CT requires that the inner director
+be a CTEmbeddedDirector.
+<br><sup>4</sup> DDF as an inner domain is exports loose if we
+annotate the graph.
+<br><sup>5</sup> GR exports strict.
+<br>Interestingly, GR doesn't require strict however.
+This is a twist.  GR submodels never have output
+ports (except possibly to another GR model), and
+hence GR can do all its work in postfire().
+<br>Note that this lack of output ports is not enforced,
+and so one could construct models that misuse GR and
+get unexpected results.
+<br>GR requires loose, it probably does not make sense to have PN inside GR.
+<br><sup>6</sup>DE2 is a bug fix to DE
+
+<p>The rules are
+<pre>
+Loose goes into Loose
+Loose goes inside Strict
+Strict goes inside Strict
+</pre>
+
+<h2><a name="DEInsideSDF">DE inside SDF</a></h2>
+A DE component inside an SDF model may not be that useful
+<menu>
+<li> SDF assumes that every actor consumes and produces a fixed number
+   of tokens on each input and output port on each firing.  For example,
+   the DE VariableDelay doesn't do that.
+
+<li> - You can sometimes get away with it anyway because many actors
+   (such as Scalar, AddSubtract, ...) just do nothing in the fire()
+   method if there are no inputs.  Thus, the SDF scheduler has no
+   way of knowing that its assumptions were violated because no
+   actor complains.  (Internally, we refer to this as the "sneaky
+   SDF trick". We do not advise using this feature.)
+
+
+<li> The Expression actor is more rigorous.  Its prefire() method
+   checks to see whether all inputs are present, and if they are not,
+   then it returns false, indicating to the SDF scheduler that it is
+   not ready to fire.  The SDF scheduler now knows its assumptions were
+   violated, so it complains.  Thus, the "sneaky SDF trick" doesn't work
+   with Expression.
+
+<li> VariableDelay will produce an output only if current time exactly matches
+   the time of the output (after being delayed).  If time passes the time
+   of an output without firing VariableDelay, then VariableDelay will 
+henceforth
+   produce no output.  If you have DE within SDF, then this can easily happen,
+   since the SDF outer level will fire the DE submodel only at multiples of
+   its period.  Note that they have to exactly match... Since time is a double
+   (sort of), quantization errors could become a problem.
+</menu>
+
+Possible solutions:
+<ol>
+<li> Stick with SDF inside SDF, don't use VariableDelay. 
+
+    You could get a similar effect
+    to VariableDelay by explicitly modeling presence or absence using, for
+    example, a boolean.
+
+
+<li> Use DE at the top level.  Some care would be needed to make sure that
+    SDF subsystems that exepected to fire once per day are in fact provided
+    with input tokens once per day (e.g., using PeriodicSampler).
+
+
+<li> Use DE within SDF, but ensure that the DE model never needs to do
+    anything except at multiples of the period.  This solution is fragile
+    because it will be vulnerable to quantization errors in the time variable.
+
+</ol>
+
+<p>Last updated $Id$
+</body>
+</html>

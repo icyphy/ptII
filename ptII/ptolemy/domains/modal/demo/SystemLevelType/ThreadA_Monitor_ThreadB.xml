@@ -1,0 +1,369 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ThreadA_Monitor_ThreadB" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomaton">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="BRequest" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="ARequest" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="BGrant" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="BRelease" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="AGrant" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="ARelease" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[898, 653]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={205, 77, 1111, 763}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{449.0, 326.5}">
+    </property>
+    <entity name="init_init_init" class="ptolemy.domains.modal.kernel.State">
+        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[413.99999743696867, 249.99999853142123]">
+        </property>
+    </entity>
+    <entity name="init_state4_state2" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[588.9999974369688, 239.99999853142123]">
+        </property>
+    </entity>
+    <entity name="state2_state7_init" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[243.9999974369688, 249.99999853142123]">
+        </property>
+    </entity>
+    <entity name="state2_state4x_state2" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[763.9999974369688, 234.99999853142123]">
+        </property>
+    </entity>
+    <entity name="init_state5_state3" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[438.99999743696867, 389.99999853142117]">
+        </property>
+    </entity>
+    <entity name="state2_state6_state3" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[277.4594434360648, 395.5466613798525]">
+        </property>
+    </entity>
+    <entity name="state3_state2_init" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[378.99999743696867, 109.99999853142126]">
+        </property>
+    </entity>
+    <entity name="state2_state7x_state2" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[93.99999743696881, 249.99999853142123]">
+        </property>
+    </entity>
+    <entity name="state3_state3_state2" class="ptolemy.domains.modal.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[543.9999974369687, 104.99999853142126]">
+        </property>
+    </entity>
+    <relation name="ThreadA_Mutex2_ThreadB" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="BRequest=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.001189156155136973">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.059590851799784815">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="BRequest;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex2" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ARequest=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.07140129300658342">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.133951248517792">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ARequest;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex22" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ARequest=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.004593569440344477">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.02900055244122344">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ARequest;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex2_ThreadB3" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="BGrant=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.9197139470137645">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.30223654273248">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="BGrant;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex2_ThreadB4" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="BGrant=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8612946118971933">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.7687749536119304">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="BGrant;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex2_ThreadB5" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="BRelease=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5882061998944653">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7986453760142416">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="BRelease;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex26" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="AGrant=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8176832778288292">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.859946865337641">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="AGrant;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex2_ThreadB7" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="BRequest=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.020792204486645573">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.13946032395162">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="BRequest;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex28" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="AGrant=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8971838558096789">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.4134618933828691">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="AGrant;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex29" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ARelease=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7427774614473563">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1423661497045101">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ARelease;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex210" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ARelease=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.572039045410721">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3459750270684736">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ARelease;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex2_ThreadB11" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="BRequest=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.030414818240135887">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.0277224072840182">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="BRequest;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex2_ThreadB12" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="BRelease=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5444286641299981">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.557580782946087">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="BRelease;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="ThreadA_Mutex213" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ARequest=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.06754615560474042">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1006610161483925">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="ARequest;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <link port="init_init_init.incomingPort" relation="ThreadA_Mutex210"/>
+    <link port="init_init_init.incomingPort" relation="ThreadA_Mutex2_ThreadB12"/>
+    <link port="init_init_init.outgoingPort" relation="ThreadA_Mutex2_ThreadB"/>
+    <link port="init_init_init.outgoingPort" relation="ThreadA_Mutex2"/>
+    <link port="init_state4_state2.incomingPort" relation="ThreadA_Mutex2_ThreadB"/>
+    <link port="init_state4_state2.incomingPort" relation="ThreadA_Mutex29"/>
+    <link port="init_state4_state2.outgoingPort" relation="ThreadA_Mutex22"/>
+    <link port="init_state4_state2.outgoingPort" relation="ThreadA_Mutex2_ThreadB3"/>
+    <link port="state2_state7_init.incomingPort" relation="ThreadA_Mutex2"/>
+    <link port="state2_state7_init.incomingPort" relation="ThreadA_Mutex2_ThreadB5"/>
+    <link port="state2_state7_init.outgoingPort" relation="ThreadA_Mutex26"/>
+    <link port="state2_state7_init.outgoingPort" relation="ThreadA_Mutex2_ThreadB7"/>
+    <link port="state2_state4x_state2.incomingPort" relation="ThreadA_Mutex22"/>
+    <link port="state2_state4x_state2.outgoingPort" relation="ThreadA_Mutex2_ThreadB4"/>
+    <link port="init_state5_state3.incomingPort" relation="ThreadA_Mutex2_ThreadB3"/>
+    <link port="init_state5_state3.outgoingPort" relation="ThreadA_Mutex2_ThreadB12"/>
+    <link port="init_state5_state3.outgoingPort" relation="ThreadA_Mutex213"/>
+    <link port="state2_state6_state3.incomingPort" relation="ThreadA_Mutex2_ThreadB4"/>
+    <link port="state2_state6_state3.incomingPort" relation="ThreadA_Mutex213"/>
+    <link port="state2_state6_state3.outgoingPort" relation="ThreadA_Mutex2_ThreadB5"/>
+    <link port="state3_state2_init.incomingPort" relation="ThreadA_Mutex26"/>
+    <link port="state3_state2_init.outgoingPort" relation="ThreadA_Mutex210"/>
+    <link port="state3_state2_init.outgoingPort" relation="ThreadA_Mutex2_ThreadB11"/>
+    <link port="state2_state7x_state2.incomingPort" relation="ThreadA_Mutex2_ThreadB7"/>
+    <link port="state2_state7x_state2.outgoingPort" relation="ThreadA_Mutex28"/>
+    <link port="state3_state3_state2.incomingPort" relation="ThreadA_Mutex28"/>
+    <link port="state3_state3_state2.incomingPort" relation="ThreadA_Mutex2_ThreadB11"/>
+    <link port="state3_state3_state2.outgoingPort" relation="ThreadA_Mutex29"/>
+</entity>

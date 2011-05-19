@@ -1,0 +1,13 @@
+ScopeTest is {
+	actor Scale = ptolemy.actor.lib.Scale;
+	parameter n;
+	for i initially [[1]] [[i <= n]] {
+		inport in;
+		outport out;
+		if [[i < n]] {
+			Scale(input := in, output := out);
+		} else {
+		}
+	} next [[i + 1]]
+	Scale(input := in, output := out);
+}

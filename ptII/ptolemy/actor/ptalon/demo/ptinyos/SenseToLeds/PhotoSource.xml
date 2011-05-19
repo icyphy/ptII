@@ -1,0 +1,212 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="PhotoSource" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 195.0]">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.25E-6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, -45.0]">
+        </property>
+    </property>
+    <property name="range" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, -50.0]">
+        </property>
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+        <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0, 0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="range*2">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="range*2">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+            </property>
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 177, 896, 490}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 372]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{201.7810132575758, 93.5603693181818}">
+    </property>
+    <port name="port" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+        <property name="output"/>
+        <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PhotoChannel">
+        </property>
+        <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=range}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 45.0]">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="5.0E-3">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 30.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 30.0]">
+        </property>
+    </entity>
+    <entity name="Frequency" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="2.0 * PI">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 30.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="Sin" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                </property>
+                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                </property>
+                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                </property>
+                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                </property>
+                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                </property>
+                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 30.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="Magnitude" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0x3FF/2">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 30.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0x3FF/2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 85.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 384, 510, 350}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 95.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.7"/>
+<yRange min="0.0" max="1022.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-50.0, 30.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[410.0, 45.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[310.0, 85.0]">
+        </vertex>
+    </relation>
+    <link port="port" relation="relation8"/>
+    <link port="Clock.output" relation="relation4"/>
+    <link port="CurrentTime.output" relation="relation"/>
+    <link port="CurrentTime.trigger" relation="relation4"/>
+    <link port="Frequency.input" relation="relation"/>
+    <link port="Frequency.output" relation="relation2"/>
+    <link port="Sin.input" relation="relation2"/>
+    <link port="Sin.output" relation="relation3"/>
+    <link port="Magnitude.input" relation="relation3"/>
+    <link port="Magnitude.output" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation7"/>
+    <link port="AddSubtract.output" relation="relation8"/>
+    <link port="Const.output" relation="relation7"/>
+    <link port="Const.trigger" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation8"/>
+</class>

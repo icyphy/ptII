@@ -1,0 +1,40 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>ptolemy.domains.continuous.lib</title>
+</head>
+<body>
+The ptolemy.domains.continuous.lib package.
+
+<h2>Notes about converting models from the ct domain to the continuous
+domain</h2>
+
+The script
+<code>$PTII/ptolemy/domains/continuous/lib/ct2continous</code>
+attempts to convert CT domain models and Java files to the Continuous
+domain.
+
+<ol>
+  <li> Change <code>domains.fsm</code> to <code>domains.modal</code>
+  <li> <code>domains.ct.kernel.CTMixedSignalDirector</code> (and all
+  other directors)
+  should be change to <code>domains.continuous.kernel.ContinuousDirector</code>
+  <li> Director class for modal models may need to be changes
+  <li> If the ct model has an ODESolver present, then delete it and
+  use the default
+  <li> Change <code>domains.ct.lib.CTPeriodicSampler</code> to <code>domains.continuous.lib.PeriodicSampler</code>
+  <li> Change <code>CTEmbedded director</code> to
+  <code>domains.continuous.kernel.ContinuousDirector</code> and remove
+  any <code>ODESolver</code>.
+  <li> Change <code>ZeroCrossing</code> to <code>LevelCrossingDetector</code>
+  <li> Integrator: port names change
+     <ul>
+        <li> <code>input</code> to <code>derivative</code>.
+        <li> <code>output</code> to <code>state</code>
+     </ul>
+  <li> Remove any EditorIcons
+</ol>
+<p>
+    @since Ptolemy II 6.0
+</body>
+</html>

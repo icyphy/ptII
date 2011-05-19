@@ -1,0 +1,51 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Fixpoint Conversion Demo</TITLE>
+<BODY>
+<H1>Fixpoint Conversion</H1>
+<p>The following model converts a sequence of floating-point numbers to
+fixed point, and then further quantizes the fixed point numbers.</p>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+FixPoint is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "FixPoint.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="FixPointVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>The precision of the first fixed-point conversion is controlled by the
+parameters of the DoubleToFix actor.  The default precision is
+[4,2], which means that a total of 4 bits are used, 2 of which
+are integer bits.
+By default, the input is rounded to the nearest representable
+number. You can change the strategy by changing the <i>quantization</i>
+parameter of the DoubleToFix actor.</p>
+<p>The precision of the second second quantization
+is controlled by the FixToFix actor, which has a default precision
+of [3,2].  Thus, the second quantizer reduces by one the number
+of fractional bits.  In addition, it uses an overflow model
+called "overflow_to_zero".  You can modify these properties
+by right clicking on the actor icons above and selecting
+"Edit Parameters".</p>
+<p>The fixed-point numbers are represented in two's-complement
+notation.  Thus, the set of
+numbers that can be represented with a [3, 2] precision is:</p>
+<p>
+<PRE>
+  { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5 }
+</PRE>
+</p>
+</BODY>
+</HTML>

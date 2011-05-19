@@ -1,0 +1,47 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>BackgroundExecution</TITLE>
+</HEAD>
+<BODY>
+<H1>BackgroundExecution</H1>
+<P>
+
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+BackgroundExecution is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "BackgroundExecution.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="BackgroundExecutionVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>The ThreadedComposite in this model has delay 2.0, so executing this model produces exactly
+the same result as if the ThreadedComposite were replaced by a TimedDelay with delay 2.0.</p>
+
+<p>However, in this implementation, the ThreadedComposite takes a full 1.5 seconds to execute
+(this implemented with a Sleep actor inside). That execution occurs in the background and does
+not block firings of the other actors, except as necessary to preserve timed DE semantics.
+Thus, notice that the lower actors react to events at times 0, 0.25, 1, and 1.25 before the
+ThreadedComposite has completed its execution.</p>
+
+<p>This illustrates that ThreadedComposite can be used to execute actors that take a while to execute.
+For example, if you have an actor that will block on I/O, wrapping it in a ThreadedComposite may be
+a good idea. Also, on a multicore machine, the ThreadedComposite can execute on another core, thus
+exploiting parallelism.</p>
+
+<p>For details, see E.A. Lee, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html" target="_top">ThreadedComposite: A Mechanism for Building Concurrent and Parallel Ptolemy II Models</a>," EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2008-151, December 7, 2008.</p>
+</BODY>
+</HTML>

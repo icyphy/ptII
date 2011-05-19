@@ -1,0 +1,770 @@
+<!-- $Id$-->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Testing Ptolemy II</title>
+</head>
+<body>
+<h1><A NAME="Testing Ptolemy II">Testing Ptolemy II</A></h1>
+This page is primarily for Ptolemy II Developers.  Some of the commands
+mentioned below are not included in the Ptolemy II distribution.
+
+ <P>Contents:
+<MENU>
+<LI> <A HREF="#test suite">Test Suite</A>
+<LI> <A HREF="#testing java">Testing Java</A>
+<LI> <A HREF="#testing documentation">Testing Documentation</A>
+<li> <a href="#testingxml">Testing XML</a>
+<li> <a href="#proofreading">Proofreading</a>
+<li> <a href="#runtimeTests">Runtime Tests</a>
+<li> <a href="#installer">Installer</a>
+</MENU>
+
+<H2><A NAME="test suite">Test Suite</A></H2>
+
+We have included regression tests for most of the Ptolemy II code.  Usually,
+wherever there is Java file, the tests are in the <CODE>test</CODE>
+directory.
+
+<H3>Running the tests</H3>
+The tests themselves are written in Tcl, and use
+<a href="../install.htm#Jacl">Jacl</a>
+which is a 100% Java implementation of a subset of Tcl.
+ <p>Resources:
+<menu>
+<li> Tcl Primer - A quick summary of Tcl  <a href="http://www.tcl.tk/scripting/primer.html" target="_top"><CODE><a href="http://www.tcl.tk/scripting/primer.html"</CODE></a> 
+<li> The <a href="tcljava.htm"><CODE>java::</CODE> man page</a> 
+</menu>
+
+
+ <p>We ship Jacl as a jar file called <CODE>$PTII/lib/ptjacl.jar</CODE>.
+
+ <p><CODE>make tests</CODE> will run the tests in the current directory
+and any subdirectories.
+
+
+<H3>Writing your own tests</H3>
+
+There are two ways to write tests:
+<ol>
+<li> Use Vergil to create tests using the Test actor
+<li> Write tests using Tcl
+</ol>
+
+<h4>Using Vergil to write tests</h4>
+The testing infrastructure will automatically run any MoML models
+located in <CODE>test/auto</CODE> directories.  (Nowhere do the names
+of these MoML files need to be listed in order for them to be run.)
+ <p>However, said infrastructure has to be re-built in each new
+directory containing tests. 
+
+ <p>Note that MoML models used for testing should follow the following
+conventions:
+<menu>
+<li> Models in <CODE>domains/<I>yourdomain</I>/kernel/test/auto</CODE>
+should <B>not</B> use actors in 
+<CODE>domains/<I>yourdomain</I>/lib</CODE>.
+ <br>The reason is that these tests are really testing the domain
+actors, not the kernel.  During the nightly build, the
+testsuite runs in the <CODE>kernel</CODE> directories before running
+in the <CODE>lib</CODE> directories, so the actors in <CODE>lib</CODE>
+will not yet be built.
+
+<li> Models that use more than one domain should be located
+in <CODE>domains/<I>yourdomain/test/auto</I></CODE>.  
+ <br>The reason is that all the domains might not be built if the
+test is in <CODE>lib/test/auto</CODE> or <CODE>kernel/test/auto</CODE>.
+ <br>Also, multi domain tests tend to be integration tests, not unit tests.
+
+<li> There should be no MoML files (and no <CODE>test/auto</CODE> directories)
+in <CODE>ptolemy/kernel</CODE> and its subdirectories.
+ The tests in <CODE>ptolemy/kernel</CODE> and subdirectories should
+not use code from <CODE>ptolemy/domains</CODE>
+ <br> The reason is that <CODE>ptolemy/moml</CODE> and the domains
+is not yet built.  Again, we want unit tests of the kernel, not
+tests of moml and the domains here.
+
+<li> All MoML test models should <b>not</b> use actors from 
+<code>ptolemy.actor.lib.<b>gui</b></code> because these gui actors 
+will not work during the nightly build when the models are run
+without a display.
+
+</menu>
+
+
+ To create the infrastructure for a new test directory, do the following:
+ <MENU>
+ <LI> Choose an existing <code>test/</code> directory
+      that contains an <code>auto/</code> directory.
+      <br>Use this as an example when creating the new test directory.
+      <br>A good example is
+      <code>$PTII/ptolemy/actor/lib/test</code>.
+ <LI> Create your <code>test/</code> and
+      <code>test/auto/</code> directories.
+<pre>
+mkdir test test/auto
+</pre>
+ <LI> cd to your <code>test/</code> directory.
+<pre>
+cd test
+</pre>
+ <LI> Copy over the <code>testDefs.tcl</code> and the <code>makefile</code>
+      file from the example directory chosen in step 1 above.
+<pre>
+cp $PTII/ptolemy/actor/lib/test/testDefs.tcl
+cp $PTII/ptolemy/actor/lib/test/makefile .
+</pre>
+ <LI> Modify these two files to fit your situation, which may differ from
+      the example situation.  In particular:
+      <dl>
+      <dt> <code>testDefs.tcl</code>
+      <dd> Adjust the value of <code>PTII</code>.  
+<pre>
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] <b>.. .. .. ..</b> ]
+}
+</pre>
+      The <code><b>.. .. .. ..</b></code> is the relative path
+      to the top of the Ptolemy II tree.
+
+      <dt> <code>makefile</code>
+      <dd> Adjust <code>ME =</code> and <code>ROOT =</code>
+      <br> The <code>auto</code> directory is listed in the
+      <code>MISC_FILES</code> section:
+<pre>
+MISC_FILES =	alljtests.tcl \
+		<b>auto</b>
+</pre>
+      <br> The <code>test/makefile</code> should include a line that
+      invokes <code>test_auto</code> when the <code>test_jsimple</code> rule
+      is invoked:
+<pre>
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl <b>test_auto</b>
+</pre>
+      <br>Note: <code>dummy.tcl</code> may appear in the <code>makefile</code>,
+      which some people find confusing.  The test makefile structure supports
+      running graphical and non-graphical Tcl tests.  If a particular directory
+      does not have graphical or non-graphical Tcl tests, then we 
+      set the value of <code>JGRAPHICAL_TESTS</code> or
+      <code>JSIMPLE_TESTS</code> to include <code>dummy.tcl</code> so
+      that when the makefile expands <code>JGRAPHICAL_TESTS</code>
+      or <code>JSIMPLE_TESTS</code> there will be a value there instead
+      of an empty value.  However, if either <code>JGRAPHICAL_TESTS</code>
+      or <code>JSIMPLE_TESTS</code> are set to <code>dummy.tcl</code>
+      and not referred to as a dependency, then you need not have
+      a <code>dummy.tcl</code> file.  
+      <br>For example, we have no graphical tests, so the makefile might
+      look like:
+<pre>
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+</pre>
+
+
+      </dl>
+ <LI> Now go up one directory:
+<pre>
+cd ..
+</pre>
+      There needs to be a makefile here too.  It needs to name the
+      <code>test/</code> directory you created.  If there already is a
+      makefile, edit it.  If there is not a makefile, then
+      copy the makefile from a similar directory elsewhere in the tree.
+
+      <br>If the <code>test</code> directory was
+      added, the add <code>test</code> to the <code>DIRS</code> and
+      <code>MISC_FILES</code> lines:
+<pre>
+DIRS =		kernel lib demo doc <b>test</b>
+...
+MISC_FILES =	kernel lib doc <b>test</b>
+</pre>
+
+ <LI> If no makefile exists in the directory above test/, you will need
+      to create one and repeat this procedure in the next directory up until
+      you find an existing makefile.
+ <LI> If you are a member of the UC Berkeley Ptolemy group, and would
+like to add your directory to the nightly build, see the instructions
+in <a href="http://www.gigascale.org/ptolemy/nightly" target="_top">http://www.gigascale.org/ptolemy/nightly</a>
+
+ </MENU>
+
+ <p>When you have done all this, the tests in your new test/auto directory ought to run in the nightly build.
+ <p>The test passes if it does not throw an exception
+ <p>The <a href="../codeDoc/ptolemy/actor/lib/Test.html">Test actor</a>
+ (located under  "more libraries") 
+can be used to compare the first few results
+of a simulation with a known good results.  If the comparison fails,
+then the test fails.  
+ <p>If a test is in the optional <CODE>test/auto/knownFailedTests</CODE> 
+directory, then it will be marked as a known failure if it fails.
+(For more information, see
+<a href="#CheckingKnownFailedTests">Checking Known Failed Test Results</a>
+below).
+
+ <p>Using Vergil to write tests is quite a bit easier than writing Tcl
+ code, but it is much more difficult to handle corner cases and test
+for erroneous conditions by writing models.  Tcl tests are unit tests,
+whereas tests that use models are system tests and may mask unit
+test bugs.  
+
+
+<h4>Writing Tcl Tests</h4>
+
+The test suite infrastructure is based on the Tcl test suite code.  The
+
+ <P>The file <A HREF="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></A> defines the Tcl proc <CODE>test</CODE>.
+
+ <P><CODE>test</CODE> takes five arguments:
+<OL>
+<LI> The name of the test, for example: <CODE>foo-1.0</CODE>
+  <br> The name of the test should strictly follow the format below.
+	The Tcl tests that come with the Tcl distribution follow a similar
+	format, so unless there is a strong need to not follow the format,
+	please stick with what works.
+	<MENU>
+	<LI> The first part of
+	name of the test should reflect the command that is
+	being tested.
+
+	<LI> The test number should be separated by a dash '<CODE>-</CODE>'
+
+	<LI> Each test number consists of a major value and a minor value,
+	separated by a dot.  Usually the major value changes as different
+	parts of the command are being tested.  The minor value changes
+	for different tests for the particular part of the command under test.
+
+	<LI> Test numbers usually start with <CODE>1</CODE>, though if
+	you are
+	doing setup, you can start with <CODE>0</CODE>.
+
+	<LI> If you go back later and want to stick a test in between
+	<CODE>foo-1</CODE> and <CODE>foo-2</CODE>, you can always call
+	your new test <CODE>foo-1.1</CODE>
+	</MENU>
+
+
+<LI> The test description, usually a single sentence.
+
+<LI> The contents of the test, usually Tcl code that does the action to
+be tested.  The last line of the contents should return a value.
+
+<LI> The results to be compared against.
+
+
+<li> The last argument is optional and determines what sort of test is
+being run.  The default value is <CODE>NORMAL</CODE>, which means that
+the test should pass under normal conditions.  If the value is
+<CODE>KNOWN_FAILED</CODE>, then the test is expected to fail, but
+eventually will be fixed.  By using <CODE>KNOWN_FAILED</CODE>, developers
+can mark tests that they know are failing, which will save other
+developers from attempting to debug known problems.
+
+</OL>
+
+Below is a sample piece of code that sources the
+<CODE>testDefs.tcl</CODE> file and then runs one test.  The code below
+has the incorrect value return results to be compared against, so the
+test suite properly indicates that the test failed.
+
+<tcl><pre>
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}
+test testExample-1.1 {This is the first test example, it does very little} {
+	catch {this is an error} errMsg1
+	set a "this is the value of a"
+	list $errMsg1 $a
+} {{invalid command name "this"} {this is NOT the value of a}}
+</pre></tcl>
+
+<H3>Parts of a test file</H3>
+Test files should be located in the <CODE>test</CODE> directory.
+
+ <P>It is better to have many small test files as opposed to a few
+large test files so that other developers can quickly find the tests
+for the class they are working with.  Usually tests for the class
+<CODE>Foo</CODE> are found in the file <CODE>test/Foo.tcl</CODE>
+
+ <P>Each test file should have the following parts:
+<OL>
+
+<LI> The Copyright
+
+<LI> The code that loads the test system package
+<PRE>
+if {[string compare test [info procs test]] == 1} then {
+    source testDefs.tcl
+}
+</PRE>
+Each directory contains a <CODE>testDefs.tcl</CODE> file which
+in turn sources <a href="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></a>.  The idea here is that
+if the test framework changes, each test file need not be updated.
+
+<LI> A line that the user can uncomment if they want the test system to
+produce verbose messages:
+<PRE>
+#set VERBOSE 1
+</PRE>
+
+
+<LI> The individual tests, which should loosely follow the Ptolemy II
+file format standard:
+<PRE>
+############################################################################
+#### Foo
+test Foo-1.1 {Test out Foo} {
+
+} {}
+</PRE>
+
+</OL>
+
+<H3><A NAME="test styles">Test Styles</A></H3>
+There are two types of tests:
+<OL>
+<LI> Tests that handle all necessary setup in each individual test.
+
+<LI> Tests that rely on the earlier tests to do setup.
+</OL>
+
+In general, each test file should be able to be run over and over again
+in a binary without exiting the binary (it should be idempotent).
+
+ <P>It is up to the author of the tests as to whether each individual
+test does all the set up necessary.  If each test is atomic, then it
+makes it easy to highlight the text of an individual test and run it.
+If lots of tests are sharing common setup, then using a separate
+procedure to do setup might help.  On the negative side, atomic tests
+usually are longer and have more complicated return results.
+
+<HR>
+<H2><A NAME="testing java">Testing Java</A></H2>
+
+Jacl is a 100% Java implementation of a subset of Tcl.
+We use Jacl to test Java by writing Tcl code that exercises the Java classes.
+
+<H3>Running the tests</H3>
+To run the all the tests, do <CODE>cd $PTII; make tests</CODE>
+
+<p>If you run <CODE>make</CODE> in a test directory that contains
+tests written in Tcl for testing Java classes, then the 'right thing'
+should just happen.
+
+ <p>If you are running in Eclipse, see
+<a href="eclipse.htm#debugTclTests">Debugging Tcl Tests</a>.
+
+<H3>Writing Tests for Java </H3>
+Below we discuss some of the details of writing tests in Tcl that test
+Java classes.
+<H4>Simple Example</H4>
+<p>Jacl allows us to instantiate objects in a class and call public
+methods.  We use Jacl and the standard Tcl test bed to create tests.
+In the example below, we call <CODE>java::new</CODE> to create an
+instance of the Java <CODE>NamedObj</CODE> class.  We can then
+call public methods of <CODE>NamedObj</CODE> by referring to the
+Java object handle <CODE>$n</CODE>:
+<PRE>
+test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
+    set n [java::new pt.kernel.NamedObj]
+    set result1 [$n getName]
+    $n setName "A Named Obj"
+    set result2 [$n getName]
+    list $result1 $result2
+} {{} {A Named Obj}}
+</PRE>
+
+<h3><a name="CheckingKnownFailedTests">Checking Known Failed Test Results</a></h3>
+
+Note that you can combine the Tcl tests and the MoML tests
+by calling <CODE>createAndExecute</CODE>.  Even better, you
+can test for specific error messages with:
+<pre>
+test SDFSchedulerErrors-1.0 {} {
+    catch {createAndExecute "rateConsistency.xml"} errorMessage
+    list $errorMessage
+} {{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+   in .rateConsistency.SDF Director
+Because:
+No solution exists for the balance equations.
+Graph is not consistent under the SDF domain detected on external 
+port .rateConsistency.actor.port2}}
+
+</pre>
+
+<H4>Java Tcl Test Files</H4>
+It is best if each Java class has a separate Tcl file that contains tests.
+The base of the name of the Tcl test file should be the same of the Java
+class being tested.  The Tcl test file should be located in the
+<CODE>test</CODE> subdirectory of the directory where the Java class
+is defined.
+ <P>For example, if we are testing <CODE>NamedObj.java</CODE>, then
+the Tcl test file should be at <CODE>test/NamedObj.tcl</CODE>.
+
+
+<H3><A NAME="JavaScope">JavaScope</A></H3>
+We use Sun's
+JavaScope test coverage tool as part of our testing environment.
+Unfortunately, on November 5, 1999, Sun decided to discontinue support
+of JavaScope.  In the short term, we are continuing to use JavaScope.
+
+ <P>Here's how to review the test suite code coverage:
+<OL>
+
+<LI> Run:
+<PRE>
+cd $PTII/ptolemy/kernel
+make jsall
+</PRE>
+The <CODE>jsall</CODE> makefile rule does the following:
+<MENU>
+<LI> JavaScope uses a program called <CODE>jsinstr</CODE>
+to instrument the Java files.  <CODE>jsinstr</CODE> copies the
+original files to the <CODE>jsoriginal</CODE> directory and then
+adds Java function calls to copies of the files.  These function calls
+increment counters in a database at runtime.
+
+<LI> To compile the instrumented classes the <CODE>JavaScope.zip</CODE> file
+is added to the CLASSPATH and then the classes are recompiled.
+
+<LI> The test suite is run.
+</MENU>
+
+<LI> To views the code coverage run either <CODE>jsreport</CODE>,
+<CODE>jssummary</CODE> or <CODE>javascope</CODE>:
+<pre>
+jssummary -HTML -PROGRESS -OUTFILE=/tmp/summary
+jsreport -HTML -PROGRESS -RECURSIVE -OUTDIR=/tmp/report
+</pre>
+
+<LI> To restore the files
+back to the original state, run <CODE>make jsrestore</CODE>.
+<PRE>
+make jsrestore
+</PRE>
+
+</OL>
+<H4>JavaScope Details</H4>
+<MENU>
+<LI> <CODE>jsinstr</CODE> saves the original Java files to the
+<CODE>jsoriginal</CODE> directory.  The <CODE>jsall</CODE> makefile
+rule checks to see if this directory is present, and if it is not, runs
+<CODE>jsinstr</CODE>.  The <CODE>jsrestore</CODE> rule runs
+<CODE>jsrestore</CODE> and then attempts to remove the <CODE>jsoriginal</CODE>
+directory so that the next run of the <CODE>jsall</CODE> rule will
+recreate it.  If you are running <CODE>jsinstr</CODE> by hand on files
+that are not in the makefile, then you may find it necessary clean out the
+<CODE>jsoriginal</CODE> directory with:
+<PRE>
+jsrestore *.java
+rm jsoriginal/README
+rmdir jsoriginal
+</PRE>
+
+
+<LI> Javascript writes the code coverage information to
+<CODE>~/jsdatabase</CODE>.  You might find it helpful to remove
+this directory periodically.
+
+</MENU>
+
+
+<H4>Flushing the JavaScope database</H4>
+The JavaScope database must be flushed by hand at the end of a run, or the
+code coverage data of the run will not be dumped out to disk.
+ <P>There are two ways to do this.
+<OL>
+
+<LI> The <CODE>IFLUSHCLASS</CODE> option will flush out the coverage
+information for the current class at the end of each method.
+
+<LI> The <CODE>IFLUSH</CODE> option will flush out all the coverage
+information at the end of each method.
+
+</OL>
+Obviously, using <CODE>IFLUSH</CODE> will take more time than using
+<CODE>IFLUSHCLASS</CODE>.
+
+ <P>The <CODE>jsintr</CODE> options are set by consulting the following
+resources in order.
+<OL>
+<LI> system properties - environment variables
+
+<LI> <CODE>$HOME/javascope.properties</CODE>
+
+<LI> <CODE>./javascope.properties</CODE> in the current directory.
+
+<LI> Options can be embedded in files as comments:
+<PRE>
+/*jsoptions: ...*/
+</PRE>
+Embedded comment options can be set more than once in a file.  Embedded
+comment options are in effect until is the option is changed by another
+embedded comment option.
+
+<LI>  Command line arguments to <CODE>jsinstr</CODE>.
+
+</OL>
+
+
+ <p>The <CODE>doneTests</CODE> proc of
+<a href="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></a>
+includes a call that will flush the database:
+<pre>
+    catch {java::call COM.sun.suntest.javascope.database.js\$ flush}
+</pre>
+<HR>
+<H2><A NAME="testing documentation">Testing Documentation</A></H2>
+
+The Ptolemy II documentation is written in HTML.  There are several tools
+that can be used.
+<h3>wget</h3>
+The <CODE>wget</CODE> program can be used to craw the html pages
+of the release when it is on a website.  
+
+ <br>On the website, create a temporary top level <CODE>$PTII/index.htm</CODE>
+that includes a link to <CODE>doc/index.htm</CODE>
+
+
+ <br>run <CODE>wget</CODE>
+<pre>
+wget -np -m http://ptolemy.eecs.berkeley.edu/ptolemyII/<I>release</I>/index.htm &gt;&amp; wget.out
+</pre>
+This will generate lots of files in a <CODE>ptolemy.eecs.berkeley.edu</CODE>
+directory.  This directory can be removed:
+<pre>
+rm -rf ptolemy.eecs.berkeley.edu
+</pre>
+
+Look for "<CODE>Not Found</CODE>"
+<pre>
+egrep 'http:|Not Found' wget.out
+</pre>
+
+
+
+<H3>weblint</H3>
+
+Weblint tells the user about html errors.  Weblint was once obtained from
+<A HREF="ftp://ftp.cre.canon.co.uk/pub/weblint/weblint.tar.gz"><CODE>ftp://ftp.cre.canon.co.uk/pub/weblint/weblint.tar.gz</CODE></A> but has since moved, try
+using google.
+<br>To run <CODE>weblint</CODE>:
+<PRE>
+cd $PTII
+make weblint
+</PRE>
+
+<H3>htmlchek</H3>
+
+Htmlchek is another tool that tells the user about html errors.
+<CODE>htmlchek</CODE> also checks for bad links.  The
+<CODE>htmlchek</CODE> output is a little hard to read, so we tend to
+use <CODE>weblint</CODE> for checking individual files.
+<CODE>htmlchek</CODE> was once available at
+<A HREF="ftp://ftp.cs.buffalo.edu/pub/htmlchek/"><CODE>ftp://ftp.cs.buffalo.edu/pub/htmlchek/</CODE></A> but has since moved, try using google.
+
+<P> The best way to run <CODE>htmlchek</CODE> is to create a sample
+distribution, create the files in the <CODE>codeDoc</CODE> directory
+and then run <CODE>htmlchek</CODE>
+
+<OL>
+<LI> Create the test distribution:
+<PRE>
+cd /users/ptII/adm/gen-latest; make htmlchek
+</PRE>
+
+<LI> Reset <CODE>PTII</CODE> to point to the test distribution:
+<PRE>
+setenv PTII /users/ptII/adm/dists/ptII-latest
+cd PTII
+</PRE>
+
+<LI> Run <CODE>make install</CODE>.  This will make the Itcl HTML docs
+twice, which will populate the <CODE>doc/codeDoc</CODE> directories.
+You need to make the Itcl HTML docs twice so that the cross references are
+correct.
+
+<LI> Run <CODE>make htmlchek</CODE>
+
+</OL>
+
+
+
+The output ends up in five files
+<MENU>
+<LI> <CODE>htmlchekout.ERR</CODE> - HTML usage errors
+<LI> <CODE>htmlchekout.NAME</CODE> - Locations in the specified files
+that ware not referenced by any of those files
+<LI> <CODE>htmlchekout.HREF</CODE> - References from the specified files
+that are not found in the files.  This file is by far the most important
+file to look at.
+<LI> <CODE>htmlchekout.SRC</CODE> - References to online images.
+<LI> <CODE>htmlchekout.MAP</CODE> - Cross dependency information.
+</MENU>
+
+<P> All of the references in <CODE>htmlchekout.HREF</CODE> that point
+to <CODE>.html</CODE> files should be checked.  References to non-HTML
+files appear in <CODE>htmlchekout.HREF</CODE> because the non-HTML
+files were not included in the list of files that
+<CODE>htmlchek</CODE> ran on.  One quick way to search all the the <CODE>*.html</CODE> files is
+<PRE>
+cd $PTII
+grep mystring `find . -name "*.html" -print`
+</PRE>
+
+<H3>Spell checking</H3>
+<a href="../../util/testsuite/ptspell"><CODE>$PTII/util/testsuite/ptspell</CODE></a>
+ is a Ptolemy II specific spelling checker.
+
+<CODE>ptspell</CODE> has the following features:
+<menu>
+<li> It uses
+<a href="../../util/testsuite/ptlocaldict"><CODE>$PTII/util/testsuite/ptlocaldict</CODE></a>
+as a local dictionary of acceptable words that are not in the
+regular system dictionary. <CODE>ptlocaldict</CODE>
+is kept in ASCII sort order.
+
+<li> <CODE>ptspell</CODE> splits words up that contain embedded
+capital letters and then runs spell again.  Thus, <CODE>ptspell</CODE>
+can report spelling problems in variable, method and class names.
+This mechanism also reduces the number of words that are reported as
+misspelled because the word consists of two words stuck together.
+
+<li> If <CODE>/usr/local/bin/ispell</CODE> is present, then
+it will use it.  If you are running under Windows with Cygwin, you can
+download a prebuilt version of <CODE>ispell</CODE> from
+<a href="http://ptolemy.eecs.berkeley.edu/tycho/tychoTools.htm"><CODE>http://ptolemy.eecs.berkeley.edu/tycho/tychoTools.htm</CODE></a>
+
+</menu>
+
+ <p>
+Checking the spelling in all the HTML files can be done with:
+<PRE>
+cd $PTII
+ptspell `find . -name "*.html" -print`
+</PRE>
+
+ <p>Spell check the comments in the demos
+<pre>
+cd $PTII
+adm/bin/ptIItxtfiles &gt; /tmp/f
+grep demo /tmp/f | grep .xml &gt; /tmp/m
+ptspell `cat /tmp/m
+</pre>
+
+<H3>Check the distribution for bogus files</H3>
+Run the following makefile rules and commands:
+<DL>
+<DT> <CODE>make realclean</CODE>
+
+<DD> This will remove the <CODE>tclIndex</CODE> files and the files in
+<CODE>doc/codeDoc</CODE>.  The reason to remove the
+<CODE>codeDoc</CODE> files is so that we don't ship HTML files for any
+classes that have been removed.
+
+<DT> <CODE>make install</CODE>
+<DD> This will recreate the <CODE>tclIndex</CODE> files and the
+<CODE>doc/codeDoc</CODE> files.
+
+<DT> <CODE>make checkjunk</CODE>
+<DD> Look for files in the distribution that should not be there.
+
+<DT> <CODE>adm/bin/chkgifs</CODE>
+<DD> This file looks for gif files that are not used by HTML files
+in the distribution.
+
+</DL>
+
+<h2><a name="testingxml">Testing XML</a></h2>
+The parser we use in
+<CODE>$PTII/com/microstar</CODE>
+is a non validating parser.
+If you are writing MoML code, you might want to run your
+file through a validating parser, below are a few references:
+<menu>
+<li> <a href="http://www.hcrc.ed.ac.uk/~richard/xml-check.html" target="_top">wwww.hcrc.edu.ac.uk</a>
+
+<li> <a href="http://dir.yahoo.com/Computers_and_Internet/Data_Formats/HTML/Validation_and_Checkers/" target="_top">Yahoo HTML Validators</a>
+</menu>
+
+<h2><a name="proofreading">Proofreading</a></h2>
+
+Below are some guidelines on proofreading documentation
+<ol>
+<li> Proofreaders should write their names on the front page
+of the document.
+
+<li> In general, write big, and use a red pen.
+
+<li> Each page that has a typo should have a mark at the top of the page
+so that editors can easily find the typo.
+
+<li> Proofreading symbols can be found at<a href="http://webster.commnet.edu/writing/symbols.htm" target="_top"><CODE>http://webster.commnet.edu/writing/symbols.htm</CODE></a>
+</ol>
+
+<h2><a href="#runtimeTests">Runtime Tests</a></h2>
+<ol>
+
+<li> It is easier to work with the 
+<a href="../webStartHelp.htm">Webstart</a> version and check for missing
+files than it is to work with the installer.
+<br>Install <a href="../install.htm#X10">X10</a> and rerun
+<code>cd $PTII;./configure</code>
+
+<br>Build a webstart version with
+<pre>
+cd $PTII
+make install jnlp_all
+</pre>
+Invoke Webstart by pointing your browser at
+<a href="../../vergil.jnlp"><code>$PTII/vergil.jnlp</code></a>
+
+<li>Use the <code>about::copyright</code> facility to test
+for missing files and models that are the wrong size.
+</ol>
+
+<h2><a name="installer">How to test the installer</a></h2>
+For each case
+<ol>
+<li> Install with the included JVM but don't include the sources
+<li> Install without the included JVM but don't include the sources
+<li> Install with the included JVM but include the sources
+<li> WebStart
+</ol>
+
+Do the following:
+<ol>
+<li> Start up all the menu choices, verify that the initial screen
+has the right version number
+
+<li> Start up vergil, check the copyrights by expanding the configuration
+and run all the demos.
+</ol>
+
+Other things to try
+<ol>
+<li> Build the sources that are included in the installer
+<pre>
+cd c:/Ptolemy/ptII5.1
+export PTII=c:/Ptolemy/ptII5.1
+./configure
+make fast install tests &gt;&amp; make.out &amp;
+</pre>
+
+<li> Run diff against old versions
+</ol>
+
+
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="KarplusStrong" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="250">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 34.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model implements the Karplus-Strong&#10;algorithm for generating a plucked-string&#10;musical instrument sound.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 10.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 275.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 817, 564}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="gaussian(0.0, 0.6, 1, 35).toArray()">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 120.0">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.999999999999">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 120.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+    </entity>
+    <entity name="Lowpass Filter" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
+        </property>
+        <doc name="tooltip">FIR filter</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 120.0">
+        </property>
+    </entity>
+    <entity name="Allpass Filter" class="ptolemy.actor.lib.IIR">
+        <property name="numerator" class="ptolemy.data.expr.Parameter" value="{0.07317, 1.0}">
+        </property>
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 0.07317}">
+        </property>
+        <doc>IIR filter</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 120.0">
+        </property>
+    </entity>
+    <entity name="AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
+        <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
+                </property>
+                <property name="11025" class="ptolemy.kernel.util.StringAttribute" value="11025">
+                </property>
+                <property name="22050" class="ptolemy.kernel.util.StringAttribute" value="22050">
+                </property>
+                <property name="44100" class="ptolemy.kernel.util.StringAttribute" value="44100">
+                </property>
+                <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
+                </property>
+            </property>
+        </property>
+        <property name="bitsPerSample" class="ptolemy.actor.parameters.SharedParameter" value="16">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
+                </property>
+                <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
+                </property>
+            </property>
+        </property>
+        <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="1">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute" value="2">
+                </property>
+            </property>
+        </property>
+        <property name="transferSize" class="ptolemy.actor.parameters.SharedParameter" value="128">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.5, 233.5">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="26.0, 185.0">
+        </vertex>
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Delay.input" relation="relation5"/>
+    <link port="Delay.output" relation="relation1"/>
+    <link port="Scale.input" relation="relation4"/>
+    <link port="Scale.output" relation="relation5"/>
+    <link port="Lowpass Filter.input" relation="relation1"/>
+    <link port="Lowpass Filter.output" relation="relation3"/>
+    <link port="Allpass Filter.input" relation="relation3"/>
+    <link port="Allpass Filter.output" relation="relation4"/>
+    <link port="AudioPlayer.input" relation="relation5"/>
+</entity>

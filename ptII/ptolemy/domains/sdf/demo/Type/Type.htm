@@ -1,0 +1,59 @@
+<!-- $Id$-->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Type Demo</TITLE>
+</head>
+<body>
+<h1>Type System Demo</h1>
+<p>
+The applet below illustrates the types of the ports as
+they are updated during type resolution.
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+        <applet 
+            code = "ptolemy.vergil.TypeAnimatorApplet" 
+            codebase = "../../../../.." 
+            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" 
+            width = "800" 
+            height = "600" 
+            > 
+            <param name="name" value="Type" > 
+	    <param name="background" value="#ffffff" > 
+	    <param name="modelURL" value="Type.xml"> 
+	    <param name="orientation" value="horizontal"> 
+	    <param name="controls" value="buttons, topParameters" > 
+	    <param name="includeRunPanel" value="true" > 
+            <a href="Type.xml">MoML specification for this model.</a> 
+        </applet> 
+</center>
+The type constraints are:
+<ul>
+  <li> For each Ramp, the types of the initial value and the step size
+       are less than or equal to the output type.
+  <li> The types of the Expression inputs less than or equal to
+       the output.
+  <li> Each connection requires that the type of the receiving port
+       is greater than or equal to the type of the sending port.
+</ul>
+To see some illustrations of how type resolution works, try the following:
+<ul>
+  <li> Using the default parameters, click "go"; the type on all the
+	ports of the Ramps and the Expression resolve to int,
+	since all the Ramp parameters are integers.
+  <li> Change the Ramp1 step size to 0.5, a double, then click "go".
+	The output of Ramp1, input1 and the output of the Expression
+	are resolved to double.
+  <li> Change the Ramp1 initial value to the string "A", step size
+	to the string "BC". (When fires, Ramp1 will generate the
+	sequence of strings "A", "ABC", "ABCBC", ...) The output
+	of Ramp1, input1 and output of the Expression will be
+	resolved to "String", but there is a type conflict between
+	the output of Expression and the input of the plotter, as
+	indicated by the message in Java console.
+</ul>
+</body>
+</html>

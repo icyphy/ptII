@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <input source="ptolemy/configs/modalLibrary.xml"/>
+  <!-- Annotate with instructions. -->
+  <property name="annotation" class="ptolemy.kernel.util.Attribute">
+    <property name="_hideName"
+	      class="ptolemy.kernel.util.SingletonAttribute"/>
+    <property name="_iconDescription"
+	      class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here.  Create transitions by holding 
+by holding the (Mac: command key, Windows: control key)
+and dragging from  one state to another.
+Right click to configure the properties
+of this model, including setting the final state(s).
+Then delete this annotation.</text>
+    </svg></configure></property>
+    <property name="_location"
+	      class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
+    <property name="_controllerFactory"
+	      class="ptolemy.vergil.basic.NodeControllerFactory"/>
+    <property name="_editorFactory"
+	      class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+  </property>
+</group>

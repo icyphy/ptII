@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>HanoiTower</title>
+</head>
+<body>
+<h1>HanoiTower</h1>
+This page contains an applet that should appear as a separate window.
+<p>This model solves Tower of Hanoi puzzle using the ActorRecursion actor. 
+A tower of disks initially stacked in increasing size on the source tower 
+shall be transferred to the destination tower, moving only at one disk at a 
+time and never a larger one onto a smaller through the third tower. </p>
+
+<p>The number of disks can be adjusted through the parameter numberOfDisks.
+The three towers are indexed as 0,1,2. The animation speed can be adjusted 
+through the parameter interpolationFactor.</p>
+
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- PT SIMPLE APPLET CONVERTER -->
+<APPLET 
+ code = "ptolemy.vergil.VergilApplet"
+ codebase = "../../../../.."
+  archive = "ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.jar,ptolemy/ptsupport.jar,ptolemy/domains/ddf/ddf.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/gr/gr.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <!-- PARAM name="jnlp_href" value="ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.jnlp" -->
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer HanoiTower.xml">
+ <PARAM NAME = "NAME" VALUE = "HanoiTower" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "HanoiTower.xml" > \
+ <a href="HanoiTower.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT SIMPLE APPLET CONVERTER -->
+</CENTER>
+</p>
+</body>
+</html>

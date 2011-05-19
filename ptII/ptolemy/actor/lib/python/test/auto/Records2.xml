@@ -1,0 +1,126 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Records2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 40.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 746}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 319.5}">
+    </property>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 150.0}">
+        </property>
+        <port name="fixpart" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="arrayOfRecords" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 375.0}">
+        </property>
+        <port name="fixpart" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="arrayOfRecords" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="PythonScript" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="class Main :&#10;  &quot;description here&quot;&#10;  def __init__(self):&#10;    self.count = 0&#10;  def fire(self) :&#10;    token = self.input.get(0)&#10;    from ptolemy.data import ArrayToken&#10;    if (self.count == 0):&#10;      self.output.broadcast(ArrayToken(&quot;{{a=1, b=2},{a=2, b=3}}&quot;))&#10;    else:&#10;      self.output.broadcast(ArrayToken(&quot;{{a=1, b=2},{a=2, b=3},{a=3, b=4}}&quot;))&#10;    self.count = self.count + 1&#10;    return&#10;&#10;">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 210.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType({a=int, b=int})">
+            </property>
+        </port>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 185.0}">
+        </property>
+    </entity>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 80.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{arrayOfRecords = {{a = 1, b = 2}, {a = 2, b = 3}}, fixpart = 1}, {arrayOfRecords = {{a = 1, b = 2}, {a = 2, b = 3}, {a = 3, b = 4}}, fixpart = 2}, {arrayOfRecords = {{a = 1, b = 2}, {a = 2, b = 3}, {a = 3, b = 4}}, fixpart = 3}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{{a = 1, b = 2}, {a = 2, b = 3}}}, {{{a = 1, b = 2}, {a = 2, b = 3}, {a = 3, b = 4}}}, {{{a = 1, b = 2}, {a = 2, b = 3}, {a = 3, b = 4}}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 405.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <vertex name="vertex1" value="{150.0, 185.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{695.0, 320.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="RecordAssembler.output" relation="relation2"/>
+    <link port="RecordAssembler.fixpart" relation="relation5"/>
+    <link port="RecordAssembler.arrayOfRecords" relation="relation4"/>
+    <link port="RecordDisassembler.input" relation="relation2"/>
+    <link port="RecordDisassembler.arrayOfRecords" relation="relation6"/>
+    <link port="PythonScript.input" relation="relation"/>
+    <link port="PythonScript.output" relation="relation4"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="Pulse.output" relation="relation5"/>
+    <link port="Pulse.trigger" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test2.input" relation="relation6"/>
+</entity>

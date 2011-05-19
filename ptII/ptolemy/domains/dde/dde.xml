@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DDE" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>Distributed Discrete Event Domain</doc>
+        <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+        <input source="ptolemy/domains/dde/lib/ddeentities.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>

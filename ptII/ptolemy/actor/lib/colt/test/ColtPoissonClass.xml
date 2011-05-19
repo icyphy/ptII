@@ -1,0 +1,138 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ColtPoissonClass" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 30}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 92, 815, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you change the seed shared parameter&#10;of ColtPoisson, then the seed shared parameter&#10;in InstanceOfCompositeClassDefinition should also&#10;change.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="1. Double click on the ColtPoisson actor&#10;and change the seed parameter">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 135.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. Right click and select &quot;open instance&quot;&#10;and then check the seed parameter of&#10;the ColtPoisson.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="However, the change to the seed is&#10;propagated to inside this composite.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 250.0]">
+        </property>
+    </property>
+    <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 120.0]">
+        </property>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 3, 0, 0, 1, 0, 0, 2, 0, 4, 0, 0, 0, 1, 0, 4, 0, 0, 1}">
+            </property>
+            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.001">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 120.0}">
+            </property>
+        </entity>
+        <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="100L">
+            </property>
+            <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
+            <doc>Create a sequence of Poisson random variables</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 120.0}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="Test.input" relation="relation"/>
+        <link port="ColtPoisson.output" relation="relation"/>
+    </class>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 3, 0, 0, 1, 0, 0, 2, 0, 4, 0, 0, 0, 1, 0, 4, 0, 0, 1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.001">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 110.0}">
+        </property>
+    </entity>
+    <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="100L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <doc>Create a sequence of Poisson random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 110.0}">
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeClassDefinition" class="CompositeClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 225.0}">
+        </property>
+        <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 120.0}">
+            </property>
+        </entity>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 225.0]">
+        </property>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 3, 0, 0, 1, 0, 0, 2, 0, 4, 0, 0, 0, 1, 0, 4, 0, 0, 1}">
+            </property>
+            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.001">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 120.0}">
+            </property>
+        </entity>
+        <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="100L">
+            </property>
+            <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
+            <doc>Create a sequence of Poisson random variables</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 120.0}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="Test.input" relation="relation"/>
+        <link port="ColtPoisson.output" relation="relation"/>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation2"/>
+    <link port="ColtPoisson.output" relation="relation2"/>
+</entity>

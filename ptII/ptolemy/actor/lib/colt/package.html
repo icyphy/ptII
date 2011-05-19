@@ -1,0 +1,59 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>ptolemy.actor.lib.colt</title>
+</head>
+<body>
+Classes that use the Colt package to generate random numbers.
+<p>
+ <br>Colt is an
+"Open Source Libraries for High Performance
+Scientific and Technical Computing in Java"
+
+<br>These classes use the Colt library from
+<a href="http://hoschek.home.cern.ch/hoschek/colt/" target="_top"><CODE>http://hoschek.home.cern.ch/hoschek/colt/</CODE></a>
+
+<p><code>$PTII/lib/ptcolt.jar</code> is a subset of the Colt classes necessary
+to compile these classes.  Usually, you need only add 
+<code>$PTII/lib/ptcolt.jar</code> to your classpath by running
+<pre>
+cd $PTII
+rm config.*; ./configure
+</pre>
+
+<p>Note that if configure finds colt.jar then configure will put
+colt.jar in front of ptcolt.jar in the classpath.  
+
+<code>$PTII/lib/ptcolt.jar</code> includes an updated 
+<a href="http://www.honeylocust.com/RngPack/">RngPack1.1a</a>, which
+includes fixes to "fixes a number of serious bugs in RngPack 1.0 including an incorrect coefficient in the Ranecu implementation and fixes an off-by-one error in the choice() method."
+Colt-1.0.3 shipped with RngPack1.0, we recommend using ptcolt.jar,
+which includes RngPack1.1a.
+
+
+<p>If you want to work with the full version of Colt, download Colt
+and unjar so that $PTII/vendors/misc/colt/colt.jar is created:
+
+<pre>
+cd $PTII/vendors/misc
+mkdir colt
+jar -xf /tmp/colt1.0.3.zip
+</pre>
+The rerun configure:
+<pre>
+cd $PTII
+rm config.*; ./configure
+</pre>
+and run make in this directory
+<pre>
+cd $PTII/ptolemy/actor/lib/colt
+make
+</pre>
+
+
+<p>
+@author David Bauer, Kostas Oikonomou, and Edward A. Lee
+@since Ptolemy II 4.1
+</body>
+</html>
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="test1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <doc>
+A hierarchical output port is connected on the inside to an input and
+an output.  Only the output rate should get propagated, since it is only an
+output port.
+    </doc>
+    <property name="SDF4" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="89.0, 62.0">
+        </property>
+    </property>
+    <entity name="typed composite actor0" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="244.0, 157.0">
+        </property>
+        <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 48.0">
+            </property>
+        </property>
+        <port name="0:port3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="location1" class="ptolemy.kernel.util.Location" value="252.0, 148.0">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="0:port4" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="location1" class="ptolemy.kernel.util.Location" value="366.0, 235.0">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <entity name="0:TrigFunction1" class="ptolemy.actor.lib.TrigFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                    </property>
+                    <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                    </property>
+                    <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                    </property>
+                    <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                    </property>
+                    <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                    </property>
+                    <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 231.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="0:Ramp0" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 232.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="0:relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="0:relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="209.0, 237.0">
+            </vertex>
+        </relation>
+        <link port="0:port3" relation="0:relation2"/>
+        <link port="0:port4" relation="0:relation5"/>
+        <link port="0:TrigFunction1.input" relation="0:relation2"/>
+        <link port="0:TrigFunction1.output" relation="0:relation5"/>
+        <link port="0:Ramp0.output" relation="0:relation2"/>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0,0.0}, {1.0,0.841471}, {2.0,0.909297}, {3.0,0.14112}, {4.0,-0.7568025}, {5.0,-0.9589243}, {6.0,-0.2794155}, {7.0,0.6569866}, {8.0,0.9893582}, {9.0,0.4121185}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="322.0, 158.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="typed composite actor0.0:port3" relation="relation5"/>
+    <link port="typed composite actor0.0:port4" relation="relation6"/>
+    <link port="Test4.input" relation="relation5"/>
+    <link port="Test4.input" relation="relation6"/>
+</entity>

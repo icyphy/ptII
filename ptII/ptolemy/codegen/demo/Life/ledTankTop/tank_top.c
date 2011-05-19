@@ -1,0 +1,53 @@
+/*********************************************
+* Author: Leah Buechley
+* Filename: tank_top.c
+* Chip: ATmega16
+* Date: 3/30/2006
+* Purpose:
+*        This program was written for a wearable LED tank top.
+*        More information in game_of_life.c and at:
+*        http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
+* Copyright information: http://www.gnu.org/copyleft/gpl.html
+
+Copyright (C) 2006 Leah Buechley
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+*********************************************/
+
+#include <stdlib.h>
+#include "tank_top.h"
+
+int main(void)
+{
+        //initialize chip
+        initialize_tank_pins_as_output ();
+
+        //initialize LED array with a glider
+        //glider(2,2);
+        r_pentomino(1,1);
+        all_off();
+        //run the game of life
+#ifdef __AVR__
+        for(;;) {
+#else
+        int i;
+        for(i = 0; i < 32; i++) {
+#endif
+            loop_lights();
+            //gol();
+        }
+        return 0;
+}

@@ -1,0 +1,188 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="Receiver" extends="ptolemy.domains.fsm.kernel.FSMActor">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
+    </property>
+    <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 195.0">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <port name="pktIn" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 80.0">
+        </property>
+    </port>
+    <port name="msgOut" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 140.0">
+        </property>
+    </port>
+    <port name="ack" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 85.0">
+        </property>
+    </port>
+    <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 125.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="S0" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="483.55438232421875, 261.74716732528145">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="S1" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.55438232421875, 263.74716732528145">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="recTr1" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_isPresent &amp;&amp; pktIn == -1">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="ack = -1">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2590999901238944">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.797049717885431">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="recTr2" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_isPresent &amp;&amp; pktIn % 2 == 0">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="ack = 0; msgOut = pktIn / 2">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="recTr3" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_isPresent &amp;&amp; pktIn % 2 == 0">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="ack = 0">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.289732573952174">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.08594835096788529">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="recTr4" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_isPresent &amp;&amp; pktIn % 2 == 1">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="ack = 1; msgOut = pktIn / 2">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="recTr5" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_isPresent &amp;&amp; pktIn % 2 == 1">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="ack = 1">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3923914536885436">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.40731946535770197">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <relation name="recTr6" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_isPresent &amp;&amp; pktIn % 2 == 0">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="ack = 0; msgOut = pktIn / 2">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+    </relation>
+    <link port="Init.incomingPort" relation="recTr1"/>
+    <link port="Init.outgoingPort" relation="recTr1"/>
+    <link port="Init.outgoingPort" relation="recTr2"/>
+    <link port="S0.incomingPort" relation="recTr4"/>
+    <link port="S0.incomingPort" relation="recTr5"/>
+    <link port="S0.outgoingPort" relation="recTr5"/>
+    <link port="S0.outgoingPort" relation="recTr6"/>
+    <link port="S1.incomingPort" relation="recTr2"/>
+    <link port="S1.incomingPort" relation="recTr3"/>
+    <link port="S1.incomingPort" relation="recTr6"/>
+    <link port="S1.outgoingPort" relation="recTr3"/>
+    <link port="S1.outgoingPort" relation="recTr4"/>
+</class>

@@ -1,0 +1,21 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Discrete Event Domain</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Discrete Event</h1>
+<P>
+The Ptolemy II Discrete Event (DE) domain provides a general environment for
+time-oriented simulations of systems such as queueing systems, communication
+networks, and hardware systems. In this domain, actors communicate by sending
+tokens across connections. The token sent and the time at which the action
+took place constitute an event in the DE domain. Upon receiving an event, the
+destination actor is activated and a reaction take place. The reaction may
+change the internal state of the actor and possibly generate new events,
+resulting in further reactions. A DE domain scheduler ensures that events
+are processed chronologically.
+</body>
+</html>

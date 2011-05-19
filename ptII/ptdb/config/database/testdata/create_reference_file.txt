@@ -1,0 +1,31 @@
+putDocument ReferenceFile.ptdbxml '<reference>
+<entity DBModelId="CompositeActor_123" name="CompositeActor"/>
+<entity DBModelId="newModel_1279245716984" name="newModel">
+	<entity DBModelId="Adder" name="Adder"/>
+	<entity DBModelId="Adder" name="Adder"/>
+</entity>
+<entity DBModelId="NoNamesNoValues" name="NoNamesNoValues"/>
+<entity DBModelId="Adder" name="Adder"/>
+<entity DBModelId="ContainsOneNameValue" name="ContainsOneNameValue"/>
+<entity DBModelId="ModelB" name="ModelB"/>
+<entity DBModelId="ModelA" name="ModelA"/>
+<entity DBModelId="modelWithTwoAdders" name="modelWithTwoAdders">
+	<entity DBModelId="Adder" name="Adder"/>
+	<entity DBModelId="Adder" name="Adder"/>
+</entity>
+<entity DBModelId="ContainsBothNamesButExchangedValues" name="ContainsBothNamesButExchangedValues"/>
+<entity DBModelId="ContainsBothNamesOneValue" name="ContainsBothNamesOneValue"/>
+<entity DBModelId="ModelContainsBothAttributes" name="ModelContainsBothAttributes"/>
+<entity DBModelId="Y" name="Y"/>
+<entity DBModelId="NoNamesAllValues" name="NoNamesAllValues"/>
+<entity DBModelId="NoReferences" name="NoReferences"/>
+<entity DBModelId="modelWithOneAdder" name="modelWithOneAdder">
+	<entity DBModelId="Adder" name="Adder"/>
+	<entity DBModelId="Adder" name="Adder"/>
+</entity>
+<entity DBModelId="DD_1287442736015" name="DD"/>
+<entity DBModelId="MM_1287442785812" name="MM"/>
+<entity DBModelId="CC_1287442853046" name="CC">
+	<entity DBModelId="MM_1287442785812" name="MM"/>
+</entity>
+</reference>'

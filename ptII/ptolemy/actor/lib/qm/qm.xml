@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="QuantityManager" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Quantity managers</doc>
+
+  <entity name="Bus" class="ptolemy.actor.lib.qm.Bus"> 
+  </entity>
+  
+  <entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
+  </entity>
+  
+  <entity name="BasicSwitch" class="ptolemy.actor.lib.qm.BasicSwitch"> 
+  </entity>
+  
+  <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

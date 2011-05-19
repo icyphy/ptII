@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Utilities library for HyVisual (modified to include ModalModel). -->
+<entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+        <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor"/>
+	<input source="ptolemy/configs/utilityModalModel.xml"/>
+        <input source="ptolemy/configs/basicUtilities.xml"/>
+        <!-- Do not include this as singleton parameters are buggy. -->
+        <!-- input source="ptolemy/configs/customize.xml"/ -->
+        <input source="ptolemy/data/unit/unitSystems.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>

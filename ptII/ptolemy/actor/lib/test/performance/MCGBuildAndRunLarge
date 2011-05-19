@@ -1,0 +1,23 @@
+#!/bin/sh -x
+# $Id$
+
+# Build models and run them.
+
+# Clean up
+rm *.out *.xml *.plt
+rm -rf $HOME/cg/
+# Build the models
+$PTII/bin/ptjacl ModularCodeGen.tcl
+
+models="hierarchicalModel_2_2.xml \
+    hierarchicalModelTransparent_2_2.xml \
+    hierarchicalModelLazy_2_2.xml \
+    hierarchicalModelLazyTransparent_2_2.xml \
+    hierarchicalModelMCG_2_2.xml"
+
+for model in $models
+do
+    echo $model
+    $PTII/bin/ptjacl run.tcl $model
+done
+

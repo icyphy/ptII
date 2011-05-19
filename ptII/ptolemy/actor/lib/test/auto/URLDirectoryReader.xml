@@ -1,0 +1,73 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="URLDirectoryReader" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[39, 58]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 65.0">
+        </property>
+        <property name="copernicus_iterations" class="ptolemy.data.expr.Parameter" value="100">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 75}">
+            </property>
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 241, 815, 568}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
+    </property>
+    <entity name="URLDirectoryReader" class="ptolemy.actor.lib.URLDirectoryReader">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:./&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+            </property>
+        </property>
+        <property name="refresh" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="endsWith" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <doc>Read a directory and output each file or subdirectory</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 215.0">
+        </property>
+    </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="175.0, 215.0">
+        </vertex>
+    </relation>
+    <link port="URLDirectoryReader.output" relation="relation4"/>
+    <link port="Discard.input" relation="relation4"/>
+</entity>

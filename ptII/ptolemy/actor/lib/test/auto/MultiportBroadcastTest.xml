@@ -1,0 +1,76 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MultiportBroadcastTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 60}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test connecting actors that have multiport outputs to multiport inputs.&#10;At one point, we created lots of actors that have multiport outputs &#10;and use broadcast().  The problem is that the width inference algorithm&#10;fails unless setDefaultWidth(1) is added or the user specifies the width.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 90.0]">
+        </property>
+    </property>
+    <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 345.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+            <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+            </property>
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;!DOCTYPE entity PUBLIC &quot;-//UC Berkeley//DTD MoML 1//EN&quot;&#10;    &quot;http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd&quot;&gt;&#10;&lt;entity name=&quot;model&quot; class=&quot;ptolemy.actor.TypedCompositeActor&quot;&gt;&#10;&lt;/entity&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 220.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="StringToXML.input" relation="relation2"/>
+    <link port="StringToXML.output" relation="relation"/>
+    <link port="Discard.input" relation="relation"/>
+    <link port="StringConst.output" relation="relation2"/>
+</entity>

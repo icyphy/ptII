@@ -1,0 +1,65 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>LogisticMap</TITLE>
+</HEAD>
+<BODY>
+<H1>LogisticMap</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+LogisticMap is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "LogisticMap.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="LogisticMapVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+This model shows a polynomial mapping described by
+the equation: x(n+1) = rx(n)(1-x(n)) which was 
+originally introduced as a demographic model where
+x(n) is a number between 0 and 1, and represents
+the population at year n and r is a positive number,
+and represents a combined rate for reproduction and
+starvation. 
+
+<p>It is often cited as an archetypal example of how
+complex, chaotic behavior can arise from very simple
+non-linear dynamical equations:
+<ul>
+<li> With 0, the population will eventually die.
+<li> With 1, the population will quickly stabilize to
+  (r-1)/r.
+<li> With 2&lt;r&lt;3, the population will eventually stabilize 
+  to (r-1)/r, after oscillating around that value for
+  some time.
+<li> With 3&lt;r&lt;3.45, the population will oscillate between
+  2 values forever.
+<li> With 3.45&lt;r&lt;3.54, the population will oscillate
+  between 4 values.
+<li> With r slightly bigger than 3.54, the population 
+  will oscillate between 8 values, then 16, 32, etc.
+  The lengths of the parameter intervals which yield
+  the same number of oscillations decrease rapidly...
+<li> At r = 3.57 is the onset of chaos and we can no
+  longer see any oscillations.
+</ul>
+For more details, see 
+<a href="http://en.wikipedia.org/wiki/Logistic_map" target="_top"><code>http://en.wikipedia.org/wiki/Logistic_map</code>
+
+</BODY>
+</HTML>

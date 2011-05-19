@@ -1,0 +1,174 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Dummy_test" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 49, 1121, 620}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 503]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{418.1652462121212, 238.0857796717172}">
+    </property>
+    <property name="OptimizingSDFDirector" class="ptolemy.domains.sdf.optimize.OptimizingSDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 70.0]">
+        </property>
+    </property>
+    <entity name="TransformAndDisplay1" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 155.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 815, 517}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.9329229797979, 95.9041982323232}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 70.0]">
+            </property>
+        </port>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={688, 157, 334, 241}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
+            </property>
+        </entity>
+        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 70.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="Display.input" relation="relation"/>
+        <link port="DummyTransformer.input" relation="relation2"/>
+        <link port="DummyTransformer.output" relation="relation"/>
+    </entity>
+    <entity name="DummySource" class="ptolemy.domains.sdf.optimize.lib.DummySource">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="DummyTransformer1" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="DummyTransformer2" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="TransformAndDisplay2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 280.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 815, 517}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.9329229797979, 95.9041982323232}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 70.0]">
+            </property>
+        </port>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={688, 157, 334, 241}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
+            </property>
+        </entity>
+        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 70.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="Display.input" relation="relation"/>
+        <link port="DummyTransformer.input" relation="relation2"/>
+        <link port="DummyTransformer.output" relation="relation"/>
+    </entity>
+    <entity name="TransformAndDisplay3" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 410.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 815, 517}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.9329229797979, 95.9041982323232}">
+        </property>
+        <property name="OptimizingSDFDirector" class="ptolemy.domains.sdf.optimize.OptimizingSDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -40.0]">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 70.0]">
+            </property>
+        </port>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={688, 157, 334, 241}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
+            </property>
+        </entity>
+        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 70.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="Display.input" relation="relation"/>
+        <link port="DummyTransformer.input" relation="relation2"/>
+        <link port="DummyTransformer.output" relation="relation"/>
+    </entity>
+    <entity name="DummyTransformer3" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 410.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="[170.0, 240.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[490.0, 325.0]">
+        </vertex>
+    </relation>
+    <link port="TransformAndDisplay1.port" relation="relation2"/>
+    <link port="DummySource.output" relation="relation3"/>
+    <link port="DummyTransformer1.input" relation="relation3"/>
+    <link port="DummyTransformer1.output" relation="relation2"/>
+    <link port="DummyTransformer2.input" relation="relation3"/>
+    <link port="DummyTransformer2.output" relation="relation"/>
+    <link port="TransformAndDisplay2.port" relation="relation"/>
+    <link port="TransformAndDisplay3.port" relation="relation4"/>
+    <link port="DummyTransformer3.input" relation="relation"/>
+    <link port="DummyTransformer3.output" relation="relation4"/>
+</entity>

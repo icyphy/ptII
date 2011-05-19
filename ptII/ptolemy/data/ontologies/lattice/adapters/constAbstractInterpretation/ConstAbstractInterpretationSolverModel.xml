@@ -1,0 +1,557 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstAbstractInterpretationSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={541, 303, 837, 593}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 476]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.8906249999999, 234.5203598484849}">
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 &lt;= Unknown || factor2 &lt;= Unknown ? Unknown :&#10; (factor1 &lt;= Zero || factor2 &lt;= Zero) &amp;&amp; factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? Zero :&#10;  (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Positive) || (factor1 &lt;= Negative &amp;&amp; factor2 &lt;= Negative) ? Positive :&#10;   (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Negative) || (factor2 &lt;= Positive &amp;&amp; factor1 &lt;= Negative) ? Negative :&#10;    factor1 &lt;= ScalarConst &amp;&amp; factor2 &lt;= ScalarConst ? ScalarConst :&#10;     factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 170.0]">
+        </property>
+    </property>
+    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend &lt;= Unknown || divisor &lt;= Zero ? Unknown :&#10; dividend &lt;= Zero &amp;&amp; divisor &lt;= ScalarNonConst ? Zero :&#10;  (dividend &lt;= Positive &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Negative &amp;&amp; divisor &lt;= Negative) ? Positive :&#10;   (dividend &lt;= Negative &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Positive &amp;&amp; divisor &lt;= Negative) ? Negative :&#10;    dividend &lt;= ScalarConst &amp;&amp; divisor &lt;= ScalarConst ? ScalarConst :&#10;     dividend &lt;= ScalarNonConst &amp;&amp; divisor &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 220.0]">
+        </property>
+    </property>
+    <property name="ComparatorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.logic.Comparator">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.logic.Comparator">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-30" y="-15" width="60" height="30" style="fill:white"></rect>
+<polyline points="-30,-10, -10,-10, -10,0" style="stroke:grey"></polyline>
+<polyline points="-30,10, 10,10, 10,0" style="stroke:grey"></polyline>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 50.0]">
+        </property>
+        <property name="leftPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="rightPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= (comparison.getExpression().trim().equals('&gt;')) ? lessThan(right, left) :&#10;    (comparison.getExpression().trim().equals('&lt;')) ? lessThan(left, right) :&#10;     (comparison.getExpression().trim().equals('==')) ? equalTo(left, right) :&#10;      (comparison.getExpression().trim().equals('&gt;=')) ? orFunction(lessThan(right, left), equalTo(left, right)) :&#10;       (comparison.getExpression().trim().equals('&lt;=')) ? orFunction(lessThan(left, right), equalTo(left, right)) :&#10;        Unknown&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="comparisonAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="toleranceAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="andFunction" class="ptolemy.data.ontologies.lattice.LogicOpConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= Unknown || booleanVar1 &lt;= Unknown ? Unknown :&#10; booleanVar0 &lt;= BooleanFalse || booleanVar1 &lt;= BooleanFalse ? BooleanFalse :&#10;  booleanVar0 &lt;= BooleanTrue &amp;&amp; booleanVar1 &lt;= BooleanTrue ? BooleanTrue :&#10;   booleanVar0 &lt;= BooleanConst &amp;&amp; booleanVar1 &lt;= BooleanConst ? BooleanConst :&#10;    booleanVar0 &lt;= BooleanNonConst &amp;&amp; booleanVar1 &lt;= BooleanNonConst ? BooleanNonConst :&#10;     Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 260.0]">
+        </property>
+    </property>
+    <property name="orFunction" class="ptolemy.data.ontologies.lattice.LogicOpConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= Unknown || booleanVar1 &lt;= Unknown ? Unknown :&#10; booleanVar0 &lt;= BooleanTrue || booleanVar1 &lt;= BooleanTrue ? BooleanTrue :&#10;  booleanVar0 &lt;= BooleanFalse &amp;&amp; booleanVar1 &lt;= BooleanFalse ? BooleanFalse :&#10;   booleanVar0 &lt;= BooleanConst &amp;&amp; booleanVar1 &lt;= BooleanConst ? BooleanConst :&#10;    booleanVar0 &lt;= BooleanNonConst &amp;&amp; booleanVar1 &lt;= BooleanNonConst ? BooleanNonConst :&#10;     Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 315.0]">
+        </property>
+    </property>
+    <property name="lessThan" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;  left &lt;= Zero &amp;&amp; right &lt;= Negative ? BooleanFalse :&#10;   (left &lt;= Zero || left &lt;= Negative) &amp;&amp; right &lt;= Positive ? BooleanTrue :&#10;    left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanTrue :&#10;     left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanFalse :&#10;      left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;       left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;        Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 150.0]">
+        </property>
+    </property>
+    <property name="equalTo" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanTrue :&#10;  left &lt;= BooleanTrue &amp;&amp; right &lt;= BooleanTrue ? BooleanTrue :&#10;   left &lt;= BooleanFalse &amp;&amp; right &lt;= BooleanFalse ? BooleanTrue :&#10;    left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;     left &lt;= Zero &amp;&amp; (right &lt;= Positive || right &lt;= Negative) ? BooleanFalse :&#10;      left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanFalse :&#10;       left &lt;= BooleanTrue &amp;&amp; right &lt;= BooleanFalse ? BooleanFalse :&#10;        left &lt;= BooleanFalse &amp;&amp; right &lt;= BooleanTrue ? BooleanFalse :&#10;         left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;          left &lt;= BooleanConst &amp;&amp; right &lt;= BooleanConst ? BooleanConst :&#10;           left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;            left &lt;= BooleanNonConst &amp;&amp; right &lt;= BooleanNonConst ? BooleanNonConst :&#10;             Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 205.0]">
+        </property>
+    </property>
+    <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 &lt;= Unknown || addend2 &lt;= Unknown ? Unknown :&#10; addend1 &lt;= Positive &amp;&amp; (addend2 &lt;= Positive || addend2 &lt;= Zero) ? Positive :&#10;  addend1 &lt;= Negative &amp;&amp; (addend2 &lt;= Negative || addend2 &lt;= Zero) ? Negative :&#10;   addend2 &lt;= Positive &amp;&amp; (addend1 &lt;= Positive || addend1 &lt;= Zero) ? Positive :&#10;    addend2 &lt;= Negative &amp;&amp; (addend1 &lt;= Negative || addend1 &lt;= Zero) ? Negative :&#10;     addend1 &lt;= Zero &amp;&amp; addend2 &lt;= Zero ? Zero :&#10;      addend1 &lt;= ScalarNonConst &amp;&amp; addend2 &lt;= ScalarNonConst : ScalarNonConst :&#10;       Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 320.0]">
+        </property>
+    </property>
+    <property name="subtractFunction" class="ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addFunction(subtractor, negateFunction(subtractee))">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 375.0]">
+        </property>
+    </property>
+    <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Positive ? Negative :&#10;  arg &lt;= Negative ? Positive :&#10;   arg &lt;= Zero ? Zero :&#10;    arg &lt;= ScalarConst ? ScalarConst :&#10;     arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 430.0]">
+        </property>
+    </property>
+    <property name="notFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= BooleanTrue ? BooleanFalse :&#10;  arg &lt;= BooleanFalse ? BooleanTrue :&#10;   arg &lt;= BooleanConst ? BooleanConst :&#10;    arg &lt;= BooleanNonConst ? BooleanNonConst :&#10;     Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 370.0]">
+        </property>
+    </property>
+    <property name="BooleanSelectActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSelect">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSelect">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 70.0]">
+        </property>
+        <property name="trueInputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="falseInputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    trueInput == Unknown &amp;&amp; falseInput == Unknown ? Unknown :&#10;     trueInput == Zero &amp;&amp; falseInput == Zero &amp;&amp; control &lt;= BooleanNonConst ? Zero :&#10;      control == BooleanTrue ? trueInput :&#10;       control == BooleanFalse ? falseInput :&#10;        control == BooleanConst ? lub(trueInput, falseInput) :&#10;         trueInput &lt;= ScalarNonConst &amp;&amp; falseInput &lt;= ScalarNonConst &amp;&amp; control &lt;= BooleanNonConst ? ScalarNonConst :&#10;          trueInput == falseInput &amp;&amp; trueInput &lt; BooleanConst &amp;&amp; falseInput &lt; BooleanConst &amp;&amp; control &lt;= BooleanNonConst ? trueInput :&#10;           trueInput &lt;= BooleanNonConst &amp;&amp; falseInput &lt;= BooleanNonConst &amp;&amp; control &lt;= BooleanNonConst ? BooleanNonConst :&#10;            Undefined">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="BooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="35.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="41.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-10.0">
+                </property>
+            </property>
+            <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="T">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, -25.0]">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, 10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, 0.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-10.0">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-13.07">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.41">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-13.07">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-5.41">
+                </property>
+            </property>
+            <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="F">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-29.0, 10.0}">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-14.14">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 20.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
+                </property>
+            </property>
+        </property>
+    </property>
+    <property name="BooleanSwitchActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSwitch">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSwitch">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 150.0]">
+        </property>
+        <property name="BooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="35.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="41.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-10.0">
+                </property>
+            </property>
+            <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="T">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, -25.0]">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, 10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, 0.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-10.0">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-13.07">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.41">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-13.07">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-5.41">
+                </property>
+            </property>
+            <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="F">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-29.0, 10.0}">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-14.14">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, -10.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 20.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
+                </property>
+            </property>
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanFalse ? Unknown :&#10;     control &lt;= BooleanNonConst ? input :&#10;      Undefined">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanTrue ? Unknown :&#10;     control &lt;= BooleanNonConst ? input :&#10;      Undefined">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-15.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="33.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-30.0, 0.0">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, -10.0">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-30.0, 0.0">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 10.0">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-20.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-10.0">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-20.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="14.14">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-20.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-20.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="13.07">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.41">
+                </property>
+            </property>
+            <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-20.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="13.07">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-5.41">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 136, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="T">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, -25.0">
+                </property>
+            </property>
+            <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="F">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 11.0]">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-15.0, 20.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
+                </property>
+            </property>
+        </property>
+    </property>
+    <property name="reciprocalFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Zero ? Unknown :&#10;  arg &lt;= Positive ? Positive :&#10;   arg &lt;= Negative ? Negative :&#10;    arg &lt;= ScalarConst ? ScalarConst :&#10;     arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 270.0]">
+        </property>
+    </property>
+    <entity name="constAbstractInterpretation" class="ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.constAbstractInterpretation">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 65.0]">
+        </property>
+    </entity>
+</entity>

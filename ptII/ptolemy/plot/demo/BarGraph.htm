@@ -1,0 +1,41 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<Title>Bar Graph</Title>
+</head>
+<body bgcolor="#ffffff">
+<h1><a name="bar graph plot">Bar Graph Plot</a></h1>
+
+Here is an example of a bar graph:
+
+<p>
+<APPLET 
+ code = "ptolemy.plot.PlotApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/plotapplet.jar" 
+ width = "600" 
+ height = "400" 
+> 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "dataurl" VALUE = "bargraph.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<p> Here, data is read from an <a href="bargraph.plt">ASCII file</a>
+at a URL.  The format of that file is the &quot;old ptplot
+format,&quot; which is simpler than PlotML, but not as compatible with
+modern web tools. The horizontal axis is manually labeled with tick
+marks indicating years. It is possible to control the thickness of
+bars and the offset of the bars behind by editing that file.  For
+details about the file format, see the documentation for the
+
+<a href="../../../doc/codeDoc/ptolemy/plot/Plot.html" target="_top">Plot</a>
+and
+<a href="../../../doc/codeDoc/ptolemy/plot/PlotBox.html" target="_top">PlotBox</a>
+classes.
+
+<p>&nbsp;
+</body>
+</html>

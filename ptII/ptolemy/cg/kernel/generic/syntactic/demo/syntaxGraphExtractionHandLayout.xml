@@ -1,0 +1,495 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="syntaxGraphExtractionHandLayout" class="ptolemy.cg.lib.SyntacticGraph">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 22, 1286, 410}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 300]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.3769371699537">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{93.3453796889298, -140.4764141840119}">
+    </property>
+    <entity name="sn_ref_Ramp" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-720.0, -220.0]">
+        </property>
+        <port name="out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_0_trigger" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_0_step" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="term_0_in_ref_0_trigger" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1000.0, -220.0]">
+        </property>
+        <port name="out_0_term_0_in_ref_0_trigger" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="exin_1" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1000.0, -90.0]">
+        </property>
+        <port name="out_0_external_in" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_DDFBooleanSelect" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-470.0, -210.0]">
+        </property>
+        <port name="in_ref_0_trueInput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_0_falseInput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_0_control" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_BooleanSwitch" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -285.0]">
+        </property>
+        <port name="in_ref_0_input" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_0_control" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_ref_0_trueOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_ref_0_falseOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="exout_2" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, -200.0]">
+        </property>
+        <port name="in_0_external_out" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_1_external_out" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_Scale" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-301.50390625, -210.859375]">
+        </property>
+        <port name="in_ref_0_input" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_SampleDelay" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -220.0]">
+        </property>
+        <port name="in_ref_0_input" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_Outside-the-loop Plotter" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, -320.0]">
+        </property>
+        <port name="in_ref_0_input" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_1_input" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_Inside-the-loop Plotter" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, -260.0]">
+        </property>
+        <port name="in_ref_0_input" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_Comparator" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -215.0]">
+        </property>
+        <port name="in_ref_0_left" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_0_right" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="exout_3" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, -130.0]">
+        </property>
+        <port name="in_0_external_out" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="exout_4" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, -65.0]">
+        </property>
+        <port name="in_0_external_out" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_1_external_out" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="sn_ref_Const" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-720.0, -160.0]">
+        </property>
+        <port name="out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="in_ref_0_trigger" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="term_5_in_ref_0_trigger" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1000.0, -155.0]">
+        </property>
+        <port name="out_0_term_5_in_ref_0_trigger" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="med_6_out_ref_0_trueOutput" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, -265.0]">
+        </property>
+        <port name="in_0_med_6_out_ref_0_trueOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_med_6_out_ref_0_trueOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_1_med_6_out_ref_0_trueOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="med_7_out_ref_0_falseOutput" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, -330.0]">
+        </property>
+        <port name="in_0_med_7_out_ref_0_falseOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_med_7_out_ref_0_falseOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_1_med_7_out_ref_0_falseOutput" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="med_8_out_ref_0_output" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, -215.0]">
+        </property>
+        <port name="in_0_med_8_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_med_8_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_1_med_8_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_2_med_8_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="med_9_out_ref_0_output" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, -185.0]">
+        </property>
+        <port name="in_0_med_9_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_med_9_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_1_med_9_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_2_med_9_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_3_med_9_out_ref_0_output" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="fb_out_10" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, 0.0]">
+        </property>
+        <port name="in_0_fb_out_10" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="fb_in_10" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1000.0, -25.0]">
+        </property>
+        <port name="out_0_fb_in_10" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="fb_out_12" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, 70.0]">
+        </property>
+        <port name="in_0_fb_out_12" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="fb_in_12" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1000.0, 40.0]">
+        </property>
+        <port name="out_0_fb_in_12" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_14" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-720.0, -100.0]">
+        </property>
+        <port name="in_0_id_14" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_14" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_15" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-720.0, -40.0]">
+        </property>
+        <port name="in_0_id_15" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_15" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_16" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-470.0, -145.0]">
+        </property>
+        <port name="in_0_id_16" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_16" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_17" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-301.50390625, -140.859375]">
+        </property>
+        <port name="in_0_id_17" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_17" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_18" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, -145.0]">
+        </property>
+        <port name="in_0_id_18" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_18" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_19" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -155.0]">
+        </property>
+        <port name="in_0_id_19" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_19" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_20" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -95.0]">
+        </property>
+        <port name="in_0_id_20" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_20" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_21" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, -125.0]">
+        </property>
+        <port name="in_0_id_21" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_21" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_22" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, -65.0]">
+        </property>
+        <port name="in_0_id_22" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_22" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_23" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -160.0]">
+        </property>
+        <port name="in_0_id_23" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_23" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_24" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -105.0]">
+        </property>
+        <port name="in_0_id_24" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_24" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_25" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -45.0]">
+        </property>
+        <port name="in_0_id_25" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_25" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_26" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, -200.0]">
+        </property>
+        <port name="in_0_id_26" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_26" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_27" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, -140.0]">
+        </property>
+        <port name="in_0_id_27" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_27" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_28" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, -80.0]">
+        </property>
+        <port name="in_0_id_28" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_28" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <entity name="id_29" class="ptolemy.cg.lib.SyntacticNode">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, -20.0]">
+        </property>
+        <port name="in_0_id_29" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+        <port name="out_0_id_29" class="ptolemy.cg.lib.SyntacticPort">
+        </port>
+    </entity>
+    <relation name="_R" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R3" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R6" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R17" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R20" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R21" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R23" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R24" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R27" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R28" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R31" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R32" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R33" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R37" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R38" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R39" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R40" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R41" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R42" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R44" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R46" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R47" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R48" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R50" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R52" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R53" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R54" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R56" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R58" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R60" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R62" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R63" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R64" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R65" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R66" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R67" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R68" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="_R69" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="relation" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="sn_ref_Ramp.out_ref_0_output" relation="_R3"/>
+    <link port="sn_ref_Ramp.in_ref_0_trigger" relation="_R"/>
+    <link port="sn_ref_Ramp.in_ref_0_step" relation="_R2"/>
+    <link port="term_0_in_ref_0_trigger.out_0_term_0_in_ref_0_trigger" relation="_R"/>
+    <link port="exin_1.out_0_external_in" relation="_R2"/>
+    <link port="sn_ref_DDFBooleanSelect.in_ref_0_trueInput" relation="_R41"/>
+    <link port="sn_ref_DDFBooleanSelect.in_ref_0_falseInput" relation="_R3"/>
+    <link port="sn_ref_DDFBooleanSelect.in_ref_0_control" relation="_R39"/>
+    <link port="sn_ref_DDFBooleanSelect.out_ref_0_output" relation="_R6"/>
+    <link port="sn_ref_BooleanSwitch.in_ref_0_input" relation="_R53"/>
+    <link port="sn_ref_BooleanSwitch.in_ref_0_control" relation="_R31"/>
+    <link port="sn_ref_BooleanSwitch.out_ref_0_trueOutput" relation="_R21"/>
+    <link port="sn_ref_BooleanSwitch.out_ref_0_falseOutput" relation="_R24"/>
+    <link port="exout_2.in_1_external_out" relation="relation"/>
+    <link port="sn_ref_Scale.in_ref_0_input" relation="_R6"/>
+    <link port="sn_ref_Scale.out_ref_0_output" relation="_R28"/>
+    <link port="sn_ref_SampleDelay.in_ref_0_input" relation="_R32"/>
+    <link port="sn_ref_SampleDelay.out_ref_0_output" relation="_R62"/>
+    <link port="sn_ref_Outside-the-loop Plotter.in_ref_0_input" relation="_R20"/>
+    <link port="sn_ref_Outside-the-loop Plotter.in_ref_1_input" relation="_R23"/>
+    <link port="sn_ref_Inside-the-loop Plotter.in_ref_0_input" relation="_R69"/>
+    <link port="sn_ref_Comparator.in_ref_0_left" relation="_R27"/>
+    <link port="sn_ref_Comparator.in_ref_0_right" relation="_R47"/>
+    <link port="sn_ref_Comparator.out_ref_0_output" relation="_R33"/>
+    <link port="exout_3.in_0_external_out" relation="_R65"/>
+    <link port="exout_4.in_0_external_out" relation="_R67"/>
+    <link port="sn_ref_Const.out_ref_0_output" relation="_R42"/>
+    <link port="sn_ref_Const.in_ref_0_trigger" relation="_R17"/>
+    <link port="term_5_in_ref_0_trigger.out_0_term_5_in_ref_0_trigger" relation="_R17"/>
+    <link port="med_6_out_ref_0_trueOutput.in_0_med_6_out_ref_0_trueOutput" relation="_R21"/>
+    <link port="med_6_out_ref_0_trueOutput.out_0_med_6_out_ref_0_trueOutput" relation="_R37"/>
+    <link port="med_6_out_ref_0_trueOutput.out_1_med_6_out_ref_0_trueOutput" relation="_R20"/>
+    <link port="med_7_out_ref_0_falseOutput.in_0_med_7_out_ref_0_falseOutput" relation="_R24"/>
+    <link port="med_7_out_ref_0_falseOutput.out_0_med_7_out_ref_0_falseOutput" relation="relation"/>
+    <link port="med_7_out_ref_0_falseOutput.out_1_med_7_out_ref_0_falseOutput" relation="_R23"/>
+    <link port="med_8_out_ref_0_output.in_0_med_8_out_ref_0_output" relation="_R28"/>
+    <link port="med_8_out_ref_0_output.out_0_med_8_out_ref_0_output" relation="_R48"/>
+    <link port="med_8_out_ref_0_output.out_1_med_8_out_ref_0_output" relation="_R50"/>
+    <link port="med_8_out_ref_0_output.out_2_med_8_out_ref_0_output" relation="_R27"/>
+    <link port="med_9_out_ref_0_output.in_0_med_9_out_ref_0_output" relation="_R33"/>
+    <link port="med_9_out_ref_0_output.out_0_med_9_out_ref_0_output" relation="_R56"/>
+    <link port="med_9_out_ref_0_output.out_1_med_9_out_ref_0_output" relation="_R58"/>
+    <link port="med_9_out_ref_0_output.out_2_med_9_out_ref_0_output" relation="_R31"/>
+    <link port="med_9_out_ref_0_output.out_3_med_9_out_ref_0_output" relation="_R32"/>
+    <link port="fb_out_10.in_0_fb_out_10" relation="_R63"/>
+    <link port="fb_in_10.out_0_fb_in_10" relation="_R38"/>
+    <link port="fb_out_12.in_0_fb_out_12" relation="_R37"/>
+    <link port="fb_in_12.out_0_fb_in_12" relation="_R40"/>
+    <link port="id_14.in_0_id_14" relation="_R38"/>
+    <link port="id_14.out_0_id_14" relation="_R39"/>
+    <link port="id_15.in_0_id_15" relation="_R40"/>
+    <link port="id_15.out_0_id_15" relation="_R41"/>
+    <link port="id_16.in_0_id_16" relation="_R42"/>
+    <link port="id_16.out_0_id_16" relation="_R44"/>
+    <link port="id_17.in_0_id_17" relation="_R44"/>
+    <link port="id_17.out_0_id_17" relation="_R46"/>
+    <link port="id_18.in_0_id_18" relation="_R46"/>
+    <link port="id_18.out_0_id_18" relation="_R47"/>
+    <link port="id_19.in_0_id_19" relation="_R48"/>
+    <link port="id_19.out_0_id_19" relation="_R52"/>
+    <link port="id_20.in_0_id_20" relation="_R50"/>
+    <link port="id_20.out_0_id_20" relation="_R54"/>
+    <link port="id_21.in_0_id_21" relation="_R52"/>
+    <link port="id_21.out_0_id_21" relation="_R53"/>
+    <link port="id_22.in_0_id_22" relation="_R54"/>
+    <link port="id_22.out_0_id_22" relation="_R60"/>
+    <link port="id_23.in_0_id_23" relation="_R56"/>
+    <link port="id_23.out_0_id_23" relation="_R64"/>
+    <link port="id_24.in_0_id_24" relation="_R58"/>
+    <link port="id_24.out_0_id_24" relation="_R66"/>
+    <link port="id_25.in_0_id_25" relation="_R60"/>
+    <link port="id_25.out_0_id_25" relation="_R68"/>
+    <link port="id_26.in_0_id_26" relation="_R62"/>
+    <link port="id_26.out_0_id_26" relation="_R63"/>
+    <link port="id_27.in_0_id_27" relation="_R64"/>
+    <link port="id_27.out_0_id_27" relation="_R65"/>
+    <link port="id_28.in_0_id_28" relation="_R66"/>
+    <link port="id_28.out_0_id_28" relation="_R67"/>
+    <link port="id_29.in_0_id_29" relation="_R68"/>
+    <link port="id_29.out_0_id_29" relation="_R69"/>
+</entity>

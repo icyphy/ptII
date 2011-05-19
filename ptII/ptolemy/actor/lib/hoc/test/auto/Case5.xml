@@ -1,0 +1,119 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="junk" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 1, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 60.0}">
+        </property>
+    </property>
+    <entity name="Case" class="ptolemy.actor.lib.hoc.Case">
+        <property name="control" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="_director" class="ptolemy.actor.lib.hoc.CaseDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 10.0]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 120.0}">
+        </property>
+        <port name="control" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.lib.hoc.MultiCompositePort">
+            <property name="output"/>
+        </port>
+        <entity name="default" class="ptolemy.domains.fsm.modal.Refinement">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 40}">
+                </property>
+            </property>
+            <port name="port2" class="ptolemy.actor.lib.hoc.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 185.0}">
+                </property>
+            </port>
+            <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+                <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
+                </property>
+                <doc>Create a sequence of tokens with increasing value</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 155.0}">
+                </property>
+            </entity>
+            <entity name="Clock" class="ptolemy.actor.lib.Clock">
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.2">
+                </property>
+                <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+                </property>
+                <doc>Create a set of pulses</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 145.0}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="port2" relation="relation2"/>
+            <link port="Ramp.output" relation="relation2"/>
+            <link port="Ramp.trigger" relation="relation"/>
+            <link port="Clock.output" relation="relation"/>
+        </entity>
+        <relation name="port2Relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port2" relation="port2Relation"/>
+        <link port="default.port2" relation="port2Relation"/>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24, -25, -26, -27, -28, -29, -30, -31, -32, -33, -34, -35, -36, -37, -38, -39, -40, -41, -42, -43, -44, -45, -46, -47, -48, -49, -50, -51, -52, -53, -54, -55, -56, -57, -58, -59, -60, -61, -62, -63, -64, -65, -66, -67, -68, -69, -70, -71, -72, -73, -74, -75, -76, -77, -78, -79, -80, -81, -82, -83, -84, -85, -86, -87, -88, -89, -90, -91, -92, -93, -94, -95, -96, -97, -98, -99, -100, -101}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 120.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{130.0, 170.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Case.control" relation="relation"/>
+    <link port="Case.port2" relation="relation3"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="Test.input" relation="relation3"/>
+</entity>

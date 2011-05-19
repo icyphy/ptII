@@ -1,0 +1,39 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Vector Quantization Demo</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Vector Quantization Demo</H1>
+<font color="#cc0000">This demo downloads 28 images, so it may
+take a few moments to get started.</font>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+HTVQ is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "HTVQ.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="HTVQVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This applet models a simple video compression scheme based on
+vector quantization (VQ).
+This model uses a
+<a href="HTVQApplet.java">custom applet</a> to achieve a
+layout different from that provided by default applet classes.</p>
+</body>
+</html>

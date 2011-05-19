@@ -1,0 +1,43 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DesignPatterns" class="ptolemy.moml.EntityLibrary">
+  <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
+    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+      <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+    </property>
+    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+      <configure>
+        <svg>
+          <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+        </svg>
+      </configure>
+    </property>
+  </property>
+  <configure>
+    <?moml
+      <input source="ptolemy/actor/designs/InputOutputPorts.xml"/>
+    ?>
+  </configure>
+  <entity name="DiscreteEvent" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <input source="ptolemy/actor/designs/DESourceSink.xml"/>
+      ?>
+    </configure>
+  </entity>
+  <entity name="DynamicDataFlow" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <input source="ptolemy/actor/designs/DDFRepeatForCount.xml"/>
+      ?>
+    </configure>
+  </entity>
+  <entity name="Rendezvous" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <input source="ptolemy/actor/designs/RendezvousSynchrony.xml"/>
+      ?>
+    </configure>
+  </entity>
+</entity>

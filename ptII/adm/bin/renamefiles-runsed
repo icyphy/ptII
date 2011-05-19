@@ -1,0 +1,20 @@
+#!/bin/sh
+# Use the /tmp/renamefiles-sedScript file from $PTII/adm/renamefiles
+# and run sed
+files=$@
+sedScript=/tmp/renamefiles-sedScript
+if [ ! -f $sedScript ]; then
+	echo "$0: $sedScript does not exist, run $PTII/adm/renamefiles first"
+	exit 5
+fi 
+
+for file in $files
+do
+    echo $file
+	if [ ! -f ${file}.old ]; then
+	    cp $file ${file}.old
+	fi    
+	sed -f $sedScript < $file > ${file}.tmp
+	diff $file ${file}.tmp
+	cp ${file}.tmp $file
+done

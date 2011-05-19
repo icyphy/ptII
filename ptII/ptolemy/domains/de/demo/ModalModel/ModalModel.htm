@@ -1,0 +1,37 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II DE Modal Model</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>DE Modal Model</H1>
+<!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+ModalModel is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "ModalModel.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="ModalModelVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+<p>
+This modal model has two modes, "clean" and "noisy".
+In the "clean" mode, it generates samples of a clean
+(noiseless) sinusoid at regular sample intervals.
+In the "noisy" mode, it generates a noisy sinusoid.
+It switches modes at random times according to a
+Poisson process.</p>
+</BODY>
+</HTML>

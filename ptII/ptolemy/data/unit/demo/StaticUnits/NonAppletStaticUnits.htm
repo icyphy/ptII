@@ -1,0 +1,192 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<!-- $Id$ -->
+<title>Static Units System</title>
+</head>
+<body>
+<h1>Static Units System</h1>
+<p>
+The Static Units System in Ptolemy II provides the means to constrain a model in terms
+of the allowable units of measure for the actors, and ports on the actors.
+It is static, in that the constraints do not relevant when the model is run.
+Rather, the constraints are used to determine if the model is correct.
+</p>
+<p>
+In order to illustrate these concepts, the Fermenter model, shown here, will be used.
+</p>
+<p>
+<center>
+<img src="StaticUnits1.gif" alt="the Fermenter Model">
+</center>
+</p>
+<p>
+The purpose of this model is simulate the growth process in a fermenter.
+There are three
+submodels;
+<ol>
+  <li> growth models the number of cells being produced as a
+function of the current number of cells and the vat temperature,
+  <li> HeatProduction models the amount of heat produced (in calories) as
+a function of the amount of work done (in joules), and
+  <li> HeatExchanger
+models the removal of heat from the vat as a function of the rate at
+which water flows through the cooling jacket around the vat.
+</ol>
+</p>
+<h2>Port Units Specifications</h2>
+In order to see the units sepcifications on the ports of the actors
+right mouse click on the actor and selecting "Customize" -&gt; "Ports". 
+<p>For example, right clicking on the  HeatExchager actor and selecting "Customize" -&gt; "Ports"
+shows
+<p>
+<center>
+<img src="StaticUnits2.gif" alt="port configuration for Heat Exchanger">
+</center>
+</p>
+<p>
+Note the units column which shows that,
+the TempVessel port has units <b>degree</b>,
+the TempCW port has units <b>degree</b>,
+the output port has units <b>calories/second</b>,
+and, the flow port has units <b>gallons/hour</b>.
+</p>
+<h2>Actor Units Specifications</h2>
+In order to see the units sepcifications on the actors,
+right mouse click on the actor and select "Configure" -&gt; "Units"
+<p>For example, right mouse clicking on the AddSubtract and selecting "Configure" -&gt; "Units" shows
+<p>
+<center>
+<img src="StaticUnits3.gif" alt="unit constraints for AddSubtract">
+</center>
+</p>
+<p>
+This shows that there are two units constraints for the AddSubtract actor.
+The expression <b>$plus=$minus</b> says that the plus and minus ports must have the
+same units. For example, it is incorrect to subtract <b>gallons/hour</b> from <b>gallons</b>.
+Similarly, the expression <b>$output=$minus</b> says that the output port must have
+the same units as the minus port.
+</p>
+<p>
+Some of the units constraints in the model are inconsistent.
+In addition to the HeatExchanger port unit constraints, and AddSubtract actor unit constraints
+illustrated above,
+the HeatProduction.heat port has the units <b>calories</b>.
+Since the HeatProduction.heat port is connected (via the AddSubtract actor)
+to the HeatExchanger.output port which has units <b>calories/second</b>
+the model is inconsistent in terms of the units constraints.
+<h2>UnitConstraints Solver<a name="UnitConstraintsSolver"></h2>
+<p>
+The UnitConstraint Solver is used to discover, analyze, and, in some cases, fix,
+unit inconsistencies that exist in a model.
+The UnitConstraintSolver Dialog is a user interface tool that provides an
+interface to the UnitConstraints Solver.
+For a detailed reference explanation of just the UnitConstraints Solver Dialog,
+<a href="../../../../actor/gui/doc/unitConstraintsSolver.htm">click here</a>.
+<p>
+ To start the UnitConstraint Solver right mouse-click and select
+UnitsConstraint Solver as shown below.
+</p>
+<p>
+<center>
+<img src="StaticUnits4.gif" alt="Starting the UnitConstraints Solver">
+</center>
+</p>
+<p>
+This will cause the UnitConstraints Solver Dialog to appear as shown below.
+Although, no components were selected prior to starting the UnitConstraintsSolver Dialog it is assumed that all
+of the components will be used. A component is highlighted with yellow if it is a member of this set.
+<p>
+<center>
+<img src="StaticUnits5.gif" alt="The UnitConstraints Solver">
+</center>
+</p>
+By clicking on the Run button in the Minimal Span Solutions panel the solver finds a single minimal
+span solution.
+<p>
+<center>
+<img src="StaticUnits6.gif" alt="Result of running Minimal Span Solutions">
+</center>
+</p>
+<p>
+This is indicated in the results pane with the label
+<b>Inconsistent relation5 joule/population relation7 1/hour</b>.
+This is a shortened version of the results and indicates three properties
+<ul>
+<li>The solution is inconsistent.
+<li>To become consistent relation5 would need to be replaced with an actor that
+transforms the input by joule/population.
+<li>To become consistent relation7 would need to be replaced with an actor that
+transforms the input by 1/hour.
+</ul>
+<p>
+If the result <b>Inconsistent relation5 joule/population relation7 1/hour</b> is selected
+the result is then displayed in the graph viewer.
+The components that are part of the minimal span solution are colored with green signifying that
+a component is consistent and red signifying that it is inconsistent.
+In the above graphic, relation7 connects the flow actor to the HeaExchanger actor with
+flow.output having units gallonUS, and HeatExchanger.flow having units gallonUS/hour.
+This relation is red indicating that it is inconsistent.
+In addition, the graphic also shows that if the cursor is placed over the relation on
+the graph viewer the requisite transformation <b>1/hour</b> is displayed as a tooltip.
+<p>
+The graph viewer also displays the inconsistency found on relation5 (this is in a portion
+of the graph viewer not shown in the above graphic).
+In this case the growth.population port has units population and is connedted (via relation5)
+to the HeatProduction.work port that has units joules.
+Placing the cursor over this relation causes the tooltip <b>joule/population</b> to appear.
+<h2>Fixing unit inconsistencies</h2>
+These inconsistencies can be fixed by making two modifications;
+<ol>
+<li> The flow actor is replaced with an actor that has an output port with units <b>gallonUS/hour</b>.
+<li> An actor is inserted between growth.population and HeatProduction.work that converts
+population to joules.
+</ol>
+<p>These changes have been implemented in the model StaticUnits2.xml which is located
+in the same directory as StaticUnits.xml used above.
+Click <a href="StaticUnits2.xml">here</a> to start it.
+The following graphic shows these changes.
+<p>
+<center>
+<img src="StaticUnits7.gif" alt="The StaticUnits2 model">
+</center>
+</p>
+Now, that these inconsistencies have been fixed the UnitConstraints Solver can
+be used to find other inconsistencies.
+For example,
+the HeatProduction.heat port has units
+calories, but the HeatExchanger.output
+has units calories/second. The
+AddSubtract actor requires that the units on
+the plus, and minus ports be the same.
+Therefore, the units constraints in this
+part of the model are inconsistent.
+In contrast to the inconsistencies described above, this inconsistency is
+<i>ambiguous</i> in that it can be caused by two different situations.
+<ol>
+<li>
+The HeatExchanger.output port could be integrated so that both the plus and minus ports have units calories.
+<li>
+Or, the HeatProduction.heat port could be differentiated so that both the plus and minus ports
+have units calorie/second.
+</ol>
+<p> The following graphics illustrate these situations.
+<p>
+<center>
+<img src="StaticUnits8.gif" alt="Unit inconsistencies in StaticUnits2">
+</center>
+</p>
+The relation between HeatExchanger.output and AddSubtract.minus is inconsistent.
+<hr>
+<p>
+<center>
+<img src="StaticUnits9.gif" alt="Unit inconsistencies in StaticUnits2">
+</center>
+</p>
+The relation between HeatProduction.heat and AddSubtract.plus is inconsistent.
+<hr>
+<p>
+</body>
+</html>
+

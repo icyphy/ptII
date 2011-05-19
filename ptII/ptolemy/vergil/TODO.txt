@@ -1,0 +1,51 @@
+BUGS:
+Fix layering of nodes and edges
+When a graph with no graphical information is loaded, then layout should be
+	triggered.
+If an executed model refs other files, then those files should be relative
+	to the model, not to the cwd of the editor.
+In TimedSource, attributeChanged triggers a fireAt().  What happens if
+	an attribute changes before fireAt can be called?
+Snap off port isn't accurate.
+GraphControllers should be able to report errors in a systematic way.
+Cancel close of InternalFrame doesn't work under jdk1.2.2  (use jdk1.3!)
+Document event is never created for "no document selected"
+Ports need locations.
+
+TODO:
+Text Annotation.
+make newPort toolbar buttons draggable?
+ptolemy modulation.xml -.modulation.something "..."
+Snap to Grid.
+Better Layout.
+Title box on each graph.
+Icon drawing app.
+Improve debugger.
+Instantiation by name.
+Multiple vertexes per Relation.
+Manager creation needs to get handled in one place.
+improve ptolemy query/ parameter styles.
+Need more control points for arcs in FSMNotation.
+NoStoragePolicy for Applet
+Persistence of user libraries.
+Infinite Canvas.
+reordering of parameters.
+Explicitly describe what a well-formed model entails.
+
+DONE:
+Direct connections from Ports to Ports.
+Layout breaks when toolbar gets dragged to the bottom.
+Manhattan Routing.
+Multiple Document Factories.
+Visual Notations for Ptolemy Package.
+Director specification.
+Printing.
+Better parameter configuration.
+Exception reporting window doesn't grow vertically.
+Mutation mechanism shouldn't always call wrapup.
+SaveAs doesn't change model title.
+Cut and Paste.
+Changes to ptolemy model should be mutations and a changeListener should
+set the dirty flag on the document.
+Libraries shouldn't all be loaded at startup.
+User addable libraries.

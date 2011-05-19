@@ -1,0 +1,141 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+  "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <property name="Tableau" class="ptolemy.domains.ptera.lib.TableauParameter">
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+      <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, -9.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8, 0.8, 0.8, 1.0}">
+        </property>
+      </property>
+      <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-13.0, -9.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="Debug" class="ptolemy.domains.ptera.lib.DebuggerParameter">
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+      <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, -9.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8, 0.8, 0.8, 1.0}">
+        </property>
+      </property>
+      <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-13.0, -9.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.6, 0.0, 1.0}">
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="SynchronizeToRealtime" class="ptolemy.domains.ptera.lib.SynchronizeToRealtime">
+    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+      <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+      </property>
+    </property>
+    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+      <configure>
+        <svg>
+          <circle cx="3" cy="3" r="2" style="fill:#0000FF">
+          </circle>
+        </svg>
+      </configure>
+    </property>
+    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+    </property>
+  </property>
+  <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+          <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
+          <input source="ptolemy/configs/basicUtilities.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+  <entity name="Analysis" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+          <input source="ptolemy/data/properties/EventLibrary.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+  <input source="ptolemy/actor/gt/controller/lib/designPatterns.xml"/>
+  <entity name="ExecutionControl" class="ptolemy.moml.EntityLibrary">
+    <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
+    </entity>
+    <entity name="Sleep" class="ptolemy.domains.ptera.lib.Sleep">
+    </entity>
+    <entity name="Stop" class="ptolemy.domains.ptera.lib.Stop">
+    </entity>
+    <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
+    </entity>
+  </entity>
+  <entity name="IO" class="ptolemy.moml.EntityLibrary">
+    <entity name="Clone" class="ptolemy.actor.gt.controller.Clone">
+    </entity>
+    <entity name="ListDirectory" class="ptolemy.domains.ptera.lib.ListDirectory">
+    </entity>
+    <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
+    </entity>
+    <entity name="WriteModel" class="ptolemy.actor.gt.controller.WriteModel">
+    </entity>
+  </entity>
+  <entity name="UserInteraction" class="ptolemy.moml.EntityLibrary">
+    <entity name="Configure" class="ptolemy.domains.ptera.lib.Configure">
+    </entity>
+    <entity name="ReceiveInput" class="ptolemy.domains.ptera.lib.ReceiveInput">
+    </entity>
+    <entity name="Report" class="ptolemy.domains.ptera.lib.Report">
+    </entity>
+    <entity name="SetTableau" class="ptolemy.domains.ptera.lib.SetTableau">
+    </entity>
+  </entity>
+  <entity name="Event" class="ptolemy.actor.gt.controller.GTEvent">
+    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+    </property>
+    <property name="_allowRefinement" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+  </entity>
+  <entity name="Match" class="ptolemy.actor.gt.controller.Match">
+  </entity>
+  <entity name="TestModel" class="ptolemy.actor.gt.controller.TestModel">
+  </entity>
+  <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
+  </entity>
+  <entity name="View" class="ptolemy.actor.gt.controller.View">
+  </entity>
+</group>

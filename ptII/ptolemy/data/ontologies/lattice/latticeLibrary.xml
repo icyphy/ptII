@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <input source="ptolemy/data/ontologies/lattice/adapters/constAbsIntObservable/constAbsIntObservable.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation/constAbstractInterpretation.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/constLattice/constLattice.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/constPropagation/constPropagation.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/constPropagationAbsInt/constPropagationAbsInt.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/dimensionSystem/dimensionSystem.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/monotonicityAnalysis/monotonicityAnalysis.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/observableLattice/observableLattice.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/reachableLattice/reachableLattice.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/softwareConfiguration/softwareConfiguration.xml"/>
+</group>

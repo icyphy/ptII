@@ -1,0 +1,54 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Stack</TITLE>
+</HEAD>
+<BODY>
+<H1>Stack</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Stack is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Stack.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="StackVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model illustrates a stack, thus demonstrating that PN is Turing complete
+with only boolean data types, SampleDelay, LogicFunction, BooleanSwitch, and BooleanSelect.
+This model does the following sequence of operations on the stack, resulting in the shown outputs:
+<pre>
+ operation     output
+ -------       -----
+ push(0)
+ push(1)
+ push(2)
+ pop               2
+ pop               1
+ pop               0
+ pop
+ push(3)
+ push(4)
+ pop               4
+ push(5)
+ pop               5
+ pop               3
+</pre>
+</p>
+</BODY>
+</HTML>

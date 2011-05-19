@@ -1,0 +1,145 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PublisherTest" class="ptolemy.actor.gt.TransformationRule">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 208, 893, 485}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 329]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.5, -59.5}">
+    </property>
+    <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
+        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute" value="../../../lib/test/auto/Publisher*.xml [...]">
+            <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../../lib/test/auto">
+                <display name="Directory"/>
+            </property>
+            <property name="filter" class="ptolemy.data.expr.StringParameter" value="Publisher*.xml">
+                <display name="File filter (*.xml)"/>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, -175.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This transformation rule demonstrates transforming Publishers (instances of&#10;ptolemy.actor.lib.Publisher or its subclasses) into CompositeActors with the&#10;Publishers inside, as well as extra Test actors.&#10;&#10;This version does not support multiple connections to a Publisher's input port.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, -40.0]">
+            </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 65.0]">
+            </property>
+            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
+            </property>
+        </property>
+        <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute" value="../../../lib/test/auto/PublisherNonStrictTest.xml">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -200.0]">
+            </property>
+        </property>
+        <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.Publisher&quot;)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -100.0]">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"/>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"/>
+</svg>
+</configure>
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="[50.0, -100.0]">
+            </vertex>
+        </relation>
+        <link port="AtomicActorMatcher.criterion1" relation="relation"/>
+    </entity>
+    <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+        <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 135.0]">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
+                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="AtomicActorMatcher">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 90.0}">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"/>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"/>
+</svg>
+</configure>
+                </property>
+            </entity>
+            <entity name="Test" class="ptolemy.actor.lib.Test">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 270.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[125.0, 200.0]">
+                </vertex>
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="AtomicActorMatcher.criterion1" relation="relation"/>
+            <link port="Test.input" relation="relation"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="{125.0, 135.0}">
+            </vertex>
+            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
+            </property>
+        </relation>
+        <link port="CompositeActor.port" relation="relation"/>
+    </entity>
+</entity>

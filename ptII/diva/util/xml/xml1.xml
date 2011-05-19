@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE schematic PUBLIC "test.dtd" "http://foo/bar.dtd">
+
+<schematic name="hello world" version="1.0">
+<description>ramp-recorder...  a good first start</description>
+
+<director name="director" template="sdf.director">
+<parameter name="iterations" value="4" type="ptolemy.data.IntToken"/>
+</director>
+
+<entity name="Ramp1" template="generic.ramp">
+<terminalmap ports="output"/>
+<parameter name="init" value="0" type="ptolemy.data.IntToken"/>
+<parameter name="step" value="4" type="ptolemy.data.IntToken"/>
+</entity>
+
+<entity name="Recorder1" template="generic.recorder">
+<terminalmap ports="input"/>
+</entity>
+
+<relation name="R1">
+<link to="Recorder1.input" from="Ramp1.output"/>
+</relation>
+ <foo>
+<bar/>
+</foo>
+</schematic>
+

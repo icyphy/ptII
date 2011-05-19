@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Analysis" class="ptolemy.moml.EntityLibrary">
+    <configure>
+        <?moml
+            <group>
+                <doc>Attributes for Analysis</doc>
+                <property name="_libraryMarker"
+  	                  class="ptolemy.kernel.util.Attribute"/>
+                <property name="DependencyHighlighter"
+                          class="ptolemy.vergil.basic.DependencyHighlighter"/>
+                <property name="MonitorReceiverContents"
+                          class="ptolemy.vergil.actor.lib.MonitorReceiverContents"/>
+            </group>
+        ?>
+    </configure>
+</entity>

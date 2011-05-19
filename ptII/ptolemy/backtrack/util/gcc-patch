@@ -1,0 +1,4998 @@
+diff -ruN gcc/java/util/AbstractList.java gcc.new/java/util/AbstractList.java
+--- gcc/java/util/AbstractList.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/AbstractList.java	2008-02-13 12:13:23.532800000 -0800
+@@ -85,7 +85,7 @@
+    * <code>add(int, Object)</code> and <code>remove(int)</code> methods.
+    * Otherwise, this field may be ignored.
+    */
+-  protected transient int modCount;
++  private transient int modCount;
+ 
+   /**
+    * The main constructor, for use by subclasses.
+@@ -305,7 +305,7 @@
+       private int pos = 0;
+       private int size = size();
+       private int last = -1;
+-      private int knownMod = modCount;
++      private int knownMod = getModCount();
+ 
+       // This will get inlined, since it is private.
+       /**
+@@ -317,7 +317,7 @@
+        */
+       private void checkMod()
+       {
+-        if (knownMod != modCount)
++        if (knownMod != getModCount())
+           throw new ConcurrentModificationException();
+       }
+ 
+@@ -372,7 +372,7 @@
+         pos--;
+         size--;
+         last = -1;
+-        knownMod = modCount;
++        knownMod = getModCount();
+       }
+     };
+   }
+@@ -433,7 +433,7 @@
+ 
+     return new ListIterator()
+     {
+-      private int knownMod = modCount;
++      private int knownMod = getModCount();
+       private int position = index;
+       private int lastReturned = -1;
+       private int size = size();
+@@ -448,7 +448,7 @@
+        */
+       private void checkMod()
+       {
+-        if (knownMod != modCount)
++        if (knownMod != getModCount())
+           throw new ConcurrentModificationException();
+       }
+ 
+@@ -556,7 +556,7 @@
+         size--;
+         position = lastReturned;
+         lastReturned = -1;
+-        knownMod = modCount;
++        knownMod = getModCount();
+       }
+ 
+      /**
+@@ -605,7 +605,7 @@
+         AbstractList.this.add(position++, o);
+         size++;
+         lastReturned = -1;
+-        knownMod = modCount;
++        knownMod = getModCount();
+       }
+     };
+   }
+@@ -736,7 +736,15 @@
+     return new SubList(this, fromIndex, toIndex);
+   }
+ 
+-  /**
++  protected void setModCount(int modCount) {
++    this.modCount = modCount;
++}
++
++protected int getModCount() {
++    return modCount;
++}
++
++/**
+    * This class follows the implementation requirements set forth in
+    * {@link AbstractList#subList(int, int)}. It matches Sun's implementation
+    * by using a non-public top-level class in the same package.
+@@ -752,7 +760,7 @@
+     /** The index of the first element of the sublist. */
+     final int offset;
+     /** The size of the sublist. */
+-    int size;
++    private int size;
+ 
+     /**
+      * Construct the sublist.
+@@ -764,9 +772,9 @@
+     SubList(AbstractList backing, int fromIndex, int toIndex)
+     {
+       backingList = backing;
+-      modCount = backing.modCount;
++      setModCount(backing.getModCount());
+       offset = fromIndex;
+-      size = toIndex - fromIndex;
++      setSize(toIndex - fromIndex);
+     }
+ 
+     /**
+@@ -779,7 +787,7 @@
+     // This can be inlined. Package visible, for use by iterator.
+     void checkMod()
+     {
+-      if (modCount != backingList.modCount)
++      if (getModCount() != backingList.getModCount())
+         throw new ConcurrentModificationException();
+     }
+ 
+@@ -793,9 +801,9 @@
+     // This will get inlined, since it is private.
+     private void checkBoundsInclusive(int index)
+     {
+-      if (index < 0 || index > size)
++      if (index < 0 || index > getSize())
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+-                                            + size);
++                                            + getSize());
+     }
+ 
+     /**
+@@ -808,9 +816,9 @@
+     // This will get inlined, since it is private.
+     private void checkBoundsExclusive(int index)
+     {
+-      if (index < 0 || index >= size)
++      if (index < 0 || index >= getSize())
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+-                                            + size);
++                                            + getSize());
+     }
+ 
+     /**
+@@ -823,7 +831,7 @@
+     public int size()
+     {
+       checkMod();
+-      return size;
++      return getSize();
+     }
+ 
+     /**
+@@ -885,8 +893,8 @@
+       checkMod();
+       checkBoundsInclusive(index);
+       backingList.add(index + offset, o);
+-      size++;
+-      modCount = backingList.modCount;
++      setSize(getSize() + 1);
++      setModCount(backingList.getModCount());
+     }
+ 
+     /**
+@@ -905,8 +913,8 @@
+       checkMod();
+       checkBoundsExclusive(index);
+       Object o = backingList.remove(index + offset);
+-      size--;
+-      modCount = backingList.modCount;
++      setSize(getSize() - 1);
++      setModCount(backingList.getModCount());
+       return o;
+     }
+ 
+@@ -927,8 +935,8 @@
+       checkMod();
+ 
+       backingList.removeRange(offset + fromIndex, offset + toIndex);
+-      size -= toIndex - fromIndex;
+-      modCount = backingList.modCount;
++      setSize(getSize() - (toIndex - fromIndex));
++      setModCount(backingList.getModCount());
+     }
+ 
+     /**
+@@ -954,8 +962,8 @@
+       checkBoundsInclusive(index);
+       int csize = c.size();
+       boolean result = backingList.addAll(offset + index, c);
+-      size += csize;
+-      modCount = backingList.modCount;
++      setSize(getSize() + csize);
++      setModCount(backingList.getModCount());
+       return result;
+     }
+ 
+@@ -976,7 +984,7 @@
+      */
+     public boolean addAll(Collection c)
+     {
+-      return addAll(size, c);
++      return addAll(getSize(), c);
+     }
+ 
+     /**
+@@ -1018,7 +1026,7 @@
+          */
+         public boolean hasNext()
+         {
+-          return position < size;
++          return position < getSize();
+         }
+ 
+         /**
+@@ -1044,7 +1052,7 @@
+          */
+         public Object next()
+         {
+-          if (position == size)
++          if (position == getSize())
+             throw new NoSuchElementException();
+           position++;
+           return i.next();
+@@ -1102,9 +1110,9 @@
+         public void remove()
+         {
+           i.remove();
+-          size--;
++          setSize(getSize() - 1);
+           position = nextIndex();
+-          modCount = backingList.modCount;
++          setModCount(backingList.getModCount());
+         }
+ 
+ 
+@@ -1148,9 +1156,9 @@
+         public void add(Object o)
+         {
+           i.add(o);
+-          size++;
++          setSize(getSize() + 1);
+           position++;
+-          modCount = backingList.modCount;
++          setModCount(backingList.getModCount());
+         }
+ 
+         // Here is the reason why the various modCount fields are mostly
+@@ -1173,6 +1181,14 @@
+         // since they do not go through the corresponding methods of the subList.
+       };
+     }
++
++    void setSize(int size) {
++        this.size = size;
++    }
++
++    int getSize() {
++        return size;
++    }
+   } // class SubList
+ 
+   /**
+diff -ruN gcc/java/util/AbstractMap.java gcc.new/java/util/AbstractMap.java
+--- gcc/java/util/AbstractMap.java	2006-02-04 12:21:48.936339000 -0800
++++ gcc.new/java/util/AbstractMap.java	2008-02-13 12:13:23.570800000 -0800
+@@ -75,13 +75,13 @@
+   /**
+    * The cache for {@link #keySet()}.
+    */
+-  // Package visible for use by subclasses.
++  private // Package visible for use by subclasses.
+   Set keys;
+ 
+   /**
+    * The cache for {@link #values()}.
+    */
+-  // Package visible for use by subclasses.
++  private // Package visible for use by subclasses.
+   Collection values;
+ 
+   /**
+@@ -135,8 +135,8 @@
+   {
+     AbstractMap copy = (AbstractMap) super.clone();
+     // Clear out the caches; they are stale.
+-    copy.keys = null;
+-    copy.values = null;
++    copy.setKeys(null);
++    copy.setValues(null);
+     return copy;
+   }
+ 
+@@ -275,8 +275,8 @@
+    */
+   public Set keySet()
+   {
+-    if (keys == null)
+-      keys = new AbstractSet()
++    if (getKeys() == null)
++      setKeys(new AbstractSet()
+       {
+ 	/**
+ 	 * Retrieves the number of keys in the backing map.
+@@ -353,8 +353,8 @@
+             }
+           };
+         }
+-      };
+-    return keys;
++      });
++    return getKeys();
+   }
+ 
+   /**
+@@ -506,8 +506,8 @@
+    */
+   public Collection values()
+   {
+-    if (values == null)
+-      values = new AbstractCollection()
++    if (getValues() == null)
++      setValues(new AbstractCollection()
+       {
+ 	/**
+ 	 * Returns the number of values stored in
+@@ -585,8 +585,8 @@
+             }
+           };
+         }
+-      };
+-    return values;
++      });
++    return getValues();
+   }
+ 
+   /**
+@@ -616,7 +616,27 @@
+     return o == null ? 0 : o.hashCode();
+   }
+ 
+-  /**
++  void setKeys(// Package visible for use by subclasses.
++  Set keys) {
++    this.keys = keys;
++}
++
++// Package visible for use by subclasses.
++  Set getKeys() {
++    return keys;
++}
++
++void setValues(// Package visible for use by subclasses.
++  Collection values) {
++    this.values = values;
++}
++
++// Package visible for use by subclasses.
++  Collection getValues() {
++    return values;
++}
++
++/**
+    * A class which implements Map.Entry. It is shared by HashMap, TreeMap,
+    * Hashtable, and Collections. It is not specified by the JDK, but makes
+    * life much easier.
+@@ -631,12 +651,12 @@
+     /**
+      * The key. Package visible for direct manipulation.
+      */
+-    Object key;
++    private Object key;
+ 
+     /**
+      * The value. Package visible for direct manipulation.
+      */
+-    Object value;
++    private Object value;
+ 
+     /**
+      * Basic constructor initializes the fields.
+@@ -645,8 +665,8 @@
+      */
+     BasicMapEntry(Object newKey, Object newValue)
+     {
+-      key = newKey;
+-      value = newValue;
++      setKeyField(newKey);
++      setValueField(newValue);
+     }
+ 
+     /**
+@@ -670,12 +690,12 @@
+       if (o instanceof BasicMapEntry)
+         {
+           BasicMapEntry e = (BasicMapEntry) o;
+-          return (AbstractMap.equals(key, e.key)
+-                  && AbstractMap.equals(value, e.value));
++          return (AbstractMap.equals(getKeyField(), e.getKeyField())
++                  && AbstractMap.equals(getValueField(), e.getValueField()));
+         }
+       Map.Entry e = (Map.Entry) o;
+-      return (AbstractMap.equals(key, e.getKey())
+-              && AbstractMap.equals(value, e.getValue()));
++      return (AbstractMap.equals(getKeyField(), e.getKey())
++              && AbstractMap.equals(getValueField(), e.getValue()));
+     }
+ 
+     /**
+@@ -685,7 +705,7 @@
+      */
+     public final Object getKey()
+     {
+-      return key;
++      return getKeyField();
+     }
+ 
+     /**
+@@ -696,7 +716,7 @@
+      */
+     public final Object getValue()
+     {
+-      return value;
++      return getValueField();
+     }
+ 
+     /**
+@@ -710,7 +730,7 @@
+      */
+     public final int hashCode()
+     {
+-      return (AbstractMap.hashCode(key) ^ AbstractMap.hashCode(value));
++      return (AbstractMap.hashCode(getKeyField()) ^ AbstractMap.hashCode(getValueField()));
+     }
+ 
+     /**
+@@ -730,8 +750,8 @@
+      */
+     public Object setValue(Object newVal)
+     {
+-      Object r = value;
+-      value = newVal;
++      Object r = getValueField();
++      setValueField(newVal);
+       return r;
+     }
+ 
+@@ -743,7 +763,23 @@
+      */
+     public final String toString()
+     {
+-      return key + "=" + value;
++      return getKeyField() + "=" + getValueField();
++    }
++
++    void setKeyField(Object key) {
++        this.key = key;
++    }
++
++    Object getKeyField() {
++        return key;
++    }
++
++    void setValueField(Object value) {
++        this.value = value;
++    }
++
++    Object getValueField() {
++        return value;
+     }
+   } // class BasicMapEntry
+ }
+diff -ruN gcc/java/util/ArrayList.java gcc.new/java/util/ArrayList.java
+--- gcc/java/util/ArrayList.java	2005-11-15 15:20:01.014789000 -0800
++++ gcc.new/java/util/ArrayList.java	2008-02-13 12:13:23.604800000 -0800
+@@ -336,7 +336,7 @@
+    */
+   public boolean add(Object e)
+   {
+-    modCount++;
++    setModCount(getModCount() + 1);
+     if (size == data.length)
+       ensureCapacity(size + 1);
+     data[size++] = e;
+@@ -355,7 +355,7 @@
+   public void add(int index, Object e)
+   {
+     checkBoundInclusive(index);
+-    modCount++;
++    setModCount(getModCount() + 1);
+     if (size == data.length)
+       ensureCapacity(size + 1);
+     if (index != size)
+@@ -375,7 +375,7 @@
+   {
+     checkBoundExclusive(index);
+     Object r = data[index];
+-    modCount++;
++    setModCount(getModCount() + 1);
+     if (index != --size)
+       System.arraycopy(data, index + 1, data, index, size - index);
+     // Aid for garbage collection by releasing this pointer.
+@@ -390,7 +390,7 @@
+   {
+     if (size > 0)
+       {
+-        modCount++;
++        setModCount(getModCount() + 1);
+         // Allow for garbage collection.
+         Arrays.fill(data, 0, size, null);
+         size = 0;
+@@ -428,7 +428,7 @@
+     Iterator itr = c.iterator();
+     int csize = c.size();
+ 
+-    modCount++;
++    setModCount(getModCount() + 1);
+     if (csize + size > data.length)
+       ensureCapacity(size + csize);
+     int end = index + csize;
+@@ -453,7 +453,7 @@
+     int change = toIndex - fromIndex;
+     if (change > 0)
+       {
+-        modCount++;
++        setModCount(getModCount() + 1);
+         System.arraycopy(data, toIndex, data, fromIndex, size - toIndex);
+         size -= change;
+       }
+@@ -512,7 +512,7 @@
+     if (i == size)
+       return false;
+ 
+-    modCount++;
++    setModCount(getModCount() + 1);
+     for (j = i++; i < size; i++)
+       if (! c.contains(data[i]))
+         data[j++] = data[i];
+@@ -540,7 +540,7 @@
+     if (i == size)
+       return false;
+ 
+-    modCount++;
++    setModCount(getModCount() + 1);
+     for (j = i++; i < size; i++)
+       if (c.contains(data[i]))
+         data[j++] = data[i];
+diff -ruN gcc/java/util/Collections.java gcc.new/java/util/Collections.java
+--- gcc/java/util/Collections.java	2006-02-04 12:21:48.936339000 -0800
++++ gcc.new/java/util/Collections.java	2008-02-13 12:15:10.621800000 -0800
+@@ -73,6 +73,20 @@
+ public class Collections
+ {
+   /**
++   * Returns the empty list (immutable). This list is serializable.
++   */
++  public static final List emptyList() {
++      return EMPTY_LIST;
++  }
++  
++  /**
++   * Returns the empty list (immutable). This list is serializable.
++   */
++  public static final Map emptyMap() {
++      return EMPTY_MAP;
++  }
++  
++  /**
+    * Constant used to decide cutoff for when a non-RandomAccess list should
+    * be treated as sequential-access. Basically, quadratic behavior is
+    * acceptable for small lists when the overhead is so small in the first
+@@ -1855,9 +1869,9 @@
+      */
+     public Set keySet()
+     {
+-      if (keys == null)
+-        keys = singleton(k);
+-      return keys;
++      if (getKeys() == null)
++        setKeys(singleton(k));
++      return getKeys();
+     }
+ 
+     /**
+@@ -1878,9 +1892,9 @@
+      */
+     public Collection values()
+     {
+-      if (values == null)
+-        values = singleton(v);
+-      return values;
++      if (getValues() == null)
++        setValues(singleton(v));
++      return getValues();
+     }
+ 
+     /**
+diff -ruN gcc/java/util/HashMap.java gcc.new/java/util/HashMap.java
+--- gcc/java/util/HashMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/HashMap.java	2008-02-13 12:13:23.704800000 -0800
+@@ -136,20 +136,20 @@
+    * Array containing the actual key-value mappings.
+    * Package visible for use by nested and subclasses.
+    */
+-  transient HashEntry[] buckets;
++  private transient HashEntry[] buckets;
+ 
+   /**
+    * Counts the number of modifications this HashMap has undergone, used
+    * by Iterators to know when to throw ConcurrentModificationExceptions.
+    * Package visible for use by nested and subclasses.
+    */
+-  transient int modCount;
++  private transient int modCount;
+ 
+   /**
+    * The size of this HashMap:  denotes the number of key-value pairs.
+    * Package visible for use by nested and subclasses.
+    */
+-  transient int size;
++  private transient int size;
+ 
+   /**
+    * The cache for {@link #entrySet()}.
+@@ -167,7 +167,7 @@
+     /**
+      * The next entry in the linked list. Package visible for use by subclass.
+      */
+-    HashEntry next;
++    private HashEntry next;
+ 
+     /**
+      * Simple constructor.
+@@ -196,7 +196,15 @@
+      */
+     Object cleanup()
+     {
+-      return value;
++      return getValueField();
++    }
++
++    void setNext(HashEntry next) {
++        this.next = next;
++    }
++
++    HashEntry getNext() {
++        return next;
+     }
+   }
+ 
+@@ -256,7 +264,7 @@
+ 
+     if (initialCapacity == 0)
+       initialCapacity = 1;
+-    buckets = new HashEntry[initialCapacity];
++    setBuckets(new HashEntry[initialCapacity]);
+     this.loadFactor = loadFactor;
+     threshold = (int) (initialCapacity * loadFactor);
+   }
+@@ -268,7 +276,7 @@
+    */
+   public int size()
+   {
+-    return size;
++    return getSize();
+   }
+ 
+   /**
+@@ -278,7 +286,7 @@
+    */
+   public boolean isEmpty()
+   {
+-    return size == 0;
++    return getSize() == 0;
+   }
+ 
+   /**
+@@ -295,12 +303,12 @@
+   public Object get(Object key)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     while (e != null)
+       {
+-        if (equals(key, e.key))
+-          return e.value;
+-        e = e.next;
++        if (equals(key, e.getKeyField()))
++          return e.getValueField();
++        e = e.getNext();
+       }
+     return null;
+   }
+@@ -316,12 +324,12 @@
+   public boolean containsKey(Object key)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     while (e != null)
+       {
+-        if (equals(key, e.key))
++        if (equals(key, e.getKeyField()))
+           return true;
+-        e = e.next;
++        e = e.getNext();
+       }
+     return false;
+   }
+@@ -342,24 +350,24 @@
+   public Object put(Object key, Object value)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+ 
+     while (e != null)
+       {
+-        if (equals(key, e.key))
++        if (equals(key, e.getKeyField()))
+           {
+             e.access(); // Must call this for bookkeeping in LinkedHashMap.
+-            Object r = e.value;
+-            e.value = value;
++            Object r = e.getValueField();
++            e.setValueField(value);
+             return r;
+           }
+         else
+-          e = e.next;
++          e = e.getNext();
+       }
+ 
+     // At this point, we know we need to add a new entry.
+-    modCount++;
+-    if (++size > threshold)
++    setModCount(getModCount() + 1);
++    if (setSize(getSize() + 1) > threshold)
+       {
+         rehash();
+         // Need a new hash value to suit the bigger table.
+@@ -388,7 +396,7 @@
+         if (e instanceof AbstractMap.BasicMapEntry)
+           {
+             AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+-            put(entry.key, entry.value);
++            put(entry.getKeyField(), entry.getValueField());
+           }
+         else
+           put(e.getKey(), e.getValue());
+@@ -408,24 +416,24 @@
+   public Object remove(Object key)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     HashEntry last = null;
+ 
+     while (e != null)
+       {
+-        if (equals(key, e.key))
++        if (equals(key, e.getKeyField()))
+           {
+-            modCount++;
++            setModCount(getModCount() + 1);
+             if (last == null)
+-              buckets[idx] = e.next;
++              getBuckets()[idx] = e.getNext();
+             else
+-              last.next = e.next;
+-            size--;
++              last.setNext(e.getNext());
++            setSize(getSize() - 1);
+             // Method call necessary for LinkedHashMap to work correctly.
+             return e.cleanup();
+           }
+         last = e;
+-        e = e.next;
++        e = e.getNext();
+       }
+     return null;
+   }
+@@ -435,11 +443,11 @@
+    */
+   public void clear()
+   {
+-    if (size != 0)
++    if (getSize() != 0)
+       {
+-        modCount++;
+-        Arrays.fill(buckets, null);
+-        size = 0;
++        setModCount(getModCount() + 1);
++        Arrays.fill(getBuckets(), null);
++        setSize(0);
+       }
+   }
+ 
+@@ -453,14 +461,14 @@
+    */
+   public boolean containsValue(Object value)
+   {
+-    for (int i = buckets.length - 1; i >= 0; i--)
++    for (int i = getBuckets().length - 1; i >= 0; i--)
+       {
+-        HashEntry e = buckets[i];
++        HashEntry e = getBuckets()[i];
+         while (e != null)
+           {
+-            if (equals(value, e.value))
++            if (equals(value, e.getValueField()))
+               return true;
+-            e = e.next;
++            e = e.getNext();
+           }
+       }
+     return false;
+@@ -483,7 +491,7 @@
+       {
+         // This is impossible.
+       }
+-    copy.buckets = new HashEntry[buckets.length];
++    copy.setBuckets(new HashEntry[getBuckets().length]);
+     copy.putAllInternal(this);
+     // Clear the entry cache. AbstractMap.clone() does the others.
+     copy.entries = null;
+@@ -501,14 +509,14 @@
+    */
+   public Set keySet()
+   {
+-    if (keys == null)
++    if (getKeys() == null)
+       // Create an AbstractSet with custom implementations of those methods
+       // that can be overridden easily and efficiently.
+-      keys = new AbstractSet()
++      setKeys(new AbstractSet()
+       {
+         public int size()
+         {
+-          return size;
++          return getSize();
+         }
+ 
+         public Iterator iterator()
+@@ -532,12 +540,12 @@
+           // Test against the size of the HashMap to determine if anything
+           // really got removed. This is necessary because the return value
+           // of HashMap.remove() is ambiguous in the null case.
+-          int oldsize = size;
++          int oldsize = getSize();
+           HashMap.this.remove(o);
+-          return oldsize != size;
++          return oldsize != getSize();
+         }
+-      };
+-    return keys;
++      });
++    return getKeys();
+   }
+ 
+   /**
+@@ -552,14 +560,14 @@
+    */
+   public Collection values()
+   {
+-    if (values == null)
++    if (getValues() == null)
+       // We don't bother overriding many of the optional methods, as doing so
+       // wouldn't provide any significant performance advantage.
+-      values = new AbstractCollection()
++      setValues(new AbstractCollection()
+       {
+         public int size()
+         {
+-          return size;
++          return getSize();
+         }
+ 
+         public Iterator iterator()
+@@ -572,8 +580,8 @@
+         {
+           HashMap.this.clear();
+         }
+-      };
+-    return values;
++      });
++    return getValues();
+   }
+ 
+   /**
+@@ -598,7 +606,7 @@
+       {
+         public int size()
+         {
+-          return size;
++          return getSize();
+         }
+ 
+         public Iterator iterator()
+@@ -622,7 +630,7 @@
+           HashEntry e = getEntry(o);
+           if (e != null)
+             {
+-              HashMap.this.remove(e.key);
++              HashMap.this.remove(e.getKeyField());
+               return true;
+             }
+           return false;
+@@ -644,8 +652,8 @@
+   void addEntry(Object key, Object value, int idx, boolean callRemove)
+   {
+     HashEntry e = new HashEntry(key, value);
+-    e.next = buckets[idx];
+-    buckets[idx] = e;
++    e.setNext(getBuckets()[idx]);
++    getBuckets()[idx] = e;
+   }
+ 
+   /**
+@@ -664,12 +672,12 @@
+     Map.Entry me = (Map.Entry) o;
+     Object key = me.getKey();
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     while (e != null)
+       {
+-        if (equals(e.key, key))
+-          return equals(e.value, me.getValue()) ? e : null;
+-        e = e.next;
++        if (equals(e.getKeyField(), key))
++          return equals(e.getValueField(), me.getValue()) ? e : null;
++        e = e.getNext();
+       }
+     return null;
+   }
+@@ -683,7 +691,7 @@
+    */
+   final int hash(Object key)
+   {
+-    return key == null ? 0 : Math.abs(key.hashCode() % buckets.length);
++    return key == null ? 0 : Math.abs(key.hashCode() % getBuckets().length);
+   }
+ 
+   /**
+@@ -708,10 +716,10 @@
+   void putAllInternal(Map m)
+   {
+     Iterator itr = m.entrySet().iterator();
+-    size = 0;
++    setSize(0);
+     while (itr.hasNext())
+       {
+-        size++;
++        setSize(getSize() + 1);
+ 	Map.Entry e = (Map.Entry) itr.next();
+ 	Object key = e.getKey();
+ 	int idx = hash(key);
+@@ -730,22 +738,22 @@
+    */
+   private void rehash()
+   {
+-    HashEntry[] oldBuckets = buckets;
++    HashEntry[] oldBuckets = getBuckets();
+ 
+-    int newcapacity = (buckets.length * 2) + 1;
++    int newcapacity = (getBuckets().length * 2) + 1;
+     threshold = (int) (newcapacity * loadFactor);
+-    buckets = new HashEntry[newcapacity];
++    setBuckets(new HashEntry[newcapacity]);
+ 
+     for (int i = oldBuckets.length - 1; i >= 0; i--)
+       {
+         HashEntry e = oldBuckets[i];
+         while (e != null)
+           {
+-            int idx = hash(e.key);
+-            HashEntry dest = buckets[idx];
+-            HashEntry next = e.next;
+-            e.next = buckets[idx];
+-            buckets[idx] = e;
++            int idx = hash(e.getKeyField());
++            HashEntry dest = getBuckets()[idx];
++            HashEntry next = e.getNext();
++            e.setNext(getBuckets()[idx]);
++            getBuckets()[idx] = e;
+             e = next;
+           }
+       }
+@@ -766,15 +774,15 @@
+     // Write the threshold and loadFactor fields.
+     s.defaultWriteObject();
+ 
+-    s.writeInt(buckets.length);
+-    s.writeInt(size);
++    s.writeInt(getBuckets().length);
++    s.writeInt(getSize());
+     // Avoid creating a wasted Set by creating the iterator directly.
+     Iterator it = iterator(ENTRIES);
+     while (it.hasNext())
+       {
+         HashEntry entry = (HashEntry) it.next();
+-        s.writeObject(entry.key);
+-        s.writeObject(entry.value);
++        s.writeObject(entry.getKeyField());
++        s.writeObject(entry.getValueField());
+       }
+   }
+ 
+@@ -796,9 +804,9 @@
+     s.defaultReadObject();
+ 
+     // Read and use capacity, followed by key/value pairs.
+-    buckets = new HashEntry[s.readInt()];
++    setBuckets(new HashEntry[s.readInt()]);
+     int len = s.readInt();
+-    size = len;
++    setSize(len);
+     while (len-- > 0)
+       {
+         Object key = s.readObject();
+@@ -806,7 +814,31 @@
+       }
+   }
+ 
+-  /**
++  void setModCount(int modCount) {
++    this.modCount = modCount;
++}
++
++int getModCount() {
++    return modCount;
++}
++
++int setSize(int size) {
++    return this.size = size;
++}
++
++int getSize() {
++    return size;
++}
++
++void setBuckets(HashEntry[] buckets) {
++    this.buckets = buckets;
++}
++
++HashEntry[] getBuckets() {
++    return buckets;
++}
++
++/**
+    * Iterate over HashMap's entries.
+    * This implementation is parameterized to give a sequential view of
+    * keys, values, or entries.
+@@ -823,11 +855,11 @@
+     /**
+      * The number of modifications to the backing HashMap that we know about.
+      */
+-    private int knownMod = modCount;
++    private int knownMod = getModCount();
+     /** The number of elements remaining to be returned by next(). */
+-    private int count = size;
++    private int count = getSize();
+     /** Current index in the physical hash table. */
+-    private int idx = buckets.length;
++    private int idx = getBuckets().length;
+     /** The last Entry returned by a next() call. */
+     private HashEntry last;
+     /**
+@@ -863,7 +895,7 @@
+      */
+     public Object next()
+     {
+-      if (knownMod != modCount)
++      if (knownMod != getModCount())
+         throw new ConcurrentModificationException();
+       if (count == 0)
+         throw new NoSuchElementException();
+@@ -871,14 +903,14 @@
+       HashEntry e = next;
+ 
+       while (e == null)
+-        e = buckets[--idx];
++        e = getBuckets()[--idx];
+ 
+-      next = e.next;
++      next = e.getNext();
+       last = e;
+       if (type == VALUES)
+-        return e.value;
++        return e.getValueField();
+       if (type == KEYS)
+-        return e.key;
++        return e.getKeyField();
+       return e;
+     }
+ 
+@@ -890,12 +922,12 @@
+      */
+     public void remove()
+     {
+-      if (knownMod != modCount)
++      if (knownMod != getModCount())
+         throw new ConcurrentModificationException();
+       if (last == null)
+         throw new IllegalStateException();
+ 
+-      HashMap.this.remove(last.key);
++      HashMap.this.remove(last.getKeyField());
+       last = null;
+       knownMod++;
+     }
+diff -ruN gcc/java/util/HashSet.java gcc.new/java/util/HashSet.java
+--- gcc/java/util/HashSet.java	2005-09-23 10:31:48.000000000 -0700
++++ gcc.new/java/util/HashSet.java	2008-02-13 12:13:23.744800000 -0800
+@@ -198,7 +198,7 @@
+    */
+   public boolean isEmpty()
+   {
+-    return map.size == 0;
++    return map.getSize() == 0;
+   }
+ 
+   /**
+@@ -234,7 +234,7 @@
+    */
+   public int size()
+   {
+-    return map.size;
++    return map.getSize();
+   }
+ 
+   /**
+@@ -264,9 +264,9 @@
+     s.defaultWriteObject();
+     // Avoid creating intermediate keySet() object by using non-public API.
+     Iterator it = map.iterator(HashMap.KEYS);
+-    s.writeInt(map.buckets.length);
++    s.writeInt(map.getBuckets().length);
+     s.writeFloat(map.loadFactor);
+-    s.writeInt(map.size);
++    s.writeInt(map.getSize());
+     while (it.hasNext())
+       s.writeObject(it.next());
+   }
+diff -ruN gcc/java/util/Hashtable.java gcc.new/java/util/Hashtable.java
+--- gcc/java/util/Hashtable.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/Hashtable.java	2008-02-13 12:13:23.790800000 -0800
+@@ -145,20 +145,20 @@
+    * Array containing the actual key-value mappings.
+    */
+   // Package visible for use by nested classes.
+-  transient HashEntry[] buckets;
++  private transient HashEntry[] buckets;
+ 
+   /**
+    * Counts the number of modifications this Hashtable has undergone, used
+    * by Iterators to know when to throw ConcurrentModificationExceptions.
+    */
+   // Package visible for use by nested classes.
+-  transient int modCount;
++  private transient int modCount;
+ 
+   /**
+    * The size of this Hashtable:  denotes the number of key-value pairs.
+    */
+   // Package visible for use by nested classes.
+-  transient int size;
++  private transient int size;
+ 
+   /**
+    * The cache for {@link #keySet()}.
+@@ -183,7 +183,7 @@
+   private static final class HashEntry extends AbstractMap.BasicMapEntry
+   {
+     /** The next entry in the linked list. */
+-    HashEntry next;
++    private HashEntry next;
+ 
+     /**
+      * Simple constructor.
+@@ -207,6 +207,14 @@
+         throw new NullPointerException();
+       return super.setValue(newVal);
+     }
++
++    void setNext(HashEntry next) {
++        this.next = next;
++    }
++
++    HashEntry getNext() {
++        return next;
++    }
+   }
+ 
+   /**
+@@ -269,7 +277,7 @@
+ 
+     if (initialCapacity == 0)
+       initialCapacity = 1;
+-    buckets = new HashEntry[initialCapacity];
++    setBuckets(new HashEntry[initialCapacity]);
+     this.loadFactor = loadFactor;
+     threshold = (int) (initialCapacity * loadFactor);
+   }
+@@ -280,7 +288,7 @@
+    */
+   public synchronized int size()
+   {
+-    return size;
++    return getSize();
+   }
+ 
+   /**
+@@ -289,7 +297,7 @@
+    */
+   public synchronized boolean isEmpty()
+   {
+-    return size == 0;
++    return getSize() == 0;
+   }
+ 
+   /**
+@@ -337,14 +345,14 @@
+     if (value == null)
+       throw new NullPointerException();
+ 
+-    for (int i = buckets.length - 1; i >= 0; i--)
++    for (int i = getBuckets().length - 1; i >= 0; i--)
+       {
+-        HashEntry e = buckets[i];
++        HashEntry e = getBuckets()[i];
+         while (e != null)
+           {
+-            if (e.value.equals(value))
++            if (e.getValueField().equals(value))
+               return true;
+-            e = e.next;
++            e = e.getNext();
+           }
+       }
+  
+@@ -382,12 +390,12 @@
+   public synchronized boolean containsKey(Object key)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     while (e != null)
+       {
+-        if (e.key.equals(key))
++        if (e.getKeyField().equals(key))
+           return true;
+-        e = e.next;
++        e = e.getNext();
+       }
+     return false;
+   }
+@@ -405,12 +413,12 @@
+   public synchronized Object get(Object key)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     while (e != null)
+       {
+-        if (e.key.equals(key))
+-          return e.value;
+-        e = e.next;
++        if (e.getKeyField().equals(key))
++          return e.getValueField();
++        e = e.getNext();
+       }
+     return null;
+   }
+@@ -430,7 +438,7 @@
+   public synchronized Object put(Object key, Object value)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+ 
+     // Check if value is null since it is not permitted.
+     if (value == null)
+@@ -438,22 +446,22 @@
+ 
+     while (e != null)
+       {
+-        if (e.key.equals(key))
++        if (e.getKeyField().equals(key))
+           {
+             // Bypass e.setValue, since we already know value is non-null.
+-            Object r = e.value;
+-            e.value = value;
++            Object r = e.getValueField();
++            e.setValueField(value);
+             return r;
+           }
+         else
+           {
+-            e = e.next;
++            e = e.getNext();
+           }
+       }
+ 
+     // At this point, we know we need to add a new entry.
+-    modCount++;
+-    if (++size > threshold)
++    setModCount(getModCount() + 1);
++    if (setSize(getSize() + 1) > threshold)
+       {
+         rehash();
+         // Need a new hash value to suit the bigger table.
+@@ -462,8 +470,8 @@
+ 
+     e = new HashEntry(key, value);
+ 
+-    e.next = buckets[idx];
+-    buckets[idx] = e;
++    e.setNext(getBuckets()[idx]);
++    getBuckets()[idx] = e;
+ 
+     return null;
+   }
+@@ -479,23 +487,23 @@
+   public synchronized Object remove(Object key)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     HashEntry last = null;
+ 
+     while (e != null)
+       {
+-        if (e.key.equals(key))
++        if (e.getKeyField().equals(key))
+           {
+-            modCount++;
++            setModCount(getModCount() + 1);
+             if (last == null)
+-              buckets[idx] = e.next;
++              getBuckets()[idx] = e.getNext();
+             else
+-              last.next = e.next;
+-            size--;
+-            return e.value;
++              last.setNext(e.getNext());
++            setSize(getSize() - 1);
++            return e.getValueField();
+           }
+         last = e;
+-        e = e.next;
++        e = e.getNext();
+       }
+     return null;
+   }
+@@ -519,7 +527,7 @@
+         if (e instanceof AbstractMap.BasicMapEntry)
+           {
+             AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+-            put(entry.key, entry.value);
++            put(entry.getKeyField(), entry.getValueField());
+           }
+         else
+           {
+@@ -533,11 +541,11 @@
+    */
+   public synchronized void clear()
+   {
+-    if (size > 0)
++    if (getSize() > 0)
+       {
+-        modCount++;
+-        Arrays.fill(buckets, null);
+-        size = 0;
++        setModCount(getModCount() + 1);
++        Arrays.fill(getBuckets(), null);
++        setSize(0);
+       }
+   }
+ 
+@@ -558,7 +566,7 @@
+       {
+         // This is impossible.
+       }
+-    copy.buckets = new HashEntry[buckets.length];
++    copy.setBuckets(new HashEntry[getBuckets().length]);
+     copy.putAllInternal(this);
+     // Clear the caches.
+     copy.keys = null;
+@@ -584,7 +592,7 @@
+     // unsynchronized HashIterator instead.
+     Iterator entries = new HashIterator(ENTRIES);
+     StringBuffer r = new StringBuffer("{");
+-    for (int pos = size; pos > 0; pos--)
++    for (int pos = getSize(); pos > 0; pos--)
+       {
+         r.append(entries.next());
+         if (pos > 1)
+@@ -619,7 +627,7 @@
+         {
+           public int size()
+           {
+-            return size;
++            return getSize();
+           }
+ 
+           public Iterator iterator()
+@@ -677,7 +685,7 @@
+         {
+           public int size()
+           {
+-            return size;
++            return getSize();
+           }
+ 
+           public Iterator iterator()
+@@ -729,7 +737,7 @@
+         {
+           public int size()
+           {
+-            return size;
++            return getSize();
+           }
+ 
+           public Iterator iterator()
+@@ -752,7 +760,7 @@
+             HashEntry e = getEntry(o);
+             if (e != null)
+               {
+-                Hashtable.this.remove(e.key);
++                Hashtable.this.remove(e.getKeyField());
+                 return true;
+               }
+             return false;
+@@ -801,7 +809,7 @@
+     // unsynchronized HashIterator instead.
+     Iterator itr = new HashIterator(ENTRIES);
+     int hashcode = 0;
+-    for (int pos = size; pos > 0; pos--)
++    for (int pos = getSize(); pos > 0; pos--)
+       hashcode += itr.next().hashCode();
+ 
+     return hashcode;
+@@ -819,7 +827,7 @@
+   {
+     // Note: Inline Math.abs here, for less method overhead, and to avoid
+     // a bootstrap dependency, since Math relies on native methods.
+-    int hash = key.hashCode() % buckets.length;
++    int hash = key.hashCode() % getBuckets().length;
+     return hash < 0 ? -hash : hash;
+   }
+ 
+@@ -841,12 +849,12 @@
+       return null;
+ 
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     while (e != null)
+       {
+         if (e.equals(o))
+           return e;
+-        e = e.next;
++        e = e.getNext();
+       }
+     return null;
+   }
+@@ -861,17 +869,17 @@
+   void putAllInternal(Map m)
+   {
+     Iterator itr = m.entrySet().iterator();
+-    size = 0;
++    setSize(0);
+ 
+     while (itr.hasNext())
+       {
+-        size++;
++        setSize(getSize() + 1);
+ 	Map.Entry e = (Map.Entry) itr.next();
+ 	Object key = e.getKey();
+ 	int idx = hash(key);
+ 	HashEntry he = new HashEntry(key, e.getValue());
+-	he.next = buckets[idx];
+-	buckets[idx] = he;
++	he.setNext(getBuckets()[idx]);
++	getBuckets()[idx] = he;
+       }
+   }
+ 
+@@ -888,33 +896,33 @@
+    */
+   protected void rehash()
+   {
+-    HashEntry[] oldBuckets = buckets;
++    HashEntry[] oldBuckets = getBuckets();
+ 
+-    int newcapacity = (buckets.length * 2) + 1;
++    int newcapacity = (getBuckets().length * 2) + 1;
+     threshold = (int) (newcapacity * loadFactor);
+-    buckets = new HashEntry[newcapacity];
++    setBuckets(new HashEntry[newcapacity]);
+ 
+     for (int i = oldBuckets.length - 1; i >= 0; i--)
+       {
+         HashEntry e = oldBuckets[i];
+         while (e != null)
+           {
+-            int idx = hash(e.key);
+-            HashEntry dest = buckets[idx];
++            int idx = hash(e.getKeyField());
++            HashEntry dest = getBuckets()[idx];
+ 
+             if (dest != null)
+               {
+-                while (dest.next != null)
+-                  dest = dest.next;
+-                dest.next = e;
++                while (dest.getNext() != null)
++                  dest = dest.getNext();
++                dest.setNext(e);
+               }
+             else
+               {
+-                buckets[idx] = e;
++                getBuckets()[idx] = e;
+               }
+ 
+-            HashEntry next = e.next;
+-            e.next = null;
++            HashEntry next = e.getNext();
++            e.setNext(null);
+             e = next;
+           }
+       }
+@@ -936,8 +944,8 @@
+     // Write the threshold and loadFactor fields.
+     s.defaultWriteObject();
+ 
+-    s.writeInt(buckets.length);
+-    s.writeInt(size);
++    s.writeInt(getBuckets().length);
++    s.writeInt(getSize());
+     // Since we are already synchronized, and entrySet().iterator()
+     // would repeatedly re-lock/release the monitor, we directly use the
+     // unsynchronized HashIterator instead.
+@@ -945,8 +953,8 @@
+     while (it.hasNext())
+       {
+         HashEntry entry = (HashEntry) it.next();
+-        s.writeObject(entry.key);
+-        s.writeObject(entry.value);
++        s.writeObject(entry.getKeyField());
++        s.writeObject(entry.getValueField());
+       }
+   }
+ 
+@@ -968,7 +976,7 @@
+     s.defaultReadObject();
+ 
+     // Read and use capacity.
+-    buckets = new HashEntry[s.readInt()];
++    setBuckets(new HashEntry[s.readInt()]);
+     int len = s.readInt();
+ 
+     // Read and use key/value pairs.
+@@ -977,7 +985,31 @@
+       put(s.readObject(), s.readObject());
+   }
+ 
+-  /**
++  void setBuckets(HashEntry[] buckets) {
++    this.buckets = buckets;
++}
++
++HashEntry[] getBuckets() {
++    return buckets;
++}
++
++void setModCount(int modCount) {
++    this.modCount = modCount;
++}
++
++int getModCount() {
++    return modCount;
++}
++
++int setSize(int size) {
++    return this.size = size;
++}
++
++int getSize() {
++    return size;
++}
++
++/**
+    * A class which implements the Iterator interface and is used for
+    * iterating over Hashtables.
+    * This implementation is parameterized to give a sequential view of
+@@ -998,19 +1030,19 @@
+     /**
+      * The number of modifications to the backing Hashtable that we know about.
+      */
+-    int knownMod = modCount;
++    private int knownMod = getModCount();
+     /** The number of elements remaining to be returned by next(). */
+-    int count = size;
++    private int count = getSize();
+     /** Current index in the physical hash table. */
+-    int idx = buckets.length;
++    private int idx = getBuckets().length;
+     /** The last Entry returned by a next() call. */
+-    HashEntry last;
++    private HashEntry last;
+     /**
+      * The next entry that should be returned by next(). It is set to something
+      * if we're iterating through a bucket that contains multiple linked
+      * entries. It is null if next() needs to find a new bucket.
+      */
+-    HashEntry next;
++    private HashEntry next;
+ 
+     /**
+      * Construct a new HashIterator with the supplied type.
+@@ -1027,7 +1059,7 @@
+      */
+     public boolean hasNext()
+     {
+-      return count > 0;
++      return getCount() > 0;
+     }
+ 
+     /**
+@@ -1038,22 +1070,22 @@
+      */
+     public Object next()
+     {
+-      if (knownMod != modCount)
++      if (getKnownMod() != getModCount())
+         throw new ConcurrentModificationException();
+-      if (count == 0)
++      if (getCount() == 0)
+         throw new NoSuchElementException();
+-      count--;
+-      HashEntry e = next;
++      setCount(getCount() - 1);
++      HashEntry e = getNext();
+ 
+       while (e == null)
+-        e = buckets[--idx];
++        e = getBuckets()[setIdx(getIdx() - 1)];
+ 
+-      next = e.next;
+-      last = e;
++      setNext(e.getNext());
++      setLast(e);
+       if (type == VALUES)
+-        return e.value;
++        return e.getValueField();
+       if (type == KEYS)
+-        return e.key;
++        return e.getKeyField();
+       return e;
+     }
+ 
+@@ -1065,14 +1097,54 @@
+      */
+     public void remove()
+     {
+-      if (knownMod != modCount)
++      if (getKnownMod() != getModCount())
+         throw new ConcurrentModificationException();
+-      if (last == null)
++      if (getLast() == null)
+         throw new IllegalStateException();
+ 
+-      Hashtable.this.remove(last.key);
+-      last = null;
+-      knownMod++;
++      Hashtable.this.remove(getLast().getKeyField());
++      setLast(null);
++      setKnownMod(getKnownMod() + 1);
++    }
++
++    void setCount(int count) {
++        this.count = count;
++    }
++
++    int getCount() {
++        return count;
++    }
++
++    int setIdx(int idx) {
++        return this.idx = idx;
++    }
++
++    int getIdx() {
++        return idx;
++    }
++
++    void setKnownMod(int knownMod) {
++        this.knownMod = knownMod;
++    }
++
++    int getKnownMod() {
++        return knownMod;
++    }
++
++    void setLast(HashEntry last) {
++        this.last = last;
++    }
++
++    HashEntry getLast() {
++        return last;
++    }
++
++    void setNext(HashEntry next) {
++        this.next = next;
++    }
++
++    HashEntry getNext() {
++        return next;
+     }
+   } // class HashIterator
+ 
+@@ -1098,15 +1170,15 @@
+      */
+     final int type;
+     /** The number of elements remaining to be returned by next(). */
+-    int count = size;
++    private int count = getSize();
+     /** Current index in the physical hash table. */
+-    int idx = buckets.length;
++    private int idx = getBuckets().length;
+     /**
+      * Entry which will be returned by the next nextElement() call. It is
+      * set if we are iterating through a bucket with multiple entries, or null
+      * if we must look in the next bucket.
+      */
+-    HashEntry next;
++    private HashEntry next;
+ 
+     /**
+      * Construct the enumeration.
+@@ -1123,7 +1195,7 @@
+      */
+     public boolean hasMoreElements()
+     {
+-      return count > 0;
++      return getCount() > 0;
+     }
+ 
+     /**
+@@ -1133,16 +1205,40 @@
+      */
+     public Object nextElement()
+     {
+-      if (count == 0)
++      if (getCount() == 0)
+         throw new NoSuchElementException("Hashtable Enumerator");
+-      count--;
+-      HashEntry e = next;
++      setCount(getCount() - 1);
++      HashEntry e = getNext();
+ 
+       while (e == null)
+-        e = buckets[--idx];
++        e = getBuckets()[setIdx(getIdx() - 1)];
++
++      setNext(e.getNext());
++      return type == VALUES ? e.getValueField() : e.getKeyField();
++    }
++
++    void setCount(int count) {
++        this.count = count;
++    }
++
++    int getCount() {
++        return count;
++    }
++
++    int setIdx(int idx) {
++        return this.idx = idx;
++    }
++
++    int getIdx() {
++        return idx;
++    }
++
++    void setNext(HashEntry next) {
++        this.next = next;
++    }
+ 
+-      next = e.next;
+-      return type == VALUES ? e.value : e.key;
++    HashEntry getNext() {
++        return next;
+     }
+   } // class Enumerator
+ } // class Hashtable
+diff -ruN gcc/java/util/LinkedHashMap.java gcc.new/java/util/LinkedHashMap.java
+--- gcc/java/util/LinkedHashMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/LinkedHashMap.java	2008-02-13 12:13:23.825800000 -0800
+@@ -116,7 +116,7 @@
+   /**
+    * The oldest Entry to begin iteration at.
+    */
+-  transient LinkedHashEntry root;
++  private transient LinkedHashEntry root;
+ 
+   /**
+    * The iteration order of this linked hash map: <code>true</code> for
+@@ -136,10 +136,10 @@
+      * The predecessor in the iteration list. If this entry is the root
+      * (eldest), pred points to the newest entry.
+      */
+-    LinkedHashEntry pred;
++    private LinkedHashEntry pred;
+ 
+     /** The successor in the iteration list, null if this is the newest. */
+-    LinkedHashEntry succ;
++    private LinkedHashEntry succ;
+ 
+     /**
+      * Simple constructor.
+@@ -150,16 +150,16 @@
+     LinkedHashEntry(Object key, Object value)
+     {
+       super(key, value);
+-      if (root == null)
++      if (getRoot() == null)
+         {
+-          root = this;
+-          pred = this;
++          setRoot(this);
++          setPred(this);
+         }
+       else
+         {
+-          pred = root.pred;
+-          pred.succ = this;
+-          root.pred = this;
++          setPred(getRoot().getPred());
++          getPred().setSucc(this);
++          getRoot().setPred(this);
+         }
+     }
+ 
+@@ -170,23 +170,23 @@
+      */
+     void access()
+     {
+-      if (accessOrder && succ != null)
++      if (accessOrder && getSucc() != null)
+         {
+-          modCount++;
+-          if (this == root)
++          setModCount(getModCount() + 1);
++          if (this == getRoot())
+             {
+-              root = succ;
+-              pred.succ = this;
+-              succ = null;
++              setRoot(getSucc());
++              getPred().setSucc(this);
++              setSucc(null);
+             }
+           else
+             {
+-              pred.succ = succ;
+-              succ.pred = pred;
+-              succ = null;
+-              pred = root.pred;
+-              pred.succ = this;
+-              root.pred = this;
++              getPred().setSucc(succ);
++              getSucc().setPred(pred);
++              setSucc(null);
++              setPred(getRoot().getPred());
++              getPred().setSucc(this);
++              getRoot().setPred(this);
+             }
+         }
+     }
+@@ -199,23 +199,39 @@
+      */
+     Object cleanup()
+     {
+-      if (this == root)
++      if (this == getRoot())
+         {
+-          root = succ;
+-          if (succ != null)
+-            succ.pred = pred;
++          setRoot(getSucc());
++          if (getSucc() != null)
++            getSucc().setPred(pred);
+         }
+-      else if (succ == null)
++      else if (getSucc() == null)
+         {
+-          pred.succ = null;
+-          root.pred = pred;
++          getPred().setSucc(null);
++          getRoot().setPred(pred);
+         }
+       else
+         {
+-          pred.succ = succ;
+-          succ.pred = pred;
++          getPred().setSucc(succ);
++          getSucc().setPred(pred);
+         }
+-      return value;
++      return getValueField();
++    }
++
++    void setPred(LinkedHashEntry pred) {
++        this.pred = pred;
++    }
++
++    LinkedHashEntry getPred() {
++        return pred;
++    }
++
++    void setSucc(LinkedHashEntry succ) {
++        this.succ = succ;
++    }
++
++    LinkedHashEntry getSucc() {
++        return succ;
+     }
+   } // class LinkedHashEntry
+ 
+@@ -300,7 +316,7 @@
+   public void clear()
+   {
+     super.clear();
+-    root = null;
++    setRoot(null);
+   }
+ 
+   /**
+@@ -312,12 +328,12 @@
+    */
+   public boolean containsValue(Object value)
+   {
+-    LinkedHashEntry e = root;
++    LinkedHashEntry e = getRoot();
+     while (e != null)
+       {
+-        if (equals(value, e.value))
++        if (equals(value, e.getValueField()))
+           return true;
+-        e = e.succ;
++        e = e.getSucc();
+       }
+     return false;
+   }
+@@ -338,15 +354,15 @@
+   public Object get(Object key)
+   {
+     int idx = hash(key);
+-    HashEntry e = buckets[idx];
++    HashEntry e = getBuckets()[idx];
+     while (e != null)
+       {
+-        if (equals(key, e.key))
++        if (equals(key, e.getKeyField()))
+           {
+             e.access();
+-            return e.value;
++            return e.getValueField();
+           }
+-        e = e.next;
++        e = e.getNext();
+       }
+     return null;
+   }
+@@ -410,10 +426,10 @@
+   void addEntry(Object key, Object value, int idx, boolean callRemove)
+   {
+     LinkedHashEntry e = new LinkedHashEntry(key, value);
+-    e.next = buckets[idx];
+-    buckets[idx] = e;
+-    if (callRemove && removeEldestEntry(root))
+-      remove(root.key);
++    e.setNext(getBuckets()[idx]);
++    getBuckets()[idx] = e;
++    if (callRemove && removeEldestEntry(getRoot()))
++      remove(getRoot().getKeyField());
+   }
+ 
+   /**
+@@ -424,7 +440,7 @@
+    */
+   void putAllInternal(Map m)
+   {
+-    root = null;
++    setRoot(null);
+     super.putAllInternal(m);
+   }
+ 
+@@ -440,13 +456,13 @@
+     return new Iterator()
+     {
+       /** The current Entry. */
+-      LinkedHashEntry current = root;
++      private LinkedHashEntry current = getRoot();
+ 
+       /** The previous Entry returned by next(). */
+-      LinkedHashEntry last;
++      private LinkedHashEntry last;
+ 
+       /** The number of known modifications to the backing Map. */
+-      int knownMod = modCount;
++      private int knownMod = getModCount();
+ 
+       /**
+        * Returns true if the Iterator has more elements.
+@@ -455,7 +471,7 @@
+        */
+       public boolean hasNext()
+       {
+-        return current != null;
++        return getCurrent() != null;
+       }
+ 
+       /**
+@@ -467,13 +483,13 @@
+        */
+       public Object next()
+       {
+-        if (knownMod != modCount)
++        if (getKnownMod() != getModCount())
+           throw new ConcurrentModificationException();
+-        if (current == null)
++        if (getCurrent() == null)
+           throw new NoSuchElementException();
+-        last = current;
+-        current = current.succ;
+-        return type == VALUES ? last.value : type == KEYS ? last.key : last;
++        setLast(getCurrent());
++        setCurrent(getCurrent().getSucc());
++        return type == VALUES ? getLast().getValueField() : type == KEYS ? getLast().getKeyField() : getLast();
+       }
+       
+       /**
+@@ -485,14 +501,46 @@
+        */
+       public void remove()
+       {
+-        if (knownMod != modCount)
++        if (getKnownMod() != getModCount())
+           throw new ConcurrentModificationException();
+-        if (last == null)
++        if (getLast() == null)
+           throw new IllegalStateException();
+-        LinkedHashMap.this.remove(last.key);
+-        last = null;
+-        knownMod++;
++        LinkedHashMap.this.remove(getLast().getKeyField());
++        setLast(null);
++        setKnownMod(getKnownMod() + 1);
+       }
++
++    void setCurrent(LinkedHashEntry current) {
++        this.current = current;
++    }
++
++    LinkedHashEntry getCurrent() {
++        return current;
++    }
++
++    void setLast(LinkedHashEntry last) {
++        this.last = last;
++    }
++
++    LinkedHashEntry getLast() {
++        return last;
++    }
++
++    void setKnownMod(int knownMod) {
++        this.knownMod = knownMod;
++    }
++
++    int getKnownMod() {
++        return knownMod;
++    }
+     };
+   }
++
++void setRoot(LinkedHashEntry root) {
++    this.root = root;
++}
++
++LinkedHashEntry getRoot() {
++    return root;
++}
+ } // class LinkedHashMap
+diff -ruN gcc/java/util/LinkedList.java gcc.new/java/util/LinkedList.java
+--- gcc/java/util/LinkedList.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/LinkedList.java	2008-02-13 12:13:23.869800000 -0800
+@@ -82,17 +82,17 @@
+   /**
+    * The first element in the list.
+    */
+-  transient Entry first;
++  private transient Entry first;
+ 
+   /**
+    * The last element in the list.
+    */
+-  transient Entry last;
++  private transient Entry last;
+ 
+   /**
+    * The current length of the list.
+    */
+-  transient int size = 0;
++  private transient int size = 0;
+ 
+   /**
+    * Class to represent an entry in the list. Holds a single element.
+@@ -100,13 +100,13 @@
+   private static final class Entry
+   {
+     /** The element in the list. */
+-    Object data;
++    private Object data;
+ 
+     /** The next list entry, null if this is last. */
+-    Entry next;
++    private Entry next;
+ 
+     /** The previous list entry, null if this is first. */
+-    Entry previous;
++    private Entry previous;
+ 
+     /**
+      * Construct an entry.
+@@ -114,7 +114,31 @@
+      */
+     Entry(Object data)
+     {
+-      this.data = data;
++      this.setData(data);
++    }
++
++    void setData(Object data) {
++        this.data = data;
++    }
++
++    Object getData() {
++        return data;
++    }
++
++    void setNext(Entry next) {
++        this.next = next;
++    }
++
++    Entry getNext() {
++        return next;
++    }
++
++    void setPrevious(Entry previous) {
++        this.previous = previous;
++    }
++
++    Entry getPrevious() {
++        return previous;
+     }
+   } // class Entry
+ 
+@@ -134,19 +158,19 @@
+   Entry getEntry(int n)
+   {
+     Entry e;
+-    if (n < size / 2)
++    if (n < getSize() / 2)
+       {
+-        e = first;
++        e = getFirstField();
+         // n less than size/2, iterate from start
+         while (n-- > 0)
+-          e = e.next;
++          e = e.getNext();
+       }
+     else
+       {
+-        e = last;
++        e = getLastField();
+         // n greater than size/2, iterate from end
+-        while (++n < size)
+-          e = e.previous;
++        while (++n < getSize())
++          e = e.getPrevious();
+       }
+     return e;
+   }
+@@ -160,26 +184,26 @@
+   // Package visible for use in nested classes.
+   void removeEntry(Entry e)
+   {
+-    modCount++;
+-    size--;
+-    if (size == 0)
+-      first = last = null;
++    setModCount(getModCount() + 1);
++    setSize(getSize() - 1);
++    if (getSize() == 0)
++      setFirstField(setLastField(null));
+     else
+       {
+-        if (e == first)
++        if (e == getFirstField())
+           {
+-            first = e.next;
+-            e.next.previous = null;
++            setFirstField(e.getNext());
++            e.getNext().setPrevious(null);
+           }
+-        else if (e == last)
++        else if (e == getLastField())
+           {
+-            last = e.previous;
+-            e.previous.next = null;
++            setLastField(e.getPrevious());
++            e.getPrevious().setNext(null);
+           }
+         else
+           {
+-            e.next.previous = e.previous;
+-            e.previous.next = e.next;
++            e.getNext().setPrevious(e.getPrevious());
++            e.getPrevious().setNext(e.getNext());
+           }
+       }
+   }
+@@ -192,9 +216,9 @@
+    */
+   private void checkBoundsInclusive(int index)
+   {
+-    if (index < 0 || index > size)
++    if (index < 0 || index > getSize())
+       throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+-                                          + size);
++                                          + getSize());
+   }
+ 
+   /**
+@@ -205,9 +229,9 @@
+    */
+   private void checkBoundsExclusive(int index)
+   {
+-    if (index < 0 || index >= size)
++    if (index < 0 || index >= getSize())
+       throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+-                                          + size);
++                                          + getSize());
+   }
+ 
+   /**
+@@ -237,9 +261,9 @@
+    */
+   public Object getFirst()
+   {
+-    if (size == 0)
++    if (getSize() == 0)
+       throw new NoSuchElementException();
+-    return first.data;
++    return getFirstField().getData();
+   }
+ 
+   /**
+@@ -250,9 +274,9 @@
+    */
+   public Object getLast()
+   {
+-    if (size == 0)
++    if (getSize() == 0)
+       throw new NoSuchElementException();
+-    return last.data;
++    return getLastField().getData();
+   }
+ 
+   /**
+@@ -263,18 +287,18 @@
+    */
+   public Object removeFirst()
+   {
+-    if (size == 0)
++    if (getSize() == 0)
+       throw new NoSuchElementException();
+-    modCount++;
+-    size--;
+-    Object r = first.data;
++    setModCount(getModCount() + 1);
++    setSize(getSize() - 1);
++    Object r = getFirstField().getData();
+ 
+-    if (first.next != null)
+-      first.next.previous = null;
++    if (getFirstField().getNext() != null)
++      getFirstField().getNext().setPrevious(null);
+     else
+-      last = null;
++      setLastField(null);
+ 
+-    first = first.next;
++    setFirstField(getFirstField().getNext());
+ 
+     return r;
+   }
+@@ -287,18 +311,18 @@
+    */
+   public Object removeLast()
+   {
+-    if (size == 0)
++    if (getSize() == 0)
+       throw new NoSuchElementException();
+-    modCount++;
+-    size--;
+-    Object r = last.data;
++    setModCount(getModCount() + 1);
++    setSize(getSize() - 1);
++    Object r = getLastField().getData();
+ 
+-    if (last.previous != null)
+-      last.previous.next = null;
++    if (getLastField().getPrevious() != null)
++      getLastField().getPrevious().setNext(null);
+     else
+-      first = null;
++      setFirstField(null);
+ 
+-    last = last.previous;
++    setLastField(getLastField().getPrevious());
+ 
+     return r;
+   }
+@@ -312,16 +336,16 @@
+   {
+     Entry e = new Entry(o);
+ 
+-    modCount++;
+-    if (size == 0)
+-      first = last = e;
++    setModCount(getModCount() + 1);
++    if (getSize() == 0)
++      setFirstField(setLastField(e));
+     else
+       {
+-        e.next = first;
+-        first.previous = e;
+-        first = e;
++        e.setNext(getFirstField());
++        getFirstField().setPrevious(e);
++        setFirstField(e);
+       }
+-    size++;
++    setSize(getSize() + 1);
+   }
+ 
+   /**
+@@ -341,16 +365,16 @@
+    */
+   private void addLastEntry(Entry e)
+   {
+-    modCount++;
+-    if (size == 0)
+-      first = last = e;
++    setModCount(getModCount() + 1);
++    if (getSize() == 0)
++      setFirstField(setLastField(e));
+     else
+       {
+-        e.previous = last;
+-        last.next = e;
+-        last = e;
++        e.setPrevious(getLastField());
++        getLastField().setNext(e);
++        setLastField(e);
+       }
+-    size++;
++    setSize(getSize() + 1);
+   }
+ 
+   /**
+@@ -362,12 +386,12 @@
+    */
+   public boolean contains(Object o)
+   {
+-    Entry e = first;
++    Entry e = getFirstField();
+     while (e != null)
+       {
+-        if (equals(o, e.data))
++        if (equals(o, e.getData()))
+           return true;
+-        e = e.next;
++        e = e.getNext();
+       }
+     return false;
+   }
+@@ -379,7 +403,7 @@
+    */
+   public int size()
+   {
+-    return size;
++    return getSize();
+   }
+ 
+   /**
+@@ -403,15 +427,15 @@
+    */
+   public boolean remove(Object o)
+   {
+-    Entry e = first;
++    Entry e = getFirstField();
+     while (e != null)
+       {
+-        if (equals(o, e.data))
++        if (equals(o, e.getData()))
+           {
+             removeEntry(e);
+             return true;
+           }
+-        e = e.next;
++        e = e.getNext();
+       }
+     return false;
+   }
+@@ -427,7 +451,7 @@
+    */
+   public boolean addAll(Collection c)
+   {
+-    return addAll(size, c);
++    return addAll(getSize(), c);
+   }
+ 
+   /**
+@@ -455,20 +479,20 @@
+     // is null. If the list is empty, both are null.
+     Entry after = null;
+     Entry before = null;
+-    if (index != size)
++    if (index != getSize())
+       {
+         after = getEntry(index);
+-        before = after.previous;
++        before = after.getPrevious();
+       }
+     else
+-      before = last;
++      before = getLastField();
+ 
+     // Create the first new entry. We do not yet set the link from `before'
+     // to the first entry, in order to deal with the case where (c == this).
+     // [Actually, we don't have to handle this case to fufill the
+     // contract for addAll(), but Sun's implementation appears to.]
+     Entry e = new Entry(itr.next());
+-    e.previous = before;
++    e.setPrevious(before);
+     Entry prev = e;
+     Entry firstNew = e;
+ 
+@@ -476,24 +500,24 @@
+     for (int pos = 1; pos < csize; pos++)
+       {
+         e = new Entry(itr.next());
+-        e.previous = prev;
+-        prev.next = e;
++        e.setPrevious(prev);
++        prev.setNext(e);
+         prev = e;
+       }
+ 
+     // Link the new chain of entries into the list.
+-    modCount++;
+-    size += csize;
+-    prev.next = after;
++    setModCount(getModCount() + 1);
++    setSize(getSize() + csize);
++    prev.setNext(after);
+     if (after != null)
+-      after.previous = e;
++      after.setPrevious(e);
+     else
+-      last = e;
++      setLastField(e);
+ 
+     if (before != null)
+-      before.next = firstNew;
++      before.setNext(firstNew);
+     else
+-      first = firstNew;
++      setFirstField(firstNew);
+     return true;
+   }
+ 
+@@ -502,12 +526,12 @@
+    */
+   public void clear()
+   {
+-    if (size > 0)
++    if (getSize() > 0)
+       {
+-        modCount++;
+-        first = null;
+-        last = null;
+-        size = 0;
++        setModCount(getModCount() + 1);
++        setFirstField(null);
++        setLastField(null);
++        setSize(0);
+       }
+   }
+ 
+@@ -521,7 +545,7 @@
+   public Object get(int index)
+   {
+     checkBoundsExclusive(index);
+-    return getEntry(index).data;
++    return getEntry(index).getData();
+   }
+ 
+   /**
+@@ -536,8 +560,8 @@
+   {
+     checkBoundsExclusive(index);
+     Entry e = getEntry(index);
+-    Object old = e.data;
+-    e.data = o;
++    Object old = e.getData();
++    e.setData(o);
+     return old;
+   }
+ 
+@@ -553,18 +577,18 @@
+     checkBoundsInclusive(index);
+     Entry e = new Entry(o);
+ 
+-    if (index < size)
++    if (index < getSize())
+       {
+-        modCount++;
++        setModCount(getModCount() + 1);
+         Entry after = getEntry(index);
+-        e.next = after;
+-        e.previous = after.previous;
+-        if (after.previous == null)
+-          first = e;
++        e.setNext(after);
++        e.setPrevious(after.getPrevious());
++        if (after.getPrevious() == null)
++          setFirstField(e);
+         else
+-          after.previous.next = e;
+-        after.previous = e;
+-        size++;
++          after.getPrevious().setNext(e);
++        after.setPrevious(e);
++        setSize(getSize() + 1);
+       }
+     else
+       addLastEntry(e);
+@@ -582,7 +606,7 @@
+     checkBoundsExclusive(index);
+     Entry e = getEntry(index);
+     removeEntry(e);
+-    return e.data;
++    return e.getData();
+   }
+ 
+   /**
+@@ -594,13 +618,13 @@
+   public int indexOf(Object o)
+   {
+     int index = 0;
+-    Entry e = first;
++    Entry e = getFirstField();
+     while (e != null)
+       {
+-        if (equals(o, e.data))
++        if (equals(o, e.getData()))
+           return index;
+         index++;
+-        e = e.next;
++        e = e.getNext();
+       }
+     return -1;
+   }
+@@ -613,14 +637,14 @@
+    */
+   public int lastIndexOf(Object o)
+   {
+-    int index = size - 1;
+-    Entry e = last;
++    int index = getSize() - 1;
++    Entry e = getLastField();
+     while (e != null)
+       {
+-        if (equals(o, e.data))
++        if (equals(o, e.getData()))
+           return index;
+         index--;
+-        e = e.previous;
++        e = e.getPrevious();
+       }
+     return -1;
+   }
+@@ -668,12 +692,12 @@
+    */
+   public Object[] toArray()
+   {
+-    Object[] array = new Object[size];
+-    Entry e = first;
+-    for (int i = 0; i < size; i++)
++    Object[] array = new Object[getSize()];
++    Entry e = getFirstField();
++    for (int i = 0; i < getSize(); i++)
+       {
+-        array[i] = e.data;
+-        e = e.next;
++        array[i] = e.getData();
++        e = e.getNext();
+       }
+     return array;
+   }
+@@ -694,15 +718,15 @@
+    */
+   public Object[] toArray(Object[] a)
+   {
+-    if (a.length < size)
+-      a = (Object[]) Array.newInstance(a.getClass().getComponentType(), size);
+-    else if (a.length > size)
+-      a[size] = null;
+-    Entry e = first;
+-    for (int i = 0; i < size; i++)
++    if (a.length < getSize())
++      a = (Object[]) Array.newInstance(a.getClass().getComponentType(), getSize());
++    else if (a.length > getSize())
++      a[getSize()] = null;
++    Entry e = getFirstField();
++    for (int i = 0; i < getSize(); i++)
+       {
+-        a[i] = e.data;
+-        e = e.next;
++        a[i] = e.getData();
++        e = e.getNext();
+       }
+     return a;
+   }
+@@ -718,12 +742,12 @@
+   private void writeObject(ObjectOutputStream s) throws IOException
+   {
+     s.defaultWriteObject();
+-    s.writeInt(size);
+-    Entry e = first;
++    s.writeInt(getSize());
++    Entry e = getFirstField();
+     while (e != null)
+       {
+-        s.writeObject(e.data);
+-        e = e.next;
++        s.writeObject(e.getData());
++        e = e.getNext();
+       }
+   }
+ 
+@@ -745,7 +769,31 @@
+       addLastEntry(new Entry(s.readObject()));
+   }
+ 
+-  /**
++  void setFirstField(Entry first) {
++    this.first = first;
++}
++
++Entry getFirstField() {
++    return first;
++}
++
++Entry setLastField(Entry last) {
++    return this.last = last;
++}
++
++Entry getLastField() {
++    return last;
++}
++
++void setSize(int size) {
++    this.size = size;
++}
++
++int getSize() {
++    return size;
++}
++
++/**
+    * A ListIterator over the list. This class keeps track of its
+    * position in the list and the two list entries it is between.
+    *
+@@ -755,7 +803,7 @@
+   private final class LinkedListItr implements ListIterator
+   {
+     /** Number of modifications we know about. */
+-    private int knownMod = modCount;
++    private int knownMod = getModCount();
+ 
+     /** Entry that will be returned by next(). */
+     private Entry next;
+@@ -776,15 +824,15 @@
+      */
+     LinkedListItr(int index)
+     {
+-      if (index == size)
++      if (index == getSize())
+         {
+           next = null;
+-          previous = last;
++          previous = getLastField();
+         }
+       else
+         {
+           next = getEntry(index);
+-          previous = next.previous;
++          previous = next.getPrevious();
+         }
+       position = index;
+     }
+@@ -796,7 +844,7 @@
+      */
+     private void checkMod()
+     {
+-      if (knownMod != modCount)
++      if (knownMod != getModCount())
+         throw new ConcurrentModificationException();
+     }
+ 
+@@ -854,8 +902,8 @@
+         throw new NoSuchElementException();
+       position++;
+       lastReturned = previous = next;
+-      next = lastReturned.next;
+-      return lastReturned.data;
++      next = lastReturned.getNext();
++      return lastReturned.getData();
+     }
+ 
+     /**
+@@ -872,8 +920,8 @@
+         throw new NoSuchElementException();
+       position--;
+       lastReturned = next = previous;
+-      previous = lastReturned.previous;
+-      return lastReturned.data;
++      previous = lastReturned.getPrevious();
++      return lastReturned.getData();
+     }
+ 
+     /**
+@@ -893,8 +941,8 @@
+       if (lastReturned == previous)
+         position--;
+ 
+-      next = lastReturned.next;
+-      previous = lastReturned.previous;
++      next = lastReturned.getNext();
++      previous = lastReturned.getPrevious();
+       removeEntry(lastReturned);
+       knownMod++;
+ 
+@@ -910,23 +958,23 @@
+     public void add(Object o)
+     {
+       checkMod();
+-      modCount++;
++      setModCount(getModCount() + 1);
+       knownMod++;
+-      size++;
++      setSize(getSize() + 1);
+       position++;
+       Entry e = new Entry(o);
+-      e.previous = previous;
+-      e.next = next;
++      e.setPrevious(previous);
++      e.setNext(next);
+ 
+       if (previous != null)
+-        previous.next = e;
++        previous.setNext(e);
+       else
+-        first = e;
++        setFirstField(e);
+ 
+       if (next != null)
+-        next.previous = e;
++        next.setPrevious(e);
+       else
+-        last = e;
++        setLastField(e);
+ 
+       previous = e;
+       lastReturned = null;
+@@ -944,7 +992,7 @@
+       checkMod();
+       if (lastReturned == null)
+         throw new IllegalStateException();
+-      lastReturned.data = o;
++      lastReturned.setData(o);
+     }
+   } // class LinkedListItr
+ }
+diff -ruN gcc/java/util/Stack.java gcc.new/java/util/Stack.java
+--- gcc/java/util/Stack.java	2005-09-23 10:31:48.000000000 -0700
++++ gcc.new/java/util/Stack.java	2008-02-13 12:13:23.895800000 -0800
+@@ -103,14 +103,14 @@
+    */
+   public synchronized Object pop()
+   {
+-    if (elementCount == 0)
++    if (getElementCount() == 0)
+       throw new EmptyStackException();
+ 
+-    modCount++;
+-    Object obj = elementData[--elementCount];
++    setModCount(getModCount() + 1);
++    Object obj = getElementData()[setElementCount(getElementCount() - 1)];
+ 
+     // Set topmost element to null to assist the gc in cleanup.
+-    elementData[elementCount] = null;
++    getElementData()[getElementCount()] = null;
+     return obj;
+   }
+ 
+@@ -122,10 +122,10 @@
+    */
+   public synchronized Object peek()
+   {
+-    if (elementCount == 0)
++    if (getElementCount() == 0)
+       throw new EmptyStackException();
+ 
+-    return elementData[elementCount - 1];
++    return getElementData()[getElementCount() - 1];
+   }
+ 
+   /**
+@@ -135,7 +135,7 @@
+    */
+   public synchronized boolean empty()
+   {
+-    return elementCount == 0;
++    return getElementCount() == 0;
+   }
+ 
+   /**
+@@ -149,10 +149,10 @@
+    */
+   public synchronized int search(Object o)
+   {
+-    int i = elementCount;
++    int i = getElementCount();
+     while (--i >= 0)
+-      if (equals(o, elementData[i]))
+-        return elementCount - i;
++      if (equals(o, getElementData()[i]))
++        return getElementCount() - i;
+     return -1;
+   }
+ }
+diff -ruN gcc/java/util/TreeMap.java gcc.new/java/util/TreeMap.java
+--- gcc/java/util/TreeMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/TreeMap.java	2008-02-13 12:13:23.949800000 -0800
+@@ -122,9 +122,9 @@
+   static
+     {
+       // Nil is self-referential, so we must initialize it after creation.
+-      nil.parent = nil;
+-      nil.left = nil;
+-      nil.right = nil;
++      nil.setParent(nil);
++      nil.setLeft(nil);
++      nil.setRight(nil);
+     }
+ 
+   /**
+@@ -135,7 +135,7 @@
+   /**
+    * The size of this TreeMap. Package visible for use by nested classes.
+    */
+-  transient int size;
++  private transient int size;
+ 
+   /**
+    * The cache for {@link #entrySet()}.
+@@ -147,7 +147,7 @@
+    * by Iterators to know when to throw ConcurrentModificationExceptions.
+    * Package visible for use by nested classes.
+    */
+-  transient int modCount;
++  private transient int modCount;
+ 
+   /**
+    * This TreeMap's comparator, or null for natural ordering.
+@@ -166,14 +166,14 @@
+   {
+     // All fields package visible for use by nested classes.
+     /** The color of this node. */
+-    int color;
++    private int color;
+ 
+     /** The left child node. */
+-    Node left = nil;
++    private Node left = nil;
+     /** The right child node. */
+-    Node right = nil;
++    private Node right = nil;
+     /** The parent node. */
+-    Node parent = nil;
++    private Node parent = nil;
+ 
+     /**
+      * Simple constructor.
+@@ -183,7 +183,39 @@
+     Node(Object key, Object value, int color)
+     {
+       super(key, value);
+-      this.color = color;
++      this.setColor(color);
++    }
++
++    void setColor(int color) {
++        this.color = color;
++    }
++
++    int getColor() {
++        return color;
++    }
++
++    void setLeft(Node left) {
++        this.left = left;
++    }
++
++    Node getLeft() {
++        return left;
++    }
++
++    void setRight(Node right) {
++        this.right = right;
++    }
++
++    Node getRight() {
++        return right;
++    }
++
++    void setParent(Node parent) {
++        this.parent = parent;
++    }
++
++    Node getParent() {
++        return parent;
+     }
+   }
+ 
+@@ -256,8 +288,8 @@
+     while (--pos >= 0)
+       {
+         Map.Entry me = (Map.Entry) itr.next();
+-        node.key = me.getKey();
+-        node.value = me.getValue();
++        node.setKeyField(me.getKey());
++        node.setValueField(me.getValue());
+         node = successor(node);
+       }
+   }
+@@ -267,11 +299,11 @@
+    */
+   public void clear()
+   {
+-    if (size > 0)
++    if (getSize() > 0)
+       {
+-        modCount++;
++        setModCount(getModCount() + 1);
+         root = nil;
+-        size = 0;
++        setSize(0);
+       }
+   }
+ 
+@@ -292,15 +324,15 @@
+       {
+       }
+     copy.entries = null;
+-    copy.fabricateTree(size);
++    copy.fabricateTree(getSize());
+ 
+     Node node = firstNode();
+     Node cnode = copy.firstNode();
+ 
+     while (node != nil)
+       {
+-        cnode.key = node.key;
+-        cnode.value = node.value;
++        cnode.setKeyField(node.getKeyField());
++        cnode.setValueField(node.getValueField());
+         node = successor(node);
+         cnode = copy.successor(cnode);
+       }
+@@ -344,7 +376,7 @@
+     Node node = firstNode();
+     while (node != nil)
+       {
+-        if (equals(value, node.value))
++        if (equals(value, node.getValueField()))
+           return true;
+         node = successor(node);
+       }
+@@ -373,7 +405,7 @@
+       {
+         public int size()
+         {
+-          return size;
++          return getSize();
+         }
+ 
+         public Iterator iterator()
+@@ -392,7 +424,7 @@
+             return false;
+           Map.Entry me = (Map.Entry) o;
+           Node n = getNode(me.getKey());
+-          return n != nil && AbstractSet.equals(me.getValue(), n.value);
++          return n != nil && AbstractSet.equals(me.getValue(), n.getValueField());
+       }
+ 
+         public boolean remove(Object o)
+@@ -401,7 +433,7 @@
+             return false;
+           Map.Entry me = (Map.Entry) o;
+           Node n = getNode(me.getKey());
+-          if (n != nil && AbstractSet.equals(me.getValue(), n.value))
++          if (n != nil && AbstractSet.equals(me.getValue(), n.getValueField()))
+             {
+               removeNode(n);
+               return true;
+@@ -422,7 +454,7 @@
+   {
+     if (root == nil)
+       throw new NoSuchElementException();
+-    return firstNode().key;
++    return firstNode().getKeyField();
+   }
+ 
+   /**
+@@ -442,7 +474,7 @@
+   public Object get(Object key)
+   {
+     // Exploit fact that nil.value == null.
+-    return getNode(key).value;
++    return getNode(key).getValueField();
+   }
+ 
+   /**
+@@ -476,14 +508,14 @@
+    */
+   public Set keySet()
+   {
+-    if (keys == null)
++    if (getKeys() == null)
+       // Create an AbstractSet with custom implementations of those methods
+       // that can be overriden easily and efficiently.
+-      keys = new AbstractSet()
++      setKeys(new AbstractSet()
+       {
+         public int size()
+         {
+-          return size;
++          return getSize();
+         }
+ 
+         public Iterator iterator()
+@@ -509,8 +541,8 @@
+           removeNode(n);
+           return true;
+         }
+-      };
+-    return keys;
++      });
++    return getKeys();
+   }
+ 
+   /**
+@@ -523,7 +555,7 @@
+   {
+     if (root == nil)
+       throw new NoSuchElementException("empty");
+-    return lastNode().key;
++    return lastNode().getKeyField();
+   }
+ 
+   /**
+@@ -552,22 +584,22 @@
+     while (current != nil)
+       {
+         parent = current;
+-        comparison = compare(key, current.key);
++        comparison = compare(key, current.getKeyField());
+         if (comparison > 0)
+-          current = current.right;
++          current = current.getRight();
+         else if (comparison < 0)
+-          current = current.left;
++          current = current.getLeft();
+         else // Key already in tree.
+           return current.setValue(value);
+       }
+ 
+     // Set up new node.
+     Node n = new Node(key, value, RED);
+-    n.parent = parent;
++    n.setParent(parent);
+ 
+     // Insert node in tree.
+-    modCount++;
+-    size++;
++    setModCount(getModCount() + 1);
++    setSize(getSize() + 1);
+     if (parent == nil)
+       {
+         // Special case inserting into an empty tree.
+@@ -575,9 +607,9 @@
+         return null;
+       }
+     if (comparison > 0)
+-      parent.right = n;
++      parent.setRight(n);
+     else
+-      parent.left = n;
++      parent.setLeft(n);
+ 
+     // Rebalance after insert.
+     insertFixup(n);
+@@ -625,7 +657,7 @@
+     if (n == nil)
+       return null;
+     // Note: removeNode can alter the contents of n, so save value now.
+-    Object result = n.value;
++    Object result = n.getValueField();
+     removeNode(n);
+     return result;
+   }
+@@ -637,7 +669,7 @@
+    */
+   public int size()
+   {
+-    return size;
++    return getSize();
+   }
+ 
+   /**
+@@ -696,14 +728,14 @@
+    */
+   public Collection values()
+   {
+-    if (values == null)
++    if (getValues() == null)
+       // We don't bother overriding many of the optional methods, as doing so
+       // wouldn't provide any significant performance advantage.
+-      values = new AbstractCollection()
++      setValues(new AbstractCollection()
+       {
+         public int size()
+         {
+-          return size;
++          return getSize();
+         }
+ 
+         public Iterator iterator()
+@@ -715,8 +747,8 @@
+         {
+           TreeMap.this.clear();
+         }
+-      };
+-    return values;
++      });
++    return getValues();
+   }
+ 
+   /**
+@@ -749,48 +781,48 @@
+     // If a black node has been removed, we need to rebalance to avoid
+     // violating the "same number of black nodes on any path" rule. If
+     // node is red, we can simply recolor it black and all is well.
+-    while (node != root && node.color == BLACK)
++    while (node != root && node.getColor() == BLACK)
+       {
+-        if (node == parent.left)
++        if (node == parent.getLeft())
+           {
+             // Rebalance left side.
+-            Node sibling = parent.right;
++            Node sibling = parent.getRight();
+             // if (sibling == nil)
+             //   throw new InternalError();
+-            if (sibling.color == RED)
++            if (sibling.getColor() == RED)
+               {
+                 // Case 1: Sibling is red.
+                 // Recolor sibling and parent, and rotate parent left.
+-                sibling.color = BLACK;
+-                parent.color = RED;
++                sibling.setColor(BLACK);
++                parent.setColor(RED);
+                 rotateLeft(parent);
+-                sibling = parent.right;
++                sibling = parent.getRight();
+               }
+ 
+-            if (sibling.left.color == BLACK && sibling.right.color == BLACK)
++            if (sibling.getLeft().getColor() == BLACK && sibling.getRight().getColor() == BLACK)
+               {
+                 // Case 2: Sibling has no red children.
+                 // Recolor sibling, and move to parent.
+-                sibling.color = RED;
++                sibling.setColor(RED);
+                 node = parent;
+-                parent = parent.parent;
++                parent = parent.getParent();
+               }
+             else
+               {
+-                if (sibling.right.color == BLACK)
++                if (sibling.getRight().getColor() == BLACK)
+                   {
+                     // Case 3: Sibling has red left child.
+                     // Recolor sibling and left child, rotate sibling right.
+-                    sibling.left.color = BLACK;
+-                    sibling.color = RED;
++                    sibling.getLeft().setColor(BLACK);
++                    sibling.setColor(RED);
+                     rotateRight(sibling);
+-                    sibling = parent.right;
++                    sibling = parent.getRight();
+                   }
+                 // Case 4: Sibling has red right child. Recolor sibling,
+                 // right child, and parent, and rotate parent left.
+-                sibling.color = parent.color;
+-                parent.color = BLACK;
+-                sibling.right.color = BLACK;
++                sibling.setColor(parent.getColor());
++                parent.setColor(BLACK);
++                sibling.getRight().setColor(BLACK);
+                 rotateLeft(parent);
+                 node = root; // Finished.
+               }
+@@ -798,49 +830,49 @@
+         else
+           {
+             // Symmetric "mirror" of left-side case.
+-            Node sibling = parent.left;
++            Node sibling = parent.getLeft();
+             // if (sibling == nil)
+             //   throw new InternalError();
+-            if (sibling.color == RED)
++            if (sibling.getColor() == RED)
+               {
+                 // Case 1: Sibling is red.
+                 // Recolor sibling and parent, and rotate parent right.
+-                sibling.color = BLACK;
+-                parent.color = RED;
++                sibling.setColor(BLACK);
++                parent.setColor(RED);
+                 rotateRight(parent);
+-                sibling = parent.left;
++                sibling = parent.getLeft();
+               }
+ 
+-            if (sibling.right.color == BLACK && sibling.left.color == BLACK)
++            if (sibling.getRight().getColor() == BLACK && sibling.getLeft().getColor() == BLACK)
+               {
+                 // Case 2: Sibling has no red children.
+                 // Recolor sibling, and move to parent.
+-                sibling.color = RED;
++                sibling.setColor(RED);
+                 node = parent;
+-                parent = parent.parent;
++                parent = parent.getParent();
+               }
+             else
+               {
+-                if (sibling.left.color == BLACK)
++                if (sibling.getLeft().getColor() == BLACK)
+                   {
+                     // Case 3: Sibling has red right child.
+                     // Recolor sibling and right child, rotate sibling left.
+-                    sibling.right.color = BLACK;
+-                    sibling.color = RED;
++                    sibling.getRight().setColor(BLACK);
++                    sibling.setColor(RED);
+                     rotateLeft(sibling);
+-                    sibling = parent.left;
++                    sibling = parent.getLeft();
+                   }
+                 // Case 4: Sibling has red left child. Recolor sibling,
+                 // left child, and parent, and rotate parent right.
+-                sibling.color = parent.color;
+-                parent.color = BLACK;
+-                sibling.left.color = BLACK;
++                sibling.setColor(parent.getColor());
++                parent.setColor(BLACK);
++                sibling.getLeft().setColor(BLACK);
+                 rotateRight(parent);
+                 node = root; // Finished.
+               }
+           }
+       }
+-    node.color = BLACK;
++    node.setColor(BLACK);
+   }
+ 
+   /**
+@@ -854,7 +886,7 @@
+     if (count == 0)
+       {
+ 	root = nil;
+-	size = 0;
++	setSize(0);
+ 	return;
+       }
+ 
+@@ -865,7 +897,7 @@
+ 
+     // Make the root node.
+     root = new Node(null, null, BLACK);
+-    size = count;
++    setSize(count);
+     Node row = root;
+     int rowsize;
+ 
+@@ -878,18 +910,18 @@
+           {
+             Node left = new Node(null, null, BLACK);
+             Node right = new Node(null, null, BLACK);
+-            left.parent = parent;
+-            left.right = right;
+-            right.parent = parent;
+-            parent.left = left;
+-            Node next = parent.right;
+-            parent.right = right;
++            left.setParent(parent);
++            left.setRight(right);
++            right.setParent(parent);
++            parent.setLeft(left);
++            Node next = parent.getRight();
++            parent.setRight(right);
+             parent = next;
+             if (last != null)
+-              last.right = left;
++              last.setRight(left);
+             last = right;
+           }
+-        row = row.left;
++        row = row.getLeft();
+       }
+ 
+     // Now do the partial final row in red.
+@@ -900,27 +932,27 @@
+       {
+         Node left = new Node(null, null, RED);
+         Node right = new Node(null, null, RED);
+-        left.parent = parent;
+-        right.parent = parent;
+-        parent.left = left;
+-        Node next = parent.right;
+-        parent.right = right;
++        left.setParent(parent);
++        right.setParent(parent);
++        parent.setLeft(left);
++        Node next = parent.getRight();
++        parent.setRight(right);
+         parent = next;
+       }
+     // Add a lone left node if necessary.
+     if (i - overflow == 0)
+       {
+         Node left = new Node(null, null, RED);
+-        left.parent = parent;
+-        parent.left = left;
+-        parent = parent.right;
+-        left.parent.right = nil;
++        left.setParent(parent);
++        parent.setLeft(left);
++        parent = parent.getRight();
++        left.getParent().setRight(nil);
+       }
+     // Unlink the remaining nodes of the previous row.
+     while (parent != nil)
+       {
+-        Node next = parent.right;
+-        parent.right = nil;
++        Node next = parent.getRight();
++        parent.setRight(nil);
+         parent = next;
+       }
+   }
+@@ -935,8 +967,8 @@
+   {
+     // Exploit fact that nil.left == nil.
+     Node node = root;
+-    while (node.left != nil)
+-      node = node.left;
++    while (node.getLeft() != nil)
++      node = node.getLeft();
+     return node;
+   }
+ 
+@@ -952,11 +984,11 @@
+     Node current = root;
+     while (current != nil)
+       {
+-        int comparison = compare(key, current.key);
++        int comparison = compare(key, current.getKeyField());
+         if (comparison > 0)
+-          current = current.right;
++          current = current.getRight();
+         else if (comparison < 0)
+-          current = current.left;
++          current = current.getLeft();
+         else
+           return current;
+       }
+@@ -982,11 +1014,11 @@
+     while (current != nil)
+       {
+         last = current;
+-        comparison = compare(key, current.key);
++        comparison = compare(key, current.getKeyField());
+         if (comparison > 0)
+-          current = current.right;
++          current = current.getRight();
+         else if (comparison < 0)
+-          current = current.left;
++          current = current.getLeft();
+         else // Exact match.
+           return predecessor(last);
+       }
+@@ -1003,69 +1035,69 @@
+     // Only need to rebalance when parent is a RED node, and while at least
+     // 2 levels deep into the tree (ie: node has a grandparent). Remember
+     // that nil.color == BLACK.
+-    while (n.parent.color == RED && n.parent.parent != nil)
++    while (n.getParent().getColor() == RED && n.getParent().getParent() != nil)
+       {
+-        if (n.parent == n.parent.parent.left)
++        if (n.getParent() == n.getParent().getParent().getLeft())
+           {
+-            Node uncle = n.parent.parent.right;
++            Node uncle = n.getParent().getParent().getRight();
+             // Uncle may be nil, in which case it is BLACK.
+-            if (uncle.color == RED)
++            if (uncle.getColor() == RED)
+               {
+                 // Case 1. Uncle is RED: Change colors of parent, uncle,
+                 // and grandparent, and move n to grandparent.
+-                n.parent.color = BLACK;
+-                uncle.color = BLACK;
+-                uncle.parent.color = RED;
+-                n = uncle.parent;
++                n.getParent().setColor(BLACK);
++                uncle.setColor(BLACK);
++                uncle.getParent().setColor(RED);
++                n = uncle.getParent();
+               }
+             else
+               {
+-                if (n == n.parent.right)
++                if (n == n.getParent().getRight())
+                   {
+                     // Case 2. Uncle is BLACK and x is right child.
+                     // Move n to parent, and rotate n left.
+-                    n = n.parent;
++                    n = n.getParent();
+                     rotateLeft(n);
+                   }
+                 // Case 3. Uncle is BLACK and x is left child.
+                 // Recolor parent, grandparent, and rotate grandparent right.
+-                n.parent.color = BLACK;
+-                n.parent.parent.color = RED;
+-                rotateRight(n.parent.parent);
++                n.getParent().setColor(BLACK);
++                n.getParent().getParent().setColor(RED);
++                rotateRight(n.getParent().getParent());
+               }
+           }
+         else
+           {
+             // Mirror image of above code.
+-            Node uncle = n.parent.parent.left;
++            Node uncle = n.getParent().getParent().getLeft();
+             // Uncle may be nil, in which case it is BLACK.
+-            if (uncle.color == RED)
++            if (uncle.getColor() == RED)
+               {
+                 // Case 1. Uncle is RED: Change colors of parent, uncle,
+                 // and grandparent, and move n to grandparent.
+-                n.parent.color = BLACK;
+-                uncle.color = BLACK;
+-                uncle.parent.color = RED;
+-                n = uncle.parent;
++                n.getParent().setColor(BLACK);
++                uncle.setColor(BLACK);
++                uncle.getParent().setColor(RED);
++                n = uncle.getParent();
+               }
+             else
+               {
+-                if (n == n.parent.left)
++                if (n == n.getParent().getLeft())
+                 {
+                     // Case 2. Uncle is BLACK and x is left child.
+                     // Move n to parent, and rotate n right.
+-                    n = n.parent;
++                    n = n.getParent();
+                     rotateRight(n);
+                   }
+                 // Case 3. Uncle is BLACK and x is right child.
+                 // Recolor parent, grandparent, and rotate grandparent left.
+-                n.parent.color = BLACK;
+-                n.parent.parent.color = RED;
+-                rotateLeft(n.parent.parent);
++                n.getParent().setColor(BLACK);
++                n.getParent().getParent().setColor(RED);
++                rotateLeft(n.getParent().getParent());
+               }
+           }
+       }
+-    root.color = BLACK;
++    root.setColor(BLACK);
+   }
+ 
+   /**
+@@ -1077,8 +1109,8 @@
+   {
+     // Exploit fact that nil.right == nil.
+     Node node = root;
+-    while (node.right != nil)
+-      node = node.right;
++    while (node.getRight() != nil)
++      node = node.getRight();
+     return node;
+   }
+ 
+@@ -1103,11 +1135,11 @@
+     while (current != nil)
+       {
+         last = current;
+-        comparison = compare(key, current.key);
++        comparison = compare(key, current.getKeyField());
+         if (comparison > 0)
+-          current = current.right;
++          current = current.getRight();
+         else if (comparison < 0)
+-          current = current.left;
++          current = current.getLeft();
+         else
+           return current;
+       }
+@@ -1122,20 +1154,20 @@
+    */
+   private Node predecessor(Node node)
+   {
+-    if (node.left != nil)
++    if (node.getLeft() != nil)
+       {
+-        node = node.left;
+-        while (node.right != nil)
+-          node = node.right;
++        node = node.getLeft();
++        while (node.getRight() != nil)
++          node = node.getRight();
+         return node;
+       }
+ 
+-    Node parent = node.parent;
++    Node parent = node.getParent();
+     // Exploit fact that nil.left == nil and node is non-nil.
+-    while (node == parent.left)
++    while (node == parent.getLeft())
+       {
+         node = parent;
+-        parent = node.parent;
++        parent = node.getParent();
+       }
+     return parent;
+   }
+@@ -1161,8 +1193,8 @@
+ 
+     while (--count >= 0)
+       {
+-        node.key = s.readObject();
+-        node.value = readValues ? s.readObject() : "";
++        node.setKeyField(s.readObject());
++        node.setValueField(readValues ? s.readObject() : "");
+         node = successor(node);
+       }
+   }
+@@ -1182,8 +1214,8 @@
+ 
+     while (--count >= 0)
+       {
+-        node.key = keys.next();
+-        node.value = "";
++        node.setKeyField(keys.next());
++        node.setValueField("");
+         node = successor(node);
+       }
+   }
+@@ -1216,50 +1248,50 @@
+     Node splice;
+     Node child;
+ 
+-    modCount++;
+-    size--;
++    setModCount(getModCount() + 1);
++    setSize(getSize() - 1);
+ 
+     // Find splice, the node at the position to actually remove from the tree.
+-    if (node.left == nil)
++    if (node.getLeft() == nil)
+       {
+         // Node to be deleted has 0 or 1 children.
+         splice = node;
+-        child = node.right;
++        child = node.getRight();
+       }
+-    else if (node.right == nil)
++    else if (node.getRight() == nil)
+       {
+         // Node to be deleted has 1 child.
+         splice = node;
+-        child = node.left;
++        child = node.getLeft();
+       }
+     else
+       {
+         // Node has 2 children. Splice is node's predecessor, and we swap
+         // its contents into node.
+-        splice = node.left;
+-        while (splice.right != nil)
+-          splice = splice.right;
+-        child = splice.left;
+-        node.key = splice.key;
+-        node.value = splice.value;
++        splice = node.getLeft();
++        while (splice.getRight() != nil)
++          splice = splice.getRight();
++        child = splice.getLeft();
++        node.setKeyField(splice.getKeyField());
++        node.setValueField(splice.getValueField());
+       }
+ 
+     // Unlink splice from the tree.
+-    Node parent = splice.parent;
++    Node parent = splice.getParent();
+     if (child != nil)
+-      child.parent = parent;
++      child.setParent(parent);
+     if (parent == nil)
+       {
+         // Special case for 0 or 1 node remaining.
+         root = child;
+         return;
+       }
+-    if (splice == parent.left)
+-      parent.left = child;
++    if (splice == parent.getLeft())
++      parent.setLeft(child);
+     else
+-      parent.right = child;
++      parent.setRight(child);
+ 
+-    if (splice.color == BLACK)
++    if (splice.getColor() == BLACK)
+       deleteFixup(child, parent);
+   }
+ 
+@@ -1270,30 +1302,30 @@
+    */
+   private void rotateLeft(Node node)
+   {
+-    Node child = node.right;
++    Node child = node.getRight();
+     // if (node == nil || child == nil)
+     //   throw new InternalError();
+ 
+     // Establish node.right link.
+-    node.right = child.left;
+-    if (child.left != nil)
+-      child.left.parent = node;
++    node.setRight(child.getLeft());
++    if (child.getLeft() != nil)
++      child.getLeft().setParent(node);
+ 
+     // Establish child->parent link.
+-    child.parent = node.parent;
+-    if (node.parent != nil)
++    child.setParent(node.getParent());
++    if (node.getParent() != nil)
+       {
+-        if (node == node.parent.left)
+-          node.parent.left = child;
++        if (node == node.getParent().getLeft())
++          node.getParent().setLeft(child);
+         else
+-          node.parent.right = child;
++          node.getParent().setRight(child);
+       }
+     else
+       root = child;
+ 
+     // Link n and child.
+-    child.left = node;
+-    node.parent = child;
++    child.setLeft(node);
++    node.setParent(child);
+   }
+ 
+   /**
+@@ -1303,30 +1335,30 @@
+    */
+   private void rotateRight(Node node)
+   {
+-    Node child = node.left;
++    Node child = node.getLeft();
+     // if (node == nil || child == nil)
+     //   throw new InternalError();
+ 
+     // Establish node.left link.
+-    node.left = child.right;
+-    if (child.right != nil)
+-      child.right.parent = node;
++    node.setLeft(child.getRight());
++    if (child.getRight() != nil)
++      child.getRight().setParent(node);
+ 
+     // Establish child->parent link.
+-    child.parent = node.parent;
+-    if (node.parent != nil)
++    child.setParent(node.getParent());
++    if (node.getParent() != nil)
+       {
+-        if (node == node.parent.right)
+-          node.parent.right = child;
++        if (node == node.getParent().getRight())
++          node.getParent().setRight(child);
+         else
+-          node.parent.left = child;
++          node.getParent().setLeft(child);
+       }
+     else
+       root = child;
+ 
+     // Link n and child.
+-    child.right = node;
+-    node.parent = child;
++    child.setRight(node);
++    node.setParent(child);
+   }
+ 
+   /**
+@@ -1338,20 +1370,20 @@
+    */
+   final Node successor(Node node)
+   {
+-    if (node.right != nil)
++    if (node.getRight() != nil)
+       {
+-        node = node.right;
+-        while (node.left != nil)
+-          node = node.left;
++        node = node.getRight();
++        while (node.getLeft() != nil)
++          node = node.getLeft();
+         return node;
+       }
+ 
+-    Node parent = node.parent;
++    Node parent = node.getParent();
+     // Exploit fact that nil.right == nil and node is non-nil.
+-    while (node == parent.right)
++    while (node == parent.getRight())
+       {
+         node = parent;
+-        parent = parent.parent;
++        parent = parent.getParent();
+       }
+     return parent;
+   }
+@@ -1369,16 +1401,32 @@
+     s.defaultWriteObject();
+ 
+     Node node = firstNode();
+-    s.writeInt(size);
++    s.writeInt(getSize());
+     while (node != nil)
+       {
+-        s.writeObject(node.key);
+-        s.writeObject(node.value);
++        s.writeObject(node.getKeyField());
++        s.writeObject(node.getValueField());
+         node = successor(node);
+       }
+   }
+ 
+-  /**
++  void setModCount(int modCount) {
++    this.modCount = modCount;
++}
++
++int getModCount() {
++    return modCount;
++}
++
++void setSize(int size) {
++    this.size = size;
++}
++
++int getSize() {
++    return size;
++}
++
++/**
+    * Iterate over TreeMap's entries. This implementation is parameterized
+    * to give a sequential view of keys, values, or entries.
+    *
+@@ -1392,7 +1440,7 @@
+      */
+     private final int type;
+     /** The number of modifications to the backing Map that we know about. */
+-    private int knownMod = modCount;
++    private int knownMod = getModCount();
+     /** The last Entry returned by a next() call. */
+     private Node last;
+     /** The next entry that should be returned by next(). */
+@@ -1448,7 +1496,7 @@
+      */
+     public Object next()
+     {
+-      if (knownMod != modCount)
++      if (knownMod != getModCount())
+         throw new ConcurrentModificationException();
+       if (next == max)
+         throw new NoSuchElementException();
+@@ -1456,9 +1504,9 @@
+       next = successor(last);
+ 
+       if (type == VALUES)
+-        return last.value;
++        return last.getValueField();
+       else if (type == KEYS)
+-        return last.key;
++        return last.getKeyField();
+       return last;
+     }
+ 
+@@ -1472,7 +1520,7 @@
+     {
+       if (last == null)
+         throw new IllegalStateException();
+-      if (knownMod != modCount)
++      if (knownMod != getModCount())
+         throw new ConcurrentModificationException();
+ 
+       removeNode(last);
+@@ -1607,7 +1655,7 @@
+             if (! keyInRange(key))
+               return false;
+             Node n = getNode(key);
+-            return n != nil && AbstractSet.equals(me.getValue(), n.value);
++            return n != nil && AbstractSet.equals(me.getValue(), n.getValueField());
+           }
+ 
+           public boolean remove(Object o)
+@@ -1619,7 +1667,7 @@
+             if (! keyInRange(key))
+               return false;
+             Node n = getNode(key);
+-            if (n != nil && AbstractSet.equals(me.getValue(), n.value))
++            if (n != nil && AbstractSet.equals(me.getValue(), n.getValueField()))
+               {
+                 removeNode(n);
+                 return true;
+@@ -1633,9 +1681,9 @@
+     public Object firstKey()
+     {
+       Node node = lowestGreaterThan(minKey, true);
+-      if (node == nil || ! keyInRange(node.key))
++      if (node == nil || ! keyInRange(node.getKeyField()))
+         throw new NoSuchElementException();
+-      return node.key;
++      return node.getKeyField();
+     }
+ 
+     public Object get(Object key)
+@@ -1654,10 +1702,10 @@
+ 
+     public Set keySet()
+     {
+-      if (this.keys == null)
++      if (this.getKeys() == null)
+         // Create an AbstractSet with custom implementations of those methods
+         // that can be overriden easily and efficiently.
+-        this.keys = new AbstractSet()
++        this.setKeys(new AbstractSet()
+         {
+           public int size()
+           {
+@@ -1695,16 +1743,16 @@
+               }
+             return false;
+           }
+-        };
+-      return this.keys;
++        });
++      return this.getKeys();
+     }
+ 
+     public Object lastKey()
+     {
+       Node node = highestLessThan(maxKey);
+-      if (node == nil || ! keyInRange(node.key))
++      if (node == nil || ! keyInRange(node.getKeyField()))
+         throw new NoSuchElementException();
+-      return node.key;
++      return node.getKeyField();
+     }
+ 
+     public Object put(Object key, Object value)
+@@ -1750,10 +1798,10 @@
+ 
+     public Collection values()
+     {
+-      if (this.values == null)
++      if (this.getValues() == null)
+         // Create an AbstractCollection with custom implementations of those
+         // methods that can be overriden easily and efficiently.
+-        this.values = new AbstractCollection()
++        this.setValues(new AbstractCollection()
+         {
+           public int size()
+           {
+@@ -1771,8 +1819,8 @@
+           {
+             SubMap.this.clear();
+           }
+-        };
+-      return this.values;
++        });
++      return this.getValues();
+     }
+   } // class SubMap  
+ } // class TreeMap
+diff -ruN gcc/java/util/Vector.java gcc.new/java/util/Vector.java
+--- gcc/java/util/Vector.java	2005-09-23 14:31:04.000000000 -0700
++++ gcc.new/java/util/Vector.java	2008-02-13 12:13:23.992800000 -0800
+@@ -93,14 +93,14 @@
+    * in positions 0 through elementCount - 1, and all remaining slots are null.
+    * @serial the elements
+    */
+-  protected Object[] elementData;
++  private Object[] elementData;
+ 
+   /**
+    * The number of elements currently in the vector, also returned by
+    * {@link #size}.
+    * @serial the size
+    */
+-  protected int elementCount;
++  private int elementCount;
+ 
+   /**
+    * The amount the Vector's internal array should be increased in size when
+@@ -109,7 +109,7 @@
+    * doubles in size.
+    * @serial the amount to grow the vector by
+    */
+-  protected int capacityIncrement;
++  private int capacityIncrement;
+ 
+   /**
+    * Constructs an empty vector with an initial size of 10, and
+@@ -130,8 +130,8 @@
+    */
+   public Vector(Collection c)
+   {
+-    elementCount = c.size();
+-    elementData = c.toArray(new Object[elementCount]);
++    setElementCount(c.size());
++    setElementData(c.toArray(new Object[getElementCount()]));
+   }
+ 
+   /**
+@@ -147,8 +147,8 @@
+   {
+     if (initialCapacity < 0)
+       throw new IllegalArgumentException();
+-    elementData = new Object[initialCapacity];
+-    this.capacityIncrement = capacityIncrement;
++    setElementData(new Object[initialCapacity]);
++    this.setCapacityIncrement(capacityIncrement);
+   }
+ 
+   /**
+@@ -176,7 +176,7 @@
+    */
+   public synchronized void copyInto(Object[] a)
+   {
+-    System.arraycopy(elementData, 0, a, 0, elementCount);
++    System.arraycopy(getElementData(), 0, a, 0, getElementCount());
+   }
+ 
+   /**
+@@ -190,9 +190,9 @@
+     // vector since that is a much less likely case; it's more efficient to
+     // not do the check and lose a bit of performance in that infrequent case
+ 
+-    Object[] newArray = new Object[elementCount];
+-    System.arraycopy(elementData, 0, newArray, 0, elementCount);
+-    elementData = newArray;
++    Object[] newArray = new Object[getElementCount()];
++    System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
++    setElementData(newArray);
+   }
+ 
+   /**
+@@ -207,19 +207,19 @@
+    */
+   public synchronized void ensureCapacity(int minCapacity)
+   {
+-    if (elementData.length >= minCapacity)
++    if (getElementData().length >= minCapacity)
+       return;
+ 
+     int newCapacity;
+-    if (capacityIncrement <= 0)
+-      newCapacity = elementData.length * 2;
++    if (getCapacityIncrement() <= 0)
++      newCapacity = getElementData().length * 2;
+     else
+-      newCapacity = elementData.length + capacityIncrement;
++      newCapacity = getElementData().length + getCapacityIncrement();
+ 
+     Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
+ 
+-    System.arraycopy(elementData, 0, newArray, 0, elementCount);
+-    elementData = newArray;
++    System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
++    setElementData(newArray);
+   }
+ 
+   /**
+@@ -236,11 +236,11 @@
+     // Don't bother checking for the case where size() == the capacity of the
+     // vector since that is a much less likely case; it's more efficient to
+     // not do the check and lose a bit of performance in that infrequent case
+-    modCount++;
++    setModCount(getModCount() + 1);
+     ensureCapacity(newSize);
+-    if (newSize < elementCount)
+-      Arrays.fill(elementData, newSize, elementCount, null);
+-    elementCount = newSize;
++    if (newSize < getElementCount())
++      Arrays.fill(getElementData(), newSize, getElementCount(), null);
++    setElementCount(newSize);
+   }
+ 
+   /**
+@@ -251,7 +251,7 @@
+    */
+   public synchronized int capacity()
+   {
+-    return elementData.length;
++    return getElementData().length;
+   }
+ 
+   /**
+@@ -261,7 +261,7 @@
+    */
+   public synchronized int size()
+   {
+-    return elementCount;
++    return getElementCount();
+   }
+ 
+   /**
+@@ -271,7 +271,7 @@
+    */
+   public synchronized boolean isEmpty()
+   {
+-    return elementCount == 0;
++    return getElementCount() == 0;
+   }
+ 
+   /**
+@@ -290,14 +290,14 @@
+ 
+       public boolean hasMoreElements()
+       {
+-        return i < elementCount;
++        return i < getElementCount();
+       }
+ 
+       public Object nextElement()
+       {
+-        if (i >= elementCount)
++        if (i >= getElementCount())
+           throw new NoSuchElementException();
+-        return elementData[i++];
++        return getElementData()[i++];
+       }
+     };
+   }
+@@ -338,8 +338,8 @@
+    */
+   public synchronized int indexOf(Object e, int index)
+   {
+-    for (int i = index; i < elementCount; i++)
+-      if (equals(e, elementData[i]))
++    for (int i = index; i < getElementCount(); i++)
++      if (equals(e, getElementData()[i]))
+         return i;
+     return -1;
+   }
+@@ -353,7 +353,7 @@
+    */
+   public int lastIndexOf(Object elem)
+   {
+-    return lastIndexOf(elem, elementCount - 1);
++    return lastIndexOf(elem, getElementCount() - 1);
+   }
+ 
+   /**
+@@ -370,7 +370,7 @@
+   {
+     checkBoundExclusive(index);
+     for (int i = index; i >= 0; i--)
+-      if (equals(e, elementData[i]))
++      if (equals(e, getElementData()[i]))
+         return i;
+     return -1;
+   }
+@@ -386,7 +386,7 @@
+   public synchronized Object elementAt(int index)
+   {
+     checkBoundExclusive(index);
+-    return elementData[index];
++    return getElementData()[index];
+   }
+ 
+   /**
+@@ -397,10 +397,10 @@
+    */
+   public synchronized Object firstElement()
+   {
+-    if (elementCount == 0)
++    if (getElementCount() == 0)
+       throw new NoSuchElementException();
+ 
+-    return elementData[0];
++    return getElementData()[0];
+   }
+ 
+   /**
+@@ -411,10 +411,10 @@
+    */
+   public synchronized Object lastElement()
+   {
+-    if (elementCount == 0)
++    if (getElementCount() == 0)
+       throw new NoSuchElementException();
+ 
+-    return elementData[elementCount - 1];
++    return getElementData()[getElementCount() - 1];
+   }
+ 
+   /**
+@@ -455,13 +455,13 @@
+   public synchronized void insertElementAt(Object obj, int index)
+   {
+     checkBoundInclusive(index);
+-    if (elementCount == elementData.length)
+-      ensureCapacity(elementCount + 1);
+-    modCount++;
+-    System.arraycopy(elementData, index, elementData, index + 1,
+-                     elementCount - index);
+-    elementCount++;
+-    elementData[index] = obj;
++    if (getElementCount() == getElementData().length)
++      ensureCapacity(getElementCount() + 1);
++    setModCount(getModCount() + 1);
++    System.arraycopy(getElementData(), index, getElementData(), index + 1,
++                     getElementCount() - index);
++    setElementCount(getElementCount() + 1);
++    getElementData()[index] = obj;
+   }
+ 
+   /**
+@@ -472,10 +472,10 @@
+    */
+   public synchronized void addElement(Object obj)
+   {
+-    if (elementCount == elementData.length)
+-      ensureCapacity(elementCount + 1);
+-    modCount++;
+-    elementData[elementCount++] = obj;
++    if (getElementCount() == getElementData().length)
++      ensureCapacity(getElementCount() + 1);
++    setModCount(getModCount() + 1);
++    getElementData()[elementCount++] = obj;
+   }
+ 
+   /**
+@@ -506,12 +506,12 @@
+    */
+   public synchronized void removeAllElements()
+   {
+-    if (elementCount == 0)
++    if (getElementCount() == 0)
+       return;
+ 
+-    modCount++;
+-    Arrays.fill(elementData, 0, elementCount, null);
+-    elementCount = 0;
++    setModCount(getModCount() + 1);
++    Arrays.fill(getElementData(), 0, getElementCount(), null);
++    setElementCount(0);
+   }
+ 
+   /**
+@@ -525,7 +525,7 @@
+     try
+       {
+         Vector clone = (Vector) super.clone();
+-        clone.elementData = (Object[]) elementData.clone();
++        clone.setElementData((Object[]) getElementData().clone());
+         return clone;
+       }
+     catch (CloneNotSupportedException ex)
+@@ -547,7 +547,7 @@
+    */
+   public synchronized Object[] toArray()
+   {
+-    Object[] newArray = new Object[elementCount];
++    Object[] newArray = new Object[getElementCount()];
+     copyInto(newArray);
+     return newArray;
+   }
+@@ -570,12 +570,12 @@
+    */
+   public synchronized Object[] toArray(Object[] a)
+   {
+-    if (a.length < elementCount)
++    if (a.length < getElementCount())
+       a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+-                                       elementCount);
+-    else if (a.length > elementCount)
+-      a[elementCount] = null;
+-    System.arraycopy(elementData, 0, a, 0, elementCount);
++                                       getElementCount());
++    else if (a.length > getElementCount())
++      a[getElementCount()] = null;
++    System.arraycopy(getElementData(), 0, a, 0, getElementCount());
+     return a;
+   }
+ 
+@@ -605,8 +605,8 @@
+   public synchronized Object set(int index, Object element)
+   {
+     checkBoundExclusive(index);
+-    Object temp = elementData[index];
+-    elementData[index] = element;
++    Object temp = getElementData()[index];
++    getElementData()[index] = element;
+     return temp;
+   }
+ 
+@@ -661,13 +661,13 @@
+   public synchronized Object remove(int index)
+   {
+     checkBoundExclusive(index);
+-    Object temp = elementData[index];
+-    modCount++;
+-    elementCount--;
+-    if (index < elementCount)
+-      System.arraycopy(elementData, index + 1, elementData, index,
+-                       elementCount - index);
+-    elementData[elementCount] = null;
++    Object temp = getElementData()[index];
++    setModCount(getModCount() + 1);
++    setElementCount(getElementCount() - 1);
++    if (index < getElementCount())
++      System.arraycopy(getElementData(), index + 1, getElementData(), index,
++                       getElementCount() - index);
++    getElementData()[getElementCount()] = null;
+     return temp;
+   }
+ 
+@@ -705,7 +705,7 @@
+    */
+   public synchronized boolean addAll(Collection c)
+   {
+-    return addAll(elementCount, c);
++    return addAll(getElementCount(), c);
+   }
+ 
+   /**
+@@ -723,17 +723,17 @@
+ 
+     int i;
+     int j;
+-    for (i = 0; i < elementCount; i++)
+-      if (c.contains(elementData[i]))
++    for (i = 0; i < getElementCount(); i++)
++      if (c.contains(getElementData()[i]))
+         break;
+-    if (i == elementCount)
++    if (i == getElementCount())
+       return false;
+ 
+-    modCount++;
+-    for (j = i++; i < elementCount; i++)
+-      if (! c.contains(elementData[i]))
+-        elementData[j++] = elementData[i];
+-    elementCount -= i - j;
++    setModCount(getModCount() + 1);
++    for (j = i++; i < getElementCount(); i++)
++      if (! c.contains(getElementData()[i]))
++        getElementData()[j++] = getElementData()[i];
++    setElementCount(getElementCount() - (i - j));
+     return true;
+   }
+ 
+@@ -752,17 +752,17 @@
+ 
+     int i;
+     int j;
+-    for (i = 0; i < elementCount; i++)
+-      if (! c.contains(elementData[i]))
++    for (i = 0; i < getElementCount(); i++)
++      if (! c.contains(getElementData()[i]))
+         break;
+-    if (i == elementCount)
++    if (i == getElementCount())
+       return false;
+ 
+-    modCount++;
+-    for (j = i++; i < elementCount; i++)
+-      if (c.contains(elementData[i]))
+-        elementData[j++] = elementData[i];
+-    elementCount -= i - j;
++    setModCount(getModCount() + 1);
++    for (j = i++; i < getElementCount(); i++)
++      if (c.contains(getElementData()[i]))
++        getElementData()[j++] = getElementData()[i];
++    setElementCount(getElementCount() - (i - j));
+     return true;
+   }
+ 
+@@ -783,15 +783,15 @@
+     Iterator itr = c.iterator();
+     int csize = c.size();
+ 
+-    modCount++;
+-    ensureCapacity(elementCount + csize);
++    setModCount(getModCount() + 1);
++    ensureCapacity(getElementCount() + csize);
+     int end = index + csize;
+-    if (elementCount > 0 && index != elementCount)
+-      System.arraycopy(elementData, index,
+-		       elementData, end, elementCount - index);
+-    elementCount += csize;
++    if (getElementCount() > 0 && index != getElementCount())
++        System.arraycopy(getElementData(), index,
++                getElementData(), end, getElementCount() - index);
++    setElementCount(getElementCount() + csize);
+     for ( ; index < end; index++)
+-      elementData[index] = itr.next();
++      getElementData()[index] = itr.next();
+     return (csize > 0);
+   }
+ 
+@@ -874,12 +874,12 @@
+     int change = toIndex - fromIndex;
+     if (change > 0)
+       {
+-        modCount++;
+-        System.arraycopy(elementData, toIndex, elementData, fromIndex,
+-                         elementCount - toIndex);
+-        int save = elementCount;
+-        elementCount -= change;
+-        Arrays.fill(elementData, elementCount, save, null);
++        setModCount(getModCount() + 1);
++        System.arraycopy(getElementData(), toIndex, getElementData(), fromIndex,
++                         getElementCount() - toIndex);
++        int save = getElementCount();
++        setElementCount(getElementCount() - change);
++        Arrays.fill(getElementData(), getElementCount(), save, null);
+       }
+     else if (change < 0)
+       throw new IndexOutOfBoundsException();
+@@ -896,8 +896,8 @@
+     // Implementation note: we do not check for negative ranges here, since
+     // use of a negative index will cause an ArrayIndexOutOfBoundsException
+     // with no effort on our part.
+-    if (index > elementCount)
+-      throw new ArrayIndexOutOfBoundsException(index + " > " + elementCount);
++    if (index > getElementCount())
++      throw new ArrayIndexOutOfBoundsException(index + " > " + getElementCount());
+   }
+ 
+   /**
+@@ -911,8 +911,8 @@
+     // Implementation note: we do not check for negative ranges here, since
+     // use of a negative index will cause an ArrayIndexOutOfBoundsException
+     // with no effort on our part.
+-    if (index >= elementCount)
+-      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
++    if (index >= getElementCount())
++      throw new ArrayIndexOutOfBoundsException(index + " >= " + getElementCount());
+   }
+ 
+   /**
+@@ -928,4 +928,28 @@
+     s.defaultWriteObject();
+   }
+ 
++protected void setCapacityIncrement(int capacityIncrement) {
++    this.capacityIncrement = capacityIncrement;
++}
++
++protected int getCapacityIncrement() {
++    return capacityIncrement;
++}
++
++protected int setElementCount(int elementCount) {
++    return this.elementCount = elementCount;
++}
++
++protected int getElementCount() {
++    return elementCount;
++}
++
++protected void setElementData(Object[] elementData) {
++    this.elementData = elementData;
++}
++
++protected Object[] getElementData() {
++    return elementData;
++}
++
+ }
+diff -ruN gcc/java/util/WeakHashMap.java gcc.new/java/util/WeakHashMap.java
+--- gcc/java/util/WeakHashMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/WeakHashMap.java	2008-02-13 12:13:24.032800000 -0800
+@@ -138,7 +138,7 @@
+   /**
+    * The number of entries in this hash map.
+    */
+-  // Package visible for use by nested classes.
++  private // Package visible for use by nested classes.
+   int size;
+ 
+   /**
+@@ -162,7 +162,7 @@
+    * by the garbage collection.  Instead the iterators must make
+    * sure to have strong references to the entries they rely on.
+    */
+-  // Package visible for use by nested classes.
++  private // Package visible for use by nested classes.
+   int modCount;
+ 
+   /**
+@@ -186,7 +186,7 @@
+      */
+     public int size()
+     {
+-      return size;
++      return getSize();
+     }
+ 
+     /**
+@@ -210,7 +210,7 @@
+          * being removed under us, since the entry strongly refers
+          * to the key.
+          */
+-        WeakBucket.WeakEntry lastEntry;
++        private WeakBucket.WeakEntry lastEntry;
+ 
+         /**
+          * The entry that will be returned by the next
+@@ -221,13 +221,13 @@
+          * being removed under us, since the entry strongly refers
+          * to the key.
+          */
+-        WeakBucket.WeakEntry nextEntry = findNext(null);
++        private WeakBucket.WeakEntry nextEntry = findNext(null);
+ 
+         /**
+          * The known number of modification to the list, if it differs
+          * from the real number, we throw an exception.
+          */
+-        int knownMod = modCount;
++        private int knownMod = getModCount();
+ 
+         /**
+          * Check the known number of modification to the number of
+@@ -240,9 +240,9 @@
+         {
+           // This method will get inlined.
+           cleanQueue();
+-          if (knownMod != modCount)
+-            throw new ConcurrentModificationException(knownMod + " != "
+-                                                      + modCount);
++          if (getKnownMod() != getModCount())
++            throw new ConcurrentModificationException(getKnownMod() + " != "
++                                                      + getModCount());
+         }
+ 
+         /**
+@@ -258,12 +258,12 @@
+           WeakBucket nextBucket;
+           if (lastEntry != null)
+             {
+-              nextBucket = lastEntry.getBucket().next;
+-              slot = lastEntry.getBucket().slot;
++              nextBucket = lastEntry.getBucket().getNext();
++              slot = lastEntry.getBucket().getSlot();
+             }
+           else
+             {
+-              nextBucket = buckets[0];
++              nextBucket = getBuckets()[0];
+               slot = 0;
+             }
+ 
+@@ -277,15 +277,15 @@
+                     return entry;
+ 
+                   // Entry was cleared, try next.
+-                  nextBucket = nextBucket.next;
++                  nextBucket = nextBucket.getNext();
+                 }
+ 
+               slot++;
+-              if (slot == buckets.length)
++              if (slot == getBuckets().length)
+                 // No more buckets, we are through.
+                 return null;
+ 
+-              nextBucket = buckets[slot];
++              nextBucket = getBuckets()[slot];
+             }
+         }
+ 
+@@ -295,7 +295,7 @@
+          */
+         public boolean hasNext()
+         {
+-          return nextEntry != null;
++          return getNextEntry() != null;
+         }
+ 
+         /**
+@@ -308,11 +308,11 @@
+         public Object next()
+         {
+           checkMod();
+-          if (nextEntry == null)
++          if (getNextEntry() == null)
+             throw new NoSuchElementException();
+-          lastEntry = nextEntry;
+-          nextEntry = findNext(lastEntry);
+-          return lastEntry;
++          setLastEntry(getNextEntry());
++          setNextEntry(findNext(getLastEntry()));
++          return getLastEntry();
+         }
+ 
+         /**
+@@ -326,12 +326,36 @@
+         public void remove()
+         {
+           checkMod();
+-          if (lastEntry == null)
++          if (getLastEntry() == null)
+             throw new IllegalStateException();
+-          modCount++;
+-          internalRemove(lastEntry.getBucket());
+-          lastEntry = null;
+-          knownMod++;
++          setModCount(getModCount() + 1);
++          internalRemove(getLastEntry().getBucket());
++          setLastEntry(null);
++          setKnownMod(getKnownMod() + 1);
++        }
++
++        void setKnownMod(int knownMod) {
++            this.knownMod = knownMod;
++        }
++
++        int getKnownMod() {
++            return knownMod;
++        }
++
++        void setLastEntry(WeakBucket.WeakEntry lastEntry) {
++            this.lastEntry = lastEntry;
++        }
++
++        WeakBucket.WeakEntry getLastEntry() {
++            return lastEntry;
++        }
++
++        void setNextEntry(WeakBucket.WeakEntry nextEntry) {
++            this.nextEntry = nextEntry;
++        }
++
++        WeakBucket.WeakEntry getNextEntry() {
++            return nextEntry;
+         }
+       };
+     }
+@@ -355,13 +379,13 @@
+      * The value of this entry.  The key is stored in the weak
+      * reference that we extend.
+      */
+-    Object value;
++    private Object value;
+ 
+     /**
+      * The next bucket describing another entry that uses the same
+      * slot.
+      */
+-    WeakBucket next;
++    private WeakBucket next;
+ 
+     /**
+      * The slot of this entry. This should be
+@@ -373,7 +397,7 @@
+      * If this bucket was removed the slot is -1.  This marker will
+      * prevent the bucket from being removed twice.
+      */
+-    int slot;
++    private int slot;
+ 
+     /**
+      * Creates a new bucket for the given key/value pair and the specified
+@@ -388,8 +412,8 @@
+                       int slot)
+     {
+       super(key, queue);
+-      this.value = value;
+-      this.slot = slot;
++      this.setValue(value);
++      this.setSlot(slot);
+     }
+ 
+     /**
+@@ -402,7 +426,7 @@
+       /**
+        * The strong ref to the key.
+        */
+-      Object key;
++      private Object key;
+ 
+       /**
+        * Creates a new entry for the key.
+@@ -410,7 +434,7 @@
+        */
+       public WeakEntry(Object key)
+       {
+-        this.key = key;
++        this.setKeyField(key);
+       }
+ 
+       /**
+@@ -428,7 +452,7 @@
+        */
+       public Object getKey()
+       {
+-        return key == NULL_KEY ? null : key;
++        return getKeyField() == NULL_KEY ? null : getKeyField();
+       }
+ 
+       /**
+@@ -437,7 +461,7 @@
+        */
+       public Object getValue()
+       {
+-        return value;
++        return getValue();
+       }
+ 
+       /**
+@@ -448,8 +472,8 @@
+        */
+       public Object setValue(Object newVal)
+       {
+-        Object oldVal = value;
+-        value = newVal;
++        Object oldVal = getValue();
++        setValue(newVal);
+         return oldVal;
+       }
+ 
+@@ -459,7 +483,7 @@
+        */
+       public int hashCode()
+       {
+-        return key.hashCode() ^ WeakHashMap.hashCode(value);
++        return getKeyField().hashCode() ^ WeakHashMap.hashCode(getValue());
+       }
+ 
+       /**
+@@ -473,15 +497,23 @@
+           {
+             Map.Entry e = (Map.Entry) o;
+             return WeakHashMap.equals(getKey(), e.getKey())
+-              && WeakHashMap.equals(value, e.getValue());
++              && WeakHashMap.equals(getValue(), e.getValue());
+           }
+         return false;
+       }
+ 
+       public String toString()
+       {
+-        return getKey() + "=" + value;
++        return getKey() + "=" + getValue();
+       }
++
++    void setKeyField(Object key) {
++        this.key = key;
++    }
++
++    Object getKeyField() {
++        return key;
++    }
+     }
+ 
+     /**
+@@ -496,6 +528,30 @@
+         return null;
+       return new WeakEntry(key);
+     }
++
++    void setNext(WeakBucket next) {
++        this.next = next;
++    }
++
++    WeakBucket getNext() {
++        return next;
++    }
++
++    void setSlot(int slot) {
++        this.slot = slot;
++    }
++
++    int getSlot() {
++        return slot;
++    }
++
++    void setValue(Object value) {
++        this.value = value;
++    }
++
++    Object getValue() {
++        return value;
++    }
+   }
+ 
+   /**
+@@ -507,7 +563,7 @@
+    * The hash buckets.  These are linked lists. Package visible for use in
+    * nested classes.
+    */
+-  WeakBucket[] buckets;
++  private WeakBucket[] buckets;
+ 
+   /**
+    * Creates a new weak hash map with default load factor and default
+@@ -548,7 +604,7 @@
+     threshold = (int) (initialCapacity * loadFactor);
+     theEntrySet = new WeakEntrySet();
+     queue = new ReferenceQueue();
+-    buckets = new WeakBucket[initialCapacity];
++    setBuckets(new WeakBucket[initialCapacity]);
+   }
+ 
+   /**
+@@ -572,7 +628,7 @@
+    */
+   private int hash(Object key)
+   {
+-    return Math.abs(key.hashCode() % buckets.length);
++    return Math.abs(key.hashCode() % getBuckets().length);
+   }
+ 
+   /**
+@@ -603,10 +659,10 @@
+    */
+   private void rehash()
+   {
+-    WeakBucket[] oldBuckets = buckets;
+-    int newsize = buckets.length * 2 + 1; // XXX should be prime.
++    WeakBucket[] oldBuckets = getBuckets();
++    int newsize = getBuckets().length * 2 + 1; // XXX should be prime.
+     threshold = (int) (newsize * loadFactor);
+-    buckets = new WeakBucket[newsize];
++    setBuckets(new WeakBucket[newsize]);
+ 
+     // Now we have to insert the buckets again.
+     for (int i = 0; i < oldBuckets.length; i++)
+@@ -615,7 +671,7 @@
+         WeakBucket nextBucket;
+         while (bucket != null)
+           {
+-            nextBucket = bucket.next;
++            nextBucket = bucket.getNext();
+ 
+             Object key = bucket.get();
+             if (key == null)
+@@ -623,16 +679,16 @@
+                 // This bucket should be removed; it is probably
+                 // already on the reference queue.  We don't insert it
+                 // at all, and mark it as cleared.
+-                bucket.slot = -1;
+-                size--;
++                bucket.setSlot(-1);
++                setSize(getSize() - 1);
+               }
+             else
+               {
+                 // Add this bucket to its new slot.
+                 int slot = hash(key);
+-                bucket.slot = slot;
+-                bucket.next = buckets[slot];
+-                buckets[slot] = bucket;
++                bucket.setSlot(slot);
++                bucket.setNext(getBuckets()[slot]);
++                getBuckets()[slot] = bucket;
+               }
+             bucket = nextBucket;
+           }
+@@ -650,14 +706,14 @@
+     if (key == null)
+       key = NULL_KEY;
+     int slot = hash(key);
+-    WeakBucket bucket = buckets[slot];
++    WeakBucket bucket = getBuckets()[slot];
+     while (bucket != null)
+       {
+         WeakBucket.WeakEntry entry = bucket.getEntry();
+-        if (entry != null && equals(key, entry.key))
++        if (entry != null && equals(key, entry.getKeyField()))
+           return entry;
+ 
+-        bucket = bucket.next;
++        bucket = bucket.getNext();
+       }
+     return null;
+   }
+@@ -673,9 +729,9 @@
+       key = NULL_KEY;
+     int slot = hash(key);
+     WeakBucket bucket = new WeakBucket(key, queue, value, slot);
+-    bucket.next = buckets[slot];
+-    buckets[slot] = bucket;
+-    size++;
++    bucket.setNext(getBuckets()[slot]);
++    getBuckets()[slot] = bucket;
++    setSize(getSize() + 1);
+   }
+ 
+   /**
+@@ -687,7 +743,7 @@
+    */
+   void internalRemove(WeakBucket bucket)
+   {
+-    int slot = bucket.slot;
++    int slot = bucket.getSlot();
+     if (slot == -1)
+       // This bucket was already removed.
+       return;
+@@ -695,22 +751,22 @@
+     // Mark the bucket as removed.  This is necessary, since the
+     // bucket may be enqueued later by the garbage collection, and
+     // internalRemove will be called a second time.
+-    bucket.slot = -1;
++    bucket.setSlot(-1);
+ 
+     WeakBucket prev = null;
+-    WeakBucket next = buckets[slot];
++    WeakBucket next = getBuckets()[slot];
+     while (next != bucket)
+       {
+          if (next == null) throw new InternalError("WeakHashMap in incosistent state");
+          prev = next; 
+-         next = prev.next;
++         next = prev.getNext();
+       }
+     if (prev == null)
+-      buckets[slot] = bucket.next;
++      getBuckets()[slot] = bucket.getNext();
+     else 
+-      prev.next = bucket.next;
++      prev.setNext(bucket.getNext());
+ 
+-    size--;
++    setSize(getSize() - 1);
+   }
+ 
+   /**
+@@ -721,7 +777,7 @@
+   public int size()
+   {
+     cleanQueue();
+-    return size;
++    return getSize();
+   }
+ 
+   /**
+@@ -732,7 +788,7 @@
+   public boolean isEmpty()
+   {
+     cleanQueue();
+-    return size == 0;
++    return getSize() == 0;
+   }
+ 
+   /**
+@@ -776,8 +832,8 @@
+     if (entry != null)
+       return entry.setValue(value);
+ 
+-    modCount++;
+-    if (size >= threshold)
++    setModCount(getModCount() + 1);
++    if (getSize() >= threshold)
+       rehash();
+ 
+     internalAdd(key, value);
+@@ -798,7 +854,7 @@
+     if (entry == null)
+       return null;
+ 
+-    modCount++;
++    setModCount(getModCount() + 1);
+     internalRemove(entry.getBucket());
+     return entry.getValue();
+   }
+@@ -875,4 +931,32 @@
+     cleanQueue();
+     return super.values();
+   }
++
++void setBuckets(WeakBucket[] buckets) {
++    this.buckets = buckets;
++}
++
++WeakBucket[] getBuckets() {
++    return buckets;
++}
++
++void setModCount(// Package visible for use by nested classes.
++  int modCount) {
++    this.modCount = modCount;
++}
++
++// Package visible for use by nested classes.
++  int getModCount() {
++    return modCount;
++}
++
++void setSize(// Package visible for use by nested classes.
++  int size) {
++    this.size = size;
++}
++
++// Package visible for use by nested classes.
++  int getSize() {
++    return size;
++}
+ } // class WeakHashMap

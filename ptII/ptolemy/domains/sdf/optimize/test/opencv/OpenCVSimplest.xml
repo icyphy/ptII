@@ -1,0 +1,117 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="OpenCVsimplest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 36, 1121, 620}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 503]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{493.8712121212121, 229.6478061868687}">
+    </property>
+    <property name="OptimizingSDFDirector" class="ptolemy.domains.sdf.optimize.OptimizingSDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 40.0]">
+        </property>
+    </property>
+    <entity name="OpenCVReader" class="ptolemy.actor.lib.opencv.OpenCVReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 330, 648, 535}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="OpenCVToAWTImage" class="ptolemy.actor.lib.opencv.OpenCVToAWTImage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="ImageDisplay2" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 305, 648, 535}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="OpenCVToAWTImage2" class="ptolemy.actor.lib.opencv.OpenCVToAWTImage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="OpenCVToAWTImage3" class="ptolemy.actor.lib.opencv.OpenCVToAWTImage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="ImageDisplay3" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 305, 648, 535}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="GrayScale" class="ptolemy.actor.lib.opencv.optimize.GrayScale">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="Invert" class="ptolemy.actor.lib.opencv.optimize.Invert">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="GrayScale2" class="ptolemy.actor.lib.opencv.optimize.GrayScale">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 260.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[205.0, 185.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[505.0, 350.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="OpenCVReader.output" relation="relation7"/>
+    <link port="ImageDisplay.input" relation="relation3"/>
+    <link port="OpenCVToAWTImage.input" relation="relation8"/>
+    <link port="OpenCVToAWTImage.output" relation="relation3"/>
+    <link port="ImageDisplay2.input" relation="relation5"/>
+    <link port="OpenCVToAWTImage2.input" relation="relation9"/>
+    <link port="OpenCVToAWTImage2.output" relation="relation5"/>
+    <link port="OpenCVToAWTImage3.input" relation="relation4"/>
+    <link port="OpenCVToAWTImage3.output" relation="relation"/>
+    <link port="ImageDisplay3.input" relation="relation"/>
+    <link port="GrayScale.input" relation="relation7"/>
+    <link port="GrayScale.output" relation="relation8"/>
+    <link port="Invert.input" relation="relation7"/>
+    <link port="Invert.output" relation="relation9"/>
+    <link port="GrayScale2.input" relation="relation9"/>
+    <link port="GrayScale2.output" relation="relation4"/>
+</entity>

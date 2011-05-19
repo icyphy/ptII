@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <doc>Configuration to run but not edit Ptolemy II models</doc>
+    <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
+    <entity name="effigyFactory"
+            class="ptolemy.actor.gui.PtolemyEffigy$Factory"/>
+</entity>

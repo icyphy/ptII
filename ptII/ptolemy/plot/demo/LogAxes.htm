@@ -1,0 +1,54 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Logarithmic Axes</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Plot using Logarithmic Axes</h1>
+The two plots below show the same
+<A HREF="logaxes.plt">data</A>, plotted with and without logarithmic
+axes.
+<p>
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" 
+ width = "380" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-t 'X and Y Logarithmic Axes' -lnx -lny logaxes.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+ <APPLET 
+ code = "ptolemy.plot.compat.PxgraphApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" 
+ width = "380" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "pxgraphargs" VALUE = "-t 'X and Y Linear Axes' logaxes.plt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<p>
+To see all the data in the <I>X and Y Linear Axes</I> plot,
+try zooming in on the points in the lower left corner.
+Both plots include three points that have error bars.
+<p>
+The code that calculates the grid and labels for logarithmic axes is
+based on David Harrison's C version in <code>xgraph</code>.
+<p>
+One limitation of the logarithmic axis feature is that sometimes not
+enough grid lines are displayed because the range of values is small.
+This bug is present in the original C version of xgraph.
+However, since logarithmic axes are usually used to show data with
+large ranges, this bug usually only shows up when zooming in by hand.
+
+<p>&nbsp;
+</body>
+</html>

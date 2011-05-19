@@ -1,0 +1,113 @@
+<!-- $Id$
+  @author: Bart Kienhuis
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Process Network QR Algorithm Demo</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Process Network QR Algorithm Demo</H1>
+<P>
+<CENTER>
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/pn/demo/QR/QR.jar,ptolemy/domains/pn/demo/demo.jar,ptolemy/data/data.jar,ptolemy/domains/pn/pn.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/pn/demo/QR/QR.jnlp">
+<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer QR.xml">
+  <PARAM NAME = "NAME" VALUE = "QR" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "QR.xml" > \
+  <a href="QR.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</CENTER>
+</p>
+<p>
+This model shows the result of a Process Network (PN) executing
+the QR-algorithm on a continuous stream of data that is coming from an
+array of antennas. Each execution of the algorithm on a new set of
+data from the antennas is called an update. The applet shows the
+matrix R in a <I>MatrixViewer</I>. This matrix is of size NxN, where N
+is the number of antenna's involved. The individual entries in the
+matrix are also shown in the <I>Plotter</I>. The matrix R is obtained
+after doing a certain number of QR-algorithm updates on a stream of
+data coming from the antenna array of a certain size.
+</p>
+
+<P>
+In the demo, if we select 10 QR-updates for an array of 6 antenna's,
+the following R matrix must be found: </P>
+
+<PRE>
+# name: Rout
+# type: matrix
+# rows: 6
+# columns: 6
+
+270.843 206.234  60.482 -39.318 -89.100 -38.568
+ 0.000 144.933 181.192 172.919 104.333  10.488
+ 0.000   0.000  32.964  18.280  10.909   9.170
+ 0.000   0.000   0.000  24.739   7.446   7.208
+ 0.000   0.000   0.000   0.000  20.30   11.206
+ 0.000   0.000   0.000   0.000   0.000   8.535
+</PRE>
+<P>
+
+The QR algorithm describes a linear algebra problem in which a matrix
+A can be written as a product of two matrices Q and R (A=QR). The
+matrix R is an upper triangular matrix and matrix Q is an orthogonal
+matrix. A program that does this QR transformation is given below in
+the Matlab programming language. The algorithm uses the Cordic
+functions <I>Vectorize </I>and <I>Rotate </I>to find the QR
+transform. If we execute this program in Matlab, we would find the
+same matrix R.</P>
+
+<PRE>
+%% Initialize Matrix r
+for j = 1:1:N,
+ for i = j:1:N,
+   [r(j,i)] = _ReadMatrix_Zeros_64x64();
+ end
+end
+
+%% Initialize Matrix x
+for k = 1:1:K,
+ for j = 1:1:N,
+   [x(k,j)] = _ReadMatrix_U_1000x16();
+ end
+end
+
+%% do the QR updates
+for k = 1:1:K,
+ for j = 1:1:N,
+   [r(j,j), x(k,j), t ] = Vectorize( r(j,j), x(k,j) );
+   for i = j+1:1:N,
+      [r(j,i), x(k,i), t] = Rotate( r(j,i), x(k,i), t );
+   end
+ end
+end
+
+%% After the K iterations, collect the values of the R Matrix
+for j = 1:1:N,
+ for i = j:1:N,
+   [ Sink(j,i) ] = Rout( r(j,i) );
+ end
+end
+</PRE>
+
+<P>However, we can also describe the same QR-algorithm as a <I>Process
+Network</I>, as shown in this model.</P>
+</BODY>
+</HTML>

@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MultipleNodesMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="MultipleNodesMoML" class="ptolemy.actor.ptalon.PtalonActor">
+        <configure>
+            <ptalon file="ptolemy.actor.ptalon.demo.MultipleNodes.MultipleNodesMoML">
+                <ptalonParameter name="node" value="ptolemy.domains.wireless.demo.SmallWorld.RelayNode"/>
+                <ptalonExpressionParameter name="n" value="3"/>
+            </ptalon>
+        </configure>
+    </entity>
+</entity>

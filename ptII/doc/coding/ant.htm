@@ -1,0 +1,91 @@
+<!-- $Id$ -->
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<head>
+<title>Ant</title>
+</head>
+<body>
+<h1>Ant</h1>
+Ant is a build tool implemented in Java.  It can be used to build
+Ptolemy II.
+
+<ol>
+<li> Download Ant from <a href="http://ant.apache.org/" target="_top"><CODE>http://ant.apache.org/</code></a>
+
+<li> Uncompress the file.  We usually put vendor supplied tools
+in <CODE>$PTII/vendors</CODE>, but Ant can be installed anywhere
+
+<li> Set the appropriate variables.
+ <p>Under bash:
+<pre>
+export ANT_HOME=$PTII/vendors/apache-ant-1.6.1
+export PATH=${PATH}:${ANT_HOME}/bin
+</pre>
+You may also need to set JAVA_HOME to the location of your 
+Java installation.  If <CODE>which java</CODE> returns
+<pre>
+/cygdrive/c/j2sdk1.4.2_04/bin/java
+</pre>
+<pre>
+export JAVA_HOME=c:/j2sdk1.4.2_04
+</pre>
+
+<h4>Permanently setting Windows Variables</h4>
+
+Under Windows, you can set these values permanently by doing
+Start -&gt; right click on My Computer, select properties
+-&gt; Advanced -&gt; Environment Variables
+and then add the ANT_HOME and JAVA_HOME variables
+and update your path.
+ <br>Note you would need to use Windows DOS syntax
+when adjusting the path, add
+<pre>
+%ANT_HOME%/bin;
+</pre>
+
+<dl>
+<dt> <CODE>ANT_HOME</CODE>
+<dd> New user variable <CODE>%PTII%/vendors/apache-ant-1.6.1</CODE>
+
+<dt> <CODE>JAVA_HOME</CODE>
+<dd> New user variable <CODE>c:/j2sdk1.4.2_04</CODE>
+
+<dt> <CODE>PATH</CODE>
+<dd> Edit the PATH in the user variables section 
+and insert <CODE>%ANT_HOME%/bin</CODE>
+
+</dl>
+After setting the Windows variables, you will need to exit and restart
+your Cygwin bash shell.
+
+<li> To test, type
+<pre>
+ant -h
+</pre>
+You should see a help message
+
+
+<li> To build Ptolemy:
+<pre>
+cd $PTII
+ant
+</pre>
+This command will read <CODE>$PTII/build.xml</CODE> and build Ptolemy II.
+
+
+<li> To see what other targets are available:
+<pre>
+ant -projecthelp 
+</pre>
+or
+<pre>
+ant -p
+</pre>
+
+
+</ol>
+
+Many thanks to Dan Higgins for creating an Ant build file for Ptolemy II
+</body>
+</html>

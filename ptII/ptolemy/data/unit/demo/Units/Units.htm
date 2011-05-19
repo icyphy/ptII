@@ -1,0 +1,59 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Units</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Units</H1>
+
+<!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Units is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Units.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="UnitsVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+The model above simulates the RC decay for 1000 ohms in contact 
+with 0.001 farad.
+ <br>The integrator has been set to an initial charge of 5.0 volts
+ <br>The voltage and current are sampled every 0.2 seconds.
+
+ <p>A major source of errors in embedded software is incorrect application
+of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
+Ptolemy II that is quite clever. A suite of constants are defined,
+with
+names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
+"days". In each unit category ("length" or "time" for example), there
+is a primary unit with respect to which all the others are specified.
+Thus, for example, if the primary unit of length is meters, then the
+expression "1.0 * cm" will have an internal value of 0.01 * meters.
+Compound units are specified by just multiplying and dividing, as in
+for example "1.0 * cm/second".
+</p>
+
+ <p>The way this is realized is that these unit constants are
+tokens just
+like other Ptolemy II data, and multiplication and division are
+overloaded in the base classes for numeric valued tokens.  We continue
+to work on this architecture to enable users to customize the unit
+system on a per-model basis.
+</p>
+<p></p>
+</BODY>
+</HTML>

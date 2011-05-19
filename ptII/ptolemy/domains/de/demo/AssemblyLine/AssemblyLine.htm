@@ -1,0 +1,50 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>AssemblyLine</TITLE>
+</HEAD>
+<BODY>
+<H1>AssemblyLine</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+AssemblyLine is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "AssemblyLine.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="AssemblyLineVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This demo shows how to use the NonInterruptibleTimer actor and Pulse actor to
+model an assembly line.
+
+<p>The Clock actor (Jobs) generates a set of jobs at different times, where no two
+jobs happen at the same time. The Pulse actor (ServiceTimes) takes a job 
+request and produces the service time of the job request. </p>
+
+<p>The NonInterruptibleTimer actor (Station) takes the service time and sets a
+timer. The timer goes off when the service time expires. The timer can not
+be interrupted to respond to another input when it is running. </p>
+
+<p>A job is passed along all three stations. The Plotter monitors the outputs
+from Stations plots the times when jobs leaves the station.</p>
+
+<p>This model is based on the assembly line example described in "Distributed 
+Discrete-Event Simulation" by Jayadev Misra, Computer Surveys, Vol. 18, 
+No. 1, March 1986.</p>
+</BODY>
+</HTML>

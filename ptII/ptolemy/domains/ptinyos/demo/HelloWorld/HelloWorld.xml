@@ -1,0 +1,163 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HelloWorld" class="ptolemy.actor.CompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
+        <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/HelloWorld/output">
+        </property>
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="target" class="ptolemy.data.expr.StringParameter" value="mica">
+        </property>
+        <property name="simulate" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 2, 815, 559}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 441]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 220.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this model (Ctrl-R) to generate code in the output directory&#10;where this model is located&#10;($PTII/ptolemy/domains/ptinyos/demo/HelloWorld).&#10;The generated code will not compile since the code for the included&#10;NCComponents does not exist, but this will give you an idea of the&#10;capabilities of the PtinyOS code generator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 290.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Elaine Cheong</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 410.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command, select&#10;Debug -&gt; Listen to Director">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 20.0]">
+        </property>
+    </property>
+    <port name="output" class="ptolemy.actor.IOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 250.0">
+        </property>
+        <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </port>
+    <entity name="NCComponent" class="ptolemy.domains.ptinyos.lib.NCComponent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 125.0">
+        </property>
+        <port name="output" class="ptolemy.actor.IOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="NCComponent2" class="ptolemy.domains.ptinyos.lib.NCComponent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 125.0">
+        </property>
+        <port name="input" class="ptolemy.actor.IOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="NCComponent3" class="ptolemy.domains.ptinyos.lib.NCComponent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 250.0">
+        </property>
+        <port name="init" class="ptolemy.actor.IOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="NCCompositeActor" class="ptolemy.actor.CompositeActor">
+        <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
+            <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/HelloWorld/output">
+            </property>
+            <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="target" class="ptolemy.data.expr.StringParameter" value="mica">
+            </property>
+            <property name="simulate" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="10584">
+            </property>
+            <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 250.0}">
+        </property>
+        <port name="init" class="ptolemy.actor.IOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 125.0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.IOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 125.0">
+            </property>
+        </port>
+        <entity name="NCComponent" class="ptolemy.domains.ptinyos.lib.NCComponent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 125.0">
+            </property>
+            <port name="input" class="ptolemy.actor.IOPort">
+                <property name="input"/>
+            </port>
+            <port name="out" class="ptolemy.actor.IOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="NCComponent2" class="ptolemy.domains.ptinyos.lib.NCComponent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 125.0">
+            </property>
+            <port name="output" class="ptolemy.actor.IOPort">
+                <property name="output"/>
+            </port>
+            <port name="init" class="ptolemy.actor.IOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.IORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.IORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.IORelation">
+        </relation>
+        <link port="init" relation="relation2"/>
+        <link port="output" relation="relation3"/>
+        <link port="NCComponent.input" relation="relation"/>
+        <link port="NCComponent.out" relation="relation3"/>
+        <link port="NCComponent2.output" relation="relation"/>
+        <link port="NCComponent2.init" relation="relation2"/>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.IORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.IORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.IORelation">
+    </relation>
+    <link port="output" relation="relation3"/>
+    <link port="NCComponent.output" relation="relation"/>
+    <link port="NCComponent2.input" relation="relation"/>
+    <link port="NCComponent3.init" relation="relation2"/>
+    <link port="NCCompositeActor.init" relation="relation2"/>
+    <link port="NCCompositeActor.output" relation="relation3"/>
+</entity>

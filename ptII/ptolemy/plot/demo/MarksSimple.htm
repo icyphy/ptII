@@ -1,0 +1,44 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Simpler version of Marks</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Simpler version of an applet that plots data read from a URL</h1>
+
+
+This applet is similar to <a href="Marks.htm"><code>Marks.htm</code></a>
+except that this applet uses the much simpler 
+<code>&lt;applet&gt; . . . &lt;/applet&gt;</code> style that will
+<b>not</b> work under Netscape Communicator 4.7x.
+<p>
+<APPLET
+ code = "ptolemy.plot.plotml.PlotMLApplet"
+ codebase = "../../.."
+ archive = "ptolemy/plot/plotmlapplet.jar"
+ width = "600"
+ height = "400"
+ >
+<PARAM NAME = "background" VALUE = "#ffffff" >
+<PARAM NAME = "dataurl" VALUE = "plotmlSample.txt" >
+  No Java Plug-in support for applet, see
+ <a href="http://www.java.com/"><code>http://www.java.com/</code></a>
+</APPLET>
+
+<p>Use the View -&gt; Source feature of your browser to view
+the source of this applet and compare and contrast it with
+the much more complex HTML in <a href="Marks.htm"><code>Marks.htm</code></a>
+
+<p> For more information about how to write applets that use
+the Java Plug-in, see
+<a href="http://www.java.com/versions.html" target="_top"><code>http://www.java.com/versions.html</code></a>
+
+<p>Note that because of a bug in Java 1.4.0_01, this applet may fail
+if it is being viewed on a local file system, see
+<a href="../doc/troubleshooting.htm#spaces">AccessControlException caused by spaces in path name</a></h2> for details.
+
+<p>&nbsp;
+</body>
+</html>

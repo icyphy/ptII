@@ -1,0 +1,168 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LMSAdaptive" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="stepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 790, 460}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.5, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates an LMS (least mean square) adaptive filter&#10;that learns the response of a fixed FIR (finite impulse response)&#10;filter by observing the input and noisy output of the filter.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 265.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 330.0]">
+        </property>
+    </property>
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 125.0">
+        </property>
+    </entity>
+    <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{-3.898043091E-17, -0.1286166, -0.2122066, -0.1800633, 3.898043091E-17, 0.3001054, 0.6366198, 0.9003163, 1.0, 0.9003163, 0.6366198, 0.3001054, 3.898043091E-17, -0.1800633, -0.2122066, -0.1286166}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <doc name="tooltip">FIR filter</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 125.0">
+        </property>
+    </entity>
+    <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="stepSize" class="ptolemy.data.expr.Parameter" value="stepSize">
+        </property>
+        <property name="initialTaps" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 210.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 135.0">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 135.0">
+        </property>
+    </entity>
+    <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 411, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 220.0">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Adaptive Filter Tap Values</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="15.0"/>
+<yRange min="-0.23566134663970909" max="0.992923501122308"/>
+<default connected="no"/>
+<barGraph width="0.5" offset="0.05"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 50.0">
+        </property>
+    </entity>
+    <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="297.0, 106.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="115.0, 125.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[130.0, 245.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Gaussian.output" relation="relation"/>
+    <link port="FIR.input" relation="relation"/>
+    <link port="FIR.output" relation="relation7"/>
+    <link port="LMSAdaptive.input" relation="relation"/>
+    <link port="LMSAdaptive.output" relation="relation3"/>
+    <link port="LMSAdaptive.error" relation="relation5"/>
+    <link port="LMSAdaptive.tapValues" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation9"/>
+    <link port="AddSubtract.minus" relation="relation3"/>
+    <link port="AddSubtract.output" relation="relation4"/>
+    <link port="SampleDelay.input" relation="relation4"/>
+    <link port="SampleDelay.output" relation="relation5"/>
+    <link port="BarGraph.input" relation="relation6"/>
+    <link port="Gaussian2.output" relation="relation8"/>
+    <link port="AddSubtract3.plus" relation="relation7"/>
+    <link port="AddSubtract3.plus" relation="relation8"/>
+    <link port="AddSubtract3.output" relation="relation9"/>
+</entity>

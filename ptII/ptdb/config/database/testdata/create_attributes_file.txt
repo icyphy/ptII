@@ -1,0 +1,11 @@
+putDocument Attributes.ptdbxml '<attributes>
+	<attribute id="Categories_1277687205671" name="Categories" type="List">
+		<item name="Under Development"/>
+		<item name="Testing"/>
+		<item name="Ready for Release"/>
+		<item name="In Production"/>
+	</attribute>
+	<attribute id="author_1277754213656" name="Author" type="String"/>
+	<attribute id="hasDefects_1277754213123" name="HasDefects" type="Boolean"/>
+
+</attributes>'

@@ -1,0 +1,38 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Record Types and Type Propagation</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Record Types and Type Propagation</H1>
+<!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Router is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Router.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="RouterVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model illustrates the very sophisticated type system
+in Ptolemy II, where type constraints propagate transparently.
+This example illustrates composite types, where records are
+constructed out of tokens with various types. Here, a record
+models a packet in a packet-switched network, where variable
+delays may result in out-of-order arrival of packets.</p>
+</BODY>
+</HTML>

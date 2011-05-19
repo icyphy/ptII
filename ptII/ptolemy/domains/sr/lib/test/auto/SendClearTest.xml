@@ -1,0 +1,329 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SendClearTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 75, 930, 623}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 505]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9076420823534">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{343.1021813118812, 245.4453125000002}">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 205.0]">
+        </property>
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=" The bug appears when a nonstrict actor depends on some value, but it&#10;is fired before the actor that produces this value. Here, the value is&#10;absent. Since that line was missing, the knownReceivers value isn't increased&#10;and may prompt the termination of the instant. So, that nonstrict actor is&#10;never fired. In short, depending on the order of firing, you may get&#10;different results.&#10;   In order to show this, the SRRandomizedScheduler must be used. If you look&#10;at the example, you will see several NonStrictLogicFunction actors. This is&#10;to increase the likelihood of the bug. With a correct SRReceiver, the&#10;output of the isPresent actor should always be &quot;false&quot;. With the buggy&#10;version, you might get unKnown, and the following exception:&#10;&#10;ptolemy.kernel.util.IllegalActionException: The fire() method of this&#10;actor was never called. Usually, this is an error indicating that&#10;starvation is occurring.  in .SendClearTest.NonStrictTest&#10;        at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:300)&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, -25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ivan Jeukens">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315, 490}">
+        </property>
+    </property>
+    <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+        <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="boolean">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
+                </property>
+                <property name="complex" class="ptolemy.kernel.util.StringAttribute" value="complex">
+                </property>
+                <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                </property>
+                <property name="fix" class="ptolemy.kernel.util.StringAttribute" value="fix">
+                </property>
+                <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                </property>
+                <property name="long" class="ptolemy.kernel.util.StringAttribute" value="long">
+                </property>
+                <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction3" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 490.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction4" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction5" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction6" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction7" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 425.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction8" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 425.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictLogicFunction9" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 425.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{ false, false, false, false, false, false, false, false, false, false }">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 495.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Absent.output" relation="relation"/>
+    <link port="NonStrictLogicFunction.input" relation="relation"/>
+    <link port="NonStrictLogicFunction.output" relation="relation2"/>
+    <link port="NonStrictLogicFunction2.input" relation="relation2"/>
+    <link port="NonStrictLogicFunction2.output" relation="relation3"/>
+    <link port="NonStrictLogicFunction3.input" relation="relation3"/>
+    <link port="NonStrictLogicFunction3.output" relation="relation7"/>
+    <link port="IsPresent.input" relation="relation11"/>
+    <link port="IsPresent.output" relation="relation5"/>
+    <link port="NonStrictLogicFunction4.input" relation="relation7"/>
+    <link port="NonStrictLogicFunction4.output" relation="relation4"/>
+    <link port="NonStrictLogicFunction5.input" relation="relation4"/>
+    <link port="NonStrictLogicFunction5.output" relation="relation6"/>
+    <link port="NonStrictLogicFunction6.input" relation="relation6"/>
+    <link port="NonStrictLogicFunction6.output" relation="relation10"/>
+    <link port="NonStrictLogicFunction7.input" relation="relation10"/>
+    <link port="NonStrictLogicFunction7.output" relation="relation8"/>
+    <link port="NonStrictLogicFunction8.input" relation="relation8"/>
+    <link port="NonStrictLogicFunction8.output" relation="relation9"/>
+    <link port="NonStrictLogicFunction9.input" relation="relation9"/>
+    <link port="NonStrictLogicFunction9.output" relation="relation11"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
+</entity>

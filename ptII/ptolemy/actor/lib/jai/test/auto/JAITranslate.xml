@@ -1,0 +1,294 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JAITranslate" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 50.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1164, 954}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[949, 845]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Translate the green band down 
+50 pixels and right 50 pixels.
+Translate the blue band down
+100 pixels and right 100 pixels.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 475.0">
+        </property>
+    </property>
+    <entity name="JAITranslate" class="ptolemy.actor.lib.jai.JAITranslate">
+        <property name="xShift" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+        <property name="yShift" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+        <property name="interpolationType" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="bicubic" class="ptolemy.kernel.util.StringAttribute" value="bicubic">
+                </property>
+                <property name="bicubic2" class="ptolemy.kernel.util.StringAttribute" value="bicubic2">
+                </property>
+                <property name="bilinear" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+                </property>
+                <property name="nearestNeighbor" class="ptolemy.kernel.util.StringAttribute" value="nearestNeighbor">
+                </property>
+            </property>
+        </property>
+        <property name="subSampleBits" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 380.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
+        <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 310.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIBandCombine" class="ptolemy.actor.lib.jai.JAIBandCombine">
+        <property name="matrix" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0; 0.0, 0.0; 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 310.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII.jpg">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 280.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="JAIBandSelect2" class="ptolemy.actor.lib.jai.JAIBandSelect">
+        <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 380.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIBandSelect3" class="ptolemy.actor.lib.jai.JAIBandSelect">
+        <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 460.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAITranslate2" class="ptolemy.actor.lib.jai.JAITranslate">
+        <property name="xShift" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="yShift" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="interpolationType" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="bicubic" class="ptolemy.kernel.util.StringAttribute" value="bicubic">
+                </property>
+                <property name="bicubic2" class="ptolemy.kernel.util.StringAttribute" value="bicubic2">
+                </property>
+                <property name="bilinear" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
+                </property>
+                <property name="nearestNeighbor" class="ptolemy.kernel.util.StringAttribute" value="nearestNeighbor">
+                </property>
+            </property>
+        </property>
+        <property name="subSampleBits" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 460.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIBandCombine2" class="ptolemy.actor.lib.jai.JAIBandCombine">
+        <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0; 1.0, 0.0; 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 385.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIBandCombine3" class="ptolemy.actor.lib.jai.JAIBandCombine">
+        <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0; 0.0, 0.0; 1.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 465.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="785.0, 375.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 182, 620, 660}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[612, 612]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="885.0, 410.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="JAIBorder" class="ptolemy.actor.lib.jai.JAIBorder">
+        <property name="leftPadding" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="rightPadding" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="topPadding" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="bottomPadding" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="borderType" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="Constant" class="ptolemy.kernel.util.StringAttribute" value="Constant">
+                </property>
+                <property name="Copy" class="ptolemy.kernel.util.StringAttribute" value="Copy">
+                </property>
+                <property name="Reflect" class="ptolemy.kernel.util.StringAttribute" value="Reflect">
+                </property>
+                <property name="Wrap" class="ptolemy.kernel.util.StringAttribute" value="Wrap">
+                </property>
+                <property name="Zero" class="ptolemy.kernel.util.StringAttribute" value="Zero">
+                </property>
+            </property>
+        </property>
+        <property name="constants" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 325.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="270.0, 360.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JAITranslate.input" relation="relation3"/>
+    <link port="JAITranslate.output" relation="relation5"/>
+    <link port="JAIBandSelect.input" relation="relation"/>
+    <link port="JAIBandSelect.output" relation="relation2"/>
+    <link port="JAIBandCombine.input" relation="relation2"/>
+    <link port="JAIBandCombine.output" relation="relation7"/>
+    <link port="JAIImageReader.output" relation="relation11"/>
+    <link port="JAIBandSelect2.input" relation="relation"/>
+    <link port="JAIBandSelect2.output" relation="relation3"/>
+    <link port="JAIBandSelect3.input" relation="relation"/>
+    <link port="JAIBandSelect3.output" relation="relation4"/>
+    <link port="JAITranslate2.input" relation="relation4"/>
+    <link port="JAITranslate2.output" relation="relation6"/>
+    <link port="JAIBandCombine2.input" relation="relation5"/>
+    <link port="JAIBandCombine2.output" relation="relation8"/>
+    <link port="JAIBandCombine3.input" relation="relation6"/>
+    <link port="JAIBandCombine3.output" relation="relation9"/>
+    <link port="AddSubtract.plus" relation="relation7"/>
+    <link port="AddSubtract.plus" relation="relation8"/>
+    <link port="AddSubtract.plus" relation="relation9"/>
+    <link port="AddSubtract.output" relation="relation10"/>
+    <link port="ImageDisplay.input" relation="relation10"/>
+    <link port="JAIBorder.input" relation="relation11"/>
+    <link port="JAIBorder.output" relation="relation"/>
+</entity>

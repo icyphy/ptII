@@ -1,0 +1,158 @@
+#!/bin/sh
+# $Id$
+# A script that reads in the output of MoMLSimpleStatistical
+# application and generates a PlotML suitable for use with
+# $PTII/bin/ptplot
+
+# Shell procedure that averages data and prints plot lines 
+# with error bars
+average() {
+   #sort -n plotPerformance.tmp | awk '{print "<p x=\"" $1 "\" y=\"" $2 "\"/>"}'
+
+   sort -n plotPerformance.tmp | 
+    awk '{ if (NR == 1 || lastx != $1) {
+              if (NR != 1) {
+                  print "<p x=\"" lastx "\" y=\"" ySum/count "\" lowErrorBar =\"" yLow "\" highErrorBar=\"" yHigh "\"/>"
+              }
+              lastx = $1 
+              ySum = 0; count = 0
+              yLow = 99999999; yHigh =-9999999
+          }
+          #print "<m x=\"" $1 "\" y=\"" $2 "\"/>"
+          ySum = ySum + $2
+          count++
+          if ($2 < yLow) {
+              yLow = $2
+          }
+          if ($2 > yHigh) {
+              yHigh = $2
+          }
+      }
+  END {print "<p x=\"" $1 "\" y=\"" ySum/count "\" lowErrorBar =\"" yLow "\" highErrorBar=\"" yHigh "\"/>"
+       }'
+  echo "</dataset>"
+  rm -f plotPerformance.tmp
+}
+
+
+cat << EoF
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<!-- Ptolemy plot, version 5.7.1.devel , PlotML format. -->
+<title>Number of actors vs time and memory</title>
+<xLabel>Number of actors</xLabel>
+<yLabel>Time in ms, Memory in K Bytes</yLabel>
+	<default marks="bigdots"/>}
+
+EoF
+
+rm -f plotPerformance.tmp
+echo '<dataset name="Open time (ms.)">'
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   egrep "^Opened" $file | awk -v size=$size ' {
+	print size, $3
+     }' >> plotPerformance.tmp
+done
+average
+
+
+echo '<dataset name="Preinitialize time (ms.)">'
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   egrep "^preinitialize" $file | awk -v size=$size ' {
+	print size, $3
+     }' >> plotPerformance.tmp
+done
+average
+
+
+echo '<dataset name="Preinit + Init time (ms.)">'
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   egrep "^Manager.initialize" $file | awk -v size=$size ' {
+	print size, $3
+     }' >> plotPerformance.tmp
+done
+average
+
+
+echo '<dataset name="Run time (ms.)">'
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   grep StatRT $file | awk -v size=$size ' {
+	print size, $1
+     }' >> plotPerformance.tmp
+done
+average
+
+
+echo "<dataset name=\"Open Memory\">"
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   grep "^Opened" $file | awk -v size=$size ' {
+   	mem = substr($6, 0, length($6)-1)
+        free= substr($8, 0, length($8)-1)
+	used = mem-free
+	print size, used
+     }' >> plotPerformance.tmp
+done
+average
+
+echo "<dataset name=\"Preinit Memory\">"
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   grep "^preinitialize() " $file | awk -v size=$size ' {
+   	mem = substr($6, 0, length($6)-1)
+        free= substr($8, 0, length($8)-1)
+	used = mem-free
+	print size, used
+     }' >> plotPerformance.tmp
+done
+average
+
+echo "<dataset name=\"Init Memory\">"
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   grep "^Manager.initialize()" $file | awk -v size=$size ' {
+   	mem = substr($6, 0, length($6)-1)
+        free= substr($8, 0, length($8)-1)
+	used = mem-free
+	print size, used
+     }' >> plotPerformance.tmp
+done
+average
+
+
+echo "<dataset name=\"Run Memory\">"
+for file in $@
+do 
+   basename=`basename $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | tail -1 | head -1`
+   grep StatRT $file | awk -v size=$size ' {
+   	mem = substr($4, 0, length($4)-1)
+        free= substr($6, 0, length($6)-1)
+	used = mem-free
+	print size, used
+     }' >> plotPerformance.tmp
+done
+average
+
+echo "</plot>"
+

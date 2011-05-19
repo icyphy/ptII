@@ -1,0 +1,586 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HysteresisWithRandomLosses" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 879, 460}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 350]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 175.0}">
+    </property>
+    <property name="highThreshold" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 75.0]">
+        </property>
+    </property>
+    <property name="lowThreshold" class="ptolemy.data.expr.Parameter" value="-0.5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
+        </property>
+    </property>
+    <property name="highValue" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+        </property>
+    </property>
+    <property name="lowValue" class="ptolemy.data.expr.Parameter" value="-1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 145.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee and Haiyang Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 320.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of a modal model to implement&#10;hysteresis, but where, with a specified probability, the model&#10;fails to switch levels on detecting a threshold crossing.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 45.0]">
+        </property>
+    </property>
+    <property name="probabilityOfFailure" class="ptolemy.data.expr.Parameter" value="0.3">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 165.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Piecewise Deterministic Hybrid System">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 250.0]">
+        </property>
+    </property>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
+        </property>
+        <port name="in" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+        </port>
+        <port name="out" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="fail" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">State machine with one state for each output value. The two
+states "high" and "low" have the same two refinements: a simple model
+that produces a constant output and a second model that detects level
+crossings and flips a coin to indicate whether failure should occur.
+The transitions between states change the values of the constant output.</text></svg></configure>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 5.0]">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 206, 917, 487}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 376]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.0, 188.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the&#10;high or low state&#10;to see how this&#10;is implemented.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 290.0]">
+                </property>
+            </property>
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 175.0]">
+                </property>
+            </port>
+            <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 225.0]">
+                </property>
+            </port>
+            <port name="fail" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 275.0]">
+                </property>
+            </port>
+            <entity name="high" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant, ThresholdDetector">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 260.0]">
+                </property>
+            </entity>
+            <entity name="low" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant, ThresholdDetector">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 265.0]">
+                </property>
+            </entity>
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 130.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fail_isPresent &amp;&amp; !fail">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = lowValue; &#10;ThresholdDetector.levelThreshold = highThreshold;&#10;ThresholdDetector.direction = &quot;rising&quot;">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.23241208405203737">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.009789568499950402">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fail_isPresent &amp;&amp; !fail">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = highValue; &#10;ThresholdDetector.levelThreshold = lowThreshold;&#10;ThresholdDetector.direction = &quot;falling&quot;">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2663765799819856">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.130408308471789">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+                    </property>
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = highValue; &#10;ThresholdDetector.levelThreshold = lowThreshold;&#10;ThresholdDetector.direction = &quot;falling&quot;">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.37341802972297894">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5108512015370985">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="high.incomingPort" relation="relation2"/>
+            <link port="high.incomingPort" relation="relation3"/>
+            <link port="high.outgoingPort" relation="relation"/>
+            <link port="low.incomingPort" relation="relation"/>
+            <link port="low.outgoingPort" relation="relation2"/>
+            <link port="init.outgoingPort" relation="relation3"/>
+        </entity>
+        <entity name="constant" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+                </property>
+            </property>
+            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="-1.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 25.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 22, 745, 460}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[532, 278]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{266.0, 139.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output a constant value given&#10;by the parameter outputValue.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 75.0]">
+                </property>
+            </property>
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 150.0]">
+                </property>
+            </port>
+            <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 90.0]">
+                </property>
+            </port>
+            <port name="fail" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 140.0]">
+                </property>
+            </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="outputValue">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 90.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="out" relation="relation"/>
+            <link port="Const.output" relation="relation"/>
+        </entity>
+        <entity name="ThresholdDetector" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
+                </property>
+            </property>
+            <property name="levelThreshold" class="ptolemy.data.expr.Parameter" value="0.5">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 40.0]">
+                </property>
+            </property>
+            <property name="direction" class="ptolemy.data.expr.Parameter" value="&quot;rising&quot;">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 65.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 294, 813, 465}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 355]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 177.5}">
+            </property>
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 140.0]">
+                </property>
+            </port>
+            <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 60.0]">
+                </property>
+            </port>
+            <port name="fail" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 140.0]">
+                </property>
+            </port>
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+                <property name="level" class="ptolemy.data.expr.Parameter" value="levelThreshold">
+                </property>
+                <property name="direction" class="ptolemy.data.expr.StringParameter" value="$direction">
+                </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 140.0]">
+                </property>
+                <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </entity>
+            <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+                </property>
+                <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                </property>
+                <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="probabilityOfFailure">
+                </property>
+                <doc>Create a sequence of bernoulli random variables</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 140.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[205.0, 140.0]">
+                </vertex>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="in" relation="relation"/>
+            <link port="fail" relation="relation4"/>
+            <link port="LevelCrossingDetector.output" relation="relation2"/>
+            <link port="LevelCrossingDetector.trigger" relation="relation"/>
+            <link port="Bernoulli.output" relation="relation4"/>
+            <link port="Bernoulli.trigger" relation="relation2"/>
+        </entity>
+        <relation name="inRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="outRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="failRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in" relation="inRelation"/>
+        <link port="out" relation="outRelation"/>
+        <link port="fail" relation="failRelation"/>
+        <link port="_Controller.in" relation="inRelation"/>
+        <link port="_Controller.out" relation="outRelation"/>
+        <link port="_Controller.fail" relation="failRelation"/>
+        <link port="constant.in" relation="inRelation"/>
+        <link port="constant.out" relation="outRelation"/>
+        <link port="constant.fail" relation="failRelation"/>
+        <link port="ThresholdDetector.in" relation="inRelation"/>
+        <link port="ThresholdDetector.out" relation="outRelation"/>
+        <link port="ThresholdDetector.fail" relation="failRelation"/>
+    </entity>
+    <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 145.0]">
+        </property>
+        <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 245.0}">
+            </property>
+        </port>
+        <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 285.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0627905195293, 0.1253332335643, 0.1873813145857, 0.2486898871649, 0.3090169943749, 0.3681245526847, 0.4257792915651, 0.4817536741017, 0.535826794979, 0.5877852522925, 0.6374239897487, 0.6845471059287, 0.7289686274214, 0.7705132427758, 0.8090169943749, 0.844327925502, 0.8763066800439, 0.904827052466, 0.9297764858883, 0.9510565162952, 0.9685831611286, 0.9822872507287, 0.9921147013145, 0.9980267284283, 1.0, 0.9980267284283, 0.9921147013145, 0.9822872507287, 0.9685831611286, 0.9510565162952, 0.9297764858883, 0.904827052466, 0.8763066800439, 0.844327925502, 0.8090169943749, 0.7705132427758, 0.7289686274214, 0.6845471059287, 0.6374239897487, 0.5877852522925, 0.535826794979, 0.4817536741017, 0.4257792915651, 0.3681245526847, 0.3090169943749, 0.2486898871649, 0.1873813145857, 0.1253332335643, 0.0627905195293, 1.2246467991474E-16, -0.0627905195293, -0.1253332335643, -0.1873813145857, -0.2486898871649, -0.3090169943749, -0.3681245526847, -0.4257792915651, -0.4817536741017, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927728, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642448, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642448, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642448, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642448, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803298, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642448, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927728, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927728, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803298, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642448, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803298, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927728, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283838, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642448, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283838, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803298, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559396, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283838, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642448, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803298, -0.895685403314, -0.8659957652111, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927728, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642448, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803298, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283838, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642448, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803298, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927728, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642448, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283838, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279512, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803298, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927728, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642448, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.756956323401, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803298, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809508, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283838, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642448, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803298, -0.895685403314, -0.8659957652111, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927728, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809508, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.653465473046, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642448, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279512, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927728, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.8659957652111, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927728, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320015, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279512, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559396, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279511, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.756956323401, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279512, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559396, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094067, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279512, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559397, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094068, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.653465473046, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279511, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559396, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, 0.0210016809509, 0.0837369094068, 0.146141666537, 0.2079696692752, 0.2689769107411, 0.3289226232241, 0.3875702283837, 0.4446882709159, 0.5000513320016, 0.5534409189315, 0.6046463273975, 0.6534654730459, 0.6997056890122, 0.7431844862891, 0.7837302739273, 0.8211830362266, 0.8553949642447, 0.8862310391318, 0.9135695649879, 0.9373026491412, 0.9573366279512, 0.9735924364561, 0.9860059204064, 0.9945280894522, 0.9991253104855, 0.9997794403753, 0.9964878975698, 0.9892636722845, 0.9781352752363, 0.9631466251242, 0.9443568753026, 0.9218401803299, 0.895685403314, 0.865995765211, 0.8328884374586, 0.7964940795541, 0.7569563234011, 0.71443120646, 0.6690865559396, 0.6211013264596, 0.5706648937982, 0.5179763075129, 0.4632435053828, 0.4066824927727, 0.3485164901593, 0.2889750521812, 0.2282931616923, 0.1667103023914, 0.1044695136897, 0.041816431545, -0.0210016809509, -0.0837369094067, -0.146141666537, -0.2079696692752, -0.2689769107411, -0.3289226232241, -0.3875702283837, -0.4446882709159, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5000513320016, -0.5534409189315, -0.6046463273975, -0.6534654730459, -0.6997056890122, -0.7431844862891, -0.7837302739273, -0.8211830362266, -0.8553949642447, -0.8862310391318, -0.9135695649879, -0.9373026491412, -0.9573366279512, -0.9735924364561, -0.9860059204064, -0.9945280894522, -0.9991253104855, -0.9997794403753, -0.9964878975698, -0.9892636722845, -0.9781352752363, -0.9631466251242, -0.9443568753026, -0.9218401803299, -0.895685403314, -0.865995765211, -0.8328884374586, -0.7964940795541, -0.7569563234011, -0.71443120646, -0.6690865559397, -0.6211013264596, -0.5706648937982, -0.5179763075129, -0.4632435053828, -0.4066824927727, -0.3485164901593, -0.2889750521812, -0.2282931616923, -0.1667103023914, -0.1044695136897, -0.041816431545, -2.1558735510086E-14, -2.1558735510086E-14}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 250.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[335.0, 145.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ModalModel.in" relation="relation3"/>
+    <link port="ModalModel.out" relation="relation4"/>
+    <link port="ModalModel.fail" relation="relation2"/>
+    <link port="ContinuousSinewave.output" relation="relation3"/>
+    <link port="BooleanToAnything.input" relation="relation2"/>
+    <link port="BooleanToAnything.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="NonStrictTest2.input" relation="relation4"/>
+    <link port="NonStrictTest3.input" relation="relation"/>
+</entity>

@@ -1,0 +1,45 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>MulticoreExecution</TITLE>
+</HEAD>
+<BODY>
+<H1>MulticoreExecution</H1>
+<P>
+
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+MulticoreExecution is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "MulticoreExecution.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="MulticoreExecutionVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>The ThreadedComposite actors in this model contain submodels that include an actor that performs
+a fixed long-running computation and then outputs the real-time it took to perform that computation.
+Since the two instances of ThreadedComposite run in separate threads, on a multicore machine this
+model will execute faster than on a single core machine, and in fact will execute in less time than
+the total aggregate computation time. The submodels compute and display the aggregate execution
+time for their own submodel.</p>
+
+<p>On a dual-core machine such as a Macbook Pro, this model executes approximately twice as fast
+as it would if the composite actors were ordinary TypedCompositeActor rather than ThreadedComposite.</p>
+
+<p>This example also illustrates that ThreadedComposite can be used with directors other than DE,
+such as SR.</p>
+<p>For details, see E.A. Lee, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html" target="_top">ThreadedComposite: A Mechanism for Building Concurrent and Parallel Ptolemy II Models</a>," EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2008-151, December 7, 2008.</p>
+</BODY>
+</HTML>

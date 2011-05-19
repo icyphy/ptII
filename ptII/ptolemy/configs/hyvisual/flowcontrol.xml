@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FlowControl" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Actors that aggregate or disaggregate signals.</doc>
+  <entity name="BooleanMultiplexor" class="ptolemy.actor.lib.BooleanMultiplexor"/>
+  <entity name="BusAssembler" class="ptolemy.actor.lib.BusAssembler"/>
+  <entity name="BusDisassembler" class="ptolemy.actor.lib.BusDisassembler"/>
+  <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor"/>
+  <entity name="Stop" class="ptolemy.actor.lib.Stop"/>
+  <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler"/>
+  <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler"/>
+  <entity name="RecordUpdater" class="ptolemy.actor.lib.RecordUpdater"/>
+  <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException"/>
+  <entity name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError"/>
+  <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler"/>
+  <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler"/>
+      </group>
+    ?>
+  </configure>
+</entity>

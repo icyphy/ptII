@@ -1,0 +1,42 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>RijndaelEncryption</TITLE>
+</HEAD>
+<BODY>
+<H1>RijndaelEncryption</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+RijndaelEncryption is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "RijndaelEncryption.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="RijndaelEncryptionVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>A model of the rijndael encryption system, operating in ECB mode.
+This model makes heavy use of the class mechanism in Ptolemy II
+to describe components that are instantiated multiple times in the model.</p>
+
+<p>The algorithm is parameterized to run on 128 bits of data at a time.
+Executing the model displays two windows of data in hex format.
+One window shows 128 bits of encrypted data, while the other displays 
+intermediate results in the encryption process after each 'round'.</p>
+
+</BODY>
+</HTML>

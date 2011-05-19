@@ -1,0 +1,289 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstAbsIntObservableSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={272, 186, 861, 701}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[646, 584]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.8906249999999, 288.5203598484849}">
+    </property>
+    <property name="AddSubtractActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.AddSubtract">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.AddSubtract">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
+<text x="-13" y="-5" style="font-size:18">
++ 
+</text>
+<text x="-13" y="7" style="font-size:18">
+_ 
+</text>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
+        </property>
+        <property name="plusPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="minusPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="subtractFunction(plus, minus)">
+        </property>
+    </property>
+    <property name="MultiplyDivideActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
+<line x1="-15" y1="-15" x2="-5" y2="-5"></line><line x1="-15" y1="-5" x2="-5" y2="-15"></line><line x1="-15" y1="10" x2="-5" y2="10"></line><circle cx="-10" cy="6" r="1" style="fill:black"></circle>
+<circle cx="-10" cy="14" r="1" style="fill:black"></circle>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 130.0]">
+        </property>
+        <property name="multiplyPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="dividePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= divideFunction(multiply, divide)">
+        </property>
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 &lt;= ObservableUnknown || factor2 &lt;= ObservableUnknown ? UnobservableUnknown :&#10;factor1 &lt;= ConstZero || factor2 &lt;= ConstZero ? UnobservableConstZero :&#10;(factor1 &lt;= ConstPositive &amp;&amp; factor2 &lt;= ConstPositive) || (factor1 &lt;= ConstNegative &amp;&amp; factor2 &lt;= ConstNegative) ? UnobservableConstPositive :&#10;(factor1 &lt;= ConstPositive &amp;&amp; factor2 &lt;= ConstNegative) || (factor2 &lt;= ConstPositive &amp;&amp; factor1 &lt;= ConstNegative) ? UnobservableConstNegative :&#10;factor1 &lt;= ConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 230.0]">
+        </property>
+    </property>
+    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend &lt;= ObservableUnknown || divisor &lt;= ConstZero ? UnobservableUnknown :&#10;dividend &lt;= ConstZero ? UnobservableConstZero :&#10;(dividend &lt;= ConstPositive &amp;&amp; divisor &lt;= ConstPositive) || (dividend &lt;= ConstNegative &amp;&amp; divisor &lt;= ConstNegative) ? UnobservableConstPositive :&#10;(dividend &lt;= ConstNegative &amp;&amp; divisor &lt;= ConstPositive) || (dividend &lt;= ConstPositive &amp;&amp; divisor &lt;= ConstNegative) ? UnobservableConstNegative :&#10;dividend &lt;= ConstUnknown &amp;&amp; divisor &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 280.0]">
+        </property>
+    </property>
+    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 260.0]">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
+        </property>
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+    </property>
+    <property name="DisplayActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.gui.Display">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.gui.Display">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-15" width="40" height="30" style="fill:lightGrey"></rect>
+<rect x="-15" y="-10" width="30" height="20" style="fill:white"></rect>
+<line x1="-13" y1="-6" x2="-4" y2="-6" style="stroke:grey"></line>
+<line x1="-13" y1="-2" x2="0" y2="-2" style="stroke:grey"></line>
+<line x1="-13" y1="2" x2="-8" y2="2" style="stroke:grey"></line>
+<line x1="-13" y1="6" x2="4" y2="6" style="stroke:grey"></line>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 345.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= ObservableUnknown">
+        </property>
+        <property name="rowsDisplayedAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="columnsDisplayedAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="suppressBlankLinesAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="titleAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="MultiplyDivideActorConstraints2" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<polygon points="-30,-20 30,-4 30,4 -30,20" style="fill:white"></polygon>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 200.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyFunction(input, factor)">
+        </property>
+        <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="ComparatorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.logic.Comparator">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.logic.Comparator">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-30" y="-15" width="60" height="30" style="fill:white"></rect>
+<polyline points="-30,-10, -10,-10, -10,0" style="stroke:grey"></polyline>
+<polyline points="-30,10, 10,10, 10,0" style="stroke:grey"></polyline>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 50.0]">
+        </property>
+        <property name="leftPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="rightPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= (comparison.getExpression().trim().equals('&gt;')) ? greaterThan(left, right) :&#10;    (comparison.getExpression().trim().equals('&lt;')) ? lessThan(left, right) :&#10;     (comparison.getExpression().trim().equals('==')) ? equalTo(left, right) :&#10;      (comparison.getExpression().trim().equals('&gt;=')) ? orFunction(greaterThan(left, right), equalTo(left, right)) :&#10;       (comparison.getExpression().trim().equals('&lt;=')) ? orFunction(lessThan(left, right), equalTo(left, right)) :&#10;        UnobservableUnknown&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="comparisonAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="toleranceAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="andFunction" class="ptolemy.data.ontologies.lattice.LogicOpConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= ObservableUnknown || booleanVar1 &lt;= ObservableUnknown ? UnobservableUnknown :&#10; booleanVar0 &lt;= ConstFalse || booleanVar1 &lt;= ConstFalse ? UnobservableConstFalse :&#10;  booleanVar0 &lt;= ConstTrue &amp;&amp; booleanVar1 &lt;= ConstTrue ? UnobservableConstTrue :&#10;   booleanVar0 &lt;= ConstUnknown || booleanVar1 &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;    UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 295.0]">
+        </property>
+    </property>
+    <property name="orFunction" class="ptolemy.data.ontologies.lattice.LogicOpConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= ObservableUnknown || booleanVar1 &lt;= ObservableUnknown ? UnobservableUnknown :&#10; booleanVar0 &lt;= ConstTrue || booleanVar1 &lt;= ConstTrue ? UnobservableConstTrue :&#10;  booleanVar0 &lt;= ConstFalse &amp;&amp; booleanVar1 &lt;= ConstFalse ? UnobservableConstFalse :&#10;   booleanVar0 &lt;= ConstUnknown || booleanVar1 &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;    UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 350.0]">
+        </property>
+    </property>
+    <property name="greaterThan" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= ObservableUnknown || right &lt;= ObservableUnknown ? UnobservableUnknown :&#10; left &lt;= ConstPositive &amp;&amp; (right &lt;= ConstZero || right &lt;= ConstNegative) ? UnobservableConstTrue :&#10;  left &lt;= ConstZero &amp;&amp; right &lt;= ConstNegative ? UnobservableConstTrue :&#10;   (left &lt;= ConstZero || left &lt;= ConstNegative) &amp;&amp; right &lt;= ConstPositive ? UnobservableConstFalse :&#10;    left &lt;= ConstNegative &amp;&amp; (right &lt;= ConstZero || right &lt;= ConstPositive) ? UnobservableConstFalse :&#10;     left &lt;= ConstZero &amp;&amp; right &lt;= ConstZero ? UnobservableConstFalse :&#10;      left &lt;= ConstUnknown &amp;&amp; right &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;       UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 130.0]">
+        </property>
+    </property>
+    <property name="lessThan" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= ObservableUnknown || right &lt;= ObservableUnknown ? UnobservableUnknown :&#10; left &lt;= ConstPositive &amp;&amp; (right &lt;= ConstZero || right &lt;= ConstNegative) ? UnobservableConstFalse :&#10;  left &lt;= ConstZero &amp;&amp; right &lt;= ConstNegative ? UnobservableConstFalse :&#10;   (left &lt;= ConstZero || left &lt;= ConstNegative) &amp;&amp; right &lt;= ConstPositive ? UnobservableConstTrue :&#10;    left &lt;= ConstNegative &amp;&amp; (right &lt;= ConstZero || right &lt;= ConstPositive) ? UnobservableConstTrue :&#10;     left &lt;= ConstZero &amp;&amp; right &lt;= ConstZero ? UnobservableConstFalse :&#10;      left &lt;= ConstUnknown &amp;&amp; right &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;       UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 185.0]">
+        </property>
+    </property>
+    <property name="equalTo" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= ObservableUnknown || right &lt;= ObservableUnknown ? UnobservableUnknown :&#10; left &lt;= ConstZero &amp;&amp; right &lt;= ConstZero ? UnobservableConstTrue :&#10;  left &lt;= ConstTrue &amp;&amp; right &lt;= ConstTrue ? UnobservableConstTrue :&#10;   left &lt;= ConstFalse &amp;&amp; right &lt;= ConstFalse ? UnobservableConstTrue :&#10;    left &lt;= ConstPositive &amp;&amp; (right &lt;= ConstZero || right &lt;= ConstNegative) ? UnobservableConstFalse :&#10;     left &lt;= ConstZero &amp;&amp; (right &lt;= ConstPositive || right &lt;= ConstNegative) ? UnobservableConstFalse :&#10;      left &lt;= ConstNegative &amp;&amp; (right &lt;= ConstZero || right &lt;= ConstPositive) ? UnobservableConstFalse :&#10;       left &lt;= ConstTrue &amp;&amp; right &lt;= ConstFalse ? UnobservableConstFalse :&#10;        left &lt;= ConstFalse &amp;&amp; right &lt;= ConstTrue ? UnobservableConstFalse :&#10;         left &lt;= ConstUnknown &amp;&amp; right &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;          UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 245.0]">
+        </property>
+    </property>
+    <property name="promoteReachability" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= UnobservableNonConst ? UnobservableUnknown :&#10; ObservableUnknown">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 175.0}">
+        </property>
+    </property>
+    <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 &lt;= ObservableUnknown || addend2 &lt;= ObservableUnknown ? UnobservableUnknown :&#10; addend1 &lt;= ConstPositive &amp;&amp; (addend2 &lt;= ConstPositive || addend2 &lt;= ConstZero) ? UnobservableConstPositive :&#10;  addend1 &lt;= ConstNegative &amp;&amp; (addend2 &lt;= ConstNegative || addend2 &lt;= ConstZero) ? UnobservableConstNegative :&#10;   addend2 &lt;= ConstPositive &amp;&amp; (addend1 &lt;= ConstPositive || addend1 &lt;= ConstZero) ? UnobservableConstPositive :&#10;    addend2 &lt;= ConstNegative &amp;&amp; (addend1 &lt;= ConstNegative || addend1 &lt;= ConstZero) ? UnobservableConstNegative :&#10;     addend1 &lt;= ConstZero &amp;&amp; addend2 &lt;= ConstZero ? UnobservableConstZero :&#10;      addend1 &lt;= ConstUnknown &amp;&amp; addend2 &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;       UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 335.0}">
+        </property>
+    </property>
+    <property name="subtractFunction" class="ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addFunction(subtractor, negateFunction(subtractee))">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 390.0]">
+        </property>
+    </property>
+    <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= ObservableUnknown ? UnobservableUnknown :&#10; arg &lt;= ConstNegative ? UnobservableConstPositive :&#10;  arg &lt;= ConstPositive ? UnobservableConstNegative :&#10;   arg &lt;= ConstZero ? UnobservableConstZero :&#10;    arg &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;     UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 445.0]">
+        </property>
+    </property>
+    <property name="notFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= ObservableUnknown ? UnobservableUnknown :&#10; arg &lt;= ConstTrue ? UnobservableConstFalse :&#10;  arg &lt;= ConstFalse ? UnobservableConstTrue :&#10;   arg &lt;= ConstUnknown ? UnobservableConstUnknown :&#10;    UnobservableNonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservable">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 405.0}">
+        </property>
+    </property>
+    <property name="ExpressionActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Expression">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Expression">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"></rect>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"></polygon>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 430.0}">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= expression">
+        </property>
+        <property name="expressionAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+    </property>
+    <entity name="constAbsIntObservable" class="ptolemy/data.ontologies.lattice.adapters.constAbsIntObservable.constAbsIntObservable">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 65.0]">
+        </property>
+    </entity>
+</entity>

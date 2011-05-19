@@ -1,0 +1,143 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="PowerEstimate" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="forgettingFactor" class="ptolemy.data.expr.Parameter" value="0.99">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This composite actor estimates the power of the input signal.
+The output is in decibels, where a power of 1 is 0 dB.
+This is done by averaging the squares of the input values
+exponentially "forgetting" old values. The forgettingFactor
+parameter determines how much averaging is done, and hence
+how quickly the output responds to changes in the input power.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 100.0">
+        </property>
+    </property>
+    <port name="input" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="location1" class="ptolemy.kernel.util.Location" value="35.0, 55.0">
+        </property>
+    </port>
+    <port name="output" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="location1" class="ptolemy.kernel.util.Location" value="500.0, 55.0">
+        </property>
+    </port>
+    <entity name="IIR" class="ptolemy.actor.lib.IIR">
+        <property name="numerator" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, -forgettingFactor}">
+        </property>
+        <doc>IIR filter</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 55.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DB" class="ptolemy.actor.lib.DB">
+        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 55.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="1 - forgettingFactor">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 55.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="square">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+                <property name="sign" class="ptolemy.kernel.util.StringAttribute" value="sign">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 55.0">
+        </property>
+        <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="input" relation="relation3"/>
+    <link port="output" relation="relation4"/>
+    <link port="IIR.input" relation="relation"/>
+    <link port="IIR.output" relation="relation5"/>
+    <link port="DB.input" relation="relation6"/>
+    <link port="DB.output" relation="relation4"/>
+    <link port="Scale.input" relation="relation5"/>
+    <link port="Scale.output" relation="relation6"/>
+    <link port="MathFunction.firstOperand" relation="relation3"/>
+    <link port="MathFunction.output" relation="relation"/>
+</class>

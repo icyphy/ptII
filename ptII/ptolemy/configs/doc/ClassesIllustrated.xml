@@ -1,0 +1,253 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ClassesIllustrated" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates classes, subclasses, inner classes&#10;and inheritance, using custom icons to make it visually&#10;clear how inheritance works.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ModelID attribute (found&#10;in Utilities-&gt;Decorative)&#10;identifies key properties&#10;of a model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 250.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that this model has&#10;no director and cannot be&#10;executed. The class mechanism&#10;operates at the kernel level&#10;in Ptolemy II, and therefore&#10;is domain-independent.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each of these components&#10;has a custom icon. The&#10;instances and subclasses&#10;inherit their icons&#10;from the base classes.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 155.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Looking inside instances reveals the class definition,&#10;not the instance. Changes to class definitions propagate&#10;to the instances and to the subclasses.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 245.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 345.0]">
+        </property>
+    </property>
+    <property name="Do Nothing Director" class="ptolemy.actor.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 365.0}">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+    </property>
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 120.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-15.0, 5.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,1.0,0.5}">
+                </property>
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The BaseClass definition includes an inner class and&#10;a subclass of that inner class, plus instances of each.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 25.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The blue outlines indicate&#10;class definitions. Class&#10;definitions are not visible&#10;to directors, typically,&#10;so they serve only to define&#10;objects in a centralized and&#10;modular way.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 35.0]">
+            </property>
+        </property>
+        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Modifications to the inner classes will propagate&#10;not just to subclasses and instances within this class,&#10;but also to subclasses and instances of the class that&#10;contains these inner class definitions.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 275.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 250, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
+            <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Mar 3, 2005 11:31:15 AM">
+            </property>
+            <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 22, 2004 11:10:43 AM">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 360.0]">
+            </property>
+        </property>
+        <class name="InnerClass" extends="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 120.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 0.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="35">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.0,0.5}">
+                    </property>
+                    <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 20.0, 0.0, 5.0, 20.0, -15.0, 20.0}">
+                    </property>
+                </property>
+            </property>
+            <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
+                <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Mar 3, 2005 11:31:15 AM">
+                </property>
+                <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Mar 3, 2005 11:31:15 AM">
+                </property>
+                <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 100}">
+                </property>
+            </property>
+        </class>
+        <class name="SubclassOfInnerClass" extends="InnerClass">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 120.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 15.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,0.5}">
+                    </property>
+                </property>
+            </property>
+        </class>
+        <entity name="InstanceOfInnerClass" class="InnerClass">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="InstanceOfSubclassOfInnerClass" class="SubclassOfInnerClass">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 235.0]">
+            </property>
+        </entity>
+    </class>
+    <class name="SubclassOfBaseClass" extends="BaseClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 120.0}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 5.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="37.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="23.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,0.5}">
+                </property>
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {200, 244, 815, 516}, maximized = false}">
+        </property>
+        <property name="Annotation_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The pink dashed outline&#10;represents components that&#10;are inherited from a base&#10;class. Such components&#10;cannot be removed, but they&#10;can be moved and their&#10;parameters (like the color&#10;of the icons) can be changed.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 175.0]">
+            </property>
+        </property>
+        <property name="Annotation_1_3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The triangle added to the icon of the inner&#10;class here effectively overrides the inner&#10;class definition inherited from BaseClass.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 150.0]">
+            </property>
+        </property>
+        <class name="InnerClass" extends="ptolemy.actor.TypedCompositeActor">
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="polygon2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -5.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="35">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,0.4,0.5}">
+                    </property>
+                    <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 10.0, 20.0, -10.0, 20.0}">
+                    </property>
+                </property>
+            </property>
+        </class>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfSubclassOfBaseClass" class="SubclassOfBaseClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 220.0]">
+        </property>
+    </entity>
+</entity>

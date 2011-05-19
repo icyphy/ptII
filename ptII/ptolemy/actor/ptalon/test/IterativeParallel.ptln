@@ -1,0 +1,9 @@
+attachDanglingPorts;
+
+IterativeParallel is {
+	actorparameter repeater;
+	parameter n;
+	for i initially [[ 1 ]] [[ i <= n ]] {
+		repeater();
+	} next [[ i + 1 ]]
+}

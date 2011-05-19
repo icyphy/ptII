@@ -1,0 +1,67 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Autocorrelation3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 35.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 99, 819, 570}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, 0.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 160.0">
+        </property>
+    </entity>
+    <entity name="Autocorrelation" class="ptolemy.domains.sdf.lib.Autocorrelation">
+        <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="numberOfLags" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="biased" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="symmetricOutput" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Autocorrelation estimator</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="254.0, 162.0">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0, 0.0, 0.2, 0.0, 0.0}}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="369.0, 152.0">
+        </property>
+    </entity>
+    <entity name="Copy3:Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0, 0.0, 0.2, 0.0, 0.0}}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="372.0, 220.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="310.0, 160.0">
+        </vertex>
+    </relation>
+    <link port="Pulse.output" relation="relation"/>
+    <link port="Autocorrelation.input" relation="relation"/>
+    <link port="Autocorrelation.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Copy3:Test.input" relation="relation2"/>
+</entity>

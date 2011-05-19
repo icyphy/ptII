@@ -1,0 +1,21 @@
+SenseToLeds is {
+    actor channel = ptolemy.domains.wireless.lib.LimitedRangeChannel;
+
+    actor photoSource = ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.PhotoSource;
+
+    actor node = ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.MicaBoard;
+
+
+    parameter channelName;
+
+    channel(seed := [[ 1L ]],
+            name := [[ channelName ]]);
+
+    photoSource();
+
+    parameter n;
+    for i initially [[ 1 ]] [[ i <= n ]] {
+        node( commandPort := [[ 10584 + (i - 1)*2 ]],
+                   nodeID := [[ i ]] );
+    } next [[ i + 1 ]]
+}

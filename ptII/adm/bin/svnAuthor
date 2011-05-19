@@ -1,0 +1,5 @@
+#!/bin/sh
+for file in $@;
+do
+    svn log -q $file | tail -2 | head -1 | awk -v file=$file '{print $3, file, $0}'
+done

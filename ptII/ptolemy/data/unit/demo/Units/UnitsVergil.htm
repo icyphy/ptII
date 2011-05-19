@@ -1,0 +1,69 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Units</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Units</H1>
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/data/unit/demo/Units/Units.jar,ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,ptolemy/data/data.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergil.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/data/unit/demo/Units/Units.jnlp">
+<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Units.xml">
+  <PARAM NAME = "NAME" VALUE = "Units" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Units.xml" > \
+  <a href="Units.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</CENTER>
+</p>
+<p>
+The model above simulates the RC decay for 1000 ohms in contact 
+with 0.001 farad.
+ <br>The integrator has been set to an initial charge of 5.0 volts
+ <br>The voltage and current are sampled every 0.2 seconds.
+</p>
+
+ <p>A major source of errors in embedded software is incorrect application
+of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
+Ptolemy II that is quite clever. A suite of constants are defined,
+with
+names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
+"days". In each unit category ("length" or "time" for example), there
+is a primary unit with respect to which all the others are specified.
+Thus, for example, if the primary unit of length is meters, then the
+expression "1.0 * cm" will have an internal value of 0.01 * meters.
+Compound units are specified by just multiplying and dividing, as in
+for example "1.0 * cm/second".
+</p>
+ <p>The way this is realized is that these unit constants are
+tokens just
+like other Ptolemy II data, and multiplication and division are
+overloaded in the base classes for numeric valued tokens.  We continue
+to work on this architecture to enable users to customize the unit
+system on a per-model basis.
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,104 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>StaticUnits</TITLE>
+</HEAD>
+<BODY>
+<H1>StaticUnits</H1>
+<P>
+The Static Units System in Ptolemy II provides the means to constrain
+a model in terms of the allowable units of measure for the actors, and
+ports on the actors.  It is static, in that the constraints do not
+relevant when the model is run.  Rather, the constraints are used to
+determine if the model is correct.
+</p>
+<p>
+In order to illustrate these concepts, the Fermenter model, shown here, will be used.
+</p>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+StaticUnits is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "StaticUnits.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="StaticUnitsVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>
+The purpose of this model is simulate the growth process in a fermenter.
+There are three
+submodels; 1) growth models the number of cells being produced as a
+function of the current number of cells and the vat temperature,
+2) HeatProduction models the amount of heat produced (in calories) as
+a function of the amount of work done (in joules), and 3) HeatExchanger
+models the removal of heat from the vat as a function of the rate at
+which water flows through the cooling jacket around the vat.
+</p>
+
+<h2>Port Units Specifications</h2>
+In order to see the units specifications on the ports of the actors
+the PortConfigurerDialog must be used.  
+<br><b>Note:</b>Currently, applets do not support the PortConfigurer dialog. 
+<br>Right mouse click on the actor and select "Configure Ports".
+For example, applying the PortConfigurerDialog to the HeatExcnager actor shows
+<p>
+<img src="StaticUnits2.gif" alt="port configuration for Heat Exchanger">
+</p>
+<p>
+Note the units column which shows that,
+the TempVessel port has units <b>degree</b>,
+the TempCW port has units <b>degree</b>,
+the output port has units <b>calories/second</b>,
+and, the flow port has units <b>gallons/hour</b>.
+</p>
+<h2>Actor Units Specifications</h2>
+
+In order to see the units sepcifications on the actors the
+ConfigureUnitsDialog must be used.
+<br><b>Note:</b>Currently, applets do not support the ConfigureUnitsDialog.
+<br>Right mouse click on the actor and
+select "Configure Units".  For example, applying the
+ConfigurerUnitsDialog to the AddSubtract actor shows
+
+<p>
+<img src="StaticUnits3.gif" alt="unit constraints for AddSubtract">
+</p>
+<p>
+
+This shows that there are two units constraints for the AddSubtract
+actor.  The expression <b>$plus=$minus</b> says that the plus and
+minus ports must have the same units. That is, it is incorrect to
+subtract <b>gallons/hour</b> from <b>gallons</b>.  Similarly, the
+expression <b>$output=$minus</b> says that the output port must have
+the same units as the minus port.
+
+</p>
+<p>
+Some of the units constraints in the model are inconsistent.  In
+addition to the HeatExchanger port unitconstraints, and AddSubtract
+actor unit constraints illustrated above, the HeatProduction.heat port
+has the units <b>calories</b>.  Since the HeatProduction.heat port is
+connected (via the AddSubtract actor) to the HeatExchanger.output port
+which has units <b>calories/second</b> the model is inconsistent in
+terms of the units constraints.
+<p>
+The UnitsConstraint Solver can be used to discover, and
+analyse these inconsistencies. (Right mouse-click and select
+UnitsConstraint Solver).
+</p>
+</BODY>
+</HTML>

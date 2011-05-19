@@ -1,0 +1,99 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Match4ActorsSubclasses_rule" class="ptolemy.actor.gt.TransformationRule">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={327, 252, 745, 546}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 432]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{243.5, 118.0}">
+    </property>
+    <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
+        <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute" value="true">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><rect x="0" y="0" width="94" height="32" style="fill:#00FFFF"></rect><rect x="5" y="5" width="30" height="22" style="fill:#FF0000"></rect><rect x="7" y="7" width="26" height="18" style="fill:#C0C0C0"></rect><rect x="14" y="11" width="15" height="10" style="fill:#FF0000"></rect><rect x="16" y="13" width="11" height="6" style="fill:#C0C0C0"></rect><line x1="39" y1="14" x2="52" y2="14" style="stroke:#303030; stroke-width:2"></line><line x1="39" y1="18" x2="52" y2="18" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="11" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="21" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><rect x="59" y="5" width="30" height="22" style="fill:#FF0000"></rect><rect x="61" y="7" width="26" height="18" style="fill:#C0C0C0"></rect></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"></rect>
+            <text x="3" y="14" style="font-size:16; font-family:SansSerif; fill:blue">HF</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, -5.0}">
+            </property>
+            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="HierarchyFlattening">
+            </property>
+        </property>
+        <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute" value="true">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><rect x="0" y="0" width="94" height="32" style="fill:#00FFFF"></rect><polygon points="14,5 8,11 14,17 20,11" style="fill:#000000"></polygon><line x1="21" y1="11" x2="24" y2="11" style="stroke:#000000"></line><line x1="24" y1="11" x2="24" y2="21" style="stroke:#000000"></line><line x1="24" y1="21" x2="27" y2="21" style="stroke:#000000"></line><polygon points="34,15 28,21 34,27 40,21" style="fill:#000000"></polygon><line x1="47" y1="14" x2="60" y2="14" style="stroke:#303030; stroke-width:2"></line><line x1="47" y1="18" x2="60" y2="18" style="stroke:#303030; stroke-width:2"></line><line x1="58" y1="11" x2="63" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="58" y1="21" x2="63" y2="16" style="stroke:#303030; stroke-width:2"></line><polygon points="77,10 71,16 77,22 83,16" style="fill:#000000"></polygon></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"></rect>
+            <text x="2" y="14" style="font-size:16; font-family:SansSerif; fill:blue">RC</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, -5.0}">
+            </property>
+            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="RelationCollapsing">
+            </property>
+        </property>
+        <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;trueOutput&quot;/false//true/false/true/true/true/true/false/)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;falseOutput&quot;/false//true/false/true/true/true/true/false/)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/false/&quot;ptolemy.actor.lib.BooleanSwitch&quot;)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[77.5, 142.5]">
+            </property>
+        </entity>
+        <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/true/false)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[207.5, 87.5]">
+            </property>
+        </entity>
+        <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;input&quot;/false//true/true/true/false/true/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;output&quot;/false//true/false/true/true/true/false)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.AbsoluteValue&quot;)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[237.5, 182.5]">
+            </property>
+        </entity>
+        <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/true/true)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[372.5, 127.5]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="A.criterion1" relation="relation"/>
+        <link port="A.criterion2" relation="relation2"/>
+        <link port="B.criterion1" relation="relation"/>
+        <link port="B.criterion2" relation="relation3"/>
+        <link port="C.criterion1" relation="relation2"/>
+        <link port="C.criterion2" relation="relation4"/>
+        <link port="D.criterion1" relation="relation3"/>
+        <link port="D.criterion1" relation="relation4"/>
+    </entity>
+</entity>

@@ -1,0 +1,289 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PetriNetDiningPhilosophers" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -175.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1120, 736}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[907, 626]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.2537878787879, 170.9981060606061}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -140.0]">
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNet.jpg">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 60.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Zach Ezzell (University of Florida), Contributor: Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-220.0, 520.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A Petri Net model of the Dining Philosophers Problem">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -200.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="As the model is running, the PetriNet Director&#10;sends messages to the PetriNetDisplay.&#10;&#10;The messages contain the token count for each&#10;Place at each iteration.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-245.0, -60.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Dining Philosophers Problem is a common concurrency problem.&#10;&#10;In this model, there are 5 chopsticks, represented by p0 through p4.&#10;There are 5 philosophers, represented by p5 through p9.&#10;For a philosopher to eat, they must use their left and right chopsticks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, -160.0]">
+        </property>
+    </property>
+    <entity name="p5" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[123.25, 65.0]">
+        </property>
+    </entity>
+    <entity name="p8" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[308.25, 365.0]">
+        </property>
+    </entity>
+    <entity name="p7" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[23.25, 435.0]">
+        </property>
+    </entity>
+    <entity name="p6" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-136.75, 230.0]">
+        </property>
+    </entity>
+    <entity name="p3" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[138.25, 335.0]">
+        </property>
+    </entity>
+    <entity name="p2" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[8.25, 290.0]">
+        </property>
+    </entity>
+    <entity name="t0" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[48.25, 65.0]">
+        </property>
+    </entity>
+    <entity name="t4" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[293.25, 205.0]">
+        </property>
+    </entity>
+    <entity name="p9" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[358.25, 205.0]">
+        </property>
+    </entity>
+    <entity name="t3" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[258.25, 365.0]">
+        </property>
+    </entity>
+    <entity name="t2" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.75, 435.0]">
+        </property>
+    </entity>
+    <entity name="t1" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.25, 230.0]">
+        </property>
+    </entity>
+    <entity name="t5" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[203.25, 65.0]">
+        </property>
+    </entity>
+    <entity name="t9" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[414.75, 205.0]">
+        </property>
+    </entity>
+    <entity name="t7" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.25, 435.0]">
+        </property>
+    </entity>
+    <entity name="t8" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[363.25, 365.0]">
+        </property>
+    </entity>
+    <entity name="t6" class="ptolemy.domains.petrinet.kernel.Transition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-86.75, 230.0]">
+        </property>
+    </entity>
+    <entity name="PetriNetDisplay" class="ptolemy.domains.petrinet.lib.gui.PetriNetDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={928, 30, 430, 414}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[430, 370]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, 75.0]">
+        </property>
+    </entity>
+    <entity name="p4" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[223.25, 270.0]">
+        </property>
+    </entity>
+    <entity name="p0" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[183.25, 170.0]">
+        </property>
+    </entity>
+    <entity name="p1" class="ptolemy.domains.petrinet.kernel.Place">
+        <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[43.25, 175.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation37" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation38" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation40" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="p5.input" relation="relation4"/>
+    <link port="p5.output" relation="relation8"/>
+    <link port="p8.input" relation="relation25"/>
+    <link port="p8.output" relation="relation26"/>
+    <link port="p7.input" relation="relation20"/>
+    <link port="p7.output" relation="relation21"/>
+    <link port="p6.input" relation="relation12"/>
+    <link port="p6.output" relation="relation13"/>
+    <link port="p3.input" relation="relation24"/>
+    <link port="p3.input" relation="relation30"/>
+    <link port="p3.output" relation="relation19"/>
+    <link port="p3.output" relation="relation27"/>
+    <link port="p2.input" relation="relation14"/>
+    <link port="p2.input" relation="relation22"/>
+    <link port="p2.output" relation="relation11"/>
+    <link port="p2.output" relation="relation17"/>
+    <link port="t0.input" relation="relation3"/>
+    <link port="t0.input" relation="relation2"/>
+    <link port="t0.output" relation="relation4"/>
+    <link port="t4.input" relation="relation37"/>
+    <link port="t4.input" relation="relation36"/>
+    <link port="t4.output" relation="relation33"/>
+    <link port="p9.input" relation="relation33"/>
+    <link port="p9.output" relation="relation34"/>
+    <link port="t3.input" relation="relation27"/>
+    <link port="t3.input" relation="relation29"/>
+    <link port="t3.output" relation="relation25"/>
+    <link port="t2.input" relation="relation17"/>
+    <link port="t2.input" relation="relation19"/>
+    <link port="t2.output" relation="relation20"/>
+    <link port="t1.input" relation="relation11"/>
+    <link port="t1.input" relation="relation10"/>
+    <link port="t1.output" relation="relation12"/>
+    <link port="t5.input" relation="relation8"/>
+    <link port="t5.output" relation="relation6"/>
+    <link port="t5.output" relation="relation7"/>
+    <link port="t9.input" relation="relation34"/>
+    <link port="t9.output" relation="relation38"/>
+    <link port="t9.output" relation="relation40"/>
+    <link port="t7.input" relation="relation21"/>
+    <link port="t7.output" relation="relation22"/>
+    <link port="t7.output" relation="relation24"/>
+    <link port="t8.input" relation="relation26"/>
+    <link port="t8.output" relation="relation30"/>
+    <link port="t8.output" relation="relation31"/>
+    <link port="t6.input" relation="relation13"/>
+    <link port="t6.output" relation="relation14"/>
+    <link port="t6.output" relation="relation16"/>
+    <link port="p4.input" relation="relation31"/>
+    <link port="p4.input" relation="relation38"/>
+    <link port="p4.output" relation="relation29"/>
+    <link port="p4.output" relation="relation37"/>
+    <link port="p0.input" relation="relation6"/>
+    <link port="p0.input" relation="relation40"/>
+    <link port="p0.output" relation="relation3"/>
+    <link port="p0.output" relation="relation36"/>
+    <link port="p1.input" relation="relation7"/>
+    <link port="p1.input" relation="relation16"/>
+    <link port="p1.output" relation="relation2"/>
+    <link port="p1.output" relation="relation10"/>
+</entity>

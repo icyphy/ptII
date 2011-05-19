@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>LevelCrossingDetectorDetectingDirections</title>
+</head>
+<body>
+<h1>LevelCrossingDetectorDetectingDirections</h1>
+This page contains an applet that should appear as a separate window.
+
+<p>Levels and directions detected by the level 
+crossing detectors.
+<p>This model shows that level crossing
+detectors can be configured to detect
+different directions of level crossings
+with the "direction" parameter.
+
+<p>When the direction is configured to be
+"rising" (or "falling"), the level crossing 
+detector only detects the level crossings 
+when the input signal is rising (or falling). 
+For example, the second (or third) level 
+crossing detector. 
+
+<p>By default, the direction is configured to
+be "both", meaning any level crossing will
+be detected no matter the signal is rising
+or falling.
+</p>
+
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- PT SIMPLE APPLET CONVERTER -->
+<APPLET 
+ code = "ptolemy.vergil.VergilApplet"
+ codebase = "../../../../.."
+  archive = "ptolemy/ptsupport.jar,ptolemy/domains/continuous/continuous.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <!-- PARAM name="jnlp_href" value="ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.jnlp" -->
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer LevelCrossingDetectorDetectingDirections.xml">
+ <PARAM NAME = "NAME" VALUE = "LevelCrossingDetectorDetectingDirections" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "LevelCrossingDetectorDetectingDirections.xml" > \
+ <a href="LevelCrossingDetectorDetectingDirections.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT SIMPLE APPLET CONVERTER -->
+</CENTER>
+</p>
+</body>
+</html>

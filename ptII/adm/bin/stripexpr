@@ -1,0 +1,110 @@
+#!/bin/sh
+# Look for Const -> NonStrictTest pairs and strip out
+# the value and correctValues and print them as a Tcl Test
+
+for file in $@
+do
+awk '$0 ~ /class="ptolemy.actor.lib.Const">/ {
+	    sawConst=1
+	    nf=split($0,f,"\"")
+	    constName = f[2]
+	}
+     $0 ~ /<property name="value" class="ptolemy.data.expr.Parameter"/ {
+	    if (sawConst == 1) {
+		sawConst = 0
+		nf=split($0,f,"\"")
+		value=f[nf-1]
+		#print "ConstName:", constName, "value: ", value
+		consts[constName] = value
+	    }
+	}    
+    $0 ~ /class="ptolemy.actor.lib.NonStrictTest">/ {sawNonStrictTest=1
+	    nf=split($0,f,"\"")
+	    nonStrictName = f[2]
+	}
+    $0 ~ /<property name="correctValues" class="ptolemy.data.expr.Parameter" value="/ {
+	    if (sawNonStrictTest == 1) {
+		sawNonStrictTest = 0
+		nf=split($0,f,"\"")
+		value=f[nf-1]
+		#print "NonStrictName:", nonStrictName, "value: ", value
+		nonStrictNames[nonStrictName] = value
+	    }
+	}
+     $0 ~ /<link port/ {
+        # Determine which Const is connected to which NonStrictName
+	nf=split($0,f,"\"")
+	split(f[2], ff, ".")	    
+
+	port=ff[1]
+	relation=f[nf-1]
+
+	if (relations[relation] == "") {
+	    # Have not yet seen this relation
+	    relations[relation] = port
+	} else {    
+	    # Saw this relation
+	    if (relations[relation] ~ /^Const/) {
+		# Get rid of the port (.input, .output)
+		split(relations[relation], f, ".")
+		constName = f[1]
+		nonStrictName = port
+	    } else {
+		if (relations[relation] ~ /^NonStrictTest/) {
+		    constName = port
+		    # Get rid of the port (.input, .output)
+		    split(relations[relation], f, ".")
+		    nonStrictName = f[1]
+		} else {
+		    print "HELP!:", $0 
+		    print "HELP: relations[relation]:", relations[relation]
+
+		}
+	    }
+	    if (resultCount == 0) {
+		# This is our first test, so print out a header
+		split(FILENAME, f, ".") 
+		shortFilename = f[1]
+		print "test ParseTreeEvaluator-" f[1], "{test", f[1] "} {"
+		printf("    list ");
+	    }
+	    if (resultCount > 0) {
+	        printf(" \\\n        ")
+            }
+	    #print "ConstName:", constName, "nonStrictName:", nonStrictName
+	    # Already saw this relation, we are done
+	    printf("[evaluate {%s}]", consts[constName])
+	    #print "nonStrictNames[]:", nonStrictNames[nonStrictName]
+	    results[resultCount++] = nonStrictNames[nonStrictName]
+
+	}
+     }
+END {
+	# Close out the test body and print the results
+        printf("\n} {")
+	for(i=0; i<resultCount; i++) {
+	    if (i > 0) {
+		printf(" ");
+	    }
+	    if (index(results[i], " ") == 0) {
+		printf("%s", substr(results[i], 2, length(results[i]) - 2))
+	    } else {
+		printf("%s", results[i])
+	    } 
+
+	}    
+        printf("}\n\n")
+	resultCount = 0
+    }     
+     ' $file | sed -e 's/doubleIdentityMatrix/identityDouble/g' \
+    -e 's/complexIdentityMatrix/identityComplex/g' \
+    -e 's/intIdentityMatrix/identityInt/g' \
+    -e 's/longIdentityMatrix/identityLong/g' \
+    -e 's/\&amp;/\&/g' \
+    -e 's/\&gt;/>/g' \
+    -e 's/\&lt;/</g' \
+    -e 's/\([0-9]\)l/\1L/g'
+done
+
+
+

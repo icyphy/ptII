@@ -1,0 +1,111 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+
+
+<!-- References: -->
+<!--  (Look at 330Cory desktop &| at printout) -->
+<!--   Selected item(s) from:                     -->
+<!--     http://xdb.lbl.gov/Section5/Sec_5-1.html -->
+<!--       lightSpeed                             -->
+
+
+<!-- TIME -->
+<property name="minute" class="ptolemy.data.expr.Parameter" value="60*second"/>
+<property name="hour" class="ptolemy.data.expr.Parameter" value="3600*second"/>
+<property name="day" class="ptolemy.data.expr.Parameter" value="24*hour"/>
+<property name="yearCalendar" class="ptolemy.data.expr.Parameter" value="365.2425*day"/> <!--Leap year %4 && !(%100 && !%400)-->
+<property name="yearSidereal" class="ptolemy.data.expr.Parameter" value="31558150*second"/> <!--APPROXIMATE-->
+<property name="yearTropical" class="ptolemy.data.expr.Parameter" value="31556930*second"/> <!--APPROXIMATE-->
+<property name="curie" class="ptolemy.data.expr.Parameter" value="3.7E+10/second"/> <!--APPROXIMATE-->
+
+
+<!-- SPACE -->
+<property name="angstrom" class="ptolemy.data.expr.Parameter" value="1E-10*meter"/>
+<property name="gallonCanadian" class="ptolemy.data.expr.Parameter" value="4546.09*cm^3"/> <!--Canadian and UK-->
+<property name="gallonUS" class="ptolemy.data.expr.Parameter" value="3785.412*cm^3"/> <!--APPROXIMATE-->
+<property name="gallon" class="ptolemy.data.expr.Parameter" value="gallonUS"/> <!--Liquid-->
+<property name="barrel" class="ptolemy.data.expr.Parameter" value="42*gallonUS"/>
+<property name="ozFluidUS" class="ptolemy.data.expr.Parameter" value="gallonUS/128"/>
+<property name="tablespoon" class="ptolemy.data.expr.Parameter" value="ozFluidUS/2"/>
+<property name="teaspoon" class="ptolemy.data.expr.Parameter" value="ozFluidUS/6"/>
+<property name="cup" class="ptolemy.data.expr.Parameter" value="8*ozFluidUS"/>
+<property name="pint" class="ptolemy.data.expr.Parameter" value="2*cup"/> <!--Liquid-->
+<property name="quart" class="ptolemy.data.expr.Parameter" value="2*pint"/> <!--Liquid-->
+<property name="astronomicalUnit" class="ptolemy.data.expr.Parameter" value="1.495979E+11*meter"/> <!--APPROXIMATE-->
+<property name="inch" class="ptolemy.data.expr.Parameter" value="0.0254*meter"/>
+<property name="foot" class="ptolemy.data.expr.Parameter" value="0.3048*meter"/>
+<property name="yard" class="ptolemy.data.expr.Parameter" value="3*foot"/>
+<property name="cord" class="ptolemy.data.expr.Parameter" value="128*foot^3"/>
+<property name="footUSSurvey" class="ptolemy.data.expr.Parameter" value="0.3048006*meter"/> <!--APPROXIMATE-->
+<property name="fathom" class="ptolemy.data.expr.Parameter" value="6*footUSSurvey"/>
+<property name="acre" class="ptolemy.data.expr.Parameter" value="43560*footUSSurvey^2"/>
+<property name="acreFoot" class="ptolemy.data.expr.Parameter" value="acre*footUSSurvey"/>
+<property name="mileNautical" class="ptolemy.data.expr.Parameter" value="1852*meter"/>
+<property name="mile" class="ptolemy.data.expr.Parameter" value="5280*foot"/>
+<property name="barn" class="ptolemy.data.expr.Parameter" value="1E-28*meter^2"/>
+<property name="hectare" class="ptolemy.data.expr.Parameter" value="1E+4*meter^2"/>
+<property name="knot" class="ptolemy.data.expr.Parameter" value="mileNautical/hour"/>
+<property name="mph" class="ptolemy.data.expr.Parameter" value="mile/hour"/>
+
+
+<!-- MATTER -->
+<property name="tonMetric" class="ptolemy.data.expr.Parameter" value="1000*kg"/>
+<property name="pound" class="ptolemy.data.expr.Parameter" value="453.5924*gram"/> <!--Avoirdupois APPROXIMATE-->
+<property name="ton" class="ptolemy.data.expr.Parameter" value="2000*pound"/> <!--Short ton-->
+<property name="tonLong" class="ptolemy.data.expr.Parameter" value="2240*pound"/> <!--Long ton-->
+<property name="oz" class="ptolemy.data.expr.Parameter" value="pound/16"/>
+<property name="poundTroy" class="ptolemy.data.expr.Parameter" value="373.2417"/> <!--Troy or apothecary APPROXIMATE-->
+<property name="ounceTroy" class="ptolemy.data.expr.Parameter" value="poundTroy/12"/> <!--Yes 12, not 16-->
+
+
+<!-- FORCE ETC. -->
+<property name="earthGravity" class="ptolemy.data.expr.Parameter" value="9.80665*meter/second^2"/> <!--APPROXIMATE-->
+<property name="ounceForce" class="ptolemy.data.expr.Parameter" value="oz*earthGravity"/>
+<property name="poundForce" class="ptolemy.data.expr.Parameter" value="pound*earthGravity"/>
+
+<property name="psi" class="ptolemy.data.expr.Parameter" value="pound/inch^2"/>
+<property name="pascal" class="ptolemy.data.expr.Parameter" value="10*dyne/cm^2"/>
+<property name="atm" class="ptolemy.data.expr.Parameter" value="101325*pascal"/> <!--atmosphere, standard APPROXIMATE-->
+<property name="bar" class="ptolemy.data.expr.Parameter" value="100000*pascal"/>
+<property name="millibar" class="ptolemy.data.expr.Parameter" value="100*pascal"/>
+<property name="inchOfWater" class="ptolemy.data.expr.Parameter" value="249.0889*pascal"/> <!--APPROXIMATE-->
+<property name="mmOfWater" class="ptolemy.data.expr.Parameter" value="inchOfWater/25.4"/>
+<property name="inchOfMercury" class="ptolemy.data.expr.Parameter" value="3386.389*pascal"/> <!--APPROXIMATE-->
+<property name="mmOfMercury" class="ptolemy.data.expr.Parameter" value="inchOfMercury/25.4"/>
+<property name="torr" class="ptolemy.data.expr.Parameter" value="mmOfMercury"/>
+
+
+<!-- ENERGY -->
+<property name="rankine" class="ptolemy.data.expr.Parameter" value="5*kelvin/9"/>
+<property name="thermUS" class="ptolemy.data.expr.Parameter" value="1.054804E+8*joule"/> <!--APPROXIMATE-->
+<property name="btuIT" class="ptolemy.data.expr.Parameter" value="1055.056*joule"/> <!--APPROXIMATE-->
+<property name="tonTNT" class="ptolemy.data.expr.Parameter" value="4.184E+9*joule"/> <!--APPROXIMATE-->
+<property name="calorie" class="ptolemy.data.expr.Parameter" value="4.1868*joule"/>
+
+
+<!-- POWER -->
+<property name="tonOfRefrigeration" class="ptolemy.data.expr.Parameter" value="12000*btuIT/hour"/>
+<property name="watt" class="ptolemy.data.expr.Parameter" value="joule/second"/>
+<property name="hp" class="ptolemy.data.expr.Parameter" value="550*foot*poundForce/second"/> <!--horsepower 550 ft-lbf/s, 5 others exist APPROXIMATE-->
+
+
+<!-- VISCOSITY, DYNAMIC -->
+<property name="centipoise" class="ptolemy.data.expr.Parameter" value="1E-3*pascal*second"/>
+<property name="poise" class="ptolemy.data.expr.Parameter" value="1E-1*pascal*second"/>
+
+<!-- VISCOSITY, KINEMATIC -->
+<property name="centistoke" class="ptolemy.data.expr.Parameter" value="1E-6*meter^2/second"/>
+<property name="stoke" class="ptolemy.data.expr.Parameter" value="1E-4*meter^2/second"/>
+
+
+
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"/>
+      </svg>
+    </configure>
+  </property>
+</group>

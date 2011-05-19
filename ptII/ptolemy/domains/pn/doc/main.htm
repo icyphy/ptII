@@ -1,0 +1,60 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Process Networks Domain</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Process Networks</h1>
+<P>
+To model hardware and embedded applications, a highly concurrent model of
+computation is required. The PN domain in Ptolemy II presents a mechanism to
+model concurrency using the Kahn process networks model of computation [1].
+The process networks model of computation has a dataflow flavor to it.
+This makes it well suited to modeling embedded dataflow applications and
+hardware architectures. <p>
+
+In Ptolemy II, an implementation of the Kahn-MacQueen [2] semantics is
+provided. This is the bounded memory execution as proposed by T. Parks [3].<p>
+
+The following are the most important features of the operational semantics of
+PN as proposed by Kahn and MacQueen:
+<UL>
+<li>This is a network of sequential processes.
+<LI>The processes do not share memory. Instead they communicate with each other
+only through unidirectional FIFO channels.
+<LI>Communication between processes is asynchronous.
+<li>Processes block on a read from a FIFO channel if the channel is empty but
+can write to a channel whenever they want to.
+</UL>
+
+The above features make the execution of the network deterministic. The
+implementation in Ptolemy II is based on Java threads and synchronizing
+monitors. <p>
+
+In addition to the above features, the PN domain has been extended to support
+a notion of global time. Time advances for a PN process either when the process
+is blocked on a read from some channel or when  is explicitly waiting for time
+to advance. This is based primarily on Pamela [4].<p>
+
+PN has been further extended to support dynamic changes to a graph. In case of
+timed-PN these changes are completely deterministic, while in case of
+untimed-PN, the changes could be non-deterministic and can depend on the
+schedule of the underlying java threads. <p>
+
+<H2>References</H2>
+<OL>
+<li>G. Kahn, "The semantics of a simple language for parallel programming,"
+<i>Info. Proc. 74, </i>vol.4, pp. 471-5, 1974.
+<li>G. Kahn and D.B. MacQueen, "Coroutines and networks of parallel processes,"
+<i>Info. Proc. 77, </i> vol. 7, pp. 993-8, 1997.
+<li>T.M. Parks, <i>Bounded scheduling of process networks.</i> PhD thesis,
+Univ. of California at Berkeley, 1995.
+<li>A. van Gemund, "Performance prediction of parallel processing systems: The
+Pamela methodology," in <i>Proc. 7th ACM Int. Conf. on Supercomputing (Tokyo),
+pp.318-327, July 1993.
+</OL>
+
+</body>
+</html>

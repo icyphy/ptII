@@ -1,0 +1,108 @@
+#! /bin/sh
+# Move over misc files and add them to CVS
+
+destdir=/users/cxh/ptII.tst/ptII
+srcdir=/users/cxh/ptII
+
+collectionsfiles="\
+ArrayEnumeration.java \
+Assertable.java \
+Bag.java \
+BinaryFunction.java \
+CEImpl.java \
+CLCell.java \
+CLEnumeration.java \
+CheckedBag.java \
+CheckedCollection.java \
+CheckedMap.java \
+CheckedSeq.java \
+CheckedSet.java \
+CircularList.java \
+Collection.java \
+CollectionEnumeration.java \
+Comparator.java \
+CorruptedEnumerationException.java \
+DAEnumeration.java \
+DefaultComparator.java \
+DefaultImplementations.java \
+Dynarray.java \
+ElementSortedCollection.java \
+FilteringEnumeration.java \
+Function.java \
+HTEnumeration.java \
+HTPairEnumeration.java \
+HashTableParams.java \
+HashedMap.java \
+HashedSet.java \
+IllegalElementException.java \
+Immutable.java \
+ImplementationCheckable.java \
+ImplementationError.java \
+IncrBag.java \
+IncrCollectionEnumeration.java \
+IncrImpl.java \
+IncrMap.java \
+IncrSeq.java \
+IncrSet.java \
+InterleavingEnumeration.java \
+KeySortedCollection.java \
+Keyed.java \
+LBEnumeration.java \
+LLCellEnumeration.java \
+LLMap.java \
+LLPair.java \
+LLPairEnumeration.java \
+LinkedBuffer.java \
+Map.java \
+MappingEnumeration.java \
+Pair.java \
+Predicate.java \
+Procedure.java \
+RBCell.java \
+RBCellEnumeration.java \
+RBMap.java \
+RBPair.java \
+RBPairEnumeration.java \
+RBTree.java \
+Seq.java \
+Set.java \
+SortableCollection.java \
+UpdatableBag.java \
+UpdatableBagImpl.java \
+UpdatableCollection.java \
+UpdatableMap.java \
+UpdatableMapImpl.java \
+UpdatableSeq.java \
+UpdatableSet.java \
+UpdatableSetImpl.java \
+index.html"
+
+if [ ! -f $destdir/UpdatableSetImpl.java ]; then
+	cd $srcdir/collections
+	cp $collectionsfiles $destdir
+	cd $destdir
+	cvs add $collectionsfiles
+	cvs commit -m "Initial check in" $collectionsfiles
+fi
+
+exit
+
+if [ ! -f $destdir/doc/img/ptIIplanet.gif ]; then
+	cd $srcdir/doc/img
+	cp *.gif $destdir/doc/img
+	cd $destdir
+	cvs add -kb *.gif
+	cvs commit -m "Initial check in of gifs"
+fi
+
+if [ ! -f $destdir/plot/demo/data/fourier.gif ]; then
+	cd $srcdir/plot/demo/data
+	cp bin.plt $destdir/plot/demo/data
+	cp butterfly.plt $destdir/plot/demo/data
+	cp fourier.gif $destdir/plot/demo/data
+	cp integrator1.plt $destdir/plot/demo/data
+	cp integrator2.plt $destdir/plot/demo/data
+	cd $destdir/plot/demo/data
+	cvs add -kb *.gif *.plt
+	cvs commit -m "Initial check in of plots and gif "
+fi

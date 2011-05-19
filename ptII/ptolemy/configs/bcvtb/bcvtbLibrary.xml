@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Basic library, including mature directors, actors and utilities.  -->
+<entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+  <!-- Marker so that tree view expands the library. -->
+  <property name="_libraryMarker"
+            class="ptolemy.kernel.util.SingletonAttribute"/>
+
+  <!-- Default utilities library. Don't include
+       configs/utilitiesLibrary.xml, it includes domains.fsm -->
+  <input source="ptolemy/configs/hyvisual/utilitiesLibrary.xml"/>
+
+  <!-- Default director library. -->
+  <!-- This uses configure so that directors are not instantiated -->
+  <!-- until (and unless) the library is opened. -->
+  <entity name="Directors" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+	   <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector"/>
+	   <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+	   <property name="FSM Director" class="ptolemy.domains.modal.kernel.FSMDirector"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+
+  <!-- Default actor library. -->
+  <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+	<input source="lbnl/actor/lib/simulatorentities.xml"/>
+	<input source="ptolemy/actor/lib/sources.xml"/>
+	<input source="ptolemy/actor/lib/sinks.xml"/>
+	<input source="ptolemy/actor/lib/array.xml"/>
+	<input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+	<input source="ptolemy/actor/lib/flowcontrol.xml"/>
+	<input source="ptolemy/actor/lib/hoc/hoc.xml"/>
+	<input source="ptolemy/actor/lib/io/io.xml"/>
+	<input source="ptolemy/actor/lib/logic/logic.xml"/>
+	<input source="ptolemy/actor/lib/math.xml"/>
+	<input source="ptolemy/actor/lib/matrix.xml"/>
+	<input source="ptolemy/actor/lib/randomNoColt.xml"/>
+	<input source="ptolemy/actor/lib/realtime.xml"/>
+	<input source="ptolemy/actor/lib/signalprocessing.xml"/>
+	<input source="ptolemy/actor/lib/string/string.xml"/>
+	<input source="ptolemy/actor/lib/xslt/xslt.xml"/>
+	<input source="ptolemy/actor/lib/database/database.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+</entity>

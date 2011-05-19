@@ -1,0 +1,81 @@
+#! /bin/sh
+# -[Mon Feb 28 08:52:07 2005 by cxh]-
+# Indent Java code using emacs
+# Usage: jindent [-n] [-d]
+#    -n Print what would happen, but don't checkout or modify files
+#
+# The Emacs  CC-mode FAQ says:
+#     *Q.* *How do I re-indent the whole file?*
+#
+#     *A.* Visit the file and hit `C-x h' to mark the whole buffer. Then
+#     hit `<ESC> C-\'.
+#
+# C-x h mark-whole-buffer
+# ESC C-\ indent-region
+#(fset 'jindent
+#   "\C-xh\C-[\C-\\")
+
+printonly=no
+
+if [ "$1" = "-n" ]; then
+    printonly=yes;
+    shift
+fi
+
+emacs=emacs
+if [ "$PTII" = "" ]; then
+    echo "$0: \$METRO is not set, exiting"
+    exit 4
+fi
+
+jindent_el=$PTII/util/lisp/jindent.el
+
+if [ ! -f "$jindent_el" ]; then
+    echo "$0: '$jindent_el' not found, exiting"
+    exit 5
+fi
+
+
+
+for file in $@
+do
+    # Handle .cpp and .java files 
+    extension=`echo $file | sed 's/.*\.\([^.]*\)$/\1/'`
+    # Under cygwin /tmp is at c:/cygwin/tmp, but emacs thinks /tmp
+    # is at c:/tmp
+    tmpfile=jindenttmp$$.$extension
+    cp $file $tmpfile
+    chmod u+w $tmpfile
+    echo "$file"
+    $emacs -q -batch -l $jindent_el $tmpfile -f jindent
+    diff $file $tmpfile
+    status=$?
+    if [ $status -eq 1 ]; then
+	if [ "$printonly" = "yes" ]; then
+	    echo "Would be checked out"
+	else
+	    if [ -d SCCS ]; then
+		sccs edit $file
+	    fi
+	    if [ -w $file ]; then
+
+		if [ -d SCCS ]; then
+		    echo "$file is now writable, now reindenting"
+		    $emacs -q -batch -l $jindent_el $file -f jindent
+		    sccs delget -y"Reindented with jindent" $file
+		else
+		    if [ -d CVS ]; then
+			cp $tmpfile $file
+			cvs commit -m "Reindented with jindent" $file
+		    fi
+		fi
+	    else
+		echo "ERROR: could not check out $file"
+	    fi
+	fi
+    rm -f $tmpfile
+    else
+	echo "No differences, so no need to delget"
+    fi
+done
+

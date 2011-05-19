@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="ListDirectoryIcon" class="ptolemy.vergil.ptera.EventIcon">
+  <property name="fill" class="ptolemy.data.expr.Parameter" value="{0.9, 0.8, 0.9, 1.0}"/>
+  <property name="spacing" value="isFinalEvent ? 3.0 : 0.0"/>
+</property>

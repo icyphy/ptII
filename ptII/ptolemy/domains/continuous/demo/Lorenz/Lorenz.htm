@@ -1,0 +1,43 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Lorenz Attractor</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Lorenz Attractor</H1>
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Lorenz is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Lorenz.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="LorenzVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+<p>
+The applet above simulates these differential equations using
+the Continuous domain in Ptolemy II.  The Continuous domain
+includes a sophisticated numerical solver for differential equations.
+The plot shows x2 vs. x1. The initial conditions of the states are
+all 1.0. The parameters sigma, lambda and b can be modified to change
+the behavior of the model.
+<p>
+See <a href="LorenzVergil.htm">the model</a>
+in Vergil, the Ptolemy II schematic editor.
+<p>
+</BODY>
+</HTML>

@@ -1,0 +1,146 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AddSubtract_Loop" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 50, 815, 644}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 526]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 263.0}">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
+        </property>
+    </property>
+    <entity name="FixConst" class="ptolemy.actor.lib.vhdl.FixConst">
+        <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="0:-31">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 340.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{fix(32.0,63,32), fix(32.5,63,32)}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 280.0}">
+        </property>
+    </entity>
+    <entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 340.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.7070707070707, 308.7200126262626}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 185.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{620.0, 200.0}">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
+            </property>
+        </port>
+        <entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 215.0]">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 115.0]">
+                </property>
+            </port>
+            <port name="port3" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 165.0]">
+                </property>
+            </port>
+            <entity name="AddSubtract" class="ptolemy.actor.lib.vhdl.AddSubtract">
+                <property name="outputPrecision" class="ptolemy.data.expr.StringParameter" value="31:-31">
+                </property>
+                <property name="outputOverflow" class="ptolemy.data.expr.StringParameter" value="CLIP">
+                </property>
+                <property name="latency" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="initialValue" class="ptolemy.data.expr.Parameter" value="32">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 160.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="port" relation="relation2"/>
+            <link port="port2" relation="relation"/>
+            <link port="port3" relation="relation3"/>
+            <link port="AddSubtract.output" relation="relation3"/>
+            <link port="AddSubtract.A" relation="relation"/>
+            <link port="AddSubtract.B" relation="relation2"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="port2" relation="relation"/>
+        <link port="port3" relation="relation3"/>
+        <link port="TypedCompositeActor.port" relation="relation2"/>
+        <link port="TypedCompositeActor.port2" relation="relation3"/>
+        <link port="TypedCompositeActor.port3" relation="relation"/>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[365.0, 280.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="FixConst.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="TypedCompositeActor.port" relation="relation"/>
+    <link port="TypedCompositeActor.port2" relation="relation"/>
+    <link port="TypedCompositeActor.port3" relation="relation2"/>
+</entity>

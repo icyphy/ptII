@@ -1,0 +1,4 @@
+DB_Class_Name = ptdb.kernel.database.OracleXMLDBConnection
+DB_Url = @PTII@/ptdb/config/database/testdata
+DB_Container_Name = Testing.dbxml
+Cache_Container_Name = Testing_cache.dbxml

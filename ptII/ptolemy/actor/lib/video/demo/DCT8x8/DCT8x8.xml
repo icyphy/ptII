@@ -1,0 +1,93 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DCT8x8" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 45.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={497, 253, 971, 515}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[749, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.5, 200.0}">
+    </property>
+    <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={502, 2, 463, 458}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 403]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="500">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="300">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 145.0}">
+        </property>
+    </entity>
+    <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 215.0}">
+        </property>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="MatrixViewer2" class="ptolemy.actor.lib.gui.MatrixViewer">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 590, 463, 458}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 403]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="MatrixViewer3" class="ptolemy.actor.lib.gui.MatrixViewer">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1024, 582, 463, 458}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 403]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="DCT8x8" class="ptolemy.actor.lib.video.DCT8x8">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="IDCT8x8" class="ptolemy.actor.lib.video.IDCT8x8">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 225.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{255.0, 215.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[410.0, 225.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="MatrixViewer.input" relation="relation2"/>
+    <link port="SequenceToMatrix.input" relation="relation"/>
+    <link port="SequenceToMatrix.output" relation="relation2"/>
+    <link port="Sequence.output" relation="relation"/>
+    <link port="MatrixViewer2.input" relation="relation3"/>
+    <link port="MatrixViewer3.input" relation="relation4"/>
+    <link port="DCT8x8.input" relation="relation2"/>
+    <link port="DCT8x8.output" relation="relation3"/>
+    <link port="IDCT8x8.input" relation="relation3"/>
+    <link port="IDCT8x8.output" relation="relation4"/>
+</entity>

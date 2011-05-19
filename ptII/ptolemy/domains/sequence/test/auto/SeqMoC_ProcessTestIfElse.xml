@@ -1,0 +1,145 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SeqMoC_ProcessTestIfElse" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 149, 944, 751}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 634]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.5, 317.0}">
+    </property>
+    <property name="Process Director" class="ptolemy.domains.sequence.kernel.ProcessDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="Enable Default Output Initial Value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="IfThenElse seems to produce a token on the false output&#10;if there is no input. Is this what we want?&#10;&#10;Where are default values specified?">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 515.0]">
+        </property>
+    </property>
+    <entity name="If Then Else" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 175.0]">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P1', 1}">
+        </property>
+    </entity>
+    <entity name="If Then Else2" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 365.0]">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="False_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P2', 1}">
+        </property>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, true, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="Sequence2" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={951, 88, 492, 219}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 215.0]">
+        </property>
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 1}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={962, 329, 492, 219}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 285.0]">
+        </property>
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 2}">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={984, 566, 492, 219}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 415.0]">
+        </property>
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 1}">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 819, 492, 219}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 490.0}">
+        </property>
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 2}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="If Then Else.If" relation="relation2"/>
+    <link port="If Then Else.Then" relation="relation3"/>
+    <link port="If Then Else.Else" relation="relation4"/>
+    <link port="If Then Else2.If" relation="relation"/>
+    <link port="If Then Else2.Then" relation="relation5"/>
+    <link port="If Then Else2.Else" relation="relation6"/>
+    <link port="Sequence.output" relation="relation2"/>
+    <link port="Sequence2.output" relation="relation"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="Display3.input" relation="relation5"/>
+    <link port="Display4.input" relation="relation6"/>
+</entity>

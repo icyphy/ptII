@@ -1,0 +1,15 @@
+PATH=/bin:/usr/bin:/usr/local/bin
+MAILDIR=$HOME/Mail      #you'd better make sure it exists
+LOGFILE=$MAILDIR/log   #recommended
+
+DEFAULT=/var/spool/mail/$LOGNAME
+FORMAIL=/usr/local/bin/formail
+
+SENDMAIL=/usr/lib/sendmail
+
+PTLUNCHBOTFOLDER=/users/ptII/adm/ptlunchbot
+:0
+* ^Subject: .*ptlunchbot
+| ${FORMAIL} -X From: -X Date: >>${PTLUNCHBOTFOLDER}
+
+

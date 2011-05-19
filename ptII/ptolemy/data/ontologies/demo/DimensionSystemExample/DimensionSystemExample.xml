@@ -1,0 +1,566 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DimensionSystemExample" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 50.0]">
+        </property>
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 204, 987, 595}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 478]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.3232727050781, 237.6444600423177}">
+    </property>
+    <property name="DimensionOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 340.0]">
+        </property>
+        <configure>
+            <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
+                <property name="MultiplyDivideActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+                    <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+                    </property>
+                    <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
+<line x1="-15" y1="-15" x2="-5" y2="-5"></line><line x1="-15" y1="-5" x2="-5" y2="-15"></line><line x1="-15" y1="10" x2="-5" y2="10"></line><circle cx="-10" cy="6" r="1" style="fill:black"></circle>
+<circle cx="-10" cy="14" r="1" style="fill:black"></circle>
+</svg>
+</configure>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 70.0]">
+                    </property>
+                    <property name="multiplyPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+                    </property>
+                    <property name="dividePortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+                    </property>
+                    <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= divideFunction(multiply, divide)">
+                    </property>
+                </property>
+                <property name="IntegratorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+                    <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.lib.Integrator">
+                    </property>
+                    <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.lib.Integrator">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg>
+<rect x="-50" y="-40" width="75" height="40" style="fill:white"></rect><text x="-45" y="-25" style="font-size:12; font-family:SansSerif; fill:black">      Actor
+Constraints</text></svg></configure>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 155.0]">
+                    </property>
+                    <property name="impulsePortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+                    </property>
+                    <property name="derivativePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= state == Unknown ? Unknown :&#10;    state == Position ? Velocity :&#10;     state == Velocity ? Acceleration :&#10;      state == Time ? Dimensionless :&#10;       Conflict">
+                        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="statePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= derivative == Unknown ? Unknown :&#10;    derivative == Velocity ? Position :&#10;     derivative == Acceleration ? Velocity :&#10;      derivative == Dimensionless ? Time :&#10;       Conflict">
+                        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="initialStatePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= state">
+                    </property>
+                    <property name="initialStateAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= state">
+                    </property>
+                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                            </property>
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                            </property>
+                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                            </property>
+                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                            </property>
+                        </property>
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                        </property>
+                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                        </property>
+                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                        </property>
+                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                        </property>
+                        <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                            <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
+                            </property>
+                        </property>
+                    </property>
+                </property>
+                <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+                    <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unknown || divisor == Unknown ? Unknown :&#10; dividend == Velocity &amp;&amp; divisor == Time ? Acceleration :&#10;  dividend == Position &amp;&amp; divisor == Time ? Velocity :&#10;   (dividend == Position &amp;&amp; divisor == Velocity) || (dividend == Velocity &amp;&amp; divisor == Acceleration) ? Time :&#10;    divisor == Dimensionless ? dividend :&#10;     dividend == divisor ? Dimensionless :&#10;      Conflict">
+                    </property>
+                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 195.0]">
+                    </property>
+                </property>
+                <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+                    <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+                    </property>
+                    <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 220.0]">
+                    </property>
+                    <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
+                    </property>
+                    <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+                    </property>
+                    <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+                    </property>
+                    <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+                    </property>
+                    <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+                    </property>
+                </property>
+                <entity name="dimensionSystem" class="ptolemy.data.ontologies.Ontology">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 80.0]">
+                    </property>
+                    <entity name="Time" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[199.70939468946088, 155.49999999999454]">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 180}">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Dimensionless" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[109.70939468946088, 155.49999999999454]">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 190}">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Acceleration" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[459.70939468946074, 155.49999999999454]">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{415, 195}">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Velocity" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[369.70939468946074, 155.49999999999454]">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 185}">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Position" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[284.70939468946085, 155.49999999999454]">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,1.0,1.0}">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 185}">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Conflict" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 50}">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Unknown" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 255.0]">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 325}">
+                            </property>
+                        </property>
+                    </entity>
+                    <relation name="r" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="r2" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="r3" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="r4" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="r5" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="r6" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="r7" class="ptolemy.data.ontologies.ConceptRelation">
+                        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </relation>
+                    <relation name="r8" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="r9" class="ptolemy.data.ontologies.ConceptRelation">
+                    </relation>
+                    <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.4524546511627046">
+                        </property>
+                    </relation>
+                    <link port="Time.belowPort" relation="r7"/>
+                    <link port="Time.abovePort" relation="r"/>
+                    <link port="Dimensionless.belowPort" relation="r6"/>
+                    <link port="Dimensionless.abovePort" relation="r2"/>
+                    <link port="Acceleration.belowPort" relation="r5"/>
+                    <link port="Acceleration.abovePort" relation="relation"/>
+                    <link port="Velocity.belowPort" relation="r8"/>
+                    <link port="Velocity.abovePort" relation="r3"/>
+                    <link port="Position.belowPort" relation="r9"/>
+                    <link port="Position.abovePort" relation="r4"/>
+                    <link port="Conflict.belowPort" relation="r"/>
+                    <link port="Conflict.belowPort" relation="r2"/>
+                    <link port="Conflict.belowPort" relation="r3"/>
+                    <link port="Conflict.belowPort" relation="r4"/>
+                    <link port="Conflict.belowPort" relation="relation"/>
+                    <link port="Unknown.abovePort" relation="r7"/>
+                    <link port="Unknown.abovePort" relation="r6"/>
+                    <link port="Unknown.abovePort" relation="r5"/>
+                    <link port="Unknown.abovePort" relation="r8"/>
+                    <link port="Unknown.abovePort" relation="r9"/>
+                </entity>
+            </entity>
+        </configure>
+    </property>
+    <property name="DimensionOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 395.0]">
+        </property>
+    </property>
+    <property name="DimensionOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="desiredSpeed &gt;= Velocity">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 415.0]">
+        </property>
+    </property>
+    <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 145.0]">
+        </property>
+    </port>
+    <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[478.38092041015625, 299.6166076660156]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="timeConstant">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[584.3184204101562, 389.9291076660156]">
+        </property>
+    </entity>
+    <entity name="AccelerationPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={706, 422, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[678.3809204101562, 204.61660766601562]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Acceleration</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="VelocityPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={706, 422, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[678.3809204101562, 299.6166076660156]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Velocity</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="PositionPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={706, 422, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[679.3184204101562, 389.9291076660156]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Position</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[525.0, 345.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <vertex name="vertex1" value="[428.38092041015625, 244.61660766601562]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="desiredSpeed" relation="relation"/>
+    <link port="MultiplyDivide.multiply" relation="relation2"/>
+    <link port="MultiplyDivide.divide" relation="relation5"/>
+    <link port="MultiplyDivide.output" relation="relation6"/>
+    <link port="Integrator.derivative" relation="relation6"/>
+    <link port="Integrator.state" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.minus" relation="relation4"/>
+    <link port="AddSubtract.output" relation="relation2"/>
+    <link port="Const.output" relation="relation5"/>
+    <link port="Integrator2.derivative" relation="relation4"/>
+    <link port="Integrator2.state" relation="relation3"/>
+    <link port="AccelerationPlot.input" relation="relation6"/>
+    <link port="VelocityPlot.input" relation="relation4"/>
+    <link port="PositionPlot.input" relation="relation3"/>
+</entity>

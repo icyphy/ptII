@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SendAndReceiveCnt" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.25E-6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 52, 985, 549}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[769, 427]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.8609532828282, 204.2345328282828}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Elaine Cheong</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 370.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is a Ptalon version of the model in &#10;$PTII/ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/SendAndReceiveCnt-InWireless.xml&#10;&#10;The PtalonActor (named SendAndReceiveCnt) generates&#10;numberOfSenders sender nodes (CntToLedsAndRfm) and numberOfReceiver receiver nodes (RfmToLeds),&#10;as well as an AtomicWirelessChannel for communication.&#10;&#10;CntToLedsAndRfm contains an application that blinks the LEDs as a binary counter &#10;and sends a radio packet with the current value of the counter. &#10;&#10;RfmToLeds contains an application that will receive the packet &#10;and display the counter value on the LEDs. &#10;&#10;The sent and received packet values are displayed in separate Display windows.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 120.0]">
+        </property>
+    </property>
+    <entity name="SendAndReceiveCnt" class="ptolemy.actor.ptalon.PtalonActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 75.0]">
+        </property>
+        <configure>
+            <ptalon file="ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.SendAndReceiveCnt">
+                <ptalonExpressionParameter name="numberOfSenders" value="5"/>
+                <ptalonExpressionParameter name="numberOfReceivers" value="5"/>
+                <ptalonExpressionParameter name="channelName" value="&quot;AtomicWirelessChannel&quot;"/>
+            </ptalon>
+        </configure>
+    </entity>
+</entity>

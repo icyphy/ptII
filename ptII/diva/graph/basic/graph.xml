@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE graph SYSTEM "graph.dtd">
+
+<graph>
+<node id="_a"/>
+<compositeNode id="_x">
+<node id="_b"/>
+<node id="_c"/>
+</compositeNode>
+<edge id="_e1" tail="_c" head="_b" directed="true"/>
+<edge id="_e2" tail="_x" head="_a" directed="true"/>
+</graph>
+

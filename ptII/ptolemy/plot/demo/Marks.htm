@@ -1,0 +1,50 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Marks</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Plot data read from a URL</h1>
+
+The plot below obtains its data from a
+<a href="plotmlSample.txt">data file</a> at a URL.
+The file format is PlotML, based on the popular internet language XML,
+<i>extensible markup language</i>.
+
+<p>
+ <APPLET 
+ code = "ptolemy.plot.plotml.PlotMLApplet" 
+ codebase = "../../.." 
+ archive = "ptolemy/plot/plotmlapplet.jar" 
+ width = "600" 
+ height = "400" 
+   > 
+ <PARAM NAME = "background" VALUE = "#ffffff" > 
+ <PARAM NAME = "dataurl" VALUE = "plotmlSample.txt" > 
+ No Java Plug-in support for applet, see <a href="http://www.java.com/"><code>http://www.java.com/</code></a> 
+ </APPLET> 
+
+<p>
+This plot shows certain features of the plotter. Note that color is
+disabled, and individual marks are used for the first ten data sets.
+After that, the marks are recycled, so the eleventh data set is
+indistinguishable from the first. (Had we used color, we would be able
+to distinguish up to 110 distinct datasets). Also note that the first two
+data sets are connected with lines, but the remaining data sets are
+not. The ranges for the horizontal and vertical axes are computed
+automatically from the data, but the tick marks for the horizontal axis
+are specified explicitly in the PlotML file. This is why they appear as
+words rather than numbers. Note further that each axis and each data
+set is labeled by a string given in the PlotML file. For details about
+the PlotML file format, see the
+<a href="../doc/plot.pdf" target="_top">Plot Chapter</a>.
+
+<p>Note that because of a bug in Java 1.4.0_01, this applet may fail
+if it is being viewed on a local file system, see
+<a href="../doc/troubleshooting.htm#spaces">AccessControlException caused by spaces in path name</a></h2> for details.
+
+<p>&nbsp;
+</body>
+</html>

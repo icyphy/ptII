@@ -1,0 +1,68 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Network Integration</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Network Integration</H1>
+
+The following plot shows the networked diagram for a received waveform
+for a baseband channel with additive Gaussian noise.
+<P>
+<font color="#cc0000">This applet will only work if this HTML file
+resides on the <code>http://ptolemy.eecs.berkeley.edu</code>
+web server.</font> See below for details.
+
+
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Networked is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Networked.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="NetworkedVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+This model contains a component that is defined on the Ptolemy project
+website.  When you open the model, you will be alerted to the fact
+that it requires loading a model definition from a remote source.
+If you agree to proceed, then you will have a model with a remotely
+defined component.  The component itself is at
+<a href="http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml">
+http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
+You can open that definition by clicking on the hyperlink, or by
+using the "Open URL" command in the File menu.
+ <p>
+This applet will only work if this HTML file
+resides on the <code>http://ptolemy.eecs.berkeley.edu</code>
+web server.
+The reason is that the default applet security policy
+only permits connections to the machine where the applet originated.
+Thus, if this applet is on your local machine, you will get a
+SecurityException when the applet tries to connect to
+<code>http://ptolemy.eecs.berkeley.edu</code> to download part of 
+the model.
+ <br>This restriction applies only to running this model as an applet,
+the model will run without this restriction under vergil or Web Start.
+
+<P>
+The <a href="NetworkedVergil.htm">block diagram</a>
+for the model was constructed using the Ptolemy II schematic editor
+called Vergil.
+</p>
+<p></p>
+</BODY>
+</HTML>

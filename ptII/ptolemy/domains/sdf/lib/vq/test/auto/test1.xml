@@ -1,0 +1,112 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="test1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    </property>
+    <property name="SDF10" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="77.0, 44.0">
+        </property>
+        <property name="copernicus_iterations" class="ptolemy.data.expr.Parameter" value="300">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 568}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
+    </property>
+    <entity name="ImageSequence0" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
+        <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
+        </property>
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="startFrame" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="endFrame" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="58.0, 124.0">
+        </property>
+    </entity>
+    <entity name="ImagePartition3" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="partitionColumns" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="158.0, 124.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            </property>
+        </port>
+    </entity>
+    <entity name="ImageUnpartition12" class="ptolemy.domains.sdf.lib.vq.ImageUnpartition">
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="partitionColumns" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="286.0, 124.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            </property>
+        </port>
+    </entity>
+    <entity name="Equals7" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="358.0, 210.0">
+        </property>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 208.0">
+        </property>
+    </entity>
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="99.0, 205.0">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ImageSequence0.output" relation="relation0"/>
+    <link port="ImagePartition3.input" relation="relation0"/>
+    <link port="ImagePartition3.output" relation="relation6"/>
+    <link port="ImageUnpartition12.input" relation="relation6"/>
+    <link port="ImageUnpartition12.output" relation="relation8"/>
+    <link port="Equals7.input" relation="relation8"/>
+    <link port="Equals7.input" relation="relation0"/>
+    <link port="Equals7.output" relation="relation10"/>
+    <link port="Test9.input" relation="relation10"/>
+</entity>

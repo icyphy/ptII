@@ -1,0 +1,12 @@
+#!/bin/sh
+# Build Ptolemy II very quickly
+
+if [ ! -d "$PTII" ]; then
+	echo "PTII is '$PTII', which either is not set or does not exist"
+	exit 9
+fi
+
+sh $PTII/util/testsuite/ptIIbuildfast
+
+cd $PTII
+make JFLAGS= tests

@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="sdf" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Synchronous dataflow actors</doc>
+
+<entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix"/>
+<entity name="MatrixToDouble" class="ptolemy.domains.sdf.lib.MatrixToDouble"/>
+<entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+<doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+</entity>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+

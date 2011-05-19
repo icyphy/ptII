@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NonStrictDelay" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 48.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 99, 819, 572}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 214.0">
+        </property>
+    </entity>
+    <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="262.0, 214.0">
+        </property>
+    </entity>
+    <entity name="NonStrictDelay2" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="197.0, 347.0">
+        </property>
+    </entity>
+    <entity name="NonStrictDelay3" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="312.0, 348.0">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="269.0, 32.0">
+        </property>
+    </entity>
+    <entity name="NonStrictTest7" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="422.0, 158.0">
+        </property>
+    </entity>
+    <entity name="NonStrictTest10" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="457.0, 417.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="139.0, 219.0">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="NonStrictDelay.input" relation="relation"/>
+    <link port="NonStrictDelay.output" relation="relation2"/>
+    <link port="NonStrictDelay2.input" relation="relation"/>
+    <link port="NonStrictDelay2.output" relation="relation6"/>
+    <link port="NonStrictDelay3.input" relation="relation6"/>
+    <link port="NonStrictDelay3.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest7.input" relation="relation2"/>
+    <link port="NonStrictTest10.input" relation="relation3"/>
+</entity>

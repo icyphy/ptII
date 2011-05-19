@@ -1,0 +1,45 @@
+- Save model doesn't work after the user creates elements (e.g. a
+  port) in a PtalonActor from Vergil.
+
+- User is not notified of invalid parameters or ports after a
+  parameter change of the PtalonActor. 
+
+- We may want to remove ports that are unconnected on the outside of a
+  PtalonActor after a parameter change.  Test this by creating a demo
+  that has a PtalonActor with a parameter that sets the number of
+  ports.
+
+- Model parameters that are used in a Ptalon file but are not declared
+  as actual PtalonParameters may not get their values transferred to a
+  PtalonActor at the right time, unless they happen to change values
+  at the same time as a declared PtalonParameter.
+  - Here is a test:
+  1. Comment out the range paramter in SmallWorld.ptln
+  2. Also remove the range parameter in SmallWorld.xml
+  3. Open SmallWorld.xml in Vergil and set top level range parameter to 100 in SmallWorld.xml
+  4. Open PtalonActor to verify that node radius sizes have not changed.
+  5. Run model.
+  6. Change range parameter to 50.
+  7. Open PtalonActor to verify that node radius sizes have or have not changed.
+  8. Do the same steps above, but first uncomment the call to validateSettables() in Manager.preinitializeAndResolveTypes().
+  9. Verify that results of model are the same, even though visually, the radii may be different.
+
+- MapReduce demo doesn't work when the number of machines equals 1.
+
+- paser.g: It is unclear that BOOLEAN_FACTOR, BOOLPARAMETER, etc are needed.
+
+- Need test framework for structural changes tested in ptalon/test/*.ptln
+
+- "actorparameter" vs. "actor" keyword is not enforced by the Ptalon compiler.
+
+- Is "transparent relation" really needed?
+
+- SharedParameters don't work.  
+  - For an example, use one of the ptinyos demos in the ptalon demo
+  directory and removed the timeResolution parameter from the DE
+  Director of all submodels (keep the top-level timeResolution
+  parameter).  timeResolution is a shared parameter which should get
+  propagated to the other DE Directors.
+  - Another example is to remove the commandPort and nodeID parameters
+  from the submodels (fill in parameter values in PtinyOSDirector with
+  default values).

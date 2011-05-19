@@ -1,0 +1,29 @@
+#!/bin/sh
+
+echo "Running find, this could take a minute"
+cvsRootFiles=/tmp/ptcvsfix.$$
+/usr/bin/find . -xdev -name Root -print > $cvsRootFiles
+
+# Create a script
+cvsRootScript=/tmp/ptcvsfix$$.sh
+cat <<EOF > $cvsRootScript
+#!/bin/sh
+for file in \$@
+do
+	echo \$file
+
+	#sed 's/gigasource/source/g' \$file > ptcvsfix.tmp
+	echo ":ext:source.eecs.berkeley.edu:/home/cvs" > ptcvsfix.tmp 
+	mv ptcvsfix.tmp \$file
+done
+EOF
+
+
+chmod a+x $cvsRootScript
+cat $cvsRootFiles | xargs $cvsRootScript
+
+rm -f $cvsRootFiles $cvsRootScript 
+
+
+
+

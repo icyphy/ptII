@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CI" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>ci domain actors</doc>
+        <entity name="BackDropQueue" class="ptolemy.domains.ci.lib.BackDropQueue"/>
+	<entity name="BinarySwitch" class="ptolemy.domains.ci.lib.BinarySwitch"/>
+	<entity name="FrontDropQueue" class="ptolemy.domains.ci.lib.FrontDropQueue"/>
+
+        <entity name="Queue" class="ptolemy.domains.ci.lib.Queue">
+
+           <doc></doc>
+	</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

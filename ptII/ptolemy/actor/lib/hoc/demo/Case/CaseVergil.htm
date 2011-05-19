@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Case</title>
+</head>
+<body>
+<h1>Case</h1>
+This page contains an applet that should appear as a separate window.
+<p>This model shows how to use the Case actor.
+Looking inside the Case actor will reveal that it
+has three distinct refinements. Which one is executed
+depends on the value of the control input provided to
+it. In this example, the control value cycles through
+the list {0, 1, 2, 3} repeatedly. The "0" refinement
+is executed when the control is 0, the "1" refinement is
+executed when the control is 1, and the "default" refinement
+is executed otherwise.</p>
+
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- PT SIMPLE APPLET CONVERTER -->
+<APPLET 
+ code = "ptolemy.vergil.VergilApplet"
+ codebase = "../../../../../.."
+  archive = "ptolemy/actor/lib/hoc/demo/Case/Case.jar,ptolemy/codegen/codegen.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/actor/lib/embeddedJava/embeddedJava.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <!-- PARAM name="jnlp_href" value="ptolemy/actor/lib/hoc/demo/Case/Case.jnlp" -->
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Case.xml">
+ <PARAM NAME = "NAME" VALUE = "Case" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "Case.xml" > \
+ <a href="Case.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT SIMPLE APPLET CONVERTER -->
+</CENTER>
+</p>
+</body>
+</html>

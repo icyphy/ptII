@@ -1,0 +1,82 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModelReference" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
+    <property name="Director" class="ptolemy.actor.Director">
+        <doc>Simple director that executes actors in the order in which they were created.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 22, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustrate the use of the ModelReference actor,&#10;which executes referenced models when it fires.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This director simply executes actors&#10;in the order in which they were created.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These two actors&#10;reference other&#10;models. When you&#10;run this model,&#10;these actors open&#10;those other models&#10;using the full-&#10;screen mode, and&#10;executes those&#10;other models.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 100.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor ends&#10;the execution.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 290.0]">
+        </property>
+    </property>
+    <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="../../../../../../ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.xml">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="10000L">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil (full screen)">
+        </property>
+        <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="VisualModelReference2" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="../MobileFunction/MobileFunction.xml">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="20000L">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+        </property>
+        <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 305.0">
+        </property>
+    </entity>
+</entity>

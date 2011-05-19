@@ -1,0 +1,6 @@
+/*attachDanglingPorts; */
+
+SingleNode is {
+	actor node = ptolemy.domains.wireless.lib.GraphicalLocator;
+        node();
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><WMBasicEdit>
+    <Attributes>
+        <WMENC_STRING Name="Title"/>
+
+    </Attributes>
+
+    <RemoveAllMarkers/>
+    <RemoveAllScripts/>
+    <Scripts>
+        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+    </Scripts>
+
+</WMBasicEdit>

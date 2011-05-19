@@ -1,0 +1,38 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Eratosthenes</TITLE>
+</HEAD>
+<BODY>
+<H1>Eratosthenes</H1>
+<P>
+
+<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Eratosthenes is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Eratosthenes.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="EratosthenesVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model computes prime numbers using the sieve of Eratosthenes.
+It uses the ActorRecursion actor, which clones a composite actor into
+itself upon firing, thus dynamically expanding the topology of the model.
+Each iteration outputs one prime number. Change the parameter
+iterations in DDF Director to specify number of iterations desired.   </p>
+</BODY>
+</HTML>

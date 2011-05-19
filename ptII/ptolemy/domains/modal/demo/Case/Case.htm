@@ -1,0 +1,41 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Case</TITLE>
+</HEAD>
+<BODY>
+<H1>Case</H1>
+<P>
+
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Case is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Case.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="CaseVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model shows how to use the Case actor.
+Looking inside the Case actor will reveal that it
+has three distinct refinements. Which one is executed
+depends on the value of the control input provided to
+it. In this example, the control value cycles through
+the list {0, 1, 2, 3} repeatedly. The "0" refinement
+is executed when the control is 0, the "1" refinement is
+executed when the control is 1, and the "default" refinement
+is executed otherwise.</p>
+</BODY>
+</HTML>

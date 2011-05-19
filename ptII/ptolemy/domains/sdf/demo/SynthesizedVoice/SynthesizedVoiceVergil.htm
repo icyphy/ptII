@@ -1,0 +1,56 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>A Synthetic Voice</TITLE>
+</HEAD>
+<BODY>
+
+<H1>A Synthetic Voice</H1>
+
+This applet plays two different audio streams.  The first is a recording of a man's voice.  The second is a synthetic version of the same spoken sentence.  The synthetic version is created using an adaptive linear-prediction filter to create an autoregressive model of the speech signal.  This filter changes during the speech signal to approximate the spectral characteristics of the speech.  These analyzed characteristics are then used to create the synthesized speech.
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<h3>Play Original Speech</h3>
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.jnlp">
+<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer SynthesizedVoice.xml">
+  <PARAM NAME = "NAME" VALUE = "SynthesizedVoice" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "SynthesizedVoice.xml" > \
+  <a href="SynthesizedVoice.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+
+<h3>Play Synthesized Speech</h3>
+<!-- PT JNLP CONVERTER -->
+<a href="SynthesizedVoice.jnlp">Run the demo using Web Start</a>
+<!-- /PT JNLP CONVERTER -->
+</CENTER>
+
+<P>
+The <a href="SynthesizedVoiceVergil.htm">block diagram</a>
+for the synthetic speech model.
+</p>
+<p></p>
+</BODY>
+</HTML>

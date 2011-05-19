@@ -1,0 +1,49 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="GenericSinks" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Sinks that work with any style of input (timed or not). </doc>
+
+<entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY"/>
+<entity name="Discard" class="ptolemy.actor.lib.Discard">
+  <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true"/>
+  <port name="input" class="ptolemy.actor.TypedIOPort">
+    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH"/>
+  </port>
+</entity>
+<entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
+
+<entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+<doc>Monitor and display values</doc>
+   <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
+   <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="displayWidth"/>
+   </property>
+</entity>
+<entity name="Publisher" class="ptolemy.actor.lib.Publisher">
+<doc>Publish the input values to all matching Subscribers.</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="channel"/>
+      <property name="displayWidth" value="60"/>
+      <property name="boxColor" value="{0.85, 0.6, 0.58, 1.0}"/>
+   </property>
+</entity>
+<entity name="Recorder" class="ptolemy.actor.lib.Recorder"/>
+<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+      </property>
+      <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+      </property>
+    </property>
+ </entity>
+<entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
+<entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
+      </group>
+    ?>
+  </configure>
+</entity>

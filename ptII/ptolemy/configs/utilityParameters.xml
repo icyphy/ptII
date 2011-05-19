@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Parameters" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Parameters</doc>
+<input source="ptolemy/configs/utilityParameter.xml"/>
+<input source="ptolemy/configs/utilityStringParameter.xml"/>
+<input source="ptolemy/configs/utilityNameParameter.xml"/>
+<input source="ptolemy/configs/utilityFileParameter.xml"/>
+<input source="ptolemy/configs/utilityColorAttribute.xml"/>
+<input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
+<input source="ptolemy/configs/utilitySharedParameter.xml"/>
+<input source="ptolemy/configs/utilityPortParameter.xml"/>
+<input source="ptolemy/configs/utilityRequireVersion.xml"/>
+<input source="ptolemy/configs/utilityScopeExtender.xml"/>
+<input source="ptolemy/configs/utilityPriority.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>

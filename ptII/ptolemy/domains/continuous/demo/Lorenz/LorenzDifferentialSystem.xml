@@ -1,0 +1,182 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LorenzDifferentialSystem" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 426]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[100, 114]">
+    </property>
+    <property name="sigma" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="sigma" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+    <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="lambda" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 45.0]">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+    <property name="b" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="b" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 60.0]">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 821, 536}, maximized=false}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 200.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{304.0, 213.0}">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is identical to the Lorenz&#10;demo, except that it uses a DifferentialSystem&#10;actor rather than discrete components&#10;to build up the dynamical system.&#10;&#10;It shows a nonlinear feedback&#10;system that exhibits chaotic behavior.&#10;It is modeled in continuous time. The&#10;Continuous director uses a sophisticated&#10;ordinary differential equation solver&#10;to execute the model. This particular&#10;model is known as a Lorenz attractor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 10.0]">
+        </property>
+    </property>
+    <entity name="DifferentialSystem" class="ptolemy.domains.continuous.lib.DifferentialSystem">
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 150.0]">
+        </property>
+        <property name="x1" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="x2" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="x3" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
+        </property>
+        <property name="x2_dot" class="ptolemy.data.expr.Parameter" value="(lambda-x3)*x1-x2">
+        </property>
+        <property name="x3_dot" class="ptolemy.data.expr.Parameter" value="x1*x2-b*x3">
+        </property>
+        <property name="y1" class="ptolemy.data.expr.Parameter" value="x1">
+        </property>
+        <property name="y2" class="ptolemy.data.expr.Parameter" value="x2">
+        </property>
+        <port name="y1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="y2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <relation name="_R" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="y1" relation="_R4"/>
+        <link port="y2" relation="_R5"/>
+    </entity>
+    <entity name="XY Plotter2" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={350, 359, 500, 486}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 442]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 150.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Strange Attractor</title>
+<xLabel>x1</xLabel>
+<yLabel>x2</yLabel>
+<xRange min="-15.83560909518253" max="17.59406406726041"/>
+<yRange min="-20.571335562672942" max="23.739642443264465"/>
+<noGrid/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DifferentialSystem.y1" relation="relation"/>
+    <link port="DifferentialSystem.y2" relation="relation8"/>
+    <link port="XY Plotter2.inputX" relation="relation"/>
+    <link port="XY Plotter2.inputY" relation="relation8"/>
+</entity>

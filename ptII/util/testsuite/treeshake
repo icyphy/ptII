@@ -1,0 +1,297 @@
+#!/bin/sh
+# Tree shake a demo: Build the minimal jar file and then run it
+# Usage:
+#       treeshake pathToJarExecutable treeshakejarfile \
+#                 [-c filelistingclasses] \ 
+#                 [-main Mainclass] java_commands . . .
+#
+#   The first java_command is expected to be the java interpreter
+# If -c is the 3rd argument, then 'filelistingclasses' is assumed to be
+# a file listing the classes to be read in where the format is 
+# fully qualified dot separated classnames:
+#   ptolemy.kernel.util.NamedObj
+#   ptolemy.util.StringUtilities
+# Note if the -c argument is present, it _must_ precede the -main argument
+#
+# If the -main argument is present, then the following argument is
+# is the main class in fully qualified dot separated format:
+#   -main foo.bar.Bif
+#
+#
+# @Authors: Christopher Hylands
+#
+# @Version: $Id$
+#
+# @Copyright (c) 1997-2008 The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+
+# We pass in the location of the jar command so that we are sure
+# that we get the right jar command in our path.  In particular, 
+# gcj comes with a jar command that could end up in /usr/local/bin
+# which is not exactly the same as the Sun jar command.
+JAR=$1
+treeshakejar=$2
+shift; shift
+fileListingClasses=""
+mainClass=""
+
+if [ "$1" = "-c" ]; then
+    shift
+    fileListingClasses=$1
+    shift
+    if [ -f "$fileListingClasses" ]; then
+	echo "File listing is $fileListingClasses."
+    else
+        echo "File listing $fileListingClasses not found...  Inferring."
+	fileListingClasses=""
+    fi
+fi
+
+if [ "$1" = "-main" ]; then
+    shift
+    mainClass=$1
+    shift
+fi
+
+javaCommand=$1
+
+# We can't use tmp here because under cygwin will remap /tmp
+# to c:/cygwin/tmp, and java will not be able to find it
+manifest=$PTII/treeshake_manifest$$.txt
+touch $manifest
+
+# If the -main argument was not present, try to find a class
+if [ "$mainClass" = "" ]; then
+    # Find the class that includes main() This is a bit of a hack, and
+    # most of the time, won't work.  We look for a command line
+    # argument that starts with "ptolemy."
+    for arg in $@
+    do
+	echo "$arg" | egrep "^ptolemy\."
+	retval=$?
+	if [ $retval = 0 ]; then
+	    mainClass=$arg
+	    break
+	fi
+    done
+fi
+
+if [ "$mainClass" != "" ]; then
+    echo "Main-class: $mainClass" > $manifest
+fi
+
+# Generate a list of ptolemy classes to include by running
+# the demo with under java -verbose
+
+if [ "$fileListingClasses" = "" ]; then
+    #set -x
+    shift
+    # XMLToken includes org.w3c.dom.Document
+    # org.xml.sax.InputSource is in the file by mistake.
+    ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
+        egrep '^\[Loaded ' | \
+        egrep -v 'Loaded (java|org.w3c|org.xml.sax|sun|com.sun)' | \
+        awk '{print substr($2, 1, length($2)-1)}' | \
+        sed 's@\.@/@g' | awk '{print $1 ".class"}'`
+    #set +x
+else
+    # XMLToken includes org.w3c.dom.Document
+    # org.xml.sax.InputSource is in the file by mistake.
+    ptolemyFiles=`cat "$fileListingClasses" |
+        egrep -v '^java|^org.w3c|^org.xml.sax|^sun|^com.sun' | \
+        sed 's@\.@/@g' | awk '{print $1 ".class"}' `
+
+    # Check that EventToken.class is present.  If not,
+    # then add it.
+    grep EventToken $fileListingClasses
+    result=$?
+    if [ $result -eq 1 ] ; then
+        ptolemyFiles="$ptolemyFiles ptolemy/data/EventToken.class"
+    fi	
+
+    # Check that ObjectType$BottomClass is present.  If not,
+    # then add it.  See
+    # https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=159
+    grep 'ObjectType\$BottomClass' $fileListingClasses
+    result=$?
+    if [ $result -eq 1 ] ; then
+	echo "Adding ObjectType$BottomClass"
+        ptolemyFiles="$ptolemyFiles ptolemy/data/type/ObjectType\$BottomClass.class"
+    fi	
+fi
+
+
+
+# Determine if we are on windows and try to set JAVAHOME
+windows=no
+if [ "${OSTYPE-no}" = "no" ]; then
+    case "`uname -s`" in
+    CYGWIN*) 
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+else    
+    case "${OSTYPE-no}" in
+    # Cygwin Bash
+    cygwin*)
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+fi
+
+CLASSPATHSEPARATOR=":"
+if [ "$windows" = "yes" ]; then
+    CLASSPATHSEPARATOR=";"
+fi
+
+
+# Throw away everything before -classpath xxx, where xxx is also tossed
+classPathArg=""
+echo "$@" | egrep -e "-classpath"
+retval=$?
+if [ $retval = 0 ]; then
+    for arg in $@
+    do
+	if [ "$1" = "-classpath" ]; then
+	    shift
+	    classPathArg=$@
+	    echo "Passed in -classpath arg was: $classPathArg"
+	    shift
+	    # Under solaris, the awk command should not have a space
+            # between the -F and the separator.
+	    classPathDirectoriesAndJars=`echo $classPathArg | \
+		awk -F"$CLASSPATHSEPARATOR" '{for(i=1;i<=NF;i++) printf("%s ", $i)}'`
+            echo "classPathDirectoriesAndJars:	$classPathDirectoriesAndJars"
+	    # Ok, since we might be pulling jar files from multiple
+	    # directories, we split up the value of the classpath argument
+	    # and copy the class files into a temporary location and
+	    # jar that up.
+	    # The trick is that we process the directories in reverse
+	    # order, so if the classpath is "xxx/jimple1;$PTII" we first
+	    # copy the .class files from $PTII and then from xxx/jimple.
+	    classPathDirectories=""	
+	    classPathJarFiles=""
+	    for dirOrJar in $classPathDirectoriesAndJars
+	    do
+		if [ -d "$dirOrJar" ]; then
+		    # It is a directory, we add it to the list
+		    # in reverse order
+		    classPathDirectories="$dirOrJar $classPathDirectories"
+		else    
+		    if [ -r "$dirOrJar" ]; then  
+			classPathJarFiles="$dirOrJar $classPathJarFiles"
+		    else	
+			echo "$0: $dirOrJar either does not exist or is not readable"
+		    fi	
+		fi
+	    done	
+            echo "classPathDirectories:	$classPathDirectories"
+	    echo "classPathJarFiles:	$classPathJarFiles"
+ 
+	    # There is similar jar handling code in ptcommon.mk
+	    PTJAR_TMPDIR=ptjar_tmpdir
+	    rm -rf $PTJAR_TMPDIR
+	    mkdir $PTJAR_TMPDIR
+
+    	    for directory in $classPathDirectories
+	    do
+		echo "Copying files from $directory"
+		for file in $ptolemyFiles
+		do
+			if [ -f "$directory/$file" ]; then
+			    classDir=`dirname $PTJAR_TMPDIR/$file`
+			    if [ ! -d "$classDir" ]; then
+				mkdir -p $classDir
+			    fi	
+			    echo $file
+			    cp "$directory/$file" $classDir
+			fi
+		done
+	    done	
+
+    	    for jarFile in $classPathJarFiles
+	    do
+		# Exclude certain jar files:
+		echo $jarFile | egrep 'Classes/classes.jar$|diva.jar$|jasminclasses.jar$|polyglotclasses-1.3.2.jar|$rt.jar$|sootclasses.jar$|' 
+		retval=$?
+	        if [ $retval != 1 ]; then
+		    echo "Skipping this jar file: $jarFile"
+	        else
+		    # jarFile was not one of the excluded jar files . . .
+		    echo "Looking in classpath at $jarFile"
+
+		    PTJAR_TMPDIR2=ptjar_tmpdir2
+		    rm -rf $PTJAR_TMPDIR2
+		    mkdir $PTJAR_TMPDIR2
+
+		    # Mac OS X fails with "cat: stdout: Broken pipe" on
+		    # ptII/lib/diva.jar, ptII/lib/polyglotclasses-1.3.2.jar
+		    # and
+		    # /System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Home/../Classes/classes.jar
+		    cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -xv)
+
+		    # This command might help avoid "cat: stdout: Broken pipe":
+		    #(cd $PTJAR_TMPDIR2; "$JAR" -xf $jarFile)
+
+		    echo "Possibly copying files from $jarFile"
+		
+		    for file in $ptolemyFiles
+		    do
+			if [ -f "$PTJAR_TMPDIR2/$file" ]; then
+			    classDir=`dirname $PTJAR_TMPDIR/$file`
+			    if [ ! -d "$classDir" ]; then
+				mkdir -p $classDir
+			    fi	
+			    cp "$PTJAR_TMPDIR2/$file" $classDir
+			fi
+		    done
+		fi
+	    done	
+	    # Now that we have processed the classpath arg, we break
+	    # out of the argument processing loop
+	    break
+	fi    
+	# Consume 
+	shift
+    done	
+fi
+
+if [ "$classPathArg" != "" ]; then
+    (cd $PTJAR_TMPDIR; "$JAR" -cm $manifest $ptolemyFiles) > "$treeshakejar"
+    rm -rf $PTJAR_TMPDIR $PTJAR_TMPDIR2
+else
+    (cd $PTII; "$JAR" -cm $manifest $ptolemyFiles) > "$treeshakejar"
+fi
+
+
+rm -f $manifest
+
+#set -x
+"$javaCommand" -classpath "$treeshakejar" $@
+

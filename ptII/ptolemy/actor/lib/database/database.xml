@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DatabaseActors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Database Actors</doc>
+      <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
+      </entity>
+      <entity name="DatabaseQuery" class="ptolemy.actor.lib.database.DatabaseQuery">
+      </entity>
+      <entity name="DatabaseSelect" class="ptolemy.actor.lib.database.DatabaseSelect">
+      </entity>
+      <entity name="DatabaseInsert" class="ptolemy.actor.lib.database.DatabaseInsert">
+      </entity>
+      <entity name="SQLStatement" class="ptolemy.actor.lib.database.SQLStatement">
+      </entity>
+      <entity name="ArrayOfRecordsRecorder" class="ptolemy.actor.lib.database.ArrayOfRecordsRecorder">
+        <property name="_configurer" class="ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory">
+          <property name="parameterName" value="records">
+          </property>
+          <property name="columns" value="columns">
+          </property>
+        </property>
+      </entity>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Graph/Model Transformation (GT) Facility</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Graph/Model Transformation (GT)</h1>
+
+<p>The model transformation facility provides a framework for the
+analysis and transformation of actor models using model transformation
+techniques.
+
+<p>The design of large-scale models poses a number of challenges. As
+the size of the models increases to thousands of actors or hundreds of
+thousands of actors, analysis and consistent modification on the
+models become extremely hard. Furthermore, to maximize component
+reuse, a systematic approach is needed for the specification and
+maintenance of common patterns in the models and the transformation of
+those patterns.
+
+<p>The model transformation framework to be developed in this project
+aims to support the flexible specification of patterns and
+replacements by means of rules in graph grammar. An intuitive
+graphical user interface will be built. For novice users, a set of
+common transformations will be included in a library to facilitate
+their common tasks.
+
+<p>The transformations are models in their own right. They can be
+embedded in larger models hierarchically. Heterogeneous models of
+computation can be used to control the application of individual
+"atomic" transformations. This makes it easy to create sophisticated
+transformations by composing simple ones in a manageable and
+disciplined way. The sophisticated transformations will also take
+advantage of the concurrency inherent in those models of computation.
+
+<p>Model transformation can be applied as an optimization of modal
+models. These are hierarchical state machines with refinements in
+their states, which are sub-models to be executed when those states
+are active. The current implementation includes the complete
+description of each refinement in the model description, even though
+refinements of the states in a state machine tend to have large
+commonality. With the transformation technique, only one refinement
+needs to be stored completely. The others are obtained by
+transformations performed on the stored refinement. This eliminates
+redundancy and eases the job of modifying multiple refinements
+consistently.
+
+<p>Other applications of the model transformation technique include
+recognizing common design patterns in the models in a static analysis,
+replacing exiting design patterns with more efficient ones, and
+reusing design patterns by incorporating them into new models.
+
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley. UCB/EECS-2009-77. May 2009.
+<li>Christopher Brooks, Chihhong Cheng, Thomas Huining Feng, Edward A. Lee and Reinhard von Hanxleden, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/bcflh08model.pdf" target="_top">Model Engineering using Multimodeling</a>," In <a href="http://www.info.fundp.ac.be/mccm/" target="_top">1st International Workshop on Model Co-Evolution and Consistency Management (MCCM '08)</a>, Toulouse, France, Sep. 2008.
+<li>Thomas Huining Feng and Edward A. Lee, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/fl08scalable.pdf" target="_top">Scalable Models Using Model Transformation</a>," In <a href="http://www.artist-embedded.org/artist/ACES-MB-08.html" target="_top">1st International Workshop on Model Based Architecting and Construction of Embedded Systems (ACESMB 2008)</a>, Toulouse, France, Sep. 2008.
+<li>Thomas Huining Feng, Miriam Zia, and Hans Vangheluwe, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/fzv07scsc.pdf" target="_top">Multi-Formalism Modelling and Model Transformation for the Design of Reactive Systems</a>," In <a href="http://www.sce.carleton.ca/faculty/wainer/SCSC07/" target="_top">2007 Summer Computer Simulation Conference (SCSC 2007)</a>, San Diego, CA, USA, Jul. 2007.
+</ul>
+
+</body>
+</html>

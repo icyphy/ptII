@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     @PTII_LOCALURL@.
+-->
+<!-- href is needed so that web start can cache the app and
+     it will appear in the desktop icon
+-->
+<!-- NOTE: the sandbox jnlp does not work with local files -->
+<jnlp codebase="@PTII_LOCALURL@"
+      href="@PTII_LOCALURL@/vergilPtinySandbox.jnlp"> 
+  <information>
+	  <title>Ptolemy II @PTVERSION@PtinySandbox</title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description>Smaller Runtime Release of the Simulation Environment in a safe and secure sandbox</description>
+	  <description kind="tooltip">Smaller Version, in Sandbox</description>
+	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <homepage href="@PTII_LOCALURL@"/>
+	  <offline-allowed/>
+  </information>
+  <security> 
+     <!-- Run in the sandbox -->
+  </security> 
+  <resources>
+        <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
+  	<j2se version="1.6+" max-heap-size="128m" />
+	<!-- Start Jars -->
+	<!-- End Jars -->
+  </resources>
+  <application-desc main-class="ptolemy.actor.gui.jnlp.PtinySandboxApplication">
+	<argument>-ptiny</argument>
+	<!-- Viewing html tends to fail because the html widget gets images -->
+	<argument>ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml</argument>
+  </application-desc>
+  <!-- Need to deal with Java 3D -->
+</jnlp>

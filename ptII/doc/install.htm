@@ -1,0 +1,802 @@
+<!-- $Id$ -->
+<html>
+<head>
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Installation</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffff">
+<h1>Ptolemy II Installation</h1>
+See the <a href="ptII8.1.release.htm">Ptolemy II 8.1 release notes</a>
+for details about this release.
+
+The instructions on this page concern installing rebuilding Ptolemy II
+from sources.
+<ul>
+<li> <a href="#impatient">Instructions for the impatient</a>
+<li> <a href="#requirements">Requirements</a>
+<li> <a href="#shippedPackages">Optional packages that are shipped with Ptolemy</a>
+<li> <a href="#notshippedPackages">Optional packages not shipped with Ptolemy used at runtime</a>
+<li> <a href="#notshippedCompileTimePackages">Optional Packages not shipped with Ptolemy that are used at compile time</a>
+<li> <a href="#rebuildingFromSource">Rebuilding from source</a>
+</ul>
+<p>
+
+<h2><a name="impatient">Instructions for the impatient</a></h2>
+
+<ol>
+
+<li> Install JDK1.6 or later, add the jdk bin directory to your path
+so that <CODE>javac</CODE> and <CODE>java</CODE> are available,
+and have the <code>make</code> command available.
+
+<li> Set the PTII environment variable to the top level Ptolemy directory,
+that is the directory above this directory
+	<dl>
+	<dt> bash
+	<dd> <pre>
+export PTII=c:/Ptolemy/ptII8.1.devel
+</pre>
+
+<dt> csh
+<dd> <pre>
+setenv PTII /users/yourname/ptII
+</pre>
+
+</dl>
+
+<li> Run configure
+<pre>
+cd "$PTII"
+rm -f config.*
+./configure
+</pre>
+
+<li> The safest thing to do is 
+to run make fast install on the entire tree:
+<pre>
+make fast install
+</pre>
+
+
+<li> Start vergil
+<pre>
+$PTII/bin/vergil
+</pre>
+
+
+</ol>
+
+
+<h2><a name="requirements">Requirements</a></h2>
+<h3>The PTII variable</h3>
+The PTII environment variable is used to refer to the directory
+that contains the Ptolemy II tree.
+Setting <CODE>PTII</CODE> is covered in
+the <a href="#Unix">Unix</a> and <a href="#Windows">Windows</a>
+sections below.
+
+<h3><a name="java">Java</a></h3>
+Ptolemy II has been developed under Java 1.6.0, which Oracle calls
+calls J2SE 6.  J2SE 6
+is available from
+<a href="http://www.oracle.com/technetwork/java/javase/overview/index.html#in_browser" target="_top"><CODE>http://www.oracle.com/technetwork/java/javase/overview/index.html</CODE></a>.
+Locally, we use Java 1.6.0_20
+
+
+<p>The Java download is available in several formats.
+<dl>
+<dt> JRE - Java Runtime Environment
+<dd> Runtime only
+ <br>If you are planning on only using the prebuilt Ptolemy II
+actors, you can download the JRE.
+<dt> JDK - Java Development Kit
+<dd> Runtime and development tools like the Java compiler <CODE>javac</CODE>
+ <br>If you are planning on writing your own actors or recompiling
+from sources, download the JDK.  If you install the JDK, be sure
+that the <CODE>bin</CODE> directory is in your path so that
+the <CODE>javac</CODE> and <CODE>java</CODE> commands are available.
+</dl>
+
+
+<h3><a name="Plugin">Java Plug-in</a></h3>
+ <!-- Note: the plug-in is called "The Java Plug-in", not "The JDK Plugin"-->
+The applet tags have been configured to require JDK1.6, so to run the applets
+in Mozilla 1.x, Netscape 4.7 or Internet Explorer 6.0 under Windows, you will need to use
+the Java Plug-in from
+<a href="http://www.oracle.com/technetwork/java/index-jsp-141438.html#in_browser" target="_top"><CODE>http://www.oracle.com/technetwork/java/index-jsp-141438.html</CODE></a>
+
+ <p>Currently, the Java Plug-in 1.6 is included in the JRE and JDK downloads
+for Windows.
+<p>If your platform is not supported by the plug-in, you can run
+the applets with the JDK <CODE>appletviewer</CODE> command.
+ <p>See the <a href="troubleshooting.htm#plugin">Plug-in section of the Ptolemy II Troubleshooting guide</a> for details.
+
+<h2><a name="shippedPackages">Optional packages that are shipped with Ptolemy</a></h2>
+
+<h3>Colt</h3>
+ Colt is the 'Open Source Libraries for High Performance
+ Scientific and Technical Computing in Java'.
+ <br>For more information, see 
+<a href="http://hoschek.home.cern.ch/hoschek/colt/#in_browser" target="_top"><code>http://hoschek.home.cern.ch/hoschek/colt/</code></a>
+
+<p>We include a subset of Colt, based on Colt 1.0.3, in <code>$PTII/lib/ptcolt.jar</code>.
+<p>Colt is covered by a 
+<a href="../ptolemy/actor/lib/colt/colt-copyright.htm">Colt specific copyright</a>.
+
+<h3><a name="Diva">Diva</a></h3>
+Diva is a visualization package used by some of the demos and by
+vergil, the Ptolemy II user interface.
+
+ <p>The Ptolemy II distribution includes <CODE>$PTII/lib/diva.jar</CODE>.
+ <p>As of Ptolemy II 4.0, the Diva sources and documentation 
+are included in the source release.
+ <p>More information about Diva can be found at
+<a href="http://embedded.eecs.berkeley.edu/diva/#in_browser" target="_top"><CODE>http://embedded.eecs.berkeley.edu/diva/</CODE></a>.
+
+
+<h3>Jython</h3>
+Jython is a Java implementation of a subset of Python.
+The <a name="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript actor</a> requires Jython.  
+
+<p>Usually, one not need install Jython as 
+all Ptolemy II distributions that include the PythonScript actor
+also include Jython as <code>$PTII/lib/jython.jar</code>.
+The Ptolemy II source distribution also includes <code>$PTII/lib/jython.jar</code>.
+Jython is covered by a 
+<a href="../ptolemy/actor/lib/python/copyright.htm">Jython specific copyright</a>
+
+
+<p>If, for some reason you want to install Jython by hand:
+<ol>
+<li> Download Jython from
+<a href="http://www.jython.org/#in_browser" target="_top"><code>http://www.jython.org</code></a>
+<li> Follow the instructions in
+<a href="http://www.jython.org/install.html#in_browser" target="_top"><code>http://www.jython.org/install.html</code></a>
+<br>Basically, you should do something like
+<pre>
+java -jar jython_installer-2.2.1.jar
+</pre>
+and then select the <b>Standalone</b> Jython installation, which 
+will create <code>jython.jar</code> and then install Jython in
+<code>$PTII/vendors/jython</code>.
+
+<p>Note that if you <b>don't</b> select the <b>Standalone</b> Jython
+install, then a set of Jython directories will be created.  You should
+add the directory where Jython was installed to your path. 
+
+</ol>
+The <code>configure</code> script will look for <code>jython</code>
+and <code>jython.jar</code> in your path and then look for
+<code>$PTII/lib/jython.jar</code> and then
+<code>$PTII/vendors/jython/jython.jar</code>.
+
+
+<h3><a name="Jacl">Jacl</a></h3>
+Jacl is a 100% Java implementation of Tcl that we use for testing Ptolemy II.
+
+Each Java directory contains a <CODE>test</CODE> subdirectory that contains
+Tcl files that use Jacl to test the Ptolemy II Java code.
+
+ <p>Jacl is <B>only</B> necessary if you are planning on running
+the Ptolemy II test suite.
+
+ <p>We ship a customized version of Jacl called Ptjacl.
+The primary difference between Ptjacl and Jacl1.1 is that Ptjacl
+is shipped as one jar file.
+
+ <p>The Ptjacl jar file at <CODE>$PTII/lib/ptjacl.jar</CODE>
+is shipped with Ptolemy II.
+
+
+ <p>For more information about Jacl and Tcl Blend, see
+<menu>
+<li> <a href="http://tcl.activestate.com/software/java/#in_browser" target="_top">Activestate.com Jacl and Tcl Blend page</a>.
+
+<li> <a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/#in_browser" target="_top">Christopher Brooks' Java Page.</a>
+<li>If you have a read/write account on <code>source.eecs.berkeley.edu</code>, then the sources for ptjacl are available via cvs:
+<pre>
+cvs -d :ext:source.eecs.berkeley.edu:/home/cvs_chess co tcl
+</pre>
+or 
+<li> <a href="coding/tcljava.htm"><CODE>java::</CODE> man page</a>
+</menu>
+
+<h3><a name="Soot">Soot</a></h3>
+
+Soot is used by the <a href="codegen.htm">code generator</a>.
+Soot, is a Java optimization framework from
+<a href="http://www.sable.mcgill.ca/soot/#in_browser" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
+
+<p> If the code generator is present, then we include
+<code>sootclasses.jar</code> and <code>jasminclasses.jar</code> in
+<code>$PTII/lib</code>
+<p> Soot and Jasmin are both covered by the
+<a href="../ptolemy/copernicus/kernel/soot-copyright.html">Soot and Jasmin specific copyright</a>
+
+
+
+<h2><a name="notshippedPackages">Optional packages not shipped with Ptolemy used at runtime</a></h2>
+
+The packages below are used at runtime.  Parts of the prebuilt Ptolemy
+II installers use these packages to provide added functionality.  For
+size or licensing reasons, we do not include these packages with
+the prebuilt Ptolemy releases, so you may want to install these
+packages if you are interested in using the functionality they provide.
+
+<h3>CaffeineMark</h3>
+The CaffeineMark benchmark is used by the Copernicus C code generator.
+<p>You need not download the CaffeineMark benchmark unless you are 
+interested in benchmarking the Copernicus C code generator.
+<p>The main page for the CaffeineMark is
+<a href="http://www-sor.inria.fr/~java/tools/cmkit/#in_browser" target="_top"><code>http://www-sor.inria.fr/~java/tools/cmkit</code></a>
+To install, do
+<pre>
+cd $PTII/vendors/cm
+# Download http://www-sor.inria.fr/~java/tools/cmkit/embed.zip
+jar -xf embed.zip
+</pre>
+
+<h3>GC</h3>
+The Copernicus C code generator uses the Boehm Garbarge Collector,
+which can be found at
+<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/#in_browser" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/</code></a>
+<p>You need not download the Garbage Collector unless you are
+planning on using the Copernicus C code generator.
+<p>The configure program looks for the Garbage Collector in
+<code>$PTII/vendors/gc</code>.
+<p>To install the Garbage Collector:
+<ol>
+<li> Download from 
+<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/#in_browser" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/</code></a>
+<li> 
+<pre>
+cd $PTII/vendors/gc
+tar -zxf /tmp/gc.tar.gz
+cd gc6.1
+./configure --prefix=$PTII
+make
+make check
+make install
+</pre>
+Note that under Windows, PTII cannot have a backslash in it or
+else make will have problems.
+</ol>
+<p>As of 4/03, we were using version 6.1
+
+<h3>JAI</h3>
+The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Advanced Imaging (JAI) actors</a> require that JAI, which can be  downloaded from
+<a href="https://jai.dev.java.net/#in_browser" target="_top"><code>https://jai.dev.java.net/</code></a>
+<p>You need not install JAI if you are not planning on using the JAI Actors.
+<p>Note that you probably want to install the JAI "JDK Install".
+
+<p>We verified that <code>jai-1_1_3-lib-windows-i586-jdk.exe</code>
+works with these actors.
+
+<p>Note that under Web Start, we had to install the JAI jar files
+by hand in
+<code>c:/Program Files/Java/jre1.6.0_04/lib/ext</code>
+by copying <code>jai_codec.jar</code>, <code>jai_core.jar</code>,
+and <code>mlibwrapper_jai.jar</code> from the 
+<code>c:/Program Files/Java/jdk1.6.0_04/lib/ext</code>
+
+Web Start users might want to try the
+"Windows Auto-installation for Java Plug-in"
+
+<h3>Java3d</h3>
+The 
+<a href="../ptolemy/domains/gr/doc/body.htm" target="body">3-D graphics (GR)</a>
+domain demos require Java3d, which can be installed from
+<a href="http://java3d.dev.java.net/#in_browser" target="_top"><CODE>http://java3d.dev.java.net/</CODE></a>.
+
+You need not install Java3d if you are not planning on using GR domain.
+
+ <p>If you plan on recompiling the GR domain, then install the Java 3D SDK
+and runtime.  If you plan on only running the GR domain demos, then
+installing only the Java 3D runtime should be sufficient.
+We have verified the demos with the 
+<code>java3d-1_5_1-windows-i586.exe</code> installer.
+
+
+<h3>Joystick</h3>
+The <a name="codeDoc/ptolemy/actor/lib/joystick/Joystick.html">Joystick actor</a>
+requires the Joystick interface from
+<a href="http://sourceforge.net/projects/javajoystick/#in_browser" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>.
+The Joystick interface works under Windows and Linux.
+Joystick is covered by a 
+<a href="../ptolemy/actor/lib/joystick/copyright.htm">Joystick specific copyright</a>
+
+<p>You must download and install the Joystick interface to use the
+Joystick actor.
+
+<p>Configure looks for the joystick interface in
+<code>$PTII/vendors/misc/joystick</code>.  In that directory, 
+it looks for <code>joystick.jar</code>.
+<ol>
+<li> Download the Joystick 0.6 zip file from
+<a href="http://sourceforge.net/projects/javajoystick/#in_browser" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>
+<li> Unzip it in <code>$PTII/vendors/misc</code>
+<li> Under Windows, copy the .dll into your path
+<pre>
+cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
+</pre>
+</ol>
+
+<h3>JMF</h3>
+The <a name="codeDoc/ptolemy/actor/lib/jmf/package-summary.html">Java Media Framework (JMF) actors</a> require that JMF, which can be  downloaded from
+<a href="http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html</code></a>
+<p>You need not install JMF if you are not planning on using the JMF Actors.
+<p>The installer also looks for the USB camera, so you may find
+it helpful if you connect a USB camera before running the installer.
+To configure a USB camera after installation, run <code>c:/Program Files/JMF2.1.1e/bin/jmfinit.exe</code>
+<p>We verified that <code>jmf-2_1_1e-windows-i586.exe</code> works with these actors.
+
+
+<h3><a name="matlab">Matlab</a></h3>
+Ptolemy II includes an interface to Matlab that was  
+developed by Zoltan Kemenczy and Sean Simmons of 
+<a href="http://www.rim.net/#in_browser" target ="_top">Research in Motion Limited</a>.
+
+<!-- If you change the next paragraph update the release notes -->
+<p>The Matlab interface works only under Windows and it requires that
+Matlab be installed on the local machine.  The Matlab interface has
+been tested with Matlab 6.1, which corresponds with R12.1.
+
+<p>The <a href="codeDoc/ptolemy/matlab/Expression.html">Matlab Expression</a>
+actor can access Matlab methods to process matrices and plot data
+using the Matlab plotter.
+<p>A demo can be found at
+<a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml"><code>$PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml</code></a>
+
+<h4>Compiling the Matlab interface</h4>
+
+<p>The Matlab interface works under Windows and Linux.
+In theory, the Matlab interface might work under Solaris, but
+we have not tested it.
+
+<p>Under Windows, we compile the Matlab interface with Microsoft
+Visual C if it is available.  Matlab interface has problems work with gcc-3.3
+Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
+<br>Under Windows, we recommend using gcc-3.2 or Microsoft Visual C.
+If you do not have Microsoft Visual C,
+you can try installing <CODE>cygwinDevel</CODE> with gcc-3.2 from
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</CODE></a>.
+
+ <p>Note that you should uninstall the previous version of cygwin
+and then install the new version.
+
+<br>Below are the instructions for compiling under gcc.
+
+<p>If you do not have <code>gcc</code> or <code>dlltool</code>
+installed, you can install them as part of the 
+<a href="#cygwin">Cygwin installation</a>
+
+
+<p>The Matlab interface is implemented using the Java Native Interface
+(JNI).  When <code>$PTII/configure</code> is run, it look in the user
+path for a binary called <code>matlab</code>, determines the location
+of the Matlab <code>extern/include/libeng.dif</code> file and then checks
+for <code>gcc</code> and <code>dlltool</code>. 
+
+<p>If these components were not found at when configure was run, then
+you can rerun configure, remake and run the demo with:
+
+<pre>
+cd $PTII
+rm config.*; ./configure
+cd $PTII/ptolemy/matlab
+make
+$PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
+</pre>
+   <br>You might need to edit jni_md.h
+   <blockquote>
+   GCC doesn't have a __int64 built-in, and this patch basically uses
+   "long long" instead.
+
+   <ol>
+   <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
+    Where <code><i>jdk_root</i></code> is the installation root (eg.,
+   <code>c:/Program Files/Java/jdk1.6.0_20</code>
+
+
+   <li> Replace the segment:
+   </ol>
+
+   <pre>
+   typedef long jint;
+   typedef __int64 jlong;
+   </pre>
+   with:
+   <pre>
+   typedef long jint;
+   #ifdef __GNUC__
+   typedef long long jlong;
+   #else
+   typedef __int64 jlong;
+   #endif
+   typedef signed char jbyte;
+   </pre>
+   </blockquote>
+
+<h3>Quicktime</h3>
+The <a hreg="codedoc/ptolemy/domains/gr/lib/quicktime/package-summary.html">Quicktime</a> GR domain actors use Quicktime from Apple.
+
+<p>To use these actors, install QuickTime with the "QuickTime For Java"
+option from 
+<a href="http://developer.apple.com/quicktime/qtjava/#in_browser" target="_top"><code>http://developer.apple.com/quicktime/qtjava/</code></a>
+<br>We chose the "Quicktime Standalone Installer", which does not 
+contain iTunes.
+
+<br>During installation, choose "custom" and then "select all".
+This drops <code>QTJava.zip</code> into the lib/ext of all your installed JREs.
+Then you have to copy this zip file to the jre/lib/ext directory
+of your SDK, for example:
+<pre>
+cp c:/Program\ Files/Java/jre1.6.0_04/lib/ext/QTJava.zip c:/Program\ Files/Java/jdk1.6.0_04/jre/lib/ext
+</pre>
+
+<h3>X10</h3>
+
+<a name="X10">X10</a> is a protocol used to control household
+electrical devices.
+
+<p>The
+<a name="codeDoc/ptolemy/actor/lib/x10/package-summary.html">X10 actors</a>
+require the Java serial port communcations package and the X10 package.
+
+<p>For installation instructions, see the 
+<a name="codeDoc/ptolemy/actor/lib/x10/X10Interface.htm">X10Interface class documentation in <code>$PTII/ptolemy/actor/lib/x10/X10Interface.java</code></a>.
+
+
+<h2><a name="notshippedCompileTimePackages">Optional Packages not shipped with Ptolemy that are used at compile time</a></h2>
+
+The packages below are used when Ptolemy II is compiled.
+<br><b>You need not install these packages if you are running
+a prebuilt version of Ptolemy II</b>
+
+If you install a package after building Ptolemy II, rerun
+configure
+<pre>
+cd $PTII; rm config.*; ./configure
+</pre>
+and then make
+<pre>
+make fast
+</pre>
+
+
+<h3>make</h3>
+Ptolemy II uses makefiles to build.  We include a subset
+of the Cygwin tools for Windows, see the
+<a href="#cygwin">Cygwin installation</a> notes.
+
+
+<p>Ptolemy II has been built with GNU make 3.77, but does not use GNU make extensions, so GNU make is not requires.  Ptolemy II has also been built
+with Solaris 8 <CODE>/usr/ccs/bin/make</CODE>.
+ <p>It seems that the make that is included with SGI Irix 6.5 may have
+problems, the workaround is to installed GNU make.
+ 
+
+<h3><a name="javacc">JavaCC</a></h3>
+JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
+and <CODE>lex</CODE>.
+ <p>JavaCC is only necessary if you modify the expression parser in
+<CODE>ptolemy/data/expr</CODE>.
+<ol>
+<li> Download <code>javacc-4.0.tar.gz</code> from
+<a href="http://javacc.dev.java.net/#in_browser" target="_top"><CODE>http://javacc.dev.java.net/</CODE></a>
+<li> Create <code>$PTII/vendors/sun</code> if necessary
+<pre>
+mkdir -p $PTII/vendors/sun
+</pre>
+<li> Extract
+cd $PTII/vendors/sun
+tar -zxf <i>where_ever_you_downloaded</i>/javacc-4.0.tar.gz
+<li> Re run configure:
+<pre>
+cd $PTII; rm config.*; ./configure
+</pre>
+
+<p>Note that JavaCC-4.2 will not work, there are problems with
+ReInit() in the data.expr tests.
+</ol>
+
+
+<h2><a name="rebuildingFromSource">Rebuilding from source</a></h2>
+
+
+<h3><a name="Unix">Unix</a></h3>
+ If you would like to rebuild from the Java sources under Unix,
+you should set the <CODE>PTII</CODE> environment variable in your
+environment.  Under C Shell:
+<pre>
+setenv PTII /users/ptII
+</pre>
+You may want to add that line to your <CODE>~/.cshrc</CODE> file.
+
+ <p>To configure the makefiles,
+run <CODE>$PTII/configure</CODE>, which is
+a GNU autoconf script that looks for your Java compiler, reads in
+<CODE>$PTII/mk/ptII.mk.in</CODE> and generates
+<CODE>$PTII/mk/ptII.mk</CODE>:
+<pre>
+cd "$PTII"
+rm -f config.*
+./configure
+</pre>
+<CODE>$PTII/configure</CODE> creates <CODE>$PTII/config.status</CODE>
+and <CODE>$PTII/config.cache</CODE>.  If you would like to reconfigure
+Ptolemy II to use a different Java compiler, set your path so
+that the appropriate compiler is first in your path, then
+remove <CODE>config.status</CODE> and rerun configure.  You
+may also use the <CODE>--with-java=</CODE> configure command line
+argument.  For more information, run <CODE>configure -help</CODE>.
+
+
+ <p>To build:
+<pre>
+make fast all
+</pre>
+
+<h3><a name="Windows">Windows</a></h3>
+Ptolemy II was developed under Windows XP.  We have successfully
+installed Ptolemy II under Windows '98, but if you have problems under 
+Windows '98 we recommend upgrading Windows XP.
+
+<p>To build Ptolemy II under Windows XP:
+<ol>
+<li>Install JDK 1.6 from
+<a href="http://www.oracle.com/technetwork/java/javase/overview/index.html#in_browser" target="_top"><CODE>http://www.oracle.com/technetwork/java/javase/overview/index.html</CODE></a>
+
+ <p>Be sure to add the <CODE>bin</CODE> directory
+to your path so that <CODE>javac</CODE> and <CODE>java</CODE>
+are available.
+
+<li> Install the <a name="cygwin">Cygwin</a> toolkit from
+<a href="http://sources.redhat.com/cygwin/#in_browser" target="_top"><CODE>http://sources.redhat.com/cygwin/</CODE></a>
+ <p> See the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII6.0/index.htm#in_browser" target="_top">Ptolemy II 6.0 Website</a> for Cygwin downloads that
+include the tools necessary to build Ptolemy II.
+
+
+ <p>An alternative to using the Cygwin downloads we provide
+is to download directly from the Cygwin website.
+
+ <p>Complete installation instructions can be found at
+<a href="http://sources.redhat.com/cygwin/faq/#in_browser" target="_top"><CODE>http://sources.redhat.com/cygwin/faq</CODE></a>,
+<p>The Cygwin installer tends to change
+over time, but below is a summary of the steps
+necessary:
+ <ol>
+ <li> Create an empty directory
+
+ <li> Download <a href="http://sources.redhat.com/cygwin/setup.exe"><CODE>http://sources.redhat.com/cygwin/setup.exe</CODE></a>
+and save it in the empty directory
+
+ <li> Click on <CODE>setup</CODE>, then <code>Next</code>
+
+ <li> Select <code>Install from Internet</code>, then 
+click on <code>Next</code>
+
+ <li> Use the default install root directory, which should
+be <CODE>c:/cygwin</CODE>
+
+ <li> Select 'Default Text File Type' of DOS.
+ <br>If you select Unix instead of DOS, then you will likely have
+ <a href="http://www.gigascale.org/softdevel/faq/23.html#in_browser" target="_top">Cygwin CR/NL problems</a> with CVS.
+ 
+
+ <li> Then hit the <CODE>Next</CODE> button.
+
+ <li> Use the default Local Package Directory, which should be the
+ directory you created above.
+
+ <li> If you are not behind a firewall, click on direct connection,
+then click <code>Next</code>
+ <li> Select a nearby mirror, then click <code>Next</code>
+
+ <li> You will be presented with a list of packages to install.
+  <br>The initial default installs packages from <CODE>Base</CODE>,
+	which is roughly a 6Mb download that expands into about 26Mb
+	of files.
+
+         <p> If you are serious about development you may also want
+         to install the packages below.  To install an individual package,
+	 click on the <CODE>+</CODE> to the left of the group name, then 
+	 click on the arrows to the right of the group name
+         until <CODE>Default</CODE>  changes to <CODE>Install</CODE>
+        <ul>
+
+        <li> Devel Category
+	<ul>
+	 <li> autoconf - requires gawk and m4 from the Interpreters Category
+	 <li> binutils, gcc, gettext, libintl libintl1, libtool, libtool-devel
+	  - The matlab interface requires gcc and Matlab.  You may find
+	  it easier to install all of the Devel category
+	 <li> cvs 
+	</ul>
+        <li> Net Category
+        <ul>
+         <li> openssh - cvs may need this
+         <li> openssl - required by openssh
+        </ul>
+        <li> Text Category: less
+        </ul>
+      </ol>
+
+ <li> Hit <CODE>Next</CODE>, which should download the packages and
+install them
+ 
+ <li> Click on <CODE>Add icon to Start Menu</CODE>, and then
+      <CODE>Finish</CODE>.
+ 
+ <li>  Start up bash with
+	<CODE>Start</CODE> -&gt; <CODE>Cygnus Solutions</CODE> -&gt;
+	<CODE>Cygwin Bash Shell</CODE>
+ 
+  </menu>
+
+
+<li> <a name="settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
+to the
+name of the directory where Ptolemy II is installed.
+  <p>Executive Summary: Under Windows, it is safest if you use forward slashes
+  in both the <code>Environment Variables</code> panel and when running
+  Cygwin bash.  In Cygwin bash, <b>don't</b> use <code>pwd</code>
+  to set your PTII variable.
+  <p>Under Windows XP, you set the environment variable via
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>)
+ <p>The PTII value <b>in the Environment tab</b> should be set
+  using forward slashes.
+  <p>If Cygwin is installed in a location other than
+  <CODE>C:\</CODE> such as <CODE>C:\Cygwin</CODE>, then try
+  using backslashes, though installing Cygwin in such a manner
+  is not recommended.
+  <p>Vista users should set PTII in the Environment Tab using
+  forward slashes.
+  <p><b>Note that when setting PTII from Cygwin bash, you should use
+  forward slashes</b>.
+<BLOCKQUOTE>
+If you have installed Cygwin in c:/cygwin, and your Ptolemy II installation
+is in a directory outside of the c:/cygwin tree, then Cygwin may
+change your PTII variable to include "/cygdrive/c".  This
+will cause problems with non-Cygwin tools like javac that do
+not understand /cygdrive/c.
+ <p>The best fix for this is to move your home directory outside
+of c:/cygwin.  An alternative is to place your Ptolemy II tree
+outside of c:/cygwin.
+<h3>How to tell Cygwin where your home directory is</h3>
+
+<ol>
+<li> Cygwin gets the location of your home directory from 
+a line that contains your login in
+<CODE>c:/cygwin/etc/passwd</CODE>.  If your login is
+not listed, then run
+<pre>
+mkpasswd -l
+</pre>
+To list all the local accounts and add the line for your account
+to <CODE>c:/cygwin/etc/passwd</CODE> using <CODE>workdpad</CODE>.
+To start <CODE>wordpad</CODE>, do Start -&gt; Run and type in
+<CODE>wordpad</CODE>.  
+ <br>Note: you can use <CODE>mkpasswd -help</CODE> to get help.
+If you are logged in to the domain and not the local machine, try
+<pre>
+mkpasswd -d | grep <I>yourlogin</I>
+</pre>
+to get just your login
+
+<li> Edit <CODE>c:/cygwin/etc/passwd</CODE> with wordpad and
+change the home directory from <CODE>/home/<I>yourlogin</I></CODE>
+to <CODE>/cygdrive/c/users/<I>yourlogin</I></CODE>, which
+will set your home directory as <CODE>c:/users/<I>yourlogin</I></CODE>
+ <br> Save<CODE>c:/cyginw/etc/passwd</CODE>
+
+<li> Start up a new bash shell and see where your home directory
+is by typing <CODE>pwd</CODE>
+</ol>
+
+</BLOCKQUOTE>
+
+
+ <p>An example PTII value in the Environment Tab would be:
+<pre>
+c:\users\yourname\ptII
+</pre>
+
+ <p>An example PTII value inside Cygwin bash would be:
+<pre>
+export PTII=c:/users/yourname/ptII
+</pre>
+
+<blockquote>
+<table border=2>
+ <tr>
+ <td>
+ <h4>Cygwin directory mapping</h4>
+ <p>Note that Cygwin remaps directories, so <CODE>d:\tmp</CODE>
+may appear as <CODE>/cygdrive/d/tmp</CODE>.
+
+ <p>Unfortunately, the <CODE>java</CODE> command
+does not understand the Cygwin <CODE>/cygdrive</CODE> notation,
+so <CODE>java</CODE> may not find the files it needs.
+
+ <p>For example, <CODE>pwd</CODE>
+returns <CODE>/cygdrive/d/tmp/ptII</CODE>, which will not work
+with <CODE>java</CODE>:
+<pre>
+cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+$ PTII=d:\\tmp\\ptII
+
+cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+$ echo $PTII
+d:\tmp\ptII
+
+cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+$ cd $PTII
+
+cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+$ pwd
+/cygdrive/d/tmp/ptII
+</pre>
+
+So, under Cygwin, it is best to avoid using pwd when setting
+variables.  Avoid:
+<pre>
+PTII=`pwd`/ptII
+</pre>
+and use
+<pre>
+PTII=d:\\tmp\\ptII
+</pre>
+instead.  Note that the configure script checks for this sort of thing.
+
+ </td>
+ </td>
+</table>
+</blockquote>
+
+<li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\Program Files\Java\jdk1.6.0_04\bin</CODE>)
+
+ <p>When you run cygwin.bat, your path
+should be set to include the Cygwin tools.  You can test this
+by typing <CODE>type make</CODE>, which should return
+<pre>
+make is /usr/bin/make
+</pre>
+If <CODE>make</CODE> cannot be found, then
+you may also need to add the Cygwin bin directory
+<CODE>c:\cygwin\usr\bin</CODE>
+to your path.
+
+<li> Optional: Install JavaCC, see the instructions
+<a href="#javacc">above</a>.
+
+
+<li> Start up Cygwin <CODE>bash</CODE>, and cd to the Ptolemy II directory.
+
+<li> Run <CODE>rm -f config.*</CODE>
+<li> Run <CODE>./configure</CODE>
+
+<li> Run <CODE>make fast all</CODE>
+<li> Now type <CODE>vergil</CODE> (or
+<CODE>$PTII/bin/vergil</CODE> if you did not set your path) in the C
+shell or cygwin Bash window and the Ptolemy II GUI should start up
+</ol>
+
+
+ <p>Currently, Ptolemy II does not support building via Microsoft
+Visual Studio <CODE>nmake</CODE> under Windows.  Also, we have not
+tried building Ptolemy II under Windows '95 or Windows '98.
+
+ <p>The instructions for setting up a parallel tree using CVS can be found in
+<a href="coding/develsetup.htm"><CODE>$PTII/doc/coding/develsetup</CODE>.</a>
+
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>

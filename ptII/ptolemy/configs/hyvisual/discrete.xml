@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Discrete" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+  </entity>
+
+  <entity name="Average" class="ptolemy.actor.lib.Average">
+  </entity>
+
+<entity name="DB" class="ptolemy.actor.lib.DB"/>
+
+  <entity name="Differential" class="ptolemy.actor.lib.Differential">
+  </entity>
+
+<entity name="FIR" class="ptolemy.domains.sdf.lib.FIR"/>
+<entity name="IIR" class="ptolemy.actor.lib.IIR"/>
+<entity name="Lattice" class="ptolemy.actor.lib.Lattice"/>
+<entity name="LinearDifferenceEquationSystem" class="ptolemy.actor.lib.LinearDifferenceEquationSystem"/>
+<entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
+
+<entity name="PowerEstimate" class="ptolemy.actor.lib.PowerEstimate"/>
+
+<entity name="RecursiveLattice" class="ptolemy.actor.lib.RecursiveLattice"/>
+<entity name="VariableFIR" class="ptolemy.domains.sdf.lib.VariableFIR"/>
+<entity name="VariableLattice" class="ptolemy.domains.sdf.lib.VariableLattice"/>
+<entity name="VariableRecursiveLattice" class="ptolemy.domains.sdf.lib.VariableRecursiveLattice"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,102 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+  <property name="AttributeMatcher" class="ptolemy.actor.gt.AttributeMatcher"/>
+  <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher"/>
+  <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"/>
+  <entity name="FSMMatcher" class="ptolemy.actor.gt.FSMMatcher"/>
+  <entity name="ModalModelMatcher" class="ptolemy.actor.gt.ModalModelMatcher"/>
+  <entity name="TransformationAttributes" class="ptolemy.moml.EntityLibrary">
+    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
+      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+      </property>
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-C-</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
+      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+      </property>
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
+      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+      </property>
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="ContainerIgnoring" class="ptolemy.actor.gt.ContainerIgnoringAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="5" y="15" style="font-size:16; font-family:SansSerif; fill:blue">CI</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="3" y="15" style="font-size:16; font-family:SansSerif; fill:blue">HF</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="2" y="15" style="font-size:16; font-family:SansSerif; fill:blue">RC</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="2" y="15" style="font-size:16; font-family:SansSerif; fill:blue">RH</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="IterativeParameter" class="ptolemy.actor.gt.IterativeParameter">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#40FF40"/>
+            <ellipse cx="13" cy="9" rx="8" ry="6" style="stroke:blue"/>
+            <rect x="10" y="14" width="4" height="2" style="stroke:green; fill:green"/>
+            <line x1="16" y1="16" x2="17" y2="9" style="stroke:blue"/>
+            <line x1="16" y1="16" x2="23" y2="16" style="stroke:blue"/>
+          </svg>
+        </configure>
+      </property>
+    </property>
+  </entity>
+</group>

@@ -1,0 +1,16 @@
+#!/bin/sh
+# $Id$
+
+# Valididate all the auto/*.xml files
+# See $PTII/ptolemy/configs/doc/validDemos.tcl for a Tcl test
+
+tmpTests=/tmp/validateTests$$.xml
+export CLASSPATH=$PTII
+allTests=`find $PTII . -name adm -prune -o -name codeDoc -prune -o -name "*.xml" | grep /auto/`
+for demo in $allTests
+do
+	echo $demo
+	$PTII/ptolemy/moml/test/removeconfigure $demo > $tmpTests
+	xmllint --valid --dtdvalid ../MoML_1.dtd --noout $tmpTests
+done
+rm -f $tmpTests

@@ -1,0 +1,1639 @@
+Model {
+  Name			  "BCVTB"
+  Version		  7.3
+  MdlSubVersion		  0
+  GraphicalInterface {
+    NumRootInports	    0
+    NumRootOutports	    0
+    ParameterArgumentNames  ""
+    ComputedModelVersion    "1.189"
+    NumModelReferences	    0
+    NumTestPointedSignals   0
+  }
+  SavedCharacterEncoding  "UTF-8"
+  SaveDefaultBlockParams  on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  DataTypeOverride	  "UseLocalSettings"
+  MinMaxOverflowLogging	  "UseLocalSettings"
+  MinMaxOverflowArchiveMode "Overwrite"
+  Created		  "Fri Jan 11 10:50:09 2008"
+  Creator		  "mwetter"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "mwetter"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Mon Jun  8 15:59:33 2009"
+  RTWModifiedTimeStamp	  0
+  ModelVersionFormat	  "1.%<AutoIncrement:189>"
+  ConfigurationManager	  "None"
+  SampleTimeColors	  off
+  SampleTimeAnnotations	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  BlockNameDataTip	  on
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  on
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  AccelSystemTargetFile	  "accel.tlc"
+  AccelTemplateMakefile	  "accel_default_tmf"
+  AccelMakeCommand	  "make_rtw"
+  TryForcingSFcnDF	  off
+  RecordCoverage	  off
+  CovPath		  "/"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeVarName	  "covCumulativeData"
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  CovExternalEMLEnable	  off
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock off
+  BufferReuse		  on
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  Array {
+    Type		    "Handle"
+    Dimension		    1
+    Simulink.ConfigSet {
+      $ObjectID		      1
+      Version		      "1.6.0"
+      Array {
+	Type			"Handle"
+	Dimension		8
+	Simulink.SolverCC {
+	  $ObjectID		  2
+	  Version		  "1.6.0"
+	  StartTime		  "0.0"
+	  StopTime		  "inf"
+	  AbsTol		  "auto"
+	  FixedStep		  "120"
+	  InitialStep		  "auto"
+	  MaxNumMinSteps	  "-1"
+	  MaxOrder		  5
+	  ZcThreshold		  "auto"
+	  ConsecutiveZCsStepRelTol "10*128*eps"
+	  MaxConsecutiveZCs	  "1000"
+	  ExtrapolationOrder	  4
+	  NumberNewtonIterations  1
+	  MaxStep		  "auto"
+	  MinStep		  "auto"
+	  MaxConsecutiveMinStep	  "1"
+	  RelTol		  "1e-3"
+	  SolverMode		  "Auto"
+	  Solver		  "FixedStepDiscrete"
+	  SolverName		  "FixedStepDiscrete"
+	  ShapePreserveControl	  "DisableAll"
+	  ZeroCrossControl	  "UseLocalSettings"
+	  ZeroCrossAlgorithm	  "Nonadaptive"
+	  AlgebraicLoopSolver	  "TrustRegion"
+	  SolverResetMethod	  "Fast"
+	  PositivePriorityOrder	  off
+	  AutoInsertRateTranBlk	  off
+	  SampleTimeConstraint	  "Unconstrained"
+	  InsertRTBMode		  "Whenever possible"
+	  SignalSizeVariationType "Allow only fixed size"
+	}
+	Simulink.DataIOCC {
+	  $ObjectID		  3
+	  Version		  "1.6.0"
+	  Decimation		  "1"
+	  ExternalInput		  "[t, u]"
+	  FinalStateName	  "xFinal"
+	  InitialState		  "xInitial"
+	  LimitDataPoints	  on
+	  MaxDataPoints		  "1000"
+	  LoadExternalInput	  off
+	  LoadInitialState	  off
+	  SaveFinalState	  off
+	  SaveCompleteFinalSimState off
+	  SaveFormat		  "Array"
+	  SaveOutput		  on
+	  SaveState		  off
+	  SignalLogging		  on
+	  InspectSignalLogs	  off
+	  SaveTime		  on
+	  StateSaveName		  "xout"
+	  TimeSaveName		  "tout"
+	  OutputSaveName	  "yout"
+	  SignalLoggingName	  "logsout"
+	  OutputOption		  "RefineOutputTimes"
+	  OutputTimes		  "[]"
+	  Refine		  "1"
+	}
+	Simulink.OptimizationCC {
+	  $ObjectID		  4
+	  Version		  "1.6.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    4
+	    Cell		    "ZeroExternalMemoryAtStartup"
+	    Cell		    "ZeroInternalMemoryAtStartup"
+	    Cell		    "NoFixptDivByZeroProtection"
+	    Cell		    "OptimizeModelRefInitCode"
+	    PropName		    "DisabledProps"
+	  }
+	  BlockReduction	  on
+	  BooleanDataType	  on
+	  ConditionallyExecuteInputs on
+	  InlineParams		  off
+	  InlineInvariantSignals  off
+	  OptimizeBlockIOStorage  on
+	  BufferReuse		  on
+	  EnhancedBackFolding	  off
+	  StrengthReduction	  off
+	  EnforceIntegerDowncast  on
+	  ExpressionFolding	  on
+	  EnableMemcpy		  on
+	  MemcpyThreshold	  64
+	  PassReuseOutputArgsAs	  "Structure reference"
+	  ExpressionDepthLimit	  2147483647
+	  FoldNonRolledExpr	  on
+	  LocalBlockOutputs	  on
+	  RollThreshold		  5
+	  SystemCodeInlineAuto	  off
+	  StateBitsets		  off
+	  DataBitsets		  off
+	  UseTempVars		  off
+	  ZeroExternalMemoryAtStartup on
+	  ZeroInternalMemoryAtStartup on
+	  InitFltsAndDblsToZero	  on
+	  NoFixptDivByZeroProtection off
+	  EfficientFloat2IntCast  off
+	  EfficientMapNaN2IntZero on
+	  OptimizeModelRefInitCode off
+	  LifeSpan		  "inf"
+	  BufferReusableBoundary  on
+	  SimCompilerOptimization "Off"
+	  AccelVerboseBuild	  off
+	}
+	Simulink.DebuggingCC {
+	  $ObjectID		  5
+	  Version		  "1.6.0"
+	  RTPrefix		  "error"
+	  ConsistencyChecking	  "none"
+	  ArrayBoundsChecking	  "none"
+	  SignalInfNanChecking	  "none"
+	  SignalRangeChecking	  "none"
+	  ReadBeforeWriteMsg	  "UseLocalSettings"
+	  WriteAfterWriteMsg	  "UseLocalSettings"
+	  WriteAfterReadMsg	  "UseLocalSettings"
+	  AlgebraicLoopMsg	  "warning"
+	  ArtificialAlgebraicLoopMsg "warning"
+	  SaveWithDisabledLinksMsg "warning"
+	  SaveWithParameterizedLinksMsg	"none"
+	  CheckSSInitialOutputMsg on
+	  UnderspecifiedInitializationDetection	"Classic"
+	  MergeDetectMultiDrivingBlocksExec "none"
+	  CheckExecutionContextPreStartOutputMsg off
+	  CheckExecutionContextRuntimeOutputMsg	off
+	  SignalResolutionControl "UseLocalSettings"
+	  BlockPriorityViolationMsg "warning"
+	  MinStepSizeMsg	  "warning"
+	  TimeAdjustmentMsg	  "none"
+	  MaxConsecutiveZCsMsg	  "error"
+	  SolverPrmCheckMsg	  "warning"
+	  InheritedTsInSrcMsg	  "warning"
+	  DiscreteInheritContinuousMsg "warning"
+	  MultiTaskDSMMsg	  "error"
+	  MultiTaskCondExecSysMsg "error"
+	  MultiTaskRateTransMsg	  "error"
+	  SingleTaskRateTransMsg  "none"
+	  TasksWithSamePriorityMsg "warning"
+	  SigSpecEnsureSampleTimeMsg "warning"
+	  CheckMatrixSingularityMsg "none"
+	  IntegerOverflowMsg	  "warning"
+	  Int32ToFloatConvMsg	  "warning"
+	  ParameterDowncastMsg	  "error"
+	  ParameterOverflowMsg	  "error"
+	  ParameterUnderflowMsg	  "none"
+	  ParameterPrecisionLossMsg "warning"
+	  ParameterTunabilityLossMsg "warning"
+	  UnderSpecifiedDataTypeMsg "none"
+	  UnnecessaryDatatypeConvMsg "none"
+	  VectorMatrixConversionMsg "none"
+	  InvalidFcnCallConnMsg	  "error"
+	  FcnCallInpInsideContextMsg "Use local settings"
+	  SignalLabelMismatchMsg  "none"
+	  UnconnectedInputMsg	  "warning"
+	  UnconnectedOutputMsg	  "warning"
+	  UnconnectedLineMsg	  "warning"
+	  SFcnCompatibilityMsg	  "none"
+	  UniqueDataStoreMsg	  "none"
+	  BusObjectLabelMismatch  "warning"
+	  RootOutportRequireBusObject "warning"
+	  AssertControl		  "UseLocalSettings"
+	  EnableOverflowDetection off
+	  ModelReferenceIOMsg	  "none"
+	  ModelReferenceVersionMismatchMessage "none"
+	  ModelReferenceIOMismatchMessage "none"
+	  ModelReferenceCSMismatchMessage "none"
+	  UnknownTsInhSupMsg	  "warning"
+	  ModelReferenceDataLoggingMessage "warning"
+	  ModelReferenceSymbolNameMessage "warning"
+	  ModelReferenceExtraNoncontSigs "error"
+	  StateNameClashWarn	  "warning"
+	  StrictBusMsg		  "Warning"
+	  LoggingUnavailableSignals "error"
+	  BlockIODiagnostic	  "none"
+	}
+	Simulink.HardwareCC {
+	  $ObjectID		  6
+	  Version		  "1.6.0"
+	  ProdBitPerChar	  8
+	  ProdBitPerShort	  16
+	  ProdBitPerInt		  32
+	  ProdBitPerLong	  32
+	  ProdIntDivRoundTo	  "Undefined"
+	  ProdEndianess		  "Unspecified"
+	  ProdWordSize		  32
+	  ProdShiftRightIntArith  on
+	  ProdHWDeviceType	  "32-bit Generic"
+	  TargetBitPerChar	  8
+	  TargetBitPerShort	  16
+	  TargetBitPerInt	  32
+	  TargetBitPerLong	  32
+	  TargetShiftRightIntArith on
+	  TargetIntDivRoundTo	  "Undefined"
+	  TargetEndianess	  "Unspecified"
+	  TargetWordSize	  32
+	  TargetTypeEmulationWarnSuppressLevel 0
+	  TargetPreprocMaxBitsSint 32
+	  TargetPreprocMaxBitsUint 32
+	  TargetHWDeviceType	  "Specified"
+	  TargetUnknown		  off
+	  ProdEqTarget		  on
+	}
+	Simulink.ModelReferenceCC {
+	  $ObjectID		  7
+	  Version		  "1.6.0"
+	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
+	  CheckModelReferenceTargetMessage "error"
+	  ModelReferenceNumInstancesAllowed "Multi"
+	  ModelReferencePassRootInputsByReference on
+	  ModelReferenceMinAlgLoopOccurrences off
+	}
+	Simulink.SFSimCC {
+	  $ObjectID		  8
+	  Version		  "1.6.0"
+	  SFSimEnableDebug	  on
+	  SFSimOverflowDetection  on
+	  SFSimEcho		  on
+	  SimBlas		  on
+	  SimUseLocalCustomCode	  off
+	  SimBuildMode		  "sf_incremental_build"
+	}
+	Simulink.RTWCC {
+	  $BackupClass		  "Simulink.RTWCC"
+	  $ObjectID		  9
+	  Version		  "1.6.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    1
+	    Cell		    "IncludeHyperlinkInReport"
+	    PropName		    "DisabledProps"
+	  }
+	  SystemTargetFile	  "grt.tlc"
+	  GenCodeOnly		  off
+	  MakeCommand		  "make_rtw"
+	  GenerateMakefile	  on
+	  TemplateMakefile	  "grt_default_tmf"
+	  GenerateReport	  off
+	  SaveLog		  off
+	  RTWVerbose		  on
+	  RetainRTWFile		  off
+	  ProfileTLC		  off
+	  TLCDebug		  off
+	  TLCCoverage		  off
+	  TLCAssert		  off
+	  ProcessScriptMode	  "Default"
+	  ConfigurationMode	  "Optimized"
+	  ConfigAtBuild		  off
+	  RTWUseLocalCustomCode	  off
+	  RTWUseSimCustomCode	  off
+	  IncludeHyperlinkInReport off
+	  LaunchReport		  off
+	  TargetLang		  "C"
+	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
+	  IncludeERTFirstTime	  off
+	  GenerateTraceInfo	  off
+	  GenerateTraceReport	  off
+	  GenerateTraceReportSl	  off
+	  GenerateTraceReportSf	  off
+	  GenerateTraceReportEml  off
+	  GenerateCodeInfo	  off
+	  RTWCompilerOptimization "Off"
+	  CheckMdlBeforeBuild	  "Off"
+	  Array {
+	    Type		    "Handle"
+	    Dimension		    2
+	    Simulink.CodeAppCC {
+	      $ObjectID		      10
+	      Version		      "1.6.0"
+	      Array {
+		Type			"Cell"
+		Dimension		16
+		Cell			"IgnoreCustomStorageClasses"
+		Cell			"InsertBlockDesc"
+		Cell			"SFDataObjDesc"
+		Cell			"SimulinkDataObjDesc"
+		Cell			"DefineNamingRule"
+		Cell			"SignalNamingRule"
+		Cell			"ParamNamingRule"
+		Cell			"InlinedPrmAccess"
+		Cell			"CustomSymbolStr"
+		Cell			"CustomSymbolStrGlobalVar"
+		Cell			"CustomSymbolStrType"
+		Cell			"CustomSymbolStrField"
+		Cell			"CustomSymbolStrFcn"
+		Cell			"CustomSymbolStrBlkIO"
+		Cell			"CustomSymbolStrTmpVar"
+		Cell			"CustomSymbolStrMacro"
+		PropName		"DisabledProps"
+	      }
+	      ForceParamTrailComments off
+	      GenerateComments	      on
+	      IgnoreCustomStorageClasses on
+	      IgnoreTestpoints	      off
+	      IncHierarchyInIds	      off
+	      MaxIdLength	      31
+	      PreserveName	      off
+	      PreserveNameWithParent  off
+	      ShowEliminatedStatement off
+	      IncAutoGenComments      off
+	      SimulinkDataObjDesc     off
+	      SFDataObjDesc	      off
+	      IncDataTypeInIds	      off
+	      MangleLength	      1
+	      CustomSymbolStrGlobalVar "$R$N$M"
+	      CustomSymbolStrType     "$N$R$M"
+	      CustomSymbolStrField    "$N$M"
+	      CustomSymbolStrFcn      "$R$N$M$F"
+	      CustomSymbolStrBlkIO    "rtb_$N$M"
+	      CustomSymbolStrTmpVar   "$N$M"
+	      CustomSymbolStrMacro    "$R$N$M"
+	      DefineNamingRule	      "None"
+	      ParamNamingRule	      "None"
+	      SignalNamingRule	      "None"
+	      InsertBlockDesc	      off
+	      SimulinkBlockComments   on
+	      EnableCustomComments    off
+	      InlinedPrmAccess	      "Literals"
+	      ReqsInCode	      off
+	      UseSimReservedNames     off
+	    }
+	    Simulink.GRTTargetCC {
+	      $BackupClass	      "Simulink.TargetCC"
+	      $ObjectID		      11
+	      Version		      "1.6.0"
+	      Array {
+		Type			"Cell"
+		Dimension		15
+		Cell			"IncludeMdlTerminateFcn"
+		Cell			"CombineOutputUpdateFcns"
+		Cell			"SuppressErrorStatus"
+		Cell			"ERTCustomFileBanners"
+		Cell			"GenerateSampleERTMain"
+		Cell			"GenerateTestInterfaces"
+		Cell			"ModelStepFunctionPrototypeControlCompliant"
+		Cell			"MultiInstanceERTCode"
+		Cell			"PurelyIntegerCode"
+		Cell			"SupportNonFinite"
+		Cell			"SupportComplex"
+		Cell			"SupportAbsoluteTime"
+		Cell			"SupportContinuousTime"
+		Cell			"SupportNonInlinedSFcns"
+		Cell			"PortableWordSizes"
+		PropName		"DisabledProps"
+	      }
+	      TargetFcnLib	      "ansi_tfl_tmw.mat"
+	      TargetLibSuffix	      ""
+	      TargetPreCompLibLocation ""
+	      TargetFunctionLibrary   "ANSI_C"
+	      UtilityFuncGeneration   "Auto"
+	      ERTMultiwordTypeDef     "System defined"
+	      ERTMultiwordLength      256
+	      MultiwordLength	      2048
+	      GenerateFullHeader      on
+	      GenerateSampleERTMain   off
+	      GenerateTestInterfaces  off
+	      IsPILTarget	      off
+	      ModelReferenceCompliant on
+	      ParMdlRefBuildCompliant on
+	      CompOptLevelCompliant   on
+	      IncludeMdlTerminateFcn  on
+	      CombineOutputUpdateFcns off
+	      SuppressErrorStatus     off
+	      ERTFirstTimeCompliant   off
+	      IncludeFileDelimiter    "Auto"
+	      ERTCustomFileBanners    off
+	      SupportAbsoluteTime     on
+	      LogVarNameModifier      "rt_"
+	      MatFileLogging	      on
+	      MultiInstanceERTCode    off
+	      SupportNonFinite	      on
+	      SupportComplex	      on
+	      PurelyIntegerCode	      off
+	      SupportContinuousTime   on
+	      SupportNonInlinedSFcns  on
+	      EnableShiftOperators    on
+	      ParenthesesLevel	      "Nominal"
+	      PortableWordSizes	      off
+	      ModelStepFunctionPrototypeControlCompliant off
+	      CPPClassGenCompliant    off
+	      AutosarCompliant	      off
+	      UseMalloc		      off
+	      ExtMode		      off
+	      ExtModeStaticAlloc      off
+	      ExtModeTesting	      off
+	      ExtModeStaticAllocSize  1000000
+	      ExtModeTransport	      0
+	      ExtModeMexFile	      "ext_comm"
+	      ExtModeIntrfLevel	      "Level1"
+	      RTWCAPISignals	      off
+	      RTWCAPIParams	      off
+	      RTWCAPIStates	      off
+	      GenerateASAP2	      off
+	    }
+	    PropName		    "Components"
+	  }
+	}
+	PropName		"Components"
+      }
+      Name		      "Configuration"
+      CurrentDlgPage	      "Data Import//Export"
+      ConfigPrmDlgPosition    " [ 124, 216, 1014, 875 ] "
+    }
+    PropName		    "ConfigurationSets"
+  }
+  Simulink.ConfigSet {
+    $PropName		    "ActiveConfigurationSet"
+    $ObjectID		    1
+  }
+  BlockDefaults {
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+    BlockRotation	    0
+    BlockMirror		    off
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      Constant
+      Value		      "1"
+      VectorParams1D	      on
+      SamplingMode	      "Sample based"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Inherit from 'Constant value'"
+      OutDataType	      "fixdt(1,16,0)"
+      ConRadixGroup	      "Use specified scaling"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: Inherit from 'Constant value'"
+      LockScale		      off
+      SampleTime	      "inf"
+      FramePeriod	      "inf"
+    }
+    Block {
+      BlockType		      DataTypeConversion
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Inherit via back propagation"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: Inherit via back propagation"
+      LockScale		      off
+      ConvertRealWorld	      "Real World Value (RWV)"
+      RndMeth		      "Zero"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Display
+      Format		      "short"
+      Decimation	      "10"
+      Floating		      off
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      EnablePort
+      StatesWhenEnabling      "held"
+      SignalSizeVariationType "Allow only fixed size"
+      ShowOutputPort	      off
+      ZeroCross		      on
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchByCopyingInsideSignal off
+      Interpolate	      on
+      DimensionsMode	      "auto"
+    }
+    Block {
+      BlockType		      Logic
+      Operator		      "AND"
+      Inputs		      "2"
+      IconShape		      "rectangular"
+      AllPortsSameDT	      on
+      OutDataTypeMode	      "Logical (see Configuration Parameters: Optimization)"
+      LogicDataType	      "uint(8)"
+      OutDataTypeStr	      "Inherit: Logical (see Configuration Parameters: Optimization)"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      SourceOfInitialOutputValue "Dialog"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+      DimensionsMode	      "auto"
+    }
+    Block {
+      BlockType		      "S-Function"
+      FunctionName	      "system"
+      SFunctionModules	      "''"
+      PortCounts	      "[]"
+      SFunctionDeploymentMode off
+    }
+    Block {
+      BlockType		      Scope
+      ModelBased	      off
+      TickLabels	      "OneTimeTick"
+      ZoomMode		      "on"
+      Grid		      "on"
+      TimeRange		      "auto"
+      YMin		      "-5"
+      YMax		      "5"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitDataPoints	      on
+      MaxDataPoints	      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Selector
+      NumberOfDimensions      "1"
+      IndexMode		      "One-based"
+      InputPortWidth	      "-1"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Stop
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+    Block {
+      BlockType		      Sum
+      IconShape		      "rectangular"
+      Inputs		      "++"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      AccumDataTypeStr	      "Inherit: Inherit via internal rule"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Same as first input"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      UnitDelay
+      X0		      "0"
+      SampleTime	      "1"
+      StateMustResolveToSignalObject off
+      RTWStateStorageClass    "Auto"
+    }
+    Block {
+      BlockType		      Width
+      OutDataTypeMode	      "Choose intrinsic data type"
+      DataType		      "double"
+    }
+  }
+  System {
+    Name		    "BCVTB"
+    Location		    [493, 583, 848, 814]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      SubSystem
+      Name		      "BCVTB"
+      Description	      "Block that interfaces to the BCVTB."
+      Ports		      [1, 1]
+      Position		      [40, 28, 130, 82]
+      BackgroundColor	      "[0.833, 0.833, 0.833]"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      System {
+	Name			"BCVTB"
+	Location		[1145, 405, 1595, 738]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "dblIn"
+	  Position		  [25, 148, 55, 162]
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Model Info"
+	  Ports			  []
+	  Position		  [25, 25, 163, 62]
+	  ShowName		  off
+	  FontName		  "Arial"
+	  SourceBlock		  "simulink/Model-Wide\nUtilities/Model Info"
+	  SourceType		  "CMBlock"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData "off"
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  InitialBlockCM	  "None"
+	  BlockCM		  "None"
+	  Frame			  "off"
+	  DisplayStringWithTags	  "%<Description>Set to 1 to enable I/O"
+	  MaskDisplayString	  "Set to 1 to enable I/O"
+	  HorizontalTextAlignment "Left"
+	  LeftAlignmentValue	  "0.02"
+	  SourceBlockDiagram	  "BCVTB"
+	  TagMaxNumber		  "20"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Model Info1"
+	  Ports			  []
+	  Position		  [155, 215, 278, 271]
+	  ShowName		  off
+	  FontName		  "Arial"
+	  SourceBlock		  "simulink/Model-Wide\nUtilities/Model Info"
+	  SourceType		  "CMBlock"
+	  ShowPortLabels	  "FromPortIcon"
+	  SystemSampleTime	  "-1"
+	  FunctionWithSeparateData "off"
+	  RTWMemSecFuncInitTerm	  "Inherit from model"
+	  RTWMemSecFuncExecute	  "Inherit from model"
+	  RTWMemSecDataConstants  "Inherit from model"
+	  RTWMemSecDataInternal	  "Inherit from model"
+	  RTWMemSecDataParameters "Inherit from model"
+	  InitialBlockCM	  "None"
+	  BlockCM		  "None"
+	  Frame			  "off"
+	  DisplayStringWithTags	  "The selector block selects \na subset of the vector u \nand outputs it as the vector v."
+	  MaskDisplayString	  "The selector block selects \\na subset of the vector u \\nand outputs it as the vector v."
+	  HorizontalTextAlignment "Left"
+	  LeftAlignmentValue	  "0.02"
+	  SourceBlockDiagram	  "BCVTB"
+	  TagMaxNumber		  "20"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "enableIO"
+	  Position		  [25, 65, 55, 95]
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Selector
+	  Name			  "selector"
+	  Ports			  [1, 1]
+	  Position		  [155, 166, 185, 194]
+	  InputPortWidth	  "128"
+	  IndexOptions		  "Index vector (dialog)"
+	  Indices		  "[1]"
+	  OutputSizes		  "1"
+	}
+	Block {
+	  BlockType		  Scope
+	  Name			  "simTim"
+	  Ports			  [1]
+	  Position		  [155, 114, 185, 146]
+	  Floating		  off
+	  Location		  [1230, 360, 1554, 599]
+	  Open			  off
+	  NumInputPorts		  "1"
+	  ZoomMode		  "xonly"
+	  List {
+	    ListType		    AxesTitles
+	    axes1		    "%<SignalLabel>"
+	  }
+	  DataFormat		  "StructureWithTime"
+	  SampleTime		  "0"
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "socketIO"
+	  Ports			  [1, 2, 1]
+	  Position		  [80, 105, 120, 205]
+	  BackgroundColor	  "[0.859200, 0.883663, 0.895000]"
+	  MinAlgLoopOccurrences	  off
+	  PropExecContextOutsideSubsystem off
+	  RTWSystemCode		  "Auto"
+	  FunctionWithSeparateData off
+	  Opaque		  off
+	  RequestExecContextInheritance	off
+	  MaskHideContents	  off
+	  System {
+	    Name		    "socketIO"
+	    Location		    [287, 541, 1171, 862]
+	    Open		    off
+	    ModelBrowserVisibility  off
+	    ModelBrowserWidth	    200
+	    ScreenColor		    "white"
+	    PaperOrientation	    "landscape"
+	    PaperPositionMode	    "auto"
+	    PaperType		    "usletter"
+	    PaperUnits		    "inches"
+	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+	    TiledPageScale	    1
+	    ShowPageBoundaries	    off
+	    ZoomFactor		    "100"
+	    Block {
+	      BlockType		      Inport
+	      Name		      "dblIn"
+	      Position		      [45, 253, 75, 267]
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      EnablePort
+	      Name		      "Enable"
+	      Ports		      []
+	      Position		      [420, 15, 440, 35]
+	    }
+	    Block {
+	      BlockType		      Width
+	      Name		      "Width"
+	      Position		      [275, 165, 305, 195]
+	      DataType		      "int16"
+	    }
+	    Block {
+	      BlockType		      SubSystem
+	      Name		      "establishSocket"
+	      Ports		      [0, 1]
+	      Position		      [35, 30, 75, 90]
+	      TreatAsAtomicUnit	      on
+	      MinAlgLoopOccurrences   off
+	      PropExecContextOutsideSubsystem off
+	      RTWSystemCode	      "Auto"
+	      FunctionWithSeparateData off
+	      Opaque		      off
+	      RequestExecContextInheritance off
+	      MaskHideContents	      off
+	      System {
+		Name			"establishSocket"
+		Location		[144, 491, 611, 789]
+		Open			off
+		ModelBrowserVisibility	off
+		ModelBrowserWidth	200
+		ScreenColor		"white"
+		PaperOrientation	"landscape"
+		PaperPositionMode	"auto"
+		PaperType		"usletter"
+		PaperUnits		"inches"
+		TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+		TiledPageScale		1
+		ShowPageBoundaries	off
+		ZoomFactor		"100"
+		Block {
+		  BlockType		  Constant
+		  Name			  "Constant"
+		  Position		  [15, 45, 45, 75]
+		  Value			  "0"
+		  OutDataTypeMode	  "int16"
+		  OutDataType		  "sfix(16)"
+		  OutScaling		  "2^0"
+		  OutDataTypeStr	  "int16"
+		}
+		Block {
+		  BlockType		  Sum
+		  Name			  "Sum"
+		  Ports			  [2, 1]
+		  Position		  [75, 50, 95, 70]
+		  ShowName		  off
+		  IconShape		  "round"
+		  Inputs		  "|++"
+		  InputSameDT		  off
+		  OutDataTypeMode	  "Inherit via internal rule"
+		  OutDataType		  "sfix(16)"
+		  OutScaling		  "2^0"
+		  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+		  SaturateOnIntegerOverflow off
+		}
+		Block {
+		  BlockType		  UnitDelay
+		  Name			  "Unit Delay"
+		  Position		  [210, 123, 245, 157]
+		  BlockMirror		  on
+		  SampleTime		  "-1"
+		}
+		Block {
+		  BlockType		  "S-Function"
+		  Name			  "establishBSDSocket"
+		  Ports			  [1, 1]
+		  Position		  [130, 45, 360, 75]
+		  FunctionName		  "establishBSDSocket"
+		  EnableBusSupport	  off
+		  MaskType		  "Legacy Function"
+		  MaskDescription	  "This block allows the user to call the following C function(s) in Simulink:\n\n InitializeCondi"
+		  "tionsFcn: none\n\n StartFcn: none\n\n OutputFcn: int16 y1 = establishBSDSocket(int16 u1[1])\n\n TerminateFcn: none"
+		  "\n"
+		  MaskPromptString	  "SFunctionSpec|Display function specification"
+		  MaskStyleString	  "edit,checkbox"
+		  MaskTunableValueString  "off,on"
+		  MaskCallbackString	  "|if strcmp(get_param(gcbh, 'ShowSpec'), 'on')\n  set_param(gcbh, 'MaskDisplay', sprintf('fpr"
+		  "intf(''%s'');', get_param(gcbh, 'SFunctionSpec')));\nelse\n  set_param(gcbh, 'MaskDisplay', sprintf('fprintf(''%s'"
+		  "');', get_param(gcbh, 'FunctionName')));\nend"
+		  MaskEnableString	  "on,on"
+		  MaskVisibilityString	  "off,on"
+		  MaskToolTipString	  "on,on"
+		  MaskVarAliasString	  ","
+		  MaskVariables		  "SFunctionSpec=&1;ShowSpec=@2"
+		  MaskDisplay		  "fprintf('int16 y1 = establishBSDSocket(int16 u1[1])');"
+		  MaskSelfModifiable	  on
+		  MaskIconFrame		  on
+		  MaskIconOpaque	  on
+		  MaskIconRotate	  "port"
+		  MaskPortRotate	  "default"
+		  MaskIconUnits		  "normalized"
+		  MaskValueString	  "int16 y1 = establishBSDSocket(int16 u1[1])|on"
+		  MaskTabNameString	  ","
+		}
+		Block {
+		  BlockType		  Outport
+		  Name			  "socketFD"
+		  Position		  [415, 53, 445, 67]
+		  IconDisplay		  "Port number"
+		}
+		Line {
+		  SrcBlock		  "Unit Delay"
+		  SrcPort		  1
+		  Points		  [-120, 0]
+		  DstBlock		  "Sum"
+		  DstPort		  2
+		}
+		Line {
+		  SrcBlock		  "Constant"
+		  SrcPort		  1
+		  DstBlock		  "Sum"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Sum"
+		  SrcPort		  1
+		  DstBlock		  "establishBSDSocket"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "establishBSDSocket"
+		  SrcPort		  1
+		  Points		  [20, 0]
+		  Branch {
+		    DstBlock		    "socketFD"
+		    DstPort		    1
+		  }
+		  Branch {
+		    Points		    [0, 80]
+		    DstBlock		    "Unit Delay"
+		    DstPort		    1
+		  }
+		}
+	      }
+	    }
+	    Block {
+	      BlockType		      "S-Function"
+	      Name		      "exchangeDoublesWithBSDSocket"
+	      Ports		      [5, 4]
+	      Position		      [370, 85, 495, 275]
+	      FunctionName	      "exchangeDoublesWithBSDSocket"
+	      EnableBusSupport	      off
+	      MaskType		      "Legacy Function"
+	      MaskDescription	      "This block allows the user to call the following C function(s) in Simulink:\n\n Initiali"
+	      "zeConditionsFcn: none\n\n StartFcn: none\n\n OutputFcn: int16 y1 = exchangeDoublesWithBSDSocket(int16 u1[1], in"
+	      "t16 u2[1], int16 y2[1], double u3[1], double u4[], double y3[1], double y4[50])\n\n TerminateFcn: none\n"
+	      MaskPromptString	      "SFunctionSpec|Display function specification"
+	      MaskStyleString	      "edit,checkbox"
+	      MaskTunableValueString  "off,on"
+	      MaskCallbackString      "|if strcmp(get_param(gcbh, 'ShowSpec'), 'on')\n  set_param(gcbh, 'MaskDisplay', sprint"
+	      "f('fprintf(''%s'');', get_param(gcbh, 'SFunctionSpec')));\nelse\n  set_param(gcbh, 'MaskDisplay', sprintf('fpri"
+	      "ntf(''%s'');', get_param(gcbh, 'FunctionName')));\nend"
+	      MaskEnableString	      "on,on"
+	      MaskVisibilityString    "off,on"
+	      MaskToolTipString	      "on,on"
+	      MaskVarAliasString      ","
+	      MaskVariables	      "SFunctionSpec=&1;ShowSpec=@2"
+	      MaskDisplay	      "fprintf('exchangeDoublesWithBSDSocket');"
+	      MaskSelfModifiable      on
+	      MaskIconFrame	      on
+	      MaskIconOpaque	      on
+	      MaskIconRotate	      "port"
+	      MaskPortRotate	      "default"
+	      MaskIconUnits	      "normalized"
+	      MaskValueString	      "int16 y1 = exchangeDoublesWithBSDSocket(int16 u1[1], int16 u2[1], int16 y2[1], double u3"
+	      "[1], double u4[], double y3[1], double y4[50])|off"
+	      MaskTabNameString	      ","
+	    }
+	    Block {
+	      BlockType		      Constant
+	      Name		      "flaWri"
+	      Position		      [40, 125, 70, 155]
+	      Value		      "0"
+	      OutDataTypeMode	      "int16"
+	      OutDataType	      "sfix(16)"
+	      OutScaling	      "2^0"
+	      OutDataTypeStr	      "int16"
+	    }
+	    Block {
+	      BlockType		      Reference
+	      Name		      "simTimMat"
+	      Ports		      [0, 1]
+	      Position		      [45, 205, 75, 235]
+	      SourceBlock	      "simulink/Sources/Ramp"
+	      SourceType	      "Ramp"
+	      ShowPortLabels	      "FromPortIcon"
+	      SystemSampleTime	      "-1"
+	      FunctionWithSeparateData "off"
+	      RTWMemSecFuncInitTerm   "Inherit from model"
+	      RTWMemSecFuncExecute    "Inherit from model"
+	      RTWMemSecDataConstants  "Inherit from model"
+	      RTWMemSecDataInternal   "Inherit from model"
+	      RTWMemSecDataParameters "Inherit from model"
+	      slope		      "1"
+	      start		      "0"
+	      X0		      "0"
+	      VectorParams1D	      "on"
+	    }
+	    Block {
+	      BlockType		      SubSystem
+	      Name		      "terminateSocket"
+	      Ports		      [3]
+	      Position		      [685, 49, 725, 111]
+	      MinAlgLoopOccurrences   off
+	      PropExecContextOutsideSubsystem off
+	      RTWSystemCode	      "Auto"
+	      FunctionWithSeparateData off
+	      Opaque		      off
+	      RequestExecContextInheritance off
+	      MaskHideContents	      off
+	      System {
+		Name			"terminateSocket"
+		Location		[211, 378, 963, 910]
+		Open			off
+		ModelBrowserVisibility	off
+		ModelBrowserWidth	200
+		ScreenColor		"white"
+		PaperOrientation	"landscape"
+		PaperPositionMode	"auto"
+		PaperType		"usletter"
+		PaperUnits		"inches"
+		TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+		TiledPageScale		1
+		ShowPageBoundaries	off
+		ZoomFactor		"100"
+		Block {
+		  BlockType		  Inport
+		  Name			  "sockfd"
+		  Position		  [45, 148, 75, 162]
+		  IconDisplay		  "Port number"
+		}
+		Block {
+		  BlockType		  Inport
+		  Name			  "excRetVal"
+		  Position		  [45, 218, 75, 232]
+		  Port			  "2"
+		  IconDisplay		  "Port number"
+		}
+		Block {
+		  BlockType		  Inport
+		  Name			  "excFlaRea"
+		  Position		  [45, 273, 75, 287]
+		  Port			  "3"
+		  IconDisplay		  "Port number"
+		}
+		Block {
+		  BlockType		  Reference
+		  Name			  "Compare\nTo Zero"
+		  Ports			  [1, 1]
+		  Position		  [155, 210, 185, 240]
+		  SourceBlock		  "simulink/Logic and Bit\nOperations/Compare\nTo Zero"
+		  SourceType		  "Compare To Zero"
+		  ShowPortLabels	  "FromPortIcon"
+		  SystemSampleTime	  "-1"
+		  FunctionWithSeparateData "off"
+		  RTWMemSecFuncInitTerm	  "Inherit from model"
+		  RTWMemSecFuncExecute	  "Inherit from model"
+		  RTWMemSecDataConstants  "Inherit from model"
+		  RTWMemSecDataInternal	  "Inherit from model"
+		  RTWMemSecDataParameters "Inherit from model"
+		  relop			  "=="
+		  LogicOutDataTypeMode	  "uint8"
+		  ZeroCross		  "off"
+		}
+		Block {
+		  BlockType		  Reference
+		  Name			  "Compare\nTo Zero1"
+		  Ports			  [1, 1]
+		  Position		  [155, 265, 185, 295]
+		  SourceBlock		  "simulink/Logic and Bit\nOperations/Compare\nTo Zero"
+		  SourceType		  "Compare To Zero"
+		  ShowPortLabels	  "FromPortIcon"
+		  SystemSampleTime	  "-1"
+		  FunctionWithSeparateData "off"
+		  RTWMemSecFuncInitTerm	  "Inherit from model"
+		  RTWMemSecFuncExecute	  "Inherit from model"
+		  RTWMemSecDataConstants  "Inherit from model"
+		  RTWMemSecDataInternal	  "Inherit from model"
+		  RTWMemSecDataParameters "Inherit from model"
+		  relop			  "=="
+		  LogicOutDataTypeMode	  "uint8"
+		  ZeroCross		  "off"
+		}
+		Block {
+		  BlockType		  Reference
+		  Name			  "Compare\nTo Zero2"
+		  Ports			  [1, 1]
+		  Position		  [240, 70, 270, 100]
+		  SourceBlock		  "simulink/Logic and Bit\nOperations/Compare\nTo Zero"
+		  SourceType		  "Compare To Zero"
+		  ShowPortLabels	  "FromPortIcon"
+		  SystemSampleTime	  "-1"
+		  FunctionWithSeparateData "off"
+		  RTWMemSecFuncInitTerm	  "Inherit from model"
+		  RTWMemSecFuncExecute	  "Inherit from model"
+		  RTWMemSecDataConstants  "Inherit from model"
+		  RTWMemSecDataInternal	  "Inherit from model"
+		  RTWMemSecDataParameters "Inherit from model"
+		  relop			  "=="
+		  LogicOutDataTypeMode	  "boolean"
+		  ZeroCross		  "off"
+		}
+		Block {
+		  BlockType		  DataTypeConversion
+		  Name			  "Data Type Conversion"
+		  Position		  [380, 243, 455, 277]
+		  OutDataType		  "sfix(16)"
+		  OutScaling		  "2^0"
+		  RndMeth		  "Floor"
+		  SaturateOnIntegerOverflow off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display"
+		  Ports			  [1]
+		  Position		  [255, 25, 345, 55]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display1"
+		  Ports			  [1]
+		  Position		  [150, 330, 205, 360]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display2"
+		  Ports			  [1]
+		  Position		  [150, 381, 205, 409]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display3"
+		  Ports			  [1]
+		  Position		  [360, 361, 405, 389]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display4"
+		  Ports			  [1]
+		  Position		  [560, 215, 650, 245]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display5"
+		  Ports			  [1]
+		  Position		  [245, 335, 300, 365]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display6"
+		  Ports			  [1]
+		  Position		  [245, 386, 300, 414]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Display
+		  Name			  "Display7"
+		  Ports			  [1]
+		  Position		  [620, 366, 665, 394]
+		  Decimation		  "1"
+		  Lockdown		  off
+		}
+		Block {
+		  BlockType		  Logic
+		  Name			  "Logical\nOperator"
+		  Ports			  [2, 1]
+		  Position		  [240, 242, 270, 273]
+		  Operator		  "NAND"
+		  AllPortsSameDT	  off
+		  OutDataTypeMode	  "boolean"
+		  OutDataTypeStr	  "boolean"
+		}
+		Block {
+		  BlockType		  Stop
+		  Name			  "Stop Simulation"
+		  Position		  [405, 67, 440, 103]
+		}
+		Block {
+		  BlockType		  Stop
+		  Name			  "Stop Simulation1"
+		  Position		  [515, 332, 550, 368]
+		}
+		Block {
+		  BlockType		  Terminator
+		  Name			  "Terminator"
+		  Position		  [710, 155, 730, 175]
+		}
+		Block {
+		  BlockType		  "S-Function"
+		  Name			  "closeBSDSocket"
+		  Ports			  [2, 1]
+		  Position		  [405, 147, 685, 178]
+		  FunctionName		  "closeBSDSocket"
+		  EnableBusSupport	  off
+		  MaskType		  "Legacy Function"
+		  MaskDescription	  "This block allows the user to call the following C function(s) in Simulink:\n\n InitializeCondi"
+		  "tionsFcn: none\n\n StartFcn: none\n\n OutputFcn: int16 y1 = closeBSDSocket(int16 u1[1], int16 u2[1])\n\n Terminate"
+		  "Fcn: none\n"
+		  MaskPromptString	  "SFunctionSpec|Display function specification"
+		  MaskStyleString	  "edit,checkbox"
+		  MaskTunableValueString  "off,on"
+		  MaskCallbackString	  "|if strcmp(get_param(gcbh, 'ShowSpec'), 'on')\n  set_param(gcbh, 'MaskDisplay', sprintf('fpr"
+		  "intf(''%s'');', get_param(gcbh, 'SFunctionSpec')));\nelse\n  set_param(gcbh, 'MaskDisplay', sprintf('fprintf(''%s'"
+		  "');', get_param(gcbh, 'FunctionName')));\nend"
+		  MaskEnableString	  "on,on"
+		  MaskVisibilityString	  "off,on"
+		  MaskToolTipString	  "on,on"
+		  MaskVarAliasString	  ","
+		  MaskVariables		  "SFunctionSpec=&1;ShowSpec=@2"
+		  MaskDisplay		  "fprintf('int16 y1 = closeBSDSocket(int16 u1[1], int16 u2[1])');"
+		  MaskSelfModifiable	  on
+		  MaskIconFrame		  on
+		  MaskIconOpaque	  on
+		  MaskIconRotate	  "port"
+		  MaskPortRotate	  "default"
+		  MaskIconUnits		  "normalized"
+		  MaskValueString	  "int16 y1 = closeBSDSocket(int16 u1[1], int16 u2[1])|on"
+		  MaskTabNameString	  ","
+		}
+		Line {
+		  SrcBlock		  "sockfd"
+		  SrcPort		  1
+		  Points		  [110, 0]
+		  Branch {
+		    DstBlock		    "closeBSDSocket"
+		    DstPort		    1
+		  }
+		  Branch {
+		    Points		    [0, -70]
+		    Branch {
+		    DstBlock		    "Compare\nTo Zero2"
+		    DstPort		    1
+		    }
+		    Branch {
+		    Points		    [0, -45]
+		    DstBlock		    "Display"
+		    DstPort		    1
+		    }
+		  }
+		}
+		Line {
+		  SrcBlock		  "excRetVal"
+		  SrcPort		  1
+		  Points		  [45, 0]
+		  Branch {
+		    DstBlock		    "Compare\nTo Zero"
+		    DstPort		    1
+		  }
+		  Branch {
+		    Points		    [0, 120]
+		    DstBlock		    "Display1"
+		    DstPort		    1
+		  }
+		}
+		Line {
+		  SrcBlock		  "excFlaRea"
+		  SrcPort		  1
+		  Points		  [25, 0]
+		  Branch {
+		    DstBlock		    "Compare\nTo Zero1"
+		    DstPort		    1
+		  }
+		  Branch {
+		    Points		    [0, 115]
+		    DstBlock		    "Display2"
+		    DstPort		    1
+		  }
+		}
+		Line {
+		  SrcBlock		  "Compare\nTo Zero"
+		  SrcPort		  1
+		  Points		  [25, 0]
+		  Branch {
+		    Points		    [0, 25]
+		    DstBlock		    "Logical\nOperator"
+		    DstPort		    1
+		  }
+		  Branch {
+		    Points		    [0, 125]
+		    DstBlock		    "Display5"
+		    DstPort		    1
+		  }
+		}
+		Line {
+		  SrcBlock		  "Compare\nTo Zero1"
+		  SrcPort		  1
+		  Points		  [15, 0]
+		  Branch {
+		    Points		    [10, 0; 0, -15]
+		    DstBlock		    "Logical\nOperator"
+		    DstPort		    2
+		  }
+		  Branch {
+		    Points		    [0, 120]
+		    DstBlock		    "Display6"
+		    DstPort		    1
+		  }
+		}
+		Line {
+		  SrcBlock		  "Logical\nOperator"
+		  SrcPort		  1
+		  Points		  [65, 0]
+		  Branch {
+		    Points		    [0, 115]
+		    DstBlock		    "Display3"
+		    DstPort		    1
+		  }
+		  Branch {
+		    Points		    [15, 0]
+		    Branch {
+		    DstBlock		    "Data Type Conversion"
+		    DstPort		    1
+		    }
+		    Branch {
+		    Points		    [0, 90]
+		    DstBlock		    "Stop Simulation1"
+		    DstPort		    1
+		    }
+		  }
+		}
+		Line {
+		  SrcBlock		  "Data Type Conversion"
+		  SrcPort		  1
+		  Points		  [45, 0]
+		  Branch {
+		    Points		    [0, -30]
+		    Branch {
+		    Points		    [-115, 0]
+		    DstBlock		    "closeBSDSocket"
+		    DstPort		    2
+		    }
+		    Branch {
+		    DstBlock		    "Display4"
+		    DstPort		    1
+		    }
+		  }
+		  Branch {
+		    Points		    [0, 35; 90, 0; 0, 85]
+		    DstBlock		    "Display7"
+		    DstPort		    1
+		  }
+		}
+		Line {
+		  SrcBlock		  "Compare\nTo Zero2"
+		  SrcPort		  1
+		  DstBlock		  "Stop Simulation"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "closeBSDSocket"
+		  SrcPort		  1
+		  DstBlock		  "Terminator"
+		  DstPort		  1
+		}
+	      }
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "simTim"
+	      Position		      [700, 198, 730, 212]
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "dblOut"
+	      Position		      [700, 243, 730, 257]
+	      Port		      "2"
+	      IconDisplay	      "Port number"
+	    }
+	    Line {
+	      SrcBlock		      "establishSocket"
+	      SrcPort		      1
+	      Points		      [230, 0]
+	      Branch {
+		Points			[0, 0; 0, 40]
+		DstBlock		"exchangeDoublesWithBSDSocket"
+		DstPort			1
+	      }
+	      Branch {
+		Labels			[0, 0]
+		DstBlock		"terminateSocket"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "flaWri"
+	      SrcPort		      1
+	      DstBlock		      "exchangeDoublesWithBSDSocket"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "exchangeDoublesWithBSDSocket"
+	      SrcPort		      3
+	      DstBlock		      "simTim"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "dblIn"
+	      SrcPort		      1
+	      Points		      [135, 0]
+	      Branch {
+		DstBlock		"exchangeDoublesWithBSDSocket"
+		DstPort			5
+	      }
+	      Branch {
+		Points			[0, -80]
+		DstBlock		"Width"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "simTimMat"
+	      SrcPort		      1
+	      DstBlock		      "exchangeDoublesWithBSDSocket"
+	      DstPort		      4
+	    }
+	    Line {
+	      SrcBlock		      "Width"
+	      SrcPort		      1
+	      DstBlock		      "exchangeDoublesWithBSDSocket"
+	      DstPort		      3
+	    }
+	    Line {
+	      SrcBlock		      "exchangeDoublesWithBSDSocket"
+	      SrcPort		      4
+	      DstBlock		      "dblOut"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "exchangeDoublesWithBSDSocket"
+	      SrcPort		      1
+	      Points		      [70, 0; 0, -35]
+	      DstBlock		      "terminateSocket"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "exchangeDoublesWithBSDSocket"
+	      SrcPort		      2
+	      Points		      [85, 0; 0, -60]
+	      DstBlock		      "terminateSocket"
+	      DstPort		      3
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "dblOut"
+	  Position		  [210, 173, 240, 187]
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "socketIO"
+	  SrcPort		  1
+	  DstBlock		  "simTim"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "enableIO"
+	  SrcPort		  1
+	  Points		  [40, 0]
+	  DstBlock		  "socketIO"
+	  DstPort		  enable
+	}
+	Line {
+	  SrcBlock		  "socketIO"
+	  SrcPort		  2
+	  DstBlock		  "selector"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "dblIn"
+	  SrcPort		  1
+	  DstBlock		  "socketIO"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "selector"
+	  SrcPort		  1
+	  DstBlock		  "dblOut"
+	  DstPort		  1
+	}
+      }
+    }
+  }
+}
+# Finite State Machines
+#
+#    Stateflow Version 7.1 (R2009a) dated Jan 27 2009, 19:23:49
+#
+#
+
+
+Stateflow {
+  machine {
+    id			    1
+    name		    "BCVTB"
+    created		    "17-Jan-2008 14:24:44"
+    isLibrary		    0
+    firstTarget		    2
+    sfVersion		    71014000.000008
+  }
+  target {
+    id			    2
+    name		    "sfun"
+    codeFlags		    ""
+    machine		    1
+    linkNode		    [1 0 0]
+  }
+}

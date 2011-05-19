@@ -1,0 +1,136 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SequencedIntegrator" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SequencedIntegrator_parameter" class="ptolemy.data.expr.Parameter" value="14.4">
+    </property>
+    <property name="SequencedIntegrator_initialValue" class="ptolemy.data.expr.Parameter" value="0">
+    </property>
+    <property name="SequencedVariable_parameter" class="ptolemy.data.expr.Parameter" value="14.4">
+    </property>
+    <property name="SequencedVariable_initialValue" class="ptolemy.data.expr.Parameter" value="0">
+    </property>
+    <property name="SequenceDirector" class="ptolemy.domains.sequence.kernel.SequenceDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={455, 293, 986, 575}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 458]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{385.4999999999998, 228.9999999999999}">
+    </property>
+    <property name="SequencedVariable2_parameter" class="ptolemy.data.expr.Parameter" value="12.0">
+    </property>
+    <property name="SequencedVariable2_initialValue" class="ptolemy.data.expr.Parameter" value="0">
+    </property>
+    <entity name="SequencedIntegrator" class="ptolemy.domains.sequence.lib.SequencedIntegrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="SequencedVariable" class="ptolemy.domains.sequence.lib.SequencedVariable">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 230.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.4, 4.8, 7.2, 9.6, 12.0, 14.4}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 230.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
+        </property>
+    </entity>
+    <entity name="SequencedVariable2" class="ptolemy.domains.sequence.lib.SequencedVariable">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 315.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="1">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 2.4, 4.8, 7.2, 9.6, 12.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 315.0]">
+        </property>
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="4">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SequencedIntegrator.input" relation="relation2"/>
+    <link port="SequencedIntegrator.sampleTime" relation="relation3"/>
+    <link port="SequencedIntegrator.sampleFactor" relation="relation"/>
+    <link port="SequencedIntegrator.output" relation="relation4"/>
+    <link port="SequencedIntegrator.currentState" relation="relation7"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="Const3.output" relation="relation3"/>
+    <link port="SequencedVariable.input" relation="relation4"/>
+    <link port="SequencedVariable.output" relation="relation5"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="SequencedVariable2.input" relation="relation7"/>
+    <link port="SequencedVariable2.output" relation="relation6"/>
+    <link port="Test2.input" relation="relation6"/>
+</entity>

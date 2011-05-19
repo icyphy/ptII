@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Library of actors that are automata. -->
+<entity name="VideoProcessing" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <entity name="SADActor" class="ptolemy.actor.lib.video.SumofAbsoluteDifferences"/>
+		<entity name="DCT2x2dc" class="ptolemy.actor.lib.video.DCT2x2dc"/>
+		<entity name="DCT4x4dc" class="ptolemy.actor.lib.video.DCT4x4dc"/>
+		<entity name="IDCT4x4dc" class="ptolemy.actor.lib.video.IDCT4x4dc"/>
+	    <entity name="DCT8x8" class="ptolemy.actor.lib.video.DCT8x8"/>
+		<entity name="IDCT8x8" class="ptolemy.actor.lib.video.IDCT8x8"/>
+      </group>
+    ?>
+  </configure>
+</entity>

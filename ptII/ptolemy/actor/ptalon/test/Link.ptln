@@ -1,0 +1,9 @@
+Link is {
+	actorparameter a;
+	actorparameter b;
+	inport input;
+	outport output;
+	relation r;
+	a(input := input, output := r);
+	b(input := r, output := output);
+}

@@ -1,0 +1,38 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Vergil Applet</TITLE>
+</head>
+<body>
+
+<h1>Vergil Applet</h1>
+<p>
+The following applet illustrates how the model visualization used in
+Vergil can be added to an applet.  Here the modulation demo can be run,
+and the parameters of specific actors can be edited as well.
+<p>
+
+<center>
+<p>
+
+        <applet 
+            code = "ptolemy.vergil.MoMLViewerApplet" 
+            codebase = "../.." 
+            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" 
+            width = "700" 
+            height = "950" 
+            > 
+            <param name="NAME" value="Vergil" > 
+	    <param name="background" value="#ffffff" > 
+	    <param name="model" value="vergilAppletDemo.xml" > 
+	    <param name="includeRunPanel" value="true" > 
+            <a href="vergilAppletDemo.xml">MoML specification for this model.</a> 
+        </applet> 
+</center>
+See the <a href="../moml/demo/sinewaveShow.htm">MoML file</a> defining a class used in this model.
+<p>
+See also <a href="doc/vergilApplets.htm">more vergil applets</a>.
+</body>
+</html>

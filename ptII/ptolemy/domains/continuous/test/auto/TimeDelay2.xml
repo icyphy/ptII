@@ -1,0 +1,59 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TimeDelay2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 65.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 244, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5877852522925, 0.9510565162952, 0.9510565162952, 0.8670707011645, 0.8670707011645, 0.4086490747363, 0.4086490747363, -0.2058626087699, -0.2058626087699, -0.7417417727387, -0.7417417727387, -0.8639234171928, -0.8639234171928, -0.9949510169813, -0.9949510169813, -0.7459411454242, -0.7459411454242, -0.2120071099221, -0.2120071099221, -0.0062831439656, -0.0062831439656, 0.5826904796686, 0.5826904796686, 0.9490961449903, 0.9490961449903, 0.9529793415172, 0.9529793415172, 0.8701837546695, 0.8701837546695, 0.4143755809933, 0.4143755809933, -0.1997099805144, -0.1997099805144, -0.7375131173582, -0.7375131173582, -0.8607420270039, -0.8607420270039}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="0.333">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 280.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[290.0, 280.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{415.0, 215.0}">
+        </vertex>
+    </relation>
+    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="TimeDelay.input" relation="relation5"/>
+    <link port="TimeDelay.output" relation="relation3"/>
+    <link port="ContinuousSinewave.output" relation="relation5"/>
+</entity>

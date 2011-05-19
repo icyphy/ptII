@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id$
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>FixPoint</title>
+</head>
+<body>
+<h1>FixPoint</h1>
+This page contains an applet that should appear as a separate window.
+<p>This model compares fixed-point (quantized)
+data against unquantized data.</p>
+<p>The precision of the first fixed-point conversion is controlled by the
+parameters of the DoubleToFix actor.  The default precision is
+[4,2], which means that a total of 4 bits are used, 2 of which
+are integer bits.
+By default, the input is rounded to the nearest representable
+number. You can change the strategy by changing the <i>quantization</i>
+parameter of the DoubleToFix actor.</p>
+<p>The precision of the second second quantization
+is controlled by the FixToFix actor, which has a default precision
+of [3,2].  Thus, the second quantizer reduces by one the number
+of fractional bits.  In addition, it uses an overflow model
+called "overflow_to_zero".  You can modify these properties
+by right clicking on the actor icons above and selecting
+"Edit Parameters".</p>
+<p>The fixed-point numbers are represented in two's-complement
+notation.  Thus, the set of
+numbers that can be represented with a [3, 2] precision is:</p>
+<p>
+<PRE>
+  { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5 }
+</PRE>
+</p>
+<p>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- PT SIMPLE APPLET CONVERTER -->
+<APPLET 
+ code = "ptolemy.vergil.VergilApplet"
+ codebase = "../../../../.."
+  archive = "ptolemy/domains/sdf/demo/FixPoint/FixPoint.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <!-- PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/FixPoint/FixPoint.jnlp" -->
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer FixPoint.xml">
+ <PARAM NAME = "NAME" VALUE = "FixPoint" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "FixPoint.xml" > \
+ <a href="FixPoint.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT SIMPLE APPLET CONVERTER -->
+</CENTER>
+</p>
+</body>
+</html>

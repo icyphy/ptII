@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <entity name="Graph Editor"
+          class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
+  </entity>
+  <entity name="Icon Editor"
+          class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <property name="blank" class="ptolemy.vergil.icon.EditorIcon"/>
+  </entity>
+</group>

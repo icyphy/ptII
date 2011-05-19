@@ -1,0 +1,38 @@
+<!-- : $Id$
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>CarTracking</TITLE>
+</HEAD>
+<BODY>
+<H1>CarTracking</H1>
+<P>
+
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+CarTracking is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "CarTracking.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="CarTrackingVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model shows a simple adaptive cruise control system,
+illustrating model-integrated control strategies. A leading
+car model produces information that is observed with possible
+flaws by a following car. If the following car detects flaws, it
+uses a conservative strategy. Otherwise, it tracks the leading
+car closely.</p>
+</BODY>
+</HTML>

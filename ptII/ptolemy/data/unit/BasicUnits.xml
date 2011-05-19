@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="BasicUnits" class="ptolemy.data.unit.UnitSystem">
+  <property name="meters" class="ptolemy.data.unit.BaseUnit" value="1.0">
+    <property name="Length" class="ptolemy.data.unit.UnitCategory"/>
+  </property>
+  <property name="meter" class="ptolemy.data.expr.Parameter" value="meters"/>
+  <property name="m" class="ptolemy.data.expr.Parameter" value="meters">
+  </property>
+  <property name="cm" class="ptolemy.data.expr.Parameter" value="0.01*meters">
+  </property>
+  <property name="centimeters" class="ptolemy.data.expr.Parameter" value="cm"/>
+  <property name="centimeter" class="ptolemy.data.expr.Parameter" value="cm"/>
+  <property name="mm" class="ptolemy.data.expr.Parameter" value="0.001*meters"/>
+  <property name="millimeter" class="ptolemy.data.expr.Parameter" value="mm"/>
+  <property name="millimeters" class="ptolemy.data.expr.Parameter" value="mm"/>
+
+  <property name="in" class="ptolemy.data.expr.Parameter" value="2.54*cm"/>
+  <property name="inch" class="ptolemy.data.expr.Parameter" value="in"/>
+  <property name="inches" class="ptolemy.data.expr.Parameter" value="in"/>
+
+  <property name="seconds" class="ptolemy.data.unit.BaseUnit" value="1.0">
+    <property name="Time" class="ptolemy.data.unit.UnitCategory"/>
+  </property>
+  <property name="sec" class="ptolemy.data.expr.Parameter" value="seconds"/>
+  <property name="second" class="ptolemy.data.expr.Parameter" value="seconds"/>
+  <property name="ms" class="ptolemy.data.expr.Parameter" value="0.001*seconds"/>
+  <property name="millisecond" class="ptolemy.data.expr.Parameter" value="ms"/>
+  <property name="milliseconds" class="ptolemy.data.expr.Parameter" value="ms"/>
+
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"/>
+      </svg>
+    </configure>
+  </property>
+</property>

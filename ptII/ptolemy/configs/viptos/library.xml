@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+  <!-- Main actor library -->
+<configure>
+  <entity name="Library" class="ptolemy.kernel.CompositeEntity">
+
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Override utilities library. -->
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+      <entity name="NCCompositeActor" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
+      </entity>
+      <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
+      <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+      
+      <input source="ptolemy/configs/basicUtilities.xml"/>
+    </entity>
+
+    <!-- director library. -->
+    <entity name="Directors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/viptos/directors.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+    <!-- Default actor library. -->
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/domains/ptinyos/lib/lib-simple.xml"/>
+            <input source="_TOSIndex.moml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+  </entity>
+</configure>

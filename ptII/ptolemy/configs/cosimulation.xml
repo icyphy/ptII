@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Co-Simulation" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+	    <!-- matlab depends on Matlab being present -->
+            <input source="ptolemy/matlab/matlab.xml"/>
+	    <input source="lbnl/actor/lib/simulatorentities.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>
