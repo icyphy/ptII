@@ -52,6 +52,10 @@ import ptolemy.kernel.util.NamedObj;
  An abstract class that is useful for implementing expression language
  scopes for Ptolemy models.
 
+ <p>{@link #getScopedVariable(Variable, NamedObj, String)} is the
+ primary entry point, used by the Expression actor and other code
+ to look up Variables by name.</p>
+
  @author Xiaojun Liu, Steve Neuendorffer, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 2.1
@@ -163,6 +167,7 @@ public abstract class ModelScope implements ParserScope {
      */
     public static Attribute getScopedAttribute(Attribute exclude,
             NamedObj container, String name) {
+        // getScopedAttribute() is used by the SetVariable actor.
         String insideName = name.replaceAll("::", ".");
 
         while (container != null) {
@@ -297,9 +302,8 @@ public abstract class ModelScope implements ParserScope {
      */
     public static Variable getScopedVariable(Variable exclude,
             NamedObj container, String name) {
-        if (name.equals("MST")) {
-            name = "MST";
-        }
+        // This is the primary entry point for this class, used
+        // by the Expression actor and others.
         String insideName = name.replaceAll("::", ".");
 
         while (container != null) {

@@ -287,6 +287,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         setPersistent(false);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Add a listener to be notified when the value of this variable changes.
      *  @param listener The listener to add.
      *  @see #removeValueListener(ValueListener)
@@ -300,9 +303,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _valueListeners.add(listener);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Clone the variable.  This creates a new variable containing the
      *  same token (if the value was set with setToken()) or the same
