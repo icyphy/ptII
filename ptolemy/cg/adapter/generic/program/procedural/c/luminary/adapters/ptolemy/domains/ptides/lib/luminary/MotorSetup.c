@@ -74,9 +74,9 @@ if (timeCompare(currentRealTime, currentModelTime) <= 0) {
 } else {
 	die("dead miss");
 }
-if ($get(input#0) != 0) {
-	debugSendPacket(&saved_discDesired, &saved_g_disc, saved_timeLeft, saved_controlSignal, saved_tempTime);
-}
+//if ($get(input#0) != 0) {
+//	debugSendPacket(&saved_discDesired, &saved_g_disc, saved_timeLeft, saved_controlSignal, saved_tempTime);
+//}
 /**/
  
 /*** actuationBlock ***/

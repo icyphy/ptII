@@ -845,6 +845,13 @@ stackRestore
 	; this doesn't pass the compiler: POP					{SP, PC}
 	BX                LR                    ; branch back to end this ISR
 
+loadState
+	POP			{R0, R1} 		
+	POP        {R4-R11}
+	POP        {R4-R11}
+	PUSH		{R0, R1}
+	BX			LR
+
 ;******************************************************************************
 ;
 ; SVCall handler, right now since we only have one call handler, and we only use it
@@ -863,6 +870,7 @@ SVCallHandler
 ;******************************************************************************
                                 EXPORT addStack
                                 EXPORT saveState
+                                EXPORT loadState
                                 EXPORT stackRestore
                                 IMPORT processEvents
 
