@@ -115,7 +115,7 @@ public class GPInputHandler extends InputDevice {
         _codeStream.append("GPIOPinIntClear(GPIO_PORT" + _padID + "_BASE, GPIO_PIN_" + _pinID + ");" +_eol);
 
         _codeStream.append("temp = FREE_EVENT_LIST;" +_eol);
-        _codeStream.append(args.get(0) + ";" +_eol);
+        _codeStream.append(args.get(0) + "();" +_eol);
         _codeStream.append("if (temp != FREE_EVENT_LIST) {" +_eol);
         _codeStream.append("addStack();" +_eol);
         _codeStream.append("} else {" +_eol);
@@ -124,8 +124,6 @@ public class GPInputHandler extends InputDevice {
         _codeStream.append("stackedModelTagIndex--;" +_eol);
         _codeStream.append("loadState();" +_eol);
         _codeStream.append("}" +_eol);
-        
-
 
         return processCode(_codeStream.toString());
     }

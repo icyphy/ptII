@@ -33,10 +33,6 @@ typedef signed char             int8;
 #include "hw_nvic.h"
 #include "ethernet.h"
 
-/* PtidyOS includes */
-#include "statics.h"
-#include "globals.h"
-
 // Number of cycles until timer rolls over
 static unsigned long TIMER_ROLLOVER_CYCLES;
 

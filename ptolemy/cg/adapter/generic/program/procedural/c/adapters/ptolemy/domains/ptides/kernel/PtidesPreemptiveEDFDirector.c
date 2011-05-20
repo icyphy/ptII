@@ -151,31 +151,28 @@ void addEvent(Event* newEvent) {
 		newEvent->prevEvent = NULL;
 		newEvent->nextEvent = NULL;
 	} else {
-		if (compareEvents(newEvent, DEADLINE_QUEUE_TAIL) >= 0) {
-			newEvent->prevEvent = DEADLINE_QUEUE_TAIL;
-			DEADLINE_QUEUE_TAIL->nextEvent = newEvent;
-			newEvent->nextEvent = NULL;
-			DEADLINE_QUEUE_TAIL = newEvent;
-		} else {
-			while (true) {
-				if (compareDeadline == NULL) {
-					die("FAIL!!");
+        if (compareEvents(newEvent, DEADLINE_QUEUE_HEAD) <= 0) {
+            newEvent->nextEvent = DEADLINE_QUEUE_HEAD;
+            DEADLINE_QUEUE_HEAD->prevEvent = newEvent;
+            newEvent->prevEvent = NULL;
+            DEADLINE_QUEUE_HEAD = newEvent;
+        } else {
+			compareDeadline = DEADLINE_QUEUE_TAIL;
+            while (compareEvents(newEvent, compareDeadline) < 0) {
+				compareDeadline = compareDeadline->prevEvent;
+                if (compareDeadline == NULL) {
+                    die("FAIL!!!!");
 				}
-				if (compareEvents(newEvent, compareDeadline) <= 0) {
-					break;
-				} else {
-					compareDeadline = compareDeadline->nextEvent;
-				}
-			}
-			newEvent->nextEvent = compareDeadline;
-			newEvent->prevEvent = compareDeadline->prevEvent;
-			compareDeadline->prevEvent = newEvent;
-			if (compareDeadline != DEADLINE_QUEUE_HEAD) {
-				newEvent->prevEvent->nextEvent = newEvent;
-			} else {
-				DEADLINE_QUEUE_HEAD = newEvent;
-			}
-		}
+            }
+            newEvent->prevEvent = compareDeadline;
+            newEvent->nextEvent = compareDeadline->nextEvent;
+            compareDeadline->nextEvent = newEvent;
+            if (compareDeadline != DEADLINE_QUEUE_TAIL) {
+                newEvent->nextEvent->prevEvent = newEvent;
+            } else {
+                DEADLINE_QUEUE_TAIL = newEvent;
+            }
+        }
 	}
     enableInterrupts();
 }
@@ -190,12 +187,12 @@ Event* peekNextEvent(Event* thisEvent) {
 	}
 }
 
-int notSameTag(const Event* event1, const Event* event2) {
+int sameTag(const Event* event1, const Event* event2) {
     if (timeCompare(event1->tag.timestamp, event2->tag.timestamp) == EQUAL
-        && event1->tag.microstep == event2->tag.microstep) {
-            return false;
-    } else {
+    		&& event1->tag.microstep == event2->tag.microstep) {
         return true;
+    } else {
+        return false;
     }
 }
 
@@ -214,11 +211,13 @@ void removeEventFromQueue(Event* event) {
 	} else {
 		// Event is the head.
 		DEADLINE_QUEUE_HEAD = event->nextEvent;
+		DEADLINE_QUEUE_HEAD->prevEvent = NULL;
 	}
 	if (event->nextEvent != NULL) {
 		event->nextEvent->prevEvent = event->prevEvent;
 	} else {
 		DEADLINE_QUEUE_TAIL = event->prevEvent;
+		DEADLINE_QUEUE_TAIL->nextEvent = NULL;
 	}
 	event->nextEvent = NULL;
 }
@@ -226,33 +225,28 @@ void removeEventFromQueue(Event* event) {
 // Remove this event from the event queue, as well as all other
 // events that share the same timestamp, as well as destination actor.
 void removeAndPropagateSameTagEvents(Event* thisEvent) {
-	Event* nextEvent = thisEvent->nextEvent;
-	Event* lastEvent = thisEvent;
+    Event* nextEvent = thisEvent->nextEvent;
+    Event* lastEvent = thisEvent;
+	int count = 0;
     propagateDataToken(thisEvent);
-	removeEventFromQueue(thisEvent);
+    removeEventFromQueue(thisEvent);
     // Now find the next event see we should process it at the same time.
     while (true) {
-        if (nextEvent == NULL) {
-            break;
-        } else if (notSameTag(nextEvent, thisEvent)) {
-            break;
+        if (nextEvent && sameTag(nextEvent, thisEvent) &&
+				sameDestination(nextEvent, thisEvent)) {
+            propagateDataToken(nextEvent);
+            removeEventFromQueue(nextEvent);
+            lastEvent = nextEvent;
+		    nextEvent = nextEvent->nextEvent;
+			count++;
         } else {
-            // If the next event and this event share the same tag,
-			// as well as the same destination
-            // actor, then propagate this event.
-            if (sameDestination(nextEvent, thisEvent)) {
-                propagateDataToken(nextEvent);
-				removeEventFromQueue(nextEvent);
-				lastEvent->nextEvent = nextEvent;
-				lastEvent = nextEvent;
-            }
-			nextEvent = nextEvent->nextEvent; 
-        }
+            break;
+		}
     }
-	// Make this linked list semi-circular by pointing
-	// the prevEvent of thisEvent to the end of the list.
-	// This is used later in freeEvent().
-	thisEvent->prevEvent = lastEvent;
+    // Make this linked list semi-circular by pointing
+    // the prevEvent of thisEvent to the end of the list.
+    // This is used later in freeEvent().
+    thisEvent->prevEvent = lastEvent;
 }
 
 // Allocate a new event from the free list of events.
@@ -399,7 +393,6 @@ void processEvents() {
 				// This is especially useful if the size of the event queue is
 				// very large, and takes a long time to traverse through.
 				enableInterrupts();
-				getRealTime(&platformTime);
 				disableInterrupts();
 				if (localProcessVersion != processVersion) {
 					// If processEvents ran during the last interrupt enable,
@@ -643,7 +636,6 @@ void execute() {
 				// This is especially useful if the size of the event queue is
 				// very large, and takes a long time to traverse through.
 				enableInterrupts();
-				getRealTime(&platformTime);
 				disableInterrupts();
 				if (localProcessVersion != processVersion) {
 					// If processEvents ran during the last interrupt enable,
