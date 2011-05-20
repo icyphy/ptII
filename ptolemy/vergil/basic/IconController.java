@@ -74,7 +74,7 @@ public class IconController extends ParameterizedNodeController {
      */
     public IconController(GraphController controller) {
         super(controller);
-        setNodeRenderer(new IconRenderer());
+        setNodeRenderer(new IconRenderer(controller.getGraphModel()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,7 +89,16 @@ public class IconController extends ParameterizedNodeController {
     ////                         inner classes                     ////
 
     /** An icon renderer. */
-    public class IconRenderer implements NodeRenderer {
+    public static class IconRenderer implements NodeRenderer {
+        
+        /** Construct an icon renderer.
+         *  @param model The GraphModel.
+         */
+        public IconRenderer(GraphModel model) {
+            super();
+            _model = model;
+        }
+        
         /**  Render a visual representation of the given node. If the
          * StringAttribute _color of the node is set then use that color to
          * highlight the node. If the StringAttribute _explanation of the node
@@ -150,10 +159,7 @@ public class IconController extends ParameterizedNodeController {
                     // in another call to this very same method, which will
                     // result in creation of yet another figure before this
                     // method even returns!
-                    GraphController controller = IconController.this
-                            .getController();
-                    GraphModel graphModel = controller.getGraphModel();
-                    ChangeRequest request = new ChangeRequest(graphModel,
+                    ChangeRequest request = new ChangeRequest(_model,
                             "Set the container of a new XMLIcon.") {
                         // NOTE: The KernelException should not be thrown,
                         // but if it is, it will be handled properly.
@@ -236,5 +242,7 @@ public class IconController extends ParameterizedNodeController {
 
             return result;
         }
+        
+        private GraphModel _model;
     }
 }

@@ -26,7 +26,6 @@ package ptolemy.vergil.ontologies;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 import javax.swing.KeyStroke;
 
@@ -37,7 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
@@ -55,10 +53,10 @@ import diva.gui.GUIUtilities;
  *  @author Charles Shelton, Man-Kit Leung
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (mankit)
- *  @Pt.AcceptedRating Red (mankit)
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ConceptController extends AttributeController {
+public class ConceptController extends AttributeInOntologyController {
 
     /** Create a concept controller associated with the specified graph
      *  controller.
@@ -78,13 +76,6 @@ public class ConceptController extends AttributeController {
         
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _toggleAcceptabilityAction));
-        
-        // Remove the "Listen To Attribute" menu action since it has no
-        // relevance for an ontology concept.
-        MenuActionFactory listenToActionFactory = _getListenToMenuActionFactory();
-        if (listenToActionFactory != null) {
-            _menuFactory.removeMenuItemFactory(listenToActionFactory);
-        }
     }    
 
     ///////////////////////////////////////////////////////////////////
@@ -98,33 +89,22 @@ public class ConceptController extends AttributeController {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _toggleAcceptabilityAction);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Get the class label of the component which is a Concept.
+     *  @return The string "Concept".
+     */
+    protected String _getComponentType() {
+        return "Concept";
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** The toggle acceptability context menu action. */
     protected ToggleAcceptabilityAction _toggleAcceptabilityAction = new ToggleAcceptabilityAction();
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
-    /** Get the MenuActionFactory in the _menuFactory object's menu item
-     *  factory list that contains the "Listen To Attribute" menu action.
-     *  @return the MenuActionFactory that contains the "Listen To Attribute"
-     *   menu action, or null if it does not exist.
-     */
-    private MenuActionFactory _getListenToMenuActionFactory() {
-        List menuItemFactories = _menuFactory.menuItemFactoryList();
-        for (Object menuItemFactory : menuItemFactories) {
-            if (menuItemFactory instanceof MenuActionFactory) {
-                if (((MenuActionFactory) menuItemFactory).substitute(
-                        _listenToAction, _listenToAction)) {
-                    return (MenuActionFactory) menuItemFactory;
-                }
-            }
-        }        
-        return null;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner classes             ////

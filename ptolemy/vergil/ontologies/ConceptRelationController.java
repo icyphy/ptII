@@ -72,13 +72,13 @@ import diva.gui.toolbox.MenuCreator;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
-public class RelationController extends BasicEdgeController {
+public class ConceptRelationController extends BasicEdgeController {
     
     /** Create a transition controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
      */
-    public RelationController(final GraphController controller) {
+    public ConceptRelationController(final GraphController controller) {
         super(controller);        
         SelectionInteractor interactor = (SelectionInteractor) getEdgeInteractor();
 

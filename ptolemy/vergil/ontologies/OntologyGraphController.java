@@ -47,7 +47,6 @@ import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.WithIconGraphController;
-import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.Figure;
@@ -69,6 +68,9 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeController;
 
+//////////////////////////////////////////////////////////////////////////
+//// OntologyGraphController
+
 /** A Graph Controller for ontology models. This controller allows lattice
  *  elements to be dragged and dropped onto its graph. Arcs can be created by
  *  control-clicking and dragging from one element to another.
@@ -76,8 +78,8 @@ import diva.graph.NodeController;
  *  @author Charles Shelton, Man-Kit Leung
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (mankit)
- *  @Pt.AcceptedRating Red (mankit)
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
 public class OntologyGraphController extends WithIconGraphController {
     
@@ -180,12 +182,14 @@ public class OntologyGraphController extends WithIconGraphController {
      *  model editor has no visible ports.
      */
     protected void _createControllers() {
-        _attributeController = new AttributeController(this,
-                AttributeController.FULL);
-        _portController = new ExternalIOPortController(this,
-                AttributeController.FULL);
+        _attributeController = new AttributeInOntologyController(this);        
         _conceptController = new ConceptController(this);
-        _relationController = new RelationController(this);
+        _relationController = new ConceptRelationController(this);
+        
+        // The port controller is not used in the ontology model editor,
+        // but it must be initialized since it is referenced in the parent
+        // class.
+        _portController = new ExternalIOPortController(this);
     }
     
     /** Initialize interaction on the graph pane. This method
@@ -242,13 +246,13 @@ public class OntologyGraphController extends WithIconGraphController {
     ////                         protected variables               ////
     
     /** The controller for attribute objects in the model. */
-    protected AttributeController _attributeController;
+    protected AttributeInOntologyController _attributeController;
     
     /** The controller for concepts in the ontology model. */
     protected ConceptController _conceptController;
 
     /** The controller for relations in the ontology model. */
-    protected RelationController _relationController;
+    protected ConceptRelationController _relationController;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

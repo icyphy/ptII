@@ -40,7 +40,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
@@ -52,8 +51,8 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  @author  Ben Lickly (based on OntologyGraphTableau, which is supposedly by Steve Neuendorffer and Edward A. Lee)
  @version $Id$
  @since Ptolemy II 8.1
- @Pt.ProposedRating Red (neuendor)
- @Pt.AcceptedRating Red (johnr)
+ @Pt.ProposedRating Red (cshelton)
+ @Pt.AcceptedRating Red (cshelton)
  */
 public class OntologySolverTableau extends Tableau {
 
@@ -118,7 +117,7 @@ public class OntologySolverTableau extends Tableau {
         
         // Not too sure which type of GraphFrame is best, so I'm just using
         // ActorGraphFrame for now.
-        ExtendedGraphFrame frame = new ActorGraphFrame(model, this,
+        ExtendedGraphFrame frame = new OntologySolverGraphFrame(model, this,
                 defaultLibrary);
 
         try {

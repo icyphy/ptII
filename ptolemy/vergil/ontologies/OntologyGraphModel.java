@@ -38,9 +38,9 @@ import diva.graph.GraphUtilities;
 import diva.graph.modular.EdgeModel;
 import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.NodeModel;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptRelation;
 import ptolemy.data.ontologies.Ontology;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeListener;
@@ -66,8 +66,8 @@ import ptolemy.vergil.kernel.Link;
     @author Charles Shelton, Edward A. Lee
     @version $Id$
     @since Ptolemy II 8.0
-    @Pt.ProposedRating Yellow (neuendor)
-    @Pt.AcceptedRating Red (johnr)
+    @Pt.ProposedRating Red (cshelton)
+    @Pt.AcceptedRating Red (cshelton)
  */
 // FIXME: Create a base class for both OntologyGraphModel and FSMGraphModel
 // that captures most of the redundant code.
@@ -113,7 +113,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
     }
     
     /** Get the concept model which maps all nodes in the graph to the 
-     *  {@link ptolemy.data.ontologies.Concept Concept} elements in the
+     *  {@link Concept} elements in the
      *  ontology model.
      *  @return The concept model.
      */
@@ -165,7 +165,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
     
     /** Return the node model for the given object.  If the object is not
      *  a node, then return null. The nodes in an ontology model should be
-     *  either {@link ptolemy.data.ontologies.Concept Concepts} or Ptolemy
+     *  either {@link Concept Concepts} or Ptolemy
      *  annotation
      *  {@link ptolemy.vergil.kernel.attributes.TextAttribute TextAttributes}.
      *  @param node An object which is assumed to be in this graph model.
@@ -176,7 +176,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         if (node instanceof Locatable) {
             Object container = ((Locatable) node).getContainer();
 
-            if (container instanceof ComponentEntity) {
+            if (container instanceof Concept) {
                 return _conceptModel;
             }
         }
@@ -464,12 +464,12 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
             String elementName = null;
 
-            if (deleteObj instanceof ComponentEntity) {
-                // Object is an entity.
+            if (deleteObj instanceof Concept) {
+                // Concept Object is an entity.
                 elementName = "deleteEntity";
             } else {
                 throw new InternalErrorException(
-                        "Attempt to remove a node that is not an Entity. "
+                        "Attempt to remove a node that is not a Concept. "
                                 + "node = " + node);
             }
 

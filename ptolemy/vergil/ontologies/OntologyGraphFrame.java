@@ -50,11 +50,11 @@ import diva.gui.GUIUtilities;
  *  overrides the base class to associate with the editor an instance of
  *  OntologyGraphController.
  * 
- * @author Man-Kit Leung
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ *  @author Charles Shelton, Man-Kit Leung
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
 public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionListener {
 

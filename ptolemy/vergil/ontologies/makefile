@@ -48,15 +48,20 @@ PTPACKAGE = 	ontologies
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AttributeInOntologyController.java \
 	ConceptController.java \
 	ConceptIcon.java \
+	ConceptRelationController.java \
 	MultipleConceptIcon.java \
+	OntologyEntityController.java \
 	OntologyGraphController.java \
 	OntologyGraphFrame.java \
 	OntologyGraphModel.java \
 	OntologyGraphTableau.java \
+	OntologySolverGraphController.java \
+	OntologySolverGraphFrame.java \
+	OntologySolverGraphModel.java \
 	OntologySolverTableau.java \
-	RelationController.java \
 	ReportOntologyLatticeStatus.java
 
 OTHER_FILES_TO_BE_JARED = 
@@ -71,14 +76,34 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	'ConceptController$$CheckIsLatticeAction.class' \
 	'ConceptController$$ToggleAcceptabilityAction.class' \
-	'OntologyGraphController$$CheckIsLatticeAction.class' \
+	'ConceptRelationController$$RelationDropper.class' \
+	'ConceptRelationController$$RelationRenderer.class' \
+	'ConceptRelationController$$RelationTarget.class' \
+	'OntologyEntityController$$LookInsideAction.class' \
+	'OntologyEntityController$$OpenInstanceAction.class' \
+	'OntologyGraphController$$NewConceptAction.class' \
+	'OntologyGraphController$$RelationCreator.class' \
 	'OntologyGraphFrame$$DebugMenuListener.class' \
+	'OntologyGraphFrame$$LayoutAction.class' \
+	'OntologyGraphModel$$ConceptModel.class' \
+	'OntologyGraphModel$$ConceptModel$$1.class' \
+	'OntologyGraphModel$$RelationModel.class' \
+	'OntologyGraphModel$$RelationModel$$1.class' \
+	'OntologyGraphModel$$RelationModel$$2.class' \
+	'OntologyGraphModel$$RelationModel$$3.class' \
+	'OntologyGraphModel$$RelationModel$$4.class' \
 	'OntologyGraphTableau$$Factory.class' \
-	'OntologySolverTableau$$Factory.class' \
-	'RelationController$$LinkRenderer.class' \
-	'ReportOntologyLatticeStatus$$1.class'
+	'OntologySolverGraphFrame$$DebugMenuListener.class' \
+	'OntologySolverGraphFrame$$ImportLibraryAction.class' \
+	'OntologySolverGraphFrame$$InsertOntologyAction.class' \
+	'OntologySolverGraphFrame$$InstantiateAttributeAction.class' \
+	'OntologySolverGraphFrame$$InstantiateEntityAction.class' \
+	'OntologySolverGraphFrame$$LayoutAction.class' \
+	'OntologySolverGraphFrame$$SaveInLibraryAction.class' \
+	'OntologySolverGrpahModel$$OntologyModel.class' \
+	'OntologySolverGrpahModel$$OntologyModel$$1.class' \
+	'OntologySolverTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

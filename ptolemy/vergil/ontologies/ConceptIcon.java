@@ -42,8 +42,8 @@ import ptolemy.vergil.icon.NameIcon;
  *  @author Ben Lickly, Edward A. Lee, Elizabeth Latronico, Charles Shelton, Man-kit Leung
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (mankit)
- *  @Pt.AcceptedRating Red (mankit)
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ConceptIcon extends NameIcon {
 

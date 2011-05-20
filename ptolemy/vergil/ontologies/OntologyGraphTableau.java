@@ -46,11 +46,11 @@ import ptolemy.moml.LibraryAttribute;
 
 /** An editor tableau for Ontology models.
 
- @author  Steve Neuendorffer and Edward A. Lee
+ @author  Charles Shelton
  @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Red (neuendor)
- @Pt.AcceptedRating Red (johnr)
+ @Pt.ProposedRating Red (cshelton)
+ @Pt.AcceptedRating Red (cshelton)
  */
 public class OntologyGraphTableau extends Tableau {
 
