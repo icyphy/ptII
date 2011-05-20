@@ -3085,9 +3085,6 @@ public class PtidesBasicDirector extends DEDirector {
             boolean highlightModelDelay) throws IllegalActionException {
 
         for (Actor actor : (List<Actor>) (compositeActor.deepEntityList())) {
-            if (!highlightModelDelay) {
-                _clearHighlight(actor, true);
-            }
             boolean annotateThisActor = false;
             CausalityInterface causalityInterface = actor
                     .getCausalityInterface();
@@ -3108,6 +3105,8 @@ public class PtidesBasicDirector extends DEDirector {
                 }
                 if (annotateThisActor) {
                     break;
+                } else {
+                    _clearHighlight(actor, true);
                 }
             }
             if (annotateThisActor && highlightModelDelay) {
