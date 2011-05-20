@@ -12,7 +12,7 @@
         <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="60">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 195, 863, 465}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 195, 872, 464}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 350]">
     </property>
@@ -175,7 +175,7 @@
     <entity name="Tunnelling Ball Device Controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 215.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 151, 970, 475}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 151, 979, 474}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 360]">
         </property>
@@ -554,13 +554,6 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
                 </property>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -614,9 +607,9 @@
         <link port="UserInputHandler.output" relation="relation11"/>
     </entity>
     <entity name="Dynamics Model" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 215.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={351, 237, 920, 465}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={351, 237, 929, 464}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 350]">
         </property>
@@ -1071,6 +1064,17 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 280.0]">
         </property>
     </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 155.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1093,9 +1097,16 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-100.0, 155.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Tunnelling Ball Device Controller.DropSensor" relation="relation"/>
     <link port="Tunnelling Ball Device Controller.MotorActuator" relation="relation6"/>
     <link port="Tunnelling Ball Device Controller.EncoderSensor" relation="relation2"/>
+    <link port="Tunnelling Ball Device Controller.UserInputSensor" relation="relation9"/>
     <link port="Dynamics Model.photoPulse" relation="relation"/>
     <link port="Dynamics Model.encoderPulse" relation="relation2"/>
     <link port="Dynamics Model.ballTrigger" relation="relation7"/>
@@ -1108,4 +1119,7 @@
     <link port="Merge.input" relation="relation4"/>
     <link port="Merge.input" relation="relation6"/>
     <link port="Merge.output" relation="relation5"/>
+    <link port="Const.output" relation="relation9"/>
+    <link port="Const.trigger" relation="relation8"/>
+    <link relation1="relation4" relation2="relation8"/>
 </entity>
