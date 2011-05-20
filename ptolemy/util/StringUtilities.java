@@ -492,13 +492,19 @@ public class StringUtilities {
                             _ptolemyPtIIDir, "%20", " ");
                 }
 
-                if (_ptolemyPtIIDir == null) {
-                    throw new RuntimeException("Could not find "
+                if (_ptolemyPtIIDir == null &&
+                        !System.getProperty("java.vm.name <http://java.vm.name>").equals("Dalvik")) {
+                    // Skip if we are running under Android.
+                    new Exception("Could not find "
                             + "'ptolemy.ptII.dir'" + " property.  "
                             + "Also tried loading '" + stringUtilitiesPath
                             + "' as a resource and working from that. "
                             + "Vergil should be "
-                            + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
+                            + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\", "
+                            + "otherwise the following features will not work: "
+                            + "PtinyOS, Ptalon, the Python actor, "
+                            + "actor document, cg code generation and possibly "
+                            + "other features will not work.");
                 }
 
                 try {
