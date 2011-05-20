@@ -17,6 +17,7 @@ public class TokenPublisher {
 
     public TokenPublisher(long period, MQTTPublisher publisher, String topic,
             int tokensPerPeriod) {
+
         this.publisher = publisher;
         this.period = period;
         this.topic = topic;
