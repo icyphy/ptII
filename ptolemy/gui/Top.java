@@ -1714,7 +1714,6 @@ public abstract class Top extends JFrame {
     /** A runnable for closing the window. */
     class CloseWindowRunnable implements Runnable {
         public void run() {
-            System.out.println("Top$CloseWindowRunnable.run() " + (Top.this).getName());
             _close();
         }
     }
