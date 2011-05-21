@@ -35,32 +35,38 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+import java.io.FilenameFilter;
 import javax.swing.filechooser.FileFilter;
 
 /**
  * A convenience implementation of FileFilter that filters out
  * all files except for those type extensions that it knows about.
  *
- * Extensions are of the type ".foo", which is typically found on
+ * <p>Extensions are of the type ".foo", which is typically found on
  * Windows and Unix boxes, but not on Macintosh. Case is ignored.
  *
- * Extension - create a new filter that filters out all files
+ * >p>Extension - create a new filter that filters out all files
  * but gif and jpg image files:
  *
+ * <pre>
  *     JFileChooser chooser = new JFileChooser();
  *     ExtensionFileFilter filter = new ExtensionFileFilter(
  *                   new String{"gif", "jpg"}, "JPEG & GIF Images")
  *     chooser.addChoosableFileFilter(filter);
  *     chooser.showOpenDialog(this);
- * 
+ * </pre>
+ 
  * <p>Note that as of Java 1.6, there is a FileNameExtensionFilter which
  * replaces this class.  See 
  * http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
- *
- * @version 1.7 04/23/99
+ * However, this class can be used with both java.awt.FileDialog
+ * and javax.swing.JFileChooser because it implements java.io.FilenameFilter
+ * and extends javax.swing.FilenameFilter.</p>
+ *  
+ * @version $Id$
  * @author Jeff Dinkins
  */
-public class ExtensionFileFilter extends FileFilter {
+public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
     //private static String TYPE_UNKNOWN = "Type Unknown";
 
     //private static String HIDDEN_FILE = "Hidden File";
@@ -156,8 +162,11 @@ public class ExtensionFileFilter extends FileFilter {
      * Return true if this file should be shown in the directory pane,
      * false if it shouldn't.
      *
-     * Files that begin with "." are ignored.
+     * <p>Files that begin with "." are ignored.</p>
      *
+     * <p>This method is used by javax.swing.JFileChoosers,
+     *
+     * @see #accept(File, String)
      * @see #getExtension(File)
      * @see FileFilter#accept(File)
      */
@@ -169,11 +178,39 @@ public class ExtensionFileFilter extends FileFilter {
 
             String extension = getExtension(f);
 
-            if ((extension != null) && (filters.get(getExtension(f)) != null)) {
+            if ((extension != null) && (filters.get(extension) != null)) {
                 return true;
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Return true if this file should be shown in the directory pane,
+     * false if it shouldn't.
+     *
+     * <p>Files that begin with "." are ignored.</p>
+     *
+     * <p>This method is used by java.awt.FileDialog.
+     *
+     * @param directory The directory in which the file was found.
+     * @param name The name of the file.
+     * @see #accept(File)
+     * @see #getExtension(File)
+     * @see FileFilter#accept(File)
+     */
+    public boolean accept(File directory, String name) {
+        int i = name.lastIndexOf('.');
+
+        String extension = "";
+        if ((i > 0) && (i < (name.length() - 1))) {
+            extension = name.substring(i + 1).toLowerCase();
+        }
+
+        if ((extension != null) && (filters.get(extension) != null)) {
+            return true;
+        }
         return false;
     }
 
@@ -202,10 +239,7 @@ public class ExtensionFileFilter extends FileFilter {
             if ((i > 0) && (i < (filename.length() - 1))) {
                 return filename.substring(i + 1).toLowerCase();
             }
-
-            ;
         }
-
         return null;
     }
 
