@@ -126,10 +126,9 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
         super(tableau, null, placeable);
         plot = plotBox;
 
-        // Note that as of Java 1.6, there is a FileNameExtensionFilter which
-        // replaces diva.gui.ExtensionFileFilter, see
-        //http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
-        _fileFilter = new diva.gui.ExtensionFileFilter("plt");
+        // We don't define a file name filter here because we are
+        // only supporting PlotML files.  .plt files are not supported
+        // for opening here.
 
         // Background color is a light grey.
         plot.setBackground(new Color(0xe5e5e5));

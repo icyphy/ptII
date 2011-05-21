@@ -50,6 +50,10 @@ import ptolemy.plot.PlotBox;
  @Pt.AcceptedRating Red (neuendor)
  */
 public class PlotEffigy extends PtolemyEffigy {
+    // FIXME: Why does this extend PtolemyEffigy?  It means that everywhere
+    // we check for PtolemyEffigy, we need to make sure the graph is not a
+    // PlotEffigy.  See vergil.actor.ActorGraphTableau
+    
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.

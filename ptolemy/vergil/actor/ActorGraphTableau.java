@@ -30,6 +30,7 @@ package ptolemy.vergil.actor;
 import java.awt.Color;
 
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
@@ -41,7 +42,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 
 ///////////////////////////////////////////////////////////////////
-//// GraphTableau
+//// ActorGraphTableau
 
 /**
  This is a graph editor for ptolemy models.  It constructs an instance
@@ -167,11 +168,13 @@ public class ActorGraphTableau extends Tableau {
          *  tableau.
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
-            if (effigy instanceof PtolemyEffigy) {
+            // Need to check for PlotEffigy here, or 
+            // $PTII/bin/vergil $PTII/ptolemy/plot/demo/sinusoids.xml will not open the
+            // plot.
+            if (effigy instanceof PtolemyEffigy && ! (effigy instanceof PlotEffigy)) {
                 // First see whether the effigy already contains a graphTableau.
                 ActorGraphTableau tableau = (ActorGraphTableau) effigy
                         .getEntity("graphTableau");
-
                 if (tableau == null) {
                     // Check to see whether this factory contains a
                     // default library.

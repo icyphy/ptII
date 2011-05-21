@@ -616,9 +616,14 @@ public class Configuration extends CompositeEntity implements
                         // throws an NullPointerException when starting
                         // vergil.
                         if (effigy instanceof PtolemyEffigy) {
-                            MessageHandler.error("Failed to open "
-                                    + ((PtolemyEffigy) effigy).getModel()
-                                            .getFullName(), ex);
+                            if (((PtolemyEffigy)effigy).getModel() != null) {
+                                MessageHandler.error("Failed to open "
+                                        + ((PtolemyEffigy) effigy).getModel()
+                                        .getFullName(), ex);
+                            } else {
+                                MessageHandler.error("Failed to open "
+                                        + effigy, ex);
+                            }
                             calledMessageHandler = true;
                         } else {
                             // Opening a link to a non-existant .htm file
@@ -684,7 +689,6 @@ public class Configuration extends CompositeEntity implements
                 }
             }
         }
-
         return null;
     }
 
