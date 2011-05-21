@@ -8,33 +8,44 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptserver.data.CommunicationToken;
 
 public class RemoteSource extends RemoteActor {
 
-    private ArrayBlockingQueue<Token> tokenQueue;
+    private ArrayBlockingQueue<CommunicationToken> tokenQueue;
 
-    public RemoteSource(CompositeEntity container, ComponentEntity entity,
-            ArrayBlockingQueue<Token> tokenQueue)
+    public RemoteSource(CompositeEntity container, ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         super(container, entity);
+    }
 
-        this.tokenQueue = tokenQueue;
+    @Override
+    public boolean prefire() throws IllegalActionException {
+        return !getTokenQueue().isEmpty();
     }
 
     @Override
     public void fire() throws IllegalActionException {
-        super.fire();
-        try {
-            Token token = tokenQueue.take();
-            for (Object p : this.portList()) {
-                if (p instanceof IOPort) {
-                    IOPort port = (IOPort) p;
-                    port.send(0, token);
+        CommunicationToken token = getTokenQueue().poll();
+        for (Object p : this.portList()) {
+            if (p instanceof IOPort) {
+                IOPort port = (IOPort) p;
+                int width = port.getWidth();
+                for (int i = 0; i < width; i++) {
+                    Token[] tokens = token.getTokens(port.getName(), i);
+                    port.send(i, tokens, tokens.length);
                 }
             }
-        } catch (InterruptedException e) {
         }
+    }
+
+    public void setTokenQueue(ArrayBlockingQueue<CommunicationToken> tokenQueue) {
+        this.tokenQueue = tokenQueue;
+    }
+
+    public ArrayBlockingQueue<CommunicationToken> getTokenQueue() {
+        return tokenQueue;
     }
 
 }

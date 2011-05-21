@@ -9,6 +9,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 public class RemoteActor extends TypedAtomicActor {
+    private String originalActorName;
 
     public RemoteActor(CompositeEntity container, ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException,
@@ -20,7 +21,7 @@ public class RemoteActor extends TypedAtomicActor {
             }
             IOPort port = (IOPort) p;
             IOPort remotePort = (IOPort) port.clone(this.workspace());
-            remotePort.setName(port.getName() + "_remote");
+            remotePort.setName(port.getName());
             remotePort.setContainer(this);
             for (Object r : port.linkedRelationList()) {
                 Relation relation = (Relation) r;
@@ -30,6 +31,15 @@ public class RemoteActor extends TypedAtomicActor {
             port.unlinkAll();
         }
         entity.setContainer(null);
+        setOriginalActorName(entity.getName());
+    }
+
+    public void setOriginalActorName(String originalActorName) {
+        this.originalActorName = originalActorName;
+    }
+
+    public String getOriginalActorName() {
+        return originalActorName;
     }
 
 }
