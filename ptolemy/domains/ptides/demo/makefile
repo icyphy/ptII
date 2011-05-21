@@ -38,7 +38,6 @@ DIRS =		PtidesAirplaneFuelControl \
 		PtidesBasicTwoPlatformsNetworkSensorEvents \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesAirplaneFuelControl \
-		PtidesBasicDemo \
 		PtidesBasicTTE \
 		PtidesClockSynchronizationError \
 		PtidesNetworkLatencyTest \
@@ -62,7 +61,6 @@ PTPACKAGE = 	demo
 PTCLASSALLJARS = \
 	PtidesAirplaneFuelControl/PtidesAirplaneFuelControl.jar \
 	PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.jar \
-	PtidesBasicDemo/PtidesBasicDemo.jar \
 	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
 	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
 	PtidesBasicOnePlatform/PtidesBasicOnePlatform.jar \
