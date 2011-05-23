@@ -108,39 +108,127 @@ This FAQ can be found at:
 <dt> <a name="ptolemy II description"><b>1.1 What is Ptolemy II?</b></a>
 <dd> 
 <p>
-Ptolemy II is a software framework developed as part of the Ptolemy project.
-It is a Java-based component assembly framework with a graphical
-user interface called Vergil.  Vergil itself is a component assembly
-defined in Ptolemy II.
-</p>
-<p>
-The Ptolemy project studies modeling, simulation, and design of
-concurrent, real-time, embedded systems. The focus is on assembly of
-concurrent components. The key underlying principle in the project is
-the use of well-defined <i>models of computation</i> that govern the
-interactions between components. A major problem area being addressed is
-the use of heterogeneous mixtures of models of computation.
-</p>
-<p>
- <!-- For clarity, we do not always display the URL here   -->
+<p>Ptolemy II <a href="#1">[1]</a><a href="#6">[6]</a> is an open-source software framework supporting
+experimentation with actor-oriented design. Actors are software
+components that execute concurrently and communicate through messages
+sent via interconnected ports. A model is a hierarchical
+interconnection of actors. In Ptolemy II, the semantics of a model is
+not determined by the framework, but rather by a software component in
+the model called a director, which implements a model of
+computation. The Ptolemy Project has developed directors supporting
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/pn/doc/index.htm">process networks (PN)</a>,
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/de/doc/index.htm">discrete-events (DE)</a>,
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/sdf/doc/index.htm">dataflow (SDF)</a>,
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/sr/doc/index.htm">synchronous/reactive(SR)</a>,
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/rendezvous/doc/index.htm">rendezvous-based models</a>,
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/gr/doc/index.htm">3-D visualization</a>,
+and
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/continuous/doc/index.htm">continuous-time</a>
+models.
+Each level of the hierarchy in a model can
+have its own director, and distinct directors can be composed
+hierarchically. A major emphasis of the project has been on
+understanding the heterogeneous combinations of models of computation
+realized by these directors. Directors can be combined hierarchically
+with state machines to make
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/ptolemy/domains/modal/doc/index.htm">modal models</a>
+<a href="#2">[2]</a>. A hierarchical
+combination of continuous-time models with state machines yields
+hybrid systems <a href="#3">[3]</a>; a combination of synchronous/reactive with state
+machines yields StateCharts <a href="#4">[4]</a> (the Ptolemy II variant is close to
+SyncCharts).</p>
 
-The Ptolemy Project 
-(<a href="http://ptolemy.eecs.berkeley.edu/index.html" target="_top"><code>http://ptolemy.eecs.berkeley.edu</code></a>)
+<p>Ptolemy II has been under development since 1996; it is a successor
+to
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyClassic">Ptolemy Classic</a>,
+which was developed since 1990. The core of
+Ptolemy II is a collection of Java classes and packages, layered to
+provide increasingly specific capabilities. The kernel supports an
+abstract syntax, a hierarchical structure of entities with ports and
+interconnections. A graphical editor called Vergil supports visual
+editing of this abstract syntax. An XML concrete syntax called MoML
+provides a persistent file format for the models. Various specialized
+tools have been created from this framework, including
+<a href="http://ptolemy.eecs.berkeley.edu/hyvisual">HyVisual</a>
+(for hybrid systems modeling),
+<a href="http://www.kepler-project.org">Kepler</a>
+(for scientific workflows), 
+<a href="http://ptolemy.eecs.berkeley.edu/visualsense">VisualSense</a>
+(for modeling and simulation of wireless networks),
+<a href="http://ptolemy.eecs.berkeley.edu/viptos">Viptos</a>
+(for sensor network design), and some commercial products.  Key parts
+of the infrastructure include an actor abstract semantics, which
+enables the interoperability of distinct models of computation with a
+well-defined semantics; a model of time (specifically, super-dense
+time, which enables interaction of continuous dynamics and imperative
+logic); and a sophisticated type system supporting type checking, type
+inference, and polymorphism. The type system has recently been
+extended to support user-defined ontologies <a href="#5">[5]</a>.  Various experiments
+with synthesis of implementation code and abstractions for
+verification are included in the project.</p>
 
+<h3>References</h3>
+
+<p><a name="1">[1]</a>
+Johan Eker, Jorn Janneck, Edward A. Lee, Jie Liu, Xiaojun
+Liu, Jozsef Ludvig, Sonia Sachs, Yuhong Xiong. <a
+href="http://chess.eecs.berkeley.edu/pubs/488.html">
+Taming heterogeneity - the Ptolemy approach</a>,
+<i>Proceedings of the IEEE</i>, 91(1):127-144,
+January 2003. 
+<br>(<i>Key citation for the Ptolemy project</i>)
+</p>
+
+<p><a name="2">[2]</a>
+Edward A. Lee. <a
+href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-151.html"><i>Finite
+State Machines and Modal Models in Ptolemy
+II</i></a>, Technical report,  EECS Department,
+University of California, Berkeley, UCB/EECS-2009-151,
+December, 2009.
+</p>
+
+<p><a name="3">[3]</a>
+	E. A. Lee and H. Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics/">Operational Semantics of Hybrid Systems</a>," Invited paper in Proceedings of Hybrid Systems: Computation and Control (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
+</p>
+
+<p><a name="4">[4]</a>
+	E. A. Lee, H. Zheng, "<a
+	href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm">Leveraging
+	Synchronous Language Principles for Heterogeneous Modeling and
+	Design of Embedded Systems</a>," EMSOFT '07, September 30 - October 3, 2007, Salzburg, Austria.
+</p>
+
+<p><a name="5">[5]</a>
+	M.-K. Leung, T. Mandl, E. A. Lee, E. Latronico,
+C. Shelton, S. Tripakis, and B. Lickly, "<a
+	href="http://chess.eecs.berkeley.edu/pubs/611.html">Scalable
+	Semantic Annotation using Lattice-based Ontologies</a>," ACM/IEEE 12th International Conference
+on Model Driven Engineering Languages and Systems (MODELS), Denver,
+CO, USA, 4-9 October, 2009.
+</p>
+
+<p><a name="6">[6]</a>Christopher Brooks, Edward A. Lee. <a
+href="http://chess.eecs.berkeley.edu/pubs/655.html"><i>Ptolemy
+II - Heterogeneous Concurrent Modeling and Design in
+Java</i></a>, 11 February, 2010; Poster presented at the 2010 <a
+href="http://www.eecs.berkeley.edu/BEARS">Berkeley
+EECS Annual Research Symposium (BEARS)</a>.</p>
+
+
+<p>
+The <a href="http://ptolemy.eecs.berkeley.edu/index.html">Ptolemy Project web page</a>
 contains much more information about the
 project. The work is conducted in the
-
-
-<a href="http://www.eecs.berkeley.edu/" target="_top">Department of Electrical Engineering and Computer Sciences</a>
+<a href="http://www.eecs.berkeley.edu/">Department of Electrical Engineering and Computer Sciences</a>
 of the
-<a href="http://www.berkeley.edu/" target="_top">University of California at Berkeley</a>.
+<a href="http://www.berkeley.edu/">University of California at Berkeley</a>.
 The project is directed by
-Prof. Edward A. Lee 
-(<a href="http://ptolemy.eecs.berkeley.edu/~eal/index.html" target="_top"><code>http://ptolemy.eecs.berkeley.edu/~eal</code></a>)
-
+<a href="http://ptolemy.eecs.berkeley.edu/~eal/index.html">Prof. Edward Lee</a>.
 The project is named after
-<a href="http://ptolemy.eecs.berkeley.edu/people/ptolemy.htm" target="_top">Claudius Ptolemaeus</a>,
-the second century Greek astronomer, mathematician, and geographer.
+<a href="http://ptolemy.eecs.berkeley.edu/people/ptolemy.htm">Claudius Ptolemaeus</a>,
+the second century Greek astronomer, mathematician, and geographer.</p>
+
 </p>
 
 <dt> <a name="ptolemy II copyright"><b>1.2 What is the copyright and license?</b></a>
