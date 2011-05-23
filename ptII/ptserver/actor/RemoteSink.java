@@ -1,47 +1,128 @@
+/*
+ RemoteSink that acts as a proxy sink and publishes tokens it receives as
+ CommunicationToken to its queue.
+ 
+ Copyright (c) 2002-2010 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptserver.actor;
 
 import ptolemy.actor.IOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptserver.communication.TokenPublisher;
 import ptserver.data.CommunicationToken;
 
+/**
+ * RemoteSink that acts as a proxy sink and publishes tokens it receives as
+ * CommunicationToken to its queue.
+ * @author ahuseyno
+ * @version $Id$ 
+ *
+ */
 public class RemoteSink extends RemoteActor {
 
-    private TokenPublisher publisher;
-
-    public RemoteSink(CompositeEntity container, ComponentEntity entity)
+    /**
+     * Replaces the targetSink with the RemoteSink instance
+     * @see RemoteActor
+     * @param container The container
+     * @param targetSink The target sink
+     * @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     * @exception CloneNotSupportedException If port cloning is not supported
+     */
+    public RemoteSink(CompositeEntity container, ComponentEntity targetSink)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
-        super(container, entity);
+        super(container, targetSink);
     }
 
+    /**
+     * Reads tokens from all ports, packages them as one CommunicationToken and sends
+     * it via tokenPublisher
+     * @exception IllegalActionException parameters.getToken, port.get throw it
+     */
+    @Override
+    public void fire() throws IllegalActionException {
+        super.fire();
+        CommunicationToken token = new CommunicationToken(getTargetEntityName());
+        for (Object portObj : this.portList()) {
+            if (portObj instanceof IOPort) {
+                IOPort port = (IOPort) portObj;
+                int consumptionRate = 1;
+                Parameter tokenConsumptionRate = (Parameter) port
+                        .getAttribute("tokenConsumptionRate");
+                if (tokenConsumptionRate != null) {
+                    consumptionRate = ((IntToken) tokenConsumptionRate
+                            .getToken()).intValue();
+                }
+                int width = port.getWidth();
+                token.addPort(port.getName(), width);
+                for (int channel = 0; channel < width; channel++) {
+                    token.putTokens(port.getName(), channel,
+                            port.get(channel, consumptionRate));
+                }
+            }
+        }
+        getTokenPublisher().sendToken(token);
+    }
+
+    /**
+     * Returns TokenPublisher that would be used to publish
+     * CommunicationTokens produced by this actor on fire
+     * @return TokenPublisher the token publisher
+     * @see #setTokenPublisher(TokenPublisher)
+     */
+    public TokenPublisher getTokenPublisher() {
+        return tokenPublisher;
+    }
+
+    /**
+     * Checks if tokens are available on all ports
+     */
     @Override
     public boolean prefire() throws IllegalActionException {
+        super.prefire();
         for (Object p : this.portList()) {
             if (p instanceof IOPort) {
                 IOPort port = (IOPort) p;
                 int consumptionRate = 1;
-                Attribute attribute = port.getAttribute("tokenConsumptionRate");
-                if (attribute instanceof Settable) {
-                    Settable settableAttribute = (Settable) attribute;
-                    String value = settableAttribute.getExpression();
-                    if (value != null) {
-                        try {
-                            consumptionRate = Integer
-                                    .parseInt(settableAttribute.getExpression());
-                        } catch (NumberFormatException ex) {
-                        }
-                    }
-
+                Parameter tokenConsumptionRate = (Parameter) port
+                        .getAttribute("tokenConsumptionRate");
+                if (tokenConsumptionRate != null) {
+                    consumptionRate = ((IntToken) tokenConsumptionRate
+                            .getToken()).intValue();
                 }
                 int width = port.getWidth();
-                for (int i = 0; i < width; i++) {
-                    if (!port.hasToken(i, consumptionRate)) {
+                for (int channel = 0; channel < width; channel++) {
+                    if (!port.hasToken(channel, consumptionRate)) {
                         return false;
                     }
                 }
@@ -50,44 +131,18 @@ public class RemoteSink extends RemoteActor {
         return true;
     }
 
-    @Override
-    public void fire() throws IllegalActionException {
-        CommunicationToken token = new CommunicationToken(
-                getOriginalActorName());
-        for (Object p : this.portList()) {
-            if (p instanceof IOPort) {
-                IOPort port = (IOPort) p;
-                int consumptionRate = 1;
-                Attribute attribute = port.getAttribute("tokenConsumptionRate");
-                if (attribute instanceof Settable) {
-                    Settable settableAttribute = (Settable) attribute;
-                    String value = settableAttribute.getExpression();
-                    if (value != null) {
-                        try {
-                            consumptionRate = Integer
-                                    .parseInt(settableAttribute.getExpression());
-                        } catch (NumberFormatException ex) {
-                        }
-                    }
-
-                }
-                int width = port.getWidth();
-                token.addPort(port.getName(), width);
-                for (int i = 0; i < width; i++) {
-                    token.putTokens(port.getName(), i,
-                            port.get(i, consumptionRate));
-                }
-            }
-        }
-        getPublisher().sendToken(token);
+    /**
+     * Sets the token publisher that would be used to send 
+     * communication tokens
+     * @param tokenPublisher
+     * @see #getTokenPublisher()
+     */
+    public void setTokenPublisher(TokenPublisher tokenPublisher) {
+        this.tokenPublisher = tokenPublisher;
     }
 
-    public void setPublisher(TokenPublisher publisher) {
-        this.publisher = publisher;
-    }
-
-    public TokenPublisher getPublisher() {
-        return publisher;
-    }
-
+    /**
+     * Token Publisher
+     */
+    private TokenPublisher tokenPublisher;
 }
