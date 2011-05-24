@@ -2,7 +2,7 @@
  Parent actor that contains logic common to both sink and source remote actors.
  This actor is responsible for removing a target actor and putting itself as a proxy.
  
- Copyright (c) 2002-2010 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,80 +28,187 @@
  */
 package ptserver.actor;
 
+import java.util.List;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//////////////////////////////////////////////////////////////////////////
+////RemoteActor
 /**
- * Parent actor that contains logic common to both sink and source remote actors.
- * This actor is responsible for removing a target actor and putting itsefl as a proxy.
+ * An abstract parent actor that contains logic common to both sink and source remote actors.
+ * This actor is responsible for either removing the target actor and putting itself as a proxy 
+ * or removing all actors connected to the target actor and putting itself instead of all of them.
+ * The intent is to allow sinks or sources to run remotely by putting instance of RemoteSink
+ * or RemoteSource instead.
  * @author ahuseyno
  * @version $Id$ 
- *  
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ * @see RemoteSink
+ * @see RemoteSource
  */
-public class RemoteActor extends TypedAtomicActor {
+public abstract class RemoteActor extends TypedAtomicActor {
 
     /**
-     * Parent constructor that replaces targetEntity with a proxy instance (RemoteSink or Remote Source).
+     * Parent constructor that replaces either targetEntity if replaceTargetEntity is true or
+     * otherwise all entities connected to it with a proxy instance (RemoteSink or RemoteSource).
      * The proxy actor is named the same as the original with addition of "_remote" suffix.
-     * All links of targetEntity are removed. The proxy actor dynamically adds ports that were present
-     * in the targetEntity (with the same port name) and connects them to the targetEntity's relations.
+     * All links of the targetEntity are removed. The proxy actor dynamically adds ports that were present
+     * in the targetEntity (with the same port name) or  and connects them to the targetEntity's relations.
      * @param container The container
      * @param targetEntity the targetEntity to be replaced by a proxy
+     * @param replaceTargetEntity true to replace the target entity with the proxy, 
+     * otherwise replace all entities connecting to it with one proxy
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
      */
-    public RemoteActor(CompositeEntity container, ComponentEntity targetEntity)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+    public RemoteActor(CompositeEntity container, ComponentEntity targetEntity,
+            boolean replaceTargetEntity) throws IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
         super(container, targetEntity.getName() + "_remote");
-        for (Object portObj : targetEntity.portList()) {
-            if (!(portObj instanceof IOPort)) {
-                break;
-            }
-            IOPort port = (IOPort) portObj;
-            IOPort remotePort = (IOPort) port.clone(this.workspace());
-            remotePort.setName(port.getName());
-            remotePort.setContainer(this);
-            for (Object relationObj : port.linkedRelationList()) {
-                Relation relation = (Relation) relationObj;
-                port.unlink(relation);
-                remotePort.link(relation);
-            }
-            port.unlinkAll();
+        if (replaceTargetEntity) {
+            replaceTargetEntity(targetEntity);
+        } else {
+            replaceConnectingEntities(targetEntity);
         }
-        targetEntity.setContainer(null);
         setTargetEntityName(targetEntity.getName());
     }
 
-    /**
-     * Sets the name of the entity this proxy actor replaces
-     * @param targetEntityName the target Entity name
-     * @see #getOriginalActorName()
-     */
-    public void setTargetEntityName(String targetEntityName) {
-        this.targetEntityName = targetEntityName;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Returns the name of the entity this proxy actor is replacing
+     * Return the name of the target entity.
      * @return the targetEntityName 
-     * @see #setOriginalActorName(String)
-     * 
+     * @see #setTargetActorName(String)
      */
     public String getTargetEntityName() {
         return targetEntityName;
     }
 
     /**
+     * Set the name of the target entity.
+     * @param targetEntityName the target entity name
+     * @see #getTargetActorName()
+     */
+    public void setTargetEntityName(String targetEntityName) {
+        this.targetEntityName = targetEntityName;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Check if the connecting port is valid and could be used
+     * for cloning for the RemoteActor.
+     * @param connectingPort
+     * @return true if connectingPort is valid, false otherwise
+     */
+    protected abstract boolean isValidConnectingPort(IOPort connectingPort);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Replace all entities connected to the targetEntity with one RemoteSource
+     * or RemoteSink.
+     * Essentially instead of all entities connected to it, RemoteSink or RemoteSource
+     * would be used that would redirect all links from those entities to itself and 
+     * connect them to dynamically added ports derived from the connected entities.
+     * 
+     * This configuration would allow running of sources and sinks disconnected from
+     * the actors in between remotely by passing respective input and output via
+     * CommunicationToken.
+     * @param targetEntity the entity to which actors that are replaced are connected
+     * @exception CloneNotSupportedException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
+     */
+    private void replaceConnectingEntities(ComponentEntity targetEntity)
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
+
+        for (Object portObject : targetEntity.portList()) {
+            if (!(portObject instanceof IOPort)) {
+                continue;
+            }
+            IOPort port = (IOPort) portObject;
+            for (Object relationObject : port.linkedRelationList()) {
+                Relation relation = (Relation) relationObject;
+                List<Port> linkedPortList = relation.linkedPortList(port);
+                IOPort remotePort = null;
+                for (Port connectingPort : linkedPortList) {
+                    if (connectingPort instanceof IOPort
+                            && isValidConnectingPort((IOPort) connectingPort)) {
+                        remotePort = (IOPort) connectingPort
+                                .clone(connectingPort.workspace());
+                        if (port instanceof TypedIOPort) {
+                            TypedIOPort typedPort = (TypedIOPort) port;
+                            TypedIOPort typedRemotePort = (TypedIOPort) remotePort;
+                            //FIXME: figure out correct way of inferring port types
+                            typedRemotePort.setTypeEquals(typedPort.getType());
+                        }
+                        remotePort.setName(port.getName());
+                        remotePort.setContainer(this);
+                        break;
+                    }
+                }
+                relation.unlinkAll();
+                if (remotePort != null) {
+                    port.link(relation);
+                    remotePort.link(relation);
+                }
+            }
+        }
+    }
+
+    /**
+     * Replace the targetEntity with the proxy.
+     * This configuration would allow execution of the model where sinks or sources run remotely
+     * and proxies execute instead of them and pass information to/from them.
+     * @param targetEntity The target entity that is replaced with the proxy
+     * @exception CloneNotSupportedException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
+     */
+    private void replaceTargetEntity(ComponentEntity targetEntity)
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
+        for (Object portObject : targetEntity.portList()) {
+            if (!(portObject instanceof IOPort)) {
+                continue;
+            }
+            IOPort port = (IOPort) portObject;
+            IOPort remotePort = (IOPort) port.clone(this.workspace());
+            remotePort.setName(port.getName());
+            remotePort.setContainer(this);
+            for (Object relationObject : port.linkedRelationList()) {
+                Relation relation = (Relation) relationObject;
+                port.unlink(relation);
+                remotePort.link(relation);
+            }
+            port.unlinkAll();
+        }
+        targetEntity.setContainer(null);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /**
      * Name of the targetEntity
      */
     private String targetEntityName;
+
 }
