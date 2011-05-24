@@ -222,6 +222,14 @@ public class TextEditorTableau extends Tableau {
                             .newInstance(new Object[] { effigy, "textTableau" });
                 }
 
+                URL url = effigy.uri.getURL();
+                if (url != null) {
+                    // Set the identifier so that if we start vergil and 
+                    // do File -> New -> Text Editor, type some text, Save
+                    // then the title changes from Unnames to the name of the file.
+                    effigy.identifier.setExpression(url.toExternalForm());
+                }
+
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
             } else {
@@ -270,9 +278,7 @@ public class TextEditorTableau extends Tableau {
 
                 TextEditorTableau textTableau = (TextEditorTableau) createTableau(textEffigy);
 
-                if (url != null) {
-                    textEffigy.identifier.setExpression(url.toExternalForm());
-                }
+                textEffigy.identifier.setExpression(url.toExternalForm());
 
                 return textTableau;
             }
