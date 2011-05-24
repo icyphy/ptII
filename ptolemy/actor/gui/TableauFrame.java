@@ -28,6 +28,7 @@ package ptolemy.actor.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FileDialog;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -58,6 +59,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
@@ -1097,79 +1099,16 @@ public class TableauFrame extends Top {
      */
     protected URL _saveAsHelper(String extension) {
         // _saveAsHelper is needed as part of Kepler.
+
         if (_tableau == null) {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
         }
-        URL newURL = null;
 
-        // Swap backgrounds and avoid white boxes in "common places" dialog
-        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
-        Color background = null;
-        try {
-            background = jFileChooserBugFix.saveBackground();
-            // Use the strategy pattern here to create the actual
-            // dialog so that subclasses can customize this dialog.
-            JFileChooser fileDialog = _saveAsFileDialog();
-            if (_initialSaveAsFileName != null) {
-                fileDialog.setSelectedFile(new File(fileDialog
-                        .getCurrentDirectory(), _initialSaveAsFileName));
-            }
-
-            // Show the dialog.
-            int returnVal = fileDialog.showSaveDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileDialog.getSelectedFile();
-                if (extension != null && file.getName().indexOf(".") == -1) {
-                    // if the user has not given the file an extension, add it
-                    file = new File(file.getAbsolutePath() + extension);
-                }
-
-                try {
-                    if (!_confirmFile(null, file)) {
-                        return null;
-                    }
-
-                    newURL = file.toURI().toURL();
-                    String newKey = newURL.toExternalForm();
-
-                    _directory = fileDialog.getCurrentDirectory();
-                    _writeFile(file);
-
-                    // The original file will still be open, and has not
-                    // been saved, so we do not change its modified status.
-                    // setModified(false);
-                    // Open a new window on the model.
-                    getConfiguration().openModel(newURL, newURL, newKey);
-
-                    // If the tableau was unnamed before, then we need
-                    // to close this window after doing the save.
-                    Effigy effigy = getEffigy();
-
-                    if (effigy != null) {
-                        String id = effigy.identifier.getExpression();
-
-                        if (id.equals("Unnamed")) {
-                            // This will have the effect of closing all the
-                            // tableaux associated with the unnamed model.
-                            effigy.setContainer(null);
-                        }
-                    }
-                    
-                    dispose();
-
-                    return newURL;
-                } catch (Exception ex) {
-                    report("Error in save as.", ex);
-                    return null;
-                }
-            }
-
-            // The user hit cancel or there was an error, so we did not
-            // successfully save.
-            return null;
-        } finally {
-            jFileChooserBugFix.restoreBackground(background);
+        if (PtGUIUtilities.useFileDialog()) {
+            return _saveAsHelperFileDialog(extension);
+        } else {
+            return _saveAsHelperJFileChooser(extension);
         }
     }
 
@@ -1272,6 +1211,171 @@ public class TableauFrame extends Top {
         }
 
         return true;
+    }
+
+
+        
+    /** Query the user for a filename, save the model to that file,
+     *  and open a new window to view the model.  This method
+     *  uses java.awt.FileDialog and is usually used under Mac OS X.
+     *
+     *  @param extension If non-null, then the extension that is
+     *  appended to the file name if there is no extension.
+     *
+     *  @return URL of the saved file if the save succeeds, null 
+     *  if save fails.
+     */
+    private URL _saveAsHelperFileDialog(String extension) {
+        // This is odd, we need to replicate similar code from
+        // Top._saveAsFileDialogImplementation()?  Why?
+        // _saveAsHelper() is needed as part of Kepler.
+
+        URL newURL = null;
+
+        FileDialog fileDialog = _saveAsFileDialogComponent();
+
+        if (_initialSaveAsFileName != null) {
+            fileDialog.setFile(new File(fileDialog
+                            .getDirectory(), _initialSaveAsFileName).toString());
+        }
+        fileDialog.show();
+
+        if (fileDialog.getFile() != null) {
+            // fileDialog.getFile() returns an old, krufty Mac OS 9 colon separated path.
+            File file = new File(_directory, fileDialog.getFile().replace(':','/'));
+            if (extension != null && file.getName().indexOf(".") == -1) {
+                // if the user has not given the file an extension, add it
+                file = new File(file.getAbsolutePath() + extension);
+            }
+            try {
+                if (!_confirmFile(null, file)) {
+                    return null;
+                }
+
+                newURL = file.toURI().toURL();
+                String newKey = newURL.toExternalForm();
+
+                _directory = new File(fileDialog.getDirectory());
+                _writeFile(file);
+
+                // The original file will still be open, and has not
+                // been saved, so we do not change its modified status.
+                // setModified(false);
+                // Open a new window on the model.
+                getConfiguration().openModel(newURL, newURL, newKey);
+
+                // If the tableau was unnamed before, then we need
+                // to close this window after doing the save.
+                Effigy effigy = getEffigy();
+
+                if (effigy != null) {
+                    String id = effigy.identifier.getExpression();
+
+                    if (id.equals("Unnamed")) {
+                        // This will have the effect of closing all the
+                        // tableaux associated with the unnamed model.
+                        effigy.setContainer(null);
+                    }
+                }
+                    
+                dispose();
+                return newURL;
+            } catch (Exception ex) {
+                report("Error in save as.", ex);
+                return null;
+            }
+        }
+        // The user hit cancel or there was an error, so we did not
+        // successfully save.
+        return null;
+    }
+
+    /** Query the user for a filename, save the model to that file,
+     *  and open a new window to view the model.  This method uses
+     *  javax.swing.JFileChooser and is usually used under
+     *  non-Mac OS X platforms such as Windows or Linux.
+     *
+     *  @param extension If non-null, then the extension that is
+     *  appended to the file name if there is no extension.
+     *
+     *  @return URL of the saved file if the save succeeds, null 
+     *  if save fails.
+     */
+    private URL _saveAsHelperJFileChooser(String extension) {
+        // This is odd, we need to replicate similar code from
+        // Top._saveAsJFileChooserImplementation()?  Why?
+        // _saveAsHelper() is needed as part of Kepler.
+
+        URL newURL = null;
+
+        // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        try {
+            background = jFileChooserBugFix.saveBackground();
+            // Use the strategy pattern here to create the actual
+            // dialog so that subclasses can customize this dialog.
+            JFileChooser fileDialog = _saveAsJFileChooserComponent();
+            if (_initialSaveAsFileName != null) {
+                fileDialog.setSelectedFile(new File(fileDialog
+                        .getCurrentDirectory(), _initialSaveAsFileName));
+            }
+
+            // Show the dialog.
+            int returnVal = fileDialog.showSaveDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileDialog.getSelectedFile();
+                if (extension != null && file.getName().indexOf(".") == -1) {
+                    // if the user has not given the file an extension, add it
+                    file = new File(file.getAbsolutePath() + extension);
+                }
+
+                try {
+                    if (!_confirmFile(null, file)) {
+                        return null;
+                    }
+
+                    newURL = file.toURI().toURL();
+                    String newKey = newURL.toExternalForm();
+
+                    _directory = fileDialog.getCurrentDirectory();
+                    _writeFile(file);
+
+                    // The original file will still be open, and has not
+                    // been saved, so we do not change its modified status.
+                    // setModified(false);
+                    // Open a new window on the model.
+                    getConfiguration().openModel(newURL, newURL, newKey);
+
+                    // If the tableau was unnamed before, then we need
+                    // to close this window after doing the save.
+                    Effigy effigy = getEffigy();
+
+                    if (effigy != null) {
+                        String id = effigy.identifier.getExpression();
+
+                        if (id.equals("Unnamed")) {
+                            // This will have the effect of closing all the
+                            // tableaux associated with the unnamed model.
+                            effigy.setContainer(null);
+                        }
+                    }
+                    
+                    dispose();
+
+                    return newURL;
+                } catch (Exception ex) {
+                    report("Error in save as.", ex);
+                    return null;
+                }
+            }
+
+            // The user hit cancel or there was an error, so we did not
+            // successfully save.
+            return null;
+        } finally {
+            jFileChooserBugFix.restoreBackground(background);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

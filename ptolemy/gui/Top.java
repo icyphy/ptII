@@ -741,10 +741,12 @@ public abstract class Top extends JFrame {
     }
 
     /** Open a file dialog to identify a file to be opened, and then call
-     *  _read() to open the file.
+     *  _read() to open the file.  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()}
+     *  return true, then java.awt.FileDialog is used.
+     *  Otherwise, javax.swing.JFileChooser is used.
      */
     protected void _open() {
-        if (PtGUIUtilities.macOSLookAndFeel()) {
+        if (PtGUIUtilities.useFileDialog()) {
             _openFileDialog();
         } else {
             _openJFileChooser();
@@ -993,55 +995,56 @@ public abstract class Top extends JFrame {
     }
 
     /** Query the user for a filename and save the model to that file.
+     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()}
+     *  return true, then java.awt.FileDialog is used.
+     *  Otherwise, javax.swing.JFileChooser is used.
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        // Swap backgrounds and avoid white boxes in "common places" dialog
-        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
-        Color background = null;
-        try {
-            background = jFileChooserBugFix.saveBackground();
-
-            // Use the strategy pattern here to create the actual
-            // dialog so that subclasses can customize this dialog.
-            JFileChooser fileDialog = _saveAsFileDialog();
-
-            // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
-            if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                _file = fileDialog.getSelectedFile();
-
-                if (_file.exists()) {
-                    // Ask for confirmation before overwriting a file.
-                    String query = "Overwrite " + _file.getName() + "?";
-
-                    // Show a MODAL dialog
-                    int selected = JOptionPane.showOptionDialog(this, query,
-                            "Save Changes?", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-                    if (selected == 1) {
-                        return false;
-                    }
-                }
-
-                // Truncate the name so that dialogs under Web Start on the Mac
-                // work better.
-                setTitle(StringUtilities.abbreviate(_getName()));
-                _directory = fileDialog.getCurrentDirectory();
-                return _save();
-            }
-
-            // Action was canceled.
-            return false;
-        } finally {
-            jFileChooserBugFix.restoreBackground(background);
+        if (PtGUIUtilities.useFileDialog()) {
+            return _saveAsFileDialogImplementation();
+        } else {
+            return _saveAsJFileChooserImplementation();
         }
     }
 
     /** Create and return a file dialog for the "Save As" command.
      *  @return A file dialog for save as.
+     *  @deprecated Use {@link #_saveAsJFileChooserComponent()}
      */
     protected JFileChooser _saveAsFileDialog() {
+        // Too bad this method was incorrectly named.  This method
+        // returns a JFileChooser, why on earth would its name
+        // have "FileDialog" in it?
+        return _saveAsJFileChooserComponent();
+    }
+
+    /** Create and return a FileDialog for the "Save As" command.
+     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns true,
+     *  then {@link _saveAs()} uses this method.  Otherwise, 
+     *  {@link _saveAsJFileChooserComponent()} is used.
+     *  @return A file dialog for save as.
+     */
+    protected FileDialog _saveAsFileDialogComponent() {
+        // The name of this method ends in "Component" because
+        // there already was a _saveAsFileDialog() method.
+        FileDialog fileDialog = new FileDialog(this, "Save as...", FileDialog.SAVE);
+
+        if (_filenameFilter != null) {
+            fileDialog.setFilenameFilter(_filenameFilter);
+        }
+
+        fileDialog.setDirectory(_getCurrentDirectory().toString());
+        return fileDialog;
+    }
+
+    /** Create and return a JFileChooser for the "Save As" command.
+     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false,
+     *  then {@link _saveAs()} uses this method.  Otherwise, 
+     *  {@link _saveAsFileDialogComponent()} is used.
+     *  @return A JFileChooser for save as.
+     */
+    protected JFileChooser _saveAsJFileChooserComponent() {
         JFileChooser fileDialog = new JFileChooser();
 
         if (_fileFilter != null) {
@@ -1517,6 +1520,136 @@ public abstract class Top extends JFrame {
 
         return historyList;
     }
+
+    /** Query the user for a filename and save the model to that file.
+     *  @return True if the save succeeds.
+     */
+    private boolean _saveAsFileDialogImplementation() {
+        // This method name ends with "Implementation" because there
+        // already was a _saveAsFileDialog() method
+
+        // Use the strategy pattern here to create the actual
+        // dialog so that subclasses can customize this dialog.
+        FileDialog fileDialog = _saveAsFileDialogComponent();
+
+        fileDialog.show();
+
+        _directory = new File(fileDialog.getDirectory());
+
+        _file = new File(_directory, fileDialog.getFile());
+
+        if (_file.exists()) {
+            // Ask for confirmation before overwriting a file.
+            String query = "Overwrite " + _file.getName() + "?";
+
+            // Show a MODAL dialog
+            int selected = JOptionPane.showOptionDialog(this, query,
+                    "Save Changes?", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+            if (selected == 1) {
+                return false;
+            }
+        }
+
+        // Truncate the name so that dialogs under Web Start on the Mac
+        // work better.
+        setTitle(StringUtilities.abbreviate(_getName()));
+        return _save();
+    }
+
+    /** Query the user for a filename and save the model to that file.
+     *  @return True if the save succeeds.
+     */
+    private boolean _saveAsJFileChooserImplementation() {
+        // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        try {
+            background = jFileChooserBugFix.saveBackground();
+
+            // Use the strategy pattern here to create the actual
+            // dialog so that subclasses can customize this dialog.
+            JFileChooser fileDialog = _saveAsFileDialog();
+
+            // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
+            if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                _file = fileDialog.getSelectedFile();
+
+                if (_file.exists()) {
+                    // Ask for confirmation before overwriting a file.
+                    String query = "Overwrite " + _file.getName() + "?";
+
+                    // Show a MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(this, query,
+                            "Save Changes?", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+                    if (selected == 1) {
+                        return false;
+                    }
+                }
+
+                // Truncate the name so that dialogs under Web Start on the Mac
+                // work better.
+                setTitle(StringUtilities.abbreviate(_getName()));
+                _directory = fileDialog.getCurrentDirectory();
+                return _save();
+            }
+
+            // Action was canceled.
+            return false;
+        } finally {
+            jFileChooserBugFix.restoreBackground(background);
+        }
+    }
+
+    /** Query the user for a filename and save the model to that file.
+     *  @return True if the save succeeds.
+     */
+    private boolean _saveAsJFileChooser() {
+        // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        try {
+            background = jFileChooserBugFix.saveBackground();
+
+            // Use the strategy pattern here to create the actual
+            // dialog so that subclasses can customize this dialog.
+            JFileChooser fileDialog = _saveAsFileDialog();
+
+            // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
+            if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                _file = fileDialog.getSelectedFile();
+
+                if (_file.exists()) {
+                    // Ask for confirmation before overwriting a file.
+                    String query = "Overwrite " + _file.getName() + "?";
+
+                    // Show a MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(this, query,
+                            "Save Changes?", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+                    if (selected == 1) {
+                        return false;
+                    }
+                }
+
+                // Truncate the name so that dialogs under Web Start on the Mac
+                // work better.
+                setTitle(StringUtilities.abbreviate(_getName()));
+                _directory = fileDialog.getCurrentDirectory();
+                return _save();
+            }
+
+            // Action was canceled.
+            return false;
+        } finally {
+            jFileChooserBugFix.restoreBackground(background);
+        }
+    }
+
 
     /** Write history to the file defined by _getHistoryFileName(). */
     private void _writeHistory(List<String> historyList) throws IOException {

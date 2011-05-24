@@ -26,6 +26,7 @@
  */
 package ptolemy.actor.gui;
 
+import java.awt.FileDialog;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +39,7 @@ import javax.swing.JFileChooser;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -368,15 +370,42 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** Create and return a file dialog for the "Save As" command.
      *  This overrides the base class to add options to the dialog.
+     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false,
+     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
+     *  {@link _saveAsFileDialogComponent()} is used.
+
      *  @return A file dialog for save as.
      */
-    protected JFileChooser _saveAsFileDialog() {
-        JFileChooser fileDialog = super._saveAsFileDialog();
+    protected JFileChooser _saveAsJFileChooserComponent() {
+        JFileChooser fileChooser = super._saveAsJFileChooserComponent();
 
         if ((_model != null) && (_model.getContainer() != null)) {
             _query = new Query();
             _query.addCheckBox("submodel", "Save submodel only", false);
-            fileDialog.setAccessory(_query);
+            fileChooser.setAccessory(_query);
+        }
+
+        return fileChooser;
+    }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  This overrides the base class to add options to the dialog.
+     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns true
+     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
+     *  {@link _saveAsJFileChooserComponent()} is used.
+
+     *  @return A file dialog for save as.
+     */
+    protected FileDialog _saveAsFileDialogComponent() {
+        FileDialog fileDialog = super._saveAsFileDialogComponent();
+
+        if ((_model != null) && (_model.getContainer() != null)) {
+            _query = new Query();
+            _query.addCheckBox("submodel", "Save submodel only", false);
+            // The problem here is that with FileDialog, we can't add the
+            // query as an accessory like we can with JFileChooser.  So, we
+            // pop up a check box dialog before bringing up the FileDialog.
+            ComponentDialog dialog = new ComponentDialog(this, "Save Submodel?", _query);
         }
 
         return fileDialog;

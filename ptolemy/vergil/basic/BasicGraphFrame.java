@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -107,6 +108,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
 import ptolemy.gui.Query;
@@ -2404,24 +2406,62 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Create and return a file dialog for the "Save As" command.
-     *  This overrides the base class to add options to the dialog.
+     *  This overrides the base class so that if this is a design pattern
+     *  and items are selected, then the user is asked if they
+     *  want to save only the selected objects.
+     *  <p>If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns true
+     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
+     *  {@link _saveAsJFileChooserComponent()} is used.</p>
      *  @return A file dialog for save as.
      */
-    protected JFileChooser _saveAsFileDialog() {
-        JFileChooser fileDialog = super._saveAsFileDialog();
-
+    protected FileDialog _saveAsFileDialogComponent() {
+        FileDialog fileDialog = super._saveAsFileDialogComponent();
         if (_isDesignPattern()) {
-            if (_getSelectionSet().isEmpty()) {
-                fileDialog.setAccessory(null);
-            } else {
+            if (!_getSelectionSet().isEmpty()) {
+                // FIXME: It is not clear to me when this code would be called.
+                // File -> New -> Ptera Model, then opening DesignPatterns,
+                // dragging in a ListenToInput, selecting it and doing Save As
+                // does not do it.
+
                 _query = new Query();
                 _query.addCheckBox("selected", "Selected objects only", true);
-                fileDialog.setAccessory(_query);
+                // The problem here is that with FileDialog, we can't add the
+                // query as an accessory like we can with JFileChooser.  So, we
+                // pop up a check box dialog before bringing up the FileDialog.
+                ComponentDialog dialog = new ComponentDialog(this, "Save Submodel?", _query);
             }
         }
 
         return fileDialog;
     }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  This overrides the base class so that if this is a design pattern
+     *  and items are selected, then the user is asked if they
+     *  want to save only the selected objects.
+     *  <p>If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false
+     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
+     *  {@link _saveAsFileDialogComponent()} is used.</p>
+
+     *  @return A file dialog for save as.
+     */
+    protected JFileChooser _saveAsJFileChooserComponent() {
+        JFileChooser fileChooser = super._saveAsJFileChooserComponent();
+
+        if (_isDesignPattern()) {
+            if (_getSelectionSet().isEmpty()) {
+                fileChooser.setAccessory(null);
+            } else {
+                _query = new Query();
+                _query.addCheckBox("selected", "Selected objects only", true);
+                fileChooser.setAccessory(_query);
+            }
+        }
+
+        return fileChooser;
+    }
+
+
 
     /** Set the directory that was last accessed by this window.
      *  @see #_getDirectory

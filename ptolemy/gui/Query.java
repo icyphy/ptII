@@ -31,6 +31,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -1935,7 +1936,10 @@ public class Query extends JPanel {
     /** Panel containing an entry box and file chooser.
      *
      */
-    public static class QueryFileChooser extends Box implements ActionListener {
+    public /*static*/ class QueryFileChooser extends Box implements ActionListener {
+        // This class cannot be static because the FileDialog needs to be owned
+        // by the parent Query.
+
         /** Construct a query file chooser.  The background will be white and
          *  the foreground will be black.
          * @param owner The query object that owns the file chooser
@@ -2011,8 +2015,153 @@ public class Query extends JPanel {
             _name = name;
         }
 
-        public void actionPerformed(ActionEvent e) {
+        /** Create a file browser dialog and get the user input.  If
+         *  {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns
+         *  true, then {@link _actionPerformedFileDialog()} uses
+         *  this method.  Otherwise, {@link
+         *  _actionPerformedJFileChooser()} is used.
+         */
+        public void actionPerformed(ActionEvent event) {
+            if (PtGUIUtilities.useFileDialog()) {
+                _actionPerformedFileDialog(event);
+            } else {
+                _actionPerformedJFileChooser(event);
+            }    
+        }
 
+        /** Get the selected file name.
+         *  @return the value of the text in the entry box.
+         */
+        public String getSelectedFileName() {
+            return _entryBox.getText();
+        }
+
+        /** Set selected file name.
+         *  @param name The value of the text in the entry box.
+         */
+        public void setFileName(String name) {
+            _entryBox.setText(name);
+        }
+
+        
+        /** Create a java.awt.FileDialog and get the user input.  If
+         *  {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns
+         *  true, then {@link actionPerformed()} uses this method.
+         *  Otherwise, {@link _actionPerformedJFileChooser()} is used.
+         *  <p>Under Mac OS X, this method is preferred over
+         *  _actionPerformedJFileChooser().</p>
+         *
+         *  <p>Under Bash, to test this method, use:</p>
+         *  <pre>
+         *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=true
+         *  $PTII/bin/vergil ~/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml 
+         *  </pre>
+         *
+         *  @return A file dialog for save as.
+         */    
+        private void _actionPerformedFileDialog(ActionEvent e) {            
+            FileDialog fileDialog = new FileDialog(JOptionPane.getFrameForComponent(Query.this),
+                    "Select", FileDialog.LOAD);
+            fileDialog.setDirectory(_startingDirectory.toString());
+
+            String fileName = getSelectedFileName().trim();
+            if (!fileName.equals("")) {
+                fileDialog.setFile(fileName);
+            }
+
+            if (_allowDirectories) {
+                System.setProperty( "apple.awt.fileDialogForDirectories", "true" );
+            }
+
+            fileDialog.show();
+            
+            if (fileDialog.getFile() == null) {
+                return;
+            }
+            File file = new File(_startingDirectory, fileDialog.getFile());
+
+            if (file.exists() && fileDialog.getMode() == FileDialog.SAVE) {
+                // Ask for confirmation before overwriting a file.
+                String queryString = file.getName()
+                    + " already exists. Overwrite?";
+                int selected = JOptionPane.showOptionDialog(null,
+                        queryString, "Confirm save",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, null,
+                        null);
+                if (selected == 1) {
+                    return;
+                }
+            }
+
+            // FIXME: lots of duplicated code here.  Consider creating
+            // a method that takes a File argument?
+            if (_base == null) {
+                // Absolute file name.
+                try {
+                    _entryBox.setText(new File(fileDialog.getFile()).getCanonicalPath());
+                } catch (IOException ex) {
+                    // If we can't get a path, then just use the name.
+                    _entryBox.setText(fileDialog.getFile());
+                }
+            } else {
+                // Relative file name.
+                File selectedFile = new File(fileDialog.getDirectory(), fileDialog.getFile());
+
+                // FIXME: There is a bug here under Windows XP
+                // at least... Sometimes, the drive ID (like c:)
+                // is lower case, and sometimes it's upper case.
+                // When we open a MoML file, it's upper case.
+                // When we do "save as", it's lower case.
+                // This despite the fact that both use the same
+                // file browser to determine the file name.
+                // Beats me... Consequence is that if you save as,
+                // then the following relativize call doesn't work
+                // until you close and reopen the file.
+                try {
+                    selectedFile = selectedFile.getCanonicalFile();
+                } catch (IOException ex) {
+                    // Ignore, since we can't do much about it anyway.
+                }
+
+                URI relativeURI = _base
+                    .relativize(selectedFile.toURI());
+                if (relativeURI != null
+                        && relativeURI.getScheme() != null
+                        && relativeURI.getScheme().equals("file")) {
+                    // Fix for "undesired file:\ prefix added by FileParameter"
+                    // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4022
+                    String pathName = relativeURI.getPath();
+                    // Sigh.  Under Windows, getPath() returns a leading /
+                    file = new File(pathName.replace("%20", " "));
+                    try {
+                        _entryBox.setText(file.getCanonicalPath()
+                                .replace('\\', '/'));
+                    } catch (IOException ex) {
+                        _entryBox.setText(file.toString());
+                    }
+                } else {
+                    _entryBox.setText(relativeURI.toString());
+                }
+            }
+            _owner._notifyListeners(_name);
+        }
+
+
+        /** Create a javax.swing.JFileChooser and get the user input.
+         *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false,
+         *  then {@link actionPerformed()} uses this method.  Otherwise, 
+         *  {@link _actionPerformedFileDialog()} is used.
+         
+         *  <p>Under Bash, to test this method, use:</p>
+         *  <pre>
+         *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=false
+         *  $PTII/bin/vergil ~/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml 
+         *  </pre>
+         *
+         *  @return A file dialog for save as.
+         */
+        private void _actionPerformedJFileChooser(ActionEvent e) {            
             // Swap backgrounds and avoid white boxes in "common places" dialog
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
@@ -2126,20 +2275,6 @@ public class Query extends JPanel {
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }
-        }
-
-        /** Get the selected file name.
-         *  @return the value of the text in the entry box.
-         */
-        public String getSelectedFileName() {
-            return _entryBox.getText();
-        }
-
-        /** Set selected file name.
-         *  @param name The value of the text in the entry box.
-         */
-        public void setFileName(String name) {
-            _entryBox.setText(name);
         }
 
         private Query _owner;

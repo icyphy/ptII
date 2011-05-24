@@ -286,6 +286,15 @@ public class TextEditor extends TableauFrame implements DocumentListener,
         _about();
     }
 
+    /** Query the user for a filename, save the model to that file,
+     *  and open a new window to view the model.
+     *  This overrides the base class to use the ".txt" extension.
+     *  @return True if the save succeeds.
+     */
+    protected boolean _saveAs() {
+        return _saveAs(".txt");
+    }
+
     /** Print the contents.
      */
     protected void _print() {

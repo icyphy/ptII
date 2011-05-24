@@ -99,6 +99,38 @@ public class PtGUIUtilities {
         return UIManager.getLookAndFeel().getName().startsWith("Mac OS");
     }
 
+    /** Return true if java.awt.FileDialog should be used instead of
+     *  javax.swing.JFileChooser.  Certain platforms such as Mac OS X
+     *  have a much better implementation of java.awt.FileDialog
+     *  than they do of javax.swing.JFileChooser.
+     *
+     *  <p>If the ptolemy.ptII.useFileDialog property is set to
+     *  "true", then return true.  If the ptolemy.ptII.useFileDialog
+     *  property is set to any other value, return false.  If the
+     *  ptolemy.ptII.useFileDialog property is not set, then return
+     *  the value of #macOSLookAndFeel().</p>
+     * 
+     *  <p>To define ptolemy.ptII.useFileDialog, invoke Vergil with
+     *  java -Dptolemy.ptII.useFileDialog=true -classpath $PTII ptolemy.vergil.VergilApplication
+     *  Or, under Cygwin or bash:</p>
+     *  <pre>
+     *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=true
+     *  $PTII/bin/vergil
+     *  </pre>
+     *  @return true if java.awt.FileDialog should be used.
+     */
+    public static boolean useFileDialog() {
+        String useFileDialog = StringUtilities.getProperty("ptolemy.ptII.useFileDialog");
+        if (useFileDialog.length() > 0) {
+            if (useFileDialog.equals("true")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return PtGUIUtilities.macOSLookAndFeel();
+    }
+
     // True if we have printed the securityExceptionMessage;
     private static boolean _printedSecurityExceptionMessage = false;
 
