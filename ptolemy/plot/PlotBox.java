@@ -2217,9 +2217,7 @@ public class PlotBox extends JPanel implements Printable {
             _title = "";
         }
 
-        if ((_yExp != 0)) {
-            titley = titlefontheight + _topPadding;
-        }
+        titley = titlefontheight + _topPadding;
 
         int captionHeight = (_captionStrings.size())
                 * (_captionFontMetrics.getHeight());
