@@ -1155,6 +1155,8 @@ public class TableauFrame extends Top {
                             effigy.setContainer(null);
                         }
                     }
+                    
+                    dispose();
 
                     return newURL;
                 } catch (Exception ex) {
