@@ -3,21 +3,19 @@ package ptserver.communication;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import ptolemy.data.DoubleToken;
-import ptolemy.data.LongToken;
 import ptolemy.data.Token;
-import ptserver.data.HandlerParser;
-import ptserver.data.TokenHandler;
+import ptolemy.kernel.util.IllegalActionException;
+import ptserver.data.TokenParser;
 
 import com.ibm.mqtt.MqttException;
 
 public class TokenPublisher {
     private final MQTTPublisher publisher;
-    private String topic;
+    private final String topic;
     private long lastSent;
-    private long period;
+    private final long period;
     private int tokenCount;
-    private int tokensPerPeriod;
+    private final int tokensPerPeriod;
 
     public TokenPublisher(long period, MQTTPublisher publisher, String topic,
             int tokensPerPeriod) {
@@ -33,21 +31,18 @@ public class TokenPublisher {
         return publisher;
     }
 
-    private ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
             10000);
 
     private int count;
 
     public void sendToken(Token token) {
-        TokenHandler<Token> handler = null;
-        if (token instanceof DoubleToken) {
-            handler = HandlerParser.getHandler("a");
-        } else if (token instanceof LongToken) {
-            handler = HandlerParser.getHandler("l");
-        }
         try {
-            handler.convertToBytes(token, outputStream);
+            TokenParser.getInstance().convertToBytes(token, outputStream);
         } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
         }
         tokenCount++;
         long now = System.currentTimeMillis();

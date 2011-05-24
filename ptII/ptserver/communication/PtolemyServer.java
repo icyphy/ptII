@@ -36,19 +36,18 @@ public class PtolemyServer {
                 Attribute attribute = actor.getAttribute("_remote");
                 if (attribute != null) {
                     Parameter param = (Parameter) attribute;
-                    System.out.println(actor);
-                    System.out.println(param.getExpression());
                     if ("source".equals(param.getExpression())) {
                         RemoteSource remoteSource = new RemoteSource(
-                                topLevelActor, actor);
+                                topLevelActor, actor, true);
                         RemoteSourceData data = new RemoteSourceData(
                                 remoteSource);
                         remoteSourceMap.put(remoteSource.getName(), data);
                     } else if ("sink".equals(param.getExpression())) {
                         RemoteSink remoteSink = new RemoteSink(topLevelActor,
-                                actor);
-                        remoteSink.setPublisher(tokenPublisher);
-                        remoteSinkMap.put(remoteSink.getOriginalActorName(), remoteSink);
+                                actor, true);
+                        remoteSink.setTokenPublisher(tokenPublisher);
+                        remoteSinkMap.put(remoteSink.getTargetEntityName(),
+                                remoteSink);
                     }
                 }
             }

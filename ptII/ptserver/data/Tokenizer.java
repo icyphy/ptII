@@ -1,36 +1,25 @@
 package ptserver.data;
 
-import java.io.UnsupportedEncodingException;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 public class Tokenizer {
-    private int pointer;
-    private byte[] payload;
+    private DataInputStream inputStream;
 
     public Tokenizer() {
     }
 
     public void setPayload(byte[] payload) {
-        this.payload = payload;
-        pointer = 0;
+        inputStream = new DataInputStream(new ByteArrayInputStream(payload));
     }
 
-    public Token getNextToken() {
-        if (pointer < payload.length) {
-            byte nameLength = payload[pointer++];
-            String name = null;
-            try {
-                name = new String(payload, pointer, nameLength, "UTF-8");
-            } catch (UnsupportedEncodingException e1) {
-            }
-            pointer += nameLength;
-            int valueLength = payload[pointer++];
-            TokenHandler<?> handler = HandlerParser.getHandler(name);
-            Token token = handler.convertToToken(payload, pointer, valueLength);
-            pointer += valueLength;
-            return token;
-        }
+    public Token getNextToken() throws IOException, IllegalActionException {
+        if (inputStream.available() > 0)
+            return TokenParser.getInstance().convertToToken(inputStream);
         return null;
     }
 
