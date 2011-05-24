@@ -74,7 +74,7 @@ public class IconController extends ParameterizedNodeController {
      */
     public IconController(GraphController controller) {
         super(controller);
-        setNodeRenderer(new IconRenderer(controller.getGraphModel()));
+        setNodeRenderer(new IconRenderer());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,16 +89,12 @@ public class IconController extends ParameterizedNodeController {
     ////                         inner classes                     ////
 
     /** An icon renderer. */
-    public static class IconRenderer implements NodeRenderer {
-        
-        /** Construct an icon renderer.
-         *  @param model The GraphModel.
-         */
-        public IconRenderer(GraphModel model) {
-            super();
-            _model = model;
-        }
-        
+    public class IconRenderer implements NodeRenderer {
+        // FindBugs wants this static, but adding a constructor that takes
+        // a GraphModel does not work.  If you create a model that has
+        // a composite and then save it, dragging around the composite
+        // results in duplicate composites.
+
         /**  Render a visual representation of the given node. If the
          * StringAttribute _color of the node is set then use that color to
          * highlight the node. If the StringAttribute _explanation of the node
@@ -159,7 +155,10 @@ public class IconController extends ParameterizedNodeController {
                     // in another call to this very same method, which will
                     // result in creation of yet another figure before this
                     // method even returns!
-                    ChangeRequest request = new ChangeRequest(_model,
+                    GraphController controller = IconController.this
+                            .getController();
+                    GraphModel graphModel = controller.getGraphModel();
+                    ChangeRequest request = new ChangeRequest(graphModel,
                             "Set the container of a new XMLIcon.") {
                         // NOTE: The KernelException should not be thrown,
                         // but if it is, it will be handled properly.
@@ -242,7 +241,5 @@ public class IconController extends ParameterizedNodeController {
 
             return result;
         }
-        
-        private GraphModel _model;
     }
 }
