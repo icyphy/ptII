@@ -31,8 +31,10 @@ import java.io.File;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLSimpleApplication;
+import ptolemy.moml.ParserAttribute;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
@@ -63,7 +65,8 @@ public class UnloadModelTest extends MoMLSimpleApplication {
      *  or running the model.
      */
     public UnloadModelTest(String xmlFileName) throws Throwable {
-        final MoMLParser parser = new MoMLParser();
+        workspace = new Workspace("MyWorkspace");
+        /*final MoMLParser*/ parser = new MoMLParser(workspace);
 
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
@@ -83,7 +86,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        final CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
+        /*final CompositeActor*/ toplevel = (CompositeActor) parser.parse(null, new File(
                 xmlFileName).toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
@@ -95,22 +98,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
 
         _manager.startRun();
 
-        Thread waitThread = new Thread() {
-            public void run() {
-                waitForFinish();
-                try {
-                    unloadModel(toplevel, parser);
-                    System.out.println("Sleeping for 100 seconds");
-                    Thread.sleep(100000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException("InterrupteException", ex);
-                }
-                if (_sawThrowable != null) {
-                    throw new RuntimeException("Execution failed",
-                            _sawThrowable);
-                }
-            }
-        };
+        Thread waitThread = new UnloaderThread();
 
         // Note that we start the thread here, which could
         // be risky when we subclass, since the thread will be
@@ -121,6 +109,10 @@ public class UnloadModelTest extends MoMLSimpleApplication {
             throw _sawThrowable;
         }
     }
+
+    public CompositeActor toplevel;
+    public MoMLParser parser;
+    public Workspace workspace;
 
     /** Load a model and then unload it.
      *  @param args The first argument is the name of the file to be loaded.
@@ -135,6 +127,23 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         }
     }
 
+    public class UnloaderThread extends Thread {
+        public void run() {
+            waitForFinish();
+            try {
+                unloadModel(toplevel, parser);
+                System.out.println("Sleeping for 1000 seconds");
+                Thread.sleep(1000000);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException("InterrupteException", ex);
+            }
+            if (_sawThrowable != null) {
+                throw new RuntimeException("Execution failed",
+                        _sawThrowable);
+            }
+        }
+    }
+
     public static void unloadModel(CompositeActor model, MoMLParser parser) throws InterruptedException {
         // First, we gc and then print the memory stats
         // BTW to get more info about gc,
@@ -144,10 +153,16 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         System.out.println("Memory before unloading: "
                 + memory());
 
-        if (model == null) return;
-
+        if (model == null) {
+            return;
+        }
+        Workspace workspace = model.workspace();
         if (model instanceof CompositeEntity) {
             try {
+                ParserAttribute parserAttribute = (ParserAttribute) model
+                    .getAttribute("_parser", ParserAttribute.class);
+                parserAttribute.setContainer(null);
+                parserAttribute = null;
                 ((CompositeEntity)model).setContainer(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -169,6 +184,9 @@ public class UnloadModelTest extends MoMLSimpleApplication {
             parser = null;
         }
         model = null;
+        workspace.removeAll();
+        workspace = null;
+            
 
         System.gc();
         Thread.sleep(1000);
