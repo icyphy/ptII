@@ -34,8 +34,11 @@ import java.io.PipedOutputStream;
 
 import org.junit.Test;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.FloatToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.CommunicationToken;
@@ -52,10 +55,44 @@ public class TokenParserTest {
         assertEquals(token,
                 TokenParser.getInstance().convertToToken(inputStream));
     }
+    
+    @Test
+    public void testBooleanToken() throws IOException, IllegalActionException {
+        BooleanToken token = new BooleanToken(false);
+        PipedOutputStream outputStream = new PipedOutputStream();
+        PipedInputStream inputStream = new PipedInputStream(outputStream);
+        TokenParser.getInstance().convertToBytes(token, outputStream);
+        assertEquals(token,
+                TokenParser.getInstance().convertToToken(inputStream));
+    }
+    
+   
+    
+    @Test
+    public void testFloatToken() throws IOException, IllegalActionException {
+        FloatToken token = new FloatToken(123);
+        PipedOutputStream outputStream = new PipedOutputStream();
+        PipedInputStream inputStream = new PipedInputStream(outputStream);
+        TokenParser.getInstance().convertToBytes(token, outputStream);
+        assertEquals(token,
+                TokenParser.getInstance().convertToToken(inputStream));
+    }
+    
 
     @Test
     public void testDoubleToken() throws IOException, IllegalActionException {
         DoubleToken token = new DoubleToken(123455.123);
+        PipedOutputStream outputStream = new PipedOutputStream();
+        PipedInputStream inputStream = new PipedInputStream(outputStream);
+        TokenParser.getInstance().convertToBytes(token, outputStream);
+        assertEquals(token,
+                TokenParser.getInstance().convertToToken(inputStream));
+    }
+    
+    
+    @Test
+    public void testStringToken() throws IOException, IllegalActionException {
+        StringToken token = new StringToken("testing");
         PipedOutputStream outputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(outputStream);
         TokenParser.getInstance().convertToBytes(token, outputStream);
@@ -85,6 +122,13 @@ public class TokenParserTest {
         token.addPort("testPort3", 2);
         token.putTokens("testPort3", 0, tokens);
         token.putTokens("testPort3", 1, tokens);
+        
+        token.addPort("testPort4", 1);
+        tokens = new Token[2];
+        tokens[0] = new BooleanToken(true);
+        tokens[1] = new BooleanToken(false);
+        token.putTokens("testPort4", 0, tokens);
+
 
         PipedOutputStream outputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(outputStream);
