@@ -402,7 +402,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     }
     
     ///////////////////////////////////////////////////////////////////
-    //// InstantiateOntologyAction
+    //// InsertOntologyAction
 
     /** An action to insert an ontology into the ontology solver model. */
     private class InsertOntologyAction extends AbstractAction {
@@ -412,12 +412,15 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             super("Insert Ontology");
             putValue("tooltip", "Insert an Ontology into the Ontology Solver");
             
-            NodeRenderer renderer = new IconController.IconRenderer(_getGraphModel());
-            Figure figure = renderer.render(_prototypeOntology);
+            // We only need to instantiate this IconController in order to
+            // render the figure for the insert ontology button on the toolbar
+            IconController toolbarIconController = new IconController(_controller);
+            NodeRenderer toolbarRenderer = toolbarIconController.new IconRenderer();
+            Figure toolbarFigure = toolbarRenderer.render(_prototypeOntology);
 
             // Standard toolbar icons are 25x25 pixels.
-            FigureIcon icon = new FigureIcon(figure, 25, 25, 1, false);
-            putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            FigureIcon toolbarIcon = new FigureIcon(toolbarFigure, 25, 25, 1, false);
+            putValue(diva.gui.GUIUtilities.LARGE_ICON, toolbarIcon);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_I, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
