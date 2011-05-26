@@ -1,4 +1,5 @@
-/* The node controller for icons of attributes
+/* The node controller for icons of attributes in ontology models and
+ * ontology solver models.
 
  Copyright (c) 1998-2010 The Regents of the University of California.
  All rights reserved.
@@ -36,22 +37,19 @@ import diva.graph.GraphController;;
 ///////////////////////////////////////////////////////////////////
 //// AttributeInOntologyController
 
-/**
- This class provides interaction with nodes that represent Ptolemy II
- attributes.  It provides a double click binding and context menu
- entry to edit the parameters of the node ("Configure") and a
- command to get documentation.
- It can have one of two access levels, FULL or PARTIAL.
- If the access level is FULL, the the context menu also
- contains a command to rename the node.
-
- @author Charles Shelton
- @version $Id$
- @since Ptolemy II 8.1
- @Pt.ProposedRating Red (cshelton)
- @Pt.AcceptedRating Red (cshelton)
+/** The node controller for icons of attributes in ontology models and
+ *  ontology solver models. This subclass of AttributeController removes
+ *  the "Listen To Attribute" context menu action since it has no relevance
+ *  for attributes inside an ontology model or an ontology solver model.
+ *
+ *  @author Charles Shelton
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
 public class AttributeInOntologyController extends AttributeController {
+    
     /** Create an attribute controller associated with the specified graph
      *  controller.  The attribute controller is given full access.
      *  @param controller The associated graph controller.
@@ -69,7 +67,7 @@ public class AttributeInOntologyController extends AttributeController {
         super(controller);
         
         // Remove the "Listen To Attribute" menu action since it has no
-        // relevance for an ontology concept.
+        // relevance for an ontology models or ontology solvers.
         MenuActionFactory listenToActionFactory = _getListenToMenuActionFactory();
         if (listenToActionFactory != null) {
             _menuFactory.removeMenuItemFactory(listenToActionFactory);
