@@ -2428,7 +2428,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // The problem here is that with FileDialog, we can't add the
                 // query as an accessory like we can with JFileChooser.  So, we
                 // pop up a check box dialog before bringing up the FileDialog.
-                ComponentDialog dialog = new ComponentDialog(this, "Save Submodel?", _query);
+                new ComponentDialog(this, "Save submodel only?", _query);
             }
         }
 
