@@ -27,22 +27,16 @@
  */
 package ptserver.data.handler;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 
-import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringTokenHandler
 /**
- * IntTokenHandler converts StringToken to/from byte stream
+ * StringTokenHandler converts StringToken to/from byte stream
  * 
  * @author ishwinde
  * @version $Id$ 
@@ -66,7 +60,7 @@ public class StringTokenHandler extends AbstractTokenHandler<StringToken> {
     }
 
     /** 
-     * Reads a long from the inputStream and converts it to the StringToken.
+     * Reads from the inputStream and converts it to the StringToken.
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
     

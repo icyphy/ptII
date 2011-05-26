@@ -31,7 +31,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,7 +60,7 @@ public class FloatTokenHandler extends AbstractTokenHandler<FloatToken> {
     }
 
     /** 
-     * Reads a double from the inputStream and converts it to the FloatToken
+     * Reads a float from the inputStream and converts it to the FloatToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
     @Override

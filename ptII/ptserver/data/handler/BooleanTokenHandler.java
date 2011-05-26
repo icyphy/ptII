@@ -60,7 +60,7 @@ public class BooleanTokenHandler extends AbstractTokenHandler<BooleanToken> {
     }
 
     /** 
-     * Reads a long from the inputStream and converts it to the BooleanToken
+     * Reads from the inputStream and converts it to the BooleanToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
     @Override
