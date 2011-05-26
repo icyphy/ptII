@@ -1048,6 +1048,9 @@ public class Plot extends PlotBox {
         }
 
         switch (_marks) {
+        case 0:
+            // Ignore, marks = none.
+            break;
         case 1:
             defaults.append(" marks=\"points\"");
             break;
@@ -1914,6 +1917,9 @@ public class Plot extends PlotBox {
         }
 
         switch (_marks) {
+        case 0:
+            //Ignore: Marks: none
+            break;
         case 1:
             output.println("Marks: points");
             break;
