@@ -1,6 +1,6 @@
 /* Ptolemy server's servlet interface definition
 
- Copyright (c) 1997-2010 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,69 +27,70 @@
 
 package ptserver.control;
 
+import java.net.URL;
+
 ///////////////////////////////////////////////////////////////////
 ////IServerManager
 
-/** This interface is necessary to define what control commands can
- * be administered to the Ptolemy server from it's distributed clients. 
- * These functions are available through a synchronous, RPC-like
- * servlet that is embedded within the Ptolemy server.
-* 
-* @author jkillian
-* @version $Id$
-* @Pt.ProposedRating Red (jkillian)
-* @Pt.AcceptedRating Red (jkillian)
+/** Defines the control commands that can be administered to the 
+ * Ptolemy server from it's distributed clients.  These functions are 
+ * available through a synchronous, RPC-like servlet that is embedded 
+ * within the Ptolemy server.
+ * 
+ * @author jkillian
+ * @version $Id$
+ * @Pt.ProposedRating Red (jkillian)
+ * @Pt.AcceptedRating Red (jkillian)
 */
 
 public interface IServerManager {
 
     /** Open the model on a separate thread within the Ptolemy server.
      * 
-     * @param filename Name of the XML file
-     * @param xmlModel XML contents of the model
+     * @param url Path to the model file
      * @return Reference to the execution thread of the selected model
      */
-    public String open(String filename, String xmlModel);
+    public Ticket open(URL url) throws Exception;
 
     /** Start the execution of the model.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the start() call
      */
-    public boolean start(String ticket);
+    public void start(Ticket ticket) throws Exception;
 
     /** Pause the execution of the running model.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the pause() call
      */
-    public boolean pause(String ticket);
+    public void pause(Ticket ticket) throws Exception;
 
     /** Resume the execution of the paused model.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the resume() call
      */
-    public boolean resume(String ticket);
+    public void resume(Ticket ticket) throws Exception;
 
     /** Stop the execution of the running model.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the stop() call
      */
-    public boolean stop(String ticket);
+    public void stop(Ticket ticket) throws Exception;
 
     /** Close the model and destroy it's owner thread.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the close() call
      */
-    public boolean close(String ticket);
+    public void close(Ticket ticket) throws Exception;
 
     /** Get the list of models available on the server either in the
      * database or within the file system.
      *
      * @return List of files on the server
      */
-    public String[] getModelListing();
+    public String[] getModelListing() throws Exception;
 }
