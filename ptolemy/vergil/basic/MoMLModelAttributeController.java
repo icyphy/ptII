@@ -24,19 +24,8 @@
 
 package ptolemy.vergil.basic;
 
-import java.awt.event.ActionEvent;
-
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFrame;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLModelAttribute;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 import diva.graph.JGraph;
@@ -89,99 +78,24 @@ public class MoMLModelAttributeController extends AttributeController {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
+    
+    /** Set the configuration for MoMLModelAttributeController. This includes
+     *  setting the configuration for its _lookinsideAction menu object.
+     *  @param configuration The given configuration object to be used to
+     *   set the configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        _lookInsideAction.setConfiguration(configuration);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /**
-     * The action that handles opening an actor. This is accessed by by
-     * ActorViewerController to create a hot key for the editor. The name
-     * "lookInside" is historical and preserved to keep backward compatibility
-     * with subclasses.
+    /** The action that handles opening an actor. This is accessed by by
+     *  ActorViewerController to create a hot key for the editor. The name
+     *  "lookInside" is historical and preserved to keep backward compatibility
+     *  with subclasses.
      */
-    protected LookInsideAction _lookInsideAction = new LookInsideAction();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         Inner Classes                     ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// LookInsideAction
-    /**
-     * An action to open a composite. This private class must remain named
-     * LookInsideAction for backward compatibility.
-     */
-    protected class LookInsideAction extends FigureAction {
-
-        public LookInsideAction() {
-            super("Open Model");
-
-            /* NOTE: The key binding doesn't actually work.
-             * Not sure why, but leave it out to not confuse the user.
-             *
-            // Attach a key binding for look inside (also called
-            // open actor).
-            // If we are in an applet, so Control-L or Command-L will
-            // be caught by the browser as "Open Location", so we don't
-            // supply Control-L or Command-L as a shortcut under applets.
-            if (!StringUtilities.inApplet()) {
-                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
-                putValue(GUIUtilities.MNEMONIC_KEY, Integer
-                        .valueOf(KeyEvent.VK_L));
-            }
-            */
-        }
-
-        public void actionPerformed(ActionEvent event) {
-            super.actionPerformed(event);
-
-            MoMLModelAttribute attribute = (MoMLModelAttribute) getTarget();
-            TableauFrame frame = (TableauFrame) getFrame();
-            Configuration configuration = frame.getConfiguration();
-            if (configuration == null) {
-                MessageHandler.error("Cannot open a model "
-                        + "without a configuration.");
-                return;
-            }
-            try {
-                NamedObj model = attribute.getContainedModel();
-                Tableau tableau = configuration.openInstance(model);
-                tableau.setMaster(false);
-                Effigy effigy = (Effigy)tableau.getContainer();
-                
-                // The effigy returned above has three problems. First,
-                // it's container is the directory is the directory in the
-                // configuration. We want it to be contained by the following
-                // containerEffigy.
-                final Effigy containerEffigy = configuration.getEffigy(attribute.getContainer());
-                
-                // Second, the effigy returned above returns the wrong value in its
-                // masterEffigy() method. That method returns the effigy associated
-                // with the toplevel, which is the same as effigy. We want it to
-                // return whatever the masterEffigy of containerEffigy is.
-                // We accomplish this by substituting a new effigy.
-                // This technique is borrowed from what is done in
-                // PtolemyFrame.getEffigy().
-                PtolemyEffigy newEffigy = new PtolemyEffigy(
-                        containerEffigy,
-                        containerEffigy.uniqueName(model.getName())) {
-                    public Effigy masterEffigy() {
-                        return containerEffigy.masterEffigy();
-                    }
-                };
-                newEffigy.setModel(model);
-                newEffigy.setModified(effigy.isModified());
-                tableau.setContainer(newEffigy);
-                effigy.setContainer(null);
-                
-                // Third, the uri attribute of the effigy is not set to
-                // refer to the file that will actually save the model.
-                newEffigy.uri.setURI(containerEffigy.uri.getURI());
-            } catch (Exception e) {
-                throw new InternalErrorException(null, e, "Unable to create "
-                        + "transformation editor for " + attribute.getName());
-            }
-        }
-    }
+    private LookInsideAction _lookInsideAction = new LookInsideAction("Open Model");
 }

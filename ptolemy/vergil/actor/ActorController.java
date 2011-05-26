@@ -30,9 +30,7 @@ package ptolemy.vergil.actor;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.Enumeration;
@@ -41,7 +39,6 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
@@ -70,9 +67,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.LookInsideAction;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogAction;
@@ -242,6 +239,8 @@ public abstract class ActorController extends AttributeController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
+        
+        _lookInsideAction.setConfiguration(configuration);
 
         if (_portDialogAction != null) {
             _portDialogAction.setConfiguration(configuration);
@@ -293,7 +292,7 @@ public abstract class ActorController extends AttributeController {
      * "lookInside" is historical and preserved to keep backward compatibility
      * with subclasses.
      */
-    protected LookInsideAction _lookInsideAction = new LookInsideAction();
+    protected LookInsideAction _lookInsideAction = new LookInsideAction("Open Actor");
 
     /**
      * The action that handles opening an instance.
@@ -793,82 +792,6 @@ public abstract class ActorController extends AttributeController {
         private BasicGraphController _controller;
         private NamedObj _target;
         private TableauFrame _tableauFrame = null;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// LookInsideAction
-    /**
-     * An action to open a composite. This private class must remain named
-     * LookInsideAction for backward compatibility.
-     */
-    private class LookInsideAction extends FigureAction {
-        public LookInsideAction() {
-            super("Open Actor");
-
-            // Attach a key binding for look inside (also called
-            // open actor).
-            // If we are in an applet, so Control-L or Command-L will
-            // be caught by the browser as "Open Location", so we don't
-            // supply Control-L or Command-L as a shortcut under applets.
-            if (!StringUtilities.inApplet()) {
-                // For some inexplicable reason, the I key doesn't work here.
-                // Use L, which used to be used for layout.
-                // Avoid Control_O, which is open file.
-                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
-            }
-        }
-
-        public void actionPerformed(ActionEvent event) {
-            if (_configuration == null) {
-                MessageHandler.error("Cannot open an actor "
-                        + "without a configuration.");
-                return;
-            }
-
-            // Determine which entity was selected for the open actor action.
-            super.actionPerformed(event);
-
-            NamedObj object = getTarget();
-
-            try {
-                StringParameter actorInteractionAddonParameter;
-                actorInteractionAddonParameter = (StringParameter) _configuration
-                    .getAttribute("_actorInteractionAddon", Parameter.class);
-
-                if (actorInteractionAddonParameter != null) {
-                    String actorInteractionAddonClassName = actorInteractionAddonParameter
-                            .stringValue();
-                    
-                        Class actorInteractionAddonClass = Class
-                            .forName(actorInteractionAddonClassName);
-                        
-                        ActorInteractionAddon actorInteractionAddon =
-                            (ActorInteractionAddon) actorInteractionAddonClass
-                            .newInstance();
-                        
-                        if(actorInteractionAddon.isActorOfInterestForAddonController(object)){
-                            actorInteractionAddon.lookInsideAction(this, object);
-                        }                    
-                            
-                    }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            // NOTE: Used to open source code here if the object
-            // was not a CompositeEntity. But this made it impossible
-            // to associate a custom tableau with an atomic entity.
-            // So now, the Configuration opens the source code as a
-            // last resort.
-            try {
-                _configuration.openModel(object);
-            } catch (Exception ex) {
-                MessageHandler.error("Open actor failed.", ex);
-            }
-        }
     }
 
     ///////////////////////////////////////////////////////////////////

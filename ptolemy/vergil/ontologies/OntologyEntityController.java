@@ -27,15 +27,12 @@
  */
 package ptolemy.vergil.ontologies;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
-import javax.swing.KeyStroke;
-
+import ptolemy.actor.gui.Configuration;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.LookInsideAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
@@ -52,7 +49,7 @@ import diva.gui.GUIUtilities;
  *
  *  @author Charles Shelton
  *  @version $Id$
- *  @since Ptolemy II 2.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
@@ -94,6 +91,16 @@ public class OntologyEntityController extends AttributeInOntologyController {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
+    
+    /** Set the configuration for OntologyEntityController. This includes
+     *  setting the configuration for its _lookinsideAction menu object.
+     *  @param configuration The given configuration object to be used to
+     *   set the configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        _lookInsideAction.setConfiguration(configuration);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -109,55 +116,13 @@ public class OntologyEntityController extends AttributeInOntologyController {
     ////                         protected variables               ////
 
     /** The action that handles opening an ontology model. */
-    protected LookInsideAction _lookInsideAction = new LookInsideAction();
+    protected LookInsideAction _lookInsideAction = new LookInsideAction("Open Ontology");
 
     /** The action that handles opening an instance of an ontology class. */
     protected OpenInstanceAction _openInstanceAction = new OpenInstanceAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// LookInsideAction
-    
-    /** An action to open an ontology model. */
-    private class LookInsideAction extends FigureAction {
-        
-        /** Create a new LookInsideAction object. */
-        public LookInsideAction() {
-            super("Open Ontology Class");
-
-            // Attach a key binding for look inside.
-            // If we are in an applet, so Control-L or Command-L will
-            // be caught by the browser as "Open Location", so we don't
-            // supply Control-L or Command-L as a shortcut under applets.
-            if (!StringUtilities.inApplet()) {
-                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
-            }
-        }
-
-        /** React to the action event received by the user interface.
-         *  @param event The event received to execute the action.
-         */
-        public void actionPerformed(ActionEvent event) {
-            if (_configuration == null) {
-                MessageHandler.error("Cannot open an actor "
-                        + "without a configuration.");
-                return;
-            }
-
-            // Determine which entity was selected for the open actor action.
-            super.actionPerformed(event);
-            Ontology ontologyModel = (Ontology) getTarget();            
-            try {
-                _configuration.openModel(ontologyModel);
-            } catch (Exception ex) {
-                MessageHandler.error("Open actor failed.", ex);
-            }
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     //// OpenInstanceAction

@@ -6,13 +6,13 @@
 <entity name="Ontologies" class="ptolemy.moml.EntityLibrary">
     <!-- Otology Solvers -->
     <group>
-      <property name="LatticeOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+      <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
       </property>
-      <property name="ProductLatticeOntologyAnalysis" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
+      <property name="ProductLatticeOntologySolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">

@@ -98,7 +98,6 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ActorController$$EntityLayout.class' \
 	'ActorController$$ListenToActorAction.class' \
-	'ActorController$$LookInsideAction.class' \
 	'ActorController$$OpenInstanceAction.class' \
 	'ActorController$$SaveInLibraryAction.class' \
 	'ActorEditorGraphController$$1.class' \

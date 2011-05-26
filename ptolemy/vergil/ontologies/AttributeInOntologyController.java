@@ -45,11 +45,11 @@ import diva.graph.GraphController;;
  If the access level is FULL, the the context menu also
  contains a command to rename the node.
 
- @author Steve Neuendorffer and Edward A. Lee
+ @author Charles Shelton
  @version $Id$
- @since Ptolemy II 2.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (johnr)
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating Red (cshelton)
+ @Pt.AcceptedRating Red (cshelton)
  */
 public class AttributeInOntologyController extends AttributeController {
     /** Create an attribute controller associated with the specified graph

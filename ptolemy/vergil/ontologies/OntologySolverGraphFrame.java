@@ -80,7 +80,7 @@ import diva.gui.toolbox.FigureIcon;
  * 
  *  @author Charles Shelton
  *  @version $Id$
- *  @since Ptolemy II 2.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
@@ -425,17 +425,27 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                     KeyEvent.VK_I, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
+            
+            // Initialize the default ontology directory to null in the
+            // constructor because the current directory may be changed later
+            // before this action is executed for the first time.
+            _ontologyDirectory = null;
         }
 
         /** Instantiate a class by first opening a dialog to get a class name and
          *  then issuing a change request.
          *  @param e The event that is received to be reacted to.
          */
-        public void actionPerformed(ActionEvent e) {            
+        public void actionPerformed(ActionEvent e) {
+            // Initialize the default ontology directory to the current directory.
+            if (_ontologyDirectory == null) {
+                _ontologyDirectory = _directory;
+            }
+            
             Query query = new Query();
             query.setTextWidth(60);
             query.addFileChooser("ontologyFilename", "Ontology Model Filename",
-                    "", null, _directory);
+                    "", null, _ontologyDirectory);
 
             ComponentDialog dialog = new ComponentDialog(OntologySolverGraphFrame.this,
                     "Insert Ontology", query);
@@ -451,8 +461,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                 String ontologyFileName = query.getStringValue("ontologyFilename");
                 File ontologyFile = new File(ontologyFileName);
                 
-                // Update most recent directory object.
-                _directory = new File(ontologyFile.getParent());
+                // Update the ontology directory to the most recent directory visited in the dialog.
+                _ontologyDirectory = new File(ontologyFile.getParent());
                 
                 String sourceURL = "";
                 try {
@@ -482,6 +492,11 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                 context.requestChange(request);
             }
         }
+        
+        /** Holds the most recent directory visited in the file dialog when
+         *  selecting an ontology file.
+         */
+        private File _ontologyDirectory;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -10,6 +10,18 @@
   <property name="ActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute"></property>
   <property name="Expression-Defined ConceptFunction" class="ptolemy.data.ontologies.ExpressionConceptFunctionDefinitionAttribute"></property>
   <property name="Class-Defined ConceptFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute"></property>
+  <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+  </property>
+  <property name="ProductLatticeOntologySolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
+  		<property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+  </property>
   
   <!-- Concept Function Library -->
   <entity name="Concept Functions" class="ptolemy.moml.EntityLibrary">

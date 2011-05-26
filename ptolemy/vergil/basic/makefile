@@ -78,6 +78,7 @@ JSRCS = \
 	KeplerDocumentationAttribute.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \
+	LookInsideAction.java \
 	MoMLModelAttributeController.java \
 	NamedObjController.java \
 	NamedObjNodeModel.java \

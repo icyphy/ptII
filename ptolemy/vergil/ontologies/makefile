@@ -80,7 +80,6 @@ OPTIONAL_FILES = \
 	'ConceptRelationController$$RelationDropper.class' \
 	'ConceptRelationController$$RelationRenderer.class' \
 	'ConceptRelationController$$RelationTarget.class' \
-	'OntologyEntityController$$LookInsideAction.class' \
 	'OntologyEntityController$$OpenInstanceAction.class' \
 	'OntologyGraphController$$NewConceptAction.class' \
 	'OntologyGraphController$$RelationCreator.class' \

@@ -51,7 +51,7 @@ import ptolemy.vergil.basic.NamedObjNodeModel;
  *
  *  @author Charles Shelton, Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
