@@ -95,7 +95,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @see #setTargetActorName(String)
      */
     public String getTargetEntityName() {
-        return targetEntityName;
+        return _targetEntityName;
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @see #getTargetActorName()
      */
     public void setTargetEntityName(String targetEntityName) {
-        this.targetEntityName = targetEntityName;
+        this._targetEntityName = targetEntityName;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,14 +152,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
                 for (Port connectingPort : linkedPortList) {
                     if (connectingPort instanceof IOPort
                             && isValidConnectingPort((IOPort) connectingPort)) {
-                        remotePort = (IOPort) connectingPort
-                                .clone(connectingPort.workspace());
-                        if (port instanceof TypedIOPort) {
-                            TypedIOPort typedPort = (TypedIOPort) port;
-                            TypedIOPort typedRemotePort = (TypedIOPort) remotePort;
-                            //FIXME: figure out correct way of inferring port types
-                            typedRemotePort.setTypeEquals(typedPort.getType());
-                        }
+                        remotePort = clonePort((IOPort) connectingPort);
                         remotePort.setName(port.getName());
                         remotePort.setContainer(this);
                         break;
@@ -191,7 +184,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
                 continue;
             }
             IOPort port = (IOPort) portObject;
-            IOPort remotePort = (IOPort) port.clone(this.workspace());
+            IOPort remotePort = clonePort(port);
             remotePort.setName(port.getName());
             remotePort.setContainer(this);
             for (Object relationObject : port.linkedRelationList()) {
@@ -205,10 +198,35 @@ public abstract class RemoteActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+
+    /**
+     * Clone the port.
+     * 
+     * This method also suppose to set type constraints of a cloned typed port.
+     * @param port
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    private IOPort clonePort(IOPort port) throws CloneNotSupportedException {
+        IOPort remotePort = (IOPort) port.clone(port.workspace());
+        if (port instanceof TypedIOPort) {
+            TypedIOPort typedPort = (TypedIOPort) port;
+            TypedIOPort typedRemotePort = (TypedIOPort) remotePort;
+            //FIXME: figure out correct a way of inferring port types
+            typedRemotePort.setTypeEquals(typedPort.getType());
+            //The following line does not seem to help
+            typedRemotePort.typeConstraints().addAll(
+                    typedPort.typeConstraints());
+        }
+        return remotePort;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
      * Name of the targetEntity
      */
-    private String targetEntityName;
+    private String _targetEntityName;
 
 }
