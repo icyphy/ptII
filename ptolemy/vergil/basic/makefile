@@ -68,6 +68,7 @@ JSRCS = \
 	EditorDropTargetListener.java \
 	ExportHTMLAction.java \
 	ExportImage.java \
+	ExportToWeb.java \
 	ExtendedGraphFrame.java \
 	GetDocumentationAction.java \
 	HTMLExportable.java \
