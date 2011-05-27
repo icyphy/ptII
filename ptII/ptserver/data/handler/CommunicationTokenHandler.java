@@ -1,5 +1,5 @@
 /*
- CommunicationTokenHandler serializes CommunicationToken to/from binary
+ Serialize a CommunicationToken to and from binary format.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -38,25 +38,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.CommunicationToken;
 import ptserver.data.TokenParser;
 
-/*
- * CommunicationToken Format
- * Token = Type (2), ValueField
- * CommunicationToken = Type(2), CommunicationTokenValueField
- * CommunicationTokenValueField = TargetActorName, PortCount(2), PortData... (depends on PortCount and individual PortData length)
- * PortData = PortName, ChannelCount(2), ChannelData... (depends on ChannelCount and individual ChannelData length)
- * ChannelData = ChannelTokenCount(2), Token
- */
 //////////////////////////////////////////////////////////////////////////
 ////CommunicationTokenHandler
 /**
-* CommunicationTokenHandler serializes CommunicationToken to/from binary
-* The stream has the following format:
-* CommunicationToken = Type(2), CommunicationTokenValueField
-* CommunicationTokenValueField = TargetActorName, PortCount(2), PortData... (PortData is repeated PortCount times)
-* PortData = PortName, ChannelCount(2), ChannelData... (ChanneldData is repeated ChannelCount times)
+* <p>Serialize a CommunicationToken to and from binary format.</p>
+* 
+* <p>The stream has the following format:
+* CommunicationToken = Type(2), CommunicationTokenValueField <br/>
+* CommunicationTokenValueField = TargetActorName, PortCount(2), PortData... (PortData is repeated PortCount times)<br/>
+* PortData = PortName, ChannelCount(2), ChannelData... (ChanneldData is repeated ChannelCount times)<br/>
 * ChannelData = ChannelTokenCount(2), Token... (Token is repeated ChannelTokenCount times; it's serialized using TokenHandler defined
-* for its data type)
-* @author ahuseyno
+* for its data type)</p>
+* @author Anar Huseynov
 * @version $Id$ 
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ahuseyno)
@@ -66,8 +59,7 @@ public class CommunicationTokenHandler extends
         AbstractTokenHandler<CommunicationToken> {
 
     /** 
-     * Serialize the communication token to the binary.
-     * See format defined in {@link CommunicationTokenHandler}.
+     * Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     @Override

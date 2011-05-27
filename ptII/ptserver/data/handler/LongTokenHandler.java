@@ -1,5 +1,5 @@
 /*
- LongTokenHandler converts LongToken to/from byte stream
+ Convert a LongToken to/from byte stream format for communication over MQTT protocol with a remote model.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -36,22 +36,22 @@ import ptolemy.data.LongToken;
 //////////////////////////////////////////////////////////////////////////
 //// LongTokenHandler
 /**
- * LongTokenHandler converts LongToken to/from byte stream
+ * Convert a LongToken to/from byte stream format for communication over MQTT protocol with a remote model.
  * 
- * @author ahuseyno
+ * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
- * 
  */
 public class LongTokenHandler extends AbstractTokenHandler<LongToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Convert LongToken to a byte stream using an algorithm defined in the DataOutputStream.
+     * Convert a LongToken to a byte stream using an algorithm defined into the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+     * @exception IOException if there is a problem writing to the stream
      */
     @Override
     public void convertToBytes(LongToken token, DataOutputStream outputStream)
@@ -60,8 +60,9 @@ public class LongTokenHandler extends AbstractTokenHandler<LongToken> {
     }
 
     /** 
-     * Reads a long from the inputStream and converts it to the LongToken
+     * Reads a long from the inputStream and converts it to the LongToken.
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @exception IOException if there is a problem reading from the stream
      */
     @Override
     public LongToken convertToToken(DataInputStream inputStream)

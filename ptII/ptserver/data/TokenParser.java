@@ -1,5 +1,5 @@
 /*
- Converts a token to a byte stream and back
+ Convert a token to a byte stream and back
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -43,17 +43,17 @@ import ptserver.data.handler.TokenHandler;
 //////////////////////////////////////////////////////////////////////////
 ////TokenParser
 /**
-* This class is a singleton and is a central point for converting 
-* a token from a byte stream and back.
+* <p>This class is a singleton and is a central point for converting 
+* a token from a byte stream and back.</p>
 * 
-* When the instances is created, a mapping from Token to its TokenHandlers
+* <p>When the instances is created, a mapping from Token to its TokenHandlers
 * is loaded from ptserver.data.TokenHandlers.properties ResourceBundle.
 * This class fill parse a token from an input stream by figuring out
 * its token identifier (based on the position of the TokenHandler in the TokenHandlers.properties)
-* and then selecting appropriate TokenHandler to do the parsing
+* and then selecting appropriate TokenHandler to do the parsing</p>
 * 
-* Similarly, the token would be converted to a byte stream by selecting
-* a TokenHandler mapped to its class and using it to do the conversion.
+* <p>Similarly, the token would be converted to a byte stream by selecting
+* a TokenHandler mapped to its class and using it to do the conversion.</p>
 * 
 * @author ahuseyno
 * @version $Id$ 
@@ -64,23 +64,24 @@ import ptserver.data.handler.TokenHandler;
 public class TokenParser {
 
     /**
-     * This private constructor loads mappings from a token class to 
-     * its TokenHandler from TokenHandlers.properties file.
+     * <p>This private constructor loads mappings from a token class to 
+     * its TokenHandler from TokenHandlers.properties file which is located in ptserver/data directory.</p>
      * 
-     * @exception IllegalActionException
+     * <p>This constructor is private because the TokenParser is singleton which makes it easy to locate the instance without passing it around.</p>
+     * @exception IllegalActionException if there is a problem loading the mapping from TokenHandlers.properties file.
      */
     private TokenParser() throws IllegalActionException {
-        for (String key : tokenHandlersBundle.keySet()) {
-            String value = tokenHandlersBundle.getString(key);
+        for (String key : _tokenHandlersBundle.keySet()) {
+            String value = _tokenHandlersBundle.getString(key);
             try {
                 ClassLoader classLoader = this.getClass().getClassLoader();
                 Class<Token> tokenClass = (Class<Token>) classLoader
                         .loadClass(key);
                 TokenHandler<? extends Token> tokenHandler = (TokenHandler<? extends Token>) classLoader
                         .loadClass(value).newInstance();
-                handlerMap.put(tokenClass, tokenHandler);
-                handlerList.add(tokenHandler);
-                tokenHandler.setPosition((short) handlerList
+                _handlerMap.put(tokenClass, tokenHandler);
+                _handlerList.add(tokenHandler);
+                tokenHandler.setPosition((short) _handlerList
                         .indexOf(tokenHandler));
             } catch (ClassNotFoundException e) {
                 throw new IllegalActionException(null, e,
@@ -98,15 +99,16 @@ public class TokenParser {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * Return singleton instance of the TokenParser.
+     * Return singleton instance of the TokenParser.  The TokenParser is singleton to simplify operations with it since
+     * there is no need to pass the instance around.  Also instantiation of the instance is costly since it relies on reflection. 
      * @return instance of the TokenParser
-     * @exception IllegalActionException
+     * @exception IllegalActionException if there is a problem loading the mapping from TokenHandlers.properties file. 
      */
     public static TokenParser getInstance() throws IllegalActionException {
-        if (instance == null) {
-            instance = new TokenParser();
+        if (_instance == null) {
+            _instance = new TokenParser();
         }
-        return instance;
+        return _instance;
     }
 
     /**
@@ -115,27 +117,26 @@ public class TokenParser {
      * @param <T> Type of the target token
      * @param token Token to be converted
      * @param outputStream outputStream used for the resulting byte stream
-     * @exception IOException is thrown in case of a problem with the outputStream 
-     * @exception IllegalActionException is thrown if the state becomes inconsistent
+     * @exception IOException if there is a problem with the outputStream 
+     * @exception IllegalActionException if the state becomes inconsistent
      */
     public <T extends Token> void convertToBytes(T token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
-        TokenHandler<T> tokenHandler = (TokenHandler<T>) handlerMap.get(token
+        TokenHandler<T> tokenHandler = (TokenHandler<T>) _handlerMap.get(token
                 .getClass());
         outputStream.writeShort(tokenHandler.getPosition());
         tokenHandler.convertToBytes(token, outputStream);
     }
 
     /**
-     * Same as {@link #convertToToken(DataInputStream)} but accepts generic OutputStream 
-     * as a parameter.
+     * Convert the token to a byte stream by first finding its TokenHandler and
+     * writing its position to the stream (first 2 bytes) followed by the conversion produced TokenHandler.
      * @param <T> Type of the target token
      * @param token Token to be converted
      * @param outputStream outputStream used for the resulting byte stream
-     * @exception IOException is thrown in case of a problem with the outputStream 
-     * @exception IllegalActionException is thrown if the state becomes inconsistent
-     * @see {@link #convertToToken(DataInputStream)}
+     * @exception IOException if there is a problem with the outputStream 
+     * @exception IllegalActionException if the state becomes inconsistent
      */
     public <T extends Token> void convertToBytes(T token,
             OutputStream outputStream) throws IOException,
@@ -155,21 +156,19 @@ public class TokenParser {
     public <T extends Token> T convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
         short position = inputStream.readShort();
-        TokenHandler<T> tokenHandler = (TokenHandler<T>) handlerList
+        TokenHandler<T> tokenHandler = (TokenHandler<T>) _handlerList
                 .get(position);
         return tokenHandler.convertToToken(inputStream);
     }
 
     /**
-     * Same as {@link #convertToToken(DataInputStream)} but accepts generic
-     * InputStream as a parameter.
+     * Read and parse the inputStream in order to recreate the Token.
      * @param <T> Type of Token
      * @param inputStream InputStream containing byteStream of the token data
      * where first 2 bytes indicated the token type (defined as TokenHandlers position)
      * @return Token read from the inputStream
      * @exception IOException is thrown in case of a problem with the outputStream 
      * @exception IllegalActionException is thrown if the state becomes inconsistent
-     * @see {@link #convertToToken(DataInputStream)}
      */
     public <T extends Token> T convertToToken(InputStream inputStream)
             throws IOException, IllegalActionException {
@@ -182,19 +181,22 @@ public class TokenParser {
     /**
      * Singleton instance of the parser.
      */
-    private static TokenParser instance;
+    private static TokenParser _instance;
+
     /**
      * ResourceBundle containing mapping from token type to its handler.
      */
-    private static final ResourceBundle tokenHandlersBundle = ResourceBundle
+    private static final ResourceBundle _tokenHandlersBundle = ResourceBundle
             .getBundle("ptserver.data.TokenHandlers");
+
     /**
      * Mapping from token type to its handler instance
      */
-    private final LinkedHashMap<Class<? extends Token>, TokenHandler<?>> handlerMap = new LinkedHashMap<Class<? extends Token>, TokenHandler<?>>();
+    private final LinkedHashMap<Class<? extends Token>, TokenHandler<?>> _handlerMap = new LinkedHashMap<Class<? extends Token>, TokenHandler<?>>();
+
     /**
      * List of TokenHandlers ordered according to its position.
      * Position is needed to figure out token data type on a byte stream.
      */
-    private final ArrayList<TokenHandler<?>> handlerList = new ArrayList<TokenHandler<?>>();
+    private final ArrayList<TokenHandler<?>> _handlerList = new ArrayList<TokenHandler<?>>();
 }

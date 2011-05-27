@@ -51,6 +51,7 @@ public class Tokenizer {
      * @param payload
      */
     public Tokenizer(byte[] payload) {
+        //there is no need to close the ByteArrayInputStream since it just wraps a byte array.
         _inputStream = new DataInputStream(new ByteArrayInputStream(payload));
     }
 
@@ -63,8 +64,9 @@ public class Tokenizer {
      * @throws IllegalActionException if there is a problem loading a token handler
      */
     public Token getNextToken() throws IOException, IllegalActionException {
-        if (_inputStream.available() > 0)
+        if (_inputStream.available() > 0) {
             return TokenParser.getInstance().convertToToken(_inputStream);
+        }
         return null;
     }
 

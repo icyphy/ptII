@@ -38,8 +38,9 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 ////CommunicationToken
 /**
-* CommunicationToken encapsulates tokens from all ports and their channels
-* that were received within one iteration.
+* Encapsulate tokens that were received within one iteration.
+* 
+* Note: Kahn networks are not being handled right now
 * @author ahuseyno
 * @version $Id$ 
 * @since Ptolemy II 8.0
@@ -52,6 +53,7 @@ public class CommunicationToken extends Token {
      * Create a new instance with targetActor set to null.
      */
     public CommunicationToken() {
+        super();
     }
 
     /**
@@ -67,16 +69,22 @@ public class CommunicationToken extends Token {
 
     /**
      * Add the port with the specified number of channels.
-     * @param port
-     * @param width
+     * 
+     * @param port The port name as it's returned by NamedObj.getName() method.
+     * @param width The number of channel that the port has.
      */
     public void addPort(String port, int width) {
         ArrayList<Token[]> list = new ArrayList<Token[]>(width);
-        portChannelTokenMap.put(port, list);
+        _portChannelTokenMap.put(port, list);
 
     }
 
-    /* (non-Javadoc)
+    /** 
+     * Return true if the object is equal to the instance, false otherwise  
+     * 
+     * The method checks if the object has the same target name and 
+     * the portChannelMap contains the same ports each having the same number of channels with the same tokens.
+     * @param The reference object with which to compare.
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -94,28 +102,33 @@ public class CommunicationToken extends Token {
         }
 
         CommunicationToken other = (CommunicationToken) object;
-        if (targetActorName == null) {
-            if (other.targetActorName != null)
+        if (_targetActorName == null) {
+            if (other._targetActorName != null) {
                 return false;
-        } else if (!targetActorName.equals(other.targetActorName))
+            }
+        } else if (!_targetActorName.equals(other._targetActorName)) {
             return false;
+        }
 
-        //portChannelTokenMap.equals(other.portChannelTokenMap) would not work because
-        //the maps contain array objects and equals the array objects checks equality of a reference
-        if (portChannelTokenMap == null) {
-            if (other.portChannelTokenMap != null)
+        /*portChannelTokenMap.equals(other.portChannelTokenMap) would not work because the maps contain array objects,
+         * and equals method on the array objects checks equality of a reference but in our case we need to check equality of each token within the array objects
+         * 
+         */
+        if (_portChannelTokenMap == null) {
+            if (other._portChannelTokenMap != null) {
                 return false;
+            }
         } else {
-            if (other.portChannelTokenMap == null) {
+            if (other._portChannelTokenMap == null) {
                 return false;
             }
-            if (!portChannelTokenMap.keySet().equals(
-                    other.portChannelTokenMap.keySet())) {
+            if (!_portChannelTokenMap.keySet().equals(
+                    other._portChannelTokenMap.keySet())) {
                 return false;
             }
-            for (Entry<String, ArrayList<Token[]>> entry : portChannelTokenMap
+            for (Entry<String, ArrayList<Token[]>> entry : _portChannelTokenMap
                     .entrySet()) {
-                ArrayList<Token[]> otherChannelTokens = other.portChannelTokenMap
+                ArrayList<Token[]> otherChannelTokens = other._portChannelTokenMap
                         .get(entry.getKey());
                 ArrayList<Token[]> channelTokens = entry.getValue();
                 if (otherChannelTokens.size() != channelTokens.size()) {
@@ -133,11 +146,12 @@ public class CommunicationToken extends Token {
     }
 
     /**
-     * Return mapping from ports to their channels with tokens received within one iteration.
-     * @return
-     */
+    * Return the mapping from ports to their channels with tokens have been received within one iteration.
+    * @return
+    */
     public HashMap<String, ArrayList<Token[]>> getPortChannelTokenMap() {
-        return portChannelTokenMap;
+        //TODO: decide if we need to wrap this map into a read object
+        return _portChannelTokenMap;
     }
 
     /**
@@ -145,30 +159,30 @@ public class CommunicationToken extends Token {
      * @return number of original tokens
      */
     public int getSize() {
-        return size;
+        return _size;
     }
 
     /**
      * Return name of the target actor that received the tokens encapsulated by the
      * CommunicationToken.
-     * @return
      * @see #setTargetActorName(String)
      */
     public String getTargetActorName() {
-        return targetActorName;
+        return _targetActorName;
     }
 
     /**
-     * Return tokens of a specific port and channel.
+     * Return the tokens of a specific port and channel.
      * @param port Port of the targetActor
      * @param channel Port's channel of the targetActor
      * @return tokens of a specific port and channel
      */
     public Token[] getTokens(String port, int channel) {
-        return portChannelTokenMap.get(port).get(channel);
+        return _portChannelTokenMap.get(port).get(channel);
     }
 
-    /* (non-Javadoc)
+    /**
+     * Compute hash code of the instance based on the targetActorname and portChannelTokenMap.
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -178,10 +192,10 @@ public class CommunicationToken extends Token {
         //TODO: check if hashCode works correctly since equals is not using equals method of portChannelTokenMap
         result = prime
                 * result
-                + ((portChannelTokenMap == null) ? 0 : portChannelTokenMap
+                + ((_portChannelTokenMap == null) ? 0 : _portChannelTokenMap
                         .hashCode());
         result = prime * result
-                + ((targetActorName == null) ? 0 : targetActorName.hashCode());
+                + ((_targetActorName == null) ? 0 : _targetActorName.hashCode());
         return result;
     }
 
@@ -192,9 +206,9 @@ public class CommunicationToken extends Token {
      * @param tokens Array of tokens received from the channel within one iteration
      */
     public void putTokens(String port, int channel, Token[] tokens) {
-        ArrayList<Token[]> channelTokenList = portChannelTokenMap.get(port);
+        ArrayList<Token[]> channelTokenList = _portChannelTokenMap.get(port);
         channelTokenList.add(channel, tokens);
-        size += tokens.length;
+        _size += tokens.length;
     }
 
     /**
@@ -204,25 +218,25 @@ public class CommunicationToken extends Token {
      * @see #getTargetActorName()
      */
     public void setTargetActorName(String targetActorName) {
-        this.targetActorName = targetActorName;
+        this._targetActorName = targetActorName;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /**
-     * Name of the target actor
+     * Name of the target actor.
      */
-    private String targetActorName;
+    private String _targetActorName;
 
     /**
-     * Mapping from port to its channels with tokens
+     * Mapping from port to its channels with tokens.
      */
-    private final HashMap<String, ArrayList<Token[]>> portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>();
+    private final HashMap<String, ArrayList<Token[]>> _portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>();
 
     /**
-     * Number of tokens encapsulated by the communication token
-     * transient to indicate that the size field won't be serialized but is here just for managing size of batching
+     * Number of tokens encapsulated by the communication token.
+     * It's transient to indicate that the size field won't be serialized but is here just for managing size of batching.
      */
-    private transient int size = 0;
+    private transient int _size = 0;
 }

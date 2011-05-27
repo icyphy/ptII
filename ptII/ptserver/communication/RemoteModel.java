@@ -29,6 +29,7 @@ package ptserver.communication;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.data.expr.Parameter;
@@ -221,11 +222,12 @@ public class RemoteModel {
         //                return attributeValue;
         //            }
         //        });
-
+        HashSet<ComponentEntity> unneededActors = new HashSet<ComponentEntity>();
         _topLevelActor = (CompositeActor) parser.parse(null, modelURL);
         for (Object obj : getTopLevelActor().entityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             Attribute attribute = actor.getAttribute("_remote");
+            boolean isSinkOrSource = false;
             if (attribute instanceof Parameter) {
                 Parameter parameter = (Parameter) attribute;
                 if (parameter.getExpression().equals("source")) {
@@ -237,6 +239,7 @@ public class RemoteModel {
                         createSource(actor, true);
                         break;
                     }
+                    isSinkOrSource = true;
                 } else if (parameter.getExpression().equals("sink")) {
                     switch (_modelType) {
                     case CLIENT:
@@ -246,8 +249,15 @@ public class RemoteModel {
                         createSink(actor, true);
                         break;
                     }
+                    isSinkOrSource = true;
                 }
             }
+            if (!isSinkOrSource && _modelType == RemoteModelType.CLIENT) {
+                unneededActors.add(actor);
+            }
+        }
+        for (ComponentEntity componentEntity : unneededActors) {
+            componentEntity.setContainer(null);
         }
 
         _mqttClient.registerSimpleHandler(new MQTTTokenListener(

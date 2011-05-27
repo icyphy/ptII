@@ -1,5 +1,5 @@
 /*
- DoubleTokenHandler converts DoubleToken to/from byte stream
+ Convert a DoubleToken to/from byte stream format for communication over MQTT protocol with a remote model.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -36,22 +36,22 @@ import ptolemy.data.DoubleToken;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleTokenHandler
 /**
- * DoubleTokenHandler converts DoubleToken to/from byte stream
+ * Convert a DoubleToken to/from byte stream format for communication over MQTT protocol with a remote model.
  * 
- * @author ahuseyno
+ * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
- * 
  */
 public class DoubleTokenHandler extends AbstractTokenHandler<DoubleToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Convert DoubleToken to a byte stream using an algorithm defined in the DataOutputStream.
+     * Convert a DoubleToken to a byte stream using an algorithm defined into the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+     * @exception IOException if there is a problem writing to the stream
      */
     @Override
     public void convertToBytes(DoubleToken token, DataOutputStream outputStream)
@@ -60,8 +60,9 @@ public class DoubleTokenHandler extends AbstractTokenHandler<DoubleToken> {
     }
 
     /** 
-     * Reads a double from the inputStream and converts it to the DoubleToken
+     * Reads a double from the inputStream and converts it to the DoubleToken.
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @exception IOException if there is a problem reading f the stream
      */
     @Override
     public DoubleToken convertToToken(DataInputStream inputStream)

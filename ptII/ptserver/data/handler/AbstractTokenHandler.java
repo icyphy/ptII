@@ -1,5 +1,6 @@
 /*
- AbstractTokenHandler that implements getters and setters for the position
+ AbstractTokenHandler that implements getters and setters for the position 
+ that is used as identifier of the token handler in the byte stream.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -33,8 +34,9 @@ import ptolemy.data.Token;
 //// AbstractTokenHandler
 
 /**
- * AbstractTokenHandler that implements getters and setters for the position.
- * Position field is used as a token identifier in the byte stream. 
+ * <p>Implement getters and setters for the position that is used as identifier of the token in the byte stream.
+ * The identifier is the first 2 bytes written within the byte stream before the byte stream produced by the token handler.
+ * When the stream is parsed back to be converted to a token, the identifier helps locate correct token handler that could parse it.</p>
  * 
  * @param <T> Type of Token that the handler handles
  * @author ahuseyno
@@ -47,27 +49,36 @@ public abstract class AbstractTokenHandler<T extends Token> implements
         TokenHandler<T> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /* (non-Javadoc)
-     * @see ptserver.data.handler.TokenHandler#getPosition()
+    /**
+     * Return the position of the handler in the handler list of the TokenHandler.
+     * Position field is used as the token type identifier in the byte stream
+     * @return position The position in the handler list of the TokenHandler
+     * @see TokenHandler 
+     * @see #setPosition(short)
      */
     @Override
     public short getPosition() {
-        return position;
+        return _position;
     }
 
-    /* (non-Javadoc)
-     * @see ptserver.data.handler.TokenHandler#setPosition(short)
+    /**
+     * Set the position of the handler in the token handler list.
+     * Position field is used as the token type identifier in the byte stream
+     * @param position
+     * @see TokenHandler 
+     * @see #getPosition()
      */
     @Override
     public void setPosition(short position) {
-        this.position = position;
+        this._position = position;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /**
-     * Position of the TokenHandler
+     * Position of the TokenHandler that identifies the token type in the byte stream.
      */
-    private short position;
+    private short _position;
 
 }

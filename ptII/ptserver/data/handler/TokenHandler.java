@@ -1,5 +1,5 @@
 /*
- Converts a token to a byte stream and back
+ Convert a token to a byte stream and back.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// TokenHandler
 /**
- * Converts a token of a particular type to a byte stream and back.
+ * Convert a token of a particular type to a byte stream and back.
  * 
  * @param <T> Type of Token that the handler handles
  * @author ahuseyno
@@ -54,8 +54,8 @@ public interface TokenHandler<T extends Token> {
      * and output it to the outputStream.
      * @param token the token to be converted
      * @param outputStream the outputStream holding stream of bytes
-     * @exception IOException is thrown in case of a problem with the outputStream 
-     * @exception IllegalActionException is thrown if the state becomes inconsistent
+     * @exception IOException if there is a problem with the outputStream 
+     * @exception IllegalActionException if there is the state becomes inconsistent
      */
     public void convertToBytes(T token, DataOutputStream outputStream)
             throws IOException, IllegalActionException;
@@ -67,14 +67,14 @@ public interface TokenHandler<T extends Token> {
      * @param inputStream The inputStream that contains serialized version
      * of a token
      * @return Token parsed from inputStream
-     * @exception IOException is thrown in case of a problem with the outputStream 
-     * @exception IllegalActionException is thrown if the state becomes inconsistent
+     * @exception IOException if there is a problem with the outputStream 
+     * @exception IllegalActionException if there is the state becomes inconsistent
      */
     public T convertToToken(DataInputStream inputStream) throws IOException,
             IllegalActionException;
 
     /**
-     * Return position of the handler in the handler list of the TokenHandler.
+     * Return the position of the handler in the handler list of the TokenHandler.
      * Position field is used as the token type identifier in the byte stream
      * @return position The position in the handler list of the TokenHandler
      * @see TokenHandler 

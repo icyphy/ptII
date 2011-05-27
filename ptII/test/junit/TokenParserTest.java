@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptserver.data.test;
+package test.junit;
 
 import static org.junit.Assert.assertEquals;
 
