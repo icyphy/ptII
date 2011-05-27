@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptserver.communication;
+package ptserver.test;
 
 import java.io.File;
 import java.net.MalformedURLException;

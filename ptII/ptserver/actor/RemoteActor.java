@@ -207,8 +207,8 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * 
      * This method also suppose to set type constraints of a cloned typed port.
      * @param port
-     * @return
-     * @throws CloneNotSupportedException
+     * @return Returns the cloned port.
+     * @exception CloneNotSupportedException
      */
     private IOPort clonePort(IOPort port) throws CloneNotSupportedException {
         IOPort remotePort = (IOPort) port.clone(port.workspace());
@@ -227,9 +227,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * Name of the targetEntity
-     */
+    /** Name of the targetEntity. */
     private String _targetEntityName;
 
 }
