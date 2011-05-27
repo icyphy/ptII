@@ -71,7 +71,9 @@ public class TokenParser {
      * @exception IllegalActionException if there is a problem loading the mapping from TokenHandlers.properties file.
      */
     private TokenParser() throws IllegalActionException {
+        //key is the token class name
         for (String key : _tokenHandlersBundle.keySet()) {
+            //value is the token handler class name
             String value = _tokenHandlersBundle.getString(key);
             try {
                 ClassLoader classLoader = this.getClass().getClassLoader();
