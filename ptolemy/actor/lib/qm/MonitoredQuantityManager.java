@@ -48,9 +48,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 
-/** This Plotter shows the time quantity managers in the model receive messages
- *  and send messages. Additionally, it shows how many messages are currently 
- *  being processed by the quantity manager
+/** This abstract class implements functionality to monitor the activity of a
+ *  quantity manager as well as assign a color attribute to a quantity manager. 
+ *  This color is used to perform highlighting on the ports that use this 
+ *  quantity manager.
+ *  <p>
+ *  Listeners can register for events happening in this quantity manager. Events are
+ *  created when, for instance, tokens are received or tokens are sent. These 
+ *  events are implemented in derived classes. 
  * 
  *  @author Patricia Derler
  *  @version $Id$
@@ -102,7 +107,9 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
         _listeners.add(monitor);
     }
     
-    @Override
+    /** Initialize the actor. 
+     *  @throws IllegalActionException Thrown by super class.
+     */
     public void initialize() throws IllegalActionException { 
         super.initialize();
         _tokenCount = 0;

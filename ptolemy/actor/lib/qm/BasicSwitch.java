@@ -57,7 +57,10 @@ import ptolemy.kernel.util.Workspace;
 /** This actor is an {@link QuantityManager} that, when its
  *  {@link #sendToken(Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
- *  according to a service rule. 
+ *  according to a service rule. This quantity manager is used on
+ *  input ports by setting a parameter with an ObjectToken that refers
+ *  to this QuantityManager at the port. Note that the name of this
+ *  parameter is irrelevant.
  *  
  *  <p>This quantity manager implements a simple switch. It has a parameter
  *  specifying the number of ports. On each port, an actor is connected.

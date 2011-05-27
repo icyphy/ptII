@@ -63,9 +63,10 @@ import ptolemy.kernel.util.Workspace;
  *  This is similar to the {@link Server} actor.
  *  Tokens are processed in FIFO order.
  *  <p>
- *  This actor will be used on any communication where the receiving
- *  port has a parameter named "QuantityManager" that refers by name
- *  to the instance of this actor.
+ *  This quantity manager will be used on any connection between actors 
+ *  where the receiving
+ *  port has a parameter with an ObjectToken that refers
+ *  to this Bus. Note that the name of this parameter is irrelevant.
  *  <p>
  *  FIXME: This receiver behaves differently for Continuous and DE. Allowing
  *  the use of this actor across hierarchies might therefore be problematic.
