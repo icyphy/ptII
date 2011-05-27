@@ -52,8 +52,8 @@ java -classpath $PTII ptolemy.moml.test.UnloadModelTest ../demo/test.xml
  @author Brian Hudson, Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (johnr)
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class UnloadModelTest extends MoMLSimpleApplication {
 
@@ -65,7 +65,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
      *  or running the model.
      */
     public UnloadModelTest(String xmlFileName) throws Throwable {
-        workspace = new Workspace("MyWorkspace");
+        Workspace workspace = new Workspace("MyWorkspace");
         /*final MoMLParser*/ parser = new MoMLParser(workspace);
 
         // The test suite calls MoMLSimpleApplication multiple times,
@@ -98,7 +98,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
 
         _manager.startRun();
 
-        Thread waitThread = new UnloaderThread();
+        Thread waitThread = new UnloadThread();
 
         // Note that we start the thread here, which could
         // be risky when we subclass, since the thread will be
@@ -109,10 +109,6 @@ public class UnloadModelTest extends MoMLSimpleApplication {
             throw _sawThrowable;
         }
     }
-
-    public CompositeActor toplevel;
-    public MoMLParser parser;
-    public Workspace workspace;
 
     /** Load a model and then unload it.
      *  @param args The first argument is the name of the file to be loaded.
@@ -127,74 +123,15 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         }
     }
 
-    public class UnloaderThread extends Thread {
-        public void run() {
-            waitForFinish();
-            try {
-                unloadModel(toplevel, parser);
-                System.out.println("Sleeping for 1000 seconds");
-                Thread.sleep(1000000);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException("InterrupteException", ex);
-            }
-            if (_sawThrowable != null) {
-                throw new RuntimeException("Execution failed",
-                        _sawThrowable);
-            }
-        }
-    }
+    /** The MoMLParser that is created and then destroyed. */
+    public MoMLParser parser;
 
-    public static void unloadModel(CompositeActor model, MoMLParser parser) throws InterruptedException {
-        // First, we gc and then print the memory stats
-        // BTW to get more info about gc,
-        // use java -verbose:gc . . .
-        System.gc();
-        Thread.sleep(1000);
-        System.out.println("Memory before unloading: "
-                + memory());
+    /** The toplevel model that is created and then destroyed. */
+    public CompositeActor toplevel;
 
-        if (model == null) {
-            return;
-        }
-        Workspace workspace = model.workspace();
-        if (model instanceof CompositeEntity) {
-            try {
-                ParserAttribute parserAttribute = (ParserAttribute) model
-                    .getAttribute("_parser", ParserAttribute.class);
-                parserAttribute.setContainer(null);
-                parserAttribute = null;
-                ((CompositeEntity)model).setContainer(null);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        try {
-            model.workspace().getWriteAccess();
-            model.workspace().removeAll();
-        } finally {
-            model.workspace().doneWriting();
-        }
-
-        if (parser != null) {
-            if(parser.topObjectsCreated() != null) {
-                parser.topObjectsCreated().remove(model);
-            }
-            parser.resetAll();
-            parser = null;
-        }
-        model = null;
-        workspace.removeAll();
-        workspace = null;
-            
-
-        System.gc();
-        Thread.sleep(1000);
-        System.out.println("Memory after  unloading: "
-                + memory());
-
-    }
-
+    /** Return the amount of memory used.
+     *  @return A string that describes the amount of memory.
+     */
     public static String memory() {
         Runtime runtime = Runtime.getRuntime();
         long totalMemory = runtime.totalMemory() / 1024;
@@ -208,5 +145,74 @@ public class UnloadModelTest extends MoMLSimpleApplication {
                         .round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
                 + "%)";
     }
+
+    public class UnloadThread extends Thread {
+        public void run() {
+            waitForFinish();
+            try {
+                // First, we gc and then print the memory stats
+                // BTW to get more info about gc,
+                // use java -verbose:gc . . .
+                System.gc();
+                Thread.sleep(1000);
+                System.out.println("Memory before unloading: "
+                        + memory());
+                
+//                 if (toplevel instanceof CompositeEntity) {
+//                     try {
+//                         ParserAttribute parserAttribute = (ParserAttribute) toplevel
+//                             .getAttribute("_parser", ParserAttribute.class);
+//                         parserAttribute.setContainer(null);
+//                         ((CompositeEntity)toplevel).setContainer(null);
+//                     } catch (Exception ex) {
+//                         ex.printStackTrace();
+//                     }
+//                 }
+
+                if (parser != null) {
+//                     if (parser.topObjectsCreated() != null) {
+//                         parser.topObjectsCreated().remove(toplevel);
+//                     }
+                    parser.resetAll();
+                    parser = null;
+                    MoMLParser.setMoMLFilters(null);
+                    BackwardCompatibility.clear();
+                }
+
+                try {
+                    toplevel.setContainer(null);
+                    _manager.terminate();
+                    toplevel.setManager(null);
+                    _manager = null;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                try {
+                    toplevel.workspace().getWriteAccess();
+                    toplevel.workspace().removeAll();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                } finally {
+                    toplevel.workspace().doneWriting();
+                }
+
+                toplevel = null;
+
+                System.gc();
+                Thread.sleep(1000);
+                System.out.println("Memory after  unloading: "
+                        + memory());
+
+                System.out.println("Sleeping for 1000 seconds");
+                if (_sawThrowable != null) {
+                    throw new RuntimeException("Execution failed",
+                            _sawThrowable);
+                }
+                Thread.sleep(1000000);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException("InterrupteException", ex);
+            }
+        }
+    }
 }
- 
