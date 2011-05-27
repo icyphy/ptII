@@ -64,9 +64,9 @@ public class RemoteSink extends RemoteActor {
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
      */
-    public RemoteSink(CompositeEntity container, ComponentEntity targetSink, boolean replaceTargetEntity)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+    public RemoteSink(CompositeEntity container, ComponentEntity targetSink,
+            boolean replaceTargetEntity) throws IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
         super(container, targetSink, replaceTargetEntity);
     }
 
@@ -171,6 +171,5 @@ public class RemoteSink extends RemoteActor {
      * into a binary and batching  
      */
     private TokenPublisher tokenPublisher;
-
 
 }

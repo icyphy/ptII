@@ -28,11 +28,13 @@
  */
 package ptserver.actor;
 
+import java.util.HashSet;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -217,7 +219,8 @@ public abstract class RemoteActor extends TypedAtomicActor {
             typedRemotePort.setTypeEquals(typedPort.getType());
             //The following line does not seem to help
             typedRemotePort.typeConstraints().addAll(
-                    typedPort.typeConstraints());
+                    (HashSet<Inequality>) ((HashSet<Inequality>) typedPort
+                            .typeConstraints()).clone());
         }
         return remotePort;
     }

@@ -85,16 +85,23 @@ public class RemoteSource extends RemoteActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        CommunicationToken token = getTokenQueue().poll();
-        for (Object portObject : this.portList()) {
-            if (portObject instanceof IOPort) {
-                IOPort port = (IOPort) portObject;
-                int width = port.getWidth();
-                for (int channel = 0; channel < width; channel++) {
-                    Token[] tokens = token.getTokens(port.getName(), channel);
-                    port.send(channel, tokens, tokens.length);
+        CommunicationToken token;
+        try {
+            token = getTokenQueue().take();
+            for (Object portObject : this.portList()) {
+                if (portObject instanceof IOPort) {
+                    IOPort port = (IOPort) portObject;
+                    int width = port.getWidth();
+                    for (int channel = 0; channel < width; channel++) {
+                        Token[] tokens = token.getTokens(port.getName(),
+                                channel);
+                        port.send(channel, tokens, tokens.length);
+                    }
                 }
             }
+        } catch (InterruptedException e) {
+            throw new IllegalActionException(this, e,
+                    "Remote Sources thread was interrupted");
         }
     }
 
@@ -105,14 +112,6 @@ public class RemoteSource extends RemoteActor {
     */
     public ArrayBlockingQueue<CommunicationToken> getTokenQueue() {
         return tokenQueue;
-    }
-
-    /**
-     * Check if any communication tokens are available on its queue.
-     */
-    @Override
-    public boolean prefire() throws IllegalActionException {
-        return super.prefire() && !getTokenQueue().isEmpty();
     }
 
     /**
@@ -127,7 +126,6 @@ public class RemoteSource extends RemoteActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /**
      * Return true if connectingPort is output port
