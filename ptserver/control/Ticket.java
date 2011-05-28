@@ -47,7 +47,7 @@ import java.util.UUID;
 * @Pt.AcceptedRating Red (jkillian)
 */
 
-public class Ticket {
+public class Ticket implements java.io.Serializable {
     /** Creates a ticket instance with a unique identifier, url for locating 
      * the model file, and the date and time of the request.
      * 

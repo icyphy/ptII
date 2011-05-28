@@ -31,13 +31,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptserver.control.IServerManager;
 import ptserver.control.ServerManager;
 import ptserver.control.Ticket;
+import ptserver.util.PtolemyLogger;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer2
@@ -60,6 +64,7 @@ public class PtolemyServer2 implements IServerManager {
         this._broker = null;
         this._servletHost = null;
         this._threadReference = new ConcurrentHashMap<Ticket, Thread>();
+        this._logger = PtolemyLogger.getLogger(this.getClass().getName());
     }
 
     /**
@@ -72,6 +77,7 @@ public class PtolemyServer2 implements IServerManager {
             // initialize singleton
             PtolemyServer2.getInstance();
         } catch (Throwable e) {
+            // TODO Add nicer handling and logging
             e.printStackTrace();
         }
     }
@@ -113,20 +119,27 @@ public class PtolemyServer2 implements IServerManager {
     }
 
     /**
-     * Start the execution fo the simulation on the selected thread by
+     * Start the execution of the simulation on the selected thread by
      * activating the Ptolemy manager.
      * 
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to start simulation thread.
      */
-    public void start(Ticket ticket) throws Exception {
+    public void start(Ticket ticket) throws IllegalStateException {
         try {
             this._threadReference.get(ticket).start();
         } catch (NullPointerException e) {
-            throw new IllegalStateException("Invalid ticket reference.", e);
+            this._logger
+                    .log(Level.WARNING, this._nullReferenceExceptionMessage);
+            throw new IllegalStateException(
+                    this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            throw new IllegalStateException("Unable to modify thread.", e);
+            this._logger.log(Level.WARNING,
+                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
+            this._logger.log(Level.WARNING,
+                    "Unable to start thread " + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to start thread.", e);
         }
     }
@@ -137,15 +150,26 @@ public class PtolemyServer2 implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to pause simulation thread.
      */
-    public void pause(Ticket ticket) throws Exception {
+    public void pause(Ticket ticket) throws IllegalStateException {
         try {
             this._threadReference.get(ticket).wait();
         } catch (NullPointerException e) {
-            throw new IllegalStateException("Invalid ticket reference.", e);
+            this._logger
+                    .log(Level.WARNING, this._nullReferenceExceptionMessage);
+            throw new IllegalStateException(
+                    this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            throw new IllegalStateException("Unable to modify thread.", e);
+            this._logger.log(Level.WARNING,
+                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
+            this._logger.log(Level.WARNING,
+                    "Unable to pause thread " + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to pause thread.", e);
+        } catch (InterruptedException e) {
+            this._logger.log(Level.WARNING,
+                    "Thread was interrupted " + ticket.getTicketID() + ".");
+            throw new IllegalStateException("Thread was interrupted.", e);
         }
     }
 
@@ -155,14 +179,21 @@ public class PtolemyServer2 implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to resume simulation thread.
      */
-    public void resume(Ticket ticket) throws Exception {
+    public void resume(Ticket ticket) throws IllegalStateException {
         try {
             this._threadReference.get(ticket).notify();
         } catch (NullPointerException e) {
-            throw new IllegalStateException("Invalid ticket reference.", e);
+            this._logger
+                    .log(Level.WARNING, this._nullReferenceExceptionMessage);
+            throw new IllegalStateException(
+                    this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            throw new IllegalStateException("Unable to modify thread.", e);
+            this._logger.log(Level.WARNING,
+                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
+            this._logger.log(Level.WARNING,
+                    "Unable to stop thread " + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to resume thread.", e);
         }
     }
@@ -173,14 +204,21 @@ public class PtolemyServer2 implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to stop simulation thread.
      */
-    public void stop(Ticket ticket) throws Exception {
+    public void stop(Ticket ticket) throws IllegalStateException {
         try {
             this._threadReference.get(ticket).stop();
         } catch (NullPointerException e) {
-            throw new IllegalStateException("Invalid ticket reference.", e);
+            this._logger
+                    .log(Level.WARNING, this._nullReferenceExceptionMessage);
+            throw new IllegalStateException(
+                    this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            throw new IllegalStateException("Unable to modify thread.", e);
+            this._logger.log(Level.WARNING,
+                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
+            this._logger.log(Level.WARNING,
+                    "Unable to stop thread " + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to stop thread.", e);
         }
     }
@@ -191,14 +229,21 @@ public class PtolemyServer2 implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to destroy simulation thread.
      */
-    public void close(Ticket ticket) throws Exception {
+    public void close(Ticket ticket) throws IllegalStateException {
         try {
             this._threadReference.get(ticket).destroy();
         } catch (NullPointerException e) {
-            throw new IllegalStateException("Invalid ticket reference.", e);
+            this._logger
+                    .log(Level.WARNING, this._nullReferenceExceptionMessage);
+            throw new IllegalStateException(
+                    this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            throw new IllegalStateException("Unable to modify thread.", e);
+            this._logger.log(Level.WARNING,
+                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
+            this._logger.log(Level.WARNING, "Unable to destroy thread "
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to destroy thread.", e);
         }
     }
@@ -227,11 +272,11 @@ public class PtolemyServer2 implements IServerManager {
 
         try {
             /** launch the broker **/
-            ProcessBuilder builder = new ProcessBuilder(
-                    "C:\\Studio\\rsmb_1.2.0\\windows\\broker.exe");
+            ProcessBuilder builder = new ProcessBuilder(_brokerPath);
             builder.redirectErrorStream(true);
             this._broker = builder.start();
         } catch (IOException e) {
+            this._logger.log(Level.SEVERE, "Unable to spawn MQTT broker process.");
             throw new IllegalStateException(
                     "Unable to spawn MQTT broker process.", e);
         }
@@ -241,7 +286,7 @@ public class PtolemyServer2 implements IServerManager {
             this._servletHost = new Server(8080);
             ServletContextHandler context = new ServletContextHandler(
                     this._servletHost, "/", ServletContextHandler.SESSIONS);
-            context.addServlet(ServerManager.class, "/ServerManager");
+            context.addServlet(new ServletHolder(new ServerManager(this)), "/ServerManager");
             this._servletHost.setHandler(context);
             this._servletHost.start();
         } catch (Exception e) {
@@ -291,4 +336,13 @@ public class PtolemyServer2 implements IServerManager {
     private Process _broker;
     private Server _servletHost;
     private ConcurrentHashMap<Ticket, Thread> _threadReference;
+    private Logger _logger;
+
+    // TODO Move these to a configuration part and add the other messages
+    private String _brokerPath = "C:\\Users\\Peter\\My Programs\\mosquitto-0.9.2-win32-bin\\mosquitto-cygwin.exe";
+    private int _brokerPort = 1883;
+    //private String _brokerPath = "C:\\Studio\\rsmb_1.2.0\\windows\\broker.exe";
+    
+    private String _nullReferenceExceptionMessage = "Invalid ticket reference.";
+    private String _securityExceptionMessage = "Unable to modify thread ";
 }

@@ -57,35 +57,35 @@ public interface IServerManager {
      * @param ticket Reference to the execution thread
      * @return Status of the start() call
      */
-    public void start(Ticket ticket) throws Exception;
+    public void start(Ticket ticket) throws IllegalStateException;
 
     /** Pause the execution of the running model.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the pause() call
      */
-    public void pause(Ticket ticket) throws Exception;
+    public void pause(Ticket ticket) throws IllegalStateException;
 
     /** Resume the execution of the paused model.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the resume() call
      */
-    public void resume(Ticket ticket) throws Exception;
+    public void resume(Ticket ticket) throws IllegalStateException;
 
     /** Stop the execution of the running model.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the stop() call
      */
-    public void stop(Ticket ticket) throws Exception;
+    public void stop(Ticket ticket) throws IllegalStateException;
 
     /** Close the model and destroy it's owner thread.
      * 
      * @param ticket Reference to the execution thread
      * @return Status of the close() call
      */
-    public void close(Ticket ticket) throws Exception;
+    public void close(Ticket ticket) throws IllegalStateException;
 
     /** Get the list of models available on the server either in the
      * database or within the file system.
