@@ -5,187 +5,192 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
 <project basedir="../" default="build" name="ptII">
-    <property environment="env"/>
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.5"/>
-    <property name="source" value="1.5"/>
-    <property name="junit.output.dir" value="ptserver/test/junit/output"/>
-    <path id="ptII.classpath">
-        <pathelement location="."/>
-        <pathelement location="lib/bsh-2.0b4.jar"/>
-        <pathelement location="lib/ptCal.jar"/>
-        <pathelement location="lib/java_cup.jar"/>
-        <pathelement location="lib/saxon8.jar"/>
-        <pathelement location="lib/saxon8-dom.jar"/>
-        <pathelement location="lib/chic.jar"/>
-        <pathelement location="lib/junit-4.8.2.jar"/>
-        <pathelement location="lib/jython.jar"/>
-        <pathelement location="lib/kieler.jar"/>
-        <pathelement location="lib/ptcolt.jar"/>
-        <pathelement location="lib/ptjacl.jar"/>
-        <pathelement location="lib/mapss.jar"/>
-        <pathelement location="lib/sootclasses.jar"/>
-        <pathelement location="lib/jasminclasses.jar"/>
-        <pathelement location="ptolemy/distributed/jini/jar/jini-core.jar"/>
-        <pathelement location="ptolemy/distributed/jini/jar/jini-ext.jar"/>
-        <pathelement location="ptolemy/distributed/jini/jar/sun-util.jar"/>
-        <pathelement location="ptolemy/domains/ptinyos/lib/jdom.jar"/>
-        <pathelement location="ptolemy/domains/ptinyos/lib/nesc.jar"/>
-        <pathelement location="ptolemy/actor/ptalon/antlr/antlr.jar"/>
-        <pathelement location="lib/PDFRenderer.jar"/>
-        <pathelement location="ptserver/lib/hessian-4.0.7.jar"/>
-        <pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar"/>
-        <pathelement location="ptserver/lib/servlet-api-2.5.jar"/>
-        <pathelement location="ptserver/lib/wmqtt.jar"/>
-    </path>
-    <target name="init">
-        <copy includeemptydirs="false" todir=".">
-            <fileset dir=".">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-                <exclude name="**/CVS/"/>
-                <exclude name="**/adm/"/>
-                <exclude name="**/codeDoc/"/>
-                <exclude name="config/"/>
-                <exclude name="diva/util/java2d/svg/"/>
-                <exclude name="jni/test/jni/meaningOfLife/"/>
-                <exclude name="jni/test/jni/testDeux/"/>
-                <exclude name="jni/test/jni/testTrois/"/>
-                <exclude name="ptdb/"/>
-                <exclude name="ptolemy/actor/lib/excel/"/>
-                <exclude name="ptolemy/actor/lib/mail/"/>
-                <exclude name="ptolemy/actor/lib/logic/fuzzy/"/>
-                <exclude name="ptolemy/actor/lib/opencv/"/>
-                <exclude name="ptolemy/actor/lib/reactable/"/>
-                <exclude name="ptolemy/backtrack/eclipse/"/>
-                <exclude name="ptolemy/backtrack/test/"/>
-                <exclude name="ptolemy/codegen/newInterfaces/"/>
-                <exclude name="doc/coding/templates/"/>
-                <exclude name="ptolemy/copernicus/kernel/fragment/"/>
-                <exclude name="ptolemy/distributed/"/>
-                <exclude name="doc/doclets/"/>
-                <exclude name="ptolemy/apps/"/>
-                <exclude name="ptolemy/domains/ct/demo/Saber/"/>
-                <exclude name="ptolemy/domains/gr/"/>
-                <exclude name="ptolemy/domains/gr/lib/experimental/"/>
-                <exclude name="ptolemy/domains/jogl/"/>
-                <exclude name="ptolemy/domains/pdf/"/>
-                <exclude name="ptolemy/domains/space/"/>
-                <exclude name="ptolemy/plot/servlet/"/>
-                <exclude name="vendors/"/>
-                <exclude name="ptolemy/actor/lib/io/comm/"/>
-                <exclude name="ptolemy/actor/lib/jai/"/>
-                <exclude name="ptolemy/actor/lib/jmf/"/>
-                <exclude name="ptolemy/actor/lib/joystick/"/>
-                <exclude name="ptolemy/actor/lib/jxta/"/>
-                <exclude name="ptolemy/actor/lib/x10/"/>
-                <exclude name="ptolemy/domains/gr/lib/quicktime/"/>
-                <exclude name="ptolemy/moml/jxta/"/>
-                <exclude name="ptolemy/moml/test/NoPackageActor.java"/>
-                <exclude name="src/"/>
-                <exclude name="ptolemy/vergil/basic/itextpdf/"/>
-                <exclude name="target/"/>
-            	<exclude name="bin"/>
-            	<exclude name="contrib"/>
-            	<exclude name="diva"/>
-            	<exclude name="doc"/>
-            	<exclude name="lbnl"/>
-            	<exclude name="lib"/>
-            	<exclude name="mk"/>
-            	<exclude name="org"/>
-            	<exclude name="thales"/>
-            	<exclude name="util"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="clean">
-        <delete>
-            <fileset dir="." includes="**/*.class"/>
-			<fileset dir="${junit.output.dir}"/>
-        </delete>
-    </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="build"/>
-    <target name="build-subprojects"/>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="." source="${source}" target="${target}" includeAntRuntime="false">
-            <src path="."/>
-            <exclude name="**/CVS/"/>
-            <exclude name="**/adm/"/>
-            <exclude name="**/codeDoc/"/>
-            <exclude name="config/"/>
-            <exclude name="diva/util/java2d/svg/"/>
-            <exclude name="jni/test/jni/meaningOfLife/"/>
-            <exclude name="jni/test/jni/testDeux/"/>
-            <exclude name="jni/test/jni/testTrois/"/>
-            <exclude name="ptdb/"/>
-            <exclude name="ptolemy/actor/lib/excel/"/>
-            <exclude name="ptolemy/actor/lib/mail/"/>
-            <exclude name="ptolemy/actor/lib/logic/fuzzy/"/>
-            <exclude name="ptolemy/actor/lib/opencv/"/>
-            <exclude name="ptolemy/actor/lib/reactable/"/>
-            <exclude name="ptolemy/backtrack/eclipse/"/>
-            <exclude name="ptolemy/backtrack/test/"/>
-            <exclude name="ptolemy/codegen/newInterfaces/"/>
-            <exclude name="doc/coding/templates/"/>
-            <exclude name="ptolemy/copernicus/kernel/fragment/"/>
-            <exclude name="ptolemy/distributed/"/>
-            <exclude name="doc/doclets/"/>
-            <exclude name="ptolemy/apps/"/>
-            <exclude name="ptolemy/domains/ct/demo/Saber/"/>
-            <exclude name="ptolemy/domains/gr/"/>
-            <exclude name="ptolemy/domains/gr/lib/experimental/"/>
-            <exclude name="ptolemy/domains/jogl/"/>
-            <exclude name="ptolemy/domains/pdf/"/>
-            <exclude name="ptolemy/domains/space/"/>
-            <exclude name="ptolemy/plot/servlet/"/>
-            <exclude name="vendors/"/>
-            <exclude name="ptolemy/actor/lib/io/comm/"/>
-            <exclude name="ptolemy/actor/lib/jai/"/>
-            <exclude name="ptolemy/actor/lib/jmf/"/>
-            <exclude name="ptolemy/actor/lib/joystick/"/>
-            <exclude name="ptolemy/actor/lib/jxta/"/>
-            <exclude name="ptolemy/actor/lib/x10/"/>
-            <exclude name="ptolemy/domains/gr/lib/quicktime/"/>
-            <exclude name="ptolemy/moml/jxta/"/>
-            <exclude name="ptolemy/moml/test/NoPackageActor.java"/>
-            <exclude name="src/"/>
-            <exclude name="ptolemy/vergil/basic/itextpdf/"/>
-            <exclude name="target/"/>
-        	<exclude name="bin"/>
-        	<exclude name="contrib"/>
-        	<exclude name="diva"/>
-        	<exclude name="doc"/>
-        	<exclude name="lbnl"/>
-        	<exclude name="lib"/>
-        	<exclude name="mk"/>
-        	<exclude name="org"/>
-        	<exclude name="thales"/>
-        	<exclude name="util"/>
-            <classpath refid="ptII.classpath"/>
-        </javac>
-    </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target name="PtolemyTestServer">
-        <java classname="ptserver.communication.PtolemyTestServer" failonerror="true" fork="yes">
-            <arg line="/Users/anarhuseynov/Desktop/addermodel.xml"/>
-            <classpath refid="ptII.classpath"/>
-        </java>
-    </target>
-    <target name="VergilApplication">
-        <java classname="ptolemy.vergil.VergilApplication" failonerror="true" fork="yes">
-            <classpath refid="ptII.classpath"/>
-        </java>
-    </target>
-    <target name="test" depends="init">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit printsummary="yes">
+	<property environment="env" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.5" />
+	<property name="source" value="1.5" />
+	<property name="junit.output.dir" value="ptserver/test/junit/output" />
+	<path id="ptII.classpath">
+		<pathelement location="." />
+		<pathelement location="lib/bsh-2.0b4.jar" />
+		<pathelement location="lib/ptCal.jar" />
+		<pathelement location="lib/java_cup.jar" />
+		<pathelement location="lib/saxon8.jar" />
+		<pathelement location="lib/saxon8-dom.jar" />
+		<pathelement location="lib/chic.jar" />
+		<pathelement location="lib/junit-4.8.2.jar" />
+		<pathelement location="lib/jython.jar" />
+		<pathelement location="lib/kieler.jar" />
+		<pathelement location="lib/ptcolt.jar" />
+		<pathelement location="lib/ptjacl.jar" />
+		<pathelement location="lib/mapss.jar" />
+		<pathelement location="lib/sootclasses.jar" />
+		<pathelement location="lib/jasminclasses.jar" />
+		<pathelement location="ptolemy/distributed/jini/jar/jini-core.jar" />
+		<pathelement location="ptolemy/distributed/jini/jar/jini-ext.jar" />
+		<pathelement location="ptolemy/distributed/jini/jar/sun-util.jar" />
+		<pathelement location="ptolemy/domains/ptinyos/lib/jdom.jar" />
+		<pathelement location="ptolemy/domains/ptinyos/lib/nesc.jar" />
+		<pathelement location="ptolemy/actor/ptalon/antlr/antlr.jar" />
+		<pathelement location="lib/PDFRenderer.jar" />
+		<pathelement location="ptserver/lib/hessian-4.0.7.jar" />
+		<pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
+		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
+		<pathelement location="ptserver/lib/wmqtt.jar" />
+	</path>
+	<target name="init">
+		<copy includeemptydirs="false" todir=".">
+			<fileset dir=".">
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.java" />
+				<exclude name="**/CVS/" />
+				<exclude name="**/adm/" />
+				<exclude name="**/codeDoc/" />
+				<exclude name="config/" />
+				<exclude name="diva/util/java2d/svg/" />
+				<exclude name="jni/test/jni/meaningOfLife/" />
+				<exclude name="jni/test/jni/testDeux/" />
+				<exclude name="jni/test/jni/testTrois/" />
+				<exclude name="ptdb/" />
+				<exclude name="ptolemy/actor/lib/excel/" />
+				<exclude name="ptolemy/actor/lib/mail/" />
+				<exclude name="ptolemy/actor/lib/logic/fuzzy/" />
+				<exclude name="ptolemy/actor/lib/opencv/" />
+				<exclude name="ptolemy/actor/lib/reactable/" />
+				<exclude name="ptolemy/backtrack/eclipse/" />
+				<exclude name="ptolemy/backtrack/test/" />
+				<exclude name="ptolemy/codegen/newInterfaces/" />
+				<exclude name="doc/coding/templates/" />
+				<exclude name="ptolemy/copernicus/kernel/fragment/" />
+				<exclude name="ptolemy/distributed/" />
+				<exclude name="doc/doclets/" />
+				<exclude name="ptolemy/apps/" />
+				<exclude name="ptolemy/domains/ct/demo/Saber/" />
+				<exclude name="ptolemy/domains/gr/" />
+				<exclude name="ptolemy/domains/gr/lib/experimental/" />
+				<exclude name="ptolemy/domains/jogl/" />
+				<exclude name="ptolemy/domains/pdf/" />
+				<exclude name="ptolemy/domains/space/" />
+				<exclude name="ptolemy/plot/servlet/" />
+				<exclude name="vendors/" />
+				<exclude name="ptolemy/actor/lib/io/comm/" />
+				<exclude name="ptolemy/actor/lib/jai/" />
+				<exclude name="ptolemy/actor/lib/jmf/" />
+				<exclude name="ptolemy/actor/lib/joystick/" />
+				<exclude name="ptolemy/actor/lib/jxta/" />
+				<exclude name="ptolemy/actor/lib/x10/" />
+				<exclude name="ptolemy/domains/gr/lib/quicktime/" />
+				<exclude name="ptolemy/moml/jxta/" />
+				<exclude name="ptolemy/moml/test/NoPackageActor.java" />
+				<exclude name="src/" />
+				<exclude name="ptolemy/vergil/basic/itextpdf/" />
+				<exclude name="target/" />
+				<exclude name="bin" />
+				<exclude name="contrib" />
+				<exclude name="diva" />
+				<exclude name="doc" />
+				<exclude name="lbnl" />
+				<exclude name="lib" />
+				<exclude name="mk" />
+				<exclude name="org" />
+				<exclude name="thales" />
+				<exclude name="util" />
+				<!-- TODO: remove-->
+				<exclude name="ptolemy/moml/test" />
+				<exclude name="ptolemy/moml/test" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="clean">
+		<delete>
+			<fileset dir="." includes="**/*.class" />
+			<fileset dir="${junit.output.dir}" />
+		</delete>
+	</target>
+	<target depends="clean" name="cleanall" />
+	<target depends="build-subprojects,build-project" name="build" />
+	<target name="build-subprojects" />
+	<target depends="init" name="build-project">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="." source="${source}" target="${target}" includeAntRuntime="false">
+			<src path="." />
+			<exclude name="**/CVS/" />
+			<exclude name="**/adm/" />
+			<exclude name="**/codeDoc/" />
+			<exclude name="config/" />
+			<exclude name="diva/util/java2d/svg/" />
+			<exclude name="jni/test/jni/meaningOfLife/" />
+			<exclude name="jni/test/jni/testDeux/" />
+			<exclude name="jni/test/jni/testTrois/" />
+			<exclude name="ptdb/" />
+			<exclude name="ptolemy/actor/lib/excel/" />
+			<exclude name="ptolemy/actor/lib/mail/" />
+			<exclude name="ptolemy/actor/lib/logic/fuzzy/" />
+			<exclude name="ptolemy/actor/lib/opencv/" />
+			<exclude name="ptolemy/actor/lib/reactable/" />
+			<exclude name="ptolemy/backtrack/eclipse/" />
+			<exclude name="ptolemy/backtrack/test/" />
+			<exclude name="ptolemy/codegen/newInterfaces/" />
+			<exclude name="doc/coding/templates/" />
+			<exclude name="ptolemy/copernicus/kernel/fragment/" />
+			<exclude name="ptolemy/distributed/" />
+			<exclude name="doc/doclets/" />
+			<exclude name="ptolemy/apps/" />
+			<exclude name="ptolemy/domains/ct/demo/Saber/" />
+			<exclude name="ptolemy/domains/gr/" />
+			<exclude name="ptolemy/domains/gr/lib/experimental/" />
+			<exclude name="ptolemy/domains/jogl/" />
+			<exclude name="ptolemy/domains/pdf/" />
+			<exclude name="ptolemy/domains/space/" />
+			<exclude name="ptolemy/plot/servlet/" />
+			<exclude name="vendors/" />
+			<exclude name="ptolemy/actor/lib/io/comm/" />
+			<exclude name="ptolemy/actor/lib/jai/" />
+			<exclude name="ptolemy/actor/lib/jmf/" />
+			<exclude name="ptolemy/actor/lib/joystick/" />
+			<exclude name="ptolemy/actor/lib/jxta/" />
+			<exclude name="ptolemy/actor/lib/x10/" />
+			<exclude name="ptolemy/domains/gr/lib/quicktime/" />
+			<exclude name="ptolemy/moml/jxta/" />
+			<exclude name="ptolemy/moml/test/NoPackageActor.java" />
+			<exclude name="src/" />
+			<exclude name="ptolemy/vergil/basic/itextpdf/" />
+			<exclude name="target/" />
+			<exclude name="bin" />
+			<exclude name="contrib" />
+			<exclude name="diva" />
+			<exclude name="doc" />
+			<exclude name="lbnl" />
+			<exclude name="lib" />
+			<exclude name="mk" />
+			<exclude name="org" />
+			<exclude name="thales" />
+			<exclude name="util" />
+			<!-- TODO: remove-->
+			<exclude name="ptolemy/moml/test" />
 			<classpath refid="ptII.classpath" />
-            <formatter type="xml"/>
-            <batchtest  fork="yes" todir="${junit.output.dir}">
-                <fileset dir="ptserver/test/junit" includes="*Test.java"/>
-            </batchtest>
-        </junit>
-    </target>
+		</javac>
+	</target>
+	<target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects" />
+	<target name="PtolemyTestServer">
+		<java classname="ptserver.communication.PtolemyTestServer" failonerror="true" fork="yes">
+			<arg line="/Users/anarhuseynov/Desktop/addermodel.xml" />
+			<classpath refid="ptII.classpath" />
+		</java>
+	</target>
+	<target name="VergilApplication">
+		<java classname="ptolemy.vergil.VergilApplication" failonerror="true" fork="yes">
+			<classpath refid="ptII.classpath" />
+		</java>
+	</target>
+	<target name="test" depends="init">
+		<mkdir dir="${junit.output.dir}" />
+		<junit printsummary="yes">
+			<classpath refid="ptII.classpath" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.output.dir}">
+				<fileset dir="ptserver/test/junit" includes="*Test.java" />
+			</batchtest>
+		</junit>
+	</target>
 </project>

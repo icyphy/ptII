@@ -241,7 +241,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
             //The following line does not seem to help
             typedRemotePort.typeConstraints().addAll(
                     typedPort.typeConstraints());
-            typedRemotePort.setTypeTerm(typedPort);
+            //typedRemotePort.setTypeTerm(typedPort);
         }
         return remotePort;
     }
