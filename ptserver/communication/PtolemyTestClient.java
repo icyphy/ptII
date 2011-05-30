@@ -78,12 +78,10 @@ public class PtolemyTestClient {
                     "PNDirector"));
             topLevelActor.getDirector().addDebugListener(new DebugListener() {
 
-                @Override
                 public void message(String message) {
                     System.out.println(message);
                 }
 
-                @Override
                 public void event(DebugEvent event) {
                     System.out.println(event);
                 }

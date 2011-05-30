@@ -174,7 +174,7 @@ public class TokenParser {
      */
     public <T extends Token> T convertToToken(InputStream inputStream)
             throws IOException, IllegalActionException {
-        return convertToToken(new DataInputStream(inputStream));
+        return this.<T> convertToToken(new DataInputStream(inputStream));
     }
 
     ///////////////////////////////////////////////////////////////////

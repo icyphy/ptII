@@ -59,7 +59,6 @@ public class RecordTokenHandler extends AbstractTokenHandler<RecordToken> {
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(RecordToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
         int size = token.length();
@@ -81,12 +80,10 @@ public class RecordTokenHandler extends AbstractTokenHandler<RecordToken> {
     }
 
     /** 
-     * Reads from the inputStream and converts it to the RecordToken.
+     * Read from the inputStream and converts it to the RecordToken.
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-
-    @Override
     public RecordToken convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
 

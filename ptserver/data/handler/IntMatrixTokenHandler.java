@@ -34,7 +34,6 @@ import java.io.IOException;
 
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
-
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.TokenParser;
 
@@ -59,7 +58,6 @@ public class IntMatrixTokenHandler extends AbstractTokenHandler<IntMatrixToken> 
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(IntMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -85,12 +83,10 @@ public class IntMatrixTokenHandler extends AbstractTokenHandler<IntMatrixToken> 
     }
 
     /** 
-     * Reads from the inputStream and converts it to the IntMatrixToken.
+     * Read from the inputStream and converts it to the IntMatrixToken.
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-
-    @Override
     public IntMatrixToken convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
         

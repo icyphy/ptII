@@ -57,7 +57,6 @@ public class ArrayTokenHandler extends AbstractTokenHandler<ArrayToken> {
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(ArrayToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
         int size = token.length();
@@ -76,12 +75,10 @@ public class ArrayTokenHandler extends AbstractTokenHandler<ArrayToken> {
     }
 
     /** 
-     * Reads from the inputStream and converts it to the ArrayToken.
+     * Read from the inputStream and converts it to the ArrayToken.
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-
-    @Override
     public ArrayToken convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
 

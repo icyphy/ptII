@@ -69,7 +69,6 @@ public class MQTTTokenListener implements MqttSimpleCallback {
      * Callback method when the connection with the broker is lost.
      * @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
      */
-    @Override
     public void connectionLost() throws Exception {
         //TODO: handle connection lost case
         System.out.println("Connection was lost at " + new Date());
@@ -83,7 +82,6 @@ public class MQTTTokenListener implements MqttSimpleCallback {
      * @param retained indicates if this message is retained by the broker.
      * @see com.ibm.mqtt.MqttSimpleCallback#publishArrived(java.lang.String, byte[], int, boolean)
      */
-    @Override
     public void publishArrived(String topicName, byte[] payload, int qos,
             boolean retained) throws Exception {
         if (!_topic.equals(topicName)) {

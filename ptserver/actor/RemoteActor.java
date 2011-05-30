@@ -28,17 +28,17 @@
  */
 package ptserver.actor;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -181,6 +181,11 @@ public abstract class RemoteActor extends TypedAtomicActor {
     private void replaceTargetEntity(ComponentEntity targetEntity)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
+        ArrayList<Attribute> attributes = new ArrayList<Attribute>(
+                targetEntity.attributeList());
+        for (Attribute attribute : attributes) {
+            attribute.setContainer(this);
+        }
         for (Object portObject : targetEntity.portList()) {
             if (!(portObject instanceof IOPort)) {
                 continue;
@@ -208,19 +213,35 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * This method also suppose to set type constraints of a cloned typed port.
      * @param port
      * @return Returns the cloned port.
-     * @exception CloneNotSupportedException
+     * @exception CloneNotSupportedException TODO
+     * @throws NameDuplicationException TODO
+     * @throws IllegalActionException TODO
      */
-    private IOPort clonePort(IOPort port) throws CloneNotSupportedException {
+    private IOPort clonePort(IOPort port) throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException {
         IOPort remotePort = (IOPort) port.clone(port.workspace());
         if (port instanceof TypedIOPort) {
             TypedIOPort typedPort = (TypedIOPort) port;
             TypedIOPort typedRemotePort = (TypedIOPort) remotePort;
+
+            //            ArrayList<Attribute> attributes = new ArrayList<Attribute>(
+            //                    remotePort.attributeList());
+            //
+            //            for (Attribute attribute : attributes) {
+            //                attribute.setContainer(null);
+            //            }
+            //            attributes = new ArrayList<Attribute>(port.attributeList());
+            //
+            //            for (Attribute attribute : attributes) {
+            //                attribute.setContainer(remotePort);
+            //            }
+
             //FIXME: figure out correct a way of inferring port types
             typedRemotePort.setTypeEquals(typedPort.getType());
             //The following line does not seem to help
             typedRemotePort.typeConstraints().addAll(
-                    (HashSet<Inequality>) ((HashSet<Inequality>) typedPort
-                            .typeConstraints()).clone());
+                    typedPort.typeConstraints());
+            typedRemotePort.setTypeTerm(typedPort);
         }
         return remotePort;
     }

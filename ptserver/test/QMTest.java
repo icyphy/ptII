@@ -58,19 +58,16 @@ public class QMTest {
                     IOPort port = (IOPort) portObject;
                     QuantityManager quantityManager = new QuantityManager() {
 
-                        @Override
                         public void sendToken(Receiver source,
                                 Receiver receiver, Token token)
                                 throws IllegalActionException {
                             System.out.println(token);
                         }
 
-                        @Override
                         public void reset() {
 
                         }
 
-                        @Override
                         public Receiver getReceiver(Receiver receiver)
                                 throws IllegalActionException {
                             return new IntermediateReceiver(this, receiver);

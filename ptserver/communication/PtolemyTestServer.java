@@ -73,12 +73,10 @@ public class PtolemyTestServer {
             topLevelActor.setManager(manager);
             topLevelActor.getDirector().addDebugListener(new DebugListener() {
 
-                @Override
                 public void message(String message) {
                     System.out.println(message);
                 }
 
-                @Override
                 public void event(DebugEvent event) {
                     System.out.println(event);
                 }

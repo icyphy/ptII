@@ -53,7 +53,6 @@ public class StringTokenHandler extends AbstractTokenHandler<StringToken> {
      * Convert StringToken to a byte stream using an algorithm defined in the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(StringToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeUTF(token.stringValue());
@@ -64,7 +63,6 @@ public class StringTokenHandler extends AbstractTokenHandler<StringToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
     
-    @Override
     public StringToken convertToToken(DataInputStream inputStream)
             throws IOException {
         return new StringToken(inputStream.readUTF());

@@ -58,7 +58,6 @@ public class LongMatrixTokenHandler extends
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(LongMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -85,12 +84,10 @@ public class LongMatrixTokenHandler extends
     }
 
     /** 
-     * Reads from the inputStream and converts it to the LongMatrixToken.
+     * Read from the inputStream and converts it to the LongMatrixToken.
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-
-    @Override
     public LongMatrixToken convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
 

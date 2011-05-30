@@ -53,7 +53,6 @@ public class IntTokenHandler extends AbstractTokenHandler<IntToken> {
      * Convert IntToken to a byte stream using an algorithm defined in the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(IntToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeInt(token.intValue());
@@ -63,7 +62,6 @@ public class IntTokenHandler extends AbstractTokenHandler<IntToken> {
      * Reads a long from the inputStream and converts it to the IntToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-    @Override
     public IntToken convertToToken(DataInputStream inputStream)
             throws IOException {
         return new IntToken(inputStream.readInt());

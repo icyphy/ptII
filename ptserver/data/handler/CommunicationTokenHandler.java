@@ -62,7 +62,6 @@ public class CommunicationTokenHandler extends
      * Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(CommunicationToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -88,7 +87,6 @@ public class CommunicationTokenHandler extends
      * Deserialize the token from the stream according to the format defined in {@link CommunicationTokenHandler}.
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-    @Override
     public CommunicationToken convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
         CommunicationToken token = new CommunicationToken();

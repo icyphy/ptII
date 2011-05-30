@@ -53,17 +53,15 @@ public class UnsignedByteTokenHandler extends AbstractTokenHandler<UnsignedByteT
      * Convert UnsignedByteToken to a byte stream using an algorithm defined in the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(UnsignedByteToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeByte(token.byteValue());
     }
 
     /** 
-     * Reads from the inputStream and converts it to the UnsignedByteToken
+     * Read from the inputStream and converts it to the UnsignedByteToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-    @Override
     public UnsignedByteToken convertToToken(DataInputStream inputStream)
             throws IOException {
         return new UnsignedByteToken(inputStream.readByte());

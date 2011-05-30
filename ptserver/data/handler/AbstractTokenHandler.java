@@ -56,7 +56,6 @@ public abstract class AbstractTokenHandler<T extends Token> implements
      * @see TokenHandler 
      * @see #setPosition(short)
      */
-    @Override
     public short getPosition() {
         return _position;
     }
@@ -68,7 +67,6 @@ public abstract class AbstractTokenHandler<T extends Token> implements
      * @see TokenHandler 
      * @see #getPosition()
      */
-    @Override
     public void setPosition(short position) {
         this._position = position;
     }

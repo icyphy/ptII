@@ -53,7 +53,6 @@ public class ShortTokenHandler extends AbstractTokenHandler<ShortToken> {
      * Convert ShortToken to a byte stream using an algorithm defined in the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(ShortToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeShort(token.shortValue());
@@ -63,7 +62,6 @@ public class ShortTokenHandler extends AbstractTokenHandler<ShortToken> {
      * Reads a short from the inputStream and converts it to the ShortToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-    @Override
     public ShortToken convertToToken(DataInputStream inputStream)
             throws IOException {
         return new ShortToken(inputStream.readShort());

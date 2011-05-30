@@ -54,7 +54,6 @@ public class ComplexTokenHandler extends AbstractTokenHandler<ComplexToken> {
      * Convert ComplexToken to a byte stream using an algorithm defined in the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(ComplexToken token, DataOutputStream outputStream)
             throws IOException {
         Complex value = token.complexValue();
@@ -68,7 +67,6 @@ public class ComplexTokenHandler extends AbstractTokenHandler<ComplexToken> {
      * Reads from the inputStream and converts it to the ComplexToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-    @Override
     public ComplexToken convertToToken(DataInputStream inputStream)
             throws IOException {
         Complex value = new Complex(inputStream.readDouble(),inputStream.readDouble());

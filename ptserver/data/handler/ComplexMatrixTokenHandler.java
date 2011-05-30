@@ -59,7 +59,6 @@ public class ComplexMatrixTokenHandler extends
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(ComplexMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -90,8 +89,6 @@ public class ComplexMatrixTokenHandler extends
      * @throws IllegalActionException 
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-
-    @Override
     public ComplexMatrixToken convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
 

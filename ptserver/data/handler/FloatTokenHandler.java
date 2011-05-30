@@ -53,7 +53,6 @@ public class FloatTokenHandler extends AbstractTokenHandler<FloatToken> {
      * Convert FloatToken to a byte stream using an algorithm defined in the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    @Override
     public void convertToBytes(FloatToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeFloat(token.floatValue());
@@ -63,7 +62,6 @@ public class FloatTokenHandler extends AbstractTokenHandler<FloatToken> {
      * Reads a float from the inputStream and converts it to the FloatToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
      */
-    @Override
     public FloatToken convertToToken(DataInputStream inputStream)
             throws IOException {
         return new FloatToken(inputStream.readFloat());
