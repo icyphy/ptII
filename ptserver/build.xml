@@ -37,8 +37,6 @@
 		<pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
 		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
-		<!-- TODO: remove-->
-		<exclude name="ptolemy/moml/test" />
 	</path>
 	<target name="init">
 		<copy includeemptydirs="false" todir=".">
@@ -98,7 +96,7 @@
 				<exclude name="thales" />
 				<exclude name="util" />
 				<!-- TODO: remove-->
-				<exclude name="ptolemy/moml/test" />
+				<exclude name="ptolemy/moml/test/UnloadModelTest.java" />
 			</fileset>
 		</copy>
 	</target>
@@ -168,7 +166,7 @@
 			<exclude name="thales" />
 			<exclude name="util" />
 			<!-- TODO: remove-->
-			<exclude name="ptolemy/moml/test" />
+			<exclude name="ptolemy/moml/test/UnloadModelTest.java" />
 			<classpath refid="ptII.classpath" />
 		</javac>
 	</target>
