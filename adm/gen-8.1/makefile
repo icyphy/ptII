@@ -130,6 +130,7 @@ PTII_TOPDIR=	.cshrc \
 		ptdb \
 		ptKeystore.properties \
 		ptolemy \
+		ptserver \
 		thales \
 		util \
 		vergil.jnlp.in \
@@ -1494,15 +1495,20 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/save \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/setup \
+	$(REMOTE1PTIIDIST)/ptserver \
+	$(REMOTE1PTIIDIST)/ptserver/actor \
+	$(REMOTE1PTIIDIST)/ptserver/communication \
+	$(REMOTE1PTIIDIST)/ptserver/control \
+	$(REMOTE1PTIIDIST)/ptserver/data \
+	$(REMOTE1PTIIDIST)/ptserver/data/handler \
+	$(REMOTE1PTIIDIST)/ptserver/test
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/basic/layout/kieler \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil
-
 
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
 	ptolemy/copernicus/gui
-
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \

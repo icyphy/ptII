@@ -587,6 +587,16 @@ PTBACKTRACK_PACKAGES = \
 	ptolemy.backtrack.xmlparser \
 	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
 
+# Eventually, configure should set these
+PTSERVER_PACKAGES = \
+	ptserver \
+	ptserver.actor \
+	ptserver.communication \
+	ptserver.control \
+	ptserver.data \
+	ptserver.data.handler \
+	ptserver.test.junit
+
 # Exclude ptolemy.backtrack.automatic.*, to fix these we would need
 # to modify the Eclipse transformer so that we can get comments from
 # the java source that is parsed.
