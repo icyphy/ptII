@@ -184,12 +184,10 @@
 	</target>
 	<target name="test" depends="init">
 		<mkdir dir="${junit.output.dir}" />
-		<junit printsummary="yes">
+		<junit printsummary="yes" fork="no">
 			<classpath refid="ptII.classpath" />
 			<formatter type="xml" />
-			<batchtest fork="yes" todir="${junit.output.dir}">
-				<fileset dir="ptserver/test/junit" includes="*Test.java" />
-			</batchtest>
+			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}"/>
 		</junit>
 	</target>
 </project>

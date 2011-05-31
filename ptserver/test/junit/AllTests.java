@@ -1,10 +1,8 @@
-package ptserver.test;
+package ptserver.test.junit;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import ptserver.test.junit.ServletTest;
-import ptserver.test.junit.TokenParserTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TokenParserTest.class, ServletTest.class })
