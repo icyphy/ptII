@@ -45,7 +45,7 @@ import ptolemy.data.UnsignedByteToken;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class UnsignedByteTokenHandler extends AbstractTokenHandler<UnsignedByteToken> {
+public class UnsignedByteTokenHandler implements TokenHandler<UnsignedByteToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,9 +60,10 @@ public class UnsignedByteTokenHandler extends AbstractTokenHandler<UnsignedByteT
 
     /** 
      * Read from the inputStream and converts it to the UnsignedByteToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public UnsignedByteToken convertToToken(DataInputStream inputStream)
+    public UnsignedByteToken convertToToken(DataInputStream inputStream,
+            Class<UnsignedByteToken> tokenType)
             throws IOException {
         return new UnsignedByteToken(inputStream.readByte());
     }

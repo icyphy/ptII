@@ -48,8 +48,7 @@ import ptserver.data.TokenParser;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class DoubleMatrixTokenHandler extends
-        AbstractTokenHandler<DoubleMatrixToken> {
+public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -86,9 +85,10 @@ public class DoubleMatrixTokenHandler extends
     /** 
      * Reads from the inputStream and converts it to the DoubleMatrixToken.
      * @throws IllegalActionException 
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public DoubleMatrixToken convertToToken(DataInputStream inputStream)
+    public DoubleMatrixToken convertToToken(DataInputStream inputStream,
+            Class<DoubleMatrixToken> tokenType)
             throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();

@@ -1,0 +1,2 @@
+BROKER_PATH=mosquitto
+BROKER_HOST=localhost:1883

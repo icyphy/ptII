@@ -55,8 +55,8 @@ import ptserver.data.TokenParser;
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
 */
-public class CommunicationTokenHandler extends
-        AbstractTokenHandler<CommunicationToken> {
+public class CommunicationTokenHandler implements
+        TokenHandler<CommunicationToken> {
 
     /** 
      * Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
@@ -85,10 +85,11 @@ public class CommunicationTokenHandler extends
 
     /** 
      * Deserialize the token from the stream according to the format defined in {@link CommunicationTokenHandler}.
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public CommunicationToken convertToToken(DataInputStream inputStream)
-            throws IOException, IllegalActionException {
+    public CommunicationToken convertToToken(DataInputStream inputStream,
+            Class<CommunicationToken> tokenType) throws IOException,
+            IllegalActionException {
         CommunicationToken token = new CommunicationToken();
         String targetActorName = inputStream.readUTF();
         token.setTargetActorName(targetActorName);

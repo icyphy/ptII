@@ -50,7 +50,7 @@ import ptserver.data.TokenParser;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class RecordTokenHandler extends AbstractTokenHandler<RecordToken> {
+public class RecordTokenHandler implements TokenHandler<RecordToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -82,9 +82,10 @@ public class RecordTokenHandler extends AbstractTokenHandler<RecordToken> {
     /** 
      * Read from the inputStream and converts it to the RecordToken.
      * @throws IllegalActionException 
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public RecordToken convertToToken(DataInputStream inputStream)
+    public RecordToken convertToToken(DataInputStream inputStream,
+            Class<RecordToken> tokenType)
             throws IOException, IllegalActionException {
 
         int size = inputStream.readInt();

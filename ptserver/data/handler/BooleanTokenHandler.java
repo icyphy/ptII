@@ -45,7 +45,7 @@ import ptolemy.data.BooleanToken;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class BooleanTokenHandler extends AbstractTokenHandler<BooleanToken> {
+public class BooleanTokenHandler implements TokenHandler<BooleanToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,10 +60,11 @@ public class BooleanTokenHandler extends AbstractTokenHandler<BooleanToken> {
 
     /** 
      * Reads from the inputStream and converts it to the BooleanToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public BooleanToken convertToToken(DataInputStream inputStream)
-            throws IOException {
+    public BooleanToken convertToToken(DataInputStream inputStream,
+            Class<BooleanToken> tokenType) throws IOException {
         return new BooleanToken(inputStream.readBoolean());
     }
+
 }

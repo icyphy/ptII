@@ -44,7 +44,7 @@ import ptolemy.data.DoubleToken;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class DoubleTokenHandler extends AbstractTokenHandler<DoubleToken> {
+public class DoubleTokenHandler implements TokenHandler<DoubleToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,10 +60,11 @@ public class DoubleTokenHandler extends AbstractTokenHandler<DoubleToken> {
 
     /** 
      * Reads a double from the inputStream and converts it to the DoubleToken.
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      * @exception IOException if there is a problem reading f the stream
      */
-    public DoubleToken convertToToken(DataInputStream inputStream)
+    public DoubleToken convertToToken(DataInputStream inputStream,
+            Class<DoubleToken> tokenType)
             throws IOException {
         return new DoubleToken(inputStream.readDouble());
     }

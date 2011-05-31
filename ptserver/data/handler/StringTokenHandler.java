@@ -45,7 +45,7 @@ import ptolemy.data.StringToken;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class StringTokenHandler extends AbstractTokenHandler<StringToken> {
+public class StringTokenHandler implements TokenHandler<StringToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,10 +60,11 @@ public class StringTokenHandler extends AbstractTokenHandler<StringToken> {
 
     /** 
      * Reads from the inputStream and converts it to the StringToken.
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     
-    public StringToken convertToToken(DataInputStream inputStream)
+    public StringToken convertToToken(DataInputStream inputStream,
+            Class<StringToken> tokenType)
             throws IOException {
         return new StringToken(inputStream.readUTF());
     }

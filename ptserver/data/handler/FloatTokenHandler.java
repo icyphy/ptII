@@ -45,7 +45,7 @@ import ptolemy.data.FloatToken;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class FloatTokenHandler extends AbstractTokenHandler<FloatToken> {
+public class FloatTokenHandler implements TokenHandler<FloatToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,9 +60,10 @@ public class FloatTokenHandler extends AbstractTokenHandler<FloatToken> {
 
     /** 
      * Reads a float from the inputStream and converts it to the FloatToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public FloatToken convertToToken(DataInputStream inputStream)
+    public FloatToken convertToToken(DataInputStream inputStream,
+            Class<FloatToken> tokenType)
             throws IOException {
         return new FloatToken(inputStream.readFloat());
     }

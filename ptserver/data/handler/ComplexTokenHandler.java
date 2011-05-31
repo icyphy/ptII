@@ -46,7 +46,7 @@ import ptolemy.math.Complex;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class ComplexTokenHandler extends AbstractTokenHandler<ComplexToken> {
+public class ComplexTokenHandler implements TokenHandler<ComplexToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -65,9 +65,10 @@ public class ComplexTokenHandler extends AbstractTokenHandler<ComplexToken> {
 
     /** 
      * Reads from the inputStream and converts it to the ComplexToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public ComplexToken convertToToken(DataInputStream inputStream)
+    public ComplexToken convertToToken(DataInputStream inputStream,
+            Class<ComplexToken> tokenType)
             throws IOException {
         Complex value = new Complex(inputStream.readDouble(),inputStream.readDouble());
         return new ComplexToken(value);

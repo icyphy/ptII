@@ -44,7 +44,7 @@ import ptolemy.data.LongToken;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class LongTokenHandler extends AbstractTokenHandler<LongToken> {
+public class LongTokenHandler implements TokenHandler<LongToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,10 +60,11 @@ public class LongTokenHandler extends AbstractTokenHandler<LongToken> {
 
     /** 
      * Reads a long from the inputStream and converts it to the LongToken.
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      * @exception IOException if there is a problem reading from the stream
      */
-    public LongToken convertToToken(DataInputStream inputStream)
+    public LongToken convertToToken(DataInputStream inputStream,
+            Class<LongToken> tokenType)
             throws IOException {
         return new LongToken(inputStream.readLong());
     }

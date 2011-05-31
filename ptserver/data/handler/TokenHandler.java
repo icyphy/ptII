@@ -66,28 +66,11 @@ public interface TokenHandler<T extends Token> {
      * defined in the handler.
      * @param inputStream The inputStream that contains serialized version
      * of a token
+     * @param tokenType TODO
      * @return Token parsed from inputStream
      * @exception IOException if there is a problem with the outputStream 
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
-    public T convertToToken(DataInputStream inputStream) throws IOException,
+    public T convertToToken(DataInputStream inputStream, Class<T> tokenType) throws IOException,
             IllegalActionException;
-
-    /**
-     * Return the position of the handler in the handler list of the TokenHandler.
-     * Position field is used as the token type identifier in the byte stream
-     * @return position The position in the handler list of the TokenHandler
-     * @see TokenHandler 
-     * @see #setPosition(short)
-     */
-    public short getPosition();
-
-    /**
-     * Set the position of the handler in the token handler list.
-     * Position field is used as the token type identifier in the byte stream
-     * @param position
-     * @see TokenHandler 
-     * @see #getPosition()
-     */
-    public void setPosition(short position);
 }

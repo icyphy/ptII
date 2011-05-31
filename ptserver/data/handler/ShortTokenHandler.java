@@ -45,7 +45,7 @@ import ptolemy.data.ShortToken;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class ShortTokenHandler extends AbstractTokenHandler<ShortToken> {
+public class ShortTokenHandler implements TokenHandler<ShortToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,9 +60,10 @@ public class ShortTokenHandler extends AbstractTokenHandler<ShortToken> {
 
     /** 
      * Reads a short from the inputStream and converts it to the ShortToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public ShortToken convertToToken(DataInputStream inputStream)
+    public ShortToken convertToToken(DataInputStream inputStream,
+            Class<ShortToken> tokenType)
             throws IOException {
         return new ShortToken(inputStream.readShort());
     }

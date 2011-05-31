@@ -27,10 +27,8 @@
 
 package ptserver.test.junit;
 
+import static org.junit.Assert.assertNotNull;
 
-import static org.junit.Assert.*;
-
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.Before;
@@ -57,31 +55,20 @@ public class ServletTest {
     @Before
     public void setUp() throws Exception {
         _ptolemyServer = PtolemyServer2.getInstance();
-        
+
         HessianProxyFactory factory = new HessianProxyFactory();
-     
-        _servletProxy = (IServerManager) factory.create(IServerManager.class, _servletURL);
+
+        _servletProxy = (IServerManager) factory.create(IServerManager.class,
+                _servletURL);
     }
-  
+
     @Test
-    public void StartThread() {
+    public void startThread() throws Exception {
         URL url = null;
         Ticket ticket = null;
+        url = new URL(_testModelFileURL);
+        ticket = _servletProxy.open(url);
 
-        try {
-            url = new URL(_testModelFileURL);
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        try {
-            ticket = _servletProxy.open(url);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
         assertNotNull(ticket);
         assertNotNull(ticket.getTicketID());
     }
@@ -90,7 +77,7 @@ public class ServletTest {
     ////                private variables
     private PtolemyServer2 _ptolemyServer;
     private IServerManager _servletProxy;
-    
-    private String _testModelFileURL = "file:///C:/Users/Peter/Workspace/ptII/ptserver/test/rampmodel.xml";
-    private String _servletURL = "http://localhost:8080/ServerManager";
+
+    private final String _testModelFileURL = "file:///C:/Users/Peter/Workspace/ptII/ptserver/test/rampmodel.xml";
+    private final String _servletURL = "http://localhost:8080/ServerManager";
 }

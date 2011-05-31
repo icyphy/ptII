@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import ptolemy.data.Token;
@@ -79,12 +79,12 @@ public class TokenParser {
                 ClassLoader classLoader = this.getClass().getClassLoader();
                 Class<Token> tokenClass = (Class<Token>) classLoader
                         .loadClass(key);
-                TokenHandler<? extends Token> tokenHandler = (TokenHandler<? extends Token>) classLoader
+                TokenHandler<Token> tokenHandler = (TokenHandler<Token>) classLoader
                         .loadClass(value).newInstance();
-                _handlerMap.put(tokenClass, tokenHandler);
-                _handlerList.add(tokenHandler);
-                tokenHandler.setPosition((short) _handlerList
-                        .indexOf(tokenHandler));
+                HandlerData<Token> data = new HandlerData<Token>(tokenHandler,
+                        tokenClass, (short) _handlerList.size());
+                _handlerMap.put(tokenClass, data);
+                _handlerList.add(data);
             } catch (ClassNotFoundException e) {
                 throw new IllegalActionException(null, e,
                         "Class was not found for " + key + " or " + value);
@@ -125,10 +125,14 @@ public class TokenParser {
     public <T extends Token> void convertToBytes(T token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
-        TokenHandler<T> tokenHandler = (TokenHandler<T>) _handlerMap.get(token
+        HandlerData<T> handlerData = (HandlerData<T>) _handlerMap.get(token
                 .getClass());
-        outputStream.writeShort(tokenHandler.getPosition());
-        tokenHandler.convertToBytes(token, outputStream);
+        if (handlerData == null) {
+            throw new NullPointerException("No handler found for type "
+                    + token.getClass());
+        }
+        outputStream.writeShort(handlerData._position);
+        handlerData._tokenHandler.convertToBytes(token, outputStream);
     }
 
     /**
@@ -158,9 +162,12 @@ public class TokenParser {
     public <T extends Token> T convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
         short position = inputStream.readShort();
-        TokenHandler<T> tokenHandler = (TokenHandler<T>) _handlerList
-                .get(position);
-        return tokenHandler.convertToToken(inputStream);
+        HandlerData<T> data = (HandlerData<T>) _handlerList.get(position);
+        if (data == null) {
+            throw new NullPointerException("No handler found for position "
+                    + position);
+        }
+        return data._tokenHandler.convertToToken(inputStream, data._tokenType);
     }
 
     /**
@@ -194,11 +201,43 @@ public class TokenParser {
     /**
      * Mapping from token type to its handler instance
      */
-    private final LinkedHashMap<Class<? extends Token>, TokenHandler<?>> _handlerMap = new LinkedHashMap<Class<? extends Token>, TokenHandler<?>>();
+    private final HashMap<Class<? extends Token>, HandlerData<?>> _handlerMap = new HashMap<Class<? extends Token>, HandlerData<?>>();
 
     /**
-     * List of TokenHandlers ordered according to its position.
+     * List of HandlerData files ordered according to their position.
      * Position is needed to figure out token data type on a byte stream.
      */
-    private final ArrayList<TokenHandler<?>> _handlerList = new ArrayList<TokenHandler<?>>();
+    private final ArrayList<HandlerData<?>> _handlerList = new ArrayList<HandlerData<?>>();
+
+    /**
+     * Data structure that stores handler, token type and position tuple
+     */
+    private class HandlerData<T extends Token> {
+
+        /**
+         * Create new instance of HandlerData
+         * @param tokenHandler the tokenHandler for the tokenType
+         * @param tokenType the tokenType to convert
+         * @param position the identifier of the token type used in the byte stream 
+         */
+        public HandlerData(TokenHandler<T> tokenHandler, Class<T> tokenType,
+                short position) {
+            this._tokenHandler = tokenHandler;
+            this._tokenType = tokenType;
+            this._position = position;
+        }
+
+        /**
+         * Token Handler for the tokenType
+         */
+        private final TokenHandler<T> _tokenHandler;
+        /**
+         * The token type handled by the tokenHandler
+         */
+        private final Class<T> _tokenType;
+        /**
+         * Identifier of the token type
+         */
+        private final int _position;
+    }
 }

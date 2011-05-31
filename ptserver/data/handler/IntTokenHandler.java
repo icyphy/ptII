@@ -45,7 +45,7 @@ import ptolemy.data.IntToken;
  * @Pt.AcceptedRating Red (ahuseyno)
  * 
  */
-public class IntTokenHandler extends AbstractTokenHandler<IntToken> {
+public class IntTokenHandler implements TokenHandler<IntToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,9 +60,10 @@ public class IntTokenHandler extends AbstractTokenHandler<IntToken> {
 
     /** 
      * Reads a long from the inputStream and converts it to the IntToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public IntToken convertToToken(DataInputStream inputStream)
+    public IntToken convertToToken(DataInputStream inputStream,
+            Class<IntToken> tokenType)
             throws IOException {
         return new IntToken(inputStream.readInt());
     }

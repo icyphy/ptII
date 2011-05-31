@@ -49,8 +49,8 @@ import ptserver.data.TokenParser;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class ComplexMatrixTokenHandler extends
-        AbstractTokenHandler<ComplexMatrixToken> {
+public class ComplexMatrixTokenHandler implements
+        TokenHandler<ComplexMatrixToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -87,10 +87,11 @@ public class ComplexMatrixTokenHandler extends
     /** 
      * Reads from the inputStream and converts it to the ComplexMatrixToken.
      * @throws IllegalActionException 
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public ComplexMatrixToken convertToToken(DataInputStream inputStream)
-            throws IOException, IllegalActionException {
+    public ComplexMatrixToken convertToToken(DataInputStream inputStream,
+            Class<ComplexMatrixToken> tokenType) throws IOException,
+            IllegalActionException {
 
         int rowCount = inputStream.readInt();
         int colunmCount = inputStream.readInt();

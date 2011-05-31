@@ -48,7 +48,7 @@ import ptserver.data.TokenParser;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class UnionTokenHandler extends AbstractTokenHandler<UnionToken> {
+public class UnionTokenHandler implements TokenHandler<UnionToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -68,9 +68,10 @@ public class UnionTokenHandler extends AbstractTokenHandler<UnionToken> {
     /** 
      * Read from the inputStream and converts it to the UnionToken
      * @throws IllegalActionException 
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public UnionToken convertToToken(DataInputStream inputStream)
+    public UnionToken convertToToken(DataInputStream inputStream,
+            Class<UnionToken> tokenType)
             throws IOException, IllegalActionException {
         String label = inputStream.readUTF();
         Token value = TokenParser.getInstance().convertToToken(

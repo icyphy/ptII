@@ -48,8 +48,7 @@ import ptserver.data.TokenParser;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class LongMatrixTokenHandler extends
-        AbstractTokenHandler<LongMatrixToken> {
+public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -86,9 +85,10 @@ public class LongMatrixTokenHandler extends
     /** 
      * Read from the inputStream and converts it to the LongMatrixToken.
      * @throws IllegalActionException 
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public LongMatrixToken convertToToken(DataInputStream inputStream)
+    public LongMatrixToken convertToToken(DataInputStream inputStream,
+            Class<LongMatrixToken> tokenType)
             throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();

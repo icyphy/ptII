@@ -48,7 +48,7 @@ import ptserver.data.TokenParser;
  * @Pt.AcceptedRating Red (ishwinde)
  * 
  */
-public class ArrayTokenHandler extends AbstractTokenHandler<ArrayToken> {
+public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -77,9 +77,10 @@ public class ArrayTokenHandler extends AbstractTokenHandler<ArrayToken> {
     /** 
      * Read from the inputStream and converts it to the ArrayToken.
      * @throws IllegalActionException 
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream)
+     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public ArrayToken convertToToken(DataInputStream inputStream)
+    public ArrayToken convertToToken(DataInputStream inputStream,
+            Class<ArrayToken> tokenType)
             throws IOException, IllegalActionException {
 
         int size = inputStream.readInt();
