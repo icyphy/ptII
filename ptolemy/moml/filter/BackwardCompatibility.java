@@ -69,6 +69,12 @@ public class BackwardCompatibility {
         return _filterList;
     }
 
+    /** Clear the list of filters.
+     */
+    public static void clear() {
+        _filterList = new LinkedList();
+    }
+
     /** Return a string that describes all the filters.
      *  @return the String that describes all the filters and that ends with a
      *  newline.
