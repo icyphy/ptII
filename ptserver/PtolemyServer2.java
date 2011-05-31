@@ -63,22 +63,21 @@ public class PtolemyServer2 implements IServerManager {
     /**
      * Logger is used throughout the server to log messages to the PtolemyLog.log file
      */
-    public static final Logger logger;
+    public static final Logger LOGGER;
     static {
-        Logger localLogger = null;
+        Logger logger = null;
         try {
-            localLogger = Logger
-                    .getLogger(PtolemyServer2.class.getSimpleName());
+            logger = Logger.getLogger(PtolemyServer2.class.getSimpleName());
             FileHandler logFile = new FileHandler("PtolemyLog.log", true);
             logFile.setFormatter(new XMLFormatter());
-            localLogger.addHandler(logFile);
-            localLogger.setLevel(Level.ALL);
+            logger.addHandler(logFile);
+            logger.setLevel(Level.ALL);
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger = localLogger;
+        LOGGER = logger;
     }
 
     /** Creates an instance of the Ptolemy server.  This class is a singleton 
@@ -152,17 +151,17 @@ public class PtolemyServer2 implements IServerManager {
         try {
             this._threadReference.get(ticket).start();
         } catch (NullPointerException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
+            PtolemyServer2.LOGGER.log(Level.WARNING,
                     this._nullReferenceExceptionMessage);
             throw new IllegalStateException(
                     this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, _securityExceptionMessage
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    "Unable to start thread " + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, "Unable to start thread "
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to start thread.", e);
         }
     }
@@ -177,21 +176,21 @@ public class PtolemyServer2 implements IServerManager {
         try {
             this._threadReference.get(ticket).wait();
         } catch (NullPointerException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
+            PtolemyServer2.LOGGER.log(Level.WARNING,
                     this._nullReferenceExceptionMessage);
             throw new IllegalStateException(
                     this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, _securityExceptionMessage
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    "Unable to pause thread " + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, "Unable to pause thread "
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to pause thread.", e);
         } catch (InterruptedException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    "Thread was interrupted " + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, "Thread was interrupted "
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException("Thread was interrupted.", e);
         }
     }
@@ -206,17 +205,17 @@ public class PtolemyServer2 implements IServerManager {
         try {
             this._threadReference.get(ticket).notify();
         } catch (NullPointerException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
+            PtolemyServer2.LOGGER.log(Level.WARNING,
                     this._nullReferenceExceptionMessage);
             throw new IllegalStateException(
                     this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, _securityExceptionMessage
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    "Unable to stop thread " + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, "Unable to stop thread "
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to resume thread.", e);
         }
     }
@@ -231,17 +230,17 @@ public class PtolemyServer2 implements IServerManager {
         try {
             this._threadReference.get(ticket).stop();
         } catch (NullPointerException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
+            PtolemyServer2.LOGGER.log(Level.WARNING,
                     this._nullReferenceExceptionMessage);
             throw new IllegalStateException(
                     this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, _securityExceptionMessage
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    "Unable to stop thread " + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, "Unable to stop thread "
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to stop thread.", e);
         }
     }
@@ -256,16 +255,16 @@ public class PtolemyServer2 implements IServerManager {
         try {
             this._threadReference.get(ticket).destroy();
         } catch (NullPointerException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
+            PtolemyServer2.LOGGER.log(Level.WARNING,
                     this._nullReferenceExceptionMessage);
             throw new IllegalStateException(
                     this._nullReferenceExceptionMessage, e);
         } catch (SecurityException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
-                    _securityExceptionMessage + ticket.getTicketID() + ".");
+            PtolemyServer2.LOGGER.log(Level.WARNING, _securityExceptionMessage
+                    + ticket.getTicketID() + ".");
             throw new IllegalStateException(_securityExceptionMessage, e);
         } catch (IllegalThreadStateException e) {
-            PtolemyServer2.logger.log(Level.WARNING,
+            PtolemyServer2.LOGGER.log(Level.WARNING,
                     "Unable to destroy thread " + ticket.getTicketID() + ".");
             throw new IllegalStateException("Unable to destroy thread.", e);
         }
@@ -308,7 +307,7 @@ public class PtolemyServer2 implements IServerManager {
 
         try {
             /** launch the servlet container **/
-            this._servletHost = new Server(8080);
+            this._servletHost = new Server(SERVLET_PORT);
             ServletContextHandler context = new ServletContextHandler(
                     this._servletHost, "/", ServletContextHandler.SESSIONS);
             context.addServlet(new ServletHolder(new ServerManager(this)),
@@ -364,12 +363,14 @@ public class PtolemyServer2 implements IServerManager {
     private ConcurrentHashMap<Ticket, Thread> _threadReference;
 
     // TODO Move these to a configuration part and add the other messages
-    private static final ResourceBundle config = ResourceBundle
+    private static final ResourceBundle CONFIG = ResourceBundle
             .getBundle("ptserver.PtolemyServerConfig");
-    private final String _brokerPath = config.getString("BROKER_PATH");
+    private final String _brokerPath = CONFIG.getString("BROKER_PATH");
     private final int _brokerPort = 1883;
     //private String _brokerPath = "C:\\Studio\\rsmb_1.2.0\\windows\\broker.exe";
 
     private final String _nullReferenceExceptionMessage = "Invalid ticket reference.";
     private final String _securityExceptionMessage = "Unable to modify thread ";
+    private final int SERVLET_PORT = Integer.parseInt(CONFIG
+            .getString("SERVLET_PORT"));
 }

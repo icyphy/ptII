@@ -1,2 +1,3 @@
 BROKER_PATH=mosquitto
 BROKER_HOST=localhost:1883
+SERVLET_PORT=8081
