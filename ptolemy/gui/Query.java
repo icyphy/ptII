@@ -2062,7 +2062,9 @@ public class Query extends JPanel {
         private void _actionPerformedFileDialog(ActionEvent e) {            
             FileDialog fileDialog = new FileDialog(JOptionPane.getFrameForComponent(Query.this),
                     "Select", FileDialog.LOAD);
-            fileDialog.setDirectory(_startingDirectory.toString());
+            if (_startingDirectory != null) {
+                fileDialog.setDirectory(_startingDirectory.toString());
+            }
 
             String fileName = getSelectedFileName().trim();
             if (!fileName.equals("")) {
@@ -2078,7 +2080,23 @@ public class Query extends JPanel {
             if (fileDialog.getFile() == null) {
                 return;
             }
-            File file = new File(_startingDirectory, fileDialog.getFile());
+
+            File file = null;
+            if (_startingDirectory != null) {
+                file = new File(_startingDirectory, fileDialog.getFile());
+            } else {
+                String currentWorkingDirectory = null;
+                try {
+                    currentWorkingDirectory = System.getProperty("user.dir");
+                } catch (Throwable throwable) {
+                    // Ignore, we are probably in an applet.
+                }
+                if (currentWorkingDirectory != null) {
+                    file = new File(currentWorkingDirectory, fileDialog.getFile());
+                } else {
+                    file = new File(fileDialog.getFile());
+                }
+            }
 
             if (file.exists() && fileDialog.getMode() == FileDialog.SAVE) {
                 // Ask for confirmation before overwriting a file.
