@@ -64,6 +64,16 @@ public class PtolemyServer2 implements IServerManager {
      * Logger is used throughout the server to log messages to the PtolemyLog.log file
      */
     public static final Logger LOGGER;
+    /**
+     * The ResourceBundle containing configuration parameters 
+     */
+    public static final ResourceBundle CONFIG = ResourceBundle
+            .getBundle("ptserver.PtolemyServerConfig");
+    /**
+     * The network port of the Jetty
+     */
+    public final static int SERVLET_PORT = Integer.parseInt(CONFIG
+            .getString("SERVLET_PORT"));
     static {
         Logger logger = null;
         try {
@@ -363,14 +373,11 @@ public class PtolemyServer2 implements IServerManager {
     private ConcurrentHashMap<Ticket, Thread> _threadReference;
 
     // TODO Move these to a configuration part and add the other messages
-    private static final ResourceBundle CONFIG = ResourceBundle
-            .getBundle("ptserver.PtolemyServerConfig");
     private final String _brokerPath = CONFIG.getString("BROKER_PATH");
     private final int _brokerPort = 1883;
     //private String _brokerPath = "C:\\Studio\\rsmb_1.2.0\\windows\\broker.exe";
 
     private final String _nullReferenceExceptionMessage = "Invalid ticket reference.";
     private final String _securityExceptionMessage = "Unable to modify thread ";
-    private final int SERVLET_PORT = Integer.parseInt(CONFIG
-            .getString("SERVLET_PORT"));
+
 }

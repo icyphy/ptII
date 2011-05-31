@@ -39,6 +39,7 @@ import ptserver.control.IServerManager;
 import ptserver.control.Ticket;
 
 import com.caucho.hessian.client.HessianProxyFactory;
+import com.sun.corba.se.spi.activation.ServerManager;
 
 ///////////////////////////////////////////////////////////////////
 //// ServletTest
@@ -60,6 +61,7 @@ public class ServletTest {
 
         _servletProxy = (IServerManager) factory.create(IServerManager.class,
                 _servletURL);
+        System.out.println(_servletURL);
     }
 
     @Test
@@ -79,5 +81,7 @@ public class ServletTest {
     private IServerManager _servletProxy;
 
     private final String _testModelFileURL = "file:///C:/Users/Peter/Workspace/ptII/ptserver/test/rampmodel.xml";
-    private final String _servletURL = "http://localhost:8080/ServerManager";
+    private final String _servletURL = "http://localhost:"
+            + PtolemyServer2.SERVLET_PORT + "/"
+            + ServerManager.class.getSimpleName();
 }
