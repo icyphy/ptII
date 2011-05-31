@@ -9,7 +9,10 @@
 	<property name="debuglevel" value="source,lines,vars" />
 	<property name="target" value="1.5" />
 	<property name="source" value="1.5" />
-	<property name="junit.output.dir" value="ptserver/test/junit/output" />
+
+	<property name="ptserver.output" value="${basedir}/ptserver/output" />
+
+
 	<path id="ptII.classpath">
 		<pathelement location="." />
 		<pathelement location="lib/bsh-2.0b4.jar" />
@@ -38,72 +41,15 @@
 		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
 	</path>
+
+
 	<target name="init">
-		<copy includeemptydirs="false" todir=".">
-			<fileset dir=".">
-				<exclude name="**/*.launch" />
-				<exclude name="**/*.java" />
-				<exclude name="**/CVS/" />
-				<exclude name="**/adm/" />
-				<exclude name="**/codeDoc/" />
-				<exclude name="config/" />
-				<exclude name="diva/util/java2d/svg/" />
-				<exclude name="jni/test/jni/meaningOfLife/" />
-				<exclude name="jni/test/jni/testDeux/" />
-				<exclude name="jni/test/jni/testTrois/" />
-				<exclude name="ptdb/" />
-				<exclude name="ptolemy/actor/lib/excel/" />
-				<exclude name="ptolemy/actor/lib/mail/" />
-				<exclude name="ptolemy/actor/lib/logic/fuzzy/" />
-				<exclude name="ptolemy/actor/lib/opencv/" />
-				<exclude name="ptolemy/actor/lib/reactable/" />
-				<exclude name="ptolemy/backtrack/eclipse/" />
-				<exclude name="ptolemy/backtrack/test/" />
-				<exclude name="ptolemy/codegen/newInterfaces/" />
-				<exclude name="doc/coding/templates/" />
-				<exclude name="ptolemy/copernicus/kernel/fragment/" />
-				<exclude name="ptolemy/distributed/" />
-				<exclude name="doc/doclets/" />
-				<exclude name="ptolemy/apps/" />
-				<exclude name="ptolemy/domains/ct/demo/Saber/" />
-				<exclude name="ptolemy/domains/gr/" />
-				<exclude name="ptolemy/domains/gr/lib/experimental/" />
-				<exclude name="ptolemy/domains/jogl/" />
-				<exclude name="ptolemy/domains/pdf/" />
-				<exclude name="ptolemy/domains/space/" />
-				<exclude name="ptolemy/plot/servlet/" />
-				<exclude name="vendors/" />
-				<exclude name="ptolemy/actor/lib/io/comm/" />
-				<exclude name="ptolemy/actor/lib/jai/" />
-				<exclude name="ptolemy/actor/lib/jmf/" />
-				<exclude name="ptolemy/actor/lib/joystick/" />
-				<exclude name="ptolemy/actor/lib/jxta/" />
-				<exclude name="ptolemy/actor/lib/x10/" />
-				<exclude name="ptolemy/domains/gr/lib/quicktime/" />
-				<exclude name="ptolemy/moml/jxta/" />
-				<exclude name="ptolemy/moml/test/NoPackageActor.java" />
-				<exclude name="src/" />
-				<exclude name="ptolemy/vergil/basic/itextpdf/" />
-				<exclude name="target/" />
-				<exclude name="bin" />
-				<exclude name="contrib" />
-				<exclude name="diva" />
-				<exclude name="doc" />
-				<exclude name="lbnl" />
-				<exclude name="lib" />
-				<exclude name="mk" />
-				<exclude name="org" />
-				<exclude name="thales" />
-				<exclude name="util" />
-				<!-- TODO: remove-->
-				<exclude name="ptolemy/moml/test/UnloadModelTest.java" />
-			</fileset>
-		</copy>
+
 	</target>
 	<target name="clean">
 		<delete>
 			<fileset dir="." includes="**/*.class" />
-			<fileset dir="${junit.output.dir}" />
+			<fileset dir="${ptserver.output}" />
 		</delete>
 	</target>
 	<target depends="clean" name="cleanall" />
@@ -165,8 +111,6 @@
 			<exclude name="org" />
 			<exclude name="thales" />
 			<exclude name="util" />
-			<!-- TODO: remove-->
-			<exclude name="ptolemy/moml/test/UnloadModelTest.java" />
 			<classpath refid="ptII.classpath" />
 		</javac>
 	</target>
@@ -182,12 +126,48 @@
 			<classpath refid="ptII.classpath" />
 		</java>
 	</target>
-	<target name="test" depends="init">
+
+	<property name="junit.output.dir" value="${ptserver.output}/junit" />
+	<!-- Cobertura -->
+
+	<target name="test" depends="init, build-project">
+
+		<property name="instrumented.dir" value="${ptserver.output}/instrumented" />
+		<property name="cobertura.dir" value="ptserver/lib" />
+		<property name="coveragereport.dir" value="${ptserver.output}/coveragereport" />
+
+		<path id="cobertura.classpath">
+			<fileset dir="${cobertura.dir}">
+				<include name="cobertura.jar" />
+				<include name="asm-3.0.jar" />
+				<include name="asm-tree-3.0.jar" />
+				<include name="jakarta-oro-2.0.8.jar" />
+				<include name="log4j-1.2.9.jar" />
+			</fileset>
+		</path>
+
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+		<delete file="${ptserver.output}/cobertura.ser" />
+
+		<cobertura-instrument todir="${instrumented.dir}">
+			<fileset dir="${basedir}">
+				<include name="ptserver/**/*.class" />
+				<exclude name="ptserver/output/**/*" />
+				<exclude name="ptserver/test/**/*" />
+			</fileset>
+		</cobertura-instrument>
 		<mkdir dir="${junit.output.dir}" />
-		<junit printsummary="yes" fork="no">
-			<classpath refid="ptII.classpath" />
+		<junit printsummary="yes" fork="yes">
+			<classpath>
+				<path location="${instrumented.dir}" />
+				<path refid="ptII.classpath" />
+				<path refid="cobertura.classpath" />
+			</classpath>
 			<formatter type="xml" />
-			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}"/>
+			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}" />
+			<!-- Cobertura -->
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${ptserver.output}/cobertura.ser" />
 		</junit>
+		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
 </project>
