@@ -147,12 +147,12 @@
 		</path>
 
 		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-		<delete file="${ptserver.output}/cobertura.ser" />
+		<delete file="cobertura.ser" />
 
 		<cobertura-instrument todir="${instrumented.dir}">
 			<fileset dir="${basedir}">
 				<include name="ptserver/**/*.class" />
-				<exclude name="ptserver/output/**/*" />
+				<exclude name="${ptserver.output}/**/*" />
 				<exclude name="ptserver/test/**/*" />
 			</fileset>
 		</cobertura-instrument>
@@ -166,8 +166,8 @@
 			<formatter type="xml" />
 			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}" />
 			<!-- Cobertura -->
-			<sysproperty key="net.sourceforge.cobertura.datafile" file="${ptserver.output}/cobertura.ser" />
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
 		</junit>
-		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
+		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}"/>
 	</target>
 </project>
