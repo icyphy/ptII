@@ -405,7 +405,7 @@ public abstract class PtolemyFrame extends TableauFrame {
             // The problem here is that with FileDialog, we can't add the
             // query as an accessory like we can with JFileChooser.  So, we
             // pop up a check box dialog before bringing up the FileDialog.
-            ComponentDialog dialog = new ComponentDialog(this, "Save Submodel?", _query);
+            /* ComponentDialog dialog = */ new ComponentDialog(this, "Save Submodel?", _query);
         }
 
         return fileDialog;
