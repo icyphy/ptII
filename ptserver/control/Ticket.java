@@ -53,18 +53,31 @@ public class Ticket implements java.io.Serializable {
      * 
      * @param url Path to the model file
      */
-    public Ticket(URL url) {
-        this.setTicketID(java.util.UUID.randomUUID());
-        this.setUrl(url);
-        this.setDateRequested(new Date());
+    private Ticket() {
+        this._ticketID = null;
+        this._url = null;
+        this._dateRequested = null;
     }
 
     //////////////////////////////////////////////////////////////////////
     ////                public methods
-    /** 
-     * Get the unique ticket identifier.     * 
-     * @return Identifier used to reference the request
+    /**
+     * Generate a new ticket for the provided model url.
+     * @return Ticket corresponding to simulation request
      */
+    public static Ticket generateTicket(URL url) {
+        Ticket ticket = new Ticket();
+        ticket.setTicketID(UUID.randomUUID());
+        ticket.setUrl(url);
+        ticket.setDateRequested(new Date());
+
+        return ticket;
+    }
+
+    /** 
+    * Get the unique ticket identifier.     * 
+    * @return Identifier used to reference the request
+    */
     public UUID getTicketID() {
         return this._ticketID;
     }

@@ -30,16 +30,16 @@ package ptserver.test.junit;
 import static org.junit.Assert.assertNotNull;
 
 import java.net.URL;
+import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ptserver.PtolemyServer2;
+import ptserver.PtolemyServer;
 import ptserver.control.IServerManager;
 import ptserver.control.Ticket;
 
 import com.caucho.hessian.client.HessianProxyFactory;
-import com.sun.corba.se.spi.activation.ServerManager;
 
 ///////////////////////////////////////////////////////////////////
 //// ServletTest
@@ -53,12 +53,13 @@ import com.sun.corba.se.spi.activation.ServerManager;
  */
 public class ServletTest {
 
+    public static final ResourceBundle CONFIG = ResourceBundle
+            .getBundle("ptserver.PtolemyServerConfig");
+
     @Before
     public void setUp() throws Exception {
-        _ptolemyServer = PtolemyServer2.getInstance();
-
+        _ptolemyServer = PtolemyServer.getInstance();
         HessianProxyFactory factory = new HessianProxyFactory();
-
         _servletProxy = (IServerManager) factory.create(IServerManager.class,
                 _servletURL);
         System.out.println(_servletURL);
@@ -77,11 +78,11 @@ public class ServletTest {
 
     //////////////////////////////////////////////////////////////////////
     ////                private variables
-    private PtolemyServer2 _ptolemyServer;
+    private PtolemyServer _ptolemyServer;
     private IServerManager _servletProxy;
 
     private final String _testModelFileURL = "file:///C:/Users/Peter/Workspace/ptII/ptserver/test/rampmodel.xml";
-    private final String _servletURL = "http://localhost:"
-            + PtolemyServer2.SERVLET_PORT + "/"
-            + ServerManager.class.getSimpleName();
+    private final String _servletURL = String.format("{0}:{1}/{2}",
+            "http://localhost:", CONFIG.getString("SERVLET_PORT"),
+            CONFIG.getString("SERVLET_PATH"));
 }

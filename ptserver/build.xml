@@ -9,10 +9,7 @@
 	<property name="debuglevel" value="source,lines,vars" />
 	<property name="target" value="1.5" />
 	<property name="source" value="1.5" />
-
 	<property name="ptserver.output" value="${basedir}/ptserver/output" />
-
-
 	<path id="ptII.classpath">
 		<pathelement location="." />
 		<pathelement location="lib/bsh-2.0b4.jar" />
@@ -41,10 +38,7 @@
 		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
 	</path>
-
-
 	<target name="init">
-
 	</target>
 	<target name="clean">
 		<delete>
@@ -126,16 +120,12 @@
 			<classpath refid="ptII.classpath" />
 		</java>
 	</target>
-
 	<property name="junit.output.dir" value="${ptserver.output}/junit" />
-	<!-- Cobertura -->
-
+	<!-- Cobertura -->	
 	<target name="test" depends="init, build-project">
-
 		<property name="instrumented.dir" value="${ptserver.output}/instrumented" />
 		<property name="cobertura.dir" value="ptserver/lib" />
 		<property name="coveragereport.dir" value="${ptserver.output}/coveragereport" />
-
 		<path id="cobertura.classpath">
 			<fileset dir="${cobertura.dir}">
 				<include name="cobertura.jar" />
@@ -145,10 +135,8 @@
 				<include name="log4j-1.2.9.jar" />
 			</fileset>
 		</path>
-
 		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 		<delete file="cobertura.ser" />
-
 		<delete dir="${instrumented.dir}" />
 		<cobertura-instrument todir="${instrumented.dir}">
 			<fileset dir="${basedir}">

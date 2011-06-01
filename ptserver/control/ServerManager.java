@@ -29,6 +29,8 @@ package ptserver.control;
 
 import java.net.URL;
 
+import ptserver.PtolemyServer;
+
 import com.caucho.hessian.server.HessianServlet;
 
 ///////////////////////////////////////////////////////////////////
@@ -45,17 +47,13 @@ import com.caucho.hessian.server.HessianServlet;
 
 public class ServerManager extends HessianServlet implements IServerManager {
 
-    public ServerManager(IServerManager ptolemyServer) {
-        this._ptolemyServer = ptolemyServer;
-    }
-
     /** Open the model on a separate thread within the Ptolemy server.
      * 
      * @param url Path to the model file
      * @return Reference to the execution thread of the selected model
      */
     public Ticket open(URL url) throws Exception {
-        return _ptolemyServer.open(url);
+        return PtolemyServer.getInstance().open(url);
     }
 
     /** Start the execution of the model.
@@ -64,7 +62,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @return Status of the start() call
      */
     public void start(Ticket ticket) throws IllegalStateException {
-        this._ptolemyServer.start(ticket);
+        PtolemyServer.getInstance().start(ticket);
     }
 
     /** Pause the execution of the running model.
@@ -73,7 +71,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @return Status of the pause() call
      */
     public void pause(Ticket ticket) throws IllegalStateException {
-        this._ptolemyServer.pause(ticket);
+        PtolemyServer.getInstance().pause(ticket);
     }
 
     /** Resume the execution of the paused model.
@@ -82,7 +80,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @return Status of the resume() call
      */
     public void resume(Ticket ticket) throws IllegalStateException {
-        this._ptolemyServer.resume(ticket);
+        PtolemyServer.getInstance().resume(ticket);
     }
 
     /** Stop the execution of the running model.
@@ -91,7 +89,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @return Status of the stop() call
      */
     public void stop(Ticket ticket) throws IllegalStateException {
-        this._ptolemyServer.stop(ticket);
+        PtolemyServer.getInstance().stop(ticket);
     }
 
     /** Close the model and destroy it's owner thread.
@@ -100,7 +98,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @return Status of the close() call
      */
     public void close(Ticket ticket) throws IllegalStateException {
-        this._ptolemyServer.close(ticket);
+        PtolemyServer.getInstance().close(ticket);
     }
 
     /** Get the list of models available on the server either in the
@@ -109,11 +107,6 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @return List of files on the server
      */
     public String[] getModelListing() throws Exception {
-        return this._ptolemyServer.getModelListing();
+        return PtolemyServer.getInstance().getModelListing();
     }
-
-    /** Reference to the Ptolemy server instance
-     * 
-     */
-    private IServerManager _ptolemyServer;
 }
