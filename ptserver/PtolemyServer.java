@@ -29,7 +29,6 @@ package ptserver;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.FileHandler;
@@ -230,9 +229,8 @@ public class PtolemyServer implements IServerManager {
         }
 
         // stop each active thread
-        Enumeration enumeration = this._simulations.keys();
-        while (enumeration.hasMoreElements()) {
-            this.stop((Ticket) enumeration.nextElement());
+        for (Ticket ticket : this._simulations.keySet()) {
+            this.stop(ticket);
         }
 
         // dispose collection

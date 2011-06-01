@@ -61,7 +61,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @param ticket Reference to the execution thread
      * @return Status of the start() call
      */
-    public void start(Ticket ticket) throws IllegalStateException,NullPointerException {
+    public void start(Ticket ticket) throws IllegalStateException, NullPointerException {
         PtolemyServer.getInstance().start(ticket);
     }
 
@@ -70,7 +70,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @param ticket Reference to the execution thread
      * @return Status of the pause() call
      */
-    public void pause(Ticket ticket) throws IllegalStateException,NullPointerException {
+    public void pause(Ticket ticket) throws IllegalStateException, NullPointerException {
         PtolemyServer.getInstance().pause(ticket);
     }
 
@@ -79,7 +79,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @param ticket Reference to the execution thread
      * @return Status of the resume() call
      */
-    public void resume(Ticket ticket) throws IllegalStateException,NullPointerException {
+    public void resume(Ticket ticket) throws IllegalStateException, NullPointerException {
         PtolemyServer.getInstance().resume(ticket);
     }
 
@@ -88,7 +88,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @param ticket Reference to the execution thread
      * @return Status of the stop() call
      */
-    public void stop(Ticket ticket) throws IllegalStateException,NullPointerException {
+    public void stop(Ticket ticket) throws IllegalStateException, NullPointerException {
         PtolemyServer.getInstance().stop(ticket);
     }
 
@@ -97,7 +97,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @param ticket Reference to the execution thread
      * @return Status of the close() call
      */
-    public void close(Ticket ticket) throws IllegalStateException,NullPointerException {
+    public void close(Ticket ticket) throws IllegalStateException, NullPointerException {
         PtolemyServer.getInstance().close(ticket);
     }
 

@@ -67,7 +67,7 @@ public class Ticket implements java.io.Serializable {
      */
     public static Ticket generateTicket(URL url) {
         Ticket ticket = new Ticket();
-        ticket.setTicketID(UUID.randomUUID());
+        ticket.setTicketID(UUID.randomUUID().toString());
         ticket.setUrl(url);
         ticket.setDateRequested(new Date());
 
@@ -78,7 +78,7 @@ public class Ticket implements java.io.Serializable {
     * Get the unique ticket identifier.     * 
     * @return Identifier used to reference the request
     */
-    public UUID getTicketID() {
+    public String getTicketID() {
         return this._ticketID;
     }
 
@@ -98,14 +98,46 @@ public class Ticket implements java.io.Serializable {
         return _dateRequested;
     }
 
+    /**
+     * 
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((_ticketID == null) ? 0 : _ticketID.hashCode());
+        return result;
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Ticket other = (Ticket) obj;
+        if (_ticketID == null) {
+            if (other._ticketID != null)
+                return false;
+        } else if (!_ticketID.equals(other._ticketID))
+            return false;
+        return true;
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////                private methods
     /**
      * Sets the unique ticket identifier
      * @param Univerally unique identifier
      */
-    private void setTicketID(UUID _ticketID) {
-        this._ticketID = _ticketID;
+    private void setTicketID(String ticketID) {
+        this._ticketID = ticketID;
     }
 
     /**
@@ -126,7 +158,7 @@ public class Ticket implements java.io.Serializable {
 
     //////////////////////////////////////////////////////////////////////
     ////                private variables
-    private UUID _ticketID;
+    private String _ticketID;
     private URL _url;
     private Date _dateRequested;
 }

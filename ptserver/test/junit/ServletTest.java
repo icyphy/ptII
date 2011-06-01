@@ -142,7 +142,8 @@ public class ServletTest {
     ////                private methods
     private Ticket openTicket() throws Exception {
         URL url = ServletTest.class.getResource("HelloWorld.xml");
-        return this._servletProxy.open(url);
+        Ticket ticket = this._servletProxy.open(url);
+        return ticket;
     }
 
     //////////////////////////////////////////////////////////////////////
