@@ -3962,13 +3962,14 @@ fi
 # $PTII/makefile if ptserver is found
 PTSERVER_DIR=
 
-#PTHESSIAN_JAR='${PTII}/ptserver/lib/hessian-4.0.7.jar'
-#PTJETTY_JAR='${PTII}/ptserver/lib/jetty-all-7.4.1.v20110513.jar'
-#PTSERVLET_JAR='${PTII}/ptserver/lib/servlet-api-2.5.jar'
-#PTWMQTT_JAR='${PTII}/ptserver/lib/wmqtt.jar'
+# Jar files used by ptserver.
+PTHESSIAN_JAR=
+PTJETTY_JAR=
+PTSERVLET_JAR=
+PTWMQTT_JAR=
 
-# Jar files necessary for compilation
-#PTSERVER_JARS="${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
+# Jar files necessary for compilation of ptserver.
+PTSERVER_JARS=
 
 # We only need to look for Hessian if $PTSERVER_USER_DIR is present
 PTSERVER_USER_DIR="$PTII/ptserver"
@@ -4027,7 +4028,7 @@ else
     The ptserver interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptserver/package.html] )
     else
-        PTSERVER_JARS="${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
+        PTSERVER_JARS="${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
     fi
 fi
 
