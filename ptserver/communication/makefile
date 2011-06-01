@@ -40,7 +40,7 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/ptserver/lib/wmqtt.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Used to build jar files
 PTPACKAGE = 	communication

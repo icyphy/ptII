@@ -36,7 +36,7 @@ ME =		ptserver/tests/junit
 ROOT =		../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/ptserver/lib/hessian-4.0.7.jar$(CLASSPATHSEPARATOR)$(ROOT)/ptserver/lib/servlet-api-2.5.jar$(CLASSPATHSEPARATOR)$(ROOT)/ptserver/lib/jetty-all-7.4.1.v20110513.jar$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

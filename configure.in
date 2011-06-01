@@ -3951,6 +3951,99 @@ if test -d "$MESCAL_USER_DIR"; then
 
 fi
 
+
+#--------------------------------------------------------------------
+#       ptserver is the Ptolemy server interface to the Android client
+#	http://chess.eecs.berkeley.edu
+#	
+#--------------------------------------------------------------------
+
+# PTSERVER_DIR is set to ptserver and used in
+# $PTII/makefile if ptserver is found
+PTSERVER_DIR=
+
+#PTHESSIAN_JAR='${PTII}/ptserver/lib/hessian-4.0.7.jar'
+#PTJETTY_JAR='${PTII}/ptserver/lib/jetty-all-7.4.1.v20110513.jar'
+#PTSERVLET_JAR='${PTII}/ptserver/lib/servlet-api-2.5.jar'
+#PTWMQTT_JAR='${PTII}/ptserver/lib/wmqtt.jar'
+
+# Jar files necessary for compilation
+#PTSERVER_JARS="${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
+
+# We only need to look for Hessian if $PTSERVER_USER_DIR is present
+PTSERVER_USER_DIR="$PTII/ptserver"
+if test ! -d "$PTSERVER_USER_DIR"; then
+    PT_MSG_STATUS([$PTSERVER_USER_DIR is not present,
+    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces.])
+else
+    AC_MSG_CHECKING([for Hessian, used by ptserver ])
+    AC_ARG_WITH(dbxml, [  --with-hessian=JAR       use Hessian.jar from JAR,
+                          defaults to \$PTII/ptserver/lib/hessian-4.0.7.jar],
+	PTHESSIAN_JAR=$withval,
+	PTHESSIAN_JAR=$PTII/ptserver/lib/hessian-4.0.7.jar)
+
+    if test  -f "$PTHESSIAN_JAR"; then
+	PT_MSG_RESULT([$PTHESSIAN_JAR])
+
+	AC_MSG_CHECKING([for Jetty, used by ptserver ])
+	AC_ARG_WITH(dbxml, [  --with-jetty=JAR       use jetty.jar from JAR,
+                          defaults to \$PTII/ptserver/lib/jetty-all-7.4.1.v20110513.jar],
+	PTJETTY_JAR=$withval,
+	PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-7.4.1.v20110513.jar)
+        if test  -f "$PTJETTY_JAR"; then
+	    PT_MSG_RESULT([$PTJETTY_JAR])
+	
+            AC_MSG_CHECKING([for Servlet, used by ptserver ])
+	    AC_ARG_WITH(dbxml, [  --with-servlet=JAR       use servlet.jar from JAR,
+                          defaults to \$PTII/ptserver/lib/jservlet-api-2.5.jar],
+	    PTSERVLET_JAR=$withval,
+	    PTSERVLET_JAR=$PTII/ptserver/lib/servlet-api-2.5.jar)
+
+            if test  -f "$PTSERVLET_JAR"; then
+	        PT_MSG_RESULT([$PTSERVLET_JAR])
+
+
+		AC_MSG_CHECKING([for WMQTT, used by pserver ])
+	    	AC_ARG_WITH(dbxml, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
+                          defaults to \$PTII/ptserver/lib/wmqtt.jar],
+	    	PTWMQTT_JAR=$withval,
+	        PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
+
+                if test  -f "$PTWMQTT_JAR"; then
+	            PT_MSG_RESULT([$PTWMQTT_JAR])
+
+	            # Set to ptserver and used in
+	            # $PTII/makefile
+	            PTSERVER_DIR=ptserver
+            	    # PTSERVER_PACKAGES is used in ptII/doc/makefile
+		    PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+                fi
+            fi	
+         fi
+    fi
+
+    if test "$PTSERVER_DIR" = ""; then
+        AC_MSG_WARN([Failed to find the jar files necessary to compile ptserver.
+    The ptserver interface is used to support Ptolemy running on the Android.
+    For further instructions, see $PTII/ptserver/package.html] )
+    else
+        PTSERVER_JARS="${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
+    fi
+fi
+
+if test -z "$PTSERVER_JARS"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptserver/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTHESSIAN_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTJETTY_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTSERVLET_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTWMQTT_JAR\"/>"
+fi 
+
 #--------------------------------------------------------------------
 #       PSDF is the Parameterized Synchronous Data Flow domain
 #--------------------------------------------------------------------
@@ -5572,6 +5665,16 @@ AC_SUBST(PTQUICKTIME_PACKAGES)
 # Ptolemy II packages that use the RXTX Java Serial Communication facility
 # PTRXTX_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTRXTX_PACKAGES)
+
+# PTSERVER_DIR is set to ptserver and used in
+# $PTII/makefile if dbxml is found
+AC_SUBST(PTSERVER_DIR)
+
+# PTSERVER_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTSERVER_PACKAGES)
+
+# PTSERVER_JARS includes hessian, jetty, servlet and mqtt jars and is used by $PTII/ptserver
+AC_SUBST(PTSERVER_JARS)
 
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.

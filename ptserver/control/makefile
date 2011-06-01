@@ -40,7 +40,7 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/ptserver/lib/hessian-4.0.7.jar$(CLASSPATHSEPARATOR)$(ROOT)/ptserver/lib/servlet-api-2.5.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Used to build jar files
 PTPACKAGE = 	control
