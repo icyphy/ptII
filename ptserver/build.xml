@@ -149,6 +149,7 @@
 		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 		<delete file="cobertura.ser" />
 
+		<delete dir="${instrumented.dir}" />
 		<cobertura-instrument todir="${instrumented.dir}">
 			<fileset dir="${basedir}">
 				<include name="ptserver/**/*.class" />
