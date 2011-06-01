@@ -264,12 +264,20 @@ public class PtolemyServer implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception Exception Failed to start simulation thread.
      */
-    public void start(Ticket ticket) throws IllegalStateException {
+    public void start(Ticket ticket) throws IllegalStateException,NullPointerException {
         try {
             SimulationThread activeThread = this._simulations.get(ticket);
-            if (activeThread != null) {
-                activeThread.getManager().execute();
+
+            if (activeThread == null) { 
+                PtolemyServer.LOGGER.log(
+                        Level.SEVERE,
+                        String.format("%s: %s", ticket.getTicketID().toString(),
+                                "Could not find thread."));
+                throw new NullPointerException("Could not find thread.");
             }
+
+            activeThread.getManager().execute();
+            
         } catch (IllegalThreadStateException e) {
             PtolemyServer.LOGGER.log(
                     Level.SEVERE,
@@ -297,11 +305,19 @@ public class PtolemyServer implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to pause simulation thread.
      */
-    public void pause(Ticket ticket) throws IllegalStateException {
+    public void pause(Ticket ticket) throws IllegalStateException,NullPointerException {
         SimulationThread activeThread = this._simulations.get(ticket);
-        if (activeThread != null) {
-            activeThread.getManager().pause();
+
+        if (activeThread == null) { 
+            PtolemyServer.LOGGER.log(
+                    Level.SEVERE,
+                    String.format("%s: %s", ticket.getTicketID().toString(),
+                            "Could not find thread."));
+            throw new NullPointerException("Could not find thread.");
         }
+
+        activeThread.getManager().pause();
+
     }
 
     /**
@@ -310,11 +326,17 @@ public class PtolemyServer implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to resume simulation thread.
      */
-    public void resume(Ticket ticket) {
+    public void resume(Ticket ticket) throws NullPointerException {
         SimulationThread activeThread = this._simulations.get(ticket);
-        if (activeThread != null) {
-            activeThread.getManager().resume();
+        if (activeThread == null) { 
+            PtolemyServer.LOGGER.log(
+                    Level.SEVERE,
+                    String.format("%s: %s", ticket.getTicketID().toString(),
+                            "Could not find thread."));
+            throw new NullPointerException("Could not find thread.");
         }
+
+        activeThread.getManager().resume();
     }
 
     /**
@@ -323,12 +345,20 @@ public class PtolemyServer implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to stop simulation thread.
      */
-    public void stop(Ticket ticket) throws IllegalStateException {
+    public void stop(Ticket ticket) throws IllegalStateException,NullPointerException {
         try {
             SimulationThread activeThread = this._simulations.get(ticket);
-            if (activeThread != null) {
-                activeThread.getManager().finish();
+            
+            if (activeThread == null) { 
+                PtolemyServer.LOGGER.log(
+                        Level.SEVERE,
+                        String.format("%s: %s", ticket.getTicketID().toString(),
+                                "Could not find thread."));
+                throw new NullPointerException("Could not find thread.");
             }
+
+            activeThread.getManager().finish();
+
         } catch (IllegalThreadStateException e) {
             PtolemyServer.LOGGER.log(
                     Level.SEVERE,
@@ -344,13 +374,21 @@ public class PtolemyServer implements IServerManager {
      * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException Failed to destroy simulation thread.
      */
-    public void close(Ticket ticket) throws IllegalStateException {
+    public void close(Ticket ticket) throws IllegalStateException,NullPointerException {
         try {
             SimulationThread activeThread = this._simulations.get(ticket);
-            if (activeThread != null) {
-                this._simulations.remove(ticket);
-                activeThread = null;
+            
+            if (activeThread == null) { 
+                PtolemyServer.LOGGER.log(
+                        Level.SEVERE,
+                        String.format("%s: %s", ticket.getTicketID().toString(),
+                                "Could not find thread."));
+                throw new NullPointerException("Could not find thread.");
             }
+            
+            this._simulations.remove(ticket);
+            activeThread = null;
+
         } catch (IllegalThreadStateException e) {
             PtolemyServer.LOGGER.log(
                     Level.SEVERE,
@@ -371,6 +409,15 @@ public class PtolemyServer implements IServerManager {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    /**
+     * Get the number of simulations registered.
+     * 
+     * @return Number of tickets in the system
+     */
+    public int getNumberOfSimulationsRunning() {
+        return _simulations.size();
+    }
 
     //////////////////////////////////////////////////////////////////////
     ////                private methods
@@ -378,7 +425,7 @@ public class PtolemyServer implements IServerManager {
      * Set the servlet virtual directory.
      * @param _servletPath Virtual path of the servlet
      */
-    public void setServletPath(String servletPath) {
+    private void setServletPath(String servletPath) {
         this._servletPath = servletPath;
     }
 
@@ -386,7 +433,7 @@ public class PtolemyServer implements IServerManager {
      * Set the servlet operating port.
      * @param servletPort Port on which to run the servlet container
      */
-    public void setServletPort(int servletPort) {
+    private void setServletPort(int servletPort) {
         this._servletPort = servletPort;
     }
 
@@ -394,7 +441,7 @@ public class PtolemyServer implements IServerManager {
      * Set the path to the broker executable.
      * @param brokerPath Path to the broker executable
      */
-    public void setBrokerPath(String brokerPath) {
+    private void setBrokerPath(String brokerPath) {
         this._brokerPath = brokerPath;
     }
 

@@ -27,6 +27,7 @@
 
 package ptserver.test.junit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.net.URL;
@@ -53,29 +54,95 @@ import com.caucho.hessian.client.HessianProxyFactory;
  */
 public class ServletTest {
 
-    public static final ResourceBundle CONFIG = ResourceBundle
-            .getBundle("ptserver.PtolemyServerConfig");
+    public static final ResourceBundle CONFIG = PtolemyServer.CONFIG;
 
     @Before
     public void setUp() throws Exception {
+        this._ptolemyServer = PtolemyServer.getInstance();
+
         HessianProxyFactory proxyFactory = new HessianProxyFactory();
         String servletUrl = String.format("http://%s:%s%s", "localhost",
                 CONFIG.getString("SERVLET_PORT"),
                 CONFIG.getString("SERVLET_PATH"));
 
-        _ptolemyServer = PtolemyServer.getInstance();
-        _servletProxy = (IServerManager) proxyFactory.create(
+        this._servletProxy = (IServerManager) proxyFactory.create(
                 IServerManager.class, servletUrl);
     }
 
+    /**
+     * Test that tries to create a new thread and makes sure the following:
+     * 1. A not null ticket is returned
+     * 2. The returned ticket has an id
+     * 3. The number of simulations stored increased by one
+     * 
+     * @throws Exception
+     */
     @Test
-    public void startThread() throws Exception {
-        URL url = ServletTest.class.getResource("HelloWorld.xml");
-        Ticket ticket = null;
-        ticket = _servletProxy.open(url);
+    public void openThread() throws Exception {
+        int simulations = this._ptolemyServer.getNumberOfSimulationsRunning();
+        Ticket ticket = openTicket();
 
         assertNotNull(ticket);
         assertNotNull(ticket.getTicketID());
+        assertEquals(simulations + 1,
+                this._ptolemyServer.getNumberOfSimulationsRunning());
+    }
+
+    /**
+     * Test that tries to open, start, stop, and close a thread
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void manipulateThread() throws Exception {
+        Ticket ticket = openTicket();
+        assertNotNull(ticket);
+
+        int simulations = this._ptolemyServer.getNumberOfSimulationsRunning();
+
+        try {
+            this._ptolemyServer.start(ticket);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /** Starting the thread should not change the number of threads registered. **/
+        assertEquals(simulations,
+                this._ptolemyServer.getNumberOfSimulationsRunning());
+
+        try {
+            this._ptolemyServer.stop(ticket);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /** Stopping the thread should not change the number of threads registered. **/
+        assertEquals(simulations,
+                this._ptolemyServer.getNumberOfSimulationsRunning());
+
+        try {
+            this._ptolemyServer.close(ticket);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /** Closing the thread should decrease the number of threads registered. **/
+        assertEquals(simulations - 1,
+                this._ptolemyServer.getNumberOfSimulationsRunning());
+
+        try {
+            this._ptolemyServer.stop(ticket);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /** Stopping an invalid thread should throw an exception. **/
+        assertEquals(simulations,
+                this._ptolemyServer.getNumberOfSimulationsRunning());
+
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////                private methods
+    private Ticket openTicket() throws Exception {
+        URL url = ServletTest.class.getResource("HelloWorld.xml");
+        return this._servletProxy.open(url);
     }
 
     //////////////////////////////////////////////////////////////////////
