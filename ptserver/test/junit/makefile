@@ -77,10 +77,13 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
-tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java ../../PtolemyServerConfig.properties #test_jsimple
 	CLASSPATH="$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptserver.test.junit.AllTests
 
 test_java: jclass
+
+../../PtolemyServerConfig.properties: ../../PtolemyServerConfig.properties.default
+	cp $^ $@
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
