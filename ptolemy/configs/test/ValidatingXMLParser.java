@@ -27,8 +27,6 @@
  */
 package ptolemy.configs.test;
 
-
-import java.io.File;
 import java.io.StringReader;
 
 import javax.xml.parsers.SAXParser;

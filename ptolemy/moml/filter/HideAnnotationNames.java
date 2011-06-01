@@ -32,7 +32,6 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -48,7 +47,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class HideAnnotationNames implements MoMLFilter {
+public class HideAnnotationNames extends MoMLFilterSimple {
     /** Hide annotation names.
      *  If the attributeName is "name" and attributeValue ends
      *  with "annotation", then

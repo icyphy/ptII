@@ -30,11 +30,9 @@ import java.io.File;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLSimpleApplication;
-import ptolemy.moml.ParserAttribute;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 

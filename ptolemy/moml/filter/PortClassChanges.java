@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -50,7 +49,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class PortClassChanges implements MoMLFilter {
+public class PortClassChanges extends MoMLFilterSimple {
     /**  If the attributeName is "class" and attributeValue names a
      *   class that has had its port classes changed between releases,
      *   then substitute in the new port classes.

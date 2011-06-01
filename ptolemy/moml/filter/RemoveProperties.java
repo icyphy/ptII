@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -89,7 +88,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class RemoveProperties implements MoMLFilter {
+public class RemoveProperties extends MoMLFilterSimple {
     /** Return the old attribute value for properties that are not registered
      *  to be removed. Otherwise, return null to remove the property.
      *  @param container  The container for this attribute.

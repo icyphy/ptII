@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -55,7 +54,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ClassChanges implements MoMLFilter {
+public class ClassChanges extends MoMLFilterSimple {
     /** Clear the map of class renames and the set of class removals.
      */
     public static void clear() {

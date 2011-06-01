@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -88,7 +87,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ParameterNameChanges implements MoMLFilter {
+public class ParameterNameChanges extends MoMLFilterSimple {
     /** If the attributeName is "class" and attributeValue names a
      *  class that has had a Parameter names changed between releases,
      *  then substitute in the new Parameter names.

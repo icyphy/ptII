@@ -33,7 +33,6 @@ import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 
 ///////////////////////////////////////////////////////////////////
 //// NamedObjClassesSeen
@@ -47,7 +46,7 @@ import ptolemy.moml.MoMLFilter;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class NamedObjClassesSeen implements MoMLFilter {
+public class NamedObjClassesSeen extends MoMLFilterSimple {
     /** Create a filter that looks for classes that extend NamedObj.
      *  @param classesToBeIndexed A HashMap, where the key is a fully
      *  qualified dot separated String naming the class; and the key

@@ -36,7 +36,6 @@ import java.net.URL;
 import ptolemy.actor.IORelation;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -55,7 +54,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class ChangeFixedWidth1ToAuto implements MoMLFilter {
+public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

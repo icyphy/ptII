@@ -92,6 +92,57 @@ public interface MoMLFilter {
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile);
 
+    /** Given a container, attribute name and attribute value,
+     *  return a new attribute value.  Note that "attribute"
+     *  means XML attribute, not Ptolemy II attribute. Also,
+     *  the container is the context of the current of XML
+     *  element.  So, for example, if you have:
+     *  <pre>
+     *    &lt;entity name="foo" class="..."&gt;
+     *       &lt;property name="x" value="10"/&gt;
+     *    &lt;/entity&gt;
+     *  </pre>
+     *  then this method will be called twice with the container
+     *  being the instance "foo". On the first call, the
+     *  <i>attributeName</i> will be "name" and the
+     *  <i>attributeValue</i> will be "x".  On the second call,
+     *  <i>attributeName</i> will be "value" and the
+     *  <i>attributeValue</i> will be "10".
+     *  To make no change to the attribute value, an implementer
+     *  should simply return the same attributeValue.
+     *  To cause the MoMLParser to ignore the current element
+     *  altogether, an implementer should return null. For
+     *  example, to skip a graphical class, create a filter that
+     *  looks for <i>attributeName</i> equal to "class" and
+     *  <i>attributeValue</i> equal to the class name to skip.
+     *  Note that if the <i>attributeValue</i> argument is null,
+     *  then returning null is interpreted as no change, rather than
+     *  as an indication to skip the element.
+     *  To change the value of the attribute, simply return a
+     *  a new value for the attribute.
+     *  <p>
+     *  If modifies the attribute value, then it should call
+     *  the static method MoMLParser.setModified(true), which indicates
+     *  that the model was modified so that the user can optionally
+     *  save the modified model.
+     *
+     *  <p>This method takes a MoMLParser argument, which is optionally
+     *  used to parse MoML.  We have to parse the MoML as opposed to
+     *  calling the Java classes directly so that ptolemy.moml.filter
+     *  does not depend on other packages, such as ptolemy.vergil.</p>
+     *
+     *  @param container  The container for XML element.
+     *  @param element The XML element name.
+     *  @param attributeName The name of the attribute.
+     *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
+     *  @return A new value for the attribute, or the same value
+     *   to leave it unchanged, or null to cause the current element
+     *   to be ignored (unless the attributeValue argument is null).
+     */
+    public String filterAttributeValue(NamedObj container, String element,
+            String attributeName, String attributeValue, String xmlFile, MoMLParser parser);
+
     /** Make modifications to the specified container, which is
      *  defined in a MoML element with the specified name.
      *  This method is called when an end element in MoML is
@@ -110,11 +161,42 @@ public interface MoMLFilter {
      *  @param currentCharData The character data, which appears
      *   only in the doc and configure elements
      *  @param xmlFile The file currently being parsed.
+     *  @param parser The parser in which MoML is optionally evaluated.
      *  @exception Exception If there is a problem modifying the
      *  specified container.
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception;
+
+    /** Make modifications to the specified container, which is
+     *  defined in a MoML element with the specified name.
+     *  This method is called when an end element in MoML is
+     *  encountered. A typical use of this method is to make
+     *  some modification to the object (the container) that
+     *  was constructed.
+b     *  <p>
+     *  If an implementor makes changes to the specified container,
+     *  then it should call MoMLParser.setModified(true) which indicates
+     *  that the model was modified so that the user can optionally
+     *  save the modified model.
+     *
+     *  <p>This method takes a MoMLParser argument, which is optionally
+     *  used to parse MoML.  We have to parse the MoML as opposed to
+     *  calling the Java classes directly so that ptolemy.moml.filter
+     *  does not depend on other packages, such as ptolemy.vergil.</p>
+     *
+     *  @param container The object defined by the element that this
+     *   is the end of.
+     *  @param elementName The element name.
+     *  @param currentCharData The character data, which appears
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
+     *  @param parser The parser in which MoML is optionally evaluated.
+     *  @exception Exception If there is a problem modifying the
+     *  specified container.
+     */
+    public void filterEndElement(NamedObj container, String elementName,
+            StringBuffer currentCharData, String xmlFile, MoMLParser parser) throws Exception;
 
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).

@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -83,7 +82,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class PropertyClassChanges implements MoMLFilter {
+public class PropertyClassChanges extends MoMLFilterSimple {
     /** Clear the map of actors with property class changes.
      */
     public static void clear() {

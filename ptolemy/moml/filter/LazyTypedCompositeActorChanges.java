@@ -28,7 +28,6 @@ package ptolemy.moml.filter;
 
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,7 +44,7 @@ definitios are changed to LazyTypedCompositeActors.
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class LazyTypedCompositeActorChanges implements MoMLFilter {
+public class LazyTypedCompositeActorChanges extends MoMLFilterSimple {
     /** Possibly replaced TypedCompositeActors with LazyTypedCompositeActors.
      *        If the attributeName is "class", attributeValue is
      *  "ptolemy.actor.TypedCompositeActor" and the container is

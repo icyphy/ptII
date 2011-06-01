@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -50,7 +49,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class RemoveGraphicalClasses implements MoMLFilter {
+public class RemoveGraphicalClasses extends MoMLFilterSimple {
     /** Clear the map of graphical classes to be removed.
      */
     public static void clear() {

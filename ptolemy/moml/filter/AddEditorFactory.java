@@ -29,7 +29,6 @@ package ptolemy.moml.filter;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -44,7 +43,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class AddEditorFactory implements MoMLFilter {
+public class AddEditorFactory extends MoMLFilterSimple {
     /**  Identify Parameters that need a VisibleParameterEditorFactory
      *   named _editorFactory added.
      *
@@ -125,9 +124,27 @@ public class AddEditorFactory implements MoMLFilter {
      *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
+     *  @deprecated Use {@link #filterEndElement(NamedObj, String, StringBuffer, String, MoMLParser)}
+     * instead and pass a MoMLParser.
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
+        filterEndElement(container, elementName, currentCharData, xmlFile,
+                new MoMLParser());
+    }
+
+    /** Make modifications to the specified container, which is
+     *  defined in a MoML element with the specified name.
+     *  @param container The object created by this element.
+     *  @param elementName The element name.
+     *  @param currentCharData The character data, which appears
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
+     *  @exception Exception if there is a problem substituting
+     *  in the new value.
+     */
+    public void filterEndElement(NamedObj container, String elementName,
+            StringBuffer currentCharData, String xmlFile, MoMLParser parser) throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
         } else if (_currentAttributeHasLocation && (elementName != null)
@@ -142,12 +159,9 @@ public class AddEditorFactory implements MoMLFilter {
             //
             // VisibleParameterEditorFactor _editorFactory =
             //        new VisibleParameterEditorFactory(container, "_editorFactory");
-            if (_parser == null) {
-                _parser = new MoMLParser();
-            }
 
             // setContext calls parser.reset()
-            _parser.setContext(container);
+            parser.setContext(container);
 
             String moml = "<property name=\"_editorFactory\""
                     + "class=\"ptolemy.vergil.toolbox."
@@ -157,7 +171,7 @@ public class AddEditorFactory implements MoMLFilter {
                 // Do not call parse(moml) here, since that method
                 // will fail if we are in an applet because it tries
                 // to read user.dir
-                _parser.parse(null, moml);
+                parser.parse(null, moml);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex, "Failed to parse\n"
@@ -191,9 +205,4 @@ public class AddEditorFactory implements MoMLFilter {
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;
-
-    // The parser we use to parse the MoML when we add an editor factory.
-    // FindBugs: "Incorrect lazy initialization of static field".
-    // So, we make this volatile.
-    private static volatile MoMLParser _parser;
 }

@@ -33,7 +33,6 @@ import java.util.Map;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -54,7 +53,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class PortNameChanges implements MoMLFilter {
+public class PortNameChanges extends MoMLFilterSimple {
     /** Clear the map of actors with port name changes.
      */
     public static void clear() {

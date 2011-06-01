@@ -50,8 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.MoMLFilterSimple;
 
 ///////////////////////////////////////////////////////////////////
 //// DesignPatternImporter
@@ -304,7 +304,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class MoMLContentFilter implements MoMLFilter {
+    private class MoMLContentFilter extends MoMLFilterSimple {
 
         /** Return the value of the attribute.
          *

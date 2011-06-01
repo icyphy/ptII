@@ -56,6 +56,7 @@ JSRCS = \
 	GRColorChanges.java \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
+	MoMLFilterSimple.java \
 	NamedObjClassesSeen.java \
 	LazyTypedCompositeActorChanges.java \
 	ParameterNameChanges.java \

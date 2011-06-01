@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -71,7 +70,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class MultiportToSinglePort implements MoMLFilter {
+public class MultiportToSinglePort extends MoMLFilterSimple {
     /** If the attributeName is "class" and attributeValue names a
      *  class that has had its port names changed between releases,
      *  then substitute in the new port names.

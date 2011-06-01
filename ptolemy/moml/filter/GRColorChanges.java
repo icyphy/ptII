@@ -31,7 +31,6 @@ import java.util.HashSet;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -50,7 +49,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class GRColorChanges implements MoMLFilter {
+public class GRColorChanges extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

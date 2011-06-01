@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -54,7 +53,7 @@ BackwardCompatibility, it must be added by calling
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class RemoveClasses implements MoMLFilter {
+public class RemoveClasses extends MoMLFilterSimple {
     /** Clear the map of graphical classes to be removed.
      */
     public static void clear() {

@@ -30,8 +30,8 @@ package ptolemy.vergil.kernel.attributes;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.MoMLFilterSimple;
 
 ///////////////////////////////////////////////////////////////////
 //// UpdateAnnotations
@@ -75,7 +75,7 @@ For hybrid system models, use the CTEmbeddedDirector.&lt;/text&gt;&lt;/svg&gt;&l
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class UpdateAnnotations implements MoMLFilter {
+public class UpdateAnnotations extends MoMLFilterSimple {
 
     /** Update annotations by removing old annotations and replacing
      *  them with new annotation. If the attributeName is "name" and

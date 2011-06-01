@@ -32,7 +32,6 @@ import java.util.Iterator;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -48,7 +47,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class AddIcon implements MoMLFilter {
+public class AddIcon extends MoMLFilterSimple {
     /**  If the attributeName is "class" and attributeValue names a
      *        class that has had its port names changed between releases,
      *  then substitute in the new port names.
@@ -127,26 +126,43 @@ public class AddIcon implements MoMLFilter {
      *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
+     *  @deprecated Use {@link #filterEndElement(NamedObj, String, StringBuffer, String, MoMLParser)}
+     * instead and pass a MoMLParser.
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
+        filterEndElement(container, elementName, currentCharData, xmlFile,
+                new MoMLParser());
+    }
+
+    /** Make modifications to the specified container, which is
+     *  defined in a MoML element with the specified name.
+     *  @param container The object created by this element.
+     *  @param elementName The element name.
+     *  @param currentCharData The character data, which appears
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
+     *  @param parser The parser in which MoML is optionally evaluated.
+     *  @exception Exception if there is a problem substituting
+     *  in the new value.
+     */
+    public void filterEndElement(NamedObj container, String elementName,
+            StringBuffer currentCharData, String xmlFile, MoMLParser parser) throws Exception {
         if (_currentlyProcessingActorThatMayNeedAnIcon
                 && elementName.equals("entity") && (container != null)
                 && container.getFullName().equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnIcon = false;
 
-            if (_parser == null) {
-                _parser = new MoMLParser();
-            }
 
+            // FIXME: do we need to set the context back?
             // setContext calls parser.reset()
-            _parser.setContext(container);
+            parser.setContext(container);
 
             try {
                 // Do not call parse(_iconMoML) here, since that method
                 // will fail if we are in an applet because it tries
                 // to read user.dir
-                _parser.parse(null, _iconMoML);
+                parser.parse(null, _iconMoML);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex, "Failed to parse\n"
@@ -189,11 +205,6 @@ public class AddIcon implements MoMLFilter {
 
     // Last "name" value seen, for use if we see a "class".
     private String _lastNameSeen;
-
-    // The parser we use to parse the MoML when we add an _icon.
-    // FindBugs: "Incorrect lazy initialization of static field".
-    // So, we make this volatile.
-    private static MoMLParser _parser;
 
     static {
         ///////////////////////////////////////////////////////////
