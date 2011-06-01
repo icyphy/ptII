@@ -1501,7 +1501,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptserver/control \
 	$(REMOTE1PTIIDIST)/ptserver/data \
 	$(REMOTE1PTIIDIST)/ptserver/data/handler \
-	$(REMOTE1PTIIDIST)/ptserver/test
+	$(REMOTE1PTIIDIST)/ptserver/test \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/basic/layout/kieler \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
