@@ -1,4 +1,6 @@
 /*
+ Thread on which a Ptolemy simulation will be executed
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,26 +41,27 @@ import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.control.Ticket;
 
 ///////////////////////////////////////////////////////////////////
-////SimulationThread
+//// SimulationThread
 
 /** 
- * Launches a simulation on the current thread under the provided
- * ticket reference and waits for the user to issue control commands.
+ * Launch the simulation on the current thread under the provided
+ * ticket reference and wait for the user to issue control commands.
  * 
  * @author jkillian
  * @version $Id$
  * @Pt.ProposedRating Red (jkillian)
  * @Pt.AcceptedRating Red (jkillian)
  */
-
 public class SimulationThread extends Thread {
+
     /**
      * Create an instance of the simulation thread running on the Ptolemy
      * server application.
      * 
      * @param ticket Reference to the simulation request
-     * @exception Exception Thrown if the simulation encounters problems 
-     * setting the director or getting workspace access.
+     * @exception Exception If the simulation encounters a problem setting
+     * the director or getting workspace access, throw an exception so that
+     * the caller is notified. 
      */
     public SimulationThread(Ticket ticket) throws Exception {
         _ticket = ticket;
@@ -82,19 +85,20 @@ public class SimulationThread extends Thread {
      */
     public void run() {
 
-        Manager manager = this.getManager();
+        Manager manager = getManager();
         if (manager != null) {
             try {
                 manager.execute();
             } catch (IllegalActionException e) {
-                PtolemyServer.LOGGER.log(Level.WARNING, String.format(
-                        "{0}: {1}", _ticket.getTicketID().toString(),
-                        "Model is already running."));
-                e.printStackTrace();
+                PtolemyServer.LOGGER.log(Level.WARNING, String.format("%s: %s",
+                        _ticket.getTicketID().toString(),
+                        "The simulation is already running."));
+                throw new IllegalStateException(e);
             } catch (KernelException e) {
                 PtolemyServer.LOGGER.log(Level.SEVERE, String.format(
-                        "{0}: {1} - {2}", _ticket.getTicketID().toString(),
-                        "KernelException has been thrown", e.getMessage()));
+                        "%s: %s - %s", _ticket.getTicketID().toString(),
+                        "A KernelException has been thrown", e.getMessage()));
+                throw new IllegalStateException(e);
             }
         }
     }
@@ -102,18 +106,22 @@ public class SimulationThread extends Thread {
     /**
      * Get the manager responsible for coordinating the model of computation.
      * 
-     * @return Manager Manager used to control the simulation
+     * @return The Manager used to control the simulation
      */
     public Manager getManager() {
         CompositeActor topLevelActor = _remoteModel.getTopLevelActor();
-        if (topLevelActor == null)
+        if (topLevelActor == null) {
             return null;
-        else
+        } else {
             return topLevelActor.getManager();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////
     ////                private variables
+
+    // References the simulation by the Ptolemy server
     private final Ticket _ticket;
+    // Replace actors and accesses the manager of the simulation
     private final RemoteModel _remoteModel;
 }
