@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 
-public class QMTest {
+public class QMTest { 
 
     public static void main(String[] args) throws MalformedURLException,
             Exception {
