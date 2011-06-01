@@ -1,0 +1,63 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="rampmodel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 126, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6954946796468">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0624999999894, 206.16666666666}">
+    </property>
+    <entity name="Display" class="ptserver.test.SysOutActor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 343, 230}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 185.0]">
+        </property>
+        <property name="_remote" class="ptolemy.data.expr.Parameter" value="sink">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Hello World">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 185.0]">
+        </property>
+        <property name="_remote" class="ptolemy.data.expr.Parameter" value="source">
+  		</property>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="World">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="Ptolemy">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[326.44921875, 168.28125]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation"/>
+    <link port="StringConst.output" relation="relation2"/>
+    <link port="StringReplace.stringToEdit" relation="relation2"/>
+    <link port="StringReplace.output" relation="relation"/>
+</entity>

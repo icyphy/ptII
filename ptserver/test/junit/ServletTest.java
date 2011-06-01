@@ -62,14 +62,12 @@ public class ServletTest {
         HessianProxyFactory factory = new HessianProxyFactory();
         _servletProxy = (IServerManager) factory.create(IServerManager.class,
                 _servletURL);
-        System.out.println(_servletURL);
     }
 
     @Test
     public void startThread() throws Exception {
-        URL url = null;
+        URL url = ServletTest.class.getResource("HelloWorld.xml");
         Ticket ticket = null;
-        url = new URL(_testModelFileURL);
         ticket = _servletProxy.open(url);
 
         assertNotNull(ticket);
@@ -81,8 +79,7 @@ public class ServletTest {
     private PtolemyServer _ptolemyServer;
     private IServerManager _servletProxy;
 
-    private final String _testModelFileURL = "file:///C:/Users/Peter/Workspace/ptII/ptserver/test/rampmodel.xml";
-    private final String _servletURL = String.format("{0}:{1}/{2}",
-            "http://localhost:", CONFIG.getString("SERVLET_PORT"),
+    private final String _servletURL = String.format("http://%s:%s%s",
+            "localhost", CONFIG.getString("SERVLET_PORT"),
             CONFIG.getString("SERVLET_PATH"));
 }
