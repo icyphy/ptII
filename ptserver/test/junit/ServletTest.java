@@ -101,7 +101,7 @@ public class ServletTest {
         int simulations = this._ptolemyServer.getNumberOfSimulationsRunning();
 
         try {
-            this._ptolemyServer.start(ticket);
+            this._servletProxy.start(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,7 +110,7 @@ public class ServletTest {
                 this._ptolemyServer.getNumberOfSimulationsRunning());
 
         try {
-            this._ptolemyServer.stop(ticket);
+            this._servletProxy.stop(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,7 +119,7 @@ public class ServletTest {
                 this._ptolemyServer.getNumberOfSimulationsRunning());
 
         try {
-            this._ptolemyServer.close(ticket);
+            this._servletProxy.close(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +128,7 @@ public class ServletTest {
                 this._ptolemyServer.getNumberOfSimulationsRunning());
 
         try {
-            this._ptolemyServer.stop(ticket);
+            this._servletProxy.stop(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
