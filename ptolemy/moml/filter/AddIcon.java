@@ -153,9 +153,8 @@ public class AddIcon extends MoMLFilterSimple {
                 && container.getFullName().equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnIcon = false;
 
-
-            // FIXME: do we need to set the context back?
-            // setContext calls parser.reset()
+            // Note that setContext() calls reset() so we don't want
+            // to do it on the main parser.
             parser.setContext(container);
 
             try {

@@ -279,7 +279,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (_filterList == null) {
             _filterList = new LinkedList();
         }
-
+        if (_filterMoMLParser == null) {
+            _filterMoMLParser = new MoMLParser();
+        }
         if (!_filterList.contains(filter)) {
             _filterList.add(filter);
         }
@@ -301,7 +303,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (_filterList == null) {
             _filterList = new LinkedList();
         }
-
+        if (_filterMoMLParser == null) {
+            _filterMoMLParser = new MoMLParser();
+        }
         _filterList.addAll(filterList);
     }
 
@@ -449,7 +453,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filteredValue = filter.filterAttributeValue(_current,
-                        currentElement, name, filteredValue, _xmlFileName, this);
+                        currentElement, name, filteredValue, _xmlFileName, _filterMoMLParser);
             }
 
             // Sometimes the value we pass in is null, so we only
@@ -737,7 +741,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filter.filterEndElement(_current, elementName,
-                        _currentCharData, _xmlFileName, this);
+                        _currentCharData, _xmlFileName, _filterMoMLParser);
             }
         }
 
@@ -1891,6 +1895,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public static void setMoMLFilters(List filterList) {
         _filterList = filterList;
+        if (_filterList == null) {
+            _filterMoMLParser = null;
+        }
     }
 
     /** Record whether the parsing of the moml modified the data.
@@ -7082,6 +7089,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // elements.  These filters will filter all MoML for all instances
     // of this class.
     private static List _filterList = null;
+
+    /** MoMLParser to use with the MoMLFilters.  We share one
+     *  MoMLParser between the filters, _filterMoMLParser is passed as
+     *  an argument.  Each filter should call setContext(container) on
+     *  the passed-in filter.  Since setContext() calls reset(), we
+     *  don't want to pass in the main MoMLParser.  We share one
+     *  MoMLParser so as to avoid the expense of constructing one each
+     *  time we read an attribute.
+     */
+    private static MoMLParser _filterMoMLParser = null;
 
     /** IconLoader used to load icons. */
     private static IconLoader _iconLoader;

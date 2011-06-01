@@ -129,7 +129,13 @@ public interface MoMLFilter {
      *  <p>This method takes a MoMLParser argument, which is optionally
      *  used to parse MoML.  We have to parse the MoML as opposed to
      *  calling the Java classes directly so that ptolemy.moml.filter
-     *  does not depend on other packages, such as ptolemy.vergil.</p>
+     *  does not depend on other packages, such as ptolemy.vergil.  Derived
+     *  classes usually call parser.setContext(container) so that the
+     *  MoML is parsed in the correct context.  Note that it is probably
+     *  not correct to call this method and pass in the current MoMLParser
+     *  because setContext() calls reset().  Instead, the caller (MoMLParser),
+     *  creates a MoMLParser instance that is shared amongst all the calls
+     *  to the MoMLFilter methods that take a MoMLParser argument.</p>
      *
      *  @param container  The container for XML element.
      *  @param element The XML element name.
@@ -174,7 +180,7 @@ public interface MoMLFilter {
      *  encountered. A typical use of this method is to make
      *  some modification to the object (the container) that
      *  was constructed.
-b     *  <p>
+     *  <p>
      *  If an implementor makes changes to the specified container,
      *  then it should call MoMLParser.setModified(true) which indicates
      *  that the model was modified so that the user can optionally
@@ -183,7 +189,13 @@ b     *  <p>
      *  <p>This method takes a MoMLParser argument, which is optionally
      *  used to parse MoML.  We have to parse the MoML as opposed to
      *  calling the Java classes directly so that ptolemy.moml.filter
-     *  does not depend on other packages, such as ptolemy.vergil.</p>
+     *  does not depend on other packages, such as ptolemy.vergil.  Derived
+     *  classes usually call parser.setContext(container) so that the
+     *  MoML is parsed in the correct context.  Note that it is probably
+     *  not correct to call this method and pass in the current MoMLParser
+     *  because setContext() calls reset().  Instead, the caller (MoMLParser),
+     *  creates a MoMLParser instance that is shared amongst all the calls
+     *  to the MoMLFilter methods that take a MoMLParser argument.</p>
      *
      *  @param container The object defined by the element that this
      *   is the end of.
