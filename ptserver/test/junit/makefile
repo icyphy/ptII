@@ -45,7 +45,8 @@ include $(CONFIG)
 JSRCS = \
 	AllTests.java \
 	ServletTest.java \
-	TokenParserTest.java
+	TokenParserTest.java \
+	ServerManagerTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
