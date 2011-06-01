@@ -539,20 +539,7 @@ public class Manager extends NamedObj implements Runnable {
         // (vs. a pause).
         ((CompositeActor) container).stop();
 
-        Thread unpauser = new Thread() {
-            public void run() {
-                // NOTE: The execute() method used to be synchronized,
-                // which would cause deadlock with this.
-                // During wrapup, if the Manager is locked
-                // and the ProcessDirector is waiting for threads
-                // to end, then these unpausers
-                // can't run, and the processes can't end.
-                synchronized (Manager.this) {
-                    Manager.this.notifyAll();
-                }
-            }
-        };
-
+        Thread unpauser = new UnpauserThread();
         unpauser.start();
     }
 
@@ -787,54 +774,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @param throwable The throwable
      */
     public void notifyListenersOfThrowable(final Throwable throwable) {
-        Thread thread = new Thread("Error reporting thread") {
-            public void run() {
-                synchronized (Manager.this) {
-                    // We use Throwables instead of Exceptions so that
-                    // we can catch Errors like
-                    // java.lang.UnsatisfiedLink.
-                    String errorMessage = MessageHandler
-                            .shortDescription(throwable)
-                            + " occurred: "
-                            + throwable.getClass()
-                            + "("
-                            + throwable.getMessage() + ")";
-                    _debug("-- Manager notifying listeners of exception: "
-                            + throwable);
-
-                    if (_executionListeners == null) {
-                        System.err
-                                .println("No executionListeners? Error message was: "
-                                        + errorMessage);
-                        throwable.printStackTrace();
-                    } else {
-                        
-                        // If the execution id is not null, map the
-                        // throwable to the id.
-                        if (_executionIdentifier != null) {
-                            _throwableToExecutionIdentifier.put(throwable, _executionIdentifier);
-                        }
-                        
-                        ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
-                                .listIterator();
-
-                        while (listeners.hasNext()) {
-                            WeakReference<ExecutionListener> reference = listeners
-                                    .next();
-                            ExecutionListener listener = reference.get();
-
-                            if (listener != null) {
-                                listener
-                                        .executionError(Manager.this, throwable);
-                            } else {
-                                listeners.remove();
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
+        Thread thread = new ErrorReportingThread("Error reporting thread", throwable);
         thread.start();
     }
 
@@ -1215,14 +1155,7 @@ public class Manager extends NamedObj implements Runnable {
         // where finish() might be called before the spawned thread
         // actually starts up.
         _finishRequested = false;
-        _thread = new PtolemyThread(this, _container.getName()) {
-            public void run() {
-                // The run() method will set _thread to null
-                // upon completion of the run.
-                Manager.this.run();
-            }
-        };
-
+        _thread = new PtolemyRunThread(this, _container.getName());
         // Priority set to the minimum to get responsive UI during execution.
         _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
@@ -1624,5 +1557,103 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         private String _description;
+    }
+
+    /** Notify listeners of an exception.
+     */   
+    private class ErrorReportingThread extends Thread {
+        // This thread is a named inner class so that we can find it
+        // by name when looking for memory leaks.
+
+        /** Construct an thread that reports errors.
+         *  @param name The name of the thread.
+         */
+        public ErrorReportingThread(String name, Throwable throwable) {
+            super(name);
+            _throwable = throwable;
+        }
+
+        /** Run the thread.
+         */    
+        public void run() {
+            synchronized (Manager.this) {
+                // We use Throwables instead of Exceptions so that
+                // we can catch Errors like
+                // java.lang.UnsatisfiedLink.
+                String errorMessage = MessageHandler
+                    .shortDescription(_throwable)
+                    + " occurred: "
+                    + _throwable.getClass()
+                    + "("
+                    + _throwable.getMessage() + ")";
+                _debug("-- Manager notifying listeners of exception: "
+                        + _throwable);
+
+                if (_executionListeners == null) {
+                    System.err
+                        .println("No executionListeners? Error message was: "
+                                + errorMessage);
+                    _throwable.printStackTrace();
+                } else {
+                    
+                    // If the execution id is not null, map the
+                    // throwable to the id.
+                    if (_executionIdentifier != null) {
+                        _throwableToExecutionIdentifier.put(_throwable, _executionIdentifier);
+                    }
+                        
+                    ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
+                        .listIterator();
+
+                    while (listeners.hasNext()) {
+                        WeakReference<ExecutionListener> reference = listeners
+                            .next();
+                        ExecutionListener listener = reference.get();
+
+                        if (listener != null) {
+                            listener
+                                .executionError(Manager.this, _throwable);
+                        } else {
+                            listeners.remove();
+                        }
+                    }
+                }
+            }
+        }
+
+        /** The throwable that is to be passed to the listeners. */
+        private Throwable _throwable;
+    }
+
+
+    private class PtolemyRunThread extends PtolemyThread {
+        // This thread is a named inner class so that we can find it
+        // by name when looking for memory leaks.
+
+        public PtolemyRunThread(Runnable target, String name) {
+            super(target, name);
+        }
+        public void run() {
+            // The run() method will set _thread to null
+            // upon completion of the run.
+            Manager.this.run();
+        }
+    }
+
+    private class UnpauserThread extends Thread {
+        // This thread is a named inner class so that we can find it
+        // by name when looking for memory leaks.
+
+        public void run() {
+            // NOTE: The execute() method used to be synchronized,
+            // which would cause deadlock with this.
+            // During wrapup, if the Manager is locked
+            // and the ProcessDirector is waiting for threads
+            // to end, then these unpausers
+            // can't run, and the processes can't end.
+            synchronized (Manager.this) {
+                Manager.this.notifyAll();
+            }
+        }
     }
 }

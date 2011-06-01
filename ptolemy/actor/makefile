@@ -44,6 +44,7 @@ DIRS = 		util sched process gui lib corba parameters gt designs test \
 ROOT =		../..
 
 CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
@@ -132,10 +133,10 @@ OPTIONAL_FILES = \
 	'FiringEvent$$1.class' \
 	'FiringEvent$$FiringEventType.class' \
 	'LazyTypedCompositeActor$$ContainedObjectsIterator.class' \
-	'Manager$$1.class' \
-	'Manager$$2.class' \
-	'Manager$$3.class' \
+	'Manager$$ErrorReportingThread.class' \
+	'Manager$$PtolemyRunThread.class' \
 	'Manager$$State.class' \
+	'Manager$$UnpauserThread.class' \
 	'TypedIOPort$$1.class' \
 	'TypedIOPort$$TypeTerm.class'
 
