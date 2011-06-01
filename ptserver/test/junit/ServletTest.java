@@ -58,10 +58,14 @@ public class ServletTest {
 
     @Before
     public void setUp() throws Exception {
+        HessianProxyFactory proxyFactory = new HessianProxyFactory();
+        String servletUrl = String.format("http://%s:%s%s", "localhost",
+                CONFIG.getString("SERVLET_PORT"),
+                CONFIG.getString("SERVLET_PATH"));
+
         _ptolemyServer = PtolemyServer.getInstance();
-        HessianProxyFactory factory = new HessianProxyFactory();
-        _servletProxy = (IServerManager) factory.create(IServerManager.class,
-                _servletURL);
+        _servletProxy = (IServerManager) proxyFactory.create(
+                IServerManager.class, servletUrl);
     }
 
     @Test
@@ -78,8 +82,4 @@ public class ServletTest {
     ////                private variables
     private PtolemyServer _ptolemyServer;
     private IServerManager _servletProxy;
-
-    private final String _servletURL = String.format("http://%s:%s%s",
-            "localhost", CONFIG.getString("SERVLET_PORT"),
-            CONFIG.getString("SERVLET_PATH"));
 }
