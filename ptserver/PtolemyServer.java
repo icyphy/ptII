@@ -409,7 +409,7 @@ public class PtolemyServer implements IServerManager {
     //////////////////////////////////////////////////////////////////////
     ////                private variables
     private static PtolemyServer _instance;
-    private static Object _syncRoot;
+    private static Object _syncRoot = new Object();
     private Process _broker;
     private Server _servletHost;
 
