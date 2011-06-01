@@ -1604,53 +1604,6 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Query the user for a filename and save the model to that file.
-     *  @return True if the save succeeds.
-     */
-    private boolean _saveAsJFileChooser() {
-        // Swap backgrounds and avoid white boxes in "common places" dialog
-        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
-        Color background = null;
-        try {
-            background = jFileChooserBugFix.saveBackground();
-
-            // Use the strategy pattern here to create the actual
-            // dialog so that subclasses can customize this dialog.
-            JFileChooser fileDialog = _saveAsFileDialog();
-
-            // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
-            if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                _file = fileDialog.getSelectedFile();
-
-                if (_file.exists()) {
-                    // Ask for confirmation before overwriting a file.
-                    String query = "Overwrite " + _file.getName() + "?";
-
-                    // Show a MODAL dialog
-                    int selected = JOptionPane.showOptionDialog(this, query,
-                            "Save Changes?", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-                    if (selected == 1) {
-                        return false;
-                    }
-                }
-
-                // Truncate the name so that dialogs under Web Start on the Mac
-                // work better.
-                setTitle(StringUtilities.abbreviate(_getName()));
-                _directory = fileDialog.getCurrentDirectory();
-                return _save();
-            }
-
-            // Action was canceled.
-            return false;
-        } finally {
-            jFileChooserBugFix.restoreBackground(background);
-        }
-    }
-
-
     /** Write history to the file defined by _getHistoryFileName(). */
     private void _writeHistory(List<String> historyList) throws IOException {
         FileWriter fileWriter = null;
