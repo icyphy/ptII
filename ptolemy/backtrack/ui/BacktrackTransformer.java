@@ -39,7 +39,7 @@ import java.util.Stack;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
+import ptolemy.moml.filter.MoMLFilterSimple;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ public class BacktrackTransformer {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private static class RenameClassMoMLFilter implements MoMLFilter {
+    private static class RenameClassMoMLFilter extends MoMLFilterSimple {
 
         /** Return the entities that are changed during the last XML parsing.
          *
