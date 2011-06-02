@@ -66,11 +66,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @exception IllegalStateException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void start(Ticket ticket) throws IllegalActionException {
-=======
-    public void start(Ticket ticket) throws IllegalStateException, NullPointerException {
->>>>>>> .r61098
         PtolemyServer.getInstance().start(ticket);
     }
 
@@ -81,11 +77,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @exception IllegalStateException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void pause(Ticket ticket) throws IllegalActionException {
-=======
-    public void pause(Ticket ticket) throws IllegalStateException, NullPointerException {
->>>>>>> .r61098
         PtolemyServer.getInstance().pause(ticket);
     }
 
@@ -96,11 +88,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @exception IllegalStateException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void resume(Ticket ticket) throws IllegalActionException {
-=======
-    public void resume(Ticket ticket) throws IllegalStateException, NullPointerException {
->>>>>>> .r61098
         PtolemyServer.getInstance().resume(ticket);
     }
 
@@ -111,11 +99,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @exception IllegalStateException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void stop(Ticket ticket) throws IllegalActionException {
-=======
-    public void stop(Ticket ticket) throws IllegalStateException, NullPointerException {
->>>>>>> .r61098
         PtolemyServer.getInstance().stop(ticket);
     }
 
@@ -126,11 +110,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * @exception IllegalStateException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void close(Ticket ticket) throws IllegalActionException {
-=======
-    public void close(Ticket ticket) throws IllegalStateException, NullPointerException {
->>>>>>> .r61098
         PtolemyServer.getInstance().close(ticket);
     }
 
