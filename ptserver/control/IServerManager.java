@@ -1,4 +1,4 @@
-/* Ptolemy server's servlet interface definition
+/* Interface definition for the Ptolemy servlet
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -29,8 +29,10 @@ package ptserver.control;
 
 import java.net.URL;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 ///////////////////////////////////////////////////////////////////
-////IServerManager
+//// IServerManager
 
 /** Defines the control commands that can be administered to the 
  * Ptolemy server from it's distributed clients.  These functions are 
@@ -42,55 +44,93 @@ import java.net.URL;
  * @Pt.ProposedRating Red (jkillian)
  * @Pt.AcceptedRating Red (jkillian)
 */
-
 public interface IServerManager {
 
-    /** Open the model on a separate thread within the Ptolemy server.
+    /** 
+     * Open the model on a separate thread within the Ptolemy server.
      * 
-     * @param url Path to the model file
-     * @return Reference to the execution thread of the selected model
+     * @param url The path to the model file
+     * @exception Exception If the simulation thread cannot be created or 
+     * the file URL provided is invalid, throw an exception.
+     * @exception IllegalActionException If the ticket cannot be 
+     * generated, throw an exception.
+     * @return A reference to the execution thread of the selected model
      */
-    public Ticket open(URL url) throws Exception;
+    public Ticket open(URL url) throws IllegalActionException;
 
-    /** Start the execution of the model.
+    /** 
+     * Start the execution of the model.
      * 
      * @param ticket Reference to the execution thread
-     * @return Status of the start() call
+     * @exception IllegalActionException If the ticket reference is invalid 
+     * or the thread's state cannot be modified, throw an exception.
      */
+<<<<<<< .mine
+    public void start(Ticket ticket) throws IllegalActionException;
+=======
     public void start(Ticket ticket) throws IllegalStateException, NullPointerException;
+>>>>>>> .r61098
 
-    /** Pause the execution of the running model.
+    /** 
+     * Pause the execution of the running model.
      * 
      * @param ticket Reference to the execution thread
-     * @return Status of the pause() call
+     * @exception IllegalActionException If the ticket reference is invalid 
+     * or the thread's state cannot be modified, throw an exception.
      */
+<<<<<<< .mine
+    public void pause(Ticket ticket) throws IllegalActionException;
+=======
     public void pause(Ticket ticket) throws IllegalStateException, NullPointerException;
+>>>>>>> .r61098
 
-    /** Resume the execution of the paused model.
+    /**
+     * Resume the execution of the paused model.
      * 
      * @param ticket Reference to the execution thread
-     * @return Status of the resume() call
+     * @exception IllegalActionException If the ticket reference is invalid 
+     * or the thread's state cannot be modified, throw an exception.
      */
+<<<<<<< .mine
+    public void resume(Ticket ticket) throws IllegalActionException;
+=======
     public void resume(Ticket ticket) throws IllegalStateException, NullPointerException;
+>>>>>>> .r61098
 
-    /** Stop the execution of the running model.
+    /** 
+     * Stop the execution of the running model.
      * 
      * @param ticket Reference to the execution thread
-     * @return Status of the stop() call
+     * @exception IllegalActionException If the ticket reference is invalid 
+     * or the thread's state cannot be modified, throw an exception.
      */
+<<<<<<< .mine
+    public void stop(Ticket ticket) throws IllegalActionException;
+=======
     public void stop(Ticket ticket) throws IllegalStateException, NullPointerException;
+>>>>>>> .r61098
 
-    /** Close the model and destroy it's owner thread.
+    /** 
+     * Close the model and destroy it's owner thread.
      * 
      * @param ticket Reference to the execution thread
-     * @return Status of the close() call
+     * @exception IllegalActionException If the ticket reference is invalid 
+     * or the thread's state cannot be modified, throw an exception.
      */
+<<<<<<< .mine
+    public void close(Ticket ticket) throws IllegalActionException;
+=======
     public void close(Ticket ticket) throws IllegalStateException, NullPointerException;
+>>>>>>> .r61098
 
-    /** Get the list of models available on the server either in the
+    /** 
+     * Get the list of models available on the server either in the
      * database or within the file system.
      *
-     * @return List of files on the server
+     * @exception IllegalActionException If there is an error 
+     * querying either the database or the file system for 
+     * available models, throw an exception.  
+     * @return Array of URL references to available model files
      */
-    public String[] getModelListing() throws Exception;
+    public URL[] getModelListing() throws IllegalActionException;
 }
