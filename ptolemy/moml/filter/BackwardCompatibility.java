@@ -43,7 +43,7 @@ import ptolemy.moml.MoMLFilter;
  MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters())
  </pre>
  method, it will cause MoMLParser to filter so that models from
- earlier releases will run in the current release.
+ earlier releases will run in the current release.</p>
 
  @see ptolemy.moml.MoMLFilter
  @author Christopher Hylands, Edward A. Lee
@@ -63,6 +63,7 @@ public class BackwardCompatibility {
     
     /** Return a list where each element of the list is a
      *  MoMLFilter to be applied to handle backward compatibility.
+     *
      *  @return a list of all the filters.
      */
     public static List allFilters() {

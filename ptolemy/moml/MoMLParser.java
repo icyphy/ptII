@@ -270,6 +270,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  the filter, then the filter is not added again.
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
+     *
+     *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
+     *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
+     *
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
      *  @see #addMoMLFilters(List filterList)
      *  @see #getMoMLFilters()
@@ -293,6 +297,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  list.
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
+     *
+     *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
+     *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
+     *
      *  @param filterList The list of MoMLFilters to add to the
      *  list of MoMLFilters to be used to translate names.
      *  @see #addMoMLFilter(MoMLFilter filter)
@@ -1889,6 +1897,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /**  Set the list of MoMLFilters used to translate names.
      *  Note that this method is static.  The specified MoMLFilters
      *  will filter all MoML for any instances of this class.
+     *
+     *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
+     *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
+     *
      *  @param filterList The List of MoMLFilters.
      *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #getMoMLFilters()
@@ -1897,6 +1909,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _filterList = filterList;
         if (_filterList == null) {
             _filterMoMLParser = null;
+        } else {
+            if (_filterMoMLParser == null) {
+                _filterMoMLParser = new MoMLParser();
+            }
         }
     }
 

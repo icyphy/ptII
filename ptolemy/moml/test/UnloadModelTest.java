@@ -63,8 +63,8 @@ public class UnloadModelTest extends MoMLSimpleApplication {
      *  or running the model.
      */
     public UnloadModelTest(String xmlFileName) throws Throwable {
-        Workspace workspace = new Workspace("MyWorkspace");
-        /*final MoMLParser*/ parser = new MoMLParser(workspace);
+        workspace = new Workspace("MyWorkspace");
+        parser = new MoMLParser(workspace);
 
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
@@ -84,7 +84,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        /*final CompositeActor*/ toplevel = (CompositeActor) parser.parse(null, new File(
+        toplevel = (CompositeActor) parser.parse(null, new File(
                 xmlFileName).toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
@@ -109,6 +109,10 @@ public class UnloadModelTest extends MoMLSimpleApplication {
     }
 
     /** Load a model and then unload it.
+     *  <p>Typically, this class is invoked with something like:  
+     *  <pre>   
+     *  java -classpath $PTII ptolemy.moml.test.UnloadModelTest ../demo/test.xml
+     *  </pre>
      *  @param args The first argument is the name of the file to be loaded.
      */
     public static void main(String[] args) {
@@ -127,6 +131,9 @@ public class UnloadModelTest extends MoMLSimpleApplication {
     /** The toplevel model that is created and then destroyed. */
     public CompositeActor toplevel;
 
+    /** The workspace in which the model and Manager are created. */
+    public Workspace workspace;
+
     /** Return the amount of memory used.
      *  @return A string that describes the amount of memory.
      */
@@ -144,6 +151,8 @@ public class UnloadModelTest extends MoMLSimpleApplication {
                 + "%)";
     }
 
+    /** Wait for the run to finish and the unload the model.
+     */   
     public class UnloadThread extends Thread {
         public void run() {
             waitForFinish();
@@ -155,47 +164,73 @@ public class UnloadModelTest extends MoMLSimpleApplication {
                 Thread.sleep(1000);
                 System.out.println("Memory before unloading: "
                         + memory());
-                
-//                 if (toplevel instanceof CompositeEntity) {
-//                     try {
-//                         ParserAttribute parserAttribute = (ParserAttribute) toplevel
-//                             .getAttribute("_parser", ParserAttribute.class);
-//                         parserAttribute.setContainer(null);
-//                         ((CompositeEntity)toplevel).setContainer(null);
-//                     } catch (Exception ex) {
-//                         ex.printStackTrace();
-//                     }
-//                 }
+
+//              if (toplevel instanceof CompositeEntity) {
+//                  try {
+//                      ParserAttribute parserAttribute = (ParserAttribute) toplevel
+//                          .getAttribute("_parser", ParserAttribute.class);
+//                      parserAttribute.setContainer(null);
+//                      ((CompositeEntity)toplevel).setContainer(null);
+//                  } catch (Exception ex) {
+//                      ex.printStackTrace();
+//                  }
+//              }
 
                 if (parser != null) {
-//                     if (parser.topObjectsCreated() != null) {
-//                         parser.topObjectsCreated().remove(toplevel);
-//                     }
+//                  if (parser.topObjectsCreated() != null) {
+//                      parser.topObjectsCreated().remove(toplevel);
+//                  }
+
                     parser.resetAll();
+                    // parser is a public variable so setting it to
+                    // null will (hopefully) cause the garbage
+                    // collector to collect it.
                     parser = null;
+
+                    // The next line removes the static backward compatibility
+                    // filters, which is probably not what we want if we
+                    // want to parse another file.
+                    // BackwardCompatibility.clear();
+
+                    // The next line will remove the static MoMLParser
+                    // used by the filters.  If we add filters, then the static
+                    // MoMLParser is recreated. 
                     MoMLParser.setMoMLFilters(null);
-                    BackwardCompatibility.clear();
                 }
 
-                try {
-                    toplevel.setContainer(null);
-                    _manager.terminate();
-                    toplevel.setManager(null);
-                    _manager = null;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
 
-                try {
-                    toplevel.workspace().getWriteAccess();
-                    toplevel.workspace().removeAll();
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                } finally {
-                    toplevel.workspace().doneWriting();
-                }
+//                 try {
+//                     toplevel.setContainer(null);
+//                     _manager.terminate();
+//                     toplevel.setManager(null);
+//                 } catch (Exception ex) {
+//                     ex.printStackTrace();
+//                 }
 
+                // _manager is a protected variable so setting it to
+                // null will (hopefully) cause the garbage
+                // collector to collect it.
+                _manager = null;
+
+//                 try {
+//                     toplevel.workspace().getWriteAccess();
+//                     toplevel.workspace().removeAll();
+//                 } catch (Throwable throwable) {
+//                     throwable.printStackTrace();
+//                 } finally {
+//                     toplevel.workspace().doneWriting();
+//                 }
+
+                // toplevel and workspace are a public variables so
+                // setting it to null will (hopefully) cause the
+                // garbage collector to collect them
+
+                // Set toplevel to null so that the Manager is collected.
                 toplevel = null;
+
+                // Set workspace to null so that the objects contained
+                // by the workspace may be collected.
+                workspace = null;
 
                 System.gc();
                 Thread.sleep(1000);
