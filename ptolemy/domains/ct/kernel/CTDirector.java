@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.ct.kernel;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -875,16 +877,25 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
         try {
             Class solver = Class.forName(className);
-            newSolver = (ODESolver) solver.newInstance();
+            Constructor constructor = solver.getConstructor(Workspace.class);
+            // Instantiate the solver in the same Workspace as the model
+            // so that the model can be gc'd.
+            newSolver = (ODESolver) constructor.newInstance(workspace());
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this, "ODESolver: " + className
+            throw new IllegalActionException(this, e, "ODESolver: " + className
                     + " is not found.");
         } catch (InstantiationException e) {
-            throw new IllegalActionException(this, "ODESolver: " + className
+            throw new IllegalActionException(this, e, "ODESolver: " + className
                     + " instantiation failed.");
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this, "ODESolver: " + className
+            throw new IllegalActionException(this, e, "ODESolver: " + className
                     + " is not accessible.");
+        } catch (NoSuchMethodException e) {
+            throw new IllegalActionException(this, e, "ODESolver: " + className
+                    + " does not have a constructor that takes a Workspace argument.");
+        } catch (InvocationTargetException e) {
+            throw new IllegalActionException(this, e, "ODESolver: " + className
+                    + " invocation of the constructor that takes a Workspace argument failed.");
         }
 
         newSolver._makeSolverOf(this);
