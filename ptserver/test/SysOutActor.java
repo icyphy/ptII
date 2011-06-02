@@ -28,6 +28,7 @@ package ptserver.test;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -45,6 +46,31 @@ public class SysOutActor extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        System.out.println(input.get(0));
+        Token token = input.get(0);
+        System.out.println(token);
+        if (delegator != null) {
+            delegator.getToken(token);
+        }
+    }
+
+    /**
+     * @param delegator the delegator to set
+     */
+    public void setDelegator(TokenDelegator delegator) {
+        this.delegator = delegator;
+    }
+
+    /**
+     * @return the delegator
+     */
+    public TokenDelegator getDelegator() {
+        return delegator;
+    }
+
+    private TokenDelegator delegator;
+
+    public interface TokenDelegator {
+        public void getToken(Token token);
+
     }
 }
