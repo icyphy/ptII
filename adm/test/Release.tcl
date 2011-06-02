@@ -111,7 +111,8 @@ ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
 ptolemy.kernel.test.junit
 ptolemy.moml.jxta
-ptolemy.plot.servlet}
+ptolemy.plot.servlet
+ptserver.test.junit}
 
 set currentDirectory [pwd]
 test release-3.1 {Run svn status and look for files that should be checked in.  See ptII/adm/bin/svnignoreupdate for a script to fix this} {
