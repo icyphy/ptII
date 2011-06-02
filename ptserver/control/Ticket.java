@@ -54,20 +54,21 @@ public class Ticket implements java.io.Serializable {
      * @param url Path to the model file
      */
     private Ticket() {
-        this._ticketID = null;
-        this._url = null;
-        this._dateRequested = null;
+        _ticketID = null;
+        _url = null;
+        _dateRequested = null;
     }
 
     //////////////////////////////////////////////////////////////////////
     ////                public methods
+
     /**
      * Generate a new ticket for the provided model url.
      * @return Ticket corresponding to simulation request
      */
     public static Ticket generateTicket(URL url) {
         Ticket ticket = new Ticket();
-        ticket.setTicketID(UUID.randomUUID().toString());
+        ticket.setTicketID(UUID.randomUUID());
         ticket.setUrl(url);
         ticket.setDateRequested(new Date());
 
@@ -75,15 +76,15 @@ public class Ticket implements java.io.Serializable {
     }
 
     /** 
-    * Get the unique ticket identifier.     * 
+    * Get the unique ticket identifier.
     * @return Identifier used to reference the request
     */
-    public String getTicketID() {
+    public UUID getTicketID() {
         return this._ticketID;
     }
 
     /**
-     * Get the URL of the model file.     * 
+     * Get the URL of the model file.
      * @return Path to the model file
      */
     public URL getUrl() {
@@ -91,52 +92,56 @@ public class Ticket implements java.io.Serializable {
     }
 
     /**
-     * Get the date and time of the original request.     * 
+     * Get the date and time of the original request.
      * @return Date and time that the simulation request was submitted
      */
     public Date getDateRequested() {
-        return _dateRequested;
+        return this._dateRequested;
     }
 
     /**
-     * 
+     * Override the equals(x) to compare ticket properties.
+     */
+    @Override
+    public boolean equals(Object otherObject) {
+        if (this == otherObject)
+            return true;
+        if (otherObject == null)
+            return false;
+        if (getClass() != otherObject.getClass())
+            return false;
+
+        Ticket otherTicket = (Ticket) otherObject;
+        if (_ticketID == null) {
+            if (otherTicket.getTicketID() != null) {
+                return false;
+            }
+        } else if (!_ticketID.equals(otherTicket._ticketID)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Override the hashCode() method.
      */
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((_ticketID == null) ? 0 : _ticketID.hashCode());
-        return result;
-    }
+        int result = prime + ((_ticketID == null) ? 0 : _ticketID.hashCode());
 
-    /**
-     * 
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Ticket other = (Ticket) obj;
-        if (_ticketID == null) {
-            if (other._ticketID != null)
-                return false;
-        } else if (!_ticketID.equals(other._ticketID))
-            return false;
-        return true;
+        return result;
     }
 
     //////////////////////////////////////////////////////////////////////
     ////                private methods
+
     /**
      * Sets the unique ticket identifier
      * @param Univerally unique identifier
      */
-    private void setTicketID(String ticketID) {
+    private void setTicketID(UUID ticketID) {
         this._ticketID = ticketID;
     }
 
@@ -158,7 +163,7 @@ public class Ticket implements java.io.Serializable {
 
     //////////////////////////////////////////////////////////////////////
     ////                private variables
-    private String _ticketID;
+    private UUID _ticketID;
     private URL _url;
     private Date _dateRequested;
 }
