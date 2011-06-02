@@ -70,9 +70,10 @@ public class SimulationThread extends Thread {
     public SimulationThread(Ticket ticket) throws Exception {
         _owner = PtolemyServer.getInstance();
         _ticket = ticket;
-        _remoteModel = new RemoteModel(UUID.randomUUID().toString(), _ticket
-                .getTicketID().toString() + "_CLIENT", _ticket.getTicketID()
-                .toString() + "_SERVER", RemoteModelType.SERVER);
+        _remoteModel = new RemoteModel(_ticket.getTicketID(), _ticket
+                .getTicketID() + "_CLIENT", _ticket.getTicketID()
+                + "_SERVER", RemoteModelType.SERVER);
+        setName(_ticket.getTicketID());
 
         // Set the MQTT client.
         IMqttClient mqttClient = MqttClient.createMqttClient("tcp://localhost@"
@@ -82,18 +83,13 @@ public class SimulationThread extends Thread {
         }
 
         // Load the model specified within the ticket.
-        URL ticketUrl = ticket.getUrl();
-        if (ticketUrl != null) {
-            _remoteModel.loadModel(ticketUrl);
-        }
+        _remoteModel.loadModel(new URL(_ticket.getUrl()));
 
         // Set the simulation manager and director.
         CompositeActor topLevelActor = _remoteModel.getTopLevelActor();
         if (topLevelActor != null) {
             topLevelActor.setManager(new Manager(topLevelActor.workspace(),
-                    _ticket.getTicketID().toString()));
-            topLevelActor
-                    .setDirector(new PNDirector(topLevelActor.workspace()));
+                    _ticket.getTicketID()));
         }
     }
 
@@ -101,21 +97,14 @@ public class SimulationThread extends Thread {
      * Start the execution of the simulation by kicking off the thread.
      */
     public void run() {
-
-        Manager manager = getManager();
-        if (manager != null) {
-            try {
-                manager.execute();
-            } catch (IllegalActionException e) {
-                PtolemyServer.LOGGER.log(Level.WARNING, String.format("%s: %s",
-                        _ticket.getTicketID().toString(),
-                        "The simulation is already running."));
-                //TODO: runtime exception seems too extreme
-            } catch (KernelException e) {
-                PtolemyServer.LOGGER.log(Level.SEVERE, String.format("%s: %s",
-                        _ticket.getTicketID().toString(), e.getMessage()));
-                throw new IllegalStateException(e);
-            }
+        try {
+            _remoteModel.getTopLevelActor().getManager().execute();
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (KernelException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

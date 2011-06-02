@@ -55,7 +55,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      * the file URL provided is invalid, throw an exception.
      * @return A reference to the execution thread of the selected model
      */
-    public Ticket open(URL url) throws IllegalActionException {
+    public Ticket open(String url) throws IllegalActionException {
         return PtolemyServer.getInstance().open(url);
     }
 

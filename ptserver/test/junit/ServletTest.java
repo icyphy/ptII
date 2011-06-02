@@ -79,13 +79,13 @@ public class ServletTest {
      */
     @Test
     public void openThread() throws Exception {
-        int simulations = this._ptolemyServer.getNumberOfSimulationsRunning();
+        int simulations = this._ptolemyServer.getSimulations();
         Ticket ticket = openTicket();
 
         assertNotNull(ticket);
         assertNotNull(ticket.getTicketID());
         assertEquals(simulations + 1,
-                this._ptolemyServer.getNumberOfSimulationsRunning());
+                this._ptolemyServer.getSimulations());
     }
 
     /**
@@ -98,7 +98,7 @@ public class ServletTest {
         Ticket ticket = openTicket();
         assertNotNull(ticket);
 
-        int simulations = this._ptolemyServer.getNumberOfSimulationsRunning();
+        int simulations = this._ptolemyServer.getSimulations();
 
         try {
             this._servletProxy.start(ticket);
@@ -107,7 +107,7 @@ public class ServletTest {
         }
         /** Starting the thread should not change the number of threads registered. **/
         assertEquals(simulations,
-                this._ptolemyServer.getNumberOfSimulationsRunning());
+                this._ptolemyServer.getSimulations());
 
         try {
             this._servletProxy.stop(ticket);
@@ -116,7 +116,7 @@ public class ServletTest {
         }
         /** Stopping the thread should not change the number of threads registered. **/
         assertEquals(simulations,
-                this._ptolemyServer.getNumberOfSimulationsRunning());
+                this._ptolemyServer.getSimulations());
 
         try {
             this._servletProxy.close(ticket);
@@ -125,24 +125,15 @@ public class ServletTest {
         }
         /** Closing the thread should decrease the number of threads registered. **/
         assertEquals(simulations - 1,
-                this._ptolemyServer.getNumberOfSimulationsRunning());
-
-        try {
-            this._servletProxy.stop(ticket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        /** Stopping an invalid thread should throw an exception. **/
-        assertEquals(simulations,
-                this._ptolemyServer.getNumberOfSimulationsRunning());
+                this._ptolemyServer.getSimulations());
 
     }
 
     //////////////////////////////////////////////////////////////////////
     ////                private methods
     private Ticket openTicket() throws Exception {
-        URL url = ServletTest.class.getResource("HelloWorld.xml");
-        Ticket ticket = this._servletProxy.open(url);
+        URL url = ServletTest.class.getResource("/ptserver/test/junit/HelloWorld.xml");
+        Ticket ticket = this._servletProxy.open(url.toExternalForm());
         return ticket;
     }
 

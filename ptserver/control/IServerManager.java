@@ -56,7 +56,7 @@ public interface IServerManager {
      * generated, throw an exception.
      * @return A reference to the execution thread of the selected model
      */
-    public Ticket open(URL url) throws IllegalActionException;
+    public Ticket open(String url) throws IllegalActionException;
 
     /** 
      * Start the execution of the model.

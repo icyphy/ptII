@@ -207,6 +207,13 @@ public class PtolemyServer implements IServerManager {
     public int getBrokerPort() {
         return this._brokerPort;
     }
+    
+    /**
+     * @return the _simulations
+     */
+    public int getSimulations() {
+        return _simulations.size();
+    }
 
     /**
      * Initialize the servlet and broker for use by the Ptolemy server.
@@ -289,7 +296,7 @@ public class PtolemyServer implements IServerManager {
      * URL, throw an exception.
      * @return Ticket The user's reference to the simulation thread
      */
-    public Ticket open(URL url) throws IllegalActionException {
+    public Ticket open(String url) throws IllegalActionException {
         Ticket ticket = null;
 
         try {
@@ -301,12 +308,13 @@ public class PtolemyServer implements IServerManager {
 
             // Enqueue the simulation.
             _simulations.put(ticket, new SimulationThread(ticket));
+            
         } catch (Exception e) {
             PtolemyServer.LOGGER.log(
                     Level.SEVERE,
                     String.format("%s: %s", ticket.getTicketID().toString(),
-                            e.getMessage()));
-            throw new IllegalActionException(e.getMessage());
+                            e.getMessage()), e);
+            throw new IllegalActionException(null, e, e.getMessage());
         }
 
         return ticket;
@@ -328,7 +336,7 @@ public class PtolemyServer implements IServerManager {
                 //TODO: create InvalidTicketException
             }
 
-            _simulations.get(ticket).getManager().execute();
+            _simulations.get(ticket).start();
         } catch (Exception e) {
             PtolemyServer.LOGGER.log(
                     Level.SEVERE,
@@ -424,7 +432,7 @@ public class PtolemyServer implements IServerManager {
         try {
             if ((ticket == null) || (!_simulations.containsKey(ticket))) {
                 throw new Exception("Invalid ticket provided: "
-                        + ticket.getTicketID().toString());
+                        + ticket.getTicketID());
                 //TODO: create InvalidTicketException
             }
 
