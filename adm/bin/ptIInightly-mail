@@ -101,8 +101,8 @@ echo "" >> $mailmsg
 # Note that in JDK1.4, the warning message format from javadoc changed
 echo "javadoc had the following `grep ': warning -' $ptbuildlog | grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer" | wc -l` warnings" >> $mailmsg
 
-grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer
-" | $AWK ' $0 ~ /^Generating/ { indir=$0 }
+grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer" $ptbuildlog |
+  $AWK ' $0 ~ /^Generating/ { indir=$0 }
       { if ($0 ~ /: warning -/) {
 	    print indir
 	    print $0
