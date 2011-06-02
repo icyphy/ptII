@@ -65,11 +65,7 @@ public interface IServerManager {
      * @exception IllegalActionException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void start(Ticket ticket) throws IllegalActionException;
-=======
-    public void start(Ticket ticket) throws IllegalStateException, NullPointerException;
->>>>>>> .r61098
 
     /** 
      * Pause the execution of the running model.
@@ -78,11 +74,7 @@ public interface IServerManager {
      * @exception IllegalActionException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void pause(Ticket ticket) throws IllegalActionException;
-=======
-    public void pause(Ticket ticket) throws IllegalStateException, NullPointerException;
->>>>>>> .r61098
 
     /**
      * Resume the execution of the paused model.
@@ -91,11 +83,7 @@ public interface IServerManager {
      * @exception IllegalActionException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void resume(Ticket ticket) throws IllegalActionException;
-=======
-    public void resume(Ticket ticket) throws IllegalStateException, NullPointerException;
->>>>>>> .r61098
 
     /** 
      * Stop the execution of the running model.
@@ -104,24 +92,16 @@ public interface IServerManager {
      * @exception IllegalActionException If the ticket reference is invalid 
      * or the thread's state cannot be modified, throw an exception.
      */
-<<<<<<< .mine
     public void stop(Ticket ticket) throws IllegalActionException;
-=======
-    public void stop(Ticket ticket) throws IllegalStateException, NullPointerException;
->>>>>>> .r61098
 
     /** 
-     * Close the model and destroy it's owner thread.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalActionException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-<<<<<<< .mine
+         * Close the model and destroy it's owner thread.
+         * 
+         * @param ticket Reference to the execution thread
+         * @exception IllegalActionException If the ticket reference is invalid 
+         * or the thread's state cannot be modified, throw an exception.
+         */
     public void close(Ticket ticket) throws IllegalActionException;
-=======
-    public void close(Ticket ticket) throws IllegalStateException, NullPointerException;
->>>>>>> .r61098
 
     /** 
      * Get the list of models available on the server either in the
