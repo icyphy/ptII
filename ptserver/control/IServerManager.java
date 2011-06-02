@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// IServerManager
 
 /** Defines the control commands that can be administered to the 
- * Ptolemy server from it's distributed clients.  These functions are 
+ * Ptolemy server from its distributed clients.  These functions are 
  * available through a synchronous, RPC-like servlet that is embedded 
  * within the Ptolemy server.
  * 
@@ -95,7 +95,7 @@ public interface IServerManager {
     public void stop(Ticket ticket) throws IllegalActionException;
 
     /** 
-     * Close the model and destroy it's owner thread.
+     * Close the model and destroy its owner thread.
      * 
      * @param ticket Reference to the execution thread
      * @exception IllegalActionException If the ticket reference is invalid 

@@ -447,7 +447,6 @@ public class PtolemyServer implements IServerManager {
      * Get a listing of the models available on the server in either the
      * database or the local file system.
      * 
-     * @param ticket Ticket reference to the simulation request.
      * @exception IllegalStateException If there was a problem discovering
      * available models, throw an exception.
      * @return Array of URL references to available model files
@@ -463,7 +462,7 @@ public class PtolemyServer implements IServerManager {
 
     /**
      * Set the servlet virtual directory.
-     * @param _servletPath Virtual path of the servlet
+     * @param servletPath Virtual path of the servlet
      */
     private void _setServletPath(String servletPath) {
         this._servletPath = servletPath;

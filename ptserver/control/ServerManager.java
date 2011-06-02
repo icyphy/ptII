@@ -104,7 +104,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
     }
 
     /** 
-     * Close the model and destroy it's owner thread.
+     * Close the model and destroy its owner thread.
      * 
      * @param ticket Reference to the execution thread
      * @exception IllegalStateException If the ticket reference is invalid 

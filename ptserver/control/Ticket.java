@@ -48,10 +48,9 @@ import java.util.UUID;
 */
 
 public class Ticket implements java.io.Serializable {
-    /** Creates a ticket instance with a unique identifier, url for locating 
+    /** 
+     * Creates a ticket instance with a unique identifier, url for locating 
      * the model file, and the date and time of the request.
-     * 
-     * @param url Path to the model file
      */
     private Ticket() {
         _ticketID = null;
@@ -139,7 +138,7 @@ public class Ticket implements java.io.Serializable {
 
     /**
      * Sets the unique ticket identifier
-     * @param Univerally unique identifier
+     * @param ticketID Universally unique identifier
      */
     private void setTicketID(UUID ticketID) {
         this._ticketID = ticketID;
