@@ -28,6 +28,7 @@
 
 package ptserver;
 
+import java.net.URL;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -39,6 +40,9 @@ import ptolemy.kernel.util.KernelException;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.control.Ticket;
+
+import com.ibm.mqtt.IMqttClient;
+import com.ibm.mqtt.MqttClient;
 
 ///////////////////////////////////////////////////////////////////
 //// SimulationThread
@@ -64,19 +68,32 @@ public class SimulationThread extends Thread {
      * the caller is notified. 
      */
     public SimulationThread(Ticket ticket) throws Exception {
+        _owner = PtolemyServer.getInstance();
         _ticket = ticket;
         _remoteModel = new RemoteModel(UUID.randomUUID().toString(), _ticket
                 .getTicketID().toString() + "_CLIENT", _ticket.getTicketID()
                 .toString() + "_SERVER", RemoteModelType.SERVER);
 
+        // Set the MQTT client.
+        IMqttClient mqttClient = MqttClient.createMqttClient("tcp://localhost@"
+                + Integer.toString(_owner.getBrokerPort()), null);
+        if (mqttClient != null) {
+            _remoteModel.setMqttClient(mqttClient);
+        }
+
+        // Load the model specified within the ticket.
+        URL ticketUrl = ticket.getUrl();
+        if (ticketUrl != null) {
+            _remoteModel.loadModel(ticketUrl);
+        }
+
+        // Set the simulation manager and director.
         CompositeActor topLevelActor = _remoteModel.getTopLevelActor();
         if (topLevelActor != null) {
-            Manager manager = new Manager(topLevelActor.workspace(), _ticket
-                    .getTicketID().toString());
-            topLevelActor.setManager(manager);
-
-            PNDirector director = new PNDirector(topLevelActor.workspace());
-            topLevelActor.setDirector(director);
+            topLevelActor.setManager(new Manager(topLevelActor.workspace(),
+                    _ticket.getTicketID().toString()));
+            topLevelActor
+                    .setDirector(new PNDirector(topLevelActor.workspace()));
         }
     }
 
@@ -93,11 +110,10 @@ public class SimulationThread extends Thread {
                 PtolemyServer.LOGGER.log(Level.WARNING, String.format("%s: %s",
                         _ticket.getTicketID().toString(),
                         "The simulation is already running."));
-                throw new IllegalStateException(e);
+                //TODO: runtime exception seems too extreme
             } catch (KernelException e) {
-                PtolemyServer.LOGGER.log(Level.SEVERE, String.format(
-                        "%s: %s - %s", _ticket.getTicketID().toString(),
-                        "A KernelException has been thrown", e.getMessage()));
+                PtolemyServer.LOGGER.log(Level.SEVERE, String.format("%s: %s",
+                        _ticket.getTicketID().toString(), e.getMessage()));
                 throw new IllegalStateException(e);
             }
         }
@@ -112,14 +128,15 @@ public class SimulationThread extends Thread {
         CompositeActor topLevelActor = _remoteModel.getTopLevelActor();
         if (topLevelActor == null) {
             return null;
-        } else {
-            return topLevelActor.getManager();
         }
+
+        return topLevelActor.getManager();
     }
 
     //////////////////////////////////////////////////////////////////////
     ////                private variables
 
+    private final PtolemyServer _owner;
     // References the simulation by the Ptolemy server
     private final Ticket _ticket;
     // Replace actors and accesses the manager of the simulation
