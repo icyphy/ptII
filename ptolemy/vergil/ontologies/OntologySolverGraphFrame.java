@@ -328,7 +328,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     // There seem to be enough differences that this may be hard.
 
     /** Listener for debug menu commands. */
-    public class DebugMenuListener implements ActionListener {
+    public static class DebugMenuListener implements ActionListener {
         
         /** React to a menu command.
          *  @param e The event that is received to be reacted to.

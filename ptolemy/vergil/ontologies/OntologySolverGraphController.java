@@ -23,7 +23,6 @@
  */
 package ptolemy.vergil.ontologies;
 
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.Attribute;

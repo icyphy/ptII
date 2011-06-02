@@ -177,9 +177,8 @@ public class ConceptController extends AttributeInOntologyController {
             BooleanToken value = (BooleanToken) isAcceptableParameter.getToken();
             value = value.not();
             
-            return new String("<property name=\"" +
-                    isAcceptableParameter.getName() + "\" value = \"" +
-                    value.toString() + "\" />");
+            return "<property name=\"" + isAcceptableParameter.getName() +
+                    "\" value = \"" + value.toString() + "\" />";
         }
     }
 }

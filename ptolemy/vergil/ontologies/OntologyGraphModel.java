@@ -399,8 +399,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             NamedObj container = deleteObj.getContainer();
-            return new String("<deleteEntity name=\"" + deleteObj.
-                    getName(container) + "\"/>\n");
+            return "<deleteEntity name=\"" + deleteObj.getName(container) +
+                    "\"/>\n";
         }
 
         /** Return the graph parent of the given node.

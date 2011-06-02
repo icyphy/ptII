@@ -131,7 +131,7 @@ public class ConceptRelationController extends BasicEdgeController {
     ////                         protected variables               ////
 
     /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction = new ConfigureAction(
+    protected final static ConfigureAction _configureAction = new ConfigureAction(
             "Configure");
 
     /** The submenu for configure actions. */
