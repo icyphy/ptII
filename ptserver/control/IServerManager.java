@@ -95,12 +95,12 @@ public interface IServerManager {
     public void stop(Ticket ticket) throws IllegalActionException;
 
     /** 
-         * Close the model and destroy it's owner thread.
-         * 
-         * @param ticket Reference to the execution thread
-         * @exception IllegalActionException If the ticket reference is invalid 
-         * or the thread's state cannot be modified, throw an exception.
-         */
+     * Close the model and destroy it's owner thread.
+     * 
+     * @param ticket Reference to the execution thread
+     * @exception IllegalActionException If the ticket reference is invalid 
+     * or the thread's state cannot be modified, throw an exception.
+     */
     public void close(Ticket ticket) throws IllegalActionException;
 
     /** 
