@@ -109,13 +109,15 @@ import diva.canvas.connector.ManhattanConnector;
  * methods to access this are {@link #getLayoutHintItem(Object, Object)},
  * {@link #setLayoutHintItem(NamedObj, NamedObj, double[])} and
  * {@link #removeLayoutHintItem(Object, Object)}.</p>
- * <p>
- * The class extends {@link SingletonAttribute} because every Relation is
- * expected to have only one such Attribute, while one of these Attributes can
- * carry multiple {@link LayoutHintItem}s as explained above. It is also
- * {@link Settable} as it can be set by loading a MOML file or by setting it
- * manually through the GUI. However, usually its visibility is set to EXPERT
+ *
+ * <p> The class extends {@link SingletonAttribute} because every
+ * Relation is expected to have only one such Attribute, while one of
+ * these Attributes can carry multiple {@link LayoutHintItem}s as
+ * explained above. It is also {@link ptolemy.kernel.util.Settable} as
+ * it can be set by loading a MOML file or by setting it manually
+ * through the GUI. However, usually its visibility is set to EXPERT
  * mode only.</p>
+ *
  * <p>
  * Some of the standard code for example for value listeners is copied from
  * {@link Location}.</p>
@@ -314,10 +316,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * Get the visibility of this Settable, as set by setVisibility().
      * The returned value is one of the static
-     * instances of the {@link Settable.Visibility} inner class.
+     * instances of the {@link ptolemy.kernel.util.Settable.Visibility} inner class.
      * @return The visibility of this Settable.
      * @see #setVisibility(ptolemy.kernel.util.Settable.Visibility)
-     * @see Settable#getVisibility()
+     * @see ptolemy.kernel.util.Settable#getVisibility()
      */
     public Visibility getVisibility() {
         return _visibility;

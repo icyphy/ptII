@@ -105,7 +105,6 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
     //                           public methods                      //
 
     /** The event is displayed. 
-     *  @param node The node where the event happened.
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
      *  @param time The physical time when the event happened.
@@ -165,7 +164,6 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
 
     /** Initialize the plot and the legend. The legend will be created for all
      *  nodes and actors.
-     *  @param nodesActors A list of nodes and contained actors.
      */
     public void initialize() {
         _actors = new ArrayList();

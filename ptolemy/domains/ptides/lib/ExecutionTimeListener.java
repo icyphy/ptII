@@ -43,11 +43,10 @@ import ptolemy.actor.Actor;
 public interface ExecutionTimeListener {
 
     /** The event is displayed. 
-     *  @param node The node where the event happened.
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
      *  @param time The physical time when the event happened.
-     *  @param scheduleEvent The type of the event.
+     *  @param event The type of the event.
      */
     public void event(Actor actor, double time,
             ExecutionEventType event);

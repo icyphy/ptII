@@ -622,7 +622,7 @@ public class PlotBox extends JPanel implements Printable {
     }
     
     /** Export a Latex description of the plot.
-     *  @param out An output stream to which to send the description.
+     *  @param directory An directory to which to export the Latex.
      */
     public synchronized void exportLatex(File directory) {
         try {

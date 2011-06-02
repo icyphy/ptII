@@ -54,8 +54,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** This actor is an {@link QuantityManager} that, when its
- *  {@link #sendToken(Receiver, Token)} method is called, delays
+/** A {@link QuantityManager} actor that, when its
+ *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
  *  according to a service rule. This quantity manager is used on
  *  input ports by setting a parameter with an ObjectToken that refers

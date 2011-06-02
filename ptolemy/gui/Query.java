@@ -2016,10 +2016,10 @@ public class Query extends JPanel {
         }
 
         /** Create a file browser dialog and get the user input.  If
-         *  {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns
-         *  true, then {@link _actionPerformedFileDialog()} uses
-         *  this method.  Otherwise, {@link
-         *  _actionPerformedJFileChooser()} is used.
+         *  {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns
+         *  true, then {@link #_actionPerformedFileDialog(ActionEvent)} uses
+         *  this method.  Otherwise, {@link #_actionPerformedJFileChooser(ActionEvent)}
+	 *  is used.
          */
         public void actionPerformed(ActionEvent event) {
             if (PtGUIUtilities.useFileDialog()) {
@@ -2045,9 +2045,9 @@ public class Query extends JPanel {
 
         
         /** Create a java.awt.FileDialog and get the user input.  If
-         *  {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns
-         *  true, then {@link actionPerformed()} uses this method.
-         *  Otherwise, {@link _actionPerformedJFileChooser()} is used.
+         *  {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns
+         *  true, then {@link #actionPerformed(ActionEvent)} uses this method.
+         *  Otherwise, {@link #_actionPerformedJFileChooser(ActionEvent)} is used.
          *  <p>Under Mac OS X, this method is preferred over
          *  _actionPerformedJFileChooser().</p>
          *
@@ -2056,8 +2056,6 @@ public class Query extends JPanel {
          *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=true
          *  $PTII/bin/vergil ~/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml 
          *  </pre>
-         *
-         *  @return A file dialog for save as.
          */    
         private void _actionPerformedFileDialog(ActionEvent e) {            
             FileDialog fileDialog = new FileDialog(JOptionPane.getFrameForComponent(Query.this),
@@ -2167,17 +2165,15 @@ public class Query extends JPanel {
 
 
         /** Create a javax.swing.JFileChooser and get the user input.
-         *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false,
-         *  then {@link actionPerformed()} uses this method.  Otherwise, 
-         *  {@link _actionPerformedFileDialog()} is used.
+         *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
+         *  then {@link #actionPerformed(ActionEvent)} uses this method.  Otherwise, 
+         *  {@link #_actionPerformedFileDialog(ActionEvent)} is used.
          
          *  <p>Under Bash, to test this method, use:</p>
          *  <pre>
          *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=false
          *  $PTII/bin/vergil ~/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml 
          *  </pre>
-         *
-         *  @return A file dialog for save as.
          */
         private void _actionPerformedJFileChooser(ActionEvent e) {            
             // Swap backgrounds and avoid white boxes in "common places" dialog

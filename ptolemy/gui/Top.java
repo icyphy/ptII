@@ -741,7 +741,7 @@ public abstract class Top extends JFrame {
     }
 
     /** Open a file dialog to identify a file to be opened, and then call
-     *  _read() to open the file.  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()}
+     *  _read() to open the file.  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()}
      *  return true, then java.awt.FileDialog is used.
      *  Otherwise, javax.swing.JFileChooser is used.
      */
@@ -995,7 +995,7 @@ public abstract class Top extends JFrame {
     }
 
     /** Query the user for a filename and save the model to that file.
-     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()}
+     *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()}
      *  return true, then java.awt.FileDialog is used.
      *  Otherwise, javax.swing.JFileChooser is used.
      *  @return True if the save succeeds.
@@ -1020,9 +1020,9 @@ public abstract class Top extends JFrame {
     }
 
     /** Create and return a FileDialog for the "Save As" command.
-     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns true,
-     *  then {@link _saveAs()} uses this method.  Otherwise, 
-     *  {@link _saveAsJFileChooserComponent()} is used.
+     *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true,
+     *  then {@link #_saveAs()} uses this method.  Otherwise, 
+     *  {@link #_saveAsJFileChooserComponent()} is used.
      *  @return A file dialog for save as.
      */
     protected FileDialog _saveAsFileDialogComponent() {
@@ -1039,9 +1039,9 @@ public abstract class Top extends JFrame {
     }
 
     /** Create and return a JFileChooser for the "Save As" command.
-     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false,
-     *  then {@link _saveAs()} uses this method.  Otherwise, 
-     *  {@link _saveAsFileDialogComponent()} is used.
+     *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
+     *  then {@link #_saveAs()} uses this method.  Otherwise, 
+     *  {@link #_saveAsFileDialogComponent()} is used.
      *  @return A JFileChooser for save as.
      */
     protected JFileChooser _saveAsJFileChooserComponent() {

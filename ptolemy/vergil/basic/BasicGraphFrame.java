@@ -880,7 +880,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Given a NamedObj, return the corresponding BasicGraphFrame.
      *  @param model The NamedObj for the model.  See
-     *  {@link ptolemy.gui.ConfigurationApplication#openModel(String)
+     *  {@link ptolemy.actor.gui.ConfigurationApplication#openModel(String)}
      *  for a static method that returns the model
      *  @return The BasicGraphFrame that corresponds with the model.
      */
@@ -2409,9 +2409,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  This overrides the base class so that if this is a design pattern
      *  and items are selected, then the user is asked if they
      *  want to save only the selected objects.
-     *  <p>If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns true
-     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
-     *  {@link _saveAsJFileChooserComponent()} is used.</p>
+     *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  {@link #_saveAsJFileChooserComponent()} is used.</p>
      *  @return A file dialog for save as.
      */
     protected FileDialog _saveAsFileDialogComponent() {
@@ -2439,9 +2439,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  This overrides the base class so that if this is a design pattern
      *  and items are selected, then the user is asked if they
      *  want to save only the selected objects.
-     *  <p>If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false
-     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
-     *  {@link _saveAsFileDialogComponent()} is used.</p>
+     *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  {@link #_saveAsFileDialogComponent()} is used.</p>
 
      *  @return A file dialog for save as.
      */

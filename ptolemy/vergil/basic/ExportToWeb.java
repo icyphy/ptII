@@ -81,7 +81,7 @@ public class ExportToWeb {
     /** Export a model to a web page.
      *  @param modelFileName A Ptolemy model in MoML format.
      *  The string may start with $CLASSPATH, $HOME or other formats
-     *  suitable for {@link ptolemy.util.FileUtilities.nameToFile(String, URI)}.
+     *  suitable for {@link ptolemy.util.FileUtilities#nameToFile(String, URI)}.
      *  @param destinationDirectory The destination directory name.
      *  @param run True if the model should be run first.
      *  @exception Exception Thrown if there is a problem reading the model

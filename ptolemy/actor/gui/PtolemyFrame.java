@@ -370,9 +370,9 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** Create and return a file dialog for the "Save As" command.
      *  This overrides the base class to add options to the dialog.
-     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns false,
-     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
-     *  {@link _saveAsFileDialogComponent()} is used.
+     *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  {@link #_saveAsFileDialogComponent()} is used.
 
      *  @return A file dialog for save as.
      */
@@ -390,9 +390,9 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** Create and return a file dialog for the "Save As" command.
      *  This overrides the base class to add options to the dialog.
-     *  If {@link ptolemy.gui.PtGUIUtilities.useFileDialog()} returns true
-     *  then {@link ptolemy.gui.Top._saveAs()} uses this method.  Otherwise, 
-     *  {@link _saveAsJFileChooserComponent()} is used.
+     *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  {@link #_saveAsJFileChooserComponent()} is used.
 
      *  @return A file dialog for save as.
      */

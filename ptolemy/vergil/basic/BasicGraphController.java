@@ -440,13 +440,16 @@ public abstract class BasicGraphController extends AbstractGraphController
     protected void _createControllers() {
     }    
     
+    /** Return true if there are active highlights.
+     *  @return True if the list if error highlights is not empty.
+     */
     protected boolean _areThereActiveErrorHighlights() {
         return !_errorHighlights.isEmpty();
     }
     
     /**
-     * 
-     * @return
+     * Return a change request that clears all the highlights.
+     * @return a change request that clears all the highlights.
      */
     protected ChangeRequest _getClearAllErrorHighlightsChangeRequest() {
         ChangeRequest request = new ChangeRequest(this,

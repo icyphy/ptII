@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its
- *  {@link #sendToken(Receiver, Token)} method is called, delays
+ *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
  *  according to a service rule. This quantity manager is used on
  *  input ports by setting a parameter with an ObjectToken that refers
@@ -240,7 +240,7 @@ public class CrossbarSwitch extends BasicSwitch {
      *  to be processed by the switch fabric and the state of the crossbar
      *  switch indicates that the connection is free. It is refired at a 
      *  future time if any of the queues contains tokens.
-     *  @exeption IllegalActionException If actor cannot be refired at 
+     *  @exception IllegalActionException If actor cannot be refired at 
      *  the computed time.
      */
     protected void _scheduleRefire() throws IllegalActionException {

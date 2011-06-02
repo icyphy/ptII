@@ -35,7 +35,7 @@ public class GLToken extends Token {
    ////                         public methods                    ////
 
    /** Return the type of this token.
-    *  @return {@link #GL}, the least upper bound of all the cryptographic
+    *  @return {@link #GL_TYPE}, the least upper bound of all the cryptographic
     *  GL types.
     */
    public Type getType() {

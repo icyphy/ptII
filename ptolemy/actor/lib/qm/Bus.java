@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its
- *  {@link #sendToken(Receiver, Token)} method is called, delays
+ *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
  *  according to a service rule. Specifically, if the actor is
  *  not currently servicing a previous token, then it delivers

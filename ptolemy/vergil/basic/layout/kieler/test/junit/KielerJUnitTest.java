@@ -54,7 +54,7 @@ import ptolemy.vergil.basic.layout.KielerLayoutAction;
  *
  * <p>There are two types of tests.</p>
 
- * <p>1. {@link _layoutModelCompareAgainstFile(NamedObj, String)} We
+ * <p>1. {@link #_layoutModelCompareAgainstFile(NamedObj, String)} We
  * read in a model and run the Kieler layout algorithm on on the model
  * and compare the results against the original model.  This test is
  * run on regression tests to be sure that the Kieler algorithm has
@@ -329,8 +329,7 @@ public class KielerJUnitTest {
      *  <p>The caller of this method should be in the Swing Event
      *  Thread.</p>
      *
-     *  @param model The model, which was read by
-     *  {@link openModel(String)}.
+     *  @param model The model.
      *  @param modelFileName The pathname of the model, used for
      *  comparing.
      *  @exception Exception If thrown while opening or laying

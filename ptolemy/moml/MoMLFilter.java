@@ -167,7 +167,6 @@ public interface MoMLFilter {
      *  @param currentCharData The character data, which appears
      *   only in the doc and configure elements
      *  @param xmlFile The file currently being parsed.
-     *  @param parser The parser in which MoML is optionally evaluated.
      *  @exception Exception If there is a problem modifying the
      *  specified container.
      */

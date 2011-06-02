@@ -693,10 +693,11 @@ public class TableauFrame extends Top {
     
     
     /** Dispose of this frame.
-     *     Override this dispose() method to unattach any listeners that may keep
+     *	
+     *  <p>Override this dispose() method to unattach any listeners that may keep
      *  this model from getting garbage collected.  This method invokes the 
      *  dispose() method of the superclass,
-     *  {@link ptolemy.actor.gui.Top}.
+     *  {@link ptolemy.gui.Top}.
      */
     public void dispose() {
         if (_debugClosing) {

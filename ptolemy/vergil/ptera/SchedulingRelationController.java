@@ -116,8 +116,8 @@ public class SchedulingRelationController extends TransitionController {
      *   fails.
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
-     *  @see ptolemy.actor.gui.Configration#openInstance(NamedObj)
-     *  @see ptolemy.actor.gui.Configration#openModel(NamedObj)
+     *  @see ptolemy.actor.gui.Configuration#openInstance(NamedObj)
+     *  @see ptolemy.actor.gui.Configuration#openModel(NamedObj)
      */  
     protected void _openInstanceOrModel(Configuration configuration,
             NamedObj refinement) throws IllegalActionException, NameDuplicationException {

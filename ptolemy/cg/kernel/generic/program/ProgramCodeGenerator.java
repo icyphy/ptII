@@ -348,7 +348,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  the firing code of each actor is not inlined. In the default,
      *  each actor's firing code is in a function with the name that
      *  is returned by
-     *  {@link#generateFireFunctionMethodName(NamedObj)}.  Derived
+     *  {@link #generateFireFunctionMethodName(NamedObj)}.  Derived
      *  classes such as JavaCodeGenerator may put the fire functions
      *  in inner classes so as to reduce the Java file size.
      *
@@ -574,9 +574,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      * Generate sanitized name for the given port.
      * This method is used when the {@link #variablesAsArrays} 
      * parameter is true.
-     * See {@link ptolemy/cg/kernel/generic/program/procedural/java/JavaCodeGenerator#applyTypeConvertCode()}
-     * for where we generate the declarations the use the maps.
-     * See {@link ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector#generateInitializeCode()} for where the arrays are initialized.
+     * See {@link ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector#generateInitializeCode()} for where the arrays are initialized.
      * @param port The port for which the name is generated.
      * @param portName The sanitized name of the port.
      * @param bufferSize The size of the port buffer.
@@ -1770,13 +1768,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** A map from String type name to a HashMap of port name to an
      *  array index.  Ports with a buffer size of 1 end up in this
-     *  array.  The {@see #variablesAsArray} parameter enables use of
+     *  array.  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap;
 
     /** A map from String type name to a HashMap of port name to Array
-     *  Index.  The {@see #variablesAsArray} parameter enables use of
+     *  Index.  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, Integer> _portTypeMaxIndex;
@@ -1785,7 +1783,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** A map from String type name to a HashMap of multiport or port
      *  to an array index.  Multiports with a buffersize of 1 or
      *  ports with a buffer size greater than 1 end up in this array.
-     *  The {@see #variablesAsArray} parameter enables use of
+     *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap2;
@@ -1794,7 +1792,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  to the maximum number in the corresponding array.
      *  Multiports with a buffersize of 1 or ports with a buffer size
      *  greater than 1 end up in this array.  
-     *  The {@see #variablesAsArray} parameter enables use of
+     *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, Integer> _portTypeMaxIndex2;
@@ -1802,7 +1800,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** A map from String type name to a HashMap of multiports to an
      *  array index.  Multiports with a buffer size greater than 1 end
      *  up in this array.  
-     *  The {@see #variablesAsArray} parameter enables use of
+     *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap3;
@@ -1811,7 +1809,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  to the maximum number in the corresponding array.
      *  Multiports with a buffer size greater than 1 end up in this
      *  array.  
-     *  The {@see #variablesAsArray} parameter enables use of
+     *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, Integer> _portTypeMaxIndex3;

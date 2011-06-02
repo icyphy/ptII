@@ -192,7 +192,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  that reacts when the mouse is moved over an actor by
      *  displaying a table with the parameter values of the actor.
      *  The gif image is assumed to have been generated with the
-     *  current view using the {@link #writeImage(OutputStream, String)}
+     *  current view using the
+     *  {@link ptolemy.vergil.basic.BasicGraphFrame#writeImage(OutputStream, String)}
      *  method.
      *  @param directory The directory in which to put any associated files.
      *  @throws IOException If unable to write associated files.

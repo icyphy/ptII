@@ -229,9 +229,9 @@ import ptolemy.moml.MoMLChangeRequest;
  *  April, 2009.</p>
  *  
  *  <p> Since sensors, actuators, and network devices are important
- *  in the context of Ptides, special actors such as {@link
- *  SensorHandler, ActuatorSetup, NetworkReceiver,
- *  NetworkTransmitter} are used in Ptides models. These actors
+ *  in the context of Ptides, special actors such as {@link SensorHandler}
+ *  {@link ActuatorSetup}, {@link NetworkReceiver},
+ *  {@link NetworkTransmitter} are used in Ptides models. These actors
  *  must only be connected to input and output ports of the composite
  *  actor governed by the Ptides director. In addition, input
  *  ports to the Ptides director hold information about
@@ -3033,7 +3033,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  delay is the sum of networkDelay and networkDriverDelay. While
      *  , if the parameter exists.
      *  @param port The port with network delay.
-     *  @return
+     *  @return the total network delay of the port.
      *  @exception IllegalActionException If token of networkDelay parameter
      *  cannot be evaluated.
      */
@@ -3442,7 +3442,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Starting from the startPort, traverse the graph to calculate the
      *  delayOffset offset.
-     *  @param startPort, port to start traversing at.
+     *  @param startPort the port at which to start traversing.
      *  @exception IllegalActionException If there are ports that are both input
      *  and output ports.
      */

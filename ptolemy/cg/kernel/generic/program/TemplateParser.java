@@ -696,7 +696,7 @@ public class TemplateParser {
 
     /** Process the specified code, replacing macros with their values.
      *  Macros have the possible forms:
-     *  <p>$xxx(), where are processed by {@link _replaceMacro(String, String)}
+     *  <p>$xxx(), where are processed by {@link #_replaceMacro(String, String)}
      *  <p>${foo}, which means get the value of the parameter "foo"
      *  <p>$nation, which is ignored.
      * @param code The code to process.

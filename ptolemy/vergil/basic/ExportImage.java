@@ -62,7 +62,7 @@ public class ExportImage {
      *  One of "GIF", "gif", "PNG", "png".
      *  @param modelFileName A Ptolemy model in MoML format.
      *  The string may start with $CLASSPATH, $HOME or other formats
-     *  suitable for {@link ptolemy.util.FileUtilities.nameToFile(String, URI)}.
+     *  suitable for {@link ptolemy.util.FileUtilities#nameToFile(String, URI)}.
      *  @param run True if the model should be run first.
      *  @param save True if the model should be saved after being run.
      *  @exception Exception Thrown if there is a problem reading the model
