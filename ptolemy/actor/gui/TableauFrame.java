@@ -73,6 +73,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// TableauFrame
@@ -1213,8 +1214,6 @@ public class TableauFrame extends Top {
 
         return true;
     }
-
-
         
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.  This method
@@ -1241,9 +1240,27 @@ public class TableauFrame extends Top {
         }
         fileDialog.show();
 
-        if (fileDialog.getFile() != null) {
-            // fileDialog.getFile() returns an old, krufty Mac OS 9 colon separated path.
-            File file = new File(_directory, fileDialog.getFile().replace(':','/'));
+        String selectedFile = fileDialog.getFile();
+        // If the user selected "Cancel", then selectedFile will be null.
+        if (selectedFile != null) {
+            // fileDialog.getFile() *sometimes* returns an old, krufty
+            // Mac OS 9 colon separated path.  Why?
+            File file = null;
+            if (selectedFile.startsWith(":")) {
+                // FIXME: _directory is ignored?
+                // To get selectedFile to contain colons, try Save As, then, in the
+                // "Save As" entry widget, replace just the filename (the text after
+                // the last slash) with new text.  For example, If I do Save As and
+                // the entry widget says "/Users/cxh/ptII/foo", then change it 
+                // to say "/Users/cxh/ptII/bar".
+                file = new File(selectedFile.replace(':','/'));
+            } else {
+                // FIXME: Are there any circumstances under which selectedFile
+                // will contain a colon as a directory separator but not
+                // start with one?  Who knows?  Apple does, but there is no
+                // documentation about this and Apple bugs are not world readable.
+                file = new File(_directory, selectedFile);
+            }
             if (extension != null && file.getName().indexOf(".") == -1) {
                 // if the user has not given the file an extension, add it
                 file = new File(file.getAbsolutePath() + extension);
@@ -1263,7 +1280,8 @@ public class TableauFrame extends Top {
                 // been saved, so we do not change its modified status.
                 // setModified(false);
                 // Open a new window on the model.
-                getConfiguration().openModel(newURL, newURL, newKey);
+                Tableau newTableau = getConfiguration().openModel(newURL, newURL, newKey);
+                newTableau.getFrame().setTitle(StringUtilities.abbreviate(new File(_directory, file.getName()).toString()));
 
                 // If the tableau was unnamed before, then we need
                 // to close this window after doing the save.
