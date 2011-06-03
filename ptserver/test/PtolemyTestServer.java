@@ -1,5 +1,5 @@
 /*
- Entry Point to the Ptolemy MQTT Client
+ Entry Point of the Ptolemy Server 
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -25,57 +25,52 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptserver.communication;
+package ptserver.test;
 
-import java.io.File;
-import java.util.Random;
+import java.net.URL;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
+import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttClient;
 
 //////////////////////////////////////////////////////////////////////////
-////PtolemyTestClient
+//// PtolemyTestServer
 /**
- * Ptolemy MQTT Client which is used for testing purposes.
- * 
- * The client would only run sinks and sources that have respective attribute and
- * would rely on the server to run the rest.  The communication is performed over MQTT
- * protocol and the MQTT broker must be running in order to execute this program.
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
- */
-public class PtolemyTestClient {
+* Entry Point of the Ptolemy MQTT Server which is used for testing purposes.
+* This class sets up the server to accept requests from Android client.
+* @author Anar Huseynov
+* @version $Id$ 
+* @since Ptolemy II 8.0
+* @Pt.ProposedRating Red (ahuseyno)
+* @Pt.AcceptedRating Red (ahuseyno)
+*/
+public class PtolemyTestServer {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
-     * Entry point to the Ptolemy MQTT Client which is used for testing purposes.
-     * 
-
-     * @param args The first argument is file path to the model
+     * Start the server.
+     * It replaces marked sinks and sources with RemoteSink and RemoteSource instances and sets up communication infrastructure.
+     * @param args currently the first argument indicates the model file that the server load
      */
     public static void main(String[] args) {
         try {
-            RemoteModel model = new RemoteModel("PtolemyServer"
-                    + new Random().nextInt(100), "Server", "Client",
-                    RemoteModelType.CLIENT);
+            RemoteModel model = new RemoteModel("Client", "Server",
+                    RemoteModelType.SERVER);
             IMqttClient mqttClient = MqttClient.createMqttClient(
                     "tcp://localhost@1883", null);
             model.setMqttClient(mqttClient);
-            CompositeActor topLevelActor = model.loadModel(new File(args[0])
-                    .toURI().toURL());
-            Manager manager = new Manager(topLevelActor.workspace(), null);
-            topLevelActor.setManager(manager);
-            topLevelActor.setDirector(new PNDirector(topLevelActor,
-                    "PNDirector"));
+            URL resource = PtolemyTestClient.class
+                    .getResource("/ptserver/test/junit/HelloWorld.xml");
+            System.out.println(resource.toExternalForm());
+            Manager manager = model.loadModel(resource);
+            CompositeActor topLevelActor = model.getTopLevelActor();
             topLevelActor.getDirector().addDebugListener(new DebugListener() {
 
                 public void message(String message) {
@@ -87,6 +82,7 @@ public class PtolemyTestClient {
                 }
             });
             manager.execute();
+
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

@@ -28,7 +28,7 @@
 
 package ptserver.communication;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ptserver.actor.RemoteSource;
 import ptserver.data.CommunicationToken;
@@ -50,11 +50,13 @@ public class RemoteSourceData {
      * Creates an instance of the data structure with the specified RemoteSource and 
      * a new token queue of max 100 elements.
      * @param remoteSource The remote source of the RemoteSourceData
+     * @param remoteModel The remoteModel that created the instance.
      */
-    public RemoteSourceData(RemoteSource remoteSource) {
+    public RemoteSourceData(RemoteSource remoteSource, RemoteModel remoteModel) {
         _remoteSource = remoteSource;
-        _tokenQueue = new ArrayBlockingQueue<CommunicationToken>(100);
-        remoteSource.setTokenQueue(_tokenQueue);
+        _tokenQueue = new ConcurrentLinkedQueue<CommunicationToken>();
+        _remoteModel = remoteModel;
+        remoteSource.setRemoteSourceData(this);
     }
 
     /**
@@ -69,19 +71,32 @@ public class RemoteSourceData {
      * Return the token queue that stores tokens sent for the RemoteSource.
      * @return the token queue
      */
-    public ArrayBlockingQueue<CommunicationToken> getTokenQueue() {
+    public ConcurrentLinkedQueue<CommunicationToken> getTokenQueue() {
         return _tokenQueue;
+    }
+
+    /**
+     * Get the RemoteModel that created this instance.
+     * @return the RemoteModel that created this instance.
+     */
+    public RemoteModel getRemoteModel() {
+        return _remoteModel;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * The remoteSource actor
+     * The remoteSource actor.
      */
     private final RemoteSource _remoteSource;
     /**
-     * The token queue that collects tokens received for the remoteSource
+     * The token queue that collects tokens received for the remoteSource.
      */
-    private final ArrayBlockingQueue<CommunicationToken> _tokenQueue;
+    private final ConcurrentLinkedQueue<CommunicationToken> _tokenQueue;
+
+    /**
+     * The remote model that created the RemoteSourceData.
+     */
+    private final RemoteModel _remoteModel;
 
 }

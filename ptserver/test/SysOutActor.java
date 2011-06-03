@@ -47,9 +47,11 @@ public class SysOutActor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         Token token = input.get(0);
-        System.out.println(token);
+
         if (delegator != null) {
             delegator.getToken(token);
+        } else {
+            System.out.println(token);
         }
     }
 

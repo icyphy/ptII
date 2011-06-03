@@ -30,14 +30,13 @@
 
 package ptserver.actor;
 
-import java.util.concurrent.ArrayBlockingQueue;
-
 import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptserver.communication.RemoteSourceData;
 import ptserver.data.CommunicationToken;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,12 +45,11 @@ import ptserver.data.CommunicationToken;
  * RemoteSource that acts as a proxy source
  * Accepts communication token, unpackage as regular tokens
  * and send them to the appropriate ports
- * @author ahuseyno
+ * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
- *
  */
 public class RemoteSource extends RemoteActor {
 
@@ -86,43 +84,35 @@ public class RemoteSource extends RemoteActor {
     public void fire() throws IllegalActionException {
         super.fire();
         CommunicationToken token;
-        try {
-            token = getTokenQueue().take();
-            for (Object portObject : this.portList()) {
-                if (portObject instanceof IOPort) {
-                    IOPort port = (IOPort) portObject;
-                    int width = port.getWidth();
-                    for (int channel = 0; channel < width; channel++) {
-                        Token[] tokens = token.getTokens(port.getName(),
-                                channel);
-                        port.send(channel, tokens, tokens.length);
-                    }
+
+        //Block the thread until either the queue has an element or the model is stopped.
+        synchronized (this) {
+            while ((token = getRemoteSourceData().getTokenQueue().poll()) == null
+                    && !getRemoteSourceData().getRemoteModel().isStopped()) {
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                    throw new IllegalActionException(this, e, "The remote source was inturrupted");
                 }
             }
-        } catch (InterruptedException e) {
-            throw new IllegalActionException(this, e,
-                    "Remote Sources thread was interrupted");
+            //If token is null, then it means that the model was stopped, just return in this case.
+            if (token == null) {
+                return;
+            }
+        }
+        for (Object portObject : this.portList()) {
+            if (portObject instanceof IOPort) {
+                IOPort port = (IOPort) portObject;
+                int width = port.getWidth();
+                for (int channel = 0; channel < width; channel++) {
+                    Token[] tokens = token.getTokens(port.getName(), channel);
+                    port.send(channel, tokens, tokens.length);
+                }
+            }
         }
     }
 
-    /**
-    * Get the token queue that this actor uses to receive CommunicationTokens.
-    * @return ArrayBlockingQueue<CommunicationToken> the tokenQueue
-    * @see #setTokenQueue(ArrayBlockingQueue)
-    */
-    public ArrayBlockingQueue<CommunicationToken> getTokenQueue() {
-        return tokenQueue;
-    }
 
-    /**
-     * Set the token queue that this actor uses to receive
-     * CommunicationTokens.
-     * @param tokenQueue
-     * @see #getTokenQueue()
-     */
-    public void setTokenQueue(ArrayBlockingQueue<CommunicationToken> tokenQueue) {
-        this.tokenQueue = tokenQueue;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -136,11 +126,25 @@ public class RemoteSource extends RemoteActor {
         return connectingPort.isOutput();
     }
 
+    /**
+     * @param _remoteSourceData the _remoteSourceData to set
+     */
+    public void setRemoteSourceData(RemoteSourceData _remoteSourceData) {
+        this._remoteSourceData = _remoteSourceData;
+    }
+
+    /**
+     * @return the _remoteSourceData
+     */
+    public RemoteSourceData getRemoteSourceData() {
+        return _remoteSourceData;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * TokenQueue used to receive CommnunicationTokens
+     * RemoteSourceData containing metadata needed for the RemoteSource;
      */
-    private ArrayBlockingQueue<CommunicationToken> tokenQueue;
+    private RemoteSourceData _remoteSourceData;
 
 }

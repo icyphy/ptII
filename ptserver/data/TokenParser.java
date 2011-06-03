@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -72,7 +73,10 @@ public class TokenParser {
      */
     private TokenParser() throws IllegalActionException {
         //key is the token class name
-        for (String key : _tokenHandlersBundle.keySet()) {
+    	//We have to use ResourceBundle.getKeys() method because Android does not support .keySet() method.
+        Enumeration<String> keys = _tokenHandlersBundle.getKeys();
+        while (keys.hasMoreElements()) {
+            String key = keys.nextElement();
             //value is the token handler class name
             String value = _tokenHandlersBundle.getString(key);
             try {

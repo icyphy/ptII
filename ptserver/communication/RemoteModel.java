@@ -30,14 +30,20 @@ package ptserver.communication;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Executable;
+import ptolemy.actor.Initializable;
+import ptolemy.actor.Manager;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptserver.actor.RemoteSink;
@@ -80,15 +86,13 @@ public class RemoteModel {
 
     /**
      * Create new instance of the remoteModel with the specified parameters.
-     * @param mqttClientId the mqtt client id that mqtt broker requires 
      * @param subscriptionTopic the topic name that this model would subscribe to receive tokens from other remote model
      * @param publishingTopic the topic name that this model would publish its tokens to be received by other remote model
      * @param modelType the type of the model which must be either client or server
      */
-    public RemoteModel(String mqttClientId, String subscriptionTopic,
-            String publishingTopic, RemoteModelType modelType) {
+    public RemoteModel(String subscriptionTopic, String publishingTopic,
+            RemoteModelType modelType) {
         _tokenPublisher = new TokenPublisher(100, 100);
-        _mqttClientId = mqttClientId;
         _subscriptionTopic = subscriptionTopic;
         _publishingTopic = publishingTopic;
         _modelType = modelType;
@@ -112,7 +116,6 @@ public class RemoteModel {
         _mqttClient = mqttClient;
         _tokenPublisher.setMqttClient(_mqttClient);
         _tokenPublisher.setTopic(_publishingTopic);
-        _mqttClient.connect(_mqttClientId, true, (short) 10);
     }
 
     /**
@@ -130,7 +133,8 @@ public class RemoteModel {
     private void createSink(ComponentEntity targetEntity,
             boolean replaceTargetEntity) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
-        RemoteSink remoteSink = new RemoteSink(getTopLevelActor(),
+        RemoteSink remoteSink = new RemoteSink(
+                (CompositeEntity) targetEntity.getContainer(),
                 targetEntity, replaceTargetEntity);
         remoteSink.setTokenPublisher(_tokenPublisher);
         _remoteSinkMap.put(remoteSink.getTargetEntityName(), remoteSink);
@@ -151,9 +155,10 @@ public class RemoteModel {
     private void createSource(ComponentEntity targetEntity,
             boolean replaceTargetEntity) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
-        RemoteSource remoteSource = new RemoteSource(getTopLevelActor(),
+        RemoteSource remoteSource = new RemoteSource(
+                (CompositeEntity) targetEntity.getContainer(),
                 targetEntity, replaceTargetEntity);
-        RemoteSourceData data = new RemoteSourceData(remoteSource);
+        RemoteSourceData data = new RemoteSourceData(remoteSource, this);
         _remoteSourceMap.put(remoteSource.getTargetEntityName(), data);
     }
 
@@ -172,60 +177,13 @@ public class RemoteModel {
      * @return the top level actor of the model
      * @throws Exception if there is a problem parsing the model, connecting to the mqtt broker or replacing actors.
      */
-    public CompositeActor loadModel(URL modelURL) throws Exception {
-        MoMLParser parser = new MoMLParser();
+    public Manager loadModel(URL modelURL) throws Exception {
+        MoMLParser parser = new MoMLParser(new Workspace());
+        parser.resetAll();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-
-        //TODO: Implement MoMLFilter for remote actor replacement
-        //The implementation below fails because relations have old actor names without "_remote" suffix.
-        //        MoMLParser.addMoMLFilter(new MoMLFilter() {
-        //
-        //            @Override
-        //            public void filterEndElement(NamedObj container,
-        //                    String elementName, StringBuffer currentCharData,
-        //                    String xmlFile) throws Exception {
-        //                // TODO Auto-generated method stub
-        //                System.out.println(container);
-        //                if (container.getName().equals("_remote")
-        //                        && container instanceof Parameter
-        //                        && container.getContainer() instanceof ComponentEntity) {
-        //                    Parameter param = (Parameter) container;
-        //                    ComponentEntity actor = (ComponentEntity) container
-        //                            .getContainer();
-        //
-        //                    if ("source".equals(param.getExpression())) {
-        //                        RemoteSource remoteSource = new RemoteSource(
-        //                                (CompositeActor) actor.getContainer(), actor,
-        //                                true);
-        //                        RemoteSourceData data = new RemoteSourceData(
-        //                                remoteSource);
-        //                        remoteSourceMap.put(remoteSource.getName(), data);
-        //                    } else if ("sink".equals(param.getExpression())) {
-        //                        RemoteSink remoteSink = new RemoteSink(
-        //                                (CompositeActor) actor.getContainer(), actor,
-        //                                true);
-        //                        remoteSink.setTokenPublisher(tokenPublisher);
-        //                        remoteSinkMap.put(remoteSink.getTargetEntityName(),
-        //                                remoteSink);
-        //                    }
-        //                }
-        //            }
-        //
-        //            @Override
-        //            public String filterAttributeValue(NamedObj container,
-        //                    String element, String attributeName,
-        //                    String attributeValue, String xmlFile) {
-        //                System.out.println(container);
-        //                System.out.println(element);
-        //                System.out.println(attributeName);
-        //                System.out.println(attributeValue);
-        //
-        //                return attributeValue;
-        //            }
-        //        });
         HashSet<ComponentEntity> unneededActors = new HashSet<ComponentEntity>();
         _topLevelActor = (CompositeActor) parser.parse(null, modelURL);
-        for (Object obj : getTopLevelActor().entityList()) {
+        for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             Attribute attribute = actor.getAttribute("_remote");
             boolean isSinkOrSource = false;
@@ -263,10 +221,96 @@ public class RemoteModel {
 
         _mqttClient.registerSimpleHandler(new MQTTTokenListener(
                 _remoteSourceMap, _settableAttributesMap, _subscriptionTopic));
+        _mqttClient.connect("Ptolemy" + new Random().nextInt(1000), true,
+                (short) 10);
         _mqttClient.subscribe(new String[] { _subscriptionTopic },
                 new int[] { QOS_LEVEL });
-        return _topLevelActor;
+        _manager = new Manager(_topLevelActor.workspace(), null);
+        _topLevelActor.setManager(getManager());
+        _topLevelActor.addPiggyback(new Executable() {
 
+            public void wrapup() throws IllegalActionException {
+            }
+
+            public void removeInitializable(Initializable initializable) {
+            }
+
+            public void preinitialize() throws IllegalActionException {
+            }
+
+            public void initialize() throws IllegalActionException {
+                setStopped(false);
+            }
+
+            public void addInitializable(Initializable initializable) {
+            }
+
+            public void terminate() {
+            }
+
+            public void stopFire() {
+            }
+
+            public void stop() {
+                setStopped(true);
+                for (RemoteSourceData data : _remoteSourceMap.values()) {
+                    synchronized (data.getRemoteSource()) {
+                        data.getRemoteSource().notifyAll();
+                    }
+                }
+            }
+
+            public boolean prefire() throws IllegalActionException {
+                return true;
+            }
+
+            public boolean postfire() throws IllegalActionException {
+                return true;
+            }
+
+            public int iterate(int count) throws IllegalActionException {
+                return 0;
+            }
+
+            public boolean isStrict() throws IllegalActionException {
+                return false;
+            }
+
+            public boolean isFireFunctional() {
+                return false;
+            }
+
+            public void fire() throws IllegalActionException {
+            }
+        });
+        return getManager();
+
+    }
+
+    /**
+     * Set the stopped state of the model.
+     * @param stopped indicates if the model is stopped or not.
+     * @see #getStopped()
+     */
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
+    }
+
+    /**
+     * Return if the model is stopped or not.
+     * @return the stopped state of the model.
+     * @see #getStopped()
+     */
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    /**
+     * Return the manager controlling this model.
+     * @return the Manager controlling this model
+     */
+    public Manager getManager() {
+        return _manager;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -287,36 +331,42 @@ public class RemoteModel {
     private final HashMap<String, Settable> _settableAttributesMap = new HashMap<String, Settable>();
 
     /**
-     * The token publisher used to batch tokens sent by the remote sink
+     * The token publisher used to batch tokens sent by the remote sink.
      */
     private final TokenPublisher _tokenPublisher;
 
     /**
-     * The top level actor of the loaded model
+     * The top level actor of the loaded model.
      */
     private CompositeActor _topLevelActor;
 
     /**
-     * The mqtt client connection
+     * The mqtt client connection.
      */
     private IMqttClient _mqttClient;
 
     /**
-     * The topic used to listen for incoming mqtt messages
+     * The topic used to listen for incoming mqtt messages.
      */
     private final String _subscriptionTopic;
 
     /**
-     * The topic used to publish outgoing mqtt messages
+     * The topic used to publish outgoing mqtt messages.
      */
     private final String _publishingTopic;
     /**
-     * The client id required by the mqtt broker
-     */
-    private final String _mqttClientId;
-    /**
-     * The type of the remote model
+     * The type of the remote model.
      */
     private final RemoteModelType _modelType;
+
+    /**
+     * The manager of the model.
+     */
+    private Manager _manager;
+
+    /**
+     * Indicator if the model is stopped.
+     */
+    private volatile boolean stopped;
 
 }

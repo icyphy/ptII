@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 
-public class QMTest { 
+public class QMTest {
 
     public static void main(String[] args) throws MalformedURLException,
             Exception {
@@ -56,26 +56,27 @@ public class QMTest {
             for (Object portObject : actor.portList()) {
                 if (portObject instanceof IOPort) {
                     IOPort port = (IOPort) portObject;
-                    QuantityManager quantityManager = new QuantityManager() {
+                    if (port.isInput()) {
+                        QuantityManager quantityManager = new QuantityManager() {
 
-                        public void sendToken(Receiver source,
-                                Receiver receiver, Token token)
-                                throws IllegalActionException {
-                            System.out.println(token);
-                        }
+                            public void sendToken(Receiver source,
+                                    Receiver receiver, Token token)
+                                    throws IllegalActionException {
+                                System.out.println(token);
+                            }
 
-                        public void reset() {
+                            public void reset() {
 
-                        }
+                            }
 
-                        public Receiver getReceiver(Receiver receiver)
-                                throws IllegalActionException {
-                            return new IntermediateReceiver(this, receiver);
-                        }
-                    };
-                    Parameter parameter = new Parameter(port, "qm",
-                            new ObjectToken(quantityManager));
-                    port.attributeChanged(parameter);
+                            public Receiver getReceiver(Receiver receiver)
+                                    throws IllegalActionException {
+                                return new IntermediateReceiver(this, receiver);
+                            }
+                        };
+                        new Parameter(port, "qm", new ObjectToken(
+                                quantityManager));
+                    }
                 }
             }
         }

@@ -30,7 +30,6 @@ package ptserver;
 
 import java.net.URL;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -64,26 +63,19 @@ public class SimulationTask implements Runnable {
     public SimulationTask(Ticket ticket) throws Exception {
         _owner = PtolemyServer.getInstance();
         _ticket = ticket;
-        _remoteModel = new RemoteModel(_ticket.getTicketID(),
-                _ticket.getTicketID() + "_CLIENT", _ticket.getTicketID()
-                        + "_SERVER", RemoteModelType.SERVER);
+        _remoteModel = new RemoteModel(_ticket.getTicketID() + "_CLIENT",
+                _ticket.getTicketID() + "_SERVER", RemoteModelType.SERVER);
 
         // Set the MQTT client.
         IMqttClient mqttClient = MqttClient.createMqttClient("tcp://localhost@"
                 + Integer.toString(_owner.getBrokerPort()), null);
+        mqttClient.connect(_ticket.getTicketID(), true, (short) 10);
         if (mqttClient != null) {
             _remoteModel.setMqttClient(mqttClient);
         }
 
         // Load the model specified within the ticket.
         _remoteModel.loadModel(new URL(_ticket.getUrl()));
-
-        // Set the simulation manager and director.
-        CompositeActor topLevelActor = _remoteModel.getTopLevelActor();
-        if (topLevelActor != null) {
-            topLevelActor.setManager(new Manager(topLevelActor.workspace(),
-                    _ticket.getTicketID()));
-        }
     }
 
     /** Start the execution of the simulation by kicking off the thread.
@@ -104,12 +96,7 @@ public class SimulationTask implements Runnable {
      *  @return The Manager used to control the simulation
      */
     public Manager getManager() {
-        CompositeActor topLevelActor = _remoteModel.getTopLevelActor();
-        if (topLevelActor == null) {
-            return null;
-        }
-
-        return topLevelActor.getManager();
+        return _remoteModel.getManager();
     }
 
     //////////////////////////////////////////////////////////////////////

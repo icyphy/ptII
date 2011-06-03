@@ -98,7 +98,11 @@ public class MQTTTokenListener implements MqttSimpleCallback {
                 CommunicationToken communicationToken = (CommunicationToken) token;
                 RemoteSourceData data = _remoteSourceMap.get(communicationToken
                         .getTargetActorName());
-                data.getTokenQueue().put(communicationToken);
+                data.getTokenQueue().add(communicationToken);
+                //Notify remote sources to read from the queue.
+                synchronized (data.getRemoteSource()) {
+                    data.getRemoteSource().notifyAll();
+                }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
                 Settable changedObject = _settableAttributesMap.get(attributeChangeToken.
