@@ -73,14 +73,14 @@ public class ServletTest {
      */
     @Before
     public void setUp() throws Exception {
-        this._ptolemyServer = PtolemyServer.getInstance();
+        _ptolemyServer = PtolemyServer.getInstance();
 
         HessianProxyFactory proxyFactory = new HessianProxyFactory();
         String servletUrl = String.format("http://%s:%s%s", "localhost",
                 CONFIG.getString("SERVLET_PORT"),
                 CONFIG.getString("SERVLET_PATH"));
 
-        this._servletProxy = (IServerManager) proxyFactory.create(
+        _servletProxy = (IServerManager) proxyFactory.create(
                 IServerManager.class, servletUrl);
     }
 
@@ -92,12 +92,12 @@ public class ServletTest {
      */
     @Test
     public void openThread() throws Exception {
-        int simulations = this._ptolemyServer.numberOfSimulations();
+        int simulations = _ptolemyServer.numberOfSimulations();
         Ticket ticket = _openTicket();
 
         assertNotNull(ticket);
         assertNotNull(ticket.getTicketID());
-        assertEquals(simulations + 1, this._ptolemyServer.numberOfSimulations());
+        assertEquals(simulations + 1, _ptolemyServer.numberOfSimulations());
     }
 
     /** Open, start, stop, and close the simulation request.
@@ -109,33 +109,33 @@ public class ServletTest {
         Ticket ticket = _openTicket();
         assertNotNull(ticket);
 
-        int simulations = this._ptolemyServer.numberOfSimulations();
+        int simulations = _ptolemyServer.numberOfSimulations();
         try {
-            this._servletProxy.start(ticket);
+            _servletProxy.start(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // Start the thread and verify that doing so has not altered the thread count.
-        assertEquals(simulations, this._ptolemyServer.numberOfSimulations());
+        assertEquals(simulations, _ptolemyServer.numberOfSimulations());
 
         try {
-            this._servletProxy.stop(ticket);
+            _servletProxy.stop(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // Stop the thread and verify that doing so has not altered the thread count.
-        assertEquals(simulations, this._ptolemyServer.numberOfSimulations());
+        assertEquals(simulations, _ptolemyServer.numberOfSimulations());
 
         try {
-            this._servletProxy.close(ticket);
+            _servletProxy.close(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // Close the thread and verify that the number of threads decreased.
-        assertEquals(simulations - 1, this._ptolemyServer.numberOfSimulations());
+        assertEquals(simulations - 1, _ptolemyServer.numberOfSimulations());
     }
 
     @After
@@ -145,8 +145,8 @@ public class ServletTest {
      *  servlet.
      */
     public void shutdown() throws Exception {
-        this._ptolemyServer.shutdown();
-        this._ptolemyServer = null;
+        _ptolemyServer.shutdown();
+        _ptolemyServer = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -161,7 +161,7 @@ public class ServletTest {
     private Ticket _openTicket() throws Exception {
         URL url = ServletTest.class
                 .getResource("/ptserver/test/junit/HelloWorld.xml");
-        Ticket ticket = this._servletProxy.open(url.toExternalForm());
+        Ticket ticket = _servletProxy.open(url.toExternalForm());
         return ticket;
     }
 
