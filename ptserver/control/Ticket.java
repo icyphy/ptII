@@ -91,21 +91,21 @@ public class Ticket implements java.io.Serializable {
      *  @return Date and time that the simulation request was submitted.
      */
     public Date getDateRequested() {
-        return this._dateRequested;
+        return _dateRequested;
     }
 
     /** Get the unique ticket identifier.
      *  @return Identifier used to reference the request.
      */
     public String getTicketID() {
-        return this._ticketID;
+        return _ticketID;
     }
 
     /** Get the URL of the model file.
      *  @return Path to the model file.
      */
     public String getUrl() {
-        return this._url;
+        return _url;
     }
 
     /** Return a hash code value for this ticket.  This method uses the hashcode()
@@ -127,21 +127,21 @@ public class Ticket implements java.io.Serializable {
      *  @param dateRequested The date and time of the request.
      */
     private void setDateRequested(Date dateRequested) {
-        this._dateRequested = dateRequested;
+        _dateRequested = dateRequested;
     }
 
     /** Set the unique ticket identifier.
      *  @param ticketID The universally unique identifier.
      */
     private void setTicketID(String ticketID) {
-        this._ticketID = ticketID;
+        _ticketID = ticketID;
     }
 
     /** Set the URL of the requested model.
      *  @param url The path to the model file.
      */
     private void setUrl(String url) {
-        this._url = url;
+        _url = url;
     }
 
     ///////////////////////////////////////////////////////////////////
