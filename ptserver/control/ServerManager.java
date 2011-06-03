@@ -28,6 +28,7 @@
 package ptserver.control;
 
 import java.net.URL;
+import java.util.logging.Level;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.PtolemyServer;
@@ -35,94 +36,123 @@ import ptserver.PtolemyServer;
 import com.caucho.hessian.server.HessianServlet;
 
 ///////////////////////////////////////////////////////////////////
-////ServerManager
+//// ServerManager
 
 /** Acts as a facade to the Ptolemy server application.  And administers
- * control commands coming through the servlet.
-* 
-* @author jkillian
-* @version $Id$
-* @Pt.ProposedRating Red (jkillian)
-* @Pt.AcceptedRating Red (jkillian)
-*/
+ *  control commands coming through the servlet.
+ * 
+ *  @author Justin Killian
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
+ */
 public class ServerManager extends HessianServlet implements IServerManager {
 
-    /** 
-     * Open the model on a separate thread within the Ptolemy server.
-     * 
-     * @param url The path to the model file
-     * @exception Exception If the simulation thread cannot be created or 
-     * the file URL provided is invalid, throw an exception.
-     * @return A reference to the execution thread of the selected model
-     */
-    public Ticket open(String url) throws IllegalActionException {
-        return PtolemyServer.getInstance().open(url);
-    }
-
-    /** 
-     * Start the execution of the model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void start(Ticket ticket) throws IllegalActionException {
-        PtolemyServer.getInstance().start(ticket);
-    }
-
-    /** 
-     * Pause the execution of the running model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void pause(Ticket ticket) throws IllegalActionException {
-        PtolemyServer.getInstance().pause(ticket);
-    }
-
-    /** 
-     * Resume the execution of the paused model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void resume(Ticket ticket) throws IllegalActionException {
-        PtolemyServer.getInstance().resume(ticket);
-    }
-
-    /** 
-     * Stop the execution of the running model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void stop(Ticket ticket) throws IllegalActionException {
-        PtolemyServer.getInstance().stop(ticket);
-    }
-
-    /** 
-     * Close the model and destroy its owner thread.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
+    /** Close the model and destroy its owner thread.
+     *  @param ticket Reference to the execution thread
+     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  or the thread's state cannot be modified.
      */
     public void close(Ticket ticket) throws IllegalActionException {
-        PtolemyServer.getInstance().close(ticket);
+        try {
+            PtolemyServer.getInstance().close(ticket);
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(Level.SEVERE,
+                    "Unable to close the simulation request.");
+            throw new IllegalActionException(null, e,
+                    "Unable to close the simulation request.");
+        }
     }
 
-    /** 
-     * Get the list of models available on the server either in the
-     * database or within the file system.
-     *
-     * @exception Exception If there is an error querying either the 
-     * database or the file system for available models, throw an exception.
-     * @return Array of URL references to available model files
+    /** Get the list of models available on the server either in the
+     *  database or within the file system.
+     *  @exception Exception If there is an error querying either the 
+     *  database or the file system for available models.
+     *  @return An array of URL references to the available model files.
      */
     public URL[] getModelListing() throws IllegalActionException {
         return PtolemyServer.getInstance().getModelListing();
+    }
+
+    /** Open the model on a separate thread within the Ptolemy server.
+     *  @param url The path to the model file
+     *  @exception Exception If the simulation thread cannot be created or 
+     *  the file URL provided is invalid, throw an exception.
+     *  @return A reference to the execution thread of the selected model
+     */
+    public Ticket open(String url) throws IllegalActionException {
+        try {
+            return PtolemyServer.getInstance().open(url);
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(Level.SEVERE,
+                    "Unable to open the requested model file.");
+            throw new IllegalActionException(null, e,
+                    "Unable to open the requested model file.");
+        }
+    }
+
+    /** Pause the execution of the running model.
+     *  @param ticket Reference to the execution thread
+     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  or the thread's state cannot be modified, throw an exception.
+     */
+    public void pause(Ticket ticket) throws IllegalActionException {
+        try {
+            PtolemyServer.getInstance().pause(ticket);
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(Level.SEVERE,
+                    "Unable to pause the running simulation.");
+            throw new IllegalActionException(null, e,
+                    "Unable to pause the running simulation.");
+        }
+    }
+
+    /** Resume the execution of the paused model.
+     *  @param ticket Reference to the execution thread
+     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  or the thread's state cannot be modified, throw an exception.
+     */
+    public void resume(Ticket ticket) throws IllegalActionException {
+        try {
+            PtolemyServer.getInstance().resume(ticket);
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(Level.SEVERE,
+                    "Unable to resume the idle simulation.");
+            throw new IllegalActionException(null, e,
+                    "Unable to resume the idle simulation.");
+        }
+    }
+
+    /** Start the execution of the model.
+     *  @param ticket Reference to the execution thread
+     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  or the thread's state cannot be modified, throw an exception.
+     */
+    public void start(Ticket ticket) throws IllegalActionException {
+        try {
+            PtolemyServer.getInstance().start(ticket);
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(Level.SEVERE,
+                    "Unable to start the requested simulation.");
+            throw new IllegalActionException(null, e,
+                    "Unable to start the requested simulation.");
+        }
+    }
+
+    /** Stop the execution of the running model.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  or the thread's state cannot be modified, throw an exception.
+     */
+    public void stop(Ticket ticket) throws IllegalActionException {
+        try {
+            PtolemyServer.getInstance().stop(ticket);
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(Level.SEVERE,
+                    "Unable to stop the running simulation.");
+            throw new IllegalActionException(null, e,
+                    "Unable to stop the running simulation.");
+        }
     }
 }

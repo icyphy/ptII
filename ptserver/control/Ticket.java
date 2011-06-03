@@ -38,7 +38,7 @@ import java.util.Random;
  *  be used to reference and administer control commands to the simulation 
  *  (ex. start, pause, resume, stop, etc).
  * 
- *  @author jkillian
+ *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jkillian)
@@ -49,41 +49,8 @@ public class Ticket implements java.io.Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate a new ticket for the provided model URL.
-     *  @return Ticket corresponding to simulation request.
-     */
-    public static Ticket generateTicket(String url) {
-
-        Ticket ticket = new Ticket();
-        ticket.setTicketID(Long.toHexString(new Random().nextLong()));
-        ticket.setUrl(url);
-        ticket.setDateRequested(new Date());
-
-        return ticket;
-    }
-
-    /** Get the unique ticket identifier.
-     *  @return Identifier used to reference the request.
-     */
-    public String getTicketID() {
-        return this._ticketID;
-    }
-
-    /** Get the URL of the model file.
-     *  @return Path to the model file.
-     */
-    public String getUrl() {
-        return this._url;
-    }
-
-    /** Get the date and time of the original request.
-     *  @return Date and time that the simulation request was submitted.
-     */
-    public Date getDateRequested() {
-        return this._dateRequested;
-    }
-
     /** Compare tickets by the ticketID property.
+     *  @param otherObject Object to compare this ticket with.
      *  @return True if the two objects are equal, false otherwise.
      */
     @Override
@@ -106,6 +73,41 @@ public class Ticket implements java.io.Serializable {
         return true;
     }
 
+    /** Generate a new ticket for the provided model URL.
+     *  @param url The path to the model file.
+     *  @return Ticket corresponding to simulation request.
+     */
+    public static Ticket generateTicket(String url) {
+
+        Ticket ticket = new Ticket();
+        ticket.setTicketID(Long.toHexString(new Random().nextLong()));
+        ticket.setUrl(url);
+        ticket.setDateRequested(new Date());
+
+        return ticket;
+    }
+
+    /** Get the date and time of the original request.
+     *  @return Date and time that the simulation request was submitted.
+     */
+    public Date getDateRequested() {
+        return this._dateRequested;
+    }
+
+    /** Get the unique ticket identifier.
+     *  @return Identifier used to reference the request.
+     */
+    public String getTicketID() {
+        return this._ticketID;
+    }
+
+    /** Get the URL of the model file.
+     *  @return Path to the model file.
+     */
+    public String getUrl() {
+        return this._url;
+    }
+
     /** Return a hash code value for this ticket.  This method uses the hashcode()
      *  of the ticketID string to compute the hash code for this ticket.
      *  @return A hash code value for this ticket.
@@ -121,6 +123,13 @@ public class Ticket implements java.io.Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Set the date of the simulation request.
+     *  @param dateRequested The date and time of the request.
+     */
+    private void setDateRequested(Date dateRequested) {
+        this._dateRequested = dateRequested;
+    }
+
     /** Set the unique ticket identifier.
      *  @param ticketID The universally unique identifier.
      */
@@ -133,13 +142,6 @@ public class Ticket implements java.io.Serializable {
      */
     private void setUrl(String url) {
         this._url = url;
-    }
-
-    /** Set the date of the simulation request.
-     *  @param dateRequested The date and time of the request.
-     */
-    private void setDateRequested(Date dateRequested) {
-        this._dateRequested = dateRequested;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -47,7 +47,7 @@ import com.ibm.mqtt.MqttClient;
 /** Launch the simulation on the current thread under the provided
  *  ticket reference and wait for the user to issue control commands.
  *  
- *  @author jkillian
+ *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jkillian)
@@ -57,7 +57,6 @@ public class SimulationTask implements Runnable {
 
     /** Create an instance of the simulation task to be run by the Ptolemy
      *  server application.
-     * 
      *  @param ticket Reference to the simulation request.
      *  @exception Exception If the simulation encounters a problem setting
      *  the director or getting workspace access.

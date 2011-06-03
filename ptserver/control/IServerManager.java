@@ -34,83 +34,68 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// IServerManager
 
-/** Defines the control commands that can be administered to the 
- * Ptolemy server from its distributed clients.  These functions are 
- * available through a synchronous, RPC-like servlet that is embedded 
- * within the Ptolemy server.
+/** Define the control commands that can be administered to the 
+ *  Ptolemy server from its distributed clients.  These functions are 
+ *  available through a synchronous, RPC-like servlet that is embedded 
+ *  within the Ptolemy server.
  * 
- * @author jkillian
- * @version $Id$
- * @Pt.ProposedRating Red (jkillian)
- * @Pt.AcceptedRating Red (jkillian)
+ *  @author Justin Killian
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
 */
 public interface IServerManager {
 
-    /** 
-     * Open the model on a separate thread within the Ptolemy server.
-     * 
-     * @param url The path to the model file
-     * @exception Exception If the simulation thread cannot be created or 
-     * the file URL provided is invalid, throw an exception.
-     * @exception IllegalActionException If the ticket cannot be 
-     * generated, throw an exception.
-     * @return A reference to the execution thread of the selected model
-     */
-    public Ticket open(String url) throws IllegalActionException;
-
-    /** 
-     * Start the execution of the model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalActionException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void start(Ticket ticket) throws IllegalActionException;
-
-    /** 
-     * Pause the execution of the running model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalActionException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void pause(Ticket ticket) throws IllegalActionException;
-
-    /**
-     * Resume the execution of the paused model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalActionException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void resume(Ticket ticket) throws IllegalActionException;
-
-    /** 
-     * Stop the execution of the running model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalActionException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
-     */
-    public void stop(Ticket ticket) throws IllegalActionException;
-
-    /** 
-     * Close the model and destroy its owner thread.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalActionException If the ticket reference is invalid 
-     * or the thread's state cannot be modified, throw an exception.
+    /** Shut down the thread associated with the user's ticket. 
+     *  @param ticket Ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  destroy the simulation thread.
      */
     public void close(Ticket ticket) throws IllegalActionException;
 
-    /** 
-     * Get the list of models available on the server either in the
-     * database or within the file system.
-     *
-     * @exception IllegalActionException If there is an error 
-     * querying either the database or the file system for 
-     * available models, throw an exception.  
-     * @return Array of URL references to available model files
+    /** Get a listing of the models available on the server in either the
+     *  database or the local file system.
+     *  @exception IllegalActionException If there was a problem discovering
+     *  available models.
+     *  @return An array of URL references to the available model files.
      */
     public URL[] getModelListing() throws IllegalActionException;
+
+    /** Open a model with the provided model URL and wait for the
+     *  user to request the execution of the simulation.
+     *  @param url The path to the model file
+     *  @exception IllegalActionException If the model fails to load 
+     *  from the provided URL.
+     *  @return The user's reference to the simulation task
+     */
+    public Ticket open(String url) throws IllegalActionException;
+
+    /** Pause the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  pause the running simulation.
+     */
+    public void pause(Ticket ticket) throws IllegalActionException;
+
+    /** Resume the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  resume the execution of the simulation.
+     */
+    public void resume(Ticket ticket) throws IllegalActionException;
+
+    /** Start the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  start the simulation.
+     */
+    public void start(Ticket ticket) throws IllegalActionException;
+
+    /** Stop the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  stop the simulation.
+     */
+    public void stop(Ticket ticket) throws IllegalActionException;
 }
