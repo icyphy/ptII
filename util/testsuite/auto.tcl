@@ -92,6 +92,8 @@ foreach file [lsort [glob auto/*.xml]] {
         } else {
 	    $watchDog cancel
    	}
+	# Free up memory.
+	$application cleanup
 
 	list {}
     } {{}}

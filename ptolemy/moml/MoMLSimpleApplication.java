@@ -35,6 +35,7 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
@@ -78,7 +79,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  or running the model.
      */
     public MoMLSimpleApplication(String xmlFileName) throws Throwable {
-        MoMLParser parser = new MoMLParser();
+        _workspace = new Workspace("MoMLSimpleApplicationWorkspace");
+        _parser = new MoMLParser();
 
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
@@ -98,27 +100,19 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
+        _toplevel = (CompositeActor) _parser.parse(null, new File(
                 xmlFileName).toURI().toURL());
 
-        _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
-        toplevel.setManager(_manager);
-        toplevel.addChangeListener(this);
+        _manager = new Manager(_toplevel.workspace(), "MoMLSimpleApplication");
+        _toplevel.setManager(_manager);
+        _toplevel.addChangeListener(this);
 
         _manager.addExecutionListener(this);
         _activeCount++;
 
         _manager.startRun();
 
-        Thread waitThread = new Thread() {
-            public void run() {
-                waitForFinish();
-                if (_sawThrowable != null) {
-                    throw new RuntimeException("Execution failed",
-                            _sawThrowable);
-                }
-            }
-        };
+        Thread waitThread = new UnloadThread();
 
         // Note that we start the thread here, which could
         // be risky when we subclass, since the thread will be
@@ -167,6 +161,44 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
 
         throw new RuntimeException("MoMLSimplApplication.changeFailed(): "
                 + description + " failed: ", exception);
+    }
+
+    /** Clean up by freeing memory.  After calling cleanup(), do not call
+     *  rerun().   
+     */   
+    public void cleanup() {
+        // The next line removes the static backward compatibility
+        // filters, which is probably not what we want if we
+        // want to parse another file.
+        //BackwardCompatibility.clear();
+
+        // The next line will remove the static MoMLParser (_filterMoMLParser)
+        // used by the filters.  If we add filters, then the _filterMoMLParser
+        // is recreated, so this is probably safe.  We need to get rid
+        // of _filterMoMLParser so that the _manager is collected.
+        MoMLParser.setMoMLFilters(null);
+
+        _parser.resetAll();
+        // _parser is a protected variable so setting it to
+        // null will (hopefully) cause the garbage
+        // collector to collect it.
+        _parser = null;
+
+        // _manager is a protected variable so setting it to
+        // null will (hopefully) cause the garbage
+        // collector to collect it.
+        _manager = null;
+
+        // _toplevel and _workspace are protected variables so
+        // setting it to null will (hopefully) cause the
+        // garbage collector to collect them
+        
+        // Set toplevel to null so that the Manager is collected.
+        _toplevel = null;
+
+        // Set workspace to null so that the objects contained
+        // by the workspace may be collected.
+        _workspace = null;
     }
 
     /** Report an execution failure.   This method will be called
@@ -254,12 +286,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     /** The count of currently executing runs. */
     protected volatile int _activeCount = 0;
 
-    /** The manager of this model. */
-    protected Manager _manager = null;
-
-    /** The exception seen by executionError(). */
-    protected volatile Throwable _sawThrowable = null;
-
     /** A flag that indicates if the execution has finished or thrown
      *  an error.  The code busy waits until executionFinished() or
      *  executionError() is called.  If this variable is true and
@@ -268,4 +294,34 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  executionError() was called.
      */
     protected volatile boolean _executionFinishedOrError = false;
+
+    /** The manager of this model. */
+    protected Manager _manager = null;
+
+    /** The MoMLParser used to parse the model. */
+    protected volatile MoMLParser _parser;
+
+    /** The exception seen by executionError(). */
+    protected volatile Throwable _sawThrowable = null;
+
+    /** The toplevel model that is created and then destroyed. */
+    protected volatile CompositeActor _toplevel;
+
+    /** The workspace in which the model and Manager are created. */
+    protected volatile Workspace _workspace;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private inner classes             ////
+
+    /** Wait for the run to finish and the unload the model.
+     */   
+    private class UnloadThread extends Thread {
+        public void run() {
+            waitForFinish();
+            if (_sawThrowable != null) {
+                throw new RuntimeException("Execution failed",
+                        _sawThrowable);
+            }
+        }
+    }
 }
