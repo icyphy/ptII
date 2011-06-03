@@ -32,11 +32,12 @@ import java.util.Date;
 import java.util.HashMap;
 
 import ptolemy.data.Token;
+import ptolemy.kernel.util.Settable;
+import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
 import ptserver.data.Tokenizer;
 
 import com.ibm.mqtt.MqttSimpleCallback;
-
 
 //////////////////////////////////////////////////////////////////////////
 ////MQTTTokenListener
@@ -58,8 +59,9 @@ public class MQTTTokenListener implements MqttSimpleCallback {
      * @param topic The topic that the instance is listening to
      */
     public MQTTTokenListener(HashMap<String, RemoteSourceData> remoteSourceMap,
-            String topic) {
+            HashMap<String, Settable> settableAttributesMap, String topic) {
         this._remoteSourceMap = remoteSourceMap;
+        this._settableAttributesMap = settableAttributesMap;
         this._topic = topic;
     }
 
@@ -90,10 +92,19 @@ public class MQTTTokenListener implements MqttSimpleCallback {
         Tokenizer tokenizer = new Tokenizer(payload);
         Token token = null;
         while ((token = tokenizer.getNextToken()) != null) {
-            CommunicationToken communicationToken = (CommunicationToken) token;
-            RemoteSourceData data = _remoteSourceMap.get(communicationToken
-                    .getTargetActorName());
-            data.getTokenQueue().put(communicationToken);
+            // The listener is only concerned about the following types.
+            // FIXME Figure out a better way to handle different token types here
+            if (token instanceof CommunicationToken) {
+                CommunicationToken communicationToken = (CommunicationToken) token;
+                RemoteSourceData data = _remoteSourceMap.get(communicationToken
+                        .getTargetActorName());
+                data.getTokenQueue().put(communicationToken);
+            } else if (token instanceof AttributeChangeToken) {
+                AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
+                Settable changedObject = _settableAttributesMap.get(attributeChangeToken.
+                        getTargetSettableName());
+                changedObject.setExpression(attributeChangeToken.getExpression());
+            }
         }
     }
 
@@ -103,6 +114,10 @@ public class MQTTTokenListener implements MqttSimpleCallback {
      * Mapping from source actor name to its queue
      */
     private final HashMap<String, RemoteSourceData> _remoteSourceMap;
+    /**
+     * Mapping of actor (with settable attributes) name to the settable attributes.
+     */
+    private final HashMap<String, Settable> _settableAttributesMap;
     /**
      * The topic that the instance is subscribed to
      */

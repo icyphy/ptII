@@ -37,6 +37,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptserver.actor.RemoteSink;
@@ -261,7 +262,7 @@ public class RemoteModel {
         }
 
         _mqttClient.registerSimpleHandler(new MQTTTokenListener(
-                _remoteSourceMap, _subscriptionTopic));
+                _remoteSourceMap, _settableAttributesMap, _subscriptionTopic));
         _mqttClient.subscribe(new String[] { _subscriptionTopic },
                 new int[] { QOS_LEVEL });
         return _topLevelActor;
@@ -279,6 +280,11 @@ public class RemoteModel {
      * The mapping from the original sink actor name to its remote sink. 
      */
     private final HashMap<String, RemoteSink> _remoteSinkMap = new HashMap<String, RemoteSink>();
+
+    /**
+     * The mapping from the original settable object name to the remote representation. 
+     */
+    private final HashMap<String, Settable> _settableAttributesMap = new HashMap<String, Settable>();
 
     /**
      * The token publisher used to batch tokens sent by the remote sink
