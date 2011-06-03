@@ -1,4 +1,5 @@
-/* Interface definition for the Ptolemy servlet
+/* A simplified interface to the Ptolemy server application that 
+   enables users to administer control commands through the servlet.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
