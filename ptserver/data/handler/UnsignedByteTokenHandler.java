@@ -1,6 +1,6 @@
 /*
  UnsignedByteTokenHandler converts UnsignedByteToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,17 +33,17 @@ import java.io.IOException;
 
 import ptolemy.data.UnsignedByteToken;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// UnsignedByteTokenHandler
 /**
  * UnsignedByteTokenHandler converts UnsignedByteToken to/from byte stream
- * 
+ *
  * @author ishwinde
- * @version $Id $ 
+ * @version $Id $
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *
  */
 public class UnsignedByteTokenHandler implements TokenHandler<UnsignedByteToken> {
     ///////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ public class UnsignedByteTokenHandler implements TokenHandler<UnsignedByteToken>
         outputStream.writeByte(token.byteValue());
     }
 
-    /** 
+    /**
      * Read from the inputStream and converts it to the UnsignedByteToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */

@@ -1,6 +1,6 @@
 /*
  LongMatrixTokenHandler converts LongMatrixToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,17 +36,17 @@ import ptolemy.data.LongToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.TokenParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LongMatrixTokenHandler
 /**
  * LongMatrixTokenHandler converts LongMatrixToken to/from byte stream
- * 
+ *
  * @author ishwinde
- * @version $Id $ 
+ * @version $Id $
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *
  */
 public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
     ///////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
 
     /**
      * Convert LongMatrixToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(LongMatrixToken token,
@@ -82,9 +82,9 @@ public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
 
     }
 
-    /** 
+    /**
      * Read from the inputStream and converts it to the LongMatrixToken.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public LongMatrixToken convertToToken(DataInputStream inputStream,

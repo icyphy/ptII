@@ -1,6 +1,6 @@
 /*
- Entry Point of the Ptolemy Server 
- 
+ Entry Point of the Ptolemy Server
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,13 +39,13 @@ import ptserver.communication.RemoteModel.RemoteModelType;
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttClient;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtolemyTestServer
 /**
 * Entry Point of the Ptolemy MQTT Server which is used for testing purposes.
 * This class sets up the server to accept requests from Android client.
 * @author Anar Huseynov
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)

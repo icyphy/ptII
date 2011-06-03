@@ -1,6 +1,6 @@
 /*
  ComplexTokenHandler converts ComplexToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,17 +34,17 @@ import java.io.IOException;
 import ptolemy.data.ComplexToken;
 import ptolemy.math.Complex;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ComplexTokenHandler
 /**
  * ComplexTokenHandler converts DoubleToken to/from byte stream
- * 
+ *
  * @author ishwinde
- * @version $Id $ 
+ * @version $Id $
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *
  */
 public class ComplexTokenHandler implements TokenHandler<ComplexToken> {
     ///////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ public class ComplexTokenHandler implements TokenHandler<ComplexToken> {
 
     }
 
-    /** 
+    /**
      * Reads from the inputStream and converts it to the ComplexToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */

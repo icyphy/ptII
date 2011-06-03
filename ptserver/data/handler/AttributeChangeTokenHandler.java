@@ -42,9 +42,9 @@ import ptserver.data.TokenParser;
 //// AttributeChangeTokenHandler
 /**
 * <p>Serialize a AttributeChangeToken to and from binary format.</p>
-* 
+*
 * @author Peter Foldes
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (pdf)
 * @Pt.AcceptedRating Red (pdf)
@@ -52,7 +52,7 @@ import ptserver.data.TokenParser;
 public class AttributeChangeTokenHandler implements
         TokenHandler<AttributeChangeToken> {
 
-    /** 
+    /**
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(AttributeChangeToken token,
@@ -62,7 +62,7 @@ public class AttributeChangeTokenHandler implements
         outputStream.writeUTF(token.getExpression());
     }
 
-    /** 
+    /**
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public AttributeChangeToken convertToToken(DataInputStream inputStream,

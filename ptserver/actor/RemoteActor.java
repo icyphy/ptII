@@ -1,7 +1,7 @@
 /*
  Parent actor that contains logic common to both sink and source remote actors.
  This actor is responsible for removing a target actor and putting itself as a proxy.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -42,16 +42,16 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////RemoteActor
 /**
  * An abstract parent actor that contains logic common to both sink and source remote actors.
- * This actor is responsible for either removing the target actor and putting itself as a proxy 
+ * This actor is responsible for either removing the target actor and putting itself as a proxy
  * or removing all actors connected to the target actor and putting itself instead of all of them.
  * The intent is to allow sinks or sources to run remotely by putting instance of RemoteSink
  * or RemoteSource instead.
  * @author ahuseyno
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -68,7 +68,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * in the targetEntity (with the same port name) or  and connects them to the targetEntity's relations.
      * @param container The container
      * @param targetEntity the targetEntity to be replaced by a proxy
-     * @param replaceTargetEntity true to replace the target entity with the proxy, 
+     * @param replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
@@ -93,7 +93,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
 
     /**
      * Return the name of the target entity.
-     * @return the targetEntityName 
+     * @return the targetEntityName
      * @see #setTargetActorName(String)
      */
     public String getTargetEntityName() {
@@ -127,9 +127,9 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * Replace all entities connected to the targetEntity with one RemoteSource
      * or RemoteSink.
      * Essentially instead of all entities connected to it, RemoteSink or RemoteSource
-     * would be used that would redirect all links from those entities to itself and 
+     * would be used that would redirect all links from those entities to itself and
      * connect them to dynamically added ports derived from the connected entities.
-     * 
+     *
      * This configuration would allow running of sources and sinks disconnected from
      * the actors in between remotely by passing respective input and output via
      * CommunicationToken.
@@ -205,17 +205,17 @@ public abstract class RemoteActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     /**
      * Clone the port.
-     * 
+     *
      * This method also suppose to set type constraints of a cloned typed port.
      * @param port
      * @return Returns the cloned port.
      * @exception CloneNotSupportedException TODO
-     * @throws NameDuplicationException TODO
-     * @throws IllegalActionException TODO
+     * @exception NameDuplicationException TODO
+     * @exception IllegalActionException TODO
      */
     private IOPort clonePort(IOPort port) throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {

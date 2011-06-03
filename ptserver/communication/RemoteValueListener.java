@@ -31,13 +31,13 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptserver.data.AttributeChangeToken;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RemoteValueListener
 /**
 * A value listener that listens to changes made to a variable widget
 * and publishes the changes as an AttributeChangeToken.
 * @author Peter Foldes
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (pdf)
 * @Pt.AcceptedRating Red (pdf)
@@ -71,7 +71,7 @@ public class RemoteValueListener implements ValueListener {
     }
 
     /**
-     * Set the token publisher that would be used to send 
+     * Set the token publisher that would be used to send
      * AttributeChange tokens.
      * @param tokenPublisher
      * @see #getTokenPublisher()

@@ -48,7 +48,7 @@ import com.caucho.hessian.client.HessianProxyFactory;
 
 /** Test the ability to open, start, stop, and close a simulation request
  *  on the Ptolemy server using the Hessian protocol.
- * 
+ *
  *  @author Peter Foldes
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -60,7 +60,7 @@ public class ServletTest {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Access the ResourceBundle containing configuration parameters. 
+    /** Access the ResourceBundle containing configuration parameters.
      */
     public static final ResourceBundle CONFIG = PtolemyServer.CONFIG;
 
@@ -68,7 +68,7 @@ public class ServletTest {
     ////                         public methods                    ////
 
     /** Set up the initial singleton reference and Hessian proxy factory
-     *  that will be used within the JUnit test cases. 
+     *  that will be used within the JUnit test cases.
      *  @exception Exception If there is an error creating the Hessian proxy.
      */
     @Before
@@ -85,9 +85,9 @@ public class ServletTest {
     }
 
     /** Test the ability to create a new simulation request ensure that
-     *  a non-null ticket is returned, the returned ticket has an id, and the 
+     *  a non-null ticket is returned, the returned ticket has an id, and the
      *  number of simulations stored has increased by one.
-     *  @exception Exception If there is an problem opening the model URL or 
+     *  @exception Exception If there is an problem opening the model URL or
      *  communicating with the command servlet.
      */
     @Test
@@ -101,7 +101,7 @@ public class ServletTest {
     }
 
     /** Open, start, stop, and close the simulation request.
-     *  @exception Exception If there is an problem opening the model URL or 
+     *  @exception Exception If there is an problem opening the model URL or
      *  communicating with the command servlet.
      */
     @Test
@@ -154,7 +154,7 @@ public class ServletTest {
 
     /** Submit a request to the servlet to open a simulation and acquire
      *  the ticket reference.
-     *  @exception Exception If there is an problem opening the model URL or 
+     *  @exception Exception If there is an problem opening the model URL or
      *  communicating with the command servlet.
      *  @return Ticket The ticket reference to the simulation request.
      */

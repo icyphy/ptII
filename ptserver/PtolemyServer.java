@@ -51,9 +51,9 @@ import ptserver.control.Ticket;
 //// PtolemyServer
 
 /** Launch the message broker, enabling users to start, pause, resume,
- *  and stop simulations through the servlet, and create independently 
+ *  and stop simulations through the servlet, and create independently
  *  executing simulations upon request.
- *   
+ *
  *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -65,12 +65,12 @@ public class PtolemyServer implements IServerManager {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The ResourceBundle containing configuration parameters. 
+    /** The ResourceBundle containing configuration parameters.
      */
     public static final ResourceBundle CONFIG = ResourceBundle
             .getBundle("ptserver.PtolemyServerConfig");
 
-    /** Start the Logger used to write messages to the specified log file. 
+    /** Start the Logger used to write messages to the specified log file.
      */
     public static final Logger LOGGER;
 
@@ -95,16 +95,16 @@ public class PtolemyServer implements IServerManager {
     }
 
     /** Initialize the server, launch the broker and servlet processes, and
-     *  wait from simulation requests.  The following optional command line 
-     *  switches may be used with their accompanying value: -servlet_path, 
+     *  wait from simulation requests.  The following optional command line
+     *  switches may be used with their accompanying value: -servlet_path,
      *  -servlet_port, -broker_path, and -broker_port.  The port numbers must
      *  integers, the broker path must be the path to the MQTT broker executable on
      *  the local machine, and the servlet path is the virtual directory (including
      *  the preceding slash) that the Ptolemy servlet will run at.
-     *  
+     *
      *  For example:
      *  java -classpath ptserver.PtolemyServer -broker_path /usr/sbin/mosquitto -broker_port 1883
-     *  
+     *
      *  @param args Optional command line arguments.
      *  @exception IllegalActionException If the server could not be launched.
      */
@@ -145,11 +145,11 @@ public class PtolemyServer implements IServerManager {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
-    /** Create an instance of the Ptolemy server.  This class is a singleton 
+    /** Create an instance of the Ptolemy server.  This class is a singleton
      *  so only one instance should ever exist at a time.  Child process are
-     *  initialized for the servlet (synchronous command handler) and the 
+     *  initialized for the servlet (synchronous command handler) and the
      *  MQTT message broker (asynchronous simulation data).
-     *  @exception Exception If the server was unable to load the default 
+     *  @exception Exception If the server was unable to load the default
      *  configuration from the resource file.
      */
     public PtolemyServer() throws Exception {
@@ -174,7 +174,7 @@ public class PtolemyServer implements IServerManager {
      *  already exist, the singleton will be instantiated using the
      *  default configuration.
      *  @return The PtolemyServer singleton.
-     *  @exception IllegalActionException If the server could not be launched. 
+     *  @exception IllegalActionException If the server could not be launched.
      */
     public static PtolemyServer getInstance() throws IllegalActionException {
         if (_instance == null) {
@@ -198,9 +198,9 @@ public class PtolemyServer implements IServerManager {
         return _instance;
     }
 
-    /** Shut down the thread associated with the user's ticket. 
+    /** Shut down the thread associated with the user's ticket.
      *  @param ticket Ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  destroy the simulation thread.
      */
     public void close(Ticket ticket) throws IllegalActionException {
@@ -257,7 +257,7 @@ public class PtolemyServer implements IServerManager {
     /** Open a model with the provided model URL and wait for the
      *  user to request the execution of the simulation.
      *  @param url The path to the model file
-     *  @exception IllegalActionException If the model fails to load 
+     *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      *  @return The user's reference to the simulation task
      */
@@ -282,7 +282,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Pause the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  pause the running simulation.
      */
     public void pause(Ticket ticket) throws IllegalActionException {
@@ -300,7 +300,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Resume the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  resume the execution of the simulation.
      */
     public void resume(Ticket ticket) throws IllegalActionException {
@@ -317,7 +317,7 @@ public class PtolemyServer implements IServerManager {
     }
 
     /** Shut down supporting processes and destroy active simulation threads.
-     *  @exception IllegalActionException If the servlet, broker, or thread pool 
+     *  @exception IllegalActionException If the servlet, broker, or thread pool
      *  cannot be stopped.
      */
     public void shutdown() throws IllegalActionException {
@@ -362,7 +362,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Start the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  start the simulation.
      */
     public void start(Ticket ticket) throws IllegalActionException {
@@ -380,7 +380,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Initialize the servlet and the broker for use in communication
      *  with the Ptolemy server.
-     *  @exception IllegalActionException If the broker or servlet 
+     *  @exception IllegalActionException If the broker or servlet
      *  cannot be started.
      */
     public void startup() throws IllegalActionException {
@@ -422,7 +422,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Stop the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  stop the simulation.
      */
     public void stop(Ticket ticket) throws IllegalActionException {

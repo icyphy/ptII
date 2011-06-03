@@ -1,7 +1,7 @@
 /*
  CommunicationToken encapsulates tokens from all ports and their channels
  that were received within one iteration.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -35,14 +35,14 @@ import java.util.Map.Entry;
 
 import ptolemy.data.Token;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////CommunicationToken
 /**
 * Encapsulate tokens that were received within one iteration.
-* 
+*
 * Note: Kahn networks are not being handled right now
 * @author ahuseyno
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
@@ -69,7 +69,7 @@ public class CommunicationToken extends Token {
 
     /**
      * Add the port with the specified number of channels.
-     * 
+     *
      * @param port The port name as it's returned by NamedObj.getName() method.
      * @param width The number of channel that the port has.
      */
@@ -79,10 +79,10 @@ public class CommunicationToken extends Token {
 
     }
 
-    /** 
-     * Return true if the object is equal to the instance, false otherwise  
-     * 
-     * The method checks if the object has the same target name and 
+    /**
+     * Return true if the object is equal to the instance, false otherwise
+     *
+     * The method checks if the object has the same target name and
      * the portChannelMap contains the same ports each having the same number of channels with the same tokens.
      * @param The reference object with which to compare.
      * @see java.lang.Object#equals(java.lang.Object)
@@ -112,7 +112,7 @@ public class CommunicationToken extends Token {
 
         /*portChannelTokenMap.equals(other.portChannelTokenMap) would not work because the maps contain array objects,
          * and equals method on the array objects checks equality of a reference but in our case we need to check equality of each token within the array objects
-         * 
+         *
          */
         if (_portChannelTokenMap == null) {
             if (other._portChannelTokenMap != null) {

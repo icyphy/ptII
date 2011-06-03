@@ -1,6 +1,6 @@
 /*
  AttributeChangeToken encapsulates changes made to a settable object.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -29,13 +29,13 @@ package ptserver.data;
 
 import ptolemy.data.Token;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AttributeChangeToken
 /**
 * Encapsulate changes made to a settable object.
-* 
+*
 * @author Peter Foldes
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (pdf)
 * @Pt.AcceptedRating Red (pdf)
@@ -60,10 +60,10 @@ public class AttributeChangeToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
-     * Return true if the object is equal to the instance, false otherwise  
-     * 
-     * The method checks if the object has the same target name and 
+    /**
+     * Return true if the object is equal to the instance, false otherwise
+     *
+     * The method checks if the object has the same target name and
      * the same expression.
      * @param The reference object with which to compare.
      * @see java.lang.Object#equals(java.lang.Object)
@@ -136,7 +136,7 @@ public class AttributeChangeToken extends Token {
     public void setExpression(String newExpression) {
         this._expression = newExpression;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

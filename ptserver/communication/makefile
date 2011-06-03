@@ -57,8 +57,6 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 # Keep this list alphabetized.
 JSRCS = \
 	MQTTTokenListener.java \
-	PtolemyTestClient.java \
-	PtolemyTestServer.java \
 	RemoteModel.java \
 	RemoteSourceData.java \
 	RemoteValueListener.java \
@@ -69,9 +67,9 @@ JSRCS = \
 MISC_FILES = 
 
 OPTIONAL_FILES = \
-	'PtolemyTestClient$$1.class' \
 	'PtolemyTestServer$$1.class' \
 	'RemoteModel$$1.class' \
+	'RemoteModel$$2.class' \
 	'RemoteModel$$RemoteModelType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

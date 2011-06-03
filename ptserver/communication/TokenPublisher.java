@@ -1,6 +1,6 @@
 /*
  TokenPublisher batches tokens, converts to them binary and then publishes the result to the MQTT topic
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,15 +37,15 @@ import ptserver.data.TokenParser;
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TokenPublisher
 /**
  * TokenPublisher batches tokens, converts to them binary and then publishes the result to the MQTT topic.
- * 
- * <p>The batch is sent it out periodically according to the period and tokensPerPeriod parameters 
- * 
+ *
+ * <p>The batch is sent it out periodically according to the period and tokensPerPeriod parameters
+ *
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -55,7 +55,7 @@ public class TokenPublisher {
     /**
      * Create instance of the TokenPublisher with specified period and tokensPerPeriod
      * @param period Period in millisecond between batches
-     * @param tokensPerPeriod Expected number of tokens per period 
+     * @param tokensPerPeriod Expected number of tokens per period
      */
     public TokenPublisher(long period, int tokensPerPeriod) {
         this._period = period;
@@ -84,10 +84,10 @@ public class TokenPublisher {
 
     /**
      * Send the token via MQTT protocol
-     * 
+     *
      * The token will not be sent out immediately but would be batched for the specified period
      * @param token the token to send
-     * @throws IllegalActionException if there is a problem with MQTT broker.
+     * @exception IllegalActionException if there is a problem with MQTT broker.
      */
     public void sendToken(Token token) throws IllegalActionException {
         if (_lastSent == -1) {

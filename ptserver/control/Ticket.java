@@ -1,5 +1,5 @@
-/* A reference to a simulation request. 
- 
+/* A reference to a simulation request.
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,11 +33,11 @@ import java.util.Random;
 ///////////////////////////////////////////////////////////////////
 //// Ticket
 
-/** Define the response to a simulation execution request.  Once the 
- *  simulation has been launched at the request of the user, the ticket will 
- *  be used to reference and administer control commands to the simulation 
+/** Define the response to a simulation execution request.  Once the
+ *  simulation has been launched at the request of the user, the ticket will
+ *  be used to reference and administer control commands to the simulation
  *  (ex. start, pause, resume, stop, etc).
- * 
+ *
  *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0

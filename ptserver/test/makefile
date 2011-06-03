@@ -41,13 +41,15 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	PtolemyTestClient.java \
+	PtolemyTestServer.java \
 	QMTest.java \
 	StringAttributeWidget.java \
 	SysOutActor.java

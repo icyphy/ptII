@@ -1,6 +1,6 @@
 /*
  Serialize a CommunicationToken to and from binary format.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -42,7 +42,7 @@ import ptserver.data.TokenParser;
 ////CommunicationTokenHandler
 /**
 * <p>Serialize a CommunicationToken to and from binary format.</p>
-* 
+*
 * <p>The stream has the following format:
 * CommunicationToken = Type(2), CommunicationTokenValueField <br/>
 * CommunicationTokenValueField = TargetActorName, PortCount(2), PortData... (PortData is repeated PortCount times)<br/>
@@ -50,7 +50,7 @@ import ptserver.data.TokenParser;
 * ChannelData = ChannelTokenCount(2), Token... (Token is repeated ChannelTokenCount times; it's serialized using TokenHandler defined
 * for its data type)</p>
 * @author Anar Huseynov
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
@@ -58,7 +58,7 @@ import ptserver.data.TokenParser;
 public class CommunicationTokenHandler implements
         TokenHandler<CommunicationToken> {
 
-    /** 
+    /**
      * Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
@@ -83,7 +83,7 @@ public class CommunicationTokenHandler implements
         }
     }
 
-    /** 
+    /**
      * Deserialize the token from the stream according to the format defined in {@link CommunicationTokenHandler}.
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */

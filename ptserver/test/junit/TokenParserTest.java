@@ -1,5 +1,5 @@
 /*
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -97,7 +97,7 @@ public class TokenParserTest {
         assertEquals(token,
                 TokenParser.getInstance().convertToToken(inputStream));
     }
-    
+
     @Test
     public void testShortToken() throws IOException, IllegalActionException {
         ShortToken token = new ShortToken(1234);
@@ -117,7 +117,7 @@ public class TokenParserTest {
         assertEquals(token,
                 TokenParser.getInstance().convertToToken(inputStream));
     }
-    
+
     @Test
     public void testUnsignedByteToken() throws IOException, IllegalActionException {
         UnsignedByteToken token = new UnsignedByteToken(220);
@@ -186,7 +186,7 @@ public class TokenParserTest {
         assertEquals(token,
                 TokenParser.getInstance().convertToToken(inputStream));
     }
-    
+
     @Test
     public void testLongMatrixToken() throws IOException, IllegalActionException {
         long[][] matrix = new long[3][4];
@@ -258,7 +258,7 @@ public class TokenParserTest {
         assertEquals(token,
                 TokenParser.getInstance().convertToToken(inputStream));
     }
-    
+
     @Test
     public void testUnionToken() throws IOException, IllegalActionException {
 
@@ -317,7 +317,7 @@ public class TokenParserTest {
         AttributeChangeToken token = new AttributeChangeToken();
         token.setTargetSettableName("targetSettable");
         token.setExpression("testing");
-        
+
         PipedOutputStream outputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(outputStream);
         TokenParser.getInstance().convertToBytes(token, outputStream);

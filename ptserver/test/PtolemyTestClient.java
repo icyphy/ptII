@@ -1,6 +1,6 @@
 /*
  Entry Point to the Ptolemy MQTT Client
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -44,12 +44,12 @@ import com.ibm.mqtt.MqttClient;
 ////PtolemyTestClient
 /**
  * Ptolemy MQTT Client which is used for testing purposes.
- * 
+ *
  * The client would only run sinks and sources that have respective attribute and
  * would rely on the server to run the rest.  The communication is performed over MQTT
  * protocol and the MQTT broker must be running in order to execute this program.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -58,7 +58,7 @@ public class PtolemyTestClient {
 
     /**
      * Entry point to the Ptolemy MQTT Client which is used for testing purposes.
-     * 
+     *
 
      * @param args The first argument is file path to the model
      */

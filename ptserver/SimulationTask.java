@@ -1,6 +1,6 @@
 /*
  Task that will be used to execute a Ptolemy simulation.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -45,7 +45,7 @@ import com.ibm.mqtt.MqttClient;
 
 /** Launch the simulation on the current thread under the provided
  *  ticket reference and wait for the user to issue control commands.
- *  
+ *
  *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -92,14 +92,14 @@ public class SimulationTask implements Runnable {
         }
     }
 
-    /** Get the manager responsible for coordinating the model of computation. 
+    /** Get the manager responsible for coordinating the model of computation.
      *  @return The Manager used to control the simulation
      */
     public Manager getManager() {
         return _remoteModel.getManager();
     }
 
-    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                private variables
 
     /** The Ptolemy server singleton.

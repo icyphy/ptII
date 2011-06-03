@@ -2,7 +2,7 @@
  RemoteSource that acts as a proxy source
  Accepts communication token, unpackage as regular tokens
  and send them to the appropriate ports
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,14 +39,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptserver.communication.RemoteSourceData;
 import ptserver.data.CommunicationToken;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////RemoteSource
 /**
  * RemoteSource that acts as a proxy source
  * Accepts communication token, unpackage as regular tokens
  * and send them to the appropriate ports
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -58,7 +58,7 @@ public class RemoteSource extends RemoteActor {
      * @see RemoteActor
      * @param container The container
      * @param targetSource The target source
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy, 
+     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.

@@ -1,7 +1,7 @@
 /*
  RemoteSink that acts as a proxy sink and publishes tokens it receives as
  CommunicationToken to its queue.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,13 +38,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptserver.communication.TokenPublisher;
 import ptserver.data.CommunicationToken;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////RemoteSink
 /**
  * A Remote Sink that acts as a proxy sink and publishes tokens it receives as
  * one CommunicationToken per fire to its queue.
  * @author ahuseyno
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -56,7 +56,7 @@ public class RemoteSink extends RemoteActor {
      * @see RemoteActor
      * @param container The container
      * @param targetSink The target sink
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy, 
+     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
@@ -142,7 +142,7 @@ public class RemoteSink extends RemoteActor {
     }
 
     /**
-     * Set the token publisher that would be used to send 
+     * Set the token publisher that would be used to send
      * communication tokens.
      * @param tokenPublisher
      * @see #getTokenPublisher()
@@ -154,7 +154,7 @@ public class RemoteSink extends RemoteActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** 
+    /**
      * Return true if connectingPort is inputPort
      * @see ptserver.actor.RemoteActor#isValidConnectingPort(ptolemy.actor.IOPort)
      */
@@ -168,7 +168,7 @@ public class RemoteSink extends RemoteActor {
 
     /**
      * Token Publisher is used to publish CommunicationTokens to a queue for serializing
-     * into a binary and batching  
+     * into a binary and batching
      */
     private TokenPublisher tokenPublisher;
 

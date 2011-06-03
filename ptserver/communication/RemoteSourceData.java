@@ -1,6 +1,6 @@
 /*
  A helper data structure holding a reference to the remote source and its queue.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,13 +33,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import ptserver.actor.RemoteSource;
 import ptserver.data.CommunicationToken;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RemoteSourceData
 
 /**
  * A helper data structure holding a reference to the remote source and its queue.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -47,7 +47,7 @@ import ptserver.data.CommunicationToken;
 public class RemoteSourceData {
 
     /**
-     * Creates an instance of the data structure with the specified RemoteSource and 
+     * Creates an instance of the data structure with the specified RemoteSource and
      * a new token queue of max 100 elements.
      * @param remoteSource The remote source of the RemoteSourceData
      * @param remoteModel The remoteModel that created the instance.

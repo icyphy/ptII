@@ -40,7 +40,7 @@ import com.caucho.hessian.server.HessianServlet;
 
 /** Acts as a facade to the Ptolemy server application.  And administers
  *  control commands coming through the servlet.
- * 
+ *
  *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -51,7 +51,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Close the model and destroy its owner thread.
      *  @param ticket Reference to the execution thread
-     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  @exception IllegalStateException If the ticket reference is invalid
      *  or the thread's state cannot be modified.
      */
     public void close(Ticket ticket) throws IllegalActionException {
@@ -67,7 +67,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Get the list of models available on the server either in the
      *  database or within the file system.
-     *  @exception Exception If there is an error querying either the 
+     *  @exception Exception If there is an error querying either the
      *  database or the file system for available models.
      *  @return An array of URL references to the available model files.
      */
@@ -77,7 +77,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Open the model on a separate thread within the Ptolemy server.
      *  @param url The path to the model file
-     *  @exception Exception If the simulation thread cannot be created or 
+     *  @exception Exception If the simulation thread cannot be created or
      *  the file URL provided is invalid, throw an exception.
      *  @return A reference to the execution thread of the selected model
      */
@@ -94,7 +94,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Pause the execution of the running model.
      *  @param ticket Reference to the execution thread
-     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  @exception IllegalStateException If the ticket reference is invalid
      *  or the thread's state cannot be modified, throw an exception.
      */
     public void pause(Ticket ticket) throws IllegalActionException {
@@ -110,7 +110,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Resume the execution of the paused model.
      *  @param ticket Reference to the execution thread
-     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  @exception IllegalStateException If the ticket reference is invalid
      *  or the thread's state cannot be modified, throw an exception.
      */
     public void resume(Ticket ticket) throws IllegalActionException {
@@ -126,7 +126,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Start the execution of the model.
      *  @param ticket Reference to the execution thread
-     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  @exception IllegalStateException If the ticket reference is invalid
      *  or the thread's state cannot be modified, throw an exception.
      */
     public void start(Ticket ticket) throws IllegalActionException {
@@ -142,7 +142,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Stop the execution of the running model.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalStateException If the ticket reference is invalid 
+     *  @exception IllegalStateException If the ticket reference is invalid
      *  or the thread's state cannot be modified, throw an exception.
      */
     public void stop(Ticket ticket) throws IllegalActionException {

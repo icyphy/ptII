@@ -1,6 +1,6 @@
 /*
  ShortTokenHandler converts ShortToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,17 +33,17 @@ import java.io.IOException;
 
 import ptolemy.data.ShortToken;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ShortTokenHandler
 /**
  * ShortTokenHandler converts ShortToken to/from byte stream
- * 
+ *
  * @author ishwinde
- * @version $Id $ 
+ * @version $Id $
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *
  */
 public class ShortTokenHandler implements TokenHandler<ShortToken> {
     ///////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ public class ShortTokenHandler implements TokenHandler<ShortToken> {
         outputStream.writeShort(token.shortValue());
     }
 
-    /** 
+    /**
      * Reads a short from the inputStream and converts it to the ShortToken
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */

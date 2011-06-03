@@ -1,6 +1,6 @@
 /*
  ArrayTokenHandler converts ArrayToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,17 +36,17 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.TokenParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ArrayTokenHandler
 /**
  * ArrayTokenHandler converts ArrayToken to/from byte stream
- * 
+ *
  * @author ishwinde
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *
  */
 public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
     ///////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
 
     /**
      * Convert ArrayToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(ArrayToken token, DataOutputStream outputStream)
@@ -74,9 +74,9 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
 
     }
 
-    /** 
+    /**
      * Read from the inputStream and converts it to the ArrayToken.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ArrayToken convertToToken(DataInputStream inputStream,

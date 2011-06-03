@@ -1,6 +1,6 @@
 /*
  Convert a token to a byte stream and back
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,23 +41,23 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.handler.TokenHandler;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////TokenParser
 /**
-* <p>This class is a singleton and is a central point for converting 
+* <p>This class is a singleton and is a central point for converting
 * a token from a byte stream and back.</p>
-* 
+*
 * <p>When the instances is created, a mapping from Token to its TokenHandlers
 * is loaded from ptserver.data.TokenHandlers.properties ResourceBundle.
 * This class fill parse a token from an input stream by figuring out
 * its token identifier (based on the position of the TokenHandler in the TokenHandlers.properties)
 * and then selecting appropriate TokenHandler to do the parsing</p>
-* 
+*
 * <p>Similarly, the token would be converted to a byte stream by selecting
 * a TokenHandler mapped to its class and using it to do the conversion.</p>
-* 
+*
 * @author ahuseyno
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
@@ -65,15 +65,15 @@ import ptserver.data.handler.TokenHandler;
 public class TokenParser {
 
     /**
-     * <p>This private constructor loads mappings from a token class to 
+     * <p>This private constructor loads mappings from a token class to
      * its TokenHandler from TokenHandlers.properties file which is located in ptserver/data directory.</p>
-     * 
+     *
      * <p>This constructor is private because the TokenParser is singleton which makes it easy to locate the instance without passing it around.</p>
      * @exception IllegalActionException if there is a problem loading the mapping from TokenHandlers.properties file.
      */
     private TokenParser() throws IllegalActionException {
         //key is the token class name
-    	//We have to use ResourceBundle.getKeys() method because Android does not support .keySet() method.
+            //We have to use ResourceBundle.getKeys() method because Android does not support .keySet() method.
         Enumeration<String> keys = _tokenHandlersBundle.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
@@ -106,9 +106,9 @@ public class TokenParser {
     ////                         public methods                    ////
     /**
      * Return singleton instance of the TokenParser.  The TokenParser is singleton to simplify operations with it since
-     * there is no need to pass the instance around.  Also instantiation of the instance is costly since it relies on reflection. 
+     * there is no need to pass the instance around.  Also instantiation of the instance is costly since it relies on reflection.
      * @return instance of the TokenParser
-     * @exception IllegalActionException if there is a problem loading the mapping from TokenHandlers.properties file. 
+     * @exception IllegalActionException if there is a problem loading the mapping from TokenHandlers.properties file.
      */
     public static TokenParser getInstance() throws IllegalActionException {
         if (_instance == null) {
@@ -123,7 +123,7 @@ public class TokenParser {
      * @param <T> Type of the target token
      * @param token Token to be converted
      * @param outputStream outputStream used for the resulting byte stream
-     * @exception IOException if there is a problem with the outputStream 
+     * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if the state becomes inconsistent
      */
     public <T extends Token> void convertToBytes(T token,
@@ -145,7 +145,7 @@ public class TokenParser {
      * @param <T> Type of the target token
      * @param token Token to be converted
      * @param outputStream outputStream used for the resulting byte stream
-     * @exception IOException if there is a problem with the outputStream 
+     * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if the state becomes inconsistent
      */
     public <T extends Token> void convertToBytes(T token,
@@ -160,7 +160,7 @@ public class TokenParser {
      * @param inputStream InputStream containing byteStream of the token data
      * where first 2 bytes indicated the token type (defined as TokenHandlers position)
      * @return Token read from the inputStream
-     * @exception IOException is thrown in case of a problem with the outputStream 
+     * @exception IOException is thrown in case of a problem with the outputStream
      * @exception IllegalActionException is thrown if the state becomes inconsistent
      */
     public <T extends Token> T convertToToken(DataInputStream inputStream)
@@ -180,7 +180,7 @@ public class TokenParser {
      * @param inputStream InputStream containing byteStream of the token data
      * where first 2 bytes indicated the token type (defined as TokenHandlers position)
      * @return Token read from the inputStream
-     * @exception IOException is thrown in case of a problem with the outputStream 
+     * @exception IOException is thrown in case of a problem with the outputStream
      * @exception IllegalActionException is thrown if the state becomes inconsistent
      */
     public <T extends Token> T convertToToken(InputStream inputStream)
@@ -222,7 +222,7 @@ public class TokenParser {
          * Create new instance of HandlerData
          * @param tokenHandler the tokenHandler for the tokenType
          * @param tokenType the tokenType to convert
-         * @param position the identifier of the token type used in the byte stream 
+         * @param position the identifier of the token type used in the byte stream
          */
         public HandlerData(TokenHandler<T> tokenHandler, Class<T> tokenType,
                 short position) {

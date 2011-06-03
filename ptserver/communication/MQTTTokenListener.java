@@ -1,7 +1,7 @@
 /*
  MQTTTokenListener is responsible for processing MQTT messages received,
  converting back to tokens and putting those tokens into appropriate queues.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,14 +39,14 @@ import ptserver.data.Tokenizer;
 
 import com.ibm.mqtt.MqttSimpleCallback;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////MQTTTokenListener
 /**
 *  MQTTTokenListener is responsible for processing MQTT messages received,
 *  converting back to tokens and putting those tokens into appropriate queues.
-* 
+*
 * @author Anar Huseynov
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
@@ -67,7 +67,7 @@ public class MQTTTokenListener implements MqttSimpleCallback {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** 
+    /**
      * Callback method when the connection with the broker is lost.
      * @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
      */

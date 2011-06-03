@@ -1,6 +1,6 @@
 /*
  DoubleMatrixTokenHandler converts DoubleMatrixToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,17 +36,17 @@ import ptolemy.data.DoubleToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.TokenParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DoubleMatrixTokenHandler
 /**
  * DoubleMatrixTokenHandler converts DoubleMatrixToken to/from byte stream
- * 
+ *
  * @author ishwinde
- * @version $Id $ 
+ * @version $Id $
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *
  */
 public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken> {
     ///////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken>
 
     /**
      * Convert DoubleMatrixToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(DoubleMatrixToken token,
@@ -82,9 +82,9 @@ public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken>
 
     }
 
-    /** 
+    /**
      * Reads from the inputStream and converts it to the DoubleMatrixToken.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public DoubleMatrixToken convertToToken(DataInputStream inputStream,

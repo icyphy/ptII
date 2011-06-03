@@ -1,4 +1,4 @@
-/* A simplified interface to the Ptolemy server application that 
+/* A simplified interface to the Ptolemy server application that
    enables users to administer control commands through the servlet.
 
  Copyright (c) 2011 The Regents of the University of California.
@@ -35,11 +35,11 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// IServerManager
 
-/** Define the control commands that can be administered to the 
- *  Ptolemy server from its distributed clients.  These functions are 
- *  available through a synchronous, RPC-like servlet that is embedded 
+/** Define the control commands that can be administered to the
+ *  Ptolemy server from its distributed clients.  These functions are
+ *  available through a synchronous, RPC-like servlet that is embedded
  *  within the Ptolemy server.
- * 
+ *
  *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -48,9 +48,9 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public interface IServerManager {
 
-    /** Shut down the thread associated with the user's ticket. 
+    /** Shut down the thread associated with the user's ticket.
      *  @param ticket Ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  destroy the simulation thread.
      */
     public void close(Ticket ticket) throws IllegalActionException;
@@ -66,7 +66,7 @@ public interface IServerManager {
     /** Open a model with the provided model URL and wait for the
      *  user to request the execution of the simulation.
      *  @param url The path to the model file
-     *  @exception IllegalActionException If the model fails to load 
+     *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      *  @return The user's reference to the simulation task
      */
@@ -74,28 +74,28 @@ public interface IServerManager {
 
     /** Pause the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  pause the running simulation.
      */
     public void pause(Ticket ticket) throws IllegalActionException;
 
     /** Resume the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  resume the execution of the simulation.
      */
     public void resume(Ticket ticket) throws IllegalActionException;
 
     /** Start the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  start the simulation.
      */
     public void start(Ticket ticket) throws IllegalActionException;
 
     /** Stop the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
-     *  @exception IllegalActionException If the server was unable to 
+     *  @exception IllegalActionException If the server was unable to
      *  stop the simulation.
      */
     public void stop(Ticket ticket) throws IllegalActionException;

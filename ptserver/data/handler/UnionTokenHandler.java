@@ -1,6 +1,6 @@
 /*
  UnionTokenHandler converts UnionToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,17 +36,17 @@ import ptolemy.data.UnionToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.TokenParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// UnionTokenHandler
 /**
  * UnionTokenHandler converts UnionToken to/from byte stream
- * 
+ *
  * @author ishwinde
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *
  */
 public class UnionTokenHandler implements TokenHandler<UnionToken> {
     ///////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ public class UnionTokenHandler implements TokenHandler<UnionToken> {
 
     /**
      * Convert UnionToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(UnionToken token, DataOutputStream outputStream)
@@ -65,9 +65,9 @@ public class UnionTokenHandler implements TokenHandler<UnionToken> {
 
     }
 
-    /** 
+    /**
      * Read from the inputStream and converts it to the UnionToken
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public UnionToken convertToToken(DataInputStream inputStream,

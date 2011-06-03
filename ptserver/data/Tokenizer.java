@@ -1,6 +1,6 @@
 /*
  Tokenizer reads out tokens from the byte array.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,12 +34,12 @@ import java.io.IOException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Tokenizer
 /**
  * Tokenizer reads out tokens from the byte array.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -60,8 +60,8 @@ public class Tokenizer {
     /**
      * Return the next token in the byte stream or null if there is none left
      * @return the next token or null if there is none left
-     * @throws IOException if there is a problem reading the byte stream
-     * @throws IllegalActionException if there is a problem loading a token handler
+     * @exception IOException if there is a problem reading the byte stream
+     * @exception IllegalActionException if there is a problem loading a token handler
      */
     public Token getNextToken() throws IOException, IllegalActionException {
         if (_inputStream.available() > 0) {

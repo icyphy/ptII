@@ -1,6 +1,6 @@
 /*
  RemoteModel initializes by making needed replacement for sinks and sources.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -52,17 +52,17 @@ import ptserver.actor.RemoteSource;
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RemoteModel
 /**
- * RemoteModel initializes by making needed replacement for sinks and sources and 
- * sets up infrastructure for sending and receiving MQTT messages. 
- * 
- * The model can set up the infrastructure for client or server 
+ * RemoteModel initializes by making needed replacement for sinks and sources and
+ * sets up infrastructure for sending and receiving MQTT messages.
+ *
+ * The model can set up the infrastructure for client or server
  * which differ slightly in actor replacement mechanisms
- * 
+ *
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -99,7 +99,7 @@ public class RemoteModel {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
     /**
      * The quality of service that would be required from the MQTT broker.  All messages must be send or received only once.
      */
@@ -110,7 +110,7 @@ public class RemoteModel {
     /**
      * Sets the mqtt client instance that is connected to the broker
      * @param brokerAddress the network address of the MQTT broker
-     * @throws MqttException if there is a problem connecting to the broker
+     * @exception MqttException if there is a problem connecting to the broker
      */
     public void setMqttClient(IMqttClient mqttClient) throws MqttException {
         _mqttClient = mqttClient;
@@ -121,7 +121,7 @@ public class RemoteModel {
     /**
      * Create a new instance of the RemoteSink either by replacing the targetEntity or by replacing all entities connected to it.
      * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy, 
+     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
@@ -143,7 +143,7 @@ public class RemoteModel {
     /**
      * Create a new instance of the RemoteSource either by replacing the targetEntity or by replacing all entities connected to it.
      * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy, 
+     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
@@ -172,10 +172,10 @@ public class RemoteModel {
 
     /**
      * Load the model from the specified URL and set up MQTT infrastructure for communicating with another remote model.
-     * 
+     *
      * @param modelURL the model URL to be loaded
      * @return the top level actor of the model
-     * @throws Exception if there is a problem parsing the model, connecting to the mqtt broker or replacing actors.
+     * @exception Exception if there is a problem parsing the model, connecting to the mqtt broker or replacing actors.
      */
     public Manager loadModel(URL modelURL) throws Exception {
         MoMLParser parser = new MoMLParser(new Workspace());
@@ -316,17 +316,17 @@ public class RemoteModel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * The mapping from the original source actor name to its remote source actor and queue. 
+     * The mapping from the original source actor name to its remote source actor and queue.
      */
     private final HashMap<String, RemoteSourceData> _remoteSourceMap = new HashMap<String, RemoteSourceData>();
 
     /**
-     * The mapping from the original sink actor name to its remote sink. 
+     * The mapping from the original sink actor name to its remote sink.
      */
     private final HashMap<String, RemoteSink> _remoteSinkMap = new HashMap<String, RemoteSink>();
 
     /**
-     * The mapping from the original settable object name to the remote representation. 
+     * The mapping from the original settable object name to the remote representation.
      */
     private final HashMap<String, Settable> _settableAttributesMap = new HashMap<String, Settable>();
 

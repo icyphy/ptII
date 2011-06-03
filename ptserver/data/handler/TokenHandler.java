@@ -1,6 +1,6 @@
 /*
  Convert a token to a byte stream and back.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,14 +34,14 @@ import java.io.IOException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TokenHandler
 /**
  * Convert a token of a particular type to a byte stream and back.
- * 
+ *
  * @param <T> Type of Token that the handler handles
  * @author ahuseyno
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -54,7 +54,7 @@ public interface TokenHandler<T extends Token> {
      * and output it to the outputStream.
      * @param token the token to be converted
      * @param outputStream the outputStream holding stream of bytes
-     * @exception IOException if there is a problem with the outputStream 
+     * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
     public void convertToBytes(T token, DataOutputStream outputStream)
@@ -62,13 +62,13 @@ public interface TokenHandler<T extends Token> {
 
     /**
      * Return a token of the specified type by reading from the inputStream
-     * and converting to the token according to the parsing algorithm 
+     * and converting to the token according to the parsing algorithm
      * defined in the handler.
      * @param inputStream The inputStream that contains serialized version
      * of a token
      * @param tokenType TODO
      * @return Token parsed from inputStream
-     * @exception IOException if there is a problem with the outputStream 
+     * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
     public T convertToToken(DataInputStream inputStream, Class<T> tokenType) throws IOException,
