@@ -1,4 +1,4 @@
-/* Ticket acts as a reference to a simulation request.
+/* A reference to a simulation request. 
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -33,26 +33,24 @@ import java.util.Random;
 ///////////////////////////////////////////////////////////////////
 //// Ticket
 
-/** 
- * Defines the response to a simulation execution request.  Once the 
- * simulation has been launched at the request of the user, the ticket will 
- * be used to reference and administer control commands to the simulation 
- * (start, pause, resume, stop, etc).
+/** Define the response to a simulation execution request.  Once the 
+ *  simulation has been launched at the request of the user, the ticket will 
+ *  be used to reference and administer control commands to the simulation 
+ *  (ex. start, pause, resume, stop, etc).
  * 
- * @author jkillian
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (jkillian)
- * @Pt.AcceptedRating Red (jkillian)
+ *  @author jkillian
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
 */
 public class Ticket implements java.io.Serializable {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    /**
-     * Generate a new ticket for the provided model URL.
-     * @return Ticket corresponding to simulation request
+    /** Generate a new ticket for the provided model URL.
+     *  @return Ticket corresponding to simulation request.
      */
     public static Ticket generateTicket(String url) {
 
@@ -64,33 +62,29 @@ public class Ticket implements java.io.Serializable {
         return ticket;
     }
 
-    /** 
-    * Get the unique ticket identifier.
-    * @return Identifier used to reference the request
-    */
+    /** Get the unique ticket identifier.
+     *  @return Identifier used to reference the request.
+     */
     public String getTicketID() {
         return this._ticketID;
     }
 
-    /**
-     * Get the URL of the model file.
-     * @return Path to the model file
+    /** Get the URL of the model file.
+     *  @return Path to the model file.
      */
     public String getUrl() {
         return this._url;
     }
 
-    /**
-     * Get the date and time of the original request.
-     * @return Date and time that the simulation request was submitted
+    /** Get the date and time of the original request.
+     *  @return Date and time that the simulation request was submitted.
      */
     public Date getDateRequested() {
         return this._dateRequested;
     }
 
-    /**
-     * Override the equals(x) to compare tickets by the ticketID property
-     * @return Equality of the two objects
+    /** Compare tickets by the ticketID property.
+     *  @return True if the two objects are equal, false otherwise.
      */
     @Override
     public boolean equals(Object otherObject) {
@@ -112,9 +106,9 @@ public class Ticket implements java.io.Serializable {
         return true;
     }
 
-    /**
-     * Override the hashCode() method.
-     * @return The computed hashcode value of the object
+    /** Return a hash code value for this ticket.  This method uses the hashcode()
+     *  of the ticketID string to compute the hash code for this ticket.
+     *  @return A hash code value for this ticket.
      */
     @Override
     public int hashCode() {
@@ -124,35 +118,32 @@ public class Ticket implements java.io.Serializable {
         return result;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                private methods
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-    /**
-     * Set the unique ticket identifier
-     * @param ticketID Universally unique identifier
+    /** Set the unique ticket identifier.
+     *  @param ticketID The universally unique identifier.
      */
     private void setTicketID(String ticketID) {
         this._ticketID = ticketID;
     }
 
-    /**
-     * Set the URL of the requested model
-     * @param url Path to the model file
+    /** Set the URL of the requested model.
+     *  @param url The path to the model file.
      */
     private void setUrl(String url) {
         this._url = url;
     }
 
-    /**
-     * Set the date of the request
-     * @param dateRequested Date and time of the request
+    /** Set the date of the simulation request.
+     *  @param dateRequested The date and time of the request.
      */
     private void setDateRequested(Date dateRequested) {
         this._dateRequested = dateRequested;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                private variables
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private String _ticketID;
     private String _url;

@@ -1,5 +1,5 @@
 /*
- Thread on which a Ptolemy simulation will be executed
+ Task that will be used to execute a Ptolemy simulation.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -29,12 +29,9 @@
 package ptserver;
 
 import java.net.URL;
-import java.util.UUID;
-import java.util.logging.Level;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptserver.communication.RemoteModel;
@@ -45,35 +42,32 @@ import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttClient;
 
 ///////////////////////////////////////////////////////////////////
-//// SimulationThread
+//// SimulationTask
 
-/** 
- * Launch the simulation on the current thread under the provided
- * ticket reference and wait for the user to issue control commands.
- * 
- * @author jkillian
- * @version $Id$
- * @Pt.ProposedRating Red (jkillian)
- * @Pt.AcceptedRating Red (jkillian)
+/** Launch the simulation on the current thread under the provided
+ *  ticket reference and wait for the user to issue control commands.
+ *  
+ *  @author jkillian
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
  */
-public class SimulationThread extends Thread {
+public class SimulationTask implements Runnable {
 
-    /**
-     * Create an instance of the simulation thread running on the Ptolemy
-     * server application.
+    /** Create an instance of the simulation task to be run by the Ptolemy
+     *  server application.
      * 
-     * @param ticket Reference to the simulation request
-     * @exception Exception If the simulation encounters a problem setting
-     * the director or getting workspace access, throw an exception so that
-     * the caller is notified. 
+     *  @param ticket Reference to the simulation request.
+     *  @exception Exception If the simulation encounters a problem setting
+     *  the director or getting workspace access.
      */
-    public SimulationThread(Ticket ticket) throws Exception {
+    public SimulationTask(Ticket ticket) throws Exception {
         _owner = PtolemyServer.getInstance();
         _ticket = ticket;
-        _remoteModel = new RemoteModel(_ticket.getTicketID(), _ticket
-                .getTicketID() + "_CLIENT", _ticket.getTicketID()
-                + "_SERVER", RemoteModelType.SERVER);
-        setName(_ticket.getTicketID());
+        _remoteModel = new RemoteModel(_ticket.getTicketID(),
+                _ticket.getTicketID() + "_CLIENT", _ticket.getTicketID()
+                        + "_SERVER", RemoteModelType.SERVER);
 
         // Set the MQTT client.
         IMqttClient mqttClient = MqttClient.createMqttClient("tcp://localhost@"
@@ -93,8 +87,7 @@ public class SimulationThread extends Thread {
         }
     }
 
-    /**
-     * Start the execution of the simulation by kicking off the thread.
+    /** Start the execution of the simulation by kicking off the thread.
      */
     public void run() {
         try {
@@ -108,10 +101,8 @@ public class SimulationThread extends Thread {
         }
     }
 
-    /**
-     * Get the manager responsible for coordinating the model of computation.
-     * 
-     * @return The Manager used to control the simulation
+    /** Get the manager responsible for coordinating the model of computation. 
+     *  @return The Manager used to control the simulation
      */
     public Manager getManager() {
         CompositeActor topLevelActor = _remoteModel.getTopLevelActor();
@@ -125,9 +116,15 @@ public class SimulationThread extends Thread {
     //////////////////////////////////////////////////////////////////////
     ////                private variables
 
+    /** The Ptolemy server singleton.
+     */
     private final PtolemyServer _owner;
-    // References the simulation by the Ptolemy server
+
+    /** The ticket reference to the simulation request.
+     */
     private final Ticket _ticket;
-    // Replace actors and accesses the manager of the simulation
+
+    /** The remote model that is used to replaced model actors.
+     */
     private final RemoteModel _remoteModel;
 }

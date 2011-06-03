@@ -28,11 +28,11 @@
 package ptserver;
 
 import java.io.IOException;
-import java.lang.Thread.State;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,26 +50,28 @@ import ptserver.control.Ticket;
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer
 
-/** 
- * Launches the message broker, enabling users to start, pause, and stop 
- * simulations through the servlet, and create independently executing 
- * simulations upon request.
- * 
- * @author jkillian
- * @version $Id$
- * @Pt.ProposedRating Red (jkillian)
- * @Pt.AcceptedRating Red (jkillian)
+/** Launch the message broker, enabling users to start, pause, resume,
+ *  and stop simulations through the servlet, and create independently 
+ *  executing simulations upon request.
+ *   
+ *  @author Justin Killian
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
  */
 public class PtolemyServer implements IServerManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public variables
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    // Access the ResourceBundle containing configuration parameters.
+    /** The ResourceBundle containing configuration parameters. 
+     */
     public static final ResourceBundle CONFIG = ResourceBundle
             .getBundle("ptserver.PtolemyServerConfig");
 
-    // Start the Logger used to write messages to the specified log file. 
+    /** Start the Logger used to write messages to the specified log file. 
+     */
     public static final Logger LOGGER;
 
     static {
@@ -92,20 +94,22 @@ public class PtolemyServer implements IServerManager {
         LOGGER = logger;
     }
 
-    /**
-     * Initialize the server and loop while waiting for requests.  To use,
-     * run the command:
-     *  java -classpath ptserver.PtolemyServer xxx yyy
-     * 
-     * @param args Optional command line arguments.
-     * -servlet_path /PtolemyServer 
-     * -servlet_port 8080 
-     * -broker_path /usr/sbin/mosquito
-     * -broker_port 1883
-     * @exception ExceptionInInitializerError If the server was unable to 
-     * start parse the command line configuration, throw an exception.
+    /** Initialize the server, launch the broker and servlet processes, and
+     *  wait from simulation requests.  The following optional command line 
+     *  switches may be used with their accompanying value: -servlet_path, 
+     *  -servlet_port, -broker_path, and -broker_port.  The port numbers must
+     *  integers, the broker path must be the path to the MQTT broker executable on
+     *  the local machine, and the servlet path is the virtual directory (including
+     *  the preceding slash) that the Ptolemy servlet will run at.
+     *  
+     *  For example:
+     *  java -classpath ptserver.PtolemyServer -broker_path /usr/sbin/mosquitto -broker_port 1883
+     *  
+     *  @param args Optional command line arguments.
+     *  @exception Exception If the server was unable to parse the 
+     *  command line configuration values.
      */
-    public static void main(String[] args) throws ExceptionInInitializerError {
+    public static void main(String[] args) throws Exception {
         // Create the singleton.
         _instance = new PtolemyServer();
 
@@ -126,58 +130,56 @@ public class PtolemyServer implements IServerManager {
                 }
             }
 
-            // Launch the servlet container and broker
+            // Launch the servlet container and broker.
             _instance.startup();
         } catch (NumberFormatException e) {
             PtolemyServer.LOGGER.log(Level.WARNING,
                     "Port must be a numeric value.");
-            throw new ExceptionInInitializerError(
-                    "Port must be a numeric value.");
+            throw new Exception("Port must be a numeric value.");
         } catch (IllegalStateException e) {
             PtolemyServer.LOGGER.log(Level.SEVERE,
                     "Unable to start the servlet or broker.");
-            throw new ExceptionInInitializerError(
-                    "Unable to start the servlet or broker.");
+            throw new Exception("Unable to start the servlet or broker.");
         }
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                constructor
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
 
-    /** 
-     * Create an instance of the Ptolemy server.  This class is a singleton 
-     * so only one instance should ever exist at a time.  Child process are
-     * initialized for the servlet (synchronous command handler) and the 
-     * MQTT message broker (asynchronous simulation data).
-     * 
-     * @exception ExceptionInInitializerError If the server was unable to 
-     * start load the default configuration from the resource file, throw
-     * an exception.
+    /** Create an instance of the Ptolemy server.  This class is a singleton 
+     *  so only one instance should ever exist at a time.  Child process are
+     *  initialized for the servlet (synchronous command handler) and the 
+     *  MQTT message broker (asynchronous simulation data).
+     *  @exception Exception If the server was unable to load the default 
+     *  configuration from the resource file.
      */
-    public PtolemyServer() {
+    public PtolemyServer() throws Exception {
         try {
             _servletPath = CONFIG.getString("SERVLET_PATH");
             _servletPort = Integer.parseInt(CONFIG.getString("SERVLET_PORT"));
             _brokerPath = CONFIG.getString("BROKER_PATH");
             _brokerPort = Integer.parseInt(CONFIG.getString("BROKER_PORT"));
-            _simulations = new ConcurrentHashMap<Ticket, SimulationThread>();
+            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
+            _executor = Executors.newCachedThreadPool();
         } catch (NumberFormatException e) {
             PtolemyServer.LOGGER.log(Level.WARNING,
                     "Unable to properly load configuration file.");
-            throw new ExceptionInInitializerError(
-                    "Unable to properly load configuration file.");
+            throw new Exception("Unable to properly load configuration file.");
         }
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    /**
-     * Get the singleton instance of the Ptolemy server.
+    /** Get the singleton instance of the Ptolemy server.  If it does not
+     *  already exist, the singleton will be instantiated using the
+     *  default configuration.
+     *  @return The PtolemyServer singleton.
+     * @throws Exception 
      */
-    public static PtolemyServer getInstance() {
+    public static PtolemyServer getInstance() throws Exception {
         if (_instance == null) {
-            synchronized (_lock) {
+            synchronized (PtolemyServer.class) {
                 if (_instance == null) {
                     // Create singleton with default configuration.
                     _instance = new PtolemyServer();
@@ -191,31 +193,191 @@ public class PtolemyServer implements IServerManager {
         return _instance;
     }
 
-    /**
-     * Get the servlet operating port.
-     * @return servletPort Port on which to run the servlet container
+    /** Shut down the thread associated with the user's ticket. 
+     *  @param ticket Ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  destroy the simulation thread.
+     */
+    public void close(Ticket ticket) throws IllegalActionException {
+        try {
+            if ((ticket == null) || (!_requests.containsKey(ticket))) {
+                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+                //TODO: create InvalidTicketException
+            }
+
+            _requests.get(ticket).getManager().finish();
+            _requests.remove(ticket);
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(
+                    Level.SEVERE,
+                    String.format("%s: %s", ticket.getTicketID(),
+                            e.getMessage()));
+            throw new IllegalActionException(e.getMessage());
+        }
+    }
+
+    /** Get the broker operating port.
+     *  @return The port on which the MQTT broker operates
+     */
+    public int getBrokerPort() {
+        return this._brokerPort;
+    }
+
+    /** Get a listing of the models available on the server in either the
+     *  database or the local file system.
+     *  @exception IllegalActionException If there was a problem discovering
+     *  available models.
+     *  @return An array of URL references to the available model files.
+     */
+    public URL[] getModelListing() throws IllegalActionException {
+        // TODO Add code to query the local database or current directory
+        // in the file system to find available model files.
+        return new URL[0];
+    }
+
+    /** Get the servlet operating port.
+     *  @return The port on which to run the servlet container.
      */
     public int getServletPort() {
         return this._servletPort;
     }
 
-    /**
-     * Get the broker operating port.
-     * @return _brokerPort Port on which the MQTT broker operates
+    /** Get the number of simulation requests on the server.
+     *  @return The size of the hash map of simulation tasks.
      */
-    public int getBrokerPort() {
-        return this._brokerPort;
-    }
-    
-    /**
-     * @return the _simulations
-     */
-    public int getSimulations() {
-        return _simulations.size();
+    public int numberOfSimulations() {
+        return _requests.size();
     }
 
-    /**
-     * Initialize the servlet and broker for use by the Ptolemy server.
+    /** Open a model with the provided model URL and wait for the
+     *  user to request the execution of the simulation.
+     *  @param url The path to the model file
+     *  @exception IllegalActionException If the model fails to load 
+     *  from the provided URL.
+     *  @return The user's reference to the simulation task
+     */
+    public Ticket open(String url) throws IllegalActionException {
+        Ticket ticket = null;
+
+        try {
+            // Generate a unique ticket for the request.
+            ticket = Ticket.generateTicket(url);
+            while (_requests.contains(ticket)) {
+                ticket = Ticket.generateTicket(url);
+            }
+
+            // Save the simulation request.
+            _requests.put(ticket, new SimulationTask(ticket));
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(
+                    Level.SEVERE,
+                    String.format("%s: %s", ticket.getTicketID().toString(),
+                            e.getMessage()), e);
+            throw new IllegalActionException(null, e, e.getMessage());
+        }
+
+        return ticket;
+    }
+
+    /** Pause the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  pause the running simulation.
+     */
+    public void pause(Ticket ticket) throws IllegalActionException {
+        try {
+            if ((ticket == null) || (!_requests.containsKey(ticket))) {
+                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+                //TODO: create InvalidTicketException
+            }
+
+            _requests.get(ticket).getManager().pause();
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(
+                    Level.SEVERE,
+                    String.format("%s: %s", ticket.getTicketID(),
+                            e.getMessage()));
+            throw new IllegalActionException(e.getMessage());
+        }
+    }
+
+    /** Resume the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  resume the execution of the simulation.
+     */
+    public void resume(Ticket ticket) throws IllegalActionException {
+        try {
+            if ((ticket == null) || (!_requests.containsKey(ticket))) {
+                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+                //TODO: create InvalidTicketException
+            }
+
+            _requests.get(ticket).getManager().resume();
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(
+                    Level.SEVERE,
+                    String.format("%s: %s", ticket.getTicketID(),
+                            e.getMessage()));
+            throw new IllegalActionException(e.getMessage());
+        }
+    }
+
+    /** Shut down supporting processes and destroy active simulation threads.
+     *  @exception Exception If the servlet container or broker cannot be stopped.
+     */
+    public void shutdown() throws Exception {
+        // Shut down the MQTT broker.
+        if (_broker != null) {
+            _broker.destroy();
+            _broker = null;
+        }
+
+        // Shut down the servlet.
+        if (_servletHost != null) {
+            _servletHost.stop();
+            _servletHost.destroy();
+            _servletHost = null;
+        }
+
+        // Clear all requests in the hash table.
+        if (_requests != null) {
+            _requests.clear();
+            _requests = null;
+        }
+
+        // Shut down the thread pool and destroy the singleton.
+        if (_executor != null) {
+            _executor.shutdown();
+        }
+
+        _instance = null;
+    }
+
+    /** Start the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  start the simulation.
+     */
+    public void start(Ticket ticket) throws IllegalActionException {
+        try {
+            if ((ticket == null) || (!_requests.containsKey(ticket))) {
+                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+                //TODO: create InvalidTicketException
+            }
+
+            _executor.execute(_requests.get(ticket));
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(
+                    Level.SEVERE,
+                    String.format("%s: %s", ticket.getTicketID(),
+                            e.getMessage()));
+            throw new IllegalActionException(e.getMessage());
+        }
+    }
+
+    /** Initialize the servlet and the broker for use in communication
+     *  with the Ptolemy server.
      */
     public void startup() {
         // Launch the broker process.
@@ -230,9 +392,13 @@ public class PtolemyServer implements IServerManager {
             _broker = builder.start();
         } catch (IOException e) {
             PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to spawn MQTT broker process.");
+                    "Unable to spawn MQTT broker process at '" + _brokerPath
+                            + "' on port " + Integer.toString(_brokerPort)
+                            + ".");
             throw new IllegalStateException(
-                    "Unable to spawn MQTT broker process.", e);
+                    "Unable to spawn MQTT broker process at '" + _brokerPath
+                            + "' on port " + Integer.toString(_brokerPort)
+                            + ".", e);
         }
 
         // Launch the Jetty servlet container.
@@ -248,267 +414,79 @@ public class PtolemyServer implements IServerManager {
             _servletHost.start();
         } catch (Exception e) {
             PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to spawn servlet container.");
+                    "Unable to spawn servlet container at '" + _servletPath
+                            + "' on port " + Integer.toString(_servletPort)
+                            + ".");
             throw new IllegalStateException(
-                    "Unable to spawn servlet container.", e);
+                    "Unable to spawn servlet container at '" + _servletPath
+                            + "' on port " + Integer.toString(_servletPort)
+                            + ".", e);
         }
     }
 
-    /**
-     * Shut down supporting processes and destroy active simulation threads.
-     * 
-     * @exception Exception If the servlet container or broker cannot be stopped,
-     * throw an exception.
-     * for some reason, throw an exception.
-     */
-    public void shutdown() throws Exception {
-        // Shut down the MQTT broker.
-        if (_broker != null) {
-            _broker.destroy();
-            _broker = null;
-        }
-
-        // Shutdown the servlet container.
-        if (_servletHost != null) {
-            _servletHost.stop();
-            _servletHost.destroy();
-            _servletHost = null;
-        }
-
-        // Stop each active thread.
-        Enumeration enumeration = _simulations.keys();
-        while (enumeration.hasMoreElements()) {
-            stop((Ticket) enumeration.nextElement());
-        }
-
-        // Dispose of the simulation collection.
-        _simulations.clear();
-        _simulations = null;
-    }
-
-    /**
-     * Open a thread on which to load the provided model URL and wait
-     * for the user to request the execution of the simulation.
-     * 
-     * @param url Path to the model file
-     * @exception Exception If the model fails to load from the provided 
-     * URL, throw an exception.
-     * @return Ticket The user's reference to the simulation thread
-     */
-    public Ticket open(String url) throws IllegalActionException {
-        Ticket ticket = null;
-
-        try {
-            // Attempt to generate a unique ticket.
-            ticket = Ticket.generateTicket(url);
-            while (_simulations.contains(ticket)) {
-                ticket = Ticket.generateTicket(url);
-            }
-
-            // Enqueue the simulation.
-            _simulations.put(ticket, new SimulationThread(ticket));
-            
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(
-                    Level.SEVERE,
-                    String.format("%s: %s", ticket.getTicketID().toString(),
-                            e.getMessage()), e);
-            throw new IllegalActionException(null, e, e.getMessage());
-        }
-
-        return ticket;
-    }
-
-    /**
-     * Start the execution of the simulation on the selected thread by
-     * activating the Ptolemy manager.
-     * 
-     * @param ticket Ticket reference to the simulation request
-     * @exception Exception If the server was unable to start the 
-     * simulation on the referenced thread, throw an exception.
-     */
-    public void start(Ticket ticket) throws IllegalActionException {
-        try {
-            if ((ticket == null) || (!_simulations.containsKey(ticket))) {
-                throw new Exception("Invalid ticket provided: "
-                        + ticket.getTicketID().toString());
-                //TODO: create InvalidTicketException
-            }
-
-            _simulations.get(ticket).start();
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(
-                    Level.SEVERE,
-                    String.format("%s: %s", ticket.getTicketID().toString(),
-                            e.getMessage()));
-            throw new IllegalActionException(e.getMessage());
-        }
-    }
-
-    /**
-     * Pause the execution of the simulation on the selected thread.
-     * 
-     * @param ticket Ticket reference to the simulation request.
-     * @exception IllegalStateException If the server was unable to 
-     * pause the running simulation, throw an exception.
-     */
-    public void pause(Ticket ticket) throws IllegalActionException {
-        try {
-            if ((ticket == null) || (!_simulations.containsKey(ticket))) {
-                throw new Exception("Invalid ticket provided: "
-                        + ticket.getTicketID().toString());
-                //TODO: create InvalidTicketException
-            }
-
-            _simulations.get(ticket).getManager().pause();
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(
-                    Level.SEVERE,
-                    String.format("%s: %s", ticket.getTicketID().toString(),
-                            e.getMessage()));
-            throw new IllegalActionException(e.getMessage());
-        }
-    }
-
-    /**
-     * Resume the execution of the simulation on the selected thread.
-     * 
-     * @param ticket Ticket reference to the simulation request.
-     * @exception IllegalStateException If the server was unable to 
-     * resume the execution of the simulation, throw an exception.
-     */
-    public void resume(Ticket ticket) throws IllegalActionException {
-        try {
-            if ((ticket == null) || (!_simulations.containsKey(ticket))) {
-                throw new Exception("Invalid ticket provided: "
-                        + ticket.getTicketID().toString());
-                //TODO: create InvalidTicketException
-            }
-
-            _simulations.get(ticket).getManager().resume();
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(
-                    Level.SEVERE,
-                    String.format("%s: %s", ticket.getTicketID().toString(),
-                            e.getMessage()));
-            throw new IllegalActionException(e.getMessage());
-        }
-    }
-
-    /**
-     * Stop the execution of the simulation on selected thread.
-     * 
-     * @param ticket Ticket reference to the simulation request.
-     * @exception IllegalStateException If the server was unable to 
-     * stop the simulation thread, throw an exception.
+    /** Stop the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to 
+     *  stop the simulation.
      */
     public void stop(Ticket ticket) throws IllegalActionException {
         try {
-            if ((ticket == null) || (!_simulations.containsKey(ticket))) {
-                throw new Exception("Invalid ticket provided: "
-                        + ticket.getTicketID().toString());
+            if ((ticket == null) || (!_requests.containsKey(ticket))) {
+                throw new Exception("Invalid ticket: " + ticket.getTicketID());
                 //TODO: create InvalidTicketException
             }
 
-            _simulations.get(ticket).getManager().finish();
+            _requests.get(ticket).getManager().stop();
         } catch (Exception e) {
             PtolemyServer.LOGGER.log(
                     Level.SEVERE,
-                    String.format("%s: %s", ticket.getTicketID().toString(),
+                    String.format("%s: %s", ticket.getTicketID(),
                             e.getMessage()));
             throw new IllegalActionException(e.getMessage());
         }
     }
 
-    /**
-     * Shutdown the thread associated with the user's ticket.
-     * 
-     * @param ticket Ticket reference to the simulation request.
-     * @exception IllegalStateException If the server was unable to 
-     * destroy the simulation thread, throw an exception.
-     */
-    public void close(Ticket ticket) throws IllegalActionException {
-        try {
-            if ((ticket == null) || (!_simulations.containsKey(ticket))) {
-                throw new Exception("Invalid ticket provided: "
-                        + ticket.getTicketID());
-                //TODO: create InvalidTicketException
-            }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-            SimulationThread thread = _simulations.get(ticket);
-            if (thread.getState() != State.TERMINATED) {
-                stop(ticket);
-            }
-
-            _simulations.remove(ticket);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(
-                    Level.SEVERE,
-                    String.format("%s: %s", ticket.getTicketID().toString(),
-                            e.getMessage()));
-            throw new IllegalActionException(e.getMessage());
-        }
-    }
-
-    /**
-     * Get a listing of the models available on the server in either the
-     * database or the local file system.
-     * 
-     * @exception IllegalStateException If there was a problem discovering
-     * available models, throw an exception.
-     * @return Array of URL references to available model files
-     */
-    public URL[] getModelListing() throws IllegalActionException {
-        // TODO Add code to query the local database or current directory
-        // in the file system to find available model files.
-        return new URL[0];
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    ////                private methods
-
-    /**
-     * Set the servlet virtual directory.
-     * @param servletPath Virtual path of the servlet
-     */
-    private void _setServletPath(String servletPath) {
-        this._servletPath = servletPath;
-    }
-
-    /**
-     * Set the servlet operating port.
-     * @param servletPort Port on which to run the servlet container
-     */
-    private void _setServletPort(int servletPort) {
-        this._servletPort = servletPort;
-    }
-
-    /**
-     * Set the path to the broker executable.
-     * @param brokerPath Path to the broker executable
+    /** Set the path to the broker executable.
+     *  @param brokerPath Path to the broker executable.
      */
     private void _setBrokerPath(String brokerPath) {
         this._brokerPath = brokerPath;
     }
 
-    /**
-     * Set the broker operating port.
-     * @param brokerPort Port on which the MQTT broker operates
+    /** Set the broker operating port.
+     *  @param brokerPort Port on which the MQTT broker operates.
      */
     private void _setBrokerPort(int brokerPort) {
         this._brokerPort = brokerPort;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                private variables
+    /** Set the servlet virtual directory.
+     *  @param servletPath Virtual path of the servlet.
+     */
+    private void _setServletPath(String servletPath) {
+        this._servletPath = servletPath;
+    }
+
+    /** Set the servlet operating port.
+     *  @param servletPort Port on which to run the servlet container.
+     */
+    private void _setServletPort(int servletPort) {
+        this._servletPort = servletPort;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private static PtolemyServer _instance;
-    private static Object _lock = new Object();
     private Process _broker;
     private Server _servletHost;
+    private ExecutorService _executor;
+    private ConcurrentHashMap<Ticket, SimulationTask> _requests;
     private String _brokerPath;
     private int _brokerPort;
     private String _servletPath;
     private int _servletPort;
-    private ConcurrentHashMap<Ticket, SimulationThread> _simulations;
 }
