@@ -99,7 +99,7 @@ public class ParserAttribute extends SingletonAttribute {
      */
     public MoMLParser getParser() {
         if (_parser == null) {
-            _parser = new MoMLParser();
+            _parser = new MoMLParser(workspace());
         }
 
         return _parser;

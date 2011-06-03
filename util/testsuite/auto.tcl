@@ -94,6 +94,7 @@ foreach file [lsort [glob auto/*.xml]] {
    	}
 	# Free up memory.
 	$application cleanup
+	set application [java::null]
 	java::call System gc
 	list {}
     } {{}}

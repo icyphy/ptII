@@ -273,18 +273,67 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
+     *  
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  created in a separate Workspace and this method is not called, instead
+     *  call {@link #addMoMLFilter(MoMLFilter, Workspace)}:</p>
+     *  <pre>
+     *  Workspace workspace = new Workspace("MyWorkspace");
+     *  MoMLParser parser = new MoMLParser(workspace);
+     *  MoMLFilter myFilter = new ptolemy.moml.filter.ClassChanges();
+     *  MoMLParser.addMoMLFilter(myfilter, workspace);
+     *  </pre>
      *
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
+     *  @see #addMoMLFilters(List filterList, Workspace workspace)
      *  @see #addMoMLFilters(List filterList)
+     *  @see #addMoMLFilters(List filterList, Workspace workspace)
      *  @see #getMoMLFilters()
      *  @see #setMoMLFilters(List filterList)
+     *  @see #setMoMLFilters(List filterList, Workspace workspace)
      */
     public static void addMoMLFilter(MoMLFilter filter) {
+        MoMLParser.addMoMLFilter(filter, new Workspace("MoMLFilter"));
+    }
+
+    /**  Add a MoMLFilter to the end of the list of MoMLFilters used
+     *  to translate names.  If the list of MoMLFilters already contains
+     *  the filter, then the filter is not added again.
+     *  Note that this method is static.  The specified MoMLFilter
+     *  will filter all MoML for any instances of this class.
+     *
+     *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
+     *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
+     *
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  created in a separate Workspace:</p>
+     *  <pre>
+     *  Workspace workspace = new Workspace("MyWorkspace");
+     *  MoMLParser parser = new MoMLParser(workspace);
+     *  MoMLFilter myFilter = new ptolemy.moml.filter.ClassChanges();
+     *  MoMLParser.addMoMLFilter(myfilter, workspace);
+     *  </pre>
+     *
+     *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
+     *  @param workspace MoMLFilters are passed a MoMLParser that is optionally
+     *  used by a filter.  This parameter determines the Workspace in which
+     *  that MoMLFilter is created.  To avoid memory leaks, typically the 
+     *  MoMLFilter that is used to parse a model is created in a new workspace.
+     *  The MoMLFilters are static, so we need to pass in the Workspace from
+     *  the top level MoMLFilter.
+     *  @see #addMoMLFilter(MOMLFilter filter)
+     *  @see #addMoMLFilters(List filterList)
+     *  @see #addMoMLFilters(List filterList, Workspace workspace)
+     *  @see #getMoMLFilters()
+     *  @see #setMoMLFilters(List filterList)
+     *  @see #setMoMLFilters(List filterList, Workspace workspace)
+     */
+    public static void addMoMLFilter(MoMLFilter filter, Workspace workspace) {
         if (_filterList == null) {
             _filterList = new LinkedList();
         }
         if (_filterMoMLParser == null) {
-            _filterMoMLParser = new MoMLParser();
+            _filterMoMLParser = new MoMLParser(workspace);
         }
         if (!_filterList.contains(filter)) {
             _filterList.add(filter);
@@ -301,18 +350,63 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
      *
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  created in a separate Workspace and this method is not called, instead
+     *  call {@link #addMoMLFilters(List, Workspace)}:</p>
+     *  <pre>
+     *  Workspace workspace = new Workspace("MyWorkspace");
+     *  MoMLParser parser = new MoMLParser(workspace);
+     *  List myFilters = BackwardCompatibility.allFilters();
+     *  MoMLParser.addMoMLFilters(myfilter, workspace);
+     *  </pre>
+     *
      *  @param filterList The list of MoMLFilters to add to the
      *  list of MoMLFilters to be used to translate names.
      *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #addMoMLFilter(MoMLFilter filter, Workspace workspace)
+     *  @see #addMoMLFilters(List filterList, Workspace workspace)
      *  @see #getMoMLFilters()
      *  @see #setMoMLFilters(List filterList)
+     *  @see #setMoMLFilters(List filterList, Workspace workspace)
      */
     public static void addMoMLFilters(List filterList) {
+        MoMLParser.addMoMLFilters(filterList, new Workspace("MoMLFilter"));
+    }
+
+    /**  Add a List of MoMLFilters to the end of the list of MoMLFilters used
+     *  to translate names.  The argument list of filters is added even if
+     *  the current list already contains some of the filters in the argument
+     *  list.
+     *  Note that this method is static.  The specified MoMLFilter
+     *  will filter all MoML for any instances of this class.
+     *
+     *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
+     *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
+     *
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  created in a separate Workspace:</p>
+     *  <pre>
+     *  Workspace workspace = new Workspace("MyWorkspace");
+     *  MoMLParser parser = new MoMLParser(workspace);
+     *  List myFiltersList = ...
+     *  MoMLParser.addMoMLFilters(myFilterList, workspace);
+     *  </pre>
+     *
+     *  @param filterList The list of MoMLFilters to add to the
+     *  list of MoMLFilters to be used to translate names.
+     *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #addMoMLFilter(MoMLFilter filter, Workspace workspace)
+     *  @see #addMoMLFilters(List filterList)
+     *  @see #getMoMLFilters()
+     *  @see #setMoMLFilters(List filterList)
+     *  @see #setMoMLFilters(List filterList, Workspace workspace)
+     */
+    public static void addMoMLFilters(List filterList, Workspace workspace) {
         if (_filterList == null) {
             _filterList = new LinkedList();
         }
         if (_filterMoMLParser == null) {
-            _filterMoMLParser = new MoMLParser();
+            _filterMoMLParser = new MoMLParser(workspace);
         }
         _filterList.addAll(filterList);
     }
@@ -1237,7 +1331,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  will filter all MoML for any instances of this class.
      *  @return The MoMLFilters currently filtering.
      *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #addMoMLFilter(MoMLFilter filter, Workspace workspace)
      *  @see #setMoMLFilters(List filterList)
+     *  @see #setMoMLFilters(List filterList, Workspace workspace)
      */
     public static List getMoMLFilters() {
         return _filterList;
@@ -1744,7 +1840,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Reset the MoML parser, forgetting about any previously parsed
      *  models.  This method differs from {@link #reset()} in that
      *  this method does as complete a reset of the MoMLParser
-     *  as possible.
+     *  as possible.  Note that the static MoMLFilters are not reset,
+     *  but the MoMLParser optionally used by the filters is reset.
      *  @see #purgeModelRecord(String)
      *  @see #purgeAllModelRecords()
      */
@@ -1752,6 +1849,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         purgeAllModelRecords();
         reset();
         _workspace = new Workspace();
+        if (_filterMoMLParser != null) {
+            _filterMoMLParser.purgeAllModelRecords();
+            _filterMoMLParser.reset();
+            _filterMoMLParser = new MoMLParser(_workspace);
+        }
     }
 
     /** Resolve an external entity.  If the first argument is the
@@ -1901,17 +2003,59 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
      *
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  created in a separate Workspace and this method is not called, instead
+     *  call {@link #setMoMLFilters(List, Workspace)}:</p>
+     *  <pre>
+     *  Workspace workspace = new Workspace("MyWorkspace");
+     *  MoMLParser parser = new MoMLParser(workspace);
+     *  List myFilters = BackwardCompatibility.allFilters();
+     *  MoMLParser.setMoMLFilters(myFilters, workspace);
+     *  </pre>
+     *
      *  @param filterList The List of MoMLFilters.
      *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #addMoMLFilter(MoMLFilter filter, Workspace workspace)
      *  @see #getMoMLFilters()
+     *  @see #setMoMLFilters(List filterList, Workspace workspace)
      */
     public static void setMoMLFilters(List filterList) {
+        MoMLParser.setMoMLFilters(filterList, new Workspace("MoMLFilter"));
+    }
+
+    /**  Set the list of MoMLFilters used to translate names.
+     *  Note that this method is static.  The specified MoMLFilters
+     *  will filter all MoML for any instances of this class.
+     *
+     *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
+     *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
+     *
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  created in a separate Workspace:</p>
+     *  <pre>
+     *  Workspace workspace = new Workspace("MyWorkspace");
+     *  MoMLParser parser = new MoMLParser(workspace);
+     *  List myFilters = BackwardCompatibility.allFilters();
+     *  MoMLParser.setMoMLFilters(myFilters, workspace);
+     *  </pre>
+     *
+     *  @param filterList The List of MoMLFilters.
+     *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #addMoMLFilter(MoMLFilter filter, Workspace workspace)
+     *  @see #getMoMLFilters()
+     *  @see #setMoMLFilters(List filterList)
+     */
+    public static void setMoMLFilters(List filterList, Workspace workspace) {
         _filterList = filterList;
         if (_filterList == null) {
             _filterMoMLParser = null;
         } else {
             if (_filterMoMLParser == null) {
-                _filterMoMLParser = new MoMLParser();
+                // FIXME: it seems like the MoMLParser should be created
+                // in a particular Workspace, not just the default workspace
+                // so that we can unload the Workspace?  However, since
+                // the filters are static, we are probably ok.
+                _filterMoMLParser = new MoMLParser(workspace);
             }
         }
     }

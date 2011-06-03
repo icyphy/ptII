@@ -86,7 +86,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
         // We set the list of MoMLFilters to handle Backward Compatibility.
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters(), _workspace);
 
         // Filter out any graphical classes.
         MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
