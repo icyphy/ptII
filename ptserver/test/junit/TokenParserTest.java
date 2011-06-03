@@ -52,6 +52,7 @@ import ptolemy.data.UnionToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
+import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
 import ptserver.data.TokenParser;
 
@@ -309,5 +310,19 @@ public class TokenParserTest {
                 inputStream);
         assertEquals(token, convertedToken);
 
+    }
+
+    @Test
+    public void testAttributeChangeToken() throws IOException, IllegalActionException {
+        AttributeChangeToken token = new AttributeChangeToken();
+        token.setTargetSettableName("targetSettable");
+        token.setExpression("testing");
+        
+        PipedOutputStream outputStream = new PipedOutputStream();
+        PipedInputStream inputStream = new PipedInputStream(outputStream);
+        TokenParser.getInstance().convertToBytes(token, outputStream);
+        Token convertedToken = TokenParser.getInstance().convertToToken(
+                inputStream);
+        assertEquals(token, convertedToken);
     }
 }
