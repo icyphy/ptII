@@ -1495,13 +1495,12 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/save \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/setup \
-	$(REMOTE1PTIIDIST)/ptserver \
 	$(REMOTE1PTIIDIST)/ptserver/actor \
 	$(REMOTE1PTIIDIST)/ptserver/communication \
 	$(REMOTE1PTIIDIST)/ptserver/control \
 	$(REMOTE1PTIIDIST)/ptserver/data \
 	$(REMOTE1PTIIDIST)/ptserver/data/handler \
-	$(REMOTE1PTIIDIST)/ptserver/test \
+	$(REMOTE1PTIIDIST)/ptserver \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/basic/layout/kieler \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
