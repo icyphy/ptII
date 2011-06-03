@@ -41,7 +41,6 @@ import java.util.logging.XMLFormatter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.python.parser.ast.If;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.control.IServerManager;
@@ -258,7 +257,7 @@ public class PtolemyServer implements IServerManager {
     /**
      * Shut down supporting processes and destroy active simulation threads.
      * 
-     * @exception If the servlet container or broker cannot be stopped,
+     * @exception Exception If the servlet container or broker cannot be stopped,
      * throw an exception.
      * for some reason, throw an exception.
      */
