@@ -49,6 +49,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	QMTest.java \
+	StringAttributeWidget.java \
 	SysOutActor.java
 
 # Non-graphical Java tests written in Tcl
@@ -75,7 +76,8 @@ MISC_FILES =	\
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'QMTest$$1.class'
+	'QMTest$$1.class' \
+	'SysOutActor$$TokenDelegator.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

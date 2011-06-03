@@ -61,6 +61,7 @@ JSRCS = \
 	PtolemyTestServer.java \
 	RemoteModel.java \
 	RemoteSourceData.java \
+	RemoteValueListener.java \
 	TokenPublisher.java
 
 # Sources that may or may not be present, but if they are present, we don't

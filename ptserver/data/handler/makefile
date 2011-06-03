@@ -59,6 +59,7 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 # Keep this list alphabetized.
 JSRCS = \
 	ArrayTokenHandler.java \
+	AttributeChangeTokenHandler.java \
 	BooleanTokenHandler.java \
 	CommunicationTokenHandler.java \
 	ComplexMatrixTokenHandler.java \
