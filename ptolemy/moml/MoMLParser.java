@@ -321,7 +321,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  MoMLFilter that is used to parse a model is created in a new workspace.
      *  The MoMLFilters are static, so we need to pass in the Workspace from
      *  the top level MoMLFilter.
-     *  @see #addMoMLFilter(MOMLFilter filter)
+     *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #addMoMLFilters(List filterList)
      *  @see #addMoMLFilters(List filterList, Workspace workspace)
      *  @see #getMoMLFilters()
