@@ -3,4 +3,5 @@
     <Match classregex="lbnl.*"/>
     <Match classregex="ptdb.*"/>
     <Match classregex="ptolemy.*"/>
+    <Match classregex="ptserver.*"/>
 </FindBugsFilter>
