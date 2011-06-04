@@ -1006,7 +1006,12 @@ Also, the image should not be scaled up after placing the image in PowerPoint;
 instead enlarge the image in Vergil and then do the capture.
 
 <dt> <a name="pdf"><b>4.7 How do I create a PDF of a model?</b></a>
-<dd>To include an image of a model in a LaTeX file, print the Ptolemy models to PDF.
+<dd>To include an image of a model in a LaTeX file, print the Ptolemy
+  models to PDF.
+  There are at least two ways to create a PDF of a model: PDF print
+  drivers or using Export -> Export PDF
+
+  <h3>PDF Print Drivers</h3>
 This requires that PDF printer drivers be installed on your machine.
 
 <p>The size of the window matters since the print utility tries to fit
@@ -1019,15 +1024,41 @@ printing.
 <pre>
        $PTII/bin/vergil -printPDF model.xml
 </pre>
-If need be, edit the results in Adobe Illustrator, including combining figures
+This method requires that you have PDF printer drivers installed on
+  your machine.
+  
+  <h3>Export PDF</h3>
+  The Ptolemy II development tree after Ptolemy II 8.0, can be
+  configured to use a GPL'd PDF utility.  To enable this utility
+  requires build Ptolemy II from source.
+  <ul>
+    <li> Download and build Ptolemy II.  See
+  <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">http://chess.eecs.berkeley.edu/ptexternal</a></li>
+    <li> Download <code>iText.jar</code> from
+    <a href="http://itextpdf.com" target="_top">http://itextpdf.com</a>
+    and place <code>iText.jar</code> as
+    <code>$PTII/ptolemy/vergil/misc/itext/iText.jar</code></li>
+    <li>Rerun <code>configure</code> or add <code>iText.jar</code> to
+  your classpath.</li>
+    <li>Edit
+  <code>ptII/ptolemy/vergil/basic/BasicGraphFrame.java</code>,
+    search for "Export PDF" and uncomment the block of text that
+    enables the interface to iText.</li>
+    <li>Build and run.  The File -&gt; Export -&gt; menu should now
+    have a Export PDF menu choice</li>
+ </ul>
+
+  <h3>Tweaking the PDF</h3>
+  If need be, edit the results in Adobe Illustrator, including combining figures
     and putting borders on the grey boxes.
 
 <p>Remove white space using Adobe Acrobat Pro by using
     Tools -&gt; Advanced Editing -&gt; Crop Tool,
     then double clicking in the interior of the crop region to
-    bring up the Crop Pages dialog and hit OK.
+    bring up the Crop Pages dialog and hit OK.</p>
 
-    	<li> 
+</dd>
+
 <dt> <a name="multicore"><b>4.8 What about multicore?</b></a>
 <dd> If you use the Kahn Process Network (PN) model of computation, then each actor
   is a thread and, in principle, each thread will run on a separate
