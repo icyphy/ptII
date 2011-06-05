@@ -410,8 +410,8 @@ public class StringUtilities {
 
                 // PTII variable was not set
                 URL namedObjURL = Thread.currentThread()
-                        .getContextClassLoader().getResource(
-                                stringUtilitiesPath);
+                        .getContextClassLoader()
+                        .getResource(stringUtilitiesPath);
 
                 if (namedObjURL != null) {
                     // Get the file portion of URL
@@ -429,7 +429,8 @@ public class StringUtilities {
                         }
                     }
 
-                    String abnormalHome = namedObjFileName.substring(0,
+                    String abnormalHome = namedObjFileName.substring(
+                            0,
                             namedObjFileName.length()
                                     - stringUtilitiesPath.length());
 
@@ -453,7 +454,8 @@ public class StringUtilities {
                             + File.separator + "RMptsupport.jar";
 
                     if (_ptolemyPtIIDir.endsWith(ptsupportJarName)) {
-                        _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
+                        _ptolemyPtIIDir = _ptolemyPtIIDir.substring(
+                                0,
                                 _ptolemyPtIIDir.length()
                                         - ptsupportJarName.length());
                     } else {
@@ -491,20 +493,27 @@ public class StringUtilities {
                     _ptolemyPtIIDir = StringUtilities.substitute(
                             _ptolemyPtIIDir, "%20", " ");
                 }
-
-                if (_ptolemyPtIIDir == null &&
-                        !System.getProperty("java.vm.name <http://java.vm.name>").equals("Dalvik")) {
-                    // Skip if we are running under Android.
-                    new Exception("Could not find "
-                            + "'ptolemy.ptII.dir'" + " property.  "
-                            + "Also tried loading '" + stringUtilitiesPath
-                            + "' as a resource and working from that. "
-                            + "Vergil should be "
-                            + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\", "
-                            + "otherwise the following features will not work: "
-                            + "PtinyOS, Ptalon, the Python actor, "
-                            + "actor document, cg code generation and possibly "
-                            + "other features will not work.");
+                //*.class files are compiled into classes.dex file; therefore, check for StringUtilities.class fails
+                //it's OK to set _ptolemyPtIIDir to an empty string on Android
+                if (_ptolemyPtIIDir == null
+                        && System.getProperty("java.vm.name").equals("Dalvik")) {
+                    _ptolemyPtIIDir = "";
+                }
+                if (_ptolemyPtIIDir == null) {
+                    new Exception(
+                            "Could not find "
+                                    + "'ptolemy.ptII.dir'"
+                                    + " property.  "
+                                    + "Also tried loading '"
+                                    + stringUtilitiesPath
+                                    + "' as a resource and working from that. "
+                                    + "Vergil should be "
+                                    + "invoked with -Dptolemy.ptII.dir"
+                                    + "=\"$PTII\", "
+                                    + "otherwise the following features will not work: "
+                                    + "PtinyOS, Ptalon, the Python actor, "
+                                    + "actor document, cg code generation and possibly "
+                                    + "other features will not work.");
                 }
 
                 try {
@@ -579,8 +588,8 @@ public class StringUtilities {
      *  @return The expected source file name.
      */
     public static String objectToSourceFileName(Object object) {
-        String sourceFileNameBase = object.getClass().getName().replace('.',
-                '/');
+        String sourceFileNameBase = object.getClass().getName()
+                .replace('.', '/');
 
         // Inner classes: Get rid of everything past the first $
         if (sourceFileNameBase.indexOf("$") != -1) {
@@ -602,8 +611,7 @@ public class StringUtilities {
         String preferencesDirectoryName = StringUtilities
                 .getProperty("user.home")
                 + File.separator
-                + StringUtilities.PREFERENCES_DIRECTORY
-                + File.separator;
+                + StringUtilities.PREFERENCES_DIRECTORY + File.separator;
         File preferencesDirectory = new File(preferencesDirectoryName);
 
         if (!preferencesDirectory.isDirectory()) {
@@ -800,6 +808,7 @@ public class StringUtilities {
      *  @exception MalformedURLException If the URL is malformed.
      *  @deprecated Use FileUtilities.nameToURL instead.
      */
+    @Deprecated
     public static URL stringToURL(String name, URI baseDirectory,
             ClassLoader classLoader) throws IOException {
         return FileUtilities.nameToURL(name, baseDirectory, classLoader);

@@ -47,7 +47,6 @@ public class RemoteValueListener implements ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    @Override
     public void valueChanged(Settable settable) {
         AttributeChangeToken token = new AttributeChangeToken();
         token.setTargetSettableName(settable.getName());

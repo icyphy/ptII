@@ -371,7 +371,6 @@ public class PtolemyServer implements IServerManager {
                 throw new Exception("Invalid ticket: " + ticket.getTicketID());
                 //TODO: create InvalidTicketException
             }
-
             _executor.execute(_requests.get(ticket));
         } catch (Exception e) {
             _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
