@@ -30,13 +30,9 @@ package ptserver.data.handler;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map.Entry;
 
-import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.AttributeChangeToken;
-import ptserver.data.TokenParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeChangeTokenHandler

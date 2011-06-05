@@ -80,7 +80,7 @@ public class Ticket implements java.io.Serializable {
     public static Ticket generateTicket(String url) {
 
         Ticket ticket = new Ticket();
-        ticket.setTicketID(Long.toHexString(new Random().nextLong()));
+        ticket.setTicketID(Long.toHexString(_randomGenerator.nextLong()));
         ticket.setUrl(url);
         ticket.setDateRequested(new Date());
 
@@ -91,7 +91,7 @@ public class Ticket implements java.io.Serializable {
      *  @return Date and time that the simulation request was submitted.
      */
     public Date getDateRequested() {
-        return _dateRequested;
+        return (Date) _dateRequested.clone();
     }
 
     /** Get the unique ticket identifier.
@@ -143,11 +143,12 @@ public class Ticket implements java.io.Serializable {
     private void setUrl(String url) {
         _url = url;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private String _ticketID;
     private String _url;
     private Date _dateRequested;
+    private static transient Random _randomGenerator = new Random();
 }

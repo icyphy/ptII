@@ -194,7 +194,7 @@ public class TokenParser {
     /**
      * Singleton instance of the parser.
      */
-    private static TokenParser _instance;
+    private static volatile TokenParser _instance;
 
     /**
      * ResourceBundle containing mapping from token type to its handler.

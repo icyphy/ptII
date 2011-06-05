@@ -31,26 +31,24 @@ import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
 //// AttributeChangeToken
-/**
-* Encapsulate changes made to a settable object.
-*
-* @author Peter Foldes
-* @version $Id$
-* @since Ptolemy II 8.0
-* @Pt.ProposedRating Red (pdf)
-* @Pt.AcceptedRating Red (pdf)
-*/
+
+/** Encapsulate changes made to a settable object.
+ *
+ * @author Peter Foldes
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (pdf)
+ * @Pt.AcceptedRating Red (pdf)
+ */
 public class AttributeChangeToken extends Token {
 
-    /**
-     * Create a new instance with targetSettable set to null.
+    /** Create a new instance with targetSettable set to null.
      */
     public AttributeChangeToken() {
         super();
     }
 
-    /**
-     * Create a new instance and set the name of the targetActor.
+    /** Create a new instance and set the name of the targetActor.
      * @param targetActor
      */
     public AttributeChangeToken(String targetSettable) {
@@ -60,8 +58,7 @@ public class AttributeChangeToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Return true if the object is equal to the instance, false otherwise
+    /** Return true if the object is equal to the instance, false otherwise.
      *
      * The method checks if the object has the same target name and
      * the same expression.
@@ -101,8 +98,23 @@ public class AttributeChangeToken extends Token {
         return true;
     }
 
-    /**
-     * Return name of the target settable object that received the changes encapsulated by
+    /** The hashCode method generates an identifier based on the stored
+     * expression and the target settable object. Used to check equality.  
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((_expression == null) ? 0 : _expression.hashCode());
+        result = prime
+                * result
+                + ((_targetSettableName == null) ? 0 : _targetSettableName
+                        .hashCode());
+        return result;
+    }
+
+    /** Return name of the target settable object that received the changes encapsulated by
      * the AttributeChangeToken.
      * @see #setTargetSettableName(String)
      */
@@ -110,8 +122,7 @@ public class AttributeChangeToken extends Token {
         return _targetSettableName;
     }
 
-    /**
-     * Set the name of target settable  object that received the changes that the
+    /** Set the name of target settable  object that received the changes that the
      * AttributeChangeToken encapsulates.
      * @param targetSettableName the name of the target actor
      * @see #getTargetSettableName()
@@ -120,16 +131,14 @@ public class AttributeChangeToken extends Token {
         this._targetSettableName = targetSettableName;
     }
 
-    /**
-     * Return the expression.
+    /** Return the expression.
      * @see #setExpression(String)
      */
     public String getExpression() {
         return _expression;
     }
 
-    /**
-     * Set the value of the expression carried.
+    /** Set the value of the expression carried.
      * @param newExpression the changed expression
      * @see #getExpression()
      */
@@ -140,12 +149,10 @@ public class AttributeChangeToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * Name of the target actor.
+    /** Name of the target settable object.
      */
     private String _targetSettableName;
-    /**
-     * New expression
+    /** New expression for the target settable object.
      */
     private String _expression;
 }

@@ -136,10 +136,10 @@ public class TokenParserTest {
         Token[] tokens = new Token[2];
         String[] labels = new String[2];
 
-        labels[0] = new String("float");
+        labels[0] = "float";
         tokens[0] = new FloatToken(123);
 
-        labels[1] = new String("long");
+        labels[1] = "long";
         tokens[1] = new DoubleToken(123.234);
 
         RecordToken token = new RecordToken(labels, tokens);
@@ -193,7 +193,7 @@ public class TokenParserTest {
 
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 4; column++) {
-                matrix[row][column] = row * column*12232233;
+                matrix[row][column] = row * column * 12232233L;
 
             }
         }
@@ -262,7 +262,7 @@ public class TokenParserTest {
     @Test
     public void testUnionToken() throws IOException, IllegalActionException {
 
-        String label = new String("unionlabel");
+        String label = "unionlabel";
         Complex complex = new Complex(234.34, 3432.324);
         ComplexToken value = new ComplexToken(complex);
         UnionToken token = new UnionToken(label,value);
