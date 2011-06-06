@@ -279,7 +279,7 @@ public class PtolemyServer implements IServerManager {
             clientModel.loadModel(new URL(url));
             RemoteModelResponse response = new RemoteModelResponse();
             response.setTicket(ticket);
-            response.setPortTypes(clientModel.getResolvedTypes());
+            response.setModelTypes(clientModel.getResolvedTypes());
             response.setModelXML(clientModel.getTopLevelActor().exportMoML());
             _requests.put(ticket, simulationTask);
             return response;
