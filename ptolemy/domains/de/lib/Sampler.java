@@ -30,6 +30,7 @@ package ptolemy.domains.de.lib;
 
 import java.util.Set;
 
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -62,6 +63,10 @@ import ptolemy.kernel.util.Workspace;
  consumed from the input port. If the width of the <i>output</i> is
  greater than that of the <i>input</i>, then the last few channels of
  the <i>output</i> will never emit tokens.
+ 
+ <p> The <i>trigger</i> port is a multiport. Whenever a trigger is received
+ on any channel the actor fires and produces an output. Multiple triggers
+ with the same timestamp are considered as one trigger.
 
  <p> Note: If the width of the input changes during execution, then the
  most recent inputs are forgotten, as if the execution of the model
@@ -99,6 +104,7 @@ public class Sampler extends DETransformer {
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
+        trigger.setMultiport(true);
 
         // Width constraint. Not bidirectional to not break any existing models.
         output.setWidthEquals(input, false);
@@ -202,36 +208,10 @@ public class Sampler extends DETransformer {
             _lastInputs = new Token[inputWidth];
         }
 
-        // Consume the inputs we save.
-        for (int i = 0; i < commonWidth; i++) {
-            while (input.hasToken(i)) {
-                _lastInputs[i] = input.get(i);
-            }
-        }
+        readInputs(commonWidth, inputWidth);
 
-        // Consume the inputs we don't save.
-        for (int i = commonWidth; i < inputWidth; i++) {
-            while (input.hasToken(i)) {
-                input.get(i);
-            }
-        }
+        sendOutputIfTriggered(commonWidth);
 
-        // If we have a trigger...
-        if (trigger.hasToken(0)) {
-            // Consume the trigger token.
-            trigger.get(0);
-
-            for (int i = 0; i < commonWidth; i++) {
-                // Do not output anything if the <i>initialValue</i>
-                // parameter was not set and this actor has not
-                // received any inputs.
-                if (_lastInputs[i] != null) {
-                    // Output the most recent token, assuming the
-                    // receiver has a FIFO behavior.
-                    output.send(i, _lastInputs[i]);
-                }
-            }
-        }
     }
 
     /** If there is no input on the <i>trigger</i> port, return
@@ -245,7 +225,14 @@ public class Sampler extends DETransformer {
 
         // If the trigger input is not connected, never fire.
         if (trigger.isOutsideConnected()) {
-            return (trigger.hasToken(0));
+            boolean hasToken = false;
+            for (int j = 0; j < trigger.getWidth(); j++) {
+                if (trigger.hasToken(j)) {
+                    hasToken = true;
+                    break;
+                }
+            }
+            return hasToken;
         } else {
             return false;
         }
@@ -283,8 +270,8 @@ public class Sampler extends DETransformer {
                 Inequality ineq = new Inequality(initialValue.getTypeTerm(),
                         input.getTypeTerm());
                 typeConstraints.add(ineq);
-                ineq = new Inequality(input.getTypeTerm(), initialValue
-                        .getTypeTerm());
+                ineq = new Inequality(input.getTypeTerm(),
+                        initialValue.getTypeTerm());
                 typeConstraints.add(ineq);
             }
         } catch (IllegalActionException ex) {
@@ -302,4 +289,60 @@ public class Sampler extends DETransformer {
 
     /** The recorded inputs last seen. */
     protected Token[] _lastInputs;
+
+    /** Consume inputs and save them. Discard inputs on input channels
+     *  that do not have corresponding output channels. 
+     *  @param commonWidth The minimum of the input and the output width.
+     *  @param inputWidth The width of the input port. 
+     *  @exception IllegalActionException Thrown if port tokens cannot be accessed.
+     */
+    protected void readInputs(int commonWidth, int inputWidth)
+            throws IllegalActionException {
+        // Consume the inputs we save.
+        for (int i = 0; i < commonWidth; i++) {
+            while (input.hasToken(i)) {
+                _lastInputs[i] = input.get(i);
+            }
+        }
+
+        // Consume the inputs we don't save.
+        for (int i = commonWidth; i < inputWidth; i++) {
+            while (input.hasToken(i)) {
+                input.get(i);
+            }
+        }
+    }
+
+    /** Send output tokens if any input on the trigger port has a token. 
+     *  All trigger tokens are consumed. 
+     *  @param commonWidth The minimum of the input and the output port width. 
+     *  @exception IllegalActionException Thrown if the width or the token of 
+     *      the trigger port cannot be accessed or if tokens cannot be sent on 
+     *      the output port. 
+     */
+    protected void sendOutputIfTriggered(int commonWidth)
+        throws IllegalActionException {
+        // If we have a trigger...
+        boolean triggered = false;
+        for (int j = 0; j < trigger.getWidth(); j++) {
+            if (trigger.hasToken(j)) {
+                // Consume the trigger token.
+                trigger.get(j);
+                triggered = true;
+            }
+        }
+
+        if (triggered) {
+            for (int i = 0; i < commonWidth; i++) {
+                // Do not output anything if the <i>initialValue</i>
+                // parameter was not set and this actor has not
+                // received any inputs.
+                if (_lastInputs[i] != null) {
+                    // Output the most recent token, assuming the
+                    // receiver has a FIFO behavior.
+                    output.send(i, _lastInputs[i]);
+                }
+            }
+        }
+    }
 }

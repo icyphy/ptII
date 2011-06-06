@@ -135,36 +135,9 @@ public class Register extends Sampler {
             _lastInputs = new Token[inputWidth];
         }
 
-        // If there is a token in the trigger port that indicates
-        // a read request, the register output the latest inputs.
-        if (trigger.hasToken(0)) {
-            // Consume the trigger token.
-            trigger.get(0);
+        sendOutputIfTriggered(commonWidth);
 
-            for (int i = 0; i < commonWidth; i++) {
-                if (_lastInputs[i] != null) {
-                    output.send(i, _lastInputs[i]);
-                }
-            }
-        }
-
-        // If there is a token in the input port that indicates
-        // a write request, the register consumes and stores the
-        // inputs. Note that if multiple inputs are available,
-        // only the last inputs are stored.
-        // Consume the inputs we save.
-        for (int i = 0; i < commonWidth; i++) {
-            while (input.hasToken(i)) {
-                _lastInputs[i] = input.get(i);
-            }
-        }
-
-        // Consume the inputs we don't save.
-        for (int i = commonWidth; i < inputWidth; i++) {
-            while (input.hasToken(i)) {
-                input.get(i);
-            }
-        }
+        readInputs(commonWidth, inputWidth);
     }
 
     /** Return true if there is any token in the input or the trigger
