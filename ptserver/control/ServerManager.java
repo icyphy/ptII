@@ -32,6 +32,7 @@ import java.util.logging.Level;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.PtolemyServer;
+import ptserver.communication.RemoteModelResponse;
 
 import com.caucho.hessian.server.HessianServlet;
 
@@ -79,9 +80,10 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @param url The path to the model file
      *  @exception Exception If the simulation thread cannot be created or
      *  the file URL provided is invalid, throw an exception.
-     *  @return A reference to the execution thread of the selected model
+     *  @return The user's reference to the simulation task along with 
+     *  specifically formatted for the client model XML and its inferred types
      */
-    public Ticket open(String url) throws IllegalActionException {
+    public RemoteModelResponse open(String url) throws IllegalActionException {
         try {
             return PtolemyServer.getInstance().open(url);
         } catch (Exception e) {

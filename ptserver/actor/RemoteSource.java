@@ -30,8 +30,11 @@
 
 package ptserver.actor;
 
+import java.util.HashMap;
+
 import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -54,12 +57,27 @@ import ptserver.data.CommunicationToken;
 public class RemoteSource extends RemoteActor {
 
     /**
+     * Create new instance of the RemoteActor without doing any actor replacement
+     * @param container The container.
+     * @param name The name of this actor within the container.
+     * @exception IllegalActionException If this actor cannot be contained
+     *  by the proposed container (see the setContainer() method).
+     * @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
+    public RemoteSource(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
+
+    /**
      * Replace the targetSource with the RemoteSource instance.
      * @see RemoteActor
      * @param container The container
      * @param targetSource The target source
      * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
+     * @param portTypes Map of ports and their resolved types
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -67,10 +85,10 @@ public class RemoteSource extends RemoteActor {
      * @exception CloneNotSupportedException If port cloning is not supported
      */
     public RemoteSource(CompositeEntity container,
-            ComponentEntity targetSource, boolean replaceTargetEntity)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
-        super(container, targetSource, replaceTargetEntity);
+            ComponentEntity targetSource, boolean replaceTargetEntity,
+            HashMap<String, Type> portTypes) throws IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
+        super(container, targetSource, replaceTargetEntity, portTypes);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,7 +110,8 @@ public class RemoteSource extends RemoteActor {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    throw new IllegalActionException(this, e, "The remote source was inturrupted");
+                    throw new IllegalActionException(this, e,
+                            "The remote source was inturrupted");
                 }
             }
             //If token is null, then it means that the model was stopped, just return in this case.
@@ -111,8 +130,6 @@ public class RemoteSource extends RemoteActor {
             }
         }
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -28,9 +28,12 @@
  */
 package ptserver.actor;
 
+import java.util.HashMap;
+
 import ptolemy.actor.IOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,12 +55,27 @@ import ptserver.data.CommunicationToken;
 public class RemoteSink extends RemoteActor {
 
     /**
+     * Create new instance of the RemoteActor without doing any actor replacement
+     * @param container The container.
+     * @param name The name of this actor within the container.
+     * @exception IllegalActionException If this actor cannot be contained
+     *  by the proposed container (see the setContainer() method).
+     * @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
+    public RemoteSink(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
+
+    /**
      * Replace the targetSink with the RemoteSink instance.
      * @see RemoteActor
      * @param container The container
      * @param targetSink The target sink
      * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
+     * @param portTypes Map of ports and their resolved types
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -65,9 +83,10 @@ public class RemoteSink extends RemoteActor {
      * @exception CloneNotSupportedException If port cloning is not supported
      */
     public RemoteSink(CompositeEntity container, ComponentEntity targetSink,
-            boolean replaceTargetEntity) throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
-        super(container, targetSink, replaceTargetEntity);
+            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
+        super(container, targetSink, replaceTargetEntity, portTypes);
     }
 
     ///////////////////////////////////////////////////////////////////

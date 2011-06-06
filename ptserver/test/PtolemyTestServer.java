@@ -28,11 +28,10 @@
 package ptserver.test;
 
 import java.net.URL;
+import java.util.Random;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 
@@ -65,22 +64,24 @@ public class PtolemyTestServer {
                     RemoteModelType.SERVER);
             IMqttClient mqttClient = MqttClient.createMqttClient(
                     "tcp://localhost@1883", null);
+            mqttClient.connect("Ptolemy" + new Random().nextInt(1000), true,
+                    (short) 10);
             model.setMqttClient(mqttClient);
             URL resource = PtolemyTestClient.class
-                    .getResource("/ptserver/test/junit/HelloWorld.xml");
-            System.out.println(resource.toExternalForm());
-            Manager manager = model.loadModel(resource);
+                    .getResource("/ptserver/test/junit/addermodel.xml");
+            model.loadModel(resource);
+            Manager manager = model.setUpInfrastructure();
             CompositeActor topLevelActor = model.getTopLevelActor();
-            topLevelActor.getDirector().addDebugListener(new DebugListener() {
-
-                public void message(String message) {
-                    System.out.println(message);
-                }
-
-                public void event(DebugEvent event) {
-                    System.out.println(event);
-                }
-            });
+            //            topLevelActor.getDirector().addDebugListener(new DebugListener() {
+            //
+            //                public void message(String message) {
+            //                    System.out.println(message);
+            //                }
+            //
+            //                public void event(DebugEvent event) {
+            //                    System.out.println(event);
+            //                }
+            //            });
             manager.execute();
 
         } catch (Throwable throwable) {

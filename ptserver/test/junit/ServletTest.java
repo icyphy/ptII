@@ -38,6 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ptserver.PtolemyServer;
+import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.Ticket;
 
@@ -93,10 +94,10 @@ public class ServletTest {
     @Test
     public void openThread() throws Exception {
         int simulations = _ptolemyServer.numberOfSimulations();
-        Ticket ticket = _openTicket();
+        RemoteModelResponse response = _openRemoteModel();
 
-        assertNotNull(ticket);
-        assertNotNull(ticket.getTicketID());
+        assertNotNull(response);
+        assertNotNull(response.getTicket().getTicketID());
         assertEquals(simulations + 1, _ptolemyServer.numberOfSimulations());
     }
 
@@ -106,9 +107,9 @@ public class ServletTest {
      */
     @Test
     public void manipulateThread() throws Exception {
-        Ticket ticket = _openTicket();
-        assertNotNull(ticket);
-
+        RemoteModelResponse response = _openRemoteModel();
+        assertNotNull(response);
+        Ticket ticket = response.getTicket();
         int simulations = _ptolemyServer.numberOfSimulations();
         try {
             _servletProxy.start(ticket);
@@ -158,11 +159,11 @@ public class ServletTest {
      *  communicating with the command servlet.
      *  @return Ticket The ticket reference to the simulation request.
      */
-    private Ticket _openTicket() throws Exception {
+    private RemoteModelResponse _openRemoteModel() throws Exception {
         URL url = ServletTest.class
                 .getResource("/ptserver/test/junit/HelloWorld.xml");
-        Ticket ticket = _servletProxy.open(url.toExternalForm());
-        return ticket;
+        RemoteModelResponse response = _servletProxy.open(url.toExternalForm());
+        return response;
     }
 
     ///////////////////////////////////////////////////////////////////

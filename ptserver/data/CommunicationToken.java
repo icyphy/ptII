@@ -41,7 +41,7 @@ import ptolemy.data.Token;
 * Encapsulate tokens that were received within one iteration.
 *
 * Note: Kahn networks are not being handled right now
-* @author ahuseyno
+* @author Anar Huseynov
 * @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ahuseyno)
@@ -76,7 +76,6 @@ public class CommunicationToken extends Token {
     public void addPort(String port, int width) {
         ArrayList<Token[]> list = new ArrayList<Token[]>(width);
         _portChannelTokenMap.put(port, list);
-
     }
 
     /**
@@ -163,7 +162,7 @@ public class CommunicationToken extends Token {
     }
 
     /**
-     * Return name of the target actor that received the tokens encapsulated by the
+     * Return the full name of the target actor that received the tokens encapsulated by the
      * CommunicationToken.
      * @see #setTargetActorName(String)
      */
@@ -212,7 +211,7 @@ public class CommunicationToken extends Token {
     }
 
     /**
-     * Set the name of targetActor that received the tokens that the
+     * Set the full name of the targetActor that received the tokens that the
      * CommunicationToken encapsulates.
      * @param targetActorName the name of the target actor
      * @see #getTargetActorName()

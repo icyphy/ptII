@@ -31,6 +31,7 @@ package ptserver.control;
 import java.net.URL;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptserver.communication.RemoteModelResponse;
 
 ///////////////////////////////////////////////////////////////////
 //// IServerManager
@@ -68,9 +69,10 @@ public interface IServerManager {
      *  @param url The path to the model file
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
-     *  @return The user's reference to the simulation task
+     *  @return The user's reference to the simulation task along with 
+     *  specifically formatted for the client model XML and its inferred types
      */
-    public Ticket open(String url) throws IllegalActionException;
+    public RemoteModelResponse open(String url) throws IllegalActionException;
 
     /** Pause the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.

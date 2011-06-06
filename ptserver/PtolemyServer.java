@@ -43,6 +43,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptserver.communication.RemoteModel;
+import ptserver.communication.RemoteModel.RemoteModelType;
+import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.ServerManager;
 import ptserver.control.Ticket;
@@ -82,7 +85,6 @@ public class PtolemyServer implements IServerManager {
             logger = Logger.getLogger(PtolemyServer.class.getSimpleName());
             logFile = new FileHandler(CONFIG.getString("LOG_FILENAME"), true);
             logFile.setFormatter(new XMLFormatter());
-
             logger.addHandler(logFile);
             logger.setLevel(Level.ALL);
         } catch (SecurityException e) {
@@ -261,9 +263,8 @@ public class PtolemyServer implements IServerManager {
      *  from the provided URL.
      *  @return The user's reference to the simulation task
      */
-    public Ticket open(String url) throws IllegalActionException {
+    public RemoteModelResponse open(String url) throws IllegalActionException {
         Ticket ticket = null;
-
         try {
             // Generate a unique ticket for the request.
             ticket = Ticket.generateTicket(url);
@@ -272,12 +273,20 @@ public class PtolemyServer implements IServerManager {
             }
 
             // Save the simulation request.
-            _requests.put(ticket, new SimulationTask(ticket));
+            SimulationTask simulationTask = new SimulationTask(ticket);
+            RemoteModel clientModel = new RemoteModel(null, null,
+                    RemoteModelType.CLIENT);
+            clientModel.loadModel(new URL(url));
+            RemoteModelResponse response = new RemoteModelResponse();
+            response.setTicket(ticket);
+            response.setPortTypes(clientModel.getResolvedTypes());
+            response.setModelXML(clientModel.getTopLevelActor().exportMoML());
+            _requests.put(ticket, simulationTask);
+            return response;
         } catch (Exception e) {
             _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
         }
-
-        return ticket;
+        return null;
     }
 
     /** Pause the execution of the selected simulation.

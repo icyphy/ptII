@@ -29,11 +29,13 @@
 package ptserver.actor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -41,6 +43,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 ////RemoteActor
@@ -61,6 +64,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 public abstract class RemoteActor extends TypedAtomicActor {
 
     /**
+     * Create new instance of the RemoteActor without doing any actor replacement
+     * @param container The container.
+     * @param name The name of this actor within the container.
+     * @exception IllegalActionException If this actor cannot be contained
+     *  by the proposed container (see the setContainer() method).
+     * @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
+    public RemoteActor(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        _targetEntityName = new StringAttribute(this, "targetEntityName");
+    }
+
+    /**
      * Parent constructor that replaces either targetEntity if replaceTargetEntity is true or
      * otherwise all entities connected to it with a proxy instance (RemoteSink or RemoteSource).
      * The proxy actor is named the same as the original with addition of "_remote" suffix.
@@ -70,6 +88,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @param targetEntity the targetEntity to be replaced by a proxy
      * @param replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
+     * @param portTypes Map of ports and their resolved types
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -77,36 +96,40 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @exception CloneNotSupportedException If port cloning is not supported
      */
     public RemoteActor(CompositeEntity container, ComponentEntity targetEntity,
-            boolean replaceTargetEntity) throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
-        super(container, targetEntity.getName() + "_remote");
+            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
+        this(container, targetEntity.getName() + "_remote");
+        setTargetEntityName(targetEntity.getFullName());
+        _targetEntityName.setExpression(getTargetEntityName());
         if (replaceTargetEntity) {
-            replaceTargetEntity(targetEntity);
+            replaceTargetEntity(targetEntity, portTypes);
         } else {
-            replaceConnectingEntities(targetEntity);
+            replaceConnectingEntities(targetEntity, portTypes);
         }
-        setTargetEntityName(targetEntity.getName());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Return the name of the target entity.
+     * Return the full name of the target entity.
      * @return the targetEntityName
      * @see #setTargetActorName(String)
      */
     public String getTargetEntityName() {
-        return _targetEntityName;
+        return _targetEntityName.getExpression();
     }
 
     /**
-     * Set the name of the target entity.
+     * Set the full name of the target entity.
      * @param targetEntityName the target entity name
+     * @throws IllegalActionException If the change is not acceptable to the container.
      * @see #getTargetActorName()
      */
-    public void setTargetEntityName(String targetEntityName) {
-        this._targetEntityName = targetEntityName;
+    public void setTargetEntityName(String targetEntityName)
+            throws IllegalActionException {
+        _targetEntityName.setExpression(targetEntityName);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,13 +157,14 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * the actors in between remotely by passing respective input and output via
      * CommunicationToken.
      * @param targetEntity the entity to which actors that are replaced are connected
+     * @param portTypes The map of ports and their resolved types
      * @exception CloneNotSupportedException
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void replaceConnectingEntities(ComponentEntity targetEntity)
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
+    private void replaceConnectingEntities(ComponentEntity targetEntity,
+            HashMap<String, Type> portTypes) throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException {
 
         for (Object portObject : targetEntity.portList()) {
             if (!(portObject instanceof IOPort)) {
@@ -154,9 +178,20 @@ public abstract class RemoteActor extends TypedAtomicActor {
                 for (Port connectingPort : linkedPortList) {
                     if (connectingPort instanceof IOPort
                             && isValidConnectingPort((IOPort) connectingPort)) {
-                        remotePort = clonePort((IOPort) connectingPort);
+                        remotePort = (IOPort) connectingPort.clone(port
+                                .workspace());
+                        remotePort.setPersistent(true);
                         remotePort.setName(port.getName());
                         remotePort.setContainer(this);
+                        if (remotePort instanceof TypedIOPort) {
+                            Type type = portTypes.get(connectingPort
+                                    .getFullName());
+                            ((TypedIOPort) remotePort).setTypeEquals(type);
+                            StringAttribute targetPortName = new StringAttribute(
+                                    remotePort, "targetPortName");
+                            targetPortName.setExpression(connectingPort
+                                    .getFullName());
+                        }
                         break;
                     }
                 }
@@ -174,13 +209,14 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * This configuration would allow execution of the model where sinks or sources run remotely
      * and proxies execute instead of them and pass information to/from them.
      * @param targetEntity The target entity that is replaced with the proxy
+     * @param portTypes The map of ports and their resolved types
      * @exception CloneNotSupportedException
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void replaceTargetEntity(ComponentEntity targetEntity)
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
+    private void replaceTargetEntity(ComponentEntity targetEntity,
+            HashMap<String, Type> portTypes) throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException {
         ArrayList<Attribute> attributes = new ArrayList<Attribute>(
                 targetEntity.attributeList());
         for (Attribute attribute : attributes) {
@@ -191,9 +227,17 @@ public abstract class RemoteActor extends TypedAtomicActor {
                 continue;
             }
             IOPort port = (IOPort) portObject;
-            IOPort remotePort = clonePort(port);
+            IOPort remotePort = (IOPort) port.clone(port.workspace());
             remotePort.setName(port.getName());
             remotePort.setContainer(this);
+            remotePort.setPersistent(true);
+            if (remotePort instanceof TypedIOPort) {
+                Type type = portTypes.get(port.getFullName());
+                ((TypedIOPort) remotePort).setTypeEquals(type);
+                StringAttribute targetPortName = new StringAttribute(
+                        remotePort, "targetPortName");
+                targetPortName.setExpression(port.getFullName());
+            }
             for (Object relationObject : port.linkedRelationList()) {
                 Relation relation = (Relation) relationObject;
                 port.unlink(relation);
@@ -205,50 +249,8 @@ public abstract class RemoteActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**
-     * Clone the port.
-     *
-     * This method also suppose to set type constraints of a cloned typed port.
-     * @param port
-     * @return Returns the cloned port.
-     * @exception CloneNotSupportedException TODO
-     * @exception NameDuplicationException TODO
-     * @exception IllegalActionException TODO
-     */
-    private IOPort clonePort(IOPort port) throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
-        IOPort remotePort = (IOPort) port.clone(port.workspace());
-        if (port instanceof TypedIOPort) {
-            TypedIOPort typedPort = (TypedIOPort) port;
-            TypedIOPort typedRemotePort = (TypedIOPort) remotePort;
-
-            //            ArrayList<Attribute> attributes = new ArrayList<Attribute>(
-            //                    remotePort.attributeList());
-            //
-            //            for (Attribute attribute : attributes) {
-            //                attribute.setContainer(null);
-            //            }
-            //            attributes = new ArrayList<Attribute>(port.attributeList());
-            //
-            //            for (Attribute attribute : attributes) {
-            //                attribute.setContainer(remotePort);
-            //            }
-
-            //FIXME: figure out correct a way of inferring port types
-            typedRemotePort.setTypeEquals(typedPort.getType());
-            //The following line does not seem to help
-            typedRemotePort.typeConstraints().addAll(
-                    typedPort.typeConstraints());
-            //typedRemotePort.setTypeTerm(typedPort);
-        }
-        return remotePort;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /** Name of the targetEntity. */
-    private String _targetEntityName;
+    /** Full name of the targetEntity. */
+    private final StringAttribute _targetEntityName;
 
 }

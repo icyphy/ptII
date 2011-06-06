@@ -484,8 +484,5 @@
 			<exclude name="ptserver/output/" />
 			<classpath refid="ptII.classpath" />
 		</javac>
-		
-		<!-- I have no idea why diva is compiled since it's excluded -->
-		<!-- <delete dir="${ptdroid.bin}/diva" /> -->
 	</target>
 </project>

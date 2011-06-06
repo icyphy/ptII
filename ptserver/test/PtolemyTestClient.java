@@ -27,13 +27,16 @@
  */
 package ptserver.test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.net.URI;
+import java.net.URL;
 import java.util.Random;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.domains.pn.kernel.PNDirector;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 
@@ -64,35 +67,54 @@ public class PtolemyTestClient {
      */
     public static void main(String[] args) {
         try {
-            RemoteModel model = new RemoteModel("Server", "Client", RemoteModelType.CLIENT);
+            RemoteModel model = new RemoteModel("Server", "Client",
+                    RemoteModelType.CLIENT);
             IMqttClient mqttClient = MqttClient.createMqttClient(
                     "tcp://localhost@1883", null);
             mqttClient.connect("Ptolemy" + new Random().nextInt(1000), true,
                     (short) 10);
             model.setMqttClient(mqttClient);
 
-            Manager manager = model
-                    .loadModel(PtolemyTestClient.class
-                            .getResource("/ptserver/test/junit/HelloWorld.xml"));
+            URL resource = PtolemyTestClient.class
+                    .getResource("/ptserver/test/junit/addermodel.xml");
+            model.loadModel(resource);
+            Manager manager = model.setUpInfrastructure();
             CompositeActor topLevelActor = model.getTopLevelActor();
 
+            topLevelActor.getDirector().setContainer(null);
             topLevelActor.setDirector(new PNDirector(topLevelActor,
                     "PNDirector"));
-            topLevelActor.getDirector().addDebugListener(new DebugListener() {
+            //            topLevelActor.getDirector().addDebugListener(new DebugListener() {
+            //
+            //                public void message(String message) {
+            //                    System.out.println(message);
+            //                }
+            //
+            //                public void event(DebugEvent event) {
+            //                    System.out.println(event);
+            //                }
+            //            });
+            System.out.println(topLevelActor.exportMoML());
 
-                public void message(String message) {
-                    System.out.println(message);
-                }
-
-                public void event(DebugEvent event) {
-                    System.out.println(event);
-                }
-            });
             manager.execute();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
     }
 
+    private static String readFileAsString(URI file) throws java.io.IOException {
+        StringBuffer fileData = new StringBuffer(1000);
+        BufferedReader reader = new BufferedReader(new FileReader(
+                new File(file)));
+        char[] buf = new char[1024];
+        int numRead = 0;
+        while ((numRead = reader.read(buf)) != -1) {
+            String readData = String.valueOf(buf, 0, numRead);
+            fileData.append(readData);
+            buf = new char[1024];
+        }
+        reader.close();
+        return fileData.toString();
+    }
 
 }

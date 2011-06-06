@@ -102,7 +102,7 @@ public class TokenPublisher {
                 _mqttClient.publish(getTopic(), _outputStream.toByteArray(),
                         RemoteModel.QOS_LEVEL, false);
                 //FIXME: use a proper logger or remove
-                System.out.println(_batchCount++);
+                //System.out.println(_batchCount++);
                 if (_tokenCount > _tokensPerPeriod) {
                     long waitTime = (long) (1.0
                             * (_tokenCount - _tokensPerPeriod)
