@@ -56,23 +56,24 @@ public interface IServerManager {
      */
     public void close(Ticket ticket) throws IllegalActionException;
 
-	/** Return an input stream for the given model file for downloading on the
-	 *  client it.
-	 *  @param modelName Name for the model xml file.
-	 *  @param exception The exception that was raised.
-	 *  @exception IllegalActionException If the server encountered an error starting, stopping, or
-	 *                manipulating a simulation request.
-	 *  @return InputStream to the model xml file.
-	 */
-     public InputStream downloadModel(String modelName) throws IllegalActionException;
-    
+    /** Return an input stream for the given model file for downloading on the
+     *  client it.
+     *  @param modelName Name for the model xml file.
+     *  @param exception The exception that was raised.
+     *  @exception IllegalActionException If the server encountered an error starting, stopping, or
+     *                manipulating a simulation request.
+     *  @return InputStream to the model xml file.
+     */
+    public InputStream downloadModel(String modelName)
+            throws IllegalActionException;
+
     /** Get a listing of the models available on the server in either the
      *  database or the local file system.
      *  @return The Array of strings containing names of available models.
      *  @exception IllegalActionException If there was a problem discovering
      *  available models.
      */
-    
+
     public String[] getModelListing() throws IllegalActionException;
 
     /** Open a model with the provided model URL and wait for the
@@ -112,6 +113,5 @@ public interface IServerManager {
      *  stop the simulation.
      */
     public void stop(Ticket ticket) throws IllegalActionException;
-    
 
 }
