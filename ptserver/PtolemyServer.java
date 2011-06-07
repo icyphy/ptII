@@ -61,6 +61,29 @@ import ptserver.control.Ticket;
  * simulations through the servlet, and create independently executing
  * simulations upon request.
  * 
+ * <p>PtolemyServer uses mosquitto from <a href="http://mosquitto.org/download/#in_browser">http://mosquitto.org/download</a>.</p>
+ *
+ * <p>Under Windows, there is a mosquitto binary.</p>
+ *
+ * <p>Under Mac OS X:</p>
+ * <ol>
+ * <li>Install cmake from <a href="http://www.cmake.org/cmake/resources/software.html#in_browser">http://www.cmake.org/cmake/resources/software.html</a></li> or from
+ * <a href="http://mxcl.github.com/homebrew/#in_browser">http://mxcl.github.com/homebrew</a></li>
+ * <li>Download and untar the mosquitto sources:
+ * <pre>
+ * cd $PTII/vendors
+ * wget http://mosquitto.org/files/source/mosquitto-0.10.2.tar.gz
+ * tar -zxf mosquitto-0.10.2.tar.gz
+ * cd mosquitto-0.10.2
+ * </pre></li>
+ * <li> Run:
+ * <pre>
+ * cmake .
+ * make
+ * sudo make install
+ * </pre></li>
+ * </ul>
+ *
  * @author Justin Killian
  * @version $Id$
  * @since Ptolemy II 8.0
