@@ -64,7 +64,7 @@ import ptolemy.kernel.util.StringAttribute;
 public abstract class RemoteActor extends TypedAtomicActor {
 
     /**
-     * Create new instance of the RemoteActor without doing any actor replacement
+     * Create new instance of the RemoteActor without doing any actor replacement.
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
@@ -103,9 +103,9 @@ public abstract class RemoteActor extends TypedAtomicActor {
         setTargetEntityName(targetEntity.getFullName());
         _targetEntityName.setExpression(getTargetEntityName());
         if (replaceTargetEntity) {
-            replaceTargetEntity(targetEntity, portTypes);
+            _replaceTargetEntity(targetEntity, portTypes);
         } else {
-            replaceConnectingEntities(targetEntity, portTypes);
+            _replaceConnectingEntities(targetEntity, portTypes);
         }
     }
 
@@ -115,7 +115,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
     /**
      * Return the full name of the target entity.
      * @return the targetEntityName
-     * @see #setTargetActorName(String)
+     * @see #setTargetEntityName(String)
      */
     public String getTargetEntityName() {
         return _targetEntityName.getExpression();
@@ -125,7 +125,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * Set the full name of the target entity.
      * @param targetEntityName the target entity name
      * @throws IllegalActionException If the change is not acceptable to the container.
-     * @see #getTargetActorName()
+     * @see #getTargetEntityName()
      */
     public void setTargetEntityName(String targetEntityName)
             throws IllegalActionException {
@@ -138,7 +138,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
     /**
      * Check if the connecting port is valid and could be used
      * for cloning for the RemoteActor.
-     * @param connectingPort
+     * @param connectingPort The connecting port to check
      * @return true if connectingPort is valid, false otherwise
      */
     protected abstract boolean isValidConnectingPort(IOPort connectingPort);
@@ -162,7 +162,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void replaceConnectingEntities(ComponentEntity targetEntity,
+    private void _replaceConnectingEntities(ComponentEntity targetEntity,
             HashMap<String, Type> portTypes) throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
 
@@ -214,7 +214,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void replaceTargetEntity(ComponentEntity targetEntity,
+    private void _replaceTargetEntity(ComponentEntity targetEntity,
             HashMap<String, Type> portTypes) throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
         ArrayList<Attribute> attributes = new ArrayList<Attribute>(

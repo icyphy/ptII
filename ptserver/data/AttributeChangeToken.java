@@ -42,14 +42,15 @@ import ptolemy.data.Token;
  */
 public class AttributeChangeToken extends Token {
 
-    /** Create a new instance with targetSettable set to null.
+    /** 
+     * Create a new instance with targetSettable set to null.
      */
     public AttributeChangeToken() {
         super();
     }
 
     /** Create a new instance and set the name of the targetActor.
-     * @param targetActor
+     * @param targetSettable The full name of the attribute
      */
     public AttributeChangeToken(String targetSettable) {
         this.setTargetSettableName(targetSettable);
@@ -62,7 +63,7 @@ public class AttributeChangeToken extends Token {
      *
      * The method checks if the object has the same target name and
      * the same expression.
-     * @param The reference object with which to compare.
+     * @param object The reference object with which to compare.
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -116,6 +117,8 @@ public class AttributeChangeToken extends Token {
 
     /** Return name of the target settable object that received the changes encapsulated by
      * the AttributeChangeToken.
+     * @return the name of the target settable object that received the changes encapsulated by
+     * the AttributeChangeToken.
      * @see #setTargetSettableName(String)
      */
     public String getTargetSettableName() {
@@ -132,6 +135,7 @@ public class AttributeChangeToken extends Token {
     }
 
     /** Return the expression.
+     * @return the expression.
      * @see #setExpression(String)
      */
     public String getExpression() {

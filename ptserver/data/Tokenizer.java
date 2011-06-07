@@ -48,7 +48,7 @@ public class Tokenizer {
 
     /**
      * Create a new instance of the tokenizer with the specified payload.
-     * @param payload
+     * @param payload the byte payload received from the MQTT broker.
      */
     public Tokenizer(byte[] payload) {
         //there is no need to close the ByteArrayInputStream since it just wraps a byte array.
@@ -58,7 +58,7 @@ public class Tokenizer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * Return the next token in the byte stream or null if there is none left
+     * Return the next token in the byte stream or null if there is none left.
      * @return the next token or null if there is none left
      * @exception IOException if there is a problem reading the byte stream
      * @exception IllegalActionException if there is a problem loading a token handler

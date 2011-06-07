@@ -47,6 +47,11 @@ public class RemoteValueListener implements ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Capture value changes of the settable and send them via the publisher to the remote model.
+     * @param settable The settable whose value changed.
+     * @see ptolemy.kernel.util.ValueListener#valueChanged(ptolemy.kernel.util.Settable)
+     */
     public void valueChanged(Settable settable) {
         AttributeChangeToken token = new AttributeChangeToken();
         token.setTargetSettableName(settable.getName());
@@ -72,7 +77,7 @@ public class RemoteValueListener implements ValueListener {
     /**
      * Set the token publisher that would be used to send
      * AttributeChange tokens.
-     * @param tokenPublisher
+     * @param tokenPublisher the token publisher used to send attribute change messages.
      * @see #getTokenPublisher()
      */
     public void setTokenPublisher(TokenPublisher tokenPublisher) {

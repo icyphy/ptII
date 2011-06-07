@@ -47,64 +47,78 @@ import ptserver.control.Ticket;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class RemoteModelResponse implements Serializable {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
     /**
-     * Set the model XML string containing the model specifically created for the Android client
-     * that includes only actors that need to run there.
-     * @param the model XML for the Android client.
+     * Return the map from the model's Typeable objects to its inferred type.
+     * 
+     * <p>This map contains only types for the sinks and sources intended to run on Android.</p>
+     * @return the map from the Typeable to its inferred type.
+     * @see #setModelTypes(HashMap)
      */
-    public void setModelXML(String _modelXML) {
-        this._modelXML = _modelXML;
+    public HashMap<String, Type> getModelTypes() {
+        return _modelTypes;
     }
 
     /**
      * Return the model XML string containing the model specifically created for the Android client
      * that includes only actors that need to run there.
      * @return the model XML for the Android client.
+     * @see #setModelXML(String)
      */
     public String getModelXML() {
         return _modelXML;
     }
 
     /**
-     * Set the ticket identifying the model on the server.
-     * @param the ticket identifying the model on the server.
-     */
-    public void setTicket(Ticket _ticket) {
-        this._ticket = _ticket;
-    }
-
-    /**
      * Return the ticket identifying the model on the server.
      * @return the ticket identifying the model on the server.
+     * @see #setTicket(Ticket)
      */
     public Ticket getTicket() {
         return _ticket;
     }
 
     /**
-     * <p>Return the map from the model's Typeable objects to its inferred type.</p>
-     * @param The map from the Typeable to its inferred type.
+     * Return the map from the model's Typeable objects to its inferred type.
+     * @param modelTypes The map from the Typeable to its inferred type.
+     * @see #getModelTypes()
      */
-    public void setModelTypes(HashMap<String, Type> _modelTypes) {
-        this._modelTypes = _modelTypes;
+    public void setModelTypes(HashMap<String, Type> modelTypes) {
+        this._modelTypes = modelTypes;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Set the model XML string containing the model specifically created for the Android client
+     * that includes only actors that need to run there.
+     * @param modelXML the model XML for the Android client.
+     * @see #getModelXML()
+     */
+    public void setModelXML(String modelXML) {
+        this._modelXML = modelXML;
     }
 
     /**
-     * <p>Return the map from the model's Typeable objects to its inferred type.</p>
-     * 
-     * This map contains only types for the sinks and sources intended to run on Android.
-     * @return the map from the Typeable to its inferred type.
+     * Set the ticket identifying the model on the server.
+     * @param ticket the ticket identifying the model on the server.
+     * @see #getTicket()
      */
-    public HashMap<String, Type> getModelTypes() {
-        return _modelTypes;
+    public void setTicket(Ticket ticket) {
+        this._ticket = ticket;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    /**
+     * The model XML containing only actors needed for the client
+     */
     private String _modelXML;
+    /**
+     * The ticket opened for the remote model
+     */
     private Ticket _ticket;
+    /**
+     * The mapping from Typeable full names to its types needed to initialize ports on the client
+     */
     private HashMap<String, Type> _modelTypes;
 }

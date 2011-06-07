@@ -56,6 +56,8 @@ public class MQTTTokenListener implements MqttSimpleCallback {
     /**
      * Initialize the instance with a map of source queues and a topic that it listens to.
      * @param remoteSourceMap The map from source entity name to its token queue
+     * @param settableAttributesMap The map from the settable full name to the corresponding instance 
+     * that need to propograted to the remote model.
      * @param topic The topic that the instance is listening to
      */
     public MQTTTokenListener(HashMap<String, RemoteSourceData> remoteSourceMap,
@@ -83,6 +85,7 @@ public class MQTTTokenListener implements MqttSimpleCallback {
      * @param qos The Quality of Service at which the message was delivered by the broker.
      * @param retained indicates if this message is retained by the broker.
      * @see com.ibm.mqtt.MqttSimpleCallback#publishArrived(java.lang.String, byte[], int, boolean)
+     * @exception Exception if there is a problem reading next token or setting attribute value
      */
     public void publishArrived(String topicName, byte[] payload, int qos,
             boolean retained) throws Exception {
@@ -105,9 +108,10 @@ public class MQTTTokenListener implements MqttSimpleCallback {
                 }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
-                Settable changedObject = _settableAttributesMap.get(attributeChangeToken.
-                        getTargetSettableName());
-                changedObject.setExpression(attributeChangeToken.getExpression());
+                Settable changedObject = _settableAttributesMap
+                        .get(attributeChangeToken.getTargetSettableName());
+                changedObject.setExpression(attributeChangeToken
+                        .getExpression());
             }
         }
     }

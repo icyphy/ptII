@@ -74,7 +74,7 @@ public class TokenPublisher {
     }
 
     /**
-     * Return the topic where the messages are published
+     * Return the topic where the messages are published.
      * @return the topic where the messages are published
      * @see #setTopic(String)
      */
@@ -83,9 +83,9 @@ public class TokenPublisher {
     }
 
     /**
-     * Send the token via MQTT protocol
+     * Send the token via MQTT protocol.
      *
-     * The token will not be sent out immediately but would be batched for the specified period
+     * <p>The token will not be sent out immediately but would be batched for the specified period.</p>
      * @param token the token to send
      * @exception IllegalActionException if there is a problem with MQTT broker.
      */
@@ -129,7 +129,8 @@ public class TokenPublisher {
     }
 
     /**
-     * @param mqttClient the mqttClient to set
+     * Set the mqttClient to be used to publish the tokens.
+     * @param mqttClient the mqttClient to be used to publish the tokens.
      * @see #getMqttClient()
      */
     public void setMqttClient(IMqttClient mqttClient) {
@@ -137,7 +138,8 @@ public class TokenPublisher {
     }
 
     /**
-     * @param topic the topic to set
+     * Set the topic for the message to publish.
+     * @param topic the topic to publish the MQTT messages.
      * @see #getTopic()
      */
     public void setTopic(String topic) {

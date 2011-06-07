@@ -91,11 +91,11 @@ public class RemoteModel {
      */
     public enum RemoteModelType {
         /**
-         * Client remote model type
+         * Client remote model type.
          */
         CLIENT,
         /**
-         * Server remote model type
+         * Server remote model type.
          */
         SERVER;
     }
@@ -185,7 +185,9 @@ public class RemoteModel {
                         port.setTypeEquals(type);
                         port.typeConstraints().clear();
                     } else {
-                        System.out.println(port);
+                        //TODO: is this possible?
+                        throw new IllegalActionException(port,
+                                "Type constraint for the port was not found");
                     }
                 }
             }
@@ -209,10 +211,9 @@ public class RemoteModel {
     }
 
     /**
-     * Load the model from the specified URL and set up MQTT infrastructure for communicating with another remote model.
+     * Load the model from the specified URL.
      *
      * @param modelURL the model URL to be loaded
-     * @return the top level actor of the model
      * @exception Exception if there is a problem parsing the model, connecting to the mqtt broker or replacing actors.
      */
     public void loadModel(URL modelURL) throws Exception {
@@ -274,8 +275,8 @@ public class RemoteModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * Sets the mqtt client instance that is connected to the broker
-     * @param brokerAddress the network address of the MQTT broker
+     * Set the MQTT client instance that is connected to the broker.
+     * @param mqttClient the mqttClient that the model would use to send and receive MQTT messages
      * @exception MqttException if there is a problem connecting to the broker
      */
     public void setMqttClient(IMqttClient mqttClient) throws MqttException {
@@ -414,6 +415,7 @@ public class RemoteModel {
 
             }
             for (Typeable attribute : entity.attributeList(Typeable.class)) {
+                //FIXME: not sure if case to Nameable is safe
                 portTypes.put(((Nameable) attribute).getFullName(),
                         attribute.getType());
             }

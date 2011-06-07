@@ -58,6 +58,7 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 JSRCS = \
 	MQTTTokenListener.java \
 	RemoteModel.java \
+	RemoteModelResponse.java \
 	RemoteSourceData.java \
 	RemoteValueListener.java \
 	TokenPublisher.java

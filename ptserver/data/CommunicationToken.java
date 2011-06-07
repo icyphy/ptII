@@ -58,7 +58,7 @@ public class CommunicationToken extends Token {
 
     /**
      * Create a new instance and set the name of the targetActor.
-     * @param targetActor
+     * @param targetActor the target actor whose tokens this instance encapsulates.
      */
     public CommunicationToken(String targetActor) {
         this.setTargetActorName(targetActor);
@@ -79,11 +79,12 @@ public class CommunicationToken extends Token {
     }
 
     /**
-     * Return true if the object is equal to the instance, false otherwise
+     * Return true if the object is equal to the instance, false otherwise.
      *
      * The method checks if the object has the same target name and
      * the portChannelMap contains the same ports each having the same number of channels with the same tokens.
-     * @param The reference object with which to compare.
+     * @param object The reference object with which to compare.
+     * @return true if the objects are equal, false otherwise.
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -146,7 +147,7 @@ public class CommunicationToken extends Token {
 
     /**
     * Return the mapping from ports to their channels with tokens have been received within one iteration.
-    * @return
+    * @return the mapping from ports to their channels with tokens have been received within one iteration.
     */
     public HashMap<String, ArrayList<Token[]>> getPortChannelTokenMap() {
         //TODO: decide if we need to wrap this map into a read object
@@ -163,6 +164,8 @@ public class CommunicationToken extends Token {
 
     /**
      * Return the full name of the target actor that received the tokens encapsulated by the
+     * CommunicationToken.
+     * @return the full name of the target actor that received the tokens encapsulated by the
      * CommunicationToken.
      * @see #setTargetActorName(String)
      */
@@ -182,13 +185,14 @@ public class CommunicationToken extends Token {
 
     /**
      * Compute hash code of the instance based on the targetActorname and portChannelTokenMap.
+     * @return the hash code based on targetActorName and tokens in the portChannelTokanMap.
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        //TODO: check if hashCode works correctly since equals is not using equals method of portChannelTokenMap
+        //FIXME: check if hashCode works correctly since equals is not using equals method of portChannelTokenMap
         result = prime
                 * result
                 + ((_portChannelTokenMap == null) ? 0 : _portChannelTokenMap

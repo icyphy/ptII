@@ -45,9 +45,9 @@ import ptserver.data.CommunicationToken;
 ///////////////////////////////////////////////////////////////////
 ////RemoteSource
 /**
- * RemoteSource that acts as a proxy source
- * Accepts communication token, unpackage as regular tokens
- * and send them to the appropriate ports
+ * RemoteSource that acts as a proxy source.
+ * Accepts communication token, unpackages as regular tokens
+ * and send them to the appropriate ports.
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -57,7 +57,7 @@ import ptserver.data.CommunicationToken;
 public class RemoteSource extends RemoteActor {
 
     /**
-     * Create new instance of the RemoteActor without doing any actor replacement
+     * Create new instance of the RemoteActor without doing any actor replacement.
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
@@ -96,7 +96,7 @@ public class RemoteSource extends RemoteActor {
 
     /**
      * Unpackage the last CommunicationToken on the queue
-     * and send tokens from it to the ports specified in the CommunicationToken
+     * and send tokens from it to the ports specified in the CommunicationToken.
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -135,7 +135,7 @@ public class RemoteSource extends RemoteActor {
     ////                         protected methods                 ////
 
     /**
-     * Return true if connectingPort is output port
+     * Return true if connectingPort is output port.
      * @see ptserver.actor.RemoteActor#isValidConnectingPort(ptolemy.actor.IOPort)
      */
     @Override
@@ -144,14 +144,18 @@ public class RemoteSource extends RemoteActor {
     }
 
     /**
-     * @param _remoteSourceData the _remoteSourceData to set
+     * Set the remote source data structure used for synchronization and thread blocking.
+     * @param remoteSourceData the remoteSourceData containing the instance
+     * @see #getRemoteSourceData()
      */
-    public void setRemoteSourceData(RemoteSourceData _remoteSourceData) {
-        this._remoteSourceData = _remoteSourceData;
+    public void setRemoteSourceData(RemoteSourceData remoteSourceData) {
+        this._remoteSourceData = remoteSourceData;
     }
 
     /**
-     * @return the _remoteSourceData
+     * Return the remoteSourceData containing the instance.
+     * @return the remoteSourceData containing the instance.
+     * @see #setRemoteSourceData(RemoteSourceData)
      */
     public RemoteSourceData getRemoteSourceData() {
         return _remoteSourceData;
@@ -160,7 +164,7 @@ public class RemoteSource extends RemoteActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * RemoteSourceData containing metadata needed for the RemoteSource;
+     * RemoteSourceData containing metadata needed for the RemoteSource.
      */
     private RemoteSourceData _remoteSourceData;
 

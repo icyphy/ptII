@@ -55,7 +55,7 @@ import ptserver.data.CommunicationToken;
 public class RemoteSink extends RemoteActor {
 
     /**
-     * Create new instance of the RemoteActor without doing any actor replacement
+     * Create new instance of the RemoteActor without doing any actor replacement.
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
@@ -163,7 +163,7 @@ public class RemoteSink extends RemoteActor {
     /**
      * Set the token publisher that would be used to send
      * communication tokens.
-     * @param tokenPublisher
+     * @param tokenPublisher the token publisher to be used for sending tokens.
      * @see #getTokenPublisher()
      */
     public void setTokenPublisher(TokenPublisher tokenPublisher) {
@@ -174,7 +174,7 @@ public class RemoteSink extends RemoteActor {
     ////                         protected methods                 ////
 
     /**
-     * Return true if connectingPort is inputPort
+     * Return true if connectingPort is inputPort.
      * @see ptserver.actor.RemoteActor#isValidConnectingPort(ptolemy.actor.IOPort)
      */
     @Override
