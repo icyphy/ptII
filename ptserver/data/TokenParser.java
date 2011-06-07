@@ -73,7 +73,7 @@ public class TokenParser {
      */
     private TokenParser() throws IllegalActionException {
         //key is the token class name
-            //We have to use ResourceBundle.getKeys() method because Android does not support .keySet() method.
+        //We have to use ResourceBundle.getKeys() method because Android does not support .keySet() method.
         Enumeration<String> keys = _tokenHandlersBundle.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
@@ -216,7 +216,7 @@ public class TokenParser {
     /**
      * Data structure that stores handler, token type and position tuple
      */
-    private class HandlerData<T extends Token> {
+    private static class HandlerData<T extends Token> {
 
         /**
          * Create new instance of HandlerData

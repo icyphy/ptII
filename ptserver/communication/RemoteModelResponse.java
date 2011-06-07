@@ -33,7 +33,6 @@ package ptserver.communication;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import ptolemy.data.type.Type;
 import ptserver.control.Ticket;
 
 ///////////////////////////////////////////////////////////////////
@@ -54,7 +53,7 @@ public class RemoteModelResponse implements Serializable {
      * @return the map from the Typeable to its inferred type.
      * @see #setModelTypes(HashMap)
      */
-    public HashMap<String, Type> getModelTypes() {
+    public HashMap<String, String> getModelTypes() {
         return _modelTypes;
     }
 
@@ -82,7 +81,7 @@ public class RemoteModelResponse implements Serializable {
      * @param modelTypes The map from the Typeable to its inferred type.
      * @see #getModelTypes()
      */
-    public void setModelTypes(HashMap<String, Type> modelTypes) {
+    public void setModelTypes(HashMap<String, String> modelTypes) {
         this._modelTypes = modelTypes;
     }
 
@@ -120,5 +119,5 @@ public class RemoteModelResponse implements Serializable {
     /**
      * The mapping from Typeable full names to its types needed to initialize ports on the client
      */
-    private HashMap<String, Type> _modelTypes;
+    private HashMap<String, String> _modelTypes;
 }

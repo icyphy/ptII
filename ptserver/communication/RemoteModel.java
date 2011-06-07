@@ -40,6 +40,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
@@ -127,7 +128,7 @@ public class RemoteModel {
      * @return The map from the Typeable's full name to its type.
      * @see #setResolvedTypes(HashMap)
      */
-    public HashMap<String, Type> getResolvedTypes() {
+    public HashMap<String, String> getResolvedTypes() {
         return _resolvedTypes;
     }
 
@@ -148,7 +149,7 @@ public class RemoteModel {
      * @param modelTypes The map of ports and their resolved types
      * @exception Exception if there is a problem parsing the modelXML.
      */
-    public void initModel(String modelXML, HashMap<String, Type> modelTypes)
+    public void initModel(String modelXML, HashMap<String, String> modelTypes)
             throws Exception {
         MoMLParser parser = createMoMLParser();
         _topLevelActor = (CompositeActor) parser.parse(modelXML);
@@ -176,12 +177,14 @@ public class RemoteModel {
                             .getAttribute("targetPortName");
 
                     if (targetPortName != null) {
-                        type = modelTypes.get(targetPortName.getExpression());
+                        type = BaseType.forName(modelTypes.get(targetPortName
+                                .getExpression()));
                         if (type != null) {
                             port.setTypeEquals(type);
                         }
                         port.typeConstraints().clear();
-                    } else if ((type = modelTypes.get(port.getFullName())) != null) {
+                    } else if ((type = BaseType.forName(modelTypes.get(port
+                            .getFullName()))) != null) {
                         port.setTypeEquals(type);
                         port.typeConstraints().clear();
                     } else {
@@ -192,8 +195,8 @@ public class RemoteModel {
                 }
             }
             for (Typeable attribute : actor.attributeList(Typeable.class)) {
-                if ((type = modelTypes
-                        .get(((Nameable) attribute).getFullName())) != null) {
+                if ((type = BaseType.forName(modelTypes
+                        .get(((Nameable) attribute).getFullName()))) != null) {
                     attribute.setTypeEquals(type);
                     attribute.typeConstraints().clear();
                 }
@@ -221,7 +224,7 @@ public class RemoteModel {
         HashSet<ComponentEntity> unneededActors = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sinks = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sources = new HashSet<ComponentEntity>();
-        setResolvedTypes(new HashMap<String, Type>());
+        setResolvedTypes(new HashMap<String, String>());
         _topLevelActor = (CompositeActor) parser.parse(null, modelURL);
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
@@ -290,7 +293,7 @@ public class RemoteModel {
      * @param portTypes the _portTypes to set
      * @see #getResolvedTypes()
      */
-    public void setResolvedTypes(HashMap<String, Type> portTypes) {
+    public void setResolvedTypes(HashMap<String, String> portTypes) {
         this._resolvedTypes = portTypes;
     }
 
@@ -387,15 +390,16 @@ public class RemoteModel {
      * @exception IllegalActionException if there is a problem inferring type of Typeable.
      */
     private void captureModelTypes(HashSet<ComponentEntity> entities,
-            HashMap<String, Type> portTypes) throws IllegalActionException {
+            HashMap<String, String> portTypes) throws IllegalActionException {
         for (ComponentEntity entity : entities) {
             for (Object portObject : entity.portList()) {
                 Port port = (Port) portObject;
                 if (port instanceof IOPort) {
                     //if it's TypedIOPort, capture its types
                     if (port instanceof TypedIOPort) {
-                        portTypes.put(port.getFullName(),
-                                ((TypedIOPort) port).getType());
+                    	//FIXME using toString on Type is not elegant and could break
+                        portTypes.put(port.getFullName(), ((TypedIOPort) port)
+                                .getType().toString());
                     }
                     //this port might be connected to other TypedIOPorts whose types are needed on the client
                     IOPort ioPort = (IOPort) port;
@@ -405,9 +409,10 @@ public class RemoteModel {
                         for (Port connectingPort : portList) {
                             //TODO: only the first port connection is used on the client, consider skipping the rest here
                             if (connectingPort instanceof TypedIOPort) {
+                            	//FIXME using toString on Type is not elegant and could break
                                 portTypes.put(connectingPort.getFullName(),
                                         ((TypedIOPort) connectingPort)
-                                                .getType());
+                                                .getType().toString());
                             }
                         }
                     }
@@ -416,8 +421,9 @@ public class RemoteModel {
             }
             for (Typeable attribute : entity.attributeList(Typeable.class)) {
                 //FIXME: not sure if case to Nameable is safe
-                portTypes.put(((Nameable) attribute).getFullName(),
-                        attribute.getType());
+            	//FIXME using toString on Type is not elegant and could break
+                portTypes.put(((Nameable) attribute).getFullName(), attribute
+                        .getType().toString());
             }
         }
     }
@@ -447,7 +453,7 @@ public class RemoteModel {
      * @see {@link RemoteSink}
      */
     private void createSink(ComponentEntity targetEntity,
-            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
+            boolean replaceTargetEntity, HashMap<String, String> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         RemoteSink remoteSink = new RemoteSink(
@@ -471,7 +477,7 @@ public class RemoteModel {
      * @see {@link RemoteSource}
      */
     private void createSource(ComponentEntity targetEntity,
-            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
+            boolean replaceTargetEntity, HashMap<String, String> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         RemoteSource remoteSource = new RemoteSource(
@@ -502,7 +508,7 @@ public class RemoteModel {
     /**
      * The map from the Typeable's full name to its type
      */
-    private HashMap<String, Type> _resolvedTypes;
+    private HashMap<String, String> _resolvedTypes;
     /**
      * The mapping from the original source actor name to its remote source actor and queue.
      */

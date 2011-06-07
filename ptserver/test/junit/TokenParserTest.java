@@ -121,14 +121,14 @@ public class TokenParserTest {
     @Test
     public void testUnsignedByteToken() throws IOException, IllegalActionException {
         UnsignedByteToken token = new UnsignedByteToken(220);
-        System.out.println(token.byteValue());
+        //System.out.println(token.byteValue());
         PipedOutputStream outputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(outputStream);
         TokenParser.getInstance().convertToBytes(token, outputStream);
         UnsignedByteToken token1 = TokenParser.getInstance().convertToToken(inputStream);
         assertEquals(token,
                 token1);
-        System.out.println(token1.byteValue());
+        //System.out.println(token1.byteValue());
     }
 
     @Test
