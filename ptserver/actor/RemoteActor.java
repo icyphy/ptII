@@ -65,7 +65,7 @@ import ptolemy.kernel.util.StringAttribute;
 public abstract class RemoteActor extends TypedAtomicActor {
 
     /**
-     * Create new instance of the RemoteActor without doing any actor replacement.
+     * Create a new instance of the RemoteActor without doing any actor replacement.
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
@@ -125,7 +125,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
     /**
      * Set the full name of the target entity.
      * @param targetEntityName the target entity name
-     * @throws IllegalActionException If the change is not acceptable to the container.
+     * @exception IllegalActionException If the change is not acceptable to the container.
      * @see #getTargetEntityName()
      */
     public void setTargetEntityName(String targetEntityName)
@@ -159,9 +159,11 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * CommunicationToken.
      * @param targetEntity the entity to which actors that are replaced are connected
      * @param portTypes The map of ports and their resolved types
-     * @exception CloneNotSupportedException
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+     * @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     * @exception CloneNotSupportedException If port cloning is not supported
      */
     private void _replaceConnectingEntities(ComponentEntity targetEntity,
             HashMap<String, String> portTypes)

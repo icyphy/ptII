@@ -56,7 +56,7 @@ import ptserver.data.CommunicationToken;
 public class RemoteSource extends RemoteActor {
 
     /**
-     * Create new instance of the RemoteActor without doing any actor replacement.
+     * Create a new instance of the RemoteActor without doing any actor replacement.
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
@@ -71,7 +71,6 @@ public class RemoteSource extends RemoteActor {
 
     /**
      * Replace the targetSource with the RemoteSource instance.
-     * @see RemoteActor
      * @param container The container
      * @param targetSource The target source
      * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
@@ -82,6 +81,7 @@ public class RemoteSource extends RemoteActor {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
+     * @see RemoteActor
      */
     public RemoteSource(CompositeEntity container,
             ComponentEntity targetSource, boolean replaceTargetEntity,
@@ -113,7 +113,7 @@ public class RemoteSource extends RemoteActor {
                             "The remote source was inturrupted");
                 }
             }
-            //If token is null, then it means that the model was stopped, just return in this case.
+            // If the token is null, then it means that the model was stopped, just return in this case.
             if (token == null) {
                 return;
             }

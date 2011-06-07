@@ -40,7 +40,7 @@ import ptolemy.data.Token;
 /**
 * Encapsulate tokens that were received within one iteration.
 *
-* Note: Kahn networks are not being handled right now
+* <p>Note: Kahn process networks are not being handled right now.</p>
 * @author Anar Huseynov
 * @version $Id$
 * @since Ptolemy II 8.0

@@ -25,9 +25,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-/**
- * 
- */
 package ptserver.communication;
 
 import java.io.Serializable;
@@ -58,7 +55,8 @@ public class RemoteModelResponse implements Serializable {
     }
 
     /**
-     * Return the model XML string containing the model specifically created for the Android client
+     * Return the model XML string containing the model specifically created for
+     * the Android client
      * that includes only actors that need to run there.
      * @return the model XML for the Android client.
      * @see #setModelXML(String)
@@ -77,7 +75,7 @@ public class RemoteModelResponse implements Serializable {
     }
 
     /**
-     * Return the map from the model's Typeable objects to its inferred type.
+     * Set the map from the model's Typeable objects to its inferred type.
      * @param modelTypes The map from the Typeable to its inferred type.
      * @see #getModelTypes()
      */
@@ -109,15 +107,15 @@ public class RemoteModelResponse implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * The model XML containing only actors needed for the client
+     * The model XML containing only actors needed for the client.
      */
     private String _modelXML;
     /**
-     * The ticket opened for the remote model
+     * The ticket opened for the remote model.
      */
     private Ticket _ticket;
     /**
-     * The mapping from Typeable full names to its types needed to initialize ports on the client
+     * The mapping from Typeable full names to its types needed to initialize ports on the client.
      */
     private HashMap<String, String> _modelTypes;
 }

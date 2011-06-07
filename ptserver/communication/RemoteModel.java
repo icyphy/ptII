@@ -65,8 +65,8 @@ import com.ibm.mqtt.MqttException;
 ///////////////////////////////////////////////////////////////////
 //// RemoteModel
 /**
- * RemoteModel initializes the Ptolemy model by making needed replacement for sinks and sources and
- * sets up infrastructure for sending and receiving MQTT messages.
+ * Initialize the Ptolemy model by making needed replacement for sinks and sources with appropriate proxy actors and
+ * set up infrastructure for sending and receiving MQTT messages.
  *
  * The model can set up the infrastructure for client or server
  * which differ slightly in actor replacement mechanisms.
@@ -81,13 +81,15 @@ public class RemoteModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
     /**
-     * The quality of service that would be required from the MQTT broker.  All messages must be send or received only once.
+     * The quality of service that would be required from the MQTT broker.  
+     * All messages must be send or received only once.
      */
     public static final int QOS_LEVEL = 2;
 
     /**
-     * This enumerations specifies the remote model type: client or server.
+     * An enumerations that specifies the remote model type: client or server.
      *
      */
     public enum RemoteModelType {
@@ -102,7 +104,7 @@ public class RemoteModel {
     }
 
     /**
-     * Create new instance of the remoteModel with the specified parameters.
+     * Create a new instance of the remoteModel with the specified parameters.
      * @param subscriptionTopic the topic name that this model would subscribe to receive tokens from other remote model
      * @param publishingTopic the topic name that this model would publish its tokens to be received by other remote model
      * @param modelType the type of the model which must be either client or server
@@ -114,6 +116,9 @@ public class RemoteModel {
         _publishingTopic = publishingTopic;
         _modelType = modelType;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the manager controlling this model.
@@ -141,17 +146,17 @@ public class RemoteModel {
     }
 
     /**
-     * <p>Initialize the model that already has RemoteSinks/Sources from the 
-     * supplied xml string and set appropriate model types from the inferred model mapping.</p>
+     * Initialize the model that already has RemoteSinks/Sources from the 
+     * supplied xml string and set appropriate model types from the inferred model mapping.
      * 
      * <p>This method is indented to be used on the Android to avoid loading unneeded actors.</p>
      * @param modelXML The modelXML file containing or
      * @param modelTypes The map of ports and their resolved types
-     * @exception Exception if there is a problem parsing the modelXML.
+     * @exception Exception If there is a problem parsing the modelXML.
      */
     public void initModel(String modelXML, HashMap<String, String> modelTypes)
             throws Exception {
-        MoMLParser parser = createMoMLParser();
+        MoMLParser parser = _createMoMLParser();
         _topLevelActor = (CompositeActor) parser.parse(modelXML);
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
@@ -205,12 +210,13 @@ public class RemoteModel {
     }
 
     /**
-     * Return if the model is stopped or not.
+     * Return true if the model is stopped, otherwise return false.
+     * TODO: Figure out if there is a difference for this class between stopped and paused state. 
      * @return the stopped state of the model.
      * @see #getStopped()
      */
     public boolean isStopped() {
-        return stopped;
+        return _stopped;
     }
 
     /**
@@ -220,7 +226,7 @@ public class RemoteModel {
      * @exception Exception if there is a problem parsing the model, connecting to the mqtt broker or replacing actors.
      */
     public void loadModel(URL modelURL) throws Exception {
-        MoMLParser parser = createMoMLParser();
+        MoMLParser parser = _createMoMLParser();
         HashSet<ComponentEntity> unneededActors = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sinks = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sources = new HashSet<ComponentEntity>();
@@ -248,24 +254,24 @@ public class RemoteModel {
             TypedCompositeActor typedActor = (TypedCompositeActor) _topLevelActor;
             TypedCompositeActor.resolveTypes(typedActor);
         }
-        captureModelTypes(sources, getResolvedTypes());
-        captureModelTypes(sinks, getResolvedTypes());
+        _captureModelTypes(sources, getResolvedTypes());
+        _captureModelTypes(sinks, getResolvedTypes());
 
         switch (_modelType) {
         case SERVER:
             for (ComponentEntity entity : sources) {
-                createSource(entity, true, getResolvedTypes());
+                _createSource(entity, true, getResolvedTypes());
             }
             for (ComponentEntity entity : sinks) {
-                createSink(entity, true, getResolvedTypes());
+                _createSink(entity, true, getResolvedTypes());
             }
             break;
         case CLIENT:
             for (ComponentEntity entity : sources) {
-                createSink(entity, false, getResolvedTypes());
+                _createSink(entity, false, getResolvedTypes());
             }
             for (ComponentEntity entity : sinks) {
-                createSource(entity, false, getResolvedTypes());
+                _createSource(entity, false, getResolvedTypes());
             }
             for (ComponentEntity componentEntity : unneededActors) {
                 componentEntity.setContainer(null);
@@ -274,9 +280,6 @@ public class RemoteModel {
         }
 
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
     /**
      * Set the MQTT client instance that is connected to the broker.
      * @param mqttClient the mqttClient that the model would use to send and receive MQTT messages
@@ -303,14 +306,14 @@ public class RemoteModel {
      * @see #getStopped()
      */
     public void setStopped(boolean stopped) {
-        this.stopped = stopped;
+        this._stopped = stopped;
     }
 
     /**
      * Set up the communication infrastructure.
      * @return The manager of the model
      * @exception MqttException if there is a problem connecting to the broker.
-     * @exception IllegalActionException if there is problem creating the manager.
+     * @exception IllegalActionException If there is problem creating the manager.
      */
     public Manager setUpInfrastructure() throws MqttException,
             IllegalActionException {
@@ -387,29 +390,29 @@ public class RemoteModel {
      * Capture inferred types of the entities.
      * @param entities The entities whose inferred types are captured
      * @param portTypes The mapping that stores the types
-     * @exception IllegalActionException if there is a problem inferring type of Typeable.
+     * @exception IllegalActionException If there is a problem inferring type of Typeable.
      */
-    private void captureModelTypes(HashSet<ComponentEntity> entities,
+    private void _captureModelTypes(HashSet<ComponentEntity> entities,
             HashMap<String, String> portTypes) throws IllegalActionException {
         for (ComponentEntity entity : entities) {
             for (Object portObject : entity.portList()) {
                 Port port = (Port) portObject;
                 if (port instanceof IOPort) {
-                    //if it's TypedIOPort, capture its types
+                    // if it's TypedIOPort, capture its types.
                     if (port instanceof TypedIOPort) {
-                    	//FIXME using toString on Type is not elegant and could break
+                        //FIXME using toString on Type is not elegant and could break.
                         portTypes.put(port.getFullName(), ((TypedIOPort) port)
                                 .getType().toString());
                     }
-                    //this port might be connected to other TypedIOPorts whose types are needed on the client
+                    // this port might be connected to other TypedIOPorts whose types are needed on the client.
                     IOPort ioPort = (IOPort) port;
                     for (Object relationObject : ioPort.linkedRelationList()) {
                         Relation relation = (Relation) relationObject;
                         List<Port> portList = relation.linkedPortList(port);
                         for (Port connectingPort : portList) {
-                            //TODO: only the first port connection is used on the client, consider skipping the rest here
+                            // TODO: only the first port connection is used on the client, consider skipping the rest here.
                             if (connectingPort instanceof TypedIOPort) {
-                            	//FIXME using toString on Type is not elegant and could break
+                                // FIXME using toString on Type is not elegant and could break.
                                 portTypes.put(connectingPort.getFullName(),
                                         ((TypedIOPort) connectingPort)
                                                 .getType().toString());
@@ -429,18 +432,20 @@ public class RemoteModel {
     }
 
     /**
-     * Create and initialize new MoMLParser.
+     * Create and initialize a new MoMLParser.
      * @return new MoMLParser
      */
-    private MoMLParser createMoMLParser() {
+    private MoMLParser _createMoMLParser() {
         MoMLParser parser = new MoMLParser(new Workspace());
         parser.resetAll();
-        MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
+        // TODO: is this thread safe?
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         return parser;
     }
 
     /**
-     * Create a new instance of the RemoteSink either by replacing the targetEntity or by replacing all entities connected to it.
+     * Create a new instance of the RemoteSink either by replacing the targetEntity
+     * or by replacing all entities connected to it.
      * @param targetEntity The target entity to be processed
      * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
@@ -452,7 +457,7 @@ public class RemoteModel {
      * @exception CloneNotSupportedException If port cloning is not supported
      * @see {@link RemoteSink}
      */
-    private void createSink(ComponentEntity targetEntity,
+    private void _createSink(ComponentEntity targetEntity,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
@@ -476,7 +481,7 @@ public class RemoteModel {
      * @exception CloneNotSupportedException If port cloning is not supported
      * @see {@link RemoteSource}
      */
-    private void createSource(ComponentEntity targetEntity,
+    private void _createSource(ComponentEntity targetEntity,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
@@ -503,7 +508,7 @@ public class RemoteModel {
     /**
      * Indicator if the model is stopped.
      */
-    private volatile boolean stopped;
+    private volatile boolean _stopped;
 
     /**
      * The map from the Typeable's full name to its type
