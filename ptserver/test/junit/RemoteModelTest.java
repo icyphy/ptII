@@ -109,7 +109,7 @@ public class RemoteModelTest {
         // Set the delegate for a returned token.
         SysOutActor actor = (SysOutActor) topLevelActor.getEntity("Display");
         actor.setDelegator(new TokenDelegator() {
-            @Override
+
             public void getToken(Token token) {
                 if (counter < 10) {
                     assertEquals(((IntToken) token).intValue() / 2, counter);

@@ -141,15 +141,21 @@ public class PtolemyServer implements IServerManager {
      */
     public void close(Ticket ticket) throws IllegalActionException {
         try {
-            if ((ticket == null) || (!_requests.containsKey(ticket))) {
-                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+            if (ticket == null) {
+                throw new IllegalStateException("Invalid ticket: " + null);
+                // TODO: create InvalidTicketException
+            }
+            if (!_requests.containsKey(ticket)) {
+                throw new IllegalStateException("Invalid ticket: "
+                        + ticket.getTicketID());
                 // TODO: create InvalidTicketException
             }
 
             _requests.get(ticket).getManager().finish();
             _requests.remove(ticket);
         } catch (Exception e) {
-            _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
+            _handleException((ticket != null ? ticket.getTicketID() : null)
+                    + ": " + e.getMessage(), e);
         }
     }
 
@@ -267,14 +273,14 @@ public class PtolemyServer implements IServerManager {
             // Set all provided configuration parameters.
             for (int i = 0; i < args.length; i++) {
                 if ((args[i].startsWith("-")) && (i + 1 < args.length)) {
-                    if (args[i].toLowerCase() == "-servlet_path") {
+                    if (args[i].toLowerCase().equals("-servlet_path")) {
                         _instance._setServletPath(args[i + 1]);
-                    } else if (args[i].toLowerCase() == "-servlet_port") {
+                    } else if (args[i].toLowerCase().equals("-servlet_port")) {
                         _instance
                                 ._setServletPort(Integer.parseInt(args[i + 1]));
-                    } else if (args[i].toLowerCase() == "-broker_path") {
+                    } else if (args[i].toLowerCase().equals("-broker_path")) {
                         _instance._setBrokerPath(args[i + 1]);
-                    } else if (args[i].toLowerCase() == "-broker_port") {
+                    } else if (args[i].toLowerCase().equals("-broker_port")) {
                         _instance._setBrokerPort(Integer.parseInt(args[i + 1]));
                     }
                 }
@@ -335,7 +341,8 @@ public class PtolemyServer implements IServerManager {
             _requests.put(ticket, simulationTask);
             return response;
         } catch (Exception e) {
-            _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
+            _handleException((ticket != null ? ticket.getTicketID() : null)
+                    + ": " + e.getMessage(), e);
         }
         return null;
     }
@@ -348,14 +355,20 @@ public class PtolemyServer implements IServerManager {
      */
     public void pause(Ticket ticket) throws IllegalActionException {
         try {
-            if ((ticket == null) || (!_requests.containsKey(ticket))) {
-                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+            if (ticket == null) {
+                throw new IllegalStateException("Invalid ticket: " + null);
+                // TODO: create InvalidTicketException
+            }
+            if (!_requests.containsKey(ticket)) {
+                throw new IllegalStateException("Invalid ticket: "
+                        + ticket.getTicketID());
                 // TODO: create InvalidTicketException
             }
 
             _requests.get(ticket).getManager().pause();
         } catch (Exception e) {
-            _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
+            _handleException((ticket != null ? ticket.getTicketID() : null)
+                    + ": " + e.getMessage(), e);
         }
     }
 
@@ -368,14 +381,20 @@ public class PtolemyServer implements IServerManager {
      */
     public void resume(Ticket ticket) throws IllegalActionException {
         try {
-            if ((ticket == null) || (!_requests.containsKey(ticket))) {
-                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+            if (ticket == null) {
+                throw new IllegalStateException("Invalid ticket: " + null);
+                // TODO: create InvalidTicketException
+            }
+            if (!_requests.containsKey(ticket)) {
+                throw new IllegalStateException("Invalid ticket: "
+                        + ticket.getTicketID());
                 // TODO: create InvalidTicketException
             }
 
             _requests.get(ticket).getManager().resume();
         } catch (Exception e) {
-            _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
+            _handleException((ticket != null ? ticket.getTicketID() : null)
+                    + ": " + e.getMessage(), e);
         }
     }
 
@@ -432,13 +451,20 @@ public class PtolemyServer implements IServerManager {
      */
     public void start(Ticket ticket) throws IllegalActionException {
         try {
-            if ((ticket == null) || (!_requests.containsKey(ticket))) {
-                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+            if (ticket == null) {
+                throw new IllegalStateException("Invalid ticket: " + null);
                 // TODO: create InvalidTicketException
             }
+            if (!_requests.containsKey(ticket)) {
+                throw new IllegalStateException("Invalid ticket: "
+                        + ticket.getTicketID());
+                // TODO: create InvalidTicketException
+            }
+
             _executor.execute(_requests.get(ticket));
         } catch (Exception e) {
-            _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
+            _handleException((ticket != null ? ticket.getTicketID() : null)
+                    + ": " + e.getMessage(), e);
         }
     }
 
@@ -493,14 +519,20 @@ public class PtolemyServer implements IServerManager {
      */
     public void stop(Ticket ticket) throws IllegalActionException {
         try {
-            if ((ticket == null) || (!_requests.containsKey(ticket))) {
-                throw new Exception("Invalid ticket: " + ticket.getTicketID());
+            if (ticket == null) {
+                throw new IllegalStateException("Invalid ticket: " + null);
+                // TODO: create InvalidTicketException
+            }
+            if (!_requests.containsKey(ticket)) {
+                throw new IllegalStateException("Invalid ticket: "
+                        + ticket.getTicketID());
                 // TODO: create InvalidTicketException
             }
 
             _requests.get(ticket).getManager().stop();
         } catch (Exception e) {
-            _handleException(ticket.getTicketID() + ": " + e.getMessage(), e);
+            _handleException((ticket != null ? ticket.getTicketID() : null)
+                    + ": " + e.getMessage(), e);
         }
     }
 
