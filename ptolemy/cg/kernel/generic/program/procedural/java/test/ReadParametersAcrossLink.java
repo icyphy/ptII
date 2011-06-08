@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
+import java.util.LinkedList;
 import java.util.List;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -68,7 +69,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
     public ReadParametersAcrossLink(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "my input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);
 
@@ -101,13 +102,14 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token sum = null;
-        for (int i = 0; i < input.getWidth(); i++) {
+        double sum = 0.0;
+        int i = 0;
+        for (PopulationGroup group : _groups) {
+            sum += group.performCalculation();
             /*Discard the input */
-            input.get(i);
+            input.get(i++);
         }
-
-        output.send(0, new DoubleToken(_remoteParameterTotal));
+        output.send(0, new DoubleToken(sum));
     }
 
     /** Get all parameters named "remoteParameter"
@@ -119,16 +121,51 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         List<Relation> linkedRelationList = input.linkedRelationList();
+
+        // Traverse all the relations connected to the input and instantiate
+        // a PopulationGroup object with the value of the parameter
+        // named "remoteParameter".
+
+        // The list of PopulationGroups is used in fire().
+        _groups = new LinkedList<PopulationGroup>();
         for (Relation relation : linkedRelationList) {
-            System.out.println("ReadParametersAcrossLink: relation: " + relation);
-            System.out.println("ReadParametersAcrossLink: relation.linedPortList(input): " + relation.linkedPortList(input));
-            System.out.println("ReadParametersAcrossLink: relation.linedPortList(input).get(0): " + relation.linkedPortList(input).get(0));
             NamedObj container = ((TypedIOPort)relation.linkedPortList(input).get(0)).getContainer();
-            System.out.println("ReadParametersAcrossLink: container: " + container + " " + container.getFullName());
+            // The index of the relation.
+            int relationIndex = TypedIOPort.getRelationIndex(input, relation, true);
+
+            // Add the current group to the list of groups.
+            PopulationGroup group = new PopulationGroup();
+            _groups.add(relationIndex, group);
+
             double remoteParameter = ((DoubleToken)((Variable)container.getAttribute("remoteParameter")).getToken()).doubleValue();
-            _remoteParameterTotal += remoteParameter;
+            group.setRemoteParameter(remoteParameter);
         }
     }
 
-    private double _remoteParameterTotal;
+    /** A list of objects where each element contains the value of a 
+     *  remote parameter contained in a container connected to the
+     *  input.
+     */
+    private List<PopulationGroup> _groups;
+
+    /** An object that contains a double that could have a complex
+     *  operation performed on it.  In real user code, the PopulationGroup
+     *  class would have many fields and several methods that performed
+     *  complex operations on those fields.  For simplicity, we have
+     *  one field and one method that multiplies the value of the field
+     *  by 2.0.
+     */
+    private class PopulationGroup {
+        public double performCalculation() {
+            // This method could be arbitrarily complex and involve multiple
+            // parameters.  For the sake of simplicity, we just return 
+            // the value * 2.0
+            return _remoteParameter * 2.0;
+        }
+        public void setRemoteParameter(double remoteParameter) {
+            _remoteParameter = remoteParameter;
+        }
+        private double _remoteParameter;
+    }
 }
+

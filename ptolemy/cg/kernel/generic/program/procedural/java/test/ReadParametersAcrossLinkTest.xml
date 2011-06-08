@@ -66,7 +66,7 @@
         <link port="Ramp.output" relation="relation"/>
     </class>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{52.0, 52.0, 52.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{104.0, 104.0, 104.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -94,8 +94,8 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Test.input" relation="relation2"/>
-    <link port="ReadParametersAcrossLink.input" relation="relation"/>
-    <link port="ReadParametersAcrossLink.input" relation="relation3"/>
+    <link port="ReadParametersAcrossLink.my input" relation="relation"/>
+    <link port="ReadParametersAcrossLink.my input" relation="relation3"/>
     <link port="ReadParametersAcrossLink.output" relation="relation2"/>
     <link port="InstanceOfCompositeActor.port" relation="relation"/>
     <link port="InstanceOfCompositeActor2.port" relation="relation3"/>
