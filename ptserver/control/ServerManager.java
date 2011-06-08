@@ -27,7 +27,6 @@
 
 package ptserver.control;
 
-import java.io.InputStream;
 import java.util.logging.Level;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -39,27 +38,24 @@ import com.caucho.hessian.server.HessianServlet;
 ///////////////////////////////////////////////////////////////////
 //// ServerManager
 
-/**
- * Acts as a facade to the Ptolemy server application and administers control
- * commands coming through the servlet.
+/** Acts as a facade to the Ptolemy server application and administers control
+ *  commands coming through the servlet.
  * 
- * @author Justin Killian
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (jkillian)
- * @Pt.AcceptedRating Red (jkillian)
+ *  @author Justin Killian
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
  */
 public class ServerManager extends HessianServlet implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Close the model and destroy its owner thread.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid or the thread's state
-     * cannot be modified.
+    /** Shut down the thread associated with the user's ticket.
+     *  @param ticket Ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to
+     *  destroy the simulation thread.
      */
     public void close(Ticket ticket) throws IllegalActionException {
         try {
@@ -72,22 +68,14 @@ public class ServerManager extends HessianServlet implements IServerManager {
         }
     }
 
-    /**
-     * Return an input stream for the given model file for downloading on the
-     * client it.
-     * 
-     * @param modelName Name for the model xml file.
-     * @param exception The exception that was raised.
-     * @exception IllegalActionException If the server encountered an error starting, stopping, or
-     * manipulating a simulation request.
-     * @return InputStream to the model xml file.
+    /** Download the selected model to the client.
+     *  @param filename Name of the model XML file.
+     *  @return Byte array containing the model data.
+     *  @exception IllegalActionException If the server encountered an error opening the model file.
      */
-    public InputStream downloadModel(String modelName)
-            throws IllegalActionException {
+    public byte[] downloadModel(String modelName) throws IllegalActionException {
         try {
-            InputStream inputStream = PtolemyServer.getInstance()
-                    .downloadModel(modelName);
-            return inputStream;
+            return PtolemyServer.getInstance().downloadModel(modelName);
         } catch (Exception e) {
             PtolemyServer.LOGGER.log(Level.SEVERE,
                     "Unable to download the model file.");
@@ -96,27 +84,23 @@ public class ServerManager extends HessianServlet implements IServerManager {
         }
     }
 
-    /**
-     * Get the list of models available on the server either in the database or
-     * within the file system.
-     * 
-     * @return The Array of strings containing names of available models.
-     * @exception Exception If there is an error querying either the database or the
-     *                      file system for available models.
+    /** Get a listing of the models available on the server in either the
+     *  database or the local file system.
+     *  @return The Array of strings containing names of available models.
+     *  @exception IllegalActionException If there was a problem discovering
+     *  available models.
      */
     public String[] getModelListing() throws IllegalActionException {
         return PtolemyServer.getInstance().getModelListing();
     }
 
-    /**
-     * Open the model on a separate thread within the Ptolemy server.
-     * 
-     * @param url The path to the model file
-     * @exception ExceptionIf the simulation thread cannot be created or the file URL
-     * provided is invalid, throw an exception.
-     * @return The user's reference to the simulation task along with
-     * specifically formatted for the client model XML and its inferred
-     * types
+    /** Open a model with the provided model URL and wait for the
+     *  user to request the execution of the simulation.
+     *  @param url The path to the model file
+     *  @exception IllegalActionException If the model fails to load
+     *  from the provided URL.
+     *  @return The user's reference to the simulation task along with 
+     *  specifically formatted for the client model XML and its inferred types
      */
     public RemoteModelResponse open(String url) throws IllegalActionException {
         try {
@@ -129,12 +113,10 @@ public class ServerManager extends HessianServlet implements IServerManager {
         }
     }
 
-    /**
-     * Pause the execution of the running model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid or the thread's state
-     * cannot be modified, throw an exception.
+    /** Pause the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to
+     *  pause the running simulation.
      */
     public void pause(Ticket ticket) throws IllegalActionException {
         try {
@@ -147,12 +129,10 @@ public class ServerManager extends HessianServlet implements IServerManager {
         }
     }
 
-    /**
-     * Resume the execution of the paused model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException If the ticket reference is invalid or the thread's state
-     * cannot be modified, throw an exception.
+    /** Resume the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to
+     *  resume the execution of the simulation.
      */
     public void resume(Ticket ticket) throws IllegalActionException {
         try {
@@ -165,12 +145,10 @@ public class ServerManager extends HessianServlet implements IServerManager {
         }
     }
 
-    /**
-     * Start the execution of the model.
-     * 
-     * @param ticket Reference to the execution thread
-     * @exception IllegalStateException  If the ticket reference is invalid or the thread's state
-     *                cannot be modified, throw an exception.
+    /** Start the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to
+     *  start the simulation.
      */
     public void start(Ticket ticket) throws IllegalActionException {
         try {
@@ -183,12 +161,10 @@ public class ServerManager extends HessianServlet implements IServerManager {
         }
     }
 
-    /**
-     * Stop the execution of the running model.
-     * 
-     * @param ticket  The ticket reference to the simulation request.
-     * @exception IllegalStateException If the ticket reference is invalid or the thread's state
-     * cannot be modified, throw an exception.
+    /** Stop the execution of the selected simulation.
+     *  @param ticket The ticket reference to the simulation request.
+     *  @exception IllegalActionException If the server was unable to
+     *  stop the simulation.
      */
     public void stop(Ticket ticket) throws IllegalActionException {
         try {
@@ -201,5 +177,4 @@ public class ServerManager extends HessianServlet implements IServerManager {
         }
 
     }
-
 }
