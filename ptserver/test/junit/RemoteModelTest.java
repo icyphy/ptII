@@ -115,7 +115,10 @@ public class RemoteModelTest {
                     assertEquals(((IntToken) token).intValue() / 2, counter);
                     counter++;
                 } else {
-                    isWaiting = false;
+                    synchronized (RemoteModelTest.this) {
+                        isWaiting = false;
+                        RemoteModelTest.this.notifyAll();
+                    }
                 }
             }
         });
@@ -124,7 +127,10 @@ public class RemoteModelTest {
         serverManager.start(ticket);
         model.getManager().startRun();
 
-        while (isWaiting) {
+        synchronized (RemoteModelTest.this) {
+            while (isWaiting) {
+                wait();
+            }
         }
 
         // Cleanup running processes. 
