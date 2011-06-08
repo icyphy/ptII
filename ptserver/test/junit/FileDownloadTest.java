@@ -31,13 +31,12 @@ package ptserver.test.junit;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ResourceBundle;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptserver.PtolemyServer;
 import ptserver.control.IServerManager;
 
@@ -57,50 +56,84 @@ import com.caucho.hessian.client.HessianProxyFactory;
  */
 public class FileDownloadTest {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Access the ResourceBundle containing configuration parameters.
+     */
     public static final ResourceBundle CONFIG = PtolemyServer.CONFIG;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set up the initial singleton reference and Hessian proxy factory
+     *  that will be used within the JUnit test cases.
+     *  @exception Exception If there is an error creating the Hessian proxy.
+     */
+    @Before
+    public void setup() throws Exception {
+        _ptolemyServer = PtolemyServer.getInstance();
+
+        HessianProxyFactory proxyFactory = new HessianProxyFactory();
+        String servletUrl = String.format("http://%s:%s%s", "localhost",
+                CONFIG.getString("SERVLET_PORT"),
+                CONFIG.getString("SERVLET_PATH"));
+
+        _servletProxy = (IServerManager) proxyFactory.create(
+                IServerManager.class, servletUrl);
+    }
+
+    /** Get the listing of models available on the server.
+     *  @exception Exception If there was an error retrieving the 
+     *  model files on the server.
+     */
     @Test
-    public void FileDownload() {
+    public void getModelListing() throws Exception {
+        // Get listing of remote model files.
+        String[] models = _servletProxy.getModelListing();
+        assertNotNull(models);
+        assertNotSame(0, models.length);
 
-        try {
-            // Set up the servlet proxy.
-            PtolemyServer _ptolemyServer = PtolemyServer.getInstance();
-            HessianProxyFactory proxyFactory = new HessianProxyFactory();
-            String servletUrl = String.format("http://%s:%s%s", "localhost",
-                    CONFIG.getString("SERVLET_PORT"),
-                    CONFIG.getString("SERVLET_PATH"));
-
-            IServerManager _servletProxy = (IServerManager) proxyFactory
-                    .create(IServerManager.class, servletUrl);
-
-            // Get listing of remote model files.
-            String[] models = _servletProxy.getModelListing();
-            assertNotNull(models);
-            assertNotSame(0, models.length);
-
-            for (String model : models)
-                for (int i = 0; i < models.length; i++) {
-                    System.out.println(model);
-                }
-
-            // Download the remote file.
-            String contents = new String(
-                    _servletProxy.downloadModel("addermodel.xml"));
-            assertNotNull(contents);
-            assertNotSame(0, contents.length());
-
-            // Write contents of the downloaded file.
-            System.out.println(contents);
-
-            // Cleanup running processes.
-            _ptolemyServer.shutdown();
-            _ptolemyServer = null;
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        for (String model : models) {
+            System.out.println(model);
         }
     }
+
+    /** Download a model from the Ptolemy server.
+     *  @exception Exception If there was an error downloading the 
+     *  model XML data from the server.
+     */
+    @Test
+    public void getModelXMLData() throws Exception {
+        // Download the remote file.
+        String contents = new String(
+                _servletProxy.downloadModel("addermodel.xml"));
+        assertNotNull(contents);
+        assertNotSame(0, contents.length());
+
+        // Write contents of the downloaded file.
+        System.out.println(contents);
+    }
+
+    /** Call the shutdown() method on the singleton and destroy all
+     *  references to it.
+     *  @exception Exception If there was an error shutting down the broker or
+     *  servlet.
+     */
+    @After
+    public void shutdown() throws Exception {
+        _ptolemyServer.shutdown();
+        _ptolemyServer = null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Handle to the Ptolemy server singleton.
+     */
+    private PtolemyServer _ptolemyServer;
+
+    /** Handle to the Hessian proxy.
+     */
+    private IServerManager _servletProxy;
 }
