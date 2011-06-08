@@ -9,7 +9,7 @@
 	<property name="debuglevel" value="source,lines,vars" />
 	<property name="target" value="1.5" />
 	<property name="source" value="1.5" />
-	<property name="ptserver.output" value="${basedir}/ptserver/output" />
+	<property name="ptserver.output" value="${basedir}/tempoutput" />
 	<property name="ptdroid.bin" value="${basedir}/../ptdroid/ptbin" />
 	<path id="ptII.classpath">
 		<pathelement location="." />
@@ -361,7 +361,7 @@
 				<exclude name="ptolemy/matlab/" />
 				<exclude name="ptolemy/ptp/" />
 				<exclude name="ptolemy/verification/" />
-				<exclude name="ptserver/output/" />
+				<exclude name="tempoutput/" />
 			</fileset>
 		</copy>
 		<echo message="${ant.project.name}: ${ant.file}" />
@@ -483,15 +483,15 @@
 			<exclude name="ptolemy/matlab/" />
 			<exclude name="ptolemy/ptp/" />
 			<exclude name="ptolemy/verification/" />
-			<exclude name="ptserver/output/" />
+			<exclude name="tempoutput/" />
 			<classpath refid="ptII.classpath" />
 		</javac>
 	</target>
 	<property name="findbugs.home" value="/usr/share/findbugs/" />
 	<target name="findbugs" depends="build, initOutput">
 		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
-		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms128m -Xmx512m">
-			<auxClasspath refid="ptII.classpath" />
+		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m">
+			<auxclasspath refid="ptII.classpath"/>
 			<sourcePath path="${basedir}" />
 			<class location="${basedir}/ptserver/" />
 		</findbugs>
