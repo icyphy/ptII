@@ -183,9 +183,12 @@
 			<classpath refid="ptII.classpath" />
 		</java>
 	</target>
+	<target name="initOutput">
+		<mkdir dir="${junit.output.dir}" />
+	</target>
 	<property name="junit.output.dir" value="${ptserver.output}/junit" />
 	<!-- Cobertura -->
-	<target name="test" depends="build-project">
+	<target name="test" depends="build, initOutput">
 		<property name="instrumented.dir" value="${ptserver.output}/instrumented" />
 		<property name="cobertura.dir" value="ptserver/lib" />
 		<property name="coveragereport.dir" value="${ptserver.output}/coveragereport" />
@@ -208,7 +211,6 @@
 				<exclude name="ptserver/test/**/*" />
 			</fileset>
 		</cobertura-instrument>
-		<mkdir dir="${junit.output.dir}" />
 		<junit printsummary="yes" fork="yes">
 			<classpath>
 				<path location="${instrumented.dir}" />
@@ -484,5 +486,14 @@
 			<exclude name="ptserver/output/" />
 			<classpath refid="ptII.classpath" />
 		</javac>
+	</target>
+	<property name="findbugs.home" value="/usr/share/findbugs/" />
+	<target name="findbugs" depends="build, initOutput">
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms128m -Xmx512m">
+			<auxClasspath refid="ptII.classpath" />
+			<sourcePath path="${basedir}" />
+			<class location="${basedir}/ptserver/" />
+		</findbugs>
 	</target>
 </project>
