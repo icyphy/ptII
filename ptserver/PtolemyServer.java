@@ -195,7 +195,7 @@ public class PtolemyServer implements IServerManager {
      *  @return The port on which the MQTT broker operates
      */
     public int getBrokerPort() {
-        return this._brokerPort;
+        return _brokerPort;
     }
 
     /** Get the singleton instance of the Ptolemy server. If it does not already
@@ -256,7 +256,7 @@ public class PtolemyServer implements IServerManager {
      *  @return The port on which to run the servlet container.
      */
     public int getServletPort() {
-        return this._servletPort;
+        return _servletPort;
     }
 
     /** Initialize the Ptolemy server, launch the broker process, set up the servlet host, 
@@ -393,28 +393,28 @@ public class PtolemyServer implements IServerManager {
      *  @param brokerPath Path to the broker executable.
      */
     public void setBrokerPath(String brokerPath) {
-        this._brokerPath = brokerPath;
+        _brokerPath = brokerPath;
     }
 
     /** Set the broker operating port.
      *  @param brokerPort Port on which the MQTT broker operates.
      */
     public void setBrokerPort(int brokerPort) {
-        this._brokerPort = brokerPort;
+        _brokerPort = brokerPort;
     }
 
     /** Set the servlet virtual directory.
      *  @param servletPath Virtual path of the servlet.
      */
     public void setServletPath(String servletPath) {
-        this._servletPath = servletPath;
+        _servletPath = servletPath;
     }
 
     /** Set the servlet operating port.
      *  @param servletPort Port on which to run the servlet container.
      */
     public void setServletPort(int servletPort) {
-        this._servletPort = servletPort;
+        _servletPort = servletPort;
     }
 
     /** Shut down the broker process and stop all active simulation 

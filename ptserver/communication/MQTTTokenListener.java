@@ -62,9 +62,9 @@ public class MQTTTokenListener implements MqttSimpleCallback {
      */
     public MQTTTokenListener(HashMap<String, RemoteSourceData> remoteSourceMap,
             HashMap<String, Settable> settableAttributesMap, String topic) {
-        this._remoteSourceMap = remoteSourceMap;
-        this._settableAttributesMap = settableAttributesMap;
-        this._topic = topic;
+        _remoteSourceMap = remoteSourceMap;
+        _settableAttributesMap = settableAttributesMap;
+        _topic = topic;
     }
 
     ///////////////////////////////////////////////////////////////////

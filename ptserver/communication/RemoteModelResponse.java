@@ -80,7 +80,7 @@ public class RemoteModelResponse implements Serializable {
      * @see #getModelTypes()
      */
     public void setModelTypes(HashMap<String, String> modelTypes) {
-        this._modelTypes = modelTypes;
+        _modelTypes = modelTypes;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ public class RemoteModelResponse implements Serializable {
      * @see #getModelXML()
      */
     public void setModelXML(String modelXML) {
-        this._modelXML = modelXML;
+        _modelXML = modelXML;
     }
 
     /**
@@ -101,7 +101,7 @@ public class RemoteModelResponse implements Serializable {
      * @see #getTicket()
      */
     public void setTicket(Ticket ticket) {
-        this._ticket = ticket;
+        _ticket = ticket;
     }
 
     ///////////////////////////////////////////////////////////////////

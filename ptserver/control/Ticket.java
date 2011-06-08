@@ -50,26 +50,23 @@ public class Ticket implements java.io.Serializable {
     ////                         public methods                    ////
 
     /** Compare tickets by the ticketID property.
-     *  @param otherObject Object to compare this ticket with.
+     *  @param object Object to compare this ticket with.
      *  @return True if the two objects are equal, false otherwise.
      */
     @Override
-    public boolean equals(Object otherObject) {
-        if (this == otherObject) {
+    public boolean equals(Object object) {
+        if (this == object)
             return true;
-        } else if (otherObject == null) {
+        if (object == null)
             return false;
-        } else if (!(otherObject instanceof Ticket)) {
+        if (getClass() != object.getClass())
             return false;
-        }
-
-        Ticket otherTicket = (Ticket) otherObject;
-        if ((_ticketID == null) && (otherTicket.getTicketID() != null)) {
+        Ticket other = (Ticket) object;
+        if (_ticketID == null) {
+            if (other._ticketID != null)
+                return false;
+        } else if (!_ticketID.equals(other._ticketID))
             return false;
-        } else if (!_ticketID.equals(otherTicket._ticketID)) {
-            return false;
-        }
-
         return true;
     }
 
@@ -116,7 +113,6 @@ public class Ticket implements java.io.Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = prime + ((_ticketID == null) ? 0 : _ticketID.hashCode());
-
         return result;
     }
 

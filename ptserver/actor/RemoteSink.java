@@ -101,7 +101,7 @@ public class RemoteSink extends RemoteActor {
     public void fire() throws IllegalActionException {
         super.fire();
         CommunicationToken token = new CommunicationToken(getTargetEntityName());
-        for (Object portObject : this.portList()) {
+        for (Object portObject : portList()) {
             if (portObject instanceof IOPort) {
                 IOPort port = (IOPort) portObject;
                 int consumptionRate = 1;
@@ -129,7 +129,7 @@ public class RemoteSink extends RemoteActor {
      * @see #setTokenPublisher(TokenPublisher)
      */
     public TokenPublisher getTokenPublisher() {
-        return tokenPublisher;
+        return _tokenPublisher;
     }
 
     /**
@@ -138,7 +138,7 @@ public class RemoteSink extends RemoteActor {
     @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
-        for (Object portObject : this.portList()) {
+        for (Object portObject : portList()) {
             if (portObject instanceof IOPort) {
                 IOPort port = (IOPort) portObject;
                 int consumptionRate = 1;
@@ -166,7 +166,7 @@ public class RemoteSink extends RemoteActor {
      * @see #getTokenPublisher()
      */
     public void setTokenPublisher(TokenPublisher tokenPublisher) {
-        this.tokenPublisher = tokenPublisher;
+        _tokenPublisher = tokenPublisher;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -188,6 +188,6 @@ public class RemoteSink extends RemoteActor {
      * Token Publisher is used to publish CommunicationTokens to a queue for serializing
      * into a binary and batching
      */
-    private TokenPublisher tokenPublisher;
+    private TokenPublisher _tokenPublisher;
 
 }

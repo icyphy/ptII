@@ -44,10 +44,13 @@ import ptserver.data.TokenParser;
 * <p>Serialize a CommunicationToken to and from binary format.</p>
 *
 * <p>The stream has the following format:
-* CommunicationToken = Type(2), CommunicationTokenValueField <br/>
-* CommunicationTokenValueField = TargetActorName, PortCount(2), PortData... (PortData is repeated PortCount times)<br/>
-* PortData = PortName, ChannelCount(2), ChannelData... (ChanneldData is repeated ChannelCount times)<br/>
-* ChannelData = ChannelTokenCount(2), Token... (Token is repeated ChannelTokenCount times; it's serialized using TokenHandler defined
+* CommunicationToken = Type(2), CommunicationTokenValueField <br />
+* CommunicationTokenValueField = TargetActorName, PortCount(2), PortData... 
+* (PortData is repeated PortCount times)<br />
+* PortData = PortName, ChannelCount(2), ChannelData... (ChanneldData is repeated
+* ChannelCount times)<br />
+* ChannelData = ChannelTokenCount(2), Token... (Token is repeated ChannelTokenCount times;
+* it's serialized using TokenHandler defined
 * for its data type)</p>
 * @author Anar Huseynov
 * @version $Id$
@@ -60,6 +63,8 @@ public class CommunicationTokenHandler implements
 
     /**
      * Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
+     * @exception IOException if there is a problem with the outputStream
+     * @exception IllegalActionException if there is the state becomes inconsistent
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(CommunicationToken token,
@@ -85,6 +90,7 @@ public class CommunicationTokenHandler implements
 
     /**
      * Deserialize the token from the stream according to the format defined in {@link CommunicationTokenHandler}.
+     * @return CommunicationToken deserialized from the inputStream.
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public CommunicationToken convertToToken(DataInputStream inputStream,

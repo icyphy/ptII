@@ -125,7 +125,7 @@ public class RemoteModel {
      * @return the Manager controlling this model
      */
     public Manager getManager() {
-        return _manager;
+        return _topLevelActor.getManager();
     }
 
     /**
@@ -280,6 +280,7 @@ public class RemoteModel {
         }
 
     }
+
     /**
      * Set the MQTT client instance that is connected to the broker.
      * @param mqttClient the mqttClient that the model would use to send and receive MQTT messages
@@ -297,7 +298,7 @@ public class RemoteModel {
      * @see #getResolvedTypes()
      */
     public void setResolvedTypes(HashMap<String, String> portTypes) {
-        this._resolvedTypes = portTypes;
+        _resolvedTypes = portTypes;
     }
 
     /**
@@ -306,7 +307,7 @@ public class RemoteModel {
      * @see #getStopped()
      */
     public void setStopped(boolean stopped) {
-        this._stopped = stopped;
+        _stopped = stopped;
     }
 
     /**
@@ -321,8 +322,8 @@ public class RemoteModel {
                 _remoteSourceMap, _settableAttributesMap, _subscriptionTopic));
         _mqttClient.subscribe(new String[] { _subscriptionTopic },
                 new int[] { QOS_LEVEL });
-        _manager = new Manager(_topLevelActor.workspace(), null);
-        _topLevelActor.setManager(getManager());
+        Manager manager = new Manager(_topLevelActor.workspace(), null);
+        _topLevelActor.setManager(manager);
         _topLevelActor.addPiggyback(new Executable() {
 
             public void addInitializable(Initializable initializable) {
@@ -380,7 +381,7 @@ public class RemoteModel {
             public void wrapup() throws IllegalActionException {
             }
         });
-        return getManager();
+        return manager;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -424,7 +425,7 @@ public class RemoteModel {
             }
             for (Typeable attribute : entity.attributeList(Typeable.class)) {
                 //FIXME: not sure if case to Nameable is safe
-            	//FIXME using toString on Type is not elegant and could break
+                //FIXME using toString on Type is not elegant and could break
                 portTypes.put(((Nameable) attribute).getFullName(), attribute
                         .getType().toString());
             }
@@ -499,11 +500,6 @@ public class RemoteModel {
      * The type of the remote model.
      */
     private final RemoteModelType _modelType;
-
-    /**
-     * The manager of the model.
-     */
-    private Manager _manager;
 
     /**
      * Indicator if the model is stopped.

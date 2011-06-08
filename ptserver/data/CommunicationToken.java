@@ -61,7 +61,7 @@ public class CommunicationToken extends Token {
      * @param targetActor the target actor whose tokens this instance encapsulates.
      */
     public CommunicationToken(String targetActor) {
-        this.setTargetActorName(targetActor);
+        setTargetActorName(targetActor);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -221,7 +221,7 @@ public class CommunicationToken extends Token {
      * @see #getTargetActorName()
      */
     public void setTargetActorName(String targetActorName) {
-        this._targetActorName = targetActorName;
+        _targetActorName = targetActorName;
     }
 
     ///////////////////////////////////////////////////////////////////

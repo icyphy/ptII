@@ -61,12 +61,12 @@ public class StringAttributeWidget extends TypedAtomicActor {
      */
     public void setAttributeValue(String value) {
         try {
-            this._attribute.setExpression(value);
+            _attribute.setExpression(value);
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    private StringAttribute _attribute;
+    private final StringAttribute _attribute;
 }

@@ -58,8 +58,8 @@ public class TokenPublisher {
      * @param tokensPerPeriod Expected number of tokens per period
      */
     public TokenPublisher(long period, int tokensPerPeriod) {
-        this._period = period;
-        this._tokensPerPeriod = tokensPerPeriod;
+        _period = period;
+        _tokensPerPeriod = tokensPerPeriod;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ public class TokenPublisher {
      * @see #getMqttClient()
      */
     public void setMqttClient(IMqttClient mqttClient) {
-        this._mqttClient = mqttClient;
+        _mqttClient = mqttClient;
     }
 
     /**
@@ -143,49 +143,50 @@ public class TokenPublisher {
      * @see #getTopic()
      */
     public void setTopic(String topic) {
-        this._topic = topic;
+        _topic = topic;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * The mqtt client instance used to send messages
+     * The mqtt client instance used to send messages.
      */
     private IMqttClient _mqttClient;
 
     /**
-     * The topic where messages are published
+     * The topic where messages are published.
      */
     private String _topic;
 
     /**
-     * The timestamp of the last sent batch
+     * The timestamp of the last sent batch.
      */
     private long _lastSent = -1;
 
     /**
-     * The period in millisecond between batches
+     * The period in millisecond between batches.
      */
     private final long _period;
 
     /**
-     * The count of tokens in the batch
+     * The count of tokens in the batch.
      */
     private int _tokenCount;
 
     /**
-     * Expected number of tokens per period
+     * Expected number of tokens per period.
      */
     private final int _tokensPerPeriod;
 
     /**
-     * The output stream holding the batch
+     * The output stream holding the batch.
      */
     private final ByteArrayOutputStream _outputStream = new ByteArrayOutputStream(
             10000);
     /**
-     * The count of batches sent
-     */
-    private int _batchCount;
+     * TODO: either remove this or add proper logging mechanism
+     * The count of batches sent.
+     * private int _batchCount;
+    */
 
 }

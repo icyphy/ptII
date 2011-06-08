@@ -53,7 +53,7 @@ public class AttributeChangeToken extends Token {
      * @param targetSettable The full name of the attribute
      */
     public AttributeChangeToken(String targetSettable) {
-        this.setTargetSettableName(targetSettable);
+        setTargetSettableName(targetSettable);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -64,6 +64,7 @@ public class AttributeChangeToken extends Token {
      * The method checks if the object has the same target name and
      * the same expression.
      * @param object The reference object with which to compare.
+     * @return true if the object is equal to the instance, false otherwise.
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -131,7 +132,7 @@ public class AttributeChangeToken extends Token {
      * @see #getTargetSettableName()
      */
     public void setTargetSettableName(String targetSettableName) {
-        this._targetSettableName = targetSettableName;
+        _targetSettableName = targetSettableName;
     }
 
     /** Return the expression.
@@ -147,7 +148,7 @@ public class AttributeChangeToken extends Token {
      * @see #getExpression()
      */
     public void setExpression(String newExpression) {
-        this._expression = newExpression;
+        _expression = newExpression;
     }
 
     ///////////////////////////////////////////////////////////////////

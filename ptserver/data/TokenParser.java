@@ -80,7 +80,7 @@ public class TokenParser {
             //value is the token handler class name
             String value = _tokenHandlersBundle.getString(key);
             try {
-                ClassLoader classLoader = this.getClass().getClassLoader();
+                ClassLoader classLoader = getClass().getClassLoader();
                 Class<Token> tokenClass = (Class<Token>) classLoader
                         .loadClass(key);
                 TokenHandler<Token> tokenHandler = (TokenHandler<Token>) classLoader
@@ -185,6 +185,7 @@ public class TokenParser {
      */
     public <T extends Token> T convertToToken(InputStream inputStream)
             throws IOException, IllegalActionException {
+        // this keyword is required here
         return this.<T> convertToToken(new DataInputStream(inputStream));
     }
 
@@ -226,9 +227,9 @@ public class TokenParser {
          */
         public HandlerData(TokenHandler<T> tokenHandler, Class<T> tokenType,
                 short position) {
-            this._tokenHandler = tokenHandler;
-            this._tokenType = tokenType;
-            this._position = position;
+            _tokenHandler = tokenHandler;
+            _tokenType = tokenType;
+            _position = position;
         }
 
         /**

@@ -107,7 +107,7 @@ public class RemoteSource extends RemoteActor {
             while ((token = getRemoteSourceData().getTokenQueue().poll()) == null
                     && !getRemoteSourceData().getRemoteModel().isStopped()) {
                 try {
-                    this.wait();
+                    wait();
                 } catch (InterruptedException e) {
                     throw new IllegalActionException(this, e,
                             "The remote source was inturrupted");
@@ -118,7 +118,7 @@ public class RemoteSource extends RemoteActor {
                 return;
             }
         }
-        for (Object portObject : this.portList()) {
+        for (Object portObject : portList()) {
             if (portObject instanceof IOPort) {
                 IOPort port = (IOPort) portObject;
                 int width = port.getWidth();
@@ -148,7 +148,7 @@ public class RemoteSource extends RemoteActor {
      * @see #getRemoteSourceData()
      */
     public void setRemoteSourceData(RemoteSourceData remoteSourceData) {
-        this._remoteSourceData = remoteSourceData;
+        _remoteSourceData = remoteSourceData;
     }
 
     /**

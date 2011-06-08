@@ -35,21 +35,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class SysOutActor extends TypedAtomicActor {
 
-    private final TypedIOPort input;
+    public interface TokenDelegator {
+        public void getToken(Token token);
 
+    }
     public SysOutActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
+        _input = new TypedIOPort(this, "input", true, false);
     }
 
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        Token token = input.get(0);
+        Token token = _input.get(0);
 
-        if (delegator != null) {
-            delegator.getToken(token);
+        if (_delegator != null) {
+            _delegator.getToken(token);
         } else {
             System.out.println(token);
         }
@@ -59,20 +61,18 @@ public class SysOutActor extends TypedAtomicActor {
      * @param delegator the delegator to set
      */
     public void setDelegator(TokenDelegator delegator) {
-        this.delegator = delegator;
+        _delegator = delegator;
     }
 
     /**
      * @return the delegator
      */
     public TokenDelegator getDelegator() {
-        return delegator;
+        return _delegator;
     }
 
-    private TokenDelegator delegator;
+    private TokenDelegator _delegator;
+    private final TypedIOPort _input;
 
-    public interface TokenDelegator {
-        public void getToken(Token token);
 
-    }
 }

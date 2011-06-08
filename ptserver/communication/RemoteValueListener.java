@@ -81,7 +81,7 @@ public class RemoteValueListener implements ValueListener {
      * @see #getTokenPublisher()
      */
     public void setTokenPublisher(TokenPublisher tokenPublisher) {
-        this.tokenPublisher = tokenPublisher;
+        tokenPublisher = tokenPublisher;
     }
 
     ///////////////////////////////////////////////////////////////////

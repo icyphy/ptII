@@ -67,13 +67,11 @@ public class SimulationTask implements Runnable {
                 _ticket.getTicketID() + "_SERVER", RemoteModelType.SERVER);
 
         // Set the MQTT client.
-        //FIXME:MQTT hostname is hardcoded; should we allow remote mosquitto servers?
+        // FIXME:MQTT hostname is hardcoded; should we allow remote mosquitto servers?
         IMqttClient mqttClient = MqttClient.createMqttClient("tcp://localhost@"
                 + Integer.toString(_owner.getBrokerPort()), null);
         mqttClient.connect(_ticket.getTicketID(), true, (short) 10);
-        if (mqttClient != null) {
-            _remoteModel.setMqttClient(mqttClient);
-        }
+        _remoteModel.setMqttClient(mqttClient);
 
         // Load the model specified within the ticket.
         _remoteModel.loadModel(new URL(_ticket.getUrl()));
