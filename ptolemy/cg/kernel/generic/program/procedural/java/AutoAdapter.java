@@ -35,8 +35,10 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -52,6 +54,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -395,7 +398,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 TypedIOPort castPort = (TypedIOPort) insidePort;
                 String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
-                    code.append(_generatePortInstantiation(name, castPort.getName(), castPort));
+                    code.append(_generatePortInstantiation(name, castPort.getName(), castPort, 0 /* channelNumber */));
                 } else {
                     // Multiports.  Not all multiports have port names
                     // that match the field name. See
@@ -425,12 +428,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                     int sources = actorPort.numberOfSources();
                     for (int i = 0; i < sources; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort));
+                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort, i));
                     }
 
                     int sinks = actorPort.numberOfSinks();
                     for (int i = 0; i < sinks; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort));
+                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort, i));
                     }
                 }
 
@@ -916,11 +919,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  For multiports, codegenPortName will vary according to channel number
      *  while actorPortName will remain the same.
      *  @param port The port of the actor.
+     *  @param channelNumber The number of the channel.  For
+     *  singlePorts, the channelNumber will be 0.  For multiports, the
+     *  channelNumber will range from 0 to the number of sinks or
+     *  sources.
      *  @exception IllegalActionException If there is a problem checking whether
      *  actorPortName is a PortParameter.
      */
     private String _generatePortInstantiation(String actorPortName,
-            String codegenPortName, TypedIOPort port) throws IllegalActionException {
+            String codegenPortName, TypedIOPort port, int channelNumber) throws IllegalActionException {
         //String escapedActorPortName = TemplateParser.escapePortName(actorPortName);
         String unescapedActorPortName = TemplateParser.unescapePortName(actorPortName);
         String escapedCodegenPortName = TemplateParser.escapePortName(codegenPortName);
@@ -928,7 +935,63 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 PortParameter.class);
         // Multiport need to have different codegenPortNames, see
         // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/Gaussian1.xml
-        StringBuffer code = new StringBuffer("    $actorSymbol(" + escapedCodegenPortName + ") = new TypedIOPort($actorSymbol(container)"
+
+        // There are some custom actors that reach across their links and read
+        // parameters from the actor on the other side:
+        //
+        // If we have a model CompositeA -> ActorB
+        // has a parameter named "remoteParameter" and ActorB is a
+        // ptolemy/cg/kernel/generic/program/procedural/java/test/ReadParametersAcrossLink.java
+        // then that actor reads the value of the "remoteParameter"
+        // parameter in CompositeA.
+        // 
+        // To test this:
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/ReadParametersAcrossLinkTest.xml
+
+        // First, determine if the port is an input port that is connected
+        // to a TypedComposite that has parameters.  If it is, then generate
+        // a composite that contains the parameters and connect our code generator
+        // to its input.  If we CompositeA -> ActorB, then we generate CompositeC
+        // and generate code that creates CompositeC -> ActorB.
+
+        // True if we are reading remote parameters.
+        boolean readingRemoteParameters = false;
+        if (port.isInput() && port.isMultiport()) {
+            // FIXME: We should annotate the very few ports that are
+            // used by actors to read parameters in remote actors.
+
+            List<Relation> linkedRelationList = port.linkedRelationList();
+            for (Relation relation : linkedRelationList) {
+                NamedObj container = ((TypedIOPort)relation.linkedPortList(port).get(0)).getContainer();
+                if (container instanceof TypedCompositeActor) {
+                    List<Parameter> parameters = container.attributeList(Parameter.class);
+                    if (parameters.size() > 0) {
+                        readingRemoteParameters = true;
+                    }
+                }
+            }
+        }
+
+        StringBuffer code = new StringBuffer("{" + _eol);
+        if (readingRemoteParameters) {
+            code.append("ptolemy.actor.TypedCompositeActor c0 = new ptolemy.actor.TypedCompositeActor($actorSymbol(container), \"c0" + codegenPortName + "\");" + _eol);
+
+            // Iterate through all the parameters in the remote actor.
+            List ports = port.connectedPortList();
+            NamedObj remoteActor = ((IOPort)ports.get(channelNumber)).getContainer();
+            List<Parameter> parameters = remoteActor.attributeList(Parameter.class);
+            for (Parameter parameter : parameters) {
+                code.append("new ptolemy.data.expr.Parameter(c0, \""
+                        + parameter.getName() + "\").setExpression(\""
+                        + parameter.getExpression() + "\");" + _eol);
+            }
+
+            // Create the input and output ports and connect them.
+            code.append("ptolemy.actor.TypedIOPort c0PortA = new ptolemy.actor.TypedIOPort(c0, \"c0PortA\", false, true);" + _eol
+                    + "ptolemy.actor.TypedIOPort c0PortB = new ptolemy.actor.TypedIOPort(c0, \"c0PortB\", true, false);" + _eol
+                    + "c0.connect(c0PortB, c0PortA);" + _eol);
+        }
+        code.append("$actorSymbol(" + escapedCodegenPortName + ") = new TypedIOPort($actorSymbol(container)"
                 // Need to deal with backslashes in port names, see
                 // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
                 + ", \"" + codegenPortName.replace("\\", "\\\\") + "\", "
@@ -941,7 +1004,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         try {
             Field foundPortField = _findFieldByPortName(unescapedActorPortName);
-                    
 
             if (foundPortField == null) {
                 throw new NoSuchFieldException("Could not find port " + unescapedActorPortName);
@@ -953,9 +1015,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + ( portParameter != null
                         ? ".getPort()" : "");
             
-            code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
-                    + portOrParameter
-                    + ");" + _eol);
+            if (!readingRemoteParameters) {
+                code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
+                        + portOrParameter
+                        + ");" + _eol);
+            } else {
+                code.append("    $actorSymbol(container).connect(c0PortA,"
+                        + portOrParameter
+                        + ");" + _eol
+                        + "    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), c0PortB);" + _eol);
+            }                    
+
             if (port.isOutput()) {
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                 code.append("    " + portOrParameter + ".setTypeEquals("
@@ -982,9 +1052,16 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String portOrParameter = 
                 "(TypedIOPort)$actorSymbol(actor).getPort(\"" 
                 + unescapedActorPortName.replace("\\", "\\\\") + "\")";
-            code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
-                    + portOrParameter
-                    + ");" + _eol);
+            if (!readingRemoteParameters) {
+                code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
+                        + portOrParameter
+                        + ");" + _eol);
+            } else {
+                code.append("    $actorSymbol(container).connect(c0PortA,"
+                        + portOrParameter
+                        + ");" + _eol
+                        + "    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), c0PortB);" + _eol);
+            }
             if (port.isOutput()) {
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                 code.append("    (" + portOrParameter + ").setTypeEquals("
@@ -992,6 +1069,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     +");" + _eol);
             }
         }
+        code.append("}" + _eol);
+
         return code.toString();
     }
 
