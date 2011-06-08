@@ -31,13 +31,11 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =		PtidesAirplaneFuelControl \
-		PtidesBasicDistributedPowerPlant\
+DIRS =		PtidesBasicDistributedPowerPlant\
 		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
 		PtidesBasicOnePlatform PtidesBasicPowerPlant \
 		PtidesBasicTwoPlatformsNetworkSensorEvents \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
-		PtidesAirplaneFuelControl \
 		PtidesBasicTTE \
 		PtidesClockSynchronizationError \
 		PtidesNetworkLatencyTest \
@@ -59,7 +57,6 @@ PTPACKAGE = 	demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	PtidesAirplaneFuelControl/PtidesAirplaneFuelControl.jar \
 	PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.jar \
 	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
 	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
