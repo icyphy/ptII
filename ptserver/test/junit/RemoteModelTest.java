@@ -112,8 +112,10 @@ public class RemoteModelTest {
 
             public void getToken(Token token) {
                 if (counter < 10) {
-                    assertEquals(((IntToken) token).intValue() / 2, counter);
-                    counter++;
+                    if ((token != null) && (token instanceof IntToken)) {
+                        assertEquals(((IntToken) token).intValue() / 2, counter);
+                        counter++;
+                    }
                 } else {
                     synchronized (RemoteModelTest.this) {
                         isWaiting = false;
