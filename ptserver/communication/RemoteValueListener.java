@@ -71,7 +71,7 @@ public class RemoteValueListener implements ValueListener {
      * @see #setTokenPublisher(TokenPublisher)
      */
     public TokenPublisher getTokenPublisher() {
-        return tokenPublisher;
+        return _tokenPublisher;
     }
 
     /**
@@ -81,7 +81,7 @@ public class RemoteValueListener implements ValueListener {
      * @see #getTokenPublisher()
      */
     public void setTokenPublisher(TokenPublisher tokenPublisher) {
-        tokenPublisher = tokenPublisher;
+        _tokenPublisher = tokenPublisher;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -91,5 +91,5 @@ public class RemoteValueListener implements ValueListener {
      * Token Publisher is used to publish AttributeChange to a queue for serializing
      * into a binary.
      */
-    private TokenPublisher tokenPublisher;
+    private TokenPublisher _tokenPublisher;
 }
