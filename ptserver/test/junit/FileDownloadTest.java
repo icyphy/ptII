@@ -1,5 +1,5 @@
 /*
- A  dummy client for the hessian service. 
+ Test cases for the file query and download functionality of the servlet. 
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -43,6 +43,18 @@ import ptserver.control.IServerManager;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 
+///////////////////////////////////////////////////////////////////
+//// FileDownloadTest
+
+/** Test the ability to get a listing of available model files
+ *  and download the XML data.
+ *
+ *  @author Justin Killian
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
+ */
 public class FileDownloadTest {
 
     public static final ResourceBundle CONFIG = PtolemyServer.CONFIG;

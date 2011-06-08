@@ -68,7 +68,7 @@ import ptserver.control.Ticket;
  * <p>Under Windows, there is a mosquitto binary.</p>
  * <p>Under Mac OS X:</p>
  * <ol>
- * <li>Install cmake from <a href="http://www.cmake.org/cmake/resources/software.html#in_browser">http://www.cmake.org/cmake/resources/software.html</a></li> or from
+ * <li>Install cmake from <a href="http://www.cmake.org/cmake/resources/software.html#in_browser">http://www.cmake.org/cmake/resources/software.html</a> or from
  * <a href="http://mxcl.github.com/homebrew/#in_browser">http://mxcl.github.com/homebrew</a></li>
  * <li>Download and untar the mosquitto sources:
  * <pre>
@@ -85,7 +85,7 @@ import ptserver.control.Ticket;
  * sudo make install
  * </pre>
  * </li>
- * </ul>
+ * </ol>
  *
  * @author Justin Killian
  * @version $Id$
@@ -157,7 +157,8 @@ public class PtolemyServer implements IServerManager {
     ///////////////////////////////////////////////////////////////////
     ////                  public methods                           ////
 
-    /** Shut down the simulation thread by calling its Manager.
+    /** Shut down the simulation thread by calling the finish() method 
+     *  on its Manager and removing the task from the server.
      *  @param ticket  Ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to destroy the simulation thread.
      */
@@ -181,11 +182,11 @@ public class PtolemyServer implements IServerManager {
         byte[] modelData = null;
 
         try {
-            File file = new File(_modelsDirectory + "\\" + filename);
+            File file = new File(_modelsDirectory + File.separator + filename);
             modelData = ptolemy.util.FileUtilities
                     .binaryReadURLToByteArray(file.toURL());
         } catch (Exception e) {
-            _handleException("Unable to read the the selected model file.", e);
+            _handleException("Unable to read the model file: " + filename, e);
         }
 
         return modelData;
@@ -359,7 +360,8 @@ public class PtolemyServer implements IServerManager {
         return response;
     }
 
-    /** Pause the execution of the simulation by calling its Manager.
+    /** Pause the execution of the simulation by calling the pause() method
+     *  on its Manager.
      *  @param ticket  The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to pause the running simulation.
      */
@@ -373,7 +375,8 @@ public class PtolemyServer implements IServerManager {
         }
     }
 
-    /** Resume the execution of the simulation by calling its Manager.
+    /** Resume the execution of the simulation by calling the resume() method
+     *  on its Manager.
      *  @param ticket  The ticket reference to the simulation request.
      *  @exception IllegalActionException  If the server was unable to resume the execution of the
      *  simulation.
@@ -423,6 +426,7 @@ public class PtolemyServer implements IServerManager {
      */
     public synchronized void shutdown() throws IllegalActionException {
         //TODO: send ShutdownNotifierToken and sleep(5000)
+        //TODO: shutdown active simulations via Manager
 
         try {
             _broker.destroy();
@@ -450,7 +454,8 @@ public class PtolemyServer implements IServerManager {
         _instance = null;
     }
 
-    /** Start the execution of the simulation by calling its Manager.
+    /** Start the execution of the simulation by utilizing a
+     *  free thread within the pool.
      *  @param ticket  The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to start the simulation.
      */
@@ -504,14 +509,15 @@ public class PtolemyServer implements IServerManager {
         }
     }
 
-    /** Stop the execution of the simulation by calling its Manager.
+    /** Stop the execution of the simulation by calling the finish() method
+     *  on its Manager.
      *  @param ticket  The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to stop the simulation.
      */
     public synchronized void stop(Ticket ticket) throws IllegalActionException {
         try {
             _checkTicket(ticket);
-            _requests.get(ticket).getManager().stop();
+            _requests.get(ticket).getManager().finish();
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
@@ -529,26 +535,27 @@ public class PtolemyServer implements IServerManager {
      */
     private void _checkTicket(Ticket ticket) throws IllegalStateException {
         if (ticket == null) {
-            throw new IllegalStateException("Invalid ticket: " + null);
+            throw new IllegalStateException("The ticket was null.");
             // TODO: create InvalidTicketException
         }
         if (!_requests.containsKey(ticket)) {
-            throw new IllegalStateException("Invalid ticket: "
-                    + ticket.getTicketID());
+            throw new IllegalStateException(
+                    "The ticket does not reference a simulation: "
+                            + ticket.getTicketID());
             // TODO: create InvalidTicketException
         }
     }
 
     /** Log the message and exception into the Ptolemy server log.
      *  @param message  Descriptive message about what caused the error.
-     *  @param exception The exception that was raised.
+     *  @param error The exception that was raised.
      *  @exception IllegalActionException Always throws the exception in order to propogate
      *  the error through the Ptolemy hierarchy.
      */
-    private void _handleException(String message, Exception exception)
+    private void _handleException(String message, Exception error)
             throws IllegalActionException {
-        PtolemyServer.LOGGER.log(Level.SEVERE, message, exception);
-        throw new IllegalActionException(null, exception, message);
+        PtolemyServer.LOGGER.log(Level.SEVERE, message, error);
+        throw new IllegalActionException(null, error, message);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -91,16 +91,23 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  available models.
      */
     public String[] getModelListing() throws IllegalActionException {
-        return PtolemyServer.getInstance().getModelListing();
+        try {
+            return PtolemyServer.getInstance().getModelListing();
+        } catch (Exception e) {
+            PtolemyServer.LOGGER.log(Level.SEVERE,
+                    "Unable to list available model files.");
+            throw new IllegalActionException(null, e,
+                    "Unable to list available model files.");
+        }
     }
 
     /** Open a model with the provided model URL and wait for the
      *  user to request the execution of the simulation.
      *  @param url The path to the model file
-     *  @exception IllegalActionException If the model fails to load
-     *  from the provided URL.
      *  @return The user's reference to the simulation task along with 
      *  specifically formatted for the client model XML and its inferred types
+     *  @exception IllegalActionException If the model fails to load
+     *  from the provided URL.
      */
     public RemoteModelResponse open(String url) throws IllegalActionException {
         try {
