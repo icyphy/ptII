@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
-	<Match>
-		<Package name="~ptserver.*" />
-	</Match>
 	 <Match classregex=".*">
       <!-- Exclude Serializable warnings -->
       <!-- Exclude class names shouldn't shadow simple name of super class
