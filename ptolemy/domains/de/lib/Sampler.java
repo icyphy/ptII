@@ -30,7 +30,6 @@ package ptolemy.domains.de.lib;
 
 import java.util.Set;
 
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
