@@ -34,6 +34,7 @@ import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -267,12 +268,33 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         }
         StringBuffer code = new StringBuffer();
 
-        for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
-            //code.append("/* IOPort.generatePutCode start. " + dataToken + " */" + _eol);
-            code.append(remoteReceivers[channelIndex][i].generatePutCode(
+        if (remoteReceivers[channelIndex].length == 1) {
+            code.append(remoteReceivers[channelIndex][0].generatePutCode(
                     (ptolemy.actor.IOPort) this.getComponent(), offset,
                     dataToken));
-            //code.append("/* IOPort.generatePutCode end. */" + _eol);
+        } else {
+            // Handle cases where the fire method gets a random number, but the output is connected
+            // to two inputs.  See
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/Uniform2.xml
+            // Need two _eol here to avoid problems with comments, see
+            // $PTII/bin/ptcg -language java  $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/VectorAssemblerMatrix.xml
+            code.append(_eol + "{" + _eol);
+            TypedIOPort port = (TypedIOPort)getComponent();
+            Type type = port.getType();
+            code.append(targetType(type) + " temporary = " + dataToken + ";" + _eol);
+            boolean debug = ((IntToken)getCodeGenerator().verbosity.getToken()).intValue() > 9;
+            for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
+                if (debug) {
+                    code.append("/* IOPort.generatePutCode start. " + dataToken + " */" + _eol);
+                }
+                code.append(remoteReceivers[channelIndex][i].generatePutCode(
+                                (ptolemy.actor.IOPort) this.getComponent(), offset,
+                                "temporary"));
+                if (debug) {
+                    code.append("/* IOPort.generatePutCode end. */" + _eol);
+                }
+            }
+            code.append("}" + _eol);
         }
         return code.toString();
     }

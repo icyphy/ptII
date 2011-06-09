@@ -117,7 +117,6 @@ public class SDFReceiver extends Receiver {
         token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
                 .getContainer().getContainer())).getTemplateParser()
                 .generateTypeConvertStatement(source, sink, 0, token);
-
         token = _removeSink(token);
 
         boolean forComposite = _forComposite;
@@ -137,6 +136,12 @@ public class SDFReceiver extends Receiver {
             forComposite = false;
         }
         String result = null;
+        token = token.trim();
+        if (token.charAt(token.length() - 1) == ';') {
+            // Remove the trailing semicolon so that we avoid adding
+            // a semicolon.
+            token = token.substring(0, token.length() - 1);
+        }
         try {
             result = _getDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
