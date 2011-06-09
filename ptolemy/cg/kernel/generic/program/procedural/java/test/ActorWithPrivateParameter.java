@@ -27,8 +27,11 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -60,6 +63,13 @@ public class ActorWithPrivateParameter extends Source {
         _myPrivateParameter = new Parameter(this, "_myPrivateParameter");        
         _myPrivateParameter.setExpression("2.0");
 
+        // It is wrong to set the name to be different this way, but
+        // we have a test case that does it.  The right way is to use displayName().
+        disconnectedPort = new TypedIOPort(this, "Disconnected Port", false, true);
+        disconnectedPort.setTypeEquals(BaseType.DOUBLE);
+
+        _myPrivateParameter.setExpression("2.0");
+
         // Set the type constraint.
         output.setTypeAtLeast(_myPrivateParameter);
     }
@@ -73,10 +83,17 @@ public class ActorWithPrivateParameter extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, _myPrivateParameter.getToken());
+        Token token = _myPrivateParameter.getToken();
+        output.send(0, token);
+        disconnectedPort.send(0, token);
     }
+
+    public TypedIOPort disconnectedPort;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
     private Parameter _myPrivateParameter;
+
+    private Parameter _myPrivateDisconnectedParameter;
 }

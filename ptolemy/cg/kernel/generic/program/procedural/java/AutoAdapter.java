@@ -396,7 +396,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (insidePort instanceof TypedIOPort) {
                 TypedIOPort castPort = (TypedIOPort) insidePort;
                 String name = TemplateParser.escapePortName(castPort.getName());
-                if (!castPort.isMultiport()) {
+                if (!castPort.isMultiport() && castPort.isOutsideConnected()) {
+                    // Only instantiate ports that are outside connected and avoid
+                    // "Cannot put a token in a full mailbox."  See
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml
                     code.append(_generatePortInstantiation(name, castPort.getName(), castPort, 0 /* channelNumber */));
                 } else {
                     // Multiports.  Not all multiports have port names
