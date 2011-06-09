@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptserver;
+package ptserver.control;
 
 import java.net.URL;
 
@@ -35,7 +35,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
-import ptserver.control.Ticket;
 
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttClient;

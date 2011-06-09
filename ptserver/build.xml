@@ -491,9 +491,15 @@
 	<target name="findbugs" depends="build, initOutput">
 		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m" includefilter="${basedir}/ptserver/findbugs-includes.xml" excludefilter="${basedir}/ptserver/findbugs-excludes.xml">
-			<auxclasspath refid="ptII.classpath"/>
+			<auxclasspath refid="ptII.classpath" />
 			<sourcePath path="${basedir}" />
-			<class location="${basedir}/ptserver/" />
+
+			<class location="ptserver/actor" />
+			<class location="ptserver/communication" />
+			<class location="ptserver/control" />
+			<class location="ptserver/data" />
+			<class location="ptserver/test" />
+
 		</findbugs>
 	</target>
 </project>

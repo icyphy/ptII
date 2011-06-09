@@ -30,7 +30,6 @@ package ptserver.control;
 import java.util.logging.Level;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptserver.PtolemyServer;
 import ptserver.communication.RemoteModelResponse;
 
 import com.caucho.hessian.server.HessianServlet;

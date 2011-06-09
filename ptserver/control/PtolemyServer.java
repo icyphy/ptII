@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptserver;
+package ptserver.control;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -49,9 +49,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
-import ptserver.control.IServerManager;
-import ptserver.control.ServerManager;
-import ptserver.control.Ticket;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer

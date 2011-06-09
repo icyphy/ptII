@@ -66,8 +66,6 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
 
 # Keep this list alphabetized.
 JSRCS = \
-	PtolemyServer.java \
-	SimulationTask.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -82,7 +80,6 @@ MISC_FILES = \
 	util
 
 OPTIONAL_FILES = \
-	'PtolemyServer$$1.class' \
 	PtolemyServerConfig.properties
 
 JCLASS = $(JSRCS:%.java=%.class)

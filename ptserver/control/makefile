@@ -57,7 +57,9 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 # Keep this list alphabetized.
 JSRCS = \
 	IServerManager.java \
+	PtolemyServer.java \
 	ServerManager.java \
+	SimulationTask.java \
 	Ticket.java
 
 # Sources that may or may not be present, but if they are present, we don't

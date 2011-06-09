@@ -7,7 +7,4 @@
 		<!-- Exclude class is Serializable; consider declaring a serialVersionUID -->
 		<BugCode name="Nm,Se,SnVI" />
 	</Match>
-	<Match>
-		<Package name="~ptserver.lib.*" />
-	</Match>
 </FindBugsFilter>

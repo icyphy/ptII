@@ -37,9 +37,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ptserver.PtolemyServer;
 import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
+import ptserver.control.PtolemyServer;
 import ptserver.control.Ticket;
 
 import com.caucho.hessian.client.HessianProxyFactory;
