@@ -213,7 +213,7 @@ public class RemoteModel {
      * Return true if the model is stopped, otherwise return false.
      * TODO: Figure out if there is a difference for this class between stopped and paused state. 
      * @return the stopped state of the model.
-     * @see #getStopped()
+     * @see #setStopped(boolean)
      */
     public boolean isStopped() {
         return _stopped;
@@ -304,7 +304,7 @@ public class RemoteModel {
     /**
      * Set the stopped state of the model.
      * @param stopped indicates if the model is stopped or not.
-     * @see #getStopped()
+     * @see #isStopped()
      */
     public void setStopped(boolean stopped) {
         _stopped = stopped;
@@ -456,7 +456,7 @@ public class RemoteModel {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
-     * @see {@link RemoteSink}
+     * @see ptserver.actor.RemoteSink
      */
     private void _createSink(ComponentEntity targetEntity,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
@@ -480,7 +480,7 @@ public class RemoteModel {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
-     * @see {@link RemoteSource}
+     * @see ptserver.actor.RemoteSource
      */
     private void _createSource(ComponentEntity targetEntity,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)

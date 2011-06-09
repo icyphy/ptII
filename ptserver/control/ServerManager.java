@@ -69,7 +69,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
     }
 
     /** Download the selected model to the client.
-     *  @param filename Name of the model XML file.
+     *  @param modelName Name of the model XML file.
      *  @return Byte array containing the model data.
      *  @exception IllegalActionException If the server encountered an error opening the model file.
      */

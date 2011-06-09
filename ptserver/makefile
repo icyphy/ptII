@@ -60,7 +60,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	PtolemyServerConfig.properties.default
 
-EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
+	findbugs-excludes.xml \
+	findbugs-includes.xml
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -80,6 +82,7 @@ MISC_FILES = \
 	util
 
 OPTIONAL_FILES = \
+	'PtolemyServer$$1.class' \
 	PtolemyServerConfig.properties
 
 JCLASS = $(JSRCS:%.java=%.class)
