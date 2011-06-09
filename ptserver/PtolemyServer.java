@@ -184,7 +184,7 @@ public class PtolemyServer implements IServerManager {
         try {
             File file = new File(_modelsDirectory + File.separator + filename);
             modelData = ptolemy.util.FileUtilities
-                    .binaryReadURLToByteArray(file.toURL());
+                    .binaryReadURLToByteArray(file.toURI().toURL());
         } catch (Exception e) {
             _handleException("Unable to read the model file: " + filename, e);
         }
