@@ -1,0 +1,48 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+  <input source="ptolemy/configs/annotation.xml"/>
+
+  <entity name="Ontology" class="ptolemy.data.ontologies.Ontology"></entity>
+  <entity name="ProductLatticeOntology" class="ptolemy.data.ontologies.lattice.ProductLatticeOntology"></entity>
+  <property name="ActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute"></property>
+  <property name="Expression-Defined ConceptFunction" class="ptolemy.data.ontologies.ExpressionConceptFunctionDefinitionAttribute"></property>
+  <property name="Class-Defined ConceptFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute"></property>
+  <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+  </property>
+  <property name="ProductLatticeOntologySolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
+  		<property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+  </property>
+  
+  <!-- Concept Function Library -->
+  <entity name="Concept Functions" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+   	    <group>
+    	  <input source="ptolemy/data/ontologies/conceptFunctionLibrary.xml"/>
+        </group>
+	  ?>
+	</configure>
+  </entity>
+
+  <!-- Default ontologies library. -->
+  <entity name="Lattice Ontologies" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+          <input source="ptolemy/data/ontologies/lattice/latticeLibrary.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+  
+</group>
