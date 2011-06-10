@@ -619,8 +619,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String name = inputPort.getName();
             Type type = inputPort.getType();
 
-            if (!inputPort.isMultiport() && ((inputPort instanceof ParameterPort) || inputPort.numLinks() > 0)) {
+            if (!inputPort.isMultiport() && inputPort.isOutsideConnected()
+                    && ((inputPort instanceof ParameterPort) || inputPort.numLinks() > 0)) {
                 // Only generate code if we have a ParameterPort or we are connected.
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/AutoAdapterTwoActors.xml
                 code.append(_generateSendInside(name, name, type, 0));
             } else {
                 // Multiports.
