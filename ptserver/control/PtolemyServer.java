@@ -135,24 +135,75 @@ public class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException If the server was unable to load the default 
      *  configuration from the resource file.
      */
-    private PtolemyServer() throws IllegalActionException {
+    private PtolemyServer(String servletPath, int servletPort,
+            String brokerPath, int brokerPort, String modelDirectory)
+            throws IllegalActionException {
+
+        // Initialize configuration values.
         try {
-            _servletPath = CONFIG.getString("SERVLET_PATH");
-            _servletPort = Integer.parseInt(CONFIG.getString("SERVLET_PORT"));
-            _modelsDirectory = CONFIG.getString("MODELS_DIRECTORY");
-            _brokerPath = CONFIG.getString("BROKER_PATH");
-            _brokerPort = Integer.parseInt(CONFIG.getString("BROKER_PORT"));
+            _servletPath = (servletPath != null ? servletPath : CONFIG
+                    .getString("SERVLET_PATH"));
+            _servletPort = (servletPort > 0 ? servletPort : Integer
+                    .parseInt(CONFIG.getString("SERVLET_PORT")));
+            _brokerPath = (brokerPath != null ? brokerPath : CONFIG
+                    .getString("BROKER_PATH"));
+            _brokerPort = (brokerPort > 0 ? brokerPort : Integer
+                    .parseInt(CONFIG.getString("BROKER_PORT")));
+            _modelsDirectory = (modelDirectory != null ? modelDirectory
+                    : CONFIG.getString("MODELS_DIRECTORY"));
             _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
             _executor = Executors.newCachedThreadPool();
+            _broker = null;
+            _servletHost = null;
         } catch (NumberFormatException e) {
             _handleException(
                     "Failed to initialize Ptolemy server with default configuration.",
+                    e);
+        }
+
+        // Launch the broker process.
+        try {
+            String[] commands = new String[] { _brokerPath, "-p",
+                    String.valueOf(_brokerPort) };
+            ProcessBuilder builder = new ProcessBuilder(commands)
+                    .redirectErrorStream(true);
+
+            _broker = builder.start();
+        } catch (IOException e) {
+            _handleException("Unable to spawn MQTT broker process at '"
+                    + _brokerPath + "' on port " + String.valueOf(_brokerPort)
+                    + ".", e);
+        }
+
+        // Launch the Jetty servlet container.
+        try {
+            _servletHost = new Server(_servletPort);
+            ServletContextHandler context = new ServletContextHandler(
+                    _servletHost, "/", ServletContextHandler.SESSIONS);
+            ServletHolder container = new ServletHolder(ServerManager.class);
+            context.addServlet(container, _servletPath);
+
+            _servletHost.setHandler(context);
+            _servletHost.start();
+        } catch (Exception e) {
+            _handleException(
+                    "Unable to spawn servlet container at '" + _servletPath
+                            + "' on port " + String.valueOf(_servletPort) + ".",
                     e);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                  public methods                           ////
+
+    /** Create the singleton with non-default configuration values.
+     */
+    public synchronized static void createInstance(String servletPath,
+            int servletPort, String brokerPath, int brokerPort,
+            String modelDirectory) throws IllegalActionException {
+        _instance = new PtolemyServer(servletPath, servletPort, brokerPath,
+                brokerPort, modelDirectory);
+    }
 
     /** Shut down the simulation thread by calling the finish() method 
      *  on its Manager and removing the task from the server.
@@ -190,7 +241,6 @@ public class PtolemyServer implements IServerManager {
 
     /** Get the broker operating port.
      *  @return The port on which the MQTT broker operates
-     *  @see #setBrokerPort
      */
     public int getBrokerPort() {
         return _brokerPort;
@@ -206,17 +256,7 @@ public class PtolemyServer implements IServerManager {
         if (_instance == null) {
             synchronized (PtolemyServer.class) {
                 if (_instance == null) {
-                    try {
-                        // Create singleton with default configuration.
-                        _instance = new PtolemyServer();
-
-                        // Launch the servlet container and broker.
-                        _instance.startup();
-                    } catch (Exception e) {
-                        String message = "Failed to launch Ptolemy server.";
-                        PtolemyServer.LOGGER.log(Level.SEVERE, message, e);
-                        throw new IllegalActionException(null, e, message);
-                    }
+                    createInstance(null, -1, null, -1, null);
                 }
             }
         }
@@ -258,7 +298,6 @@ public class PtolemyServer implements IServerManager {
 
     /** Get the servlet operating port.
      *  @return The port on which to run the servlet container.
-     *  @see #setServletPort
      */
     public int getServletPort() {
         return _servletPort;
@@ -267,7 +306,7 @@ public class PtolemyServer implements IServerManager {
     /** Initialize the Ptolemy server, launch the broker process, set up the servlet host, 
      *  and wait for simulation requests. The following optional command line switches
      *  may be used with their accompanying value: -servlet_path, -servlet_port,
-     *  -broker_path, and -broker_port. The port numbers must be integers, the
+     *  -broker_path, -broker_port, and -model_dir. The port numbers must be integers, the
      *  broker path must be the path to the MQTT broker executable, and the servlet 
      *  path is the virtual directory (including the preceding slash) at which the Ptolemy 
      *  servlet will hosted.
@@ -279,27 +318,34 @@ public class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException If the server could not be launched.
      */
     public static void main(String[] args) throws IllegalActionException {
+        String servletPath = CONFIG.getString("SERVLET_PATH");
+        int servletPort = Integer.parseInt(CONFIG.getString("SERVLET_PORT"));
+        String brokerPath = CONFIG.getString("BROKER_PATH");
+        int brokerPort = Integer.parseInt(CONFIG.getString("BROKER_PORT"));
+        String modelDirectory = CONFIG.getString("MODELS_DIRECTORY");
+
         try {
-            // Create the singleton.
-            _instance = new PtolemyServer();
 
             // Set all provided configuration parameters.
             for (int i = 0; i < args.length; i++) {
                 if ((args[i].startsWith("-")) && (i + 1 < args.length)) {
                     if (args[i].toLowerCase().equals("-servlet_path")) {
-                        _instance.setServletPath(args[i + 1]);
+                        servletPath = args[i + 1];
                     } else if (args[i].toLowerCase().equals("-servlet_port")) {
-                        _instance.setServletPort(Integer.parseInt(args[i + 1]));
+                        servletPort = Integer.parseInt(args[i + 1]);
                     } else if (args[i].toLowerCase().equals("-broker_path")) {
-                        _instance.setBrokerPath(args[i + 1]);
+                        brokerPath = args[i + 1];
                     } else if (args[i].toLowerCase().equals("-broker_port")) {
-                        _instance.setBrokerPort(Integer.parseInt(args[i + 1]));
+                        brokerPort = Integer.parseInt(args[i + 1]);
+                    } else if (args[i].toLowerCase().equals("-model_dir")) {
+                        modelDirectory = args[i + 1];
                     }
                 }
             }
 
-            // Launch the servlet container and broker.
-            _instance.startup();
+            // Create the singleton.
+            createInstance(servletPath, servletPort, brokerPath, brokerPort,
+                    modelDirectory);
         } catch (NumberFormatException e) {
             String message = "Port must be a numeric value.  The default value will be used.";
             PtolemyServer.LOGGER.log(Level.SEVERE, message, e);
@@ -396,36 +442,6 @@ public class PtolemyServer implements IServerManager {
         }
     }
 
-    /** Set the path to the broker executable.
-     *  @param brokerPath Path to the broker executable.
-     */
-    public void setBrokerPath(String brokerPath) {
-        _brokerPath = brokerPath;
-    }
-
-    /** Set the broker operating port.
-     *  @param brokerPort Port on which the MQTT broker operates.
-     *  @see #getBrokerPort
-     */
-    public void setBrokerPort(int brokerPort) {
-        _brokerPort = brokerPort;
-    }
-
-    /** Set the servlet virtual directory.
-     *  @param servletPath Virtual path of the servlet.
-     */
-    public void setServletPath(String servletPath) {
-        _servletPath = servletPath;
-    }
-
-    /** Set the servlet operating port.
-     *  @param servletPort Port on which to run the servlet container.
-     *  @see #getServletPort
-     */
-    public void setServletPort(int servletPort) {
-        _servletPort = servletPort;
-    }
-
     /** Shut down the broker process and stop all active simulation 
      *  threads by calling their Managers.
      *  @exception IllegalActionException If the servlet, broker, or thread pool cannot be stopped.
@@ -472,46 +488,6 @@ public class PtolemyServer implements IServerManager {
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
-        }
-    }
-
-    /** Initialize the servlet and the broker for use in communication with the
-     *  Ptolemy server.
-     *  @exception IllegalActionException  If the broker or servlet cannot be started.
-     */
-    public synchronized void startup() throws IllegalActionException {
-        // Launch the broker process.
-        _broker = null;
-        try {
-            String[] commands = new String[] { _brokerPath, "-p",
-                    String.valueOf(_brokerPort) };
-
-            ProcessBuilder builder = new ProcessBuilder(commands);
-            builder.redirectErrorStream(true);
-
-            _broker = builder.start();
-        } catch (IOException e) {
-            _handleException("Unable to spawn MQTT broker process at '"
-                    + _brokerPath + "' on port " + String.valueOf(_brokerPort)
-                    + ".", e);
-        }
-
-        // Launch the Jetty servlet container.
-        _servletHost = null;
-        try {
-            _servletHost = new Server(_servletPort);
-            ServletContextHandler context = new ServletContextHandler(
-                    _servletHost, "/", ServletContextHandler.SESSIONS);
-            ServletHolder container = new ServletHolder(ServerManager.class);
-            context.addServlet(container, _servletPath);
-
-            _servletHost.setHandler(context);
-            _servletHost.start();
-        } catch (Exception e) {
-            _handleException(
-                    "Unable to spawn servlet container at '" + _servletPath
-                            + "' on port " + String.valueOf(_servletPort) + ".",
-                    e);
         }
     }
 
