@@ -94,7 +94,7 @@ public class CommunicationTokenHandler implements
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public CommunicationToken convertToToken(DataInputStream inputStream,
-            Class<CommunicationToken> tokenType) throws IOException,
+            Class<? extends CommunicationToken> tokenType) throws IOException,
             IllegalActionException {
         CommunicationToken token = new CommunicationToken();
         String targetActorName = inputStream.readUTF();

@@ -63,7 +63,7 @@ public class UnsignedByteTokenHandler implements TokenHandler<UnsignedByteToken>
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public UnsignedByteToken convertToToken(DataInputStream inputStream,
-            Class<UnsignedByteToken> tokenType)
+            Class<? extends UnsignedByteToken> tokenType)
             throws IOException {
         return new UnsignedByteToken(inputStream.readByte());
     }

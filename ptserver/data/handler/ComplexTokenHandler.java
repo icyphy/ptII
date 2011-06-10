@@ -68,7 +68,7 @@ public class ComplexTokenHandler implements TokenHandler<ComplexToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ComplexToken convertToToken(DataInputStream inputStream,
-            Class<ComplexToken> tokenType)
+            Class<? extends ComplexToken> tokenType)
             throws IOException {
         Complex value = new Complex(inputStream.readDouble(),inputStream.readDouble());
         return new ComplexToken(value);

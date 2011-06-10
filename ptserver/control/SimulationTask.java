@@ -64,24 +64,35 @@ public class SimulationTask implements Runnable {
         _ticket = ticket;
         _remoteModel = new RemoteModel(_ticket.getTicketID() + "_CLIENT",
                 _ticket.getTicketID() + "_SERVER", RemoteModelType.SERVER);
+        _remoteModel.setTicket(ticket);
+       
 
         // Set the MQTT client.
         // FIXME:MQTT hostname is hardcoded; should we allow remote mosquitto servers?
         IMqttClient mqttClient = MqttClient.createMqttClient("tcp://localhost@"
                 + Integer.toString(_owner.getBrokerPort()), null);
         mqttClient.connect(_ticket.getTicketID(), true, (short) 10);
-        _remoteModel.setMqttClient(mqttClient);
+        getRemoteModel().setMqttClient(mqttClient);
 
         // Load the model specified within the ticket.
-        _remoteModel.loadModel(new URL(_ticket.getUrl()));
-        _remoteModel.setUpInfrastructure();
+        getRemoteModel().loadModel(new URL(_ticket.getUrl()));
+        getRemoteModel().setUpInfrastructure();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Close the remote model.
+     */
+    public void close() {
+        getRemoteModel().close();
     }
 
     /** Start the execution of the simulation by kicking off the thread.
      */
     public void run() {
         try {
-            _remoteModel.getTopLevelActor().getManager().execute();
+            getRemoteModel().getTopLevelActor().getManager().execute();
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -95,7 +106,15 @@ public class SimulationTask implements Runnable {
      *  @return The Manager used to control the simulation
      */
     public Manager getManager() {
-        return _remoteModel.getManager();
+        return getRemoteModel().getManager();
+    }
+
+    /**
+     * Return the task's remote model.
+     * @return the remoteModel of the instance.
+     */
+    public RemoteModel getRemoteModel() {
+        return _remoteModel;
     }
 
     ///////////////////////////////////////////////////////////////////

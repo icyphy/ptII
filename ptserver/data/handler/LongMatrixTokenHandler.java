@@ -88,7 +88,7 @@ public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public LongMatrixToken convertToToken(DataInputStream inputStream,
-            Class<LongMatrixToken> tokenType)
+            Class<? extends LongMatrixToken> tokenType)
             throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();

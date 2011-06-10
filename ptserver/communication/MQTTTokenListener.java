@@ -29,12 +29,14 @@
 package ptserver.communication;
 
 import java.util.Date;
-import java.util.HashMap;
 
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
 import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
+import ptserver.data.PingToken;
+import ptserver.data.PongToken;
 import ptserver.data.Tokenizer;
 
 import com.ibm.mqtt.MqttSimpleCallback;
@@ -54,17 +56,12 @@ import com.ibm.mqtt.MqttSimpleCallback;
 public class MQTTTokenListener implements MqttSimpleCallback {
 
     /**
-     * Initialize the instance with a map of source queues and a topic that it listens to.
-     * @param remoteSourceMap The map from source entity name to its token queue
-     * @param settableAttributesMap The map from the settable full name to the corresponding instance 
-     * that need to propograted to the remote model.
-     * @param topic The topic that the instance is listening to
+     * Initialize the instance by reading needed fields from the remoteModel.
+     * @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
      */
-    public MQTTTokenListener(HashMap<String, RemoteSourceData> remoteSourceMap,
-            HashMap<String, Settable> settableAttributesMap, String topic) {
-        _remoteSourceMap = remoteSourceMap;
-        _settableAttributesMap = settableAttributesMap;
-        _topic = topic;
+    public MQTTTokenListener(RemoteModel remoteModel) {
+        _remoteModel = remoteModel;
+        _topic = remoteModel.getSubscriptionTopic();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,11 +93,10 @@ public class MQTTTokenListener implements MqttSimpleCallback {
         Token token = null;
         while ((token = tokenizer.getNextToken()) != null) {
             // The listener is only concerned about the following types.
-            // FIXME Figure out a better way to handle different token types here
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
-                RemoteSourceData data = _remoteSourceMap.get(communicationToken
-                        .getTargetActorName());
+                RemoteSourceData data = _remoteModel.getRemoteSourceMap().get(
+                        communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
                 //Notify remote sources to read from the queue.
                 synchronized (data.getRemoteSource()) {
@@ -108,10 +104,15 @@ public class MQTTTokenListener implements MqttSimpleCallback {
                 }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
-                Settable changedObject = _settableAttributesMap
-                        .get(attributeChangeToken.getTargetSettableName());
+                Settable changedObject = _remoteModel
+                        .getSettableAttributesMap().get(
+                                attributeChangeToken.getTargetSettableName());
                 changedObject.setExpression(attributeChangeToken
                         .getExpression());
+            } else if (token instanceof PingToken) {
+                _remoteModel.getExecutor().execute(new PongTask(new PongToken(((PingToken) token).getTimestamp())));
+            } else if (token instanceof PongToken) {
+                _remoteModel.setLastPongToken((PongToken) token);
             }
         }
     }
@@ -119,16 +120,46 @@ public class MQTTTokenListener implements MqttSimpleCallback {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * Mapping from source actor name to its queue
-     */
-    private final HashMap<String, RemoteSourceData> _remoteSourceMap;
-    /**
-     * Mapping of actor (with settable attributes) name to the settable attributes.
-     */
-    private final HashMap<String, Settable> _settableAttributesMap;
-    /**
      * The topic that the instance is subscribed to
      */
     private final String _topic;
+
+    /**
+     * The remote model that created the publisher.
+     */
+    private RemoteModel _remoteModel;
+
+    /**
+     * The task that sends the pong back. 
+     */
+    private class PongTask implements Runnable {
+
+        
+        /**
+         * Create an instance with the provided token.
+         * @param token The pong token to send back.
+         */
+        public PongTask(PongToken token) {
+            _token = token;
+        }
+
+        /** 
+         * Send the token back via the model's publisher;
+         * @see java.lang.Runnable#run()
+         */
+        public void run() {
+            try {
+                _remoteModel.getTokenPublisher().sendToken(_token);
+            } catch (IllegalActionException e) {
+                //TODO handle this
+            }
+        }
+
+        /**
+         * The pong token of the current object.
+         */
+        private PongToken _token;
+
+    }
 
 }

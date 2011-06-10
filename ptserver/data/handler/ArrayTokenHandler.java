@@ -80,7 +80,7 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ArrayToken convertToToken(DataInputStream inputStream,
-            Class<ArrayToken> tokenType)
+            Class<? extends ArrayToken> tokenType)
             throws IOException, IllegalActionException {
 
         int size = inputStream.readInt();

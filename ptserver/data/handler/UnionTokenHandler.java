@@ -71,7 +71,7 @@ public class UnionTokenHandler implements TokenHandler<UnionToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public UnionToken convertToToken(DataInputStream inputStream,
-            Class<UnionToken> tokenType)
+            Class<? extends UnionToken> tokenType)
             throws IOException, IllegalActionException {
         String label = inputStream.readUTF();
         Token value = TokenParser.getInstance().convertToToken(

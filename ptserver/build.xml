@@ -228,7 +228,7 @@
 
 	<target name="ptdroid.clean">
 		<delete includeemptydirs="true">
-			<fileset dir="${ptdroid.bin}" includes="**/*" />
+			<fileset dir="${ptdroid.bin}/ptserver" includes="**/*" />
 		</delete>
 	</target>
 	<target name="ptdroid.build">

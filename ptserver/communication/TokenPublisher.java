@@ -59,7 +59,7 @@ public class TokenPublisher {
      */
     public TokenPublisher(long period, int tokensPerPeriod) {
         _period = period;
-        _tokensPerPeriod = tokensPerPeriod;
+//        _tokensPerPeriod = tokensPerPeriod;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,7 +89,8 @@ public class TokenPublisher {
      * @param token the token to send
      * @exception IllegalActionException if there is a problem with MQTT broker.
      */
-    public void sendToken(Token token) throws IllegalActionException {
+    public synchronized void sendToken(Token token)
+            throws IllegalActionException {
         if (_lastSent == -1) {
             _lastSent = System.currentTimeMillis();
         }
@@ -103,15 +104,15 @@ public class TokenPublisher {
                         RemoteModel.QOS_LEVEL, false);
                 //FIXME: use a proper logger or remove
                 //System.out.println(_batchCount++);
-                if (_tokenCount > _tokensPerPeriod) {
-                    long waitTime = (long) (1.0
-                            * (_tokenCount - _tokensPerPeriod)
-                            / _tokensPerPeriod * _period);
-                    try {
-                        Thread.sleep(waitTime);
-                    } catch (InterruptedException e) {
-                    }
-                }
+                //                if (_tokenCount > _tokensPerPeriod) {
+                //                    long waitTime = (long) (1.0
+                //                            * (_tokenCount - _tokensPerPeriod)
+                //                            / _tokensPerPeriod * _period);
+                //                    try {
+                //                        Thread.sleep(waitTime);
+                //                    } catch (InterruptedException e) {
+                //                    }
+                //                }
                 _outputStream.reset();
                 _tokenCount = 0;
                 _lastSent = System.currentTimeMillis();
@@ -174,10 +175,11 @@ public class TokenPublisher {
     private int _tokenCount;
 
     /**
+     * TODO: do we need to throttle the source?
      * Expected number of tokens per period.
+     *
+     *  private final int _tokensPerPeriod;
      */
-    private final int _tokensPerPeriod;
-
     /**
      * The output stream holding the batch.
      */

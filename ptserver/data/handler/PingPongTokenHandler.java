@@ -1,6 +1,6 @@
 /*
- Convert a token to a byte stream and back.
-
+ PingPongTokenHandler converts tokens from bytestream and back.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -25,6 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+
 package ptserver.data.handler;
 
 import java.io.DataInputStream;
@@ -33,44 +34,59 @@ import java.io.IOException;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptserver.data.PingToken;
+import ptserver.data.PongToken;
 
 ///////////////////////////////////////////////////////////////////
-//// TokenHandler
+//// PingPongTokenHandler
+
 /**
- * Convert a token of a particular type to a byte stream and back.
- *
- * @param <T> Type of Token that the handler handles
- * @author ahuseyno
- * @version $Id$
+ * PingPongTokenHandler converts tokens from bytestream and back. 
+ * @author Anar Huseynov
+ * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public interface TokenHandler<T extends Token> {
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+public class PingPongTokenHandler implements TokenHandler<Token> {
+
     /**
-     * Convert the token to a byte stream according to the handler's parsing algorithm
-     * and output it to the outputStream.
+     * Convert the Ping or Pong token to the by stream.
      * @param token the token to be converted
      * @param outputStream the outputStream holding stream of bytes
+     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
-    public void convertToBytes(T token, DataOutputStream outputStream)
-            throws IOException, IllegalActionException;
+    public void convertToBytes(Token token, DataOutputStream outputStream)
+            throws IOException, IllegalActionException {
+        if (token.getClass() == PingToken.class) {
+            outputStream.writeLong(((PingToken) token).getTimestamp());
+        } else if (token.getClass() == PongToken.class) {
+            outputStream.writeLong(((PongToken) token).getTimestamp());
+        } else {
+            throw new IllegalStateException("Wrong class was passed in");
+        }
+    }
 
     /**
-     * Return a token of the specified type by reading from the inputStream
-     * and converting to the token according to the parsing algorithm
-     * defined in the handler.
+     * Return a Ping or Pong token depending on the tokenType by deserializing the inputStream.
      * @param inputStream The inputStream that contains serialized version
      * of a token
-     * @param tokenType the type of token to be read.
+     * @param tokenType the type of the token to be read.
      * @return Token parsed from inputStream
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
-    public T convertToToken(DataInputStream inputStream, Class<? extends T> tokenType) throws IOException,
-            IllegalActionException;
+    public Token convertToToken(DataInputStream inputStream,
+            Class<? extends Token> tokenType) throws IOException, IllegalActionException {
+        if (tokenType == PingToken.class) {
+            return new PingToken(inputStream.readLong());
+        } else if (tokenType == PongToken.class) {
+            return new PongToken(inputStream.readLong());
+        } else {
+            throw new IllegalStateException("Wrong class was passed in");
+        }
+    }
+
 }

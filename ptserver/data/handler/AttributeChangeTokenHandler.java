@@ -62,7 +62,7 @@ public class AttributeChangeTokenHandler implements
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public AttributeChangeToken convertToToken(DataInputStream inputStream,
-            Class<AttributeChangeToken> tokenType) throws IOException,
+            Class<? extends AttributeChangeToken> tokenType) throws IOException,
             IllegalActionException {
         AttributeChangeToken token = new AttributeChangeToken();
         String targetSettableName = inputStream.readUTF();

@@ -88,7 +88,7 @@ public class IntMatrixTokenHandler implements TokenHandler<IntMatrixToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public IntMatrixToken convertToToken(DataInputStream inputStream,
-            Class<IntMatrixToken> tokenType)
+            Class<? extends IntMatrixToken> tokenType)
             throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();

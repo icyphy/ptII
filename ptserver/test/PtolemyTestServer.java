@@ -71,7 +71,7 @@ public class PtolemyTestServer {
                     .getResource("/ptserver/test/junit/addermodel.xml");
             model.loadModel(resource);
             Manager manager = model.setUpInfrastructure();
-            CompositeActor topLevelActor = model.getTopLevelActor();
+            //CompositeActor topLevelActor = model.getTopLevelActor();
             //            topLevelActor.getDirector().addDebugListener(new DebugListener() {
             //
             //                public void message(String message) {

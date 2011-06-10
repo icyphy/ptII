@@ -31,6 +31,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
@@ -58,6 +63,9 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptserver.actor.RemoteSink;
 import ptserver.actor.RemoteSource;
+import ptserver.control.Ticket;
+import ptserver.data.PingToken;
+import ptserver.data.PongToken;
 
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttException;
@@ -83,10 +91,23 @@ public class RemoteModel {
     ////                         public variables                  ////
 
     /**
-     * The quality of service that would be required from the MQTT broker.  
-     * All messages must be send or received only once.
+     * The listener that notifies about events happening in the RemoteModel.
+     *
      */
-    public static final int QOS_LEVEL = 2;
+    public interface RemoteModelListener {
+        /**
+         * Notify listener the exception in the given model
+         * @param remoteModel The model where the exception happened.
+         * @param exception The exception that triggered this event.
+         */
+        public void modelException(RemoteModel remoteModel, Throwable exception);
+
+        /**
+         * Notify listener about the expiration of the model connection to another remote model.
+         * @param remoteModel The remote model whose connection expired.
+         */
+        public void modelConnectionExpired(RemoteModel remoteModel);
+    }
 
     /**
      * An enumerations that specifies the remote model type: client or server.
@@ -104,6 +125,12 @@ public class RemoteModel {
     }
 
     /**
+     * The quality of service that would be required from the MQTT broker.  
+     * All messages must be send or received only once.
+     */
+    public static final int QOS_LEVEL = 2;
+
+    /**
      * Create a new instance of the remoteModel with the specified parameters.
      * @param subscriptionTopic the topic name that this model would subscribe to receive tokens from other remote model
      * @param publishingTopic the topic name that this model would publish its tokens to be received by other remote model
@@ -115,10 +142,49 @@ public class RemoteModel {
         _subscriptionTopic = subscriptionTopic;
         _publishingTopic = publishingTopic;
         _modelType = modelType;
+        _executor = Executors.newCachedThreadPool();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /**
+     * Add RemoteModelListener for notifications about the model events.
+     * @param listener The listener to add.
+     */
+    public void addRemoteModelListener(RemoteModelListener listener) {
+        synchronized (_modelListeners) {
+            if (_modelListeners.contains(listener)) {
+                return;
+            } else {
+                _modelListeners.add(listener);
+            }
+        }
+    }
+
+    /**
+     * Unsubscribe the listener from the model events.
+     * @param listener The listener to remove.
+     */
+    public void removeRemoteModelListener(RemoteModelListener listener) {
+        synchronized (_modelListeners) {
+            _modelListeners.remove(listener);
+        }
+    }
+
+    /**
+     * Close the model along with all its connection.
+     */
+    public void close() {
+        _pingTimer.cancel();
+        try {
+            _mqttClient.unsubscribe(new String[] { getSubscriptionTopic() });
+            _mqttClient.registerSimpleHandler(null);
+            _mqttClient.disconnect();
+        } catch (MqttException e) {
+            // TODO handle exception
+        }
+    }
 
     /**
      * Return the manager controlling this model.
@@ -135,6 +201,30 @@ public class RemoteModel {
      */
     public HashMap<String, String> getResolvedTypes() {
         return _resolvedTypes;
+    }
+
+    /**
+     * Return the ticket that uniquely identifies the model.
+     * @return the ticket identifying the model.
+     */
+    public Ticket getTicket() {
+        return _ticket;
+    }
+
+    /**
+     * Return the tokenPublisher used to send and batch tokens.
+     * @return The token publisher used for sending tokens.
+     */
+    public TokenPublisher getTokenPublisher() {
+        return _tokenPublisher;
+    }
+
+    /**
+     * Return the roundtrip latency of sending ping/echo requests.
+     * @return
+     */
+    public long getPingPongLatency() {
+        return _pingPonglatency;
     }
 
     /**
@@ -170,7 +260,7 @@ public class RemoteModel {
                 RemoteSourceData remoteSourceData = new RemoteSourceData(
                         remoteSource, this);
                 remoteSource.setRemoteSourceData(remoteSourceData);
-                _remoteSourceMap.put(remoteSource.getTargetEntityName(),
+                getRemoteSourceMap().put(remoteSource.getTargetEntityName(),
                         remoteSourceData);
 
             }
@@ -282,6 +372,26 @@ public class RemoteModel {
     }
 
     /**
+     * Set the PongToken instance that was received the last. 
+     * @param lastPongToken The last PongToken.
+     * @see #getLastPongToken()
+     */
+    public synchronized void setLastPongToken(PongToken lastPongToken) {
+        _lastPongToken = lastPongToken;
+        _pingPonglatency = System.currentTimeMillis()
+                - lastPongToken.getTimestamp();
+    }
+
+    /**
+     * Return the last PongToken.
+     * @return the last PongToken.
+     * @set {@link #setLastPongToken(PongToken)}
+     */
+    public synchronized PongToken getLastPongToken() {
+        return _lastPongToken;
+    }
+
+    /**
      * Set the MQTT client instance that is connected to the broker.
      * @param mqttClient the mqttClient that the model would use to send and receive MQTT messages
      * @exception MqttException if there is a problem connecting to the broker
@@ -310,6 +420,18 @@ public class RemoteModel {
         _stopped = stopped;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Set the ticket uniquely identifying the model
+     * @param ticket the ticket to set
+     * @see #getTicket()
+     */
+    public void setTicket(Ticket ticket) {
+        _ticket = ticket;
+    }
+
     /**
      * Set up the communication infrastructure.
      * @return The manager of the model
@@ -318,12 +440,29 @@ public class RemoteModel {
      */
     public Manager setUpInfrastructure() throws MqttException,
             IllegalActionException {
-        _mqttClient.registerSimpleHandler(new MQTTTokenListener(
-                _remoteSourceMap, _settableAttributesMap, _subscriptionTopic));
-        _mqttClient.subscribe(new String[] { _subscriptionTopic },
+        _mqttClient.registerSimpleHandler(new MQTTTokenListener(this));
+        _mqttClient.subscribe(new String[] { getSubscriptionTopic() },
                 new int[] { QOS_LEVEL });
         Manager manager = new Manager(_topLevelActor.workspace(), null);
         _topLevelActor.setManager(manager);
+        _lastPongToken = new PongToken(System.currentTimeMillis());
+        _pingTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                long msTime = System.currentTimeMillis();
+                try {
+                    _tokenPublisher.sendToken(new PingToken(msTime));
+                } catch (IllegalActionException e) {
+                    //TODO handle this
+                }
+                long lastPong = msTime - _getLastPongToken().getTimestamp();
+                long timeOut = 1000 * 30;
+                if (lastPong > timeOut) {
+                    _fireModelConnectionExpired();
+                }
+            }
+        }, 0, 1000);
         _topLevelActor.addPiggyback(new Executable() {
 
             public void addInitializable(Initializable initializable) {
@@ -365,7 +504,7 @@ public class RemoteModel {
 
             public void stop() {
                 setStopped(true);
-                for (RemoteSourceData data : _remoteSourceMap.values()) {
+                for (RemoteSourceData data : getRemoteSourceMap().values()) {
                     synchronized (data.getRemoteSource()) {
                         data.getRemoteSource().notifyAll();
                     }
@@ -383,9 +522,6 @@ public class RemoteModel {
         });
         return manager;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /**
      * Capture inferred types of the entities.
@@ -434,7 +570,7 @@ public class RemoteModel {
 
     /**
      * Create and initialize a new MoMLParser.
-     * @return new MoMLParser
+     * @return new MoMLParser with BackwardCompatibility filters.
      */
     private MoMLParser _createMoMLParser() {
         MoMLParser parser = new MoMLParser(new Workspace());
@@ -490,12 +626,60 @@ public class RemoteModel {
                 (CompositeEntity) targetEntity.getContainer(), targetEntity,
                 replaceTargetEntity, portTypes);
         RemoteSourceData data = new RemoteSourceData(remoteSource, this);
-        _remoteSourceMap.put(remoteSource.getTargetEntityName(), data);
+        getRemoteSourceMap().put(remoteSource.getTargetEntityName(), data);
+    }
+
+    private synchronized PongToken _getLastPongToken() {
+        return _lastPongToken;
+    }
+
+    /**
+     * Notify the model listeners about the model connection experiation.
+     */
+    protected final void _fireModelConnectionExpired() {
+        for (RemoteModelListener listener : _modelListeners) {
+            listener.modelConnectionExpired(this);
+        }
+    }
+
+    /**
+     * Return the subscription topic of the current model.
+     * @return the subscriptionTopic used to listen for tokens from other remote model.
+     */
+    public String getSubscriptionTopic() {
+        return _subscriptionTopic;
+    }
+
+    /**
+     * Return the mappings from remote source full names to their RemoteSourceData
+     * data-structure.
+     * @return the remoteSourceMap the mappings between full name and RemoteSourceData.
+     */
+    public HashMap<String, RemoteSourceData> getRemoteSourceMap() {
+        return _remoteSourceMap;
+    }
+
+    /**
+     * Return the mappings from remote attribute full names to their remote Settable instance.
+     * @return the settableAttributesMap the mappings from remote attribute full names to their remote Settable instance.
+     */
+    public HashMap<String, Settable> getSettableAttributesMap() {
+        return _settableAttributesMap;
+    }
+
+    /**
+     * Return the executor to schedule short lived tasks.
+     * 
+     * <p>It's used to send PongTokens outside of the MQTT listener thread
+     * since MQTTClient disallows that. </p> 
+     * @return the executor to schedule short lived tasks. 
+     */
+    public Executor getExecutor() {
+        return _executor;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     /**
      * The type of the remote model.
      */
@@ -549,4 +733,34 @@ public class RemoteModel {
      * The topic used to publish outgoing mqtt messages.
      */
     private final String _publishingTopic;
+
+    /**
+     * The timer used to send periodical pings.
+     */
+    private Timer _pingTimer = new Timer(true);
+
+    /**
+     * The last pong token received from the remoteModel.
+     */
+    private PongToken _lastPongToken;
+
+    /**
+     * The model listeners.
+     */
+    private List<RemoteModelListener> _modelListeners = new CopyOnWriteArrayList<RemoteModelListener>();
+
+    /**
+     * The ticket identifying the model.
+     */
+    private Ticket _ticket;
+    /**
+     * The roundtrip latency for sending ping token and receiving pong token back.
+     */
+    private long _pingPonglatency;
+
+    /**
+     * The executor used to schedule short lived tasks.
+     */
+    private final Executor _executor;
+
 }

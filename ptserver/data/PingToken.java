@@ -1,6 +1,6 @@
 /*
- IntTokenHandler converts IntToken to/from byte stream
-
+ The PingToken holds a timestamp it was generated at.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -25,46 +25,53 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptserver.data.handler;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+package ptserver.data;
 
-import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
-//// IntTokenHandler
+//// PingToken
+
 /**
- * IntTokenHandler converts IntToken to/from byte stream
- *
- * @author ahuseyno
- * @version $Id$
+ * The PingToken holds a timestamp it was generated at. It's used for measuring the roundtrip latency.
+ * @author Anar Huseynov
+ * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
- *
  */
-public class IntTokenHandler implements TokenHandler<IntToken> {
+public class PingToken extends Token {
+
+    /**
+     * Create new instance of the token with timestamp set to zero.
+     */
+    public PingToken() {
+        super();
+    }
+    
+    /**
+     * Create new instance of the token with the provided timestamp.
+     * @param timestamp The timestamp of the ping.
+     */
+    public PingToken(long timestamp) {
+        this();
+        _timestamp = timestamp;
+    }
+
+    /**
+     * Return the creation time of the token.
+     * @return the creation timestamp.
+     */
+    public long getTimestamp() {
+        return _timestamp;
+    }
+
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
+    ////                         private variables                 ////
+    
     /**
-     * Convert IntToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+     * The creation time.
      */
-    public void convertToBytes(IntToken token, DataOutputStream outputStream)
-            throws IOException {
-        outputStream.writeInt(token.intValue());
-    }
-
-    /**
-     * Reads a long from the inputStream and converts it to the IntToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
-     */
-    public IntToken convertToToken(DataInputStream inputStream,
-            Class<? extends IntToken> tokenType)
-            throws IOException {
-        return new IntToken(inputStream.readInt());
-    }
+    private long _timestamp;
 }

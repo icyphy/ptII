@@ -47,6 +47,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.RemoteModel;
+import ptserver.communication.RemoteModel.RemoteModelListener;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
 
@@ -213,7 +214,9 @@ public class PtolemyServer implements IServerManager {
     public synchronized void close(Ticket ticket) throws IllegalActionException {
         try {
             _checkTicket(ticket);
-            _requests.get(ticket).getManager().finish();
+            stop(ticket);
+            SimulationTask task = _requests.get(ticket);
+            task.close();
             _requests.remove(ticket);
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
@@ -391,6 +394,8 @@ public class PtolemyServer implements IServerManager {
 
             // Save the simulation request.
             SimulationTask simulationTask = new SimulationTask(ticket);
+            simulationTask.getRemoteModel().addRemoteModelListener(
+                    remoteModelListener);
             RemoteModel clientModel = new RemoteModel(null, null,
                     RemoteModelType.CLIENT);
             clientModel.loadModel(new URL(url));
@@ -406,7 +411,6 @@ public class PtolemyServer implements IServerManager {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
         }
-
         return response;
     }
 
@@ -542,6 +546,23 @@ public class PtolemyServer implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
+    private final RemoteModelListener remoteModelListener = new RemoteModelListener() {
+
+        public void modelConnectionExpired(RemoteModel remoteModel) {
+            System.out.println("Removing model " + remoteModel.getTicket());
+            System.out.println("Last pong was "
+                    + (System.currentTimeMillis() - remoteModel
+                            .getLastPongToken().getTimestamp()) + " ms ago");
+            try {
+                close(remoteModel.getTicket());
+            } catch (IllegalActionException e) {
+                // TODO handle exception, note this exception comes from worker thread.
+            }
+        }
+
+        public void modelException(RemoteModel remoteModel, Throwable cause) {
+        }
+    };
 
     /** The Ptolemy server singleton.
      */

@@ -64,7 +64,7 @@ public class DoubleTokenHandler implements TokenHandler<DoubleToken> {
      * @exception IOException if there is a problem reading f the stream
      */
     public DoubleToken convertToToken(DataInputStream inputStream,
-            Class<DoubleToken> tokenType)
+            Class<? extends DoubleToken> tokenType)
             throws IOException {
         return new DoubleToken(inputStream.readDouble());
     }
