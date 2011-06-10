@@ -143,7 +143,16 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 parameterValue = parameter.getExpression();
             }
 
-            parameterValue = StringUtilities.escapeString(parameterValue);
+
+            // Don't escape strings here, otherwise StringMatch patterns fail because \\D gets converted 
+            // to \D.  We need a literal string parameter for use with patterns.  See
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml
+            //parameterValue = StringUtilities.escapeString(parameterValue);
+
+            // Instead, we escape double quotes, which is needed by
+            //$PTII/bin/ptcg -language java  $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/AutoAdapterTwoActors.xml
+            parameterValue = parameterValue.replaceAll("\"", "\\\\\"");
+
             // FIXME: do we want one try block per parameter?  It does
             // make for better error messages.
 
@@ -464,7 +473,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             // Certain actors may create ports on the
                             // fly, so query the actor for its port.
 
-                            + "(TypedIOPort)$actorSymbol(container).getPort(\"" 
+                            // Set the port of the actor, not the container.  See
+                            // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
+                            + "(TypedIOPort)$actorSymbol(actor).getPort(\"" 
                             + insidePort.getName().replace("\\", "\\\\") + "\"), \"inputType\");" + _eol
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression()
