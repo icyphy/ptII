@@ -109,33 +109,22 @@ public class ServletTest {
     public void manipulateThread() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
         assertNotNull(response);
+
         Ticket ticket = response.getTicket();
+        assertNotNull(ticket);
+
         int simulations = _ptolemyServer.numberOfSimulations();
-        try {
-            _servletProxy.start(ticket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         // Start the thread and verify that doing so has not altered the thread count.
+        _servletProxy.start(ticket);
         assertEquals(simulations, _ptolemyServer.numberOfSimulations());
-
-        try {
-            _servletProxy.stop(ticket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         // Stop the thread and verify that doing so has not altered the thread count.
+        _servletProxy.stop(ticket);
         assertEquals(simulations, _ptolemyServer.numberOfSimulations());
 
-        try {
-            _servletProxy.close(ticket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // Close the thread and verify that the number of threads decreased.
+        _servletProxy.close(ticket);
         assertEquals(simulations - 1, _ptolemyServer.numberOfSimulations());
     }
 

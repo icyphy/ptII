@@ -28,10 +28,14 @@
 package ptserver.test.junit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import ptolemy.actor.CompositeActor;
@@ -65,37 +69,63 @@ import com.ibm.mqtt.MqttClient;
  */
 public class RemoteModelTest {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Access the ResourceBundle containing configuration parameters.
+     */
     public static final ResourceBundle CONFIG = PtolemyServer.CONFIG;
+
+    /** Used to ensure that a minimum number of tokens are received
+     *  during the test.
+     */
     private volatile int counter = 0;
+
+    /** Control the loop that synchronizes the response from the server.
+     */
     private volatile boolean isWaiting = true;
 
-    /** Start the server and client
-     *  @exception Exception If the the setup or shutdown of the simulation fails.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set up the initial singleton reference and Hessian proxy factory
+     *  that will be used within the JUnit test cases.
+     *  @exception Exception If there is an error creating the Hessian proxy.
      */
-    @Test(timeout = 2000)
-    public void initialize() throws Exception {
-        String servletUrl = String.format("http://%s:%s%s", "localhost",
+    @Before
+    public void setup() throws Exception {
+        _server = PtolemyServer.getInstance();
+        _servletUrl = String.format("http://%s:%s%s", "localhost",
                 CONFIG.getString("SERVLET_PORT"),
                 CONFIG.getString("SERVLET_PATH"));
-        String brokerUrl = String.format("tcp://%s@%s", "localhost",
+        _brokerUrl = String.format("tcp://%s@%s", "localhost",
                 CONFIG.getString("BROKER_PORT"));
+        _proxy = (IServerManager) new HessianProxyFactory().create(
+                IServerManager.class, _servletUrl);
+    }
 
-        // Create the server and servlet proxy.
-        PtolemyServer server = PtolemyServer.getInstance();
-        IServerManager serverManager = (IServerManager) new HessianProxyFactory()
-                .create(IServerManager.class, servletUrl);
-
+    /** Find the model file on the server and execute the simulation.
+     *  @exception Exception If the the setup or shutdown of the simulation fails.
+     */
+    @Test(timeout = 3000)
+    public void runSimulation() throws Exception {
         // Open the model on the server.
-        RemoteModelResponse response = serverManager.open(IServerManager.class
-                .getResource("/ptserver/test/junit/addermodel.xml").toString());
+        String[] modelUrls = _proxy.getModelListing();
+        assertNotNull(modelUrls);
+        assertTrue(modelUrls.length > 0);
+
+        RemoteModelResponse response = _proxy.open(modelUrls[0]);
+        assertNotNull(response);
 
         // Open the model on the client.
         Ticket ticket = response.getTicket();
+        assertNotNull(ticket);
+
         RemoteModel model = new RemoteModel(ticket.getTicketID() + "_SERVER",
                 ticket.getTicketID() + "_CLIENT", RemoteModelType.CLIENT);
 
         // Initialize the client.
-        IMqttClient mqttClient = MqttClient.createMqttClient(brokerUrl, null);
+        IMqttClient mqttClient = MqttClient.createMqttClient(_brokerUrl, null);
         mqttClient.connect("Android" + new Random().nextInt(1000), true,
                 (short) 10);
 
@@ -104,10 +134,14 @@ public class RemoteModelTest {
         model.setUpInfrastructure();
 
         CompositeActor topLevelActor = model.getTopLevelActor();
+        assertNotNull(topLevelActor);
+
         topLevelActor.setDirector(new PNDirector(topLevelActor, "PNDirector"));
 
         // Set the delegate for a returned token.
         SysOutActor actor = (SysOutActor) topLevelActor.getEntity("Display");
+        assertNotNull(actor);
+
         actor.setDelegator(new TokenDelegator() {
 
             public void getToken(Token token) {
@@ -126,7 +160,7 @@ public class RemoteModelTest {
         });
 
         // Wait for a roundtrip response from the server.
-        serverManager.start(ticket);
+        _proxy.start(ticket);
         model.getManager().startRun();
 
         synchronized (RemoteModelTest.this) {
@@ -136,9 +170,37 @@ public class RemoteModelTest {
         }
 
         // Cleanup running processes. 
-        serverManager.stop(ticket);
+        _proxy.stop(ticket);
         model.getManager().stop();
-        server.shutdown();
-        server = null;
     }
+
+    @After
+    /** Call the shutdown() method on the singleton and destroy all
+     *  references to it.
+     *  @exception Exception If there was an error shutting down the broker or
+     *  servlet.
+     */
+    public void shutdown() throws Exception {
+        _server.shutdown();
+        _server = null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Handle to the Ptolemy server singleton.
+     */
+    private PtolemyServer _server;
+
+    /** Handle to the Hessian servlet proxy.
+     */
+    private IServerManager _proxy;
+
+    /** Store the address to the Hessian servlet.
+     */
+    private String _servletUrl;
+
+    /** Store the address to the MQTT broker.
+     */
+    private String _brokerUrl;
 }

@@ -171,19 +171,18 @@ public class PtolemyServer implements IServerManager {
     }
 
     /** Download the selected model to the client.
-     *  @param filename Name of the model XML file.
+     *  @param url URL of the model file.
      *  @return Byte array containing the model data.
      *  @exception IllegalActionException If the server encountered an error opening the model file.
      */
-    public byte[] downloadModel(String filename) throws IllegalActionException {
+    public byte[] downloadModel(String url) throws IllegalActionException {
         byte[] modelData = null;
 
         try {
-            File file = new File(_modelsDirectory + File.separator + filename);
             modelData = ptolemy.util.FileUtilities
-                    .binaryReadURLToByteArray(file.toURL());
+                    .binaryReadURLToByteArray(new URL(url));
         } catch (Exception e) {
-            _handleException("Unable to read the model file: " + filename, e);
+            _handleException("Unable to read the model URL: " + url, e);
         }
 
         return modelData;
@@ -191,6 +190,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Get the broker operating port.
      *  @return The port on which the MQTT broker operates
+     *  @see #setBrokerPort
      */
     public int getBrokerPort() {
         return _brokerPort;
@@ -226,7 +226,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Get a listing of the models available on the server in either the
      *  database or the local file system.
-     *  @return An array of filenames for the models available on the server.
+     *  @return An array of URLs for the models available on the server.
      *  @exception IllegalActionException If there was a problem discovering available models.
      */
     public String[] getModelListing() throws IllegalActionException {
@@ -237,21 +237,28 @@ public class PtolemyServer implements IServerManager {
             }
         };
 
-        ArrayList<String> filenames = new ArrayList<String>();
+        ArrayList<String> urls = new ArrayList<String>();
         File modelDirectory = new File(_modelsDirectory);
 
         for (File filterResult : modelDirectory.listFiles(modelFilter)) {
             if (!filterResult.isDirectory()) {
-                filenames.add(filterResult.getName());
+                try {
+                    urls.add(filterResult.toURI().toURL().toExternalForm());
+                } catch (Exception e) {
+                    _handleException(
+                            "Unable to construct the URL for model file: "
+                                    + filterResult.getName(), e);
+                }
             }
         }
 
-        String[] returnItems = new String[filenames.size()];
-        return filenames.toArray(returnItems);
+        String[] returnItems = new String[urls.size()];
+        return urls.toArray(returnItems);
     }
 
     /** Get the servlet operating port.
      *  @return The port on which to run the servlet container.
+     *  @see #setServletPort
      */
     public int getServletPort() {
         return _servletPort;
@@ -310,7 +317,7 @@ public class PtolemyServer implements IServerManager {
      *  @return The number of active simulations as well as the queued requests that have not 
      *  yet been fulfilled.
      */
-    public int numberOfSimulations() {
+    public synchronized int numberOfSimulations() {
         if (_requests == null) {
             return 0;
         }
@@ -398,6 +405,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Set the broker operating port.
      *  @param brokerPort Port on which the MQTT broker operates.
+     *  @see #getBrokerPort
      */
     public void setBrokerPort(int brokerPort) {
         _brokerPort = brokerPort;
@@ -412,6 +420,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Set the servlet operating port.
      *  @param servletPort Port on which to run the servlet container.
+     *  @see #getServletPort
      */
     public void setServletPort(int servletPort) {
         _servletPort = servletPort;
@@ -470,7 +479,7 @@ public class PtolemyServer implements IServerManager {
      *  Ptolemy server.
      *  @exception IllegalActionException  If the broker or servlet cannot be started.
      */
-    public void startup() throws IllegalActionException {
+    public synchronized void startup() throws IllegalActionException {
         // Launch the broker process.
         _broker = null;
         try {

@@ -89,13 +89,12 @@ public class FileDownloadTest {
      */
     @Test
     public void getModelListing() throws Exception {
-        // Get listing of remote model files.
-        String[] models = _servletProxy.getModelListing();
-        assertNotNull(models);
-        assertNotSame(0, models.length);
+        String[] modelUrls = _servletProxy.getModelListing();
+        assertNotNull(modelUrls);
+        assertNotSame(0, modelUrls.length);
 
-        for (String model : models) {
-            System.out.println(model);
+        for (String modelUrl : modelUrls) {
+            System.out.println(modelUrl);
         }
     }
 
@@ -105,9 +104,11 @@ public class FileDownloadTest {
      */
     @Test
     public void getModelXMLData() throws Exception {
-        // Download the remote file.
-        String contents = new String(
-                _servletProxy.downloadModel("addermodel.xml"));
+        String[] modelUrls = _servletProxy.getModelListing();
+        assertNotNull(modelUrls);
+        assertNotSame(0, modelUrls.length);
+
+        String contents = new String(_servletProxy.downloadModel(modelUrls[0]));
         assertNotNull(contents);
         assertNotSame(0, contents.length());
 

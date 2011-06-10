@@ -68,26 +68,25 @@ public class ServerManager extends HessianServlet implements IServerManager {
     }
 
     /** Download the selected model to the client.
-     *  @param modelName Name of the model XML file.
+     *  @param url URL of the model file.
      *  @return Byte array containing the model data.
      *  @exception IllegalActionException If the server encountered an error opening the model file.
      */
-    public byte[] downloadModel(String modelName) throws IllegalActionException {
+    public byte[] downloadModel(String url) throws IllegalActionException {
         try {
-            return PtolemyServer.getInstance().downloadModel(modelName);
+            return PtolemyServer.getInstance().downloadModel(url);
         } catch (Exception e) {
             PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to download the model file.");
+                    "Unable to download the model file: " + url);
             throw new IllegalActionException(null, e,
-                    "Unable to download the model file.");
+                    "Unable to download the model file: " + url);
         }
     }
 
     /** Get a listing of the models available on the server in either the
      *  database or the local file system.
-     *  @return The Array of strings containing names of available models.
-     *  @exception IllegalActionException If there was a problem discovering
-     *  available models.
+     *  @return An array of URLs for the models available on the server.
+     *  @exception IllegalActionException If there was a problem discovering available models.
      */
     public String[] getModelListing() throws IllegalActionException {
         try {
