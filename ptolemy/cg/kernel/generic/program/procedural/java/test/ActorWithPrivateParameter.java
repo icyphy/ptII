@@ -29,7 +29,7 @@ package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
-import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -63,12 +63,15 @@ public class ActorWithPrivateParameter extends Source {
         _myPrivateParameter = new Parameter(this, "_myPrivateParameter");        
         _myPrivateParameter.setExpression("2.0");
 
+        // This is wrong, use displayName().
+        _myPrivateParameterWithADifferentName = new Parameter(this, "my Private Parameter spaces in the name");        
+        _myPrivateParameterWithADifferentName.setExpression("3.0");
+
         // It is wrong to set the name to be different this way, but
         // we have a test case that does it.  The right way is to use displayName().
         disconnectedPort = new TypedIOPort(this, "Disconnected Port", false, true);
         disconnectedPort.setTypeEquals(BaseType.DOUBLE);
 
-        _myPrivateParameter.setExpression("2.0");
 
         // Set the type constraint.
         output.setTypeAtLeast(_myPrivateParameter);
@@ -83,9 +86,10 @@ public class ActorWithPrivateParameter extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token token = _myPrivateParameter.getToken();
-        output.send(0, token);
-        disconnectedPort.send(0, token);
+        double a = ((DoubleToken)_myPrivateParameter.getToken()).doubleValue();
+        double b = ((DoubleToken)_myPrivateParameterWithADifferentName.getToken()).doubleValue();
+        output.send(0, new DoubleToken(a + b));
+        disconnectedPort.send(0, new DoubleToken(a + b));
     }
 
     public TypedIOPort disconnectedPort;
@@ -96,4 +100,7 @@ public class ActorWithPrivateParameter extends Source {
     private Parameter _myPrivateParameter;
 
     private Parameter _myPrivateDisconnectedParameter;
+
+    public Parameter _myPrivateParameterWithADifferentName;
+
 }

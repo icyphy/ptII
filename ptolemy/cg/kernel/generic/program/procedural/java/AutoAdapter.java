@@ -163,13 +163,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 privateParameter = true;
                 code.append(// "try{" + _eol
                         "{" + _eol
-                        + "// Accessing private field" + _eol
+                        // Accessing private field
                         + "Object actor = $actorSymbol(actor);" + _eol
                         + "java.lang.reflect.Field fields[] = actor.getClass().getDeclaredFields();" + _eol
                         + "for (int i = 0; i < fields.length; i++){" + _eol
+                        + "    ptolemy.data.expr.Parameter parameter = null;" + _eol
+                        + "    fields[i].setAccessible(true);" + _eol 
                         + "    if (fields[i].getName().equals(\"" + parameterName + "\")) {" + _eol
-                        + "        fields[i].setAccessible(true);" + _eol 
-                        + "        ptolemy.data.expr.Parameter parameter = (ptolemy.data.expr.Parameter)fields[i].get(actor);" + _eol
+                        + "        parameter = (ptolemy.data.expr.Parameter)fields[i].get(actor);" + _eol
+                        + "    } else if (fields[i].getType().isAssignableFrom(ptolemy.data.expr.Parameter.class)) {" + _eol
+                        + "        parameter = (ptolemy.data.expr.Parameter)fields[i].get(actor);" + _eol
+                        // Check for private parameters that have setName() different than the name of the field.
+                        // $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml 
+                        // Uninitialized parameters may be null.
+                        + "        if (parameter != null && !parameter.getName().equals(\"" + parameter.getName() + "\")) {" + _eol
+                        + "            parameter = null;" + _eol
+                        + "        }" + _eol
+                        + "    }" + _eol 
+                        + "    if (parameter != null) {" + _eol
                         + "        parameter.setExpression(\"" + parameterValue + "\");" + _eol
                         + "       ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(parameter);" + _eol
                         + "        break;" + _eol
@@ -218,14 +229,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             "try {" + _eol
             //+ "    TypedCompositeActor.resolveTypes($actorSymbol(container));" + _eol
             + "    TypedCompositeActor.resolveTypes(_toplevel);" + _eol
-            + "    $actorSymbol(actor).initialize();" + _eol
             + "} catch (Exception ex) {" + _eol
-            + "    throw new RuntimeException(\"Failed to initalize $actorSymbol(actor))\", ex);" + _eol
+            + "    throw new RuntimeException(\"Failed to resolve types of the top level.\", ex);" + _eol
             + "}" + _eol
             + "{" + _eol
             + splitInitializeParameterCode[0]
             + splitInitializeParameterCode[1]
+            + "}" + _eol
+            + "try {" + _eol
+            // Initialize after the parameters are set.
+            + "    $actorSymbol(actor).initialize();" + _eol
+            + "} catch (Exception ex) {" + _eol
+            + "    throw new RuntimeException(\"Failed to initialize $actorSymbol(actor))\", ex);" + _eol
             + "}" + _eol;
+
 
         return processCode(result);
     }
@@ -496,6 +513,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + containmentCode
             + "    $actorSymbol(actor) = new " + actorClassName
             + "($actorSymbol(container), \"$actorSymbol(actor)\");" + _eol
+            // Set the displayName so that actors that call getDisplayName() get the same value.
+            // Actors that generate random numbers often call getFullName(), then should call getDisplayName()
+            // instead.
+            + "    $actorSymbol(actor).setDisplayName(\"" + getComponent().getName() + "\");" + _eol
             + splitInitializeConnectionCode[0]
             + splitInitializeConnectionCode[1]
             + "    new ptolemy.actor.Director($actorSymbol(container), \"director\");" + _eol
