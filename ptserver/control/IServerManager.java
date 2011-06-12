@@ -68,6 +68,13 @@ public interface IServerManager {
      */
     public String[] getModelListing() throws IllegalActionException;
 
+    /** Get a listing of the layouts for a specific model available on the
+     *  server in either the database or the local file system.
+     *  @return An array of URLs for the layouts available for the model on the server.
+     *  @exception IllegalActionException If there was a problem discovering available layouts.
+     */
+    public String[] getLayoutListing(String url) throws IllegalActionException;
+    
     /** Open a model with the provided model URL and wait for the
      *  user to request the execution of the simulation.
      *  @param url The path to the model file

@@ -45,6 +45,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import ptolemy.actor.Manager.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelListener;
@@ -299,6 +300,38 @@ public class PtolemyServer implements IServerManager {
         return urls.toArray(returnItems);
     }
 
+    /** Get a listing of the layouts for a specific model available on the
+     *  server in either the database or the local file system.
+     *  @return An array of URLs for the layouts available for the model on the server.
+     *  @exception IllegalActionException If there was a problem discovering available layouts.
+     */
+    public String[] getLayoutListing(String url) throws IllegalActionException {
+        FilenameFilter layoutFilter = new FilenameFilter() {
+            public boolean accept(File file, String filename) {
+                // TODO add naming convention restrictions.
+                return (filename.endsWith(".xml"));
+            }
+        };
+
+        ArrayList<String> urls = new ArrayList<String>();
+        File modelDirectory = new File(_modelsDirectory);
+
+        for (File filterResult : modelDirectory.listFiles(layoutFilter)) {
+            if (!filterResult.isDirectory()) {
+                try {
+                    urls.add(filterResult.toURI().toURL().toExternalForm());
+                } catch (Exception e) {
+                    _handleException(
+                            "Unable to construct the URL for layout file: "
+                                    + filterResult.getName(), e);
+                }
+            }
+        }
+
+        String[] returnItems = new String[urls.size()];
+        return urls.toArray(returnItems);
+    }
+
     /** Get the servlet operating port.
      *  @return The port on which to run the servlet container.
      */
@@ -372,6 +405,23 @@ public class PtolemyServer implements IServerManager {
         }
 
         return _requests.size();
+    }
+
+    /** Get the current state of a specific simulation based on the simulation manager's state. 
+     *  @return The state of the queried simulation.
+     */
+    public synchronized State getStateOfSimulation(Ticket ticket)
+            throws IllegalActionException {
+        State state = null;
+        try {
+            _checkTicket(ticket);
+            SimulationTask task = _requests.get(ticket);
+            state = task.getManager().getState();
+        } catch (Exception e) {
+            _handleException((ticket != null ? ticket.getTicketID() : null)
+                    + ": " + e.getMessage(), e);
+        }
+        return state;
     }
 
     /** Open a model with the provided model URL and wait for the user to request
