@@ -217,6 +217,7 @@ public class PtolemyServer implements IServerManager {
             _checkTicket(ticket);
             stop(ticket);
             SimulationTask task = _requests.get(ticket);
+            // FindBugs is wrong here since _checkTicket ensures that task is not null
             task.close();
             _requests.remove(ticket);
         } catch (Exception e) {
@@ -366,6 +367,7 @@ public class PtolemyServer implements IServerManager {
         try {
             _checkTicket(ticket);
             SimulationTask task = _requests.get(ticket);
+            // FindBugs is wrong here since _checkTicket ensures that task is not null
             state = task.getManager().getState();
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
@@ -490,6 +492,7 @@ public class PtolemyServer implements IServerManager {
     public synchronized void pause(Ticket ticket) throws IllegalActionException {
         try {
             _checkTicket(ticket);
+            // FindBugs is wrong here since _checkTicket ensures that task is not null
             _requests.get(ticket).getManager().pause();
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
@@ -507,6 +510,7 @@ public class PtolemyServer implements IServerManager {
             throws IllegalActionException {
         try {
             _checkTicket(ticket);
+            // FindBugs is wrong here since _checkTicket ensures that task is not null
             _requests.get(ticket).getManager().resume();
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
@@ -545,6 +549,7 @@ public class PtolemyServer implements IServerManager {
 
         _requests.clear();
         _requests = null;
+        // FindBugs is wrong here, it's OK to set the instance to null since the server is shutting down.
         _instance = null;
     }
 
@@ -571,6 +576,7 @@ public class PtolemyServer implements IServerManager {
     public synchronized void stop(Ticket ticket) throws IllegalActionException {
         try {
             _checkTicket(ticket);
+            // FindBugs is wrong here since _checkTicket ensures that task is not null
             _requests.get(ticket).getManager().finish();
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
