@@ -492,7 +492,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                             // Set the port of the actor, not the container.  See
                             // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
-                            + "(TypedIOPort)$actorSymbol(actor).getPort(\"" 
+                            // However, if we don't set the port of the container, then this fails:
+                            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
+                            + "(TypedIOPort)$actorSymbol(container).getPort(\"" 
                             + insidePort.getName().replace("\\", "\\\\") + "\"), \"inputType\");" + _eol
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression()
