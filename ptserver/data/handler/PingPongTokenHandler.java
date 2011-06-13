@@ -60,9 +60,9 @@ public class PingPongTokenHandler implements TokenHandler<Token> {
      */
     public void convertToBytes(Token token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
-        if (token.getClass() == PingToken.class) {
+        if (token instanceof PingToken) {
             outputStream.writeLong(((PingToken) token).getTimestamp());
-        } else if (token.getClass() == PongToken.class) {
+        } else if (token instanceof PongToken) {
             outputStream.writeLong(((PongToken) token).getTimestamp());
         } else {
             throw new IllegalStateException("Wrong class was passed in");
@@ -79,7 +79,8 @@ public class PingPongTokenHandler implements TokenHandler<Token> {
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
     public Token convertToToken(DataInputStream inputStream,
-            Class<? extends Token> tokenType) throws IOException, IllegalActionException {
+            Class<? extends Token> tokenType) throws IOException,
+            IllegalActionException {
         if (tokenType == PingToken.class) {
             return new PingToken(inputStream.readLong());
         } else if (tokenType == PongToken.class) {
