@@ -1230,9 +1230,12 @@ public class TableauFrame extends Top {
         // Top._saveAsFileDialogImplementation()?  Why?
         // _saveAsHelper() is needed as part of Kepler.
 
-        URL newURL = null;
-
         FileDialog fileDialog = _saveAsFileDialogComponent();
+
+        if (fileDialog == null) {
+            // Action was canceled, perhaps by Save As in a submodel.
+            return null;
+        }
 
         if (_initialSaveAsFileName != null) {
             fileDialog.setFile(new File(fileDialog
@@ -1270,7 +1273,7 @@ public class TableauFrame extends Top {
                     return null;
                 }
 
-                newURL = file.toURI().toURL();
+                URL newURL = file.toURI().toURL();
                 String newKey = newURL.toExternalForm();
 
                 _directory = new File(fileDialog.getDirectory());
