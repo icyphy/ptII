@@ -31,6 +31,7 @@ package ptolemy.domains.de.lib;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
@@ -87,7 +88,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.de.lib.Inhibit
  @see ptolemy.domains.de.lib.Register
  */
-public class Sampler extends DETransformer {
+public class Sampler extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
