@@ -92,10 +92,10 @@ public class FileDownloadTest {
         String[] modelUrls = _servletProxy.getModelListing();
         assertNotNull(modelUrls);
         assertNotSame(0, modelUrls.length);
-
-        for (String modelUrl : modelUrls) {
-            System.out.println(modelUrl);
-        }
+        //
+        //        for (String modelUrl : modelUrls) {
+        //            System.out.println(modelUrl);
+        //        }
     }
 
     /** Download a model from the Ptolemy server.
@@ -113,7 +113,7 @@ public class FileDownloadTest {
         assertNotSame(0, contents.length());
 
         // Write contents of the downloaded file.
-        System.out.println(contents);
+        //        System.out.println(contents);
     }
 
     /** Call the shutdown() method on the singleton and destroy all

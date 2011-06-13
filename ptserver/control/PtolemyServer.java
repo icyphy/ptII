@@ -197,7 +197,7 @@ public class PtolemyServer implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                  public methods                           ////
-    
+
     /** Create the singleton with non-default configuration values.
      */
     public synchronized static void createInstance(String servletPath,
@@ -592,7 +592,7 @@ public class PtolemyServer implements IServerManager {
             throw new IllegalStateException("The ticket was null.");
             // TODO: create InvalidTicketException
         }
-        if (!_requests.containsKey(ticket)) {
+        if (_requests.get(ticket) == null) {
             throw new IllegalStateException(
                     "The ticket does not reference a simulation: "
                             + ticket.getTicketID());
