@@ -66,7 +66,10 @@ JSRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = 
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'PtolemyServer$$1.class' \
+	'PtolemyServer$$2.class' \
+	'PtolemyServer$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

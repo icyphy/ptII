@@ -61,6 +61,8 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 JSRCS = \
 	AttributeChangeToken.java \
 	CommunicationToken.java \
+	PingToken.java \
+	PongToken.java \
 	TokenParser.java \
 	Tokenizer.java
 

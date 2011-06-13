@@ -71,7 +71,11 @@ OPTIONAL_FILES = \
 	'PtolemyTestServer$$1.class' \
 	'RemoteModel$$1.class' \
 	'RemoteModel$$2.class' \
-	'RemoteModel$$RemoteModelType.class'
+	'RemoteModel$$3.class' \
+	'RemoteModel$$RemoteModelType.class' \
+	'RemoteModel$$RemoteModelListener.class' \
+	'TokenListener$$PongTask.class' \
+	'TokenPublisher$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

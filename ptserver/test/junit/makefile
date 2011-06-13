@@ -76,7 +76,8 @@ MISC_FILES = \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	PtolemyLog.log \
-	'RemoteModelTest$$1.class'
+	'RemoteModelTest$$1.class' \
+	'RemoteModelTest$$2.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
