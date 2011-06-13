@@ -66,6 +66,8 @@ public class Synchronizer extends Transformer {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
+        
+        input.setWidthEquals(output, true);
     }
 
     ///////////////////////////////////////////////////////////////////
