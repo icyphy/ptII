@@ -31,10 +31,10 @@ import java.awt.Container;
 ///////////////////////////////////////////////////////////////////
 //// PortablePlaceable
 /**
- * <p>This interface is analogous to the {@link Placeable} interface.  However, this
+ * This interface is analogous to the {@link Placeable} interface.  However, this
  * interface is platform independent, and it's expected that implementers of the
  * interface are also platform independent.  By platform independent, we mean there is
- * no dependendency to java.awt or java.swing packages.</p>
+ * no dependendency to java.awt or java.swing packages.
  * 
  * <p>Interface for objects that have UI components that can be placed in containers.
  * These objects can be fairly tricky to write because of the fact that they
@@ -68,8 +68,8 @@ import java.awt.Container;
 public interface PortablePlaceable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Specify the container into which this object should be placed.
+
+    /** Place the object that implements this interface into the specified container.
      *  Obviously, this method needs to be called before the object
      *  is actually placed in a container.  Otherwise, the object will be
      *  expected to create its own frame into which to place itself.

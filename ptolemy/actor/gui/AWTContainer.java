@@ -51,9 +51,10 @@ public class AWTContainer implements PortableContainer<Container, Component> {
     public AWTContainer(Container container) {
         _container = container;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** 
      * Add the component to the container.
      * @param component the component to be added to the container.
@@ -66,6 +67,7 @@ public class AWTContainer implements PortableContainer<Container, Component> {
     /**
      * Return the AWT container that this instance wraps. 
      * @see ptolemy.actor.gui.PortableContainer#getPlatformContainer()
+     * @return the AWT container that this instance wraps.
      */
     public Container getPlatformContainer() {
         return _container;
@@ -73,9 +75,10 @@ public class AWTContainer implements PortableContainer<Container, Component> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /**
      * The AWT container that this instance wraps.
      */
-    private Container _container;
+    private final Container _container;
 
 }
