@@ -42,6 +42,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.pn.kernel.PNDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Settable;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
@@ -102,6 +104,8 @@ public class RemoteModelTest {
                 CONFIG.getString("BROKER_PORT"));
         _proxy = (IServerManager) new HessianProxyFactory().create(
                 IServerManager.class, _servletUrl);
+        counter = 0;
+        isWaiting = true;
     }
 
     /** Find the model file on the server and execute the simulation.
@@ -110,6 +114,50 @@ public class RemoteModelTest {
     @Test(timeout = 3000)
     public void runSimulation() throws Exception {
         // Open the model on the server.
+        RemoteModelResponse response = _openRemoteModel();
+        RemoteModel model = _setUpClientModel(response);
+        // Set the delegate for a returned token.
+        SysOutActor actor = (SysOutActor) model.getTopLevelActor().getEntity(
+                "Display");
+        assertNotNull(actor);
+        actor.setDelegator(new TokenDelegator() {
+
+            public void getToken(Token token) {
+                if (counter < 10) {
+                    if (token instanceof IntToken) {
+                        assertEquals(counter, ((IntToken) token).intValue() / 2);
+                        counter++;
+                    }
+                } else {
+                    synchronized (RemoteModelTest.this) {
+                        isWaiting = false;
+                        RemoteModelTest.this.notifyAll();
+                    }
+                }
+            }
+        });
+
+        // Wait for a roundtrip response from the server.
+        _proxy.start(response.getTicket());
+        model.getManager().startRun();
+
+        synchronized (RemoteModelTest.this) {
+            while (isWaiting) {
+                wait();
+            }
+        }
+
+        // stop running processes. 
+        _proxy.stop(response.getTicket());
+        model.getManager().stop();
+        // close the simulation
+        _proxy.close(response.getTicket());
+        model.close();
+        assertEquals(10, counter);
+    }
+
+    private RemoteModelResponse _openRemoteModel()
+            throws IllegalActionException {
         String[] modelUrls = _proxy.getModelListing();
         assertNotNull(modelUrls);
         assertTrue(modelUrls.length > 0);
@@ -120,7 +168,12 @@ public class RemoteModelTest {
         // Open the model on the client.
         Ticket ticket = response.getTicket();
         assertNotNull(ticket);
+        return response;
+    }
 
+    private RemoteModel _setUpClientModel(RemoteModelResponse response)
+            throws Exception {
+        Ticket ticket = response.getTicket();
         RemoteModel model = new RemoteModel(ticket.getTicketID() + "_SERVER",
                 ticket.getTicketID() + "_CLIENT", RemoteModelType.CLIENT);
 
@@ -137,17 +190,49 @@ public class RemoteModelTest {
         assertNotNull(topLevelActor);
 
         topLevelActor.setDirector(new PNDirector(topLevelActor, "PNDirector"));
+        return model;
+    }
 
-        // Set the delegate for a returned token.
-        SysOutActor actor = (SysOutActor) topLevelActor.getEntity("Display");
+    @Test
+    public void testRemoteAttribute() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        RemoteModel clientModel = _setUpClientModel(response);
+        clientModel.setTimeoutPeriod(0);
+        RemoteModel serverModel = PtolemyServer.getInstance()
+                .getSimulationTask(response.getTicket()).getRemoteModel();
+        serverModel.setTimeoutPeriod(0);
+        Settable clientSettable = (Settable) clientModel.getTopLevelActor()
+                .getAttribute("Ramp2.init");
+        assertNotNull(clientSettable);
+        clientSettable.setExpression("1");
+        Settable serverSettable = (Settable) serverModel.getTopLevelActor()
+                .getAttribute("Ramp2.init");
+        assertNotNull(serverSettable);
+        Thread.sleep(1000);
+        assertEquals("1", serverSettable.getExpression());
+        _proxy.close(response.getTicket());
+        clientModel.close();
+    }
+
+    @Test(timeout = 3000)
+    public void testRemoteAttributeSimulation() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        RemoteModel clientModel = _setUpClientModel(response);
+        clientModel.setTimeoutPeriod(0);
+        Settable clientSettable = (Settable) clientModel.getTopLevelActor()
+                .getAttribute("Ramp2.init");
+        assertNotNull(clientSettable);
+        clientSettable.setExpression("1");
+        SysOutActor actor = (SysOutActor) clientModel.getTopLevelActor()
+                .getEntity("Display");
         assertNotNull(actor);
-
         actor.setDelegator(new TokenDelegator() {
 
             public void getToken(Token token) {
                 if (counter < 10) {
-                    if ((token != null) && (token instanceof IntToken)) {
-                        assertEquals(((IntToken) token).intValue() / 2, counter);
+                    if (token instanceof IntToken) {
+                        assertEquals(counter, ((IntToken) token).intValue() / 2);
+                        assertEquals(1, ((IntToken) token).intValue() % 2);
                         counter++;
                     }
                 } else {
@@ -160,8 +245,8 @@ public class RemoteModelTest {
         });
 
         // Wait for a roundtrip response from the server.
-        _proxy.start(ticket);
-        model.getManager().startRun();
+        _proxy.start(response.getTicket());
+        clientModel.getManager().startRun();
 
         synchronized (RemoteModelTest.this) {
             while (isWaiting) {
@@ -169,17 +254,21 @@ public class RemoteModelTest {
             }
         }
 
-        // Cleanup running processes. 
-        _proxy.stop(ticket);
-        model.getManager().stop();
+        // stop running processes. 
+        _proxy.stop(response.getTicket());
+        clientModel.getManager().stop();
+        // close the simulation
+        _proxy.close(response.getTicket());
+        clientModel.close();
+        assertEquals(10, counter);
     }
 
-    @After
     /** Call the shutdown() method on the singleton and destroy all
      *  references to it.
      *  @exception Exception If there was an error shutting down the broker or
      *  servlet.
      */
+    @After
     public void shutdown() throws Exception {
         _server.shutdown();
         _server = null;

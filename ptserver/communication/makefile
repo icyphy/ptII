@@ -56,11 +56,11 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Keep this list alphabetized.
 JSRCS = \
-	MQTTTokenListener.java \
 	RemoteModel.java \
 	RemoteModelResponse.java \
 	RemoteSourceData.java \
 	RemoteValueListener.java \
+	TokenListener.java \
 	TokenPublisher.java
 
 # Sources that may or may not be present, but if they are present, we don't

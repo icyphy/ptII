@@ -29,6 +29,8 @@ package ptserver.communication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,7 +61,45 @@ public class TokenPublisher {
      */
     public TokenPublisher(long period, int tokensPerPeriod) {
         _period = period;
-//        _tokensPerPeriod = tokensPerPeriod;
+        //        _tokensPerPeriod = tokensPerPeriod;
+        _timer = new Timer(true);
+        _timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                synchronized (TokenPublisher.this) {
+                    if (_tokenCount > 0) {
+                        try {
+                            _mqttClient.publish(getTopic(),
+                                    _outputStream.toByteArray(),
+                                    RemoteModel.QOS_LEVEL, false);
+                        } catch (MqttException e) {
+                            //TODO handle the exception;
+                        }
+                        //FIXME: use a proper logger or remove
+                        //System.out.println(_batchCount++);
+                        //                if (_tokenCount > _tokensPerPeriod) {
+                        //                    long waitTime = (long) (1.0
+                        //                            * (_tokenCount - _tokensPerPeriod)
+                        //                            / _tokensPerPeriod * _period);
+                        //                    try {
+                        //                        Thread.sleep(waitTime);
+                        //                    } catch (InterruptedException e) {
+                        //                    }
+                        //                }
+                        _outputStream.reset();
+                        _tokenCount = 0;
+                    }
+                }
+            }
+        }, _period, _period);
+    }
+
+    /**
+     * Cancel the publisher's timer used for sending batch of tokens.
+     */
+    public void cancelTimer() {
+        _timer.cancel();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -91,41 +131,15 @@ public class TokenPublisher {
      */
     public synchronized void sendToken(Token token)
             throws IllegalActionException {
-        if (_lastSent == -1) {
-            _lastSent = System.currentTimeMillis();
-        }
         try {
             TokenParser.getInstance().convertToBytes(token, _outputStream);
-
             _tokenCount++;
-            long now = System.currentTimeMillis();
-            if (now - _lastSent >= _period) {
-                _mqttClient.publish(getTopic(), _outputStream.toByteArray(),
-                        RemoteModel.QOS_LEVEL, false);
-                //FIXME: use a proper logger or remove
-                //System.out.println(_batchCount++);
-                //                if (_tokenCount > _tokensPerPeriod) {
-                //                    long waitTime = (long) (1.0
-                //                            * (_tokenCount - _tokensPerPeriod)
-                //                            / _tokensPerPeriod * _period);
-                //                    try {
-                //                        Thread.sleep(waitTime);
-                //                    } catch (InterruptedException e) {
-                //                    }
-                //                }
-                _outputStream.reset();
-                _tokenCount = 0;
-                _lastSent = System.currentTimeMillis();
-            }
         } catch (IllegalActionException e) {
             throw new IllegalActionException(null, e,
                     "Problem convernting a token to a byte stream");
         } catch (IOException e) {
             throw new IllegalActionException(null, e,
                     "Problem convernting a token to a byte stream");
-        } catch (MqttException e1) {
-            throw new IllegalActionException(null, e1,
-                    "MQTT problem publishing a token stream");
         }
     }
 
@@ -160,11 +174,6 @@ public class TokenPublisher {
     private String _topic;
 
     /**
-     * The timestamp of the last sent batch.
-     */
-    private long _lastSent = -1;
-
-    /**
      * The period in millisecond between batches.
      */
     private final long _period;
@@ -190,5 +199,9 @@ public class TokenPublisher {
      * The count of batches sent.
      * private int _batchCount;
     */
+    /**
+     * The timer used for sending batch of tokens.
+     */
+    private Timer _timer;
 
 }

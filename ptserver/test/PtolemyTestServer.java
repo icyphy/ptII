@@ -30,7 +30,6 @@ package ptserver.test;
 import java.net.URL;
 import java.util.Random;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;

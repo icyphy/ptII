@@ -53,13 +53,13 @@ import com.ibm.mqtt.MqttSimpleCallback;
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
 */
-public class MQTTTokenListener implements MqttSimpleCallback {
+public class TokenListener implements MqttSimpleCallback {
 
     /**
      * Initialize the instance by reading needed fields from the remoteModel.
      * @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
      */
-    public MQTTTokenListener(RemoteModel remoteModel) {
+    public TokenListener(RemoteModel remoteModel) {
         _remoteModel = remoteModel;
         _topic = remoteModel.getSubscriptionTopic();
     }
@@ -104,13 +104,26 @@ public class MQTTTokenListener implements MqttSimpleCallback {
                 }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
-                Settable changedObject = _remoteModel
+                Settable remoteAttribute = _remoteModel
                         .getSettableAttributesMap().get(
                                 attributeChangeToken.getTargetSettableName());
-                changedObject.setExpression(attributeChangeToken
-                        .getExpression());
+                RemoteValueListener listener = _remoteModel
+                        .getSettableAttributeListenersMap().get(
+                                attributeChangeToken.getTargetSettableName());
+                synchronized (listener) {
+                    try {
+                        listener.setEnabled(false);
+                        remoteAttribute.setExpression(attributeChangeToken
+                                .getExpression());
+                        remoteAttribute.validate();
+                    } finally {
+                        listener.setEnabled(true);
+                    }
+                }
             } else if (token instanceof PingToken) {
-                _remoteModel.getExecutor().execute(new PongTask(new PongToken(((PingToken) token).getTimestamp())));
+                _remoteModel.getExecutor().execute(
+                        new PongTask(new PongToken(((PingToken) token)
+                                .getTimestamp())));
             } else if (token instanceof PongToken) {
                 _remoteModel.setLastPongToken((PongToken) token);
             }
@@ -134,7 +147,6 @@ public class MQTTTokenListener implements MqttSimpleCallback {
      */
     private class PongTask implements Runnable {
 
-        
         /**
          * Create an instance with the provided token.
          * @param token The pong token to send back.

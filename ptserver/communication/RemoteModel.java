@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -56,6 +57,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -96,17 +98,17 @@ public class RemoteModel {
      */
     public interface RemoteModelListener {
         /**
+         * Notify listener about the expiration of the model connection to another remote model.
+         * @param remoteModel The remote model whose connection expired.
+         */
+        public void modelConnectionExpired(RemoteModel remoteModel);
+
+        /**
          * Notify listener the exception in the given model
          * @param remoteModel The model where the exception happened.
          * @param exception The exception that triggered this event.
          */
         public void modelException(RemoteModel remoteModel, Throwable exception);
-
-        /**
-         * Notify listener about the expiration of the model connection to another remote model.
-         * @param remoteModel The remote model whose connection expired.
-         */
-        public void modelConnectionExpired(RemoteModel remoteModel);
     }
 
     /**
@@ -153,22 +155,10 @@ public class RemoteModel {
      * @param listener The listener to add.
      */
     public void addRemoteModelListener(RemoteModelListener listener) {
-        synchronized (_modelListeners) {
-            if (_modelListeners.contains(listener)) {
-                return;
-            } else {
-                _modelListeners.add(listener);
-            }
-        }
-    }
-
-    /**
-     * Unsubscribe the listener from the model events.
-     * @param listener The listener to remove.
-     */
-    public void removeRemoteModelListener(RemoteModelListener listener) {
-        synchronized (_modelListeners) {
-            _modelListeners.remove(listener);
+        if (_modelListeners.contains(listener)) {
+            return;
+        } else {
+            _modelListeners.add(listener);
         }
     }
 
@@ -177,6 +167,7 @@ public class RemoteModel {
      */
     public void close() {
         _pingTimer.cancel();
+        _tokenPublisher.cancelTimer();
         try {
             _mqttClient.unsubscribe(new String[] { getSubscriptionTopic() });
             _mqttClient.registerSimpleHandler(null);
@@ -187,11 +178,48 @@ public class RemoteModel {
     }
 
     /**
+     * Return the executor to schedule short lived tasks.
+     * 
+     * <p>It's used to send PongTokens outside of the MQTT listener thread
+     * since MQTTClient disallows that. </p> 
+     * @return the executor to schedule short lived tasks. 
+     */
+    public Executor getExecutor() {
+        return _executor;
+    }
+
+    /**
+     * Return the last PongToken.
+     * @return the last PongToken.
+     * @set {@link #setLastPongToken(PongToken)}
+     */
+    public synchronized PongToken getLastPongToken() {
+        return _lastPongToken;
+    }
+
+    /**
      * Return the manager controlling this model.
      * @return the Manager controlling this model
      */
     public Manager getManager() {
         return _topLevelActor.getManager();
+    }
+
+    /**
+     * Return the roundtrip latency of sending ping/echo requests.
+     * @return
+     */
+    public long getPingPongLatency() {
+        return _pingPonglatency;
+    }
+
+    /**
+     * Return the mappings from remote source full names to their RemoteSourceData
+     * data-structure.
+     * @return the remoteSourceMap the mappings between full name and RemoteSourceData.
+     */
+    public HashMap<String, RemoteSourceData> getRemoteSourceMap() {
+        return _remoteSourceMap;
     }
 
     /**
@@ -204,6 +232,30 @@ public class RemoteModel {
     }
 
     /**
+     * Return the map with RemoteValueListeners of the model's remote attributes. 
+     * @return the map with RemoteValueListeners of the model's remote attributes.
+     */
+    public HashMap<String, RemoteValueListener> getSettableAttributeListenersMap() {
+        return _settableAttributeListenersMap;
+    }
+
+    /**
+     * Return the mappings from remote attribute full names to their remote Settable instance.
+     * @return the settableAttributesMap the mappings from remote attribute full names to their remote Settable instance.
+     */
+    public HashMap<String, Settable> getSettableAttributesMap() {
+        return _settableAttributesMap;
+    }
+
+    /**
+     * Return the subscription topic of the current model.
+     * @return the subscriptionTopic used to listen for tokens from other remote model.
+     */
+    public String getSubscriptionTopic() {
+        return _subscriptionTopic;
+    }
+
+    /**
      * Return the ticket that uniquely identifies the model.
      * @return the ticket identifying the model.
      */
@@ -212,19 +264,21 @@ public class RemoteModel {
     }
 
     /**
+     * Return the model's timeout period. if the period is less or equal to 0, 
+     * the model would never timeout. 
+     * @return the timeoutPeriod of the model.
+     * @see #setTimeoutPeriod(int)
+     */
+    public int getTimeoutPeriod() {
+        return timeoutPeriod;
+    }
+
+    /**
      * Return the tokenPublisher used to send and batch tokens.
      * @return The token publisher used for sending tokens.
      */
     public TokenPublisher getTokenPublisher() {
         return _tokenPublisher;
-    }
-
-    /**
-     * Return the roundtrip latency of sending ping/echo requests.
-     * @return
-     */
-    public long getPingPongLatency() {
-        return _pingPonglatency;
     }
 
     /**
@@ -283,13 +337,14 @@ public class RemoteModel {
                         port.setTypeEquals(type);
                         port.typeConstraints().clear();
                     } else {
-                        //TODO: is this possible?
+                        //Not sure if this is possible, but just in case.
                         throw new IllegalActionException(port,
                                 "Type constraint for the port was not found");
                     }
                 }
             }
             for (Typeable attribute : actor.attributeList(Typeable.class)) {
+                //Cast to Nameable is safe because it's an attribute.
                 if ((type = BaseType.forName(modelTypes
                         .get(((Nameable) attribute).getFullName()))) != null) {
                     attribute.setTypeEquals(type);
@@ -297,6 +352,7 @@ public class RemoteModel {
                 }
             }
         }
+        _initRemoteAttributes(_topLevelActor);
     }
 
     /**
@@ -324,10 +380,10 @@ public class RemoteModel {
         _topLevelActor = (CompositeActor) parser.parse(null, modelURL);
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
-            Attribute attribute = actor.getAttribute("_remote");
+            Attribute remoteAttribute = actor.getAttribute("_remote");
             boolean isSinkOrSource = false;
-            if (attribute instanceof Parameter) {
-                Parameter parameter = (Parameter) attribute;
+            if (remoteAttribute instanceof Parameter) {
+                Parameter parameter = (Parameter) remoteAttribute;
                 if (parameter.getExpression().equals("source")) {
                     sources.add(actor);
                     isSinkOrSource = true;
@@ -339,7 +395,9 @@ public class RemoteModel {
             if (!isSinkOrSource && _modelType == RemoteModelType.CLIENT) {
                 unneededActors.add(actor);
             }
+            _initRemoteAttributes(actor);
         }
+        _initRemoteAttributes(_topLevelActor);
         if (_topLevelActor instanceof TypedCompositeActor) {
             TypedCompositeActor typedActor = (TypedCompositeActor) _topLevelActor;
             TypedCompositeActor.resolveTypes(typedActor);
@@ -363,12 +421,44 @@ public class RemoteModel {
             for (ComponentEntity entity : sinks) {
                 _createSource(entity, false, getResolvedTypes());
             }
+            HashMap<NamedObj, StringAttribute> containerToDummyAttributeMap = new HashMap<NamedObj, StringAttribute>();
+            for (Settable settable : _settableAttributesMap.values()) {
+                Attribute attribute = (Attribute) settable;
+                NamedObj container = attribute.getContainer();
+                Attribute lastAttribute = attribute;
+                while (container != _topLevelActor) {
+                    StringAttribute dummyAttribute = containerToDummyAttributeMap
+                            .get(container);
+                    if (dummyAttribute == null) {
+                        dummyAttribute = new StringAttribute(
+                                container.getContainer(), container
+                                        .getContainer().uniqueName("dummy"));
+                        dummyAttribute.setPersistent(true);
+                        containerToDummyAttributeMap.put(container,
+                                dummyAttribute);
+                    }
+                    container = container.getContainer();
+                    lastAttribute.setContainer(dummyAttribute);
+                    lastAttribute = dummyAttribute;
+                }
+            }
             for (ComponentEntity componentEntity : unneededActors) {
                 componentEntity.setContainer(null);
             }
+            for (Entry<NamedObj, StringAttribute> entry : containerToDummyAttributeMap
+                    .entrySet()) {
+                entry.getValue().setName(entry.getKey().getName());
+            }
             break;
         }
+    }
 
+    /**
+     * Unsubscribe the listener from the model events.
+     * @param listener The listener to remove.
+     */
+    public void removeRemoteModelListener(RemoteModelListener listener) {
+        _modelListeners.remove(listener);
     }
 
     /**
@@ -380,15 +470,6 @@ public class RemoteModel {
         _lastPongToken = lastPongToken;
         _pingPonglatency = System.currentTimeMillis()
                 - lastPongToken.getTimestamp();
-    }
-
-    /**
-     * Return the last PongToken.
-     * @return the last PongToken.
-     * @set {@link #setLastPongToken(PongToken)}
-     */
-    public synchronized PongToken getLastPongToken() {
-        return _lastPongToken;
     }
 
     /**
@@ -420,9 +501,6 @@ public class RemoteModel {
         _stopped = stopped;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /**
      * Set the ticket uniquely identifying the model
      * @param ticket the ticket to set
@@ -432,6 +510,22 @@ public class RemoteModel {
         _ticket = ticket;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Set the model's timeout period.  If the period is set to 0 or less,
+     * the model would never timeout.
+     * @param the timeout period of the model.
+     * @see #getTimeoutPeriod()
+     */
+    public void setTimeoutPeriod(int timeoutPeriod) {
+        this.timeoutPeriod = timeoutPeriod;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
      * Set up the communication infrastructure.
      * @return The manager of the model
@@ -440,87 +534,20 @@ public class RemoteModel {
      */
     public Manager setUpInfrastructure() throws MqttException,
             IllegalActionException {
-        _mqttClient.registerSimpleHandler(new MQTTTokenListener(this));
-        _mqttClient.subscribe(new String[] { getSubscriptionTopic() },
-                new int[] { QOS_LEVEL });
-        Manager manager = new Manager(_topLevelActor.workspace(), null);
-        _topLevelActor.setManager(manager);
-        _lastPongToken = new PongToken(System.currentTimeMillis());
-        _pingTimer.schedule(new TimerTask() {
+        _setUpMQTT();
+        _setUpRemoteAttributes();
+        _setUpMonitoring();
+        _setUpManager();
+        return _topLevelActor.getManager();
+    }
 
-            @Override
-            public void run() {
-                long msTime = System.currentTimeMillis();
-                try {
-                    _tokenPublisher.sendToken(new PingToken(msTime));
-                } catch (IllegalActionException e) {
-                    //TODO handle this
-                }
-                long lastPong = msTime - _getLastPongToken().getTimestamp();
-                long timeOut = 1000 * 30;
-                if (lastPong > timeOut) {
-                    _fireModelConnectionExpired();
-                }
-            }
-        }, 0, 1000);
-        _topLevelActor.addPiggyback(new Executable() {
-
-            public void addInitializable(Initializable initializable) {
-            }
-
-            public void fire() throws IllegalActionException {
-            }
-
-            public void initialize() throws IllegalActionException {
-                setStopped(false);
-            }
-
-            public boolean isFireFunctional() {
-                return false;
-            }
-
-            public boolean isStrict() throws IllegalActionException {
-                return false;
-            }
-
-            public int iterate(int count) throws IllegalActionException {
-                //FIXME: Not sure if this is correct
-                throw new IllegalActionException("Iterating is not supported");
-            }
-
-            public boolean postfire() throws IllegalActionException {
-                return true;
-            }
-
-            public boolean prefire() throws IllegalActionException {
-                return true;
-            }
-
-            public void preinitialize() throws IllegalActionException {
-            }
-
-            public void removeInitializable(Initializable initializable) {
-            }
-
-            public void stop() {
-                setStopped(true);
-                for (RemoteSourceData data : getRemoteSourceMap().values()) {
-                    synchronized (data.getRemoteSource()) {
-                        data.getRemoteSource().notifyAll();
-                    }
-                }
-            }
-
-            public void stopFire() {
-            }
-
-            public void terminate() {
-            }
-
-            public void wrapup() throws IllegalActionException {
-            }
-        });
-        return manager;
+    /**
+     * Notify the model listeners about the model connection experiation.
+     */
+    protected final void _fireModelConnectionExpired() {
+        for (RemoteModelListener listener : _modelListeners) {
+            listener.modelConnectionExpired(this);
+        }
     }
 
     /**
@@ -560,7 +587,6 @@ public class RemoteModel {
 
             }
             for (Typeable attribute : entity.attributeList(Typeable.class)) {
-                //FIXME: not sure if case to Nameable is safe
                 //FIXME using toString on Type is not elegant and could break
                 portTypes.put(((Nameable) attribute).getFullName(), attribute
                         .getType().toString());
@@ -629,53 +655,162 @@ public class RemoteModel {
         getRemoteSourceMap().put(remoteSource.getTargetEntityName(), data);
     }
 
+    /**
+     * Return the last pong token.
+     * @return the last pong token.
+     */
     private synchronized PongToken _getLastPongToken() {
         return _lastPongToken;
     }
 
     /**
-     * Notify the model listeners about the model connection experiation.
+     * Find all remote attributes of the model and add them to the _settableAttributesMap.
+     * @param container
      */
-    protected final void _fireModelConnectionExpired() {
-        for (RemoteModelListener listener : _modelListeners) {
-            listener.modelConnectionExpired(this);
+    private void _initRemoteAttributes(NamedObj container) {
+        for (Object attributeObject : container.attributeList()) {
+            Attribute attribute = (Attribute) attributeObject;
+            if (_isRemoteAttribute(attribute)) {
+                _settableAttributesMap.put(attribute.getFullName(),
+                        (Settable) attribute);
+            } else {
+                _initRemoteAttributes(attribute);
+            }
         }
     }
 
     /**
-     * Return the subscription topic of the current model.
-     * @return the subscriptionTopic used to listen for tokens from other remote model.
+     * Return true if the attribute is marked as remote attribute, false otherwise.
+     * @param attribute the attribute to check.
+     * @return true if the attribute is marked as remote attribute, false otherwise.
      */
-    public String getSubscriptionTopic() {
-        return _subscriptionTopic;
+    private boolean _isRemoteAttribute(Attribute attribute) {
+        if (attribute instanceof Settable) {
+            Attribute isRemoteAttribute = attribute.getAttribute("_remote");
+            if (isRemoteAttribute instanceof Parameter) {
+                if (((Parameter) isRemoteAttribute).getExpression().equals(
+                        "attribute")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
-     * Return the mappings from remote source full names to their RemoteSourceData
-     * data-structure.
-     * @return the remoteSourceMap the mappings between full name and RemoteSourceData.
+     * Initialize the manager of the model.
+     * @throws IllegalActionException if there is a problem setting the 
+     * manager of the top level actor.
      */
-    public HashMap<String, RemoteSourceData> getRemoteSourceMap() {
-        return _remoteSourceMap;
+    private void _setUpManager() throws IllegalActionException {
+        Manager manager = new Manager(_topLevelActor.workspace(), null);
+        _topLevelActor.setManager(manager);
+        _topLevelActor.addPiggyback(new Executable() {
+
+            public void addInitializable(Initializable initializable) {
+            }
+
+            public void fire() throws IllegalActionException {
+            }
+
+            public void initialize() throws IllegalActionException {
+                setStopped(false);
+            }
+
+            public boolean isFireFunctional() {
+                return false;
+            }
+
+            public boolean isStrict() throws IllegalActionException {
+                return false;
+            }
+
+            public int iterate(int count) throws IllegalActionException {
+                //FIXME: Not sure if this is correct
+                throw new IllegalActionException("Iterating is not supported");
+            }
+
+            public boolean postfire() throws IllegalActionException {
+                return true;
+            }
+
+            public boolean prefire() throws IllegalActionException {
+                return true;
+            }
+
+            public void preinitialize() throws IllegalActionException {
+            }
+
+            public void removeInitializable(Initializable initializable) {
+            }
+
+            public void stop() {
+                setStopped(true);
+                for (RemoteSourceData data : getRemoteSourceMap().values()) {
+                    synchronized (data.getRemoteSource()) {
+                        data.getRemoteSource().notifyAll();
+                    }
+                }
+            }
+
+            public void stopFire() {
+            }
+
+            public void terminate() {
+            }
+
+            public void wrapup() throws IllegalActionException {
+            }
+        });
     }
 
     /**
-     * Return the mappings from remote attribute full names to their remote Settable instance.
-     * @return the settableAttributesMap the mappings from remote attribute full names to their remote Settable instance.
+     * Set up model monitoring infrastructure.
      */
-    public HashMap<String, Settable> getSettableAttributesMap() {
-        return _settableAttributesMap;
+    private void _setUpMonitoring() {
+        setLastPongToken(new PongToken(System.currentTimeMillis()));
+        _pingTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                long msTime = System.currentTimeMillis();
+                try {
+                    _tokenPublisher.sendToken(new PingToken(msTime));
+                } catch (IllegalActionException e) {
+                    //TODO handle this
+                }
+                if (timeoutPeriod > 0) {
+                    long lastPong = msTime - _getLastPongToken().getTimestamp();
+                    long timeOut = 1000 * timeoutPeriod;
+                    if (lastPong > timeOut) {
+                        _fireModelConnectionExpired();
+                    }
+                }
+            }
+        }, 0, 1000);
     }
 
     /**
-     * Return the executor to schedule short lived tasks.
-     * 
-     * <p>It's used to send PongTokens outside of the MQTT listener thread
-     * since MQTTClient disallows that. </p> 
-     * @return the executor to schedule short lived tasks. 
+     * Set up MQTT connection.
+     * @throws MqttException if there is a problem subscribing to topic.
      */
-    public Executor getExecutor() {
-        return _executor;
+    private void _setUpMQTT() throws MqttException {
+        _mqttClient.registerSimpleHandler(new TokenListener(this));
+        _mqttClient.subscribe(new String[] { getSubscriptionTopic() },
+                new int[] { QOS_LEVEL });
+    }
+
+    /**
+     * Set up remote attribute listeners.
+     */
+    private void _setUpRemoteAttributes() {
+        for (Settable settable : _settableAttributesMap.values()) {
+            RemoteValueListener listener = new RemoteValueListener(
+                    _tokenPublisher);
+            settable.addValueListener(listener);
+            _settableAttributeListenersMap
+                    .put(settable.getFullName(), listener);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -710,6 +845,11 @@ public class RemoteModel {
     private final HashMap<String, Settable> _settableAttributesMap = new HashMap<String, Settable>();
 
     /**
+     * The mapping from the original settable object name to its attribute listener.
+     */
+    private final HashMap<String, RemoteValueListener> _settableAttributeListenersMap = new HashMap<String, RemoteValueListener>();
+
+    /**
      * The token publisher used to batch tokens sent by the remote sink.
      */
     private final TokenPublisher _tokenPublisher;
@@ -737,7 +877,7 @@ public class RemoteModel {
     /**
      * The timer used to send periodical pings.
      */
-    private Timer _pingTimer = new Timer(true);
+    private final Timer _pingTimer = new Timer(true);
 
     /**
      * The last pong token received from the remoteModel.
@@ -747,7 +887,7 @@ public class RemoteModel {
     /**
      * The model listeners.
      */
-    private List<RemoteModelListener> _modelListeners = new CopyOnWriteArrayList<RemoteModelListener>();
+    private final List<RemoteModelListener> _modelListeners = new CopyOnWriteArrayList<RemoteModelListener>();
 
     /**
      * The ticket identifying the model.
@@ -762,5 +902,10 @@ public class RemoteModel {
      * The executor used to schedule short lived tasks.
      */
     private final Executor _executor;
+
+    /**
+     * Model time out period.
+     */
+    private int timeoutPeriod = 30;
 
 }
