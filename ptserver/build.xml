@@ -502,4 +502,11 @@
 
 		</findbugs>
 	</target>
+	<target name="checkstyle" depends="initOutput">
+		<taskdef resource="checkstyletask.properties" classpath="ptserver/lib/checkstyle-5.3-all.jar" />
+		<checkstyle config="doc/checkstyle-ptII.xml" failOnViolation="false">
+			<fileset dir="ptserver" />
+			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
+		</checkstyle>
+	</target>
 </project>
