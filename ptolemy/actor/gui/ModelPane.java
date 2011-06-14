@@ -141,6 +141,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_goButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _goButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         startRun();
                     }
@@ -151,6 +152,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_pauseButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _pauseButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         pauseRun();
                     }
@@ -161,6 +163,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_resumeButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _resumeButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         resumeRun();
                     }
@@ -170,6 +173,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _stopButton.setToolTipText("Stop executing the model");
                 _buttonPanel.add(_stopButton);
                 _stopButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         stopRun();
                     }
@@ -257,6 +261,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *   The displays are handled by setModel().
      *  @see #getDisplayPane()
      */
+    @Deprecated
     public void setDisplayPane(Container pane) {
         if (_displays != null) {
             remove(_displays);
@@ -416,6 +421,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
+    @Override
     public void windowClosed(Window window, String button) {
         if (_directorQuery != null) {
             _directorQuery.windowClosed(window, button);
@@ -481,6 +487,8 @@ public class ModelPane extends JPanel implements CloseListener {
 
             if (object instanceof Placeable) {
                 ((Placeable) object).place(_displays);
+            } else if (object instanceof PortablePlaceable) {
+                ((PortablePlaceable) object).place(new AWTContainer(_displays));
             }
         }
     }
@@ -506,7 +514,7 @@ public class ModelPane extends JPanel implements CloseListener {
     private JButton _goButton;
 
     // The layout specified in the constructor.
-    private int _layout;
+    private final int _layout;
 
     // The manager of the associated model.
     private Manager _manager;
@@ -527,7 +535,7 @@ public class ModelPane extends JPanel implements CloseListener {
     private JButton _resumeButton;
 
     // Indicator given to the constructor of how much to show.
-    private int _show;
+    private final int _show;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -551,12 +559,14 @@ public class ModelPane extends JPanel implements CloseListener {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     private class ClickListener extends MouseAdapter {
+        @Override
         public void mouseClicked(MouseEvent e) {
             _controlPanel.requestFocus();
         }
     }
 
     private class CommandListener extends KeyAdapter {
+        @Override
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -636,6 +646,7 @@ public class ModelPane extends JPanel implements CloseListener {
             }
         }
 
+        @Override
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -657,7 +668,7 @@ public class ModelPane extends JPanel implements CloseListener {
 
         private boolean _shift = false;
 
-        private String _helpString = "Key bindings in button panel:\n"
+        private final String _helpString = "Key bindings in button panel:\n"
                 + "  Control-G: Start a run.\n"
                 + "  Control-H: Display help.\n"
                 + "  Control-M: Export MoML to standard out.\n"

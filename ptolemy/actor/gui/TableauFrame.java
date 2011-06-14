@@ -130,7 +130,24 @@ public class TableauFrame extends Top {
      *  @param statusBar The status bar, or null to not include one.
      */
     public TableauFrame(Tableau tableau, StatusBar statusBar) {
-        this(tableau, statusBar, null);
+        super(statusBar);
+        // Set this frame in the tableau so that later in the constructor we can
+        // invoke tableau.getFrame() to get back this frame instead of null.
+        // -- tfeng (01/15/2009)
+        try {
+            if (tableau != null) {
+                tableau.setFrame(this);
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException("This frame of class "
+                    + getClass() + " is not compatible with tableau "
+                    + tableau.getName());
+        }
+
+        setTableau(tableau);
+        setIconImage(_getDefaultIconImage());
+        _newMenuItems = new Vector<AbstractButton>();
+
     }
 
     /** Construct an empty top-level frame managed by the specified
@@ -148,25 +165,27 @@ public class TableauFrame extends Top {
      */
     public TableauFrame(Tableau tableau, StatusBar statusBar,
             Placeable placeable) {
-        super(statusBar);
-
-        // Set this frame in the tableau so that later in the constructor we can
-        // invoke tableau.getFrame() to get back this frame instead of null.
-        // -- tfeng (01/15/2009)
-        try {
-            if (tableau != null) {
-                tableau.setFrame(this);
-            }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException("This frame of class "
-                    + getClass() + " is not compatible with tableau "
-                    + tableau.getName());
-        }
-
-        setTableau(tableau);
-        setIconImage(_getDefaultIconImage());
+        this(tableau, statusBar);
         _placeable = placeable;
-        _newMenuItems = new Vector<AbstractButton>();
+    }
+
+    /** Construct an empty top-level frame managed by the specified
+     *  tableau with the specified status bar and associated PortablePlaceable
+     *  object. Associating an instance of PortablePlaceable with this
+     *  frame has the effect that when this frame is closed,
+     *  if the portablePlaceable contains instances of WindowSizeAttribute
+     *  and/or SizeAttribute, then the window sizes are recorded.
+     *  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
+     *  @param tableau The managing tableau.
+     *  @param statusBar The status bar, or null to not include one.
+     *  @param portablePlaceable The associated PortablePlaceable.
+     */
+    public TableauFrame(Tableau tableau, StatusBar statusBar,
+            PortablePlaceable portablePlaceable) {
+        this(tableau, statusBar);
+        _portablePlaceable = portablePlaceable;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -255,6 +274,7 @@ public class TableauFrame extends Top {
      *  has not been called.
      *  @return True if the data has been modified.
      */
+    @Override
     public boolean isModified() {
         Effigy effigy = getEffigy();
 
@@ -272,6 +292,7 @@ public class TableauFrame extends Top {
      *  This overrides the base class to delegate to the effigy.
      *  @param modified True if the data has been modified.
      */
+    @Override
     public void setModified(boolean modified) {
         Effigy effigy = getEffigy();
 
@@ -298,6 +319,7 @@ public class TableauFrame extends Top {
      * If the _alternateTopPackClass attribute is not set or set
      * improperly, then Top.pack() is called from this method.
      */
+    @Override
     public void pack() {
         super.pack();
         Configuration configuration = getConfiguration();
@@ -384,6 +406,7 @@ public class TableauFrame extends Top {
     /** Override the base class to open the intro.htm splash window,
      *  which is in the directory ptolemy/configs.
      */
+    @Override
     protected void _about() {
         // NOTE: We take some care here to ensure that this window is
         // only opened once.
@@ -464,6 +487,7 @@ public class TableauFrame extends Top {
      *  <p>If the configuration has a _disableFileNew parameter that
      *  is set to true, then we do not populate the File-&gt;New menu.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -511,8 +535,8 @@ public class TableauFrame extends Top {
                     canCreateBlank = true;
 
                     String name = factory.getName();
-                    ActionListener menuListener = new MenuItemListener(
-                            factory,directory,configuration);
+                    ActionListener menuListener = new MenuItemListener(factory,
+                            directory, configuration);
 
                     JMenuItem item = new JMenuItem(name);
                     item.setActionCommand(name);
@@ -578,14 +602,15 @@ public class TableauFrame extends Top {
      *  then ask the user whether to save the data before closing.
      *  @return False if the user cancels on a save query.
      */
+    @Override
     protected boolean _close() {
         if (_debugClosing) {
             System.out.println("TableauFrame._close() : " + this.getName());
         }
 
         // Record window properties, if appropriate.
-        if (_placeable instanceof NamedObj) {
-            Iterator properties = ((NamedObj) _placeable).attributeList(
+        if (_getPlaceable() instanceof NamedObj) {
+            Iterator properties = ((NamedObj) _getPlaceable()).attributeList(
                     WindowPropertiesAttribute.class).iterator();
             while (properties.hasNext()) {
                 WindowPropertiesAttribute windowProperties = (WindowPropertiesAttribute) properties
@@ -595,7 +620,7 @@ public class TableauFrame extends Top {
             // Regrettably, have to also record the size of the contents
             // because in Swing, setSize() methods do not set the size.
             // Only the first component size is recorded.
-            properties = ((NamedObj) _placeable).attributeList(
+            properties = ((NamedObj) _getPlaceable()).attributeList(
                     SizeAttribute.class).iterator();
             while (properties.hasNext()) {
                 SizeAttribute size = (SizeAttribute) properties.next();
@@ -630,9 +655,7 @@ public class TableauFrame extends Top {
                         // windowClosed events rather than overriding the
                         // windowClosing behavior given here.
                         dispose();
-                        if (_placeable != null) {
-                            _placeable.place(null);
-                        }
+                        _clearPlaceable();
                         return true;
                     }
                 }
@@ -653,9 +676,7 @@ public class TableauFrame extends Top {
                     // issue a warning that those children will
                     // persist.  Give the user the chance to cancel.
                     if (!_checkForDerivedObjects()) {
-                        if (_placeable != null) {
-                            _placeable.place(null);
-                        }
+                        _clearPlaceable();
                         return false;
                     }
                 }
@@ -686,13 +707,10 @@ public class TableauFrame extends Top {
                 dispose();
             }
         }
-        if (_placeable != null) {
-            _placeable.place(null);
-        }
+        _clearPlaceable();
         return result;
     }
-    
-    
+
     /** Dispose of this frame.
      *	
      *  <p>Override this dispose() method to unattach any listeners that may keep
@@ -700,22 +718,23 @@ public class TableauFrame extends Top {
      *  dispose() method of the superclass,
      *  {@link ptolemy.gui.Top}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("TableauFrame.dispose() : " + this.getName());
         }
 
         // Deal with view menu action listeners
-        /*int c =*/ MemoryCleaner.removeActionListeners(_viewMenu);
+        /*int c =*/MemoryCleaner.removeActionListeners(_viewMenu);
         //System.out.println("_viewMenu: "+c);
-        
+
         // Deal with new menu action listeners
         //int i = 0;
         for (AbstractButton newMenuButton : _newMenuItems) {
-            /*c =*/ MemoryCleaner.removeActionListeners(newMenuButton);
+            /*c =*/MemoryCleaner.removeActionListeners(newMenuButton);
             //System.out.println("newMenuButton["+(i++)+"]: "+c);
         }
-        
+
         // The size attribute is holding a reference to this frame
         // with an attached listener.  Free the reference so this
         // frame can be garbage collected.  Also, null the reference
@@ -724,11 +743,11 @@ public class TableauFrame extends Top {
             _tableau.size.setSize(null);
             setTableau(null);
         }
-        
+
         if (_placeable != null) {
             _placeable = null;
         }
-        
+
         super.dispose();
     }
 
@@ -845,6 +864,7 @@ public class TableauFrame extends Top {
      *  then do not exit.
      *  @see Tableau#close()
      */
+    @Override
     protected void _exit() {
         ModelDirectory directory = getDirectory();
 
@@ -963,6 +983,7 @@ public class TableauFrame extends Top {
      *  for the title of the window.
      *  @return The name.
      */
+    @Override
     protected String _getName() {
         Effigy effigy = getEffigy();
 
@@ -985,6 +1006,7 @@ public class TableauFrame extends Top {
      *  _about() method.
      *  @see FileParameter
      */
+    @Override
     protected void _help() {
         try {
             Configuration configuration = getConfiguration();
@@ -1011,6 +1033,7 @@ public class TableauFrame extends Top {
      *  @exception Exception If the URL cannot be read, or if there is no
      *   tableau.
      */
+    @Override
     protected void _read(URL url) throws Exception {
         if (_tableau == null) {
             throw new Exception("No associated Tableau!"
@@ -1023,8 +1046,8 @@ public class TableauFrame extends Top {
         Nameable configuration = _tableau.toplevel();
 
         if (configuration instanceof Configuration) {
-            ((Configuration) configuration).openModel(url, url, url
-                    .toExternalForm());
+            ((Configuration) configuration).openModel(url, url,
+                    url.toExternalForm());
         } else {
             throw new InternalErrorException(
                     "Expected top-level to be a Configuration: "
@@ -1039,6 +1062,7 @@ public class TableauFrame extends Top {
      *  _saveAs(). This calls _writeFile() to perform the save.
      *  @return True if the save succeeds.
      */
+    @Override
     protected boolean _save() {
         if (_tableau == null) {
             throw new InternalErrorException(
@@ -1069,6 +1093,7 @@ public class TableauFrame extends Top {
      *  ModelDirectory and to rename the model to match the file name.
      *  @return True if the save succeeds.
      */
+    @Override
     protected boolean _saveAs() {
         return _saveAs(null);
     }
@@ -1083,13 +1108,13 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs(String extension) {
-    	URL result = _saveAsHelper(extension);
-    	if (result == null){
-    		return false;
-    	}
-    	return true;
+        URL result = _saveAsHelper(extension);
+        if (result == null) {
+            return false;
+        }
+        return true;
     }
-    
+
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.
      *
@@ -1120,6 +1145,7 @@ public class TableauFrame extends Top {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     protected void _writeFile(File file) throws IOException {
         Tableau tableau = getTableau();
 
@@ -1214,7 +1240,7 @@ public class TableauFrame extends Top {
 
         return true;
     }
-        
+
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.  This method
      *  uses java.awt.FileDialog and is usually used under Mac OS X.
@@ -1235,8 +1261,8 @@ public class TableauFrame extends Top {
         FileDialog fileDialog = _saveAsFileDialogComponent();
 
         if (_initialSaveAsFileName != null) {
-            fileDialog.setFile(new File(fileDialog
-                            .getDirectory(), _initialSaveAsFileName).toString());
+            fileDialog.setFile(new File(fileDialog.getDirectory(),
+                    _initialSaveAsFileName).toString());
         }
         fileDialog.show();
 
@@ -1253,7 +1279,7 @@ public class TableauFrame extends Top {
                 // the last slash) with new text.  For example, If I do Save As and
                 // the entry widget says "/Users/cxh/ptII/foo", then change it 
                 // to say "/Users/cxh/ptII/bar".
-                file = new File(selectedFile.replace(':','/'));
+                file = new File(selectedFile.replace(':', '/'));
             } else {
                 // FIXME: Are there any circumstances under which selectedFile
                 // will contain a colon as a directory separator but not
@@ -1280,8 +1306,11 @@ public class TableauFrame extends Top {
                 // been saved, so we do not change its modified status.
                 // setModified(false);
                 // Open a new window on the model.
-                Tableau newTableau = getConfiguration().openModel(newURL, newURL, newKey);
-                newTableau.getFrame().setTitle(StringUtilities.abbreviate(new File(_directory, file.getName()).toString()));
+                Tableau newTableau = getConfiguration().openModel(newURL,
+                        newURL, newKey);
+                newTableau.getFrame().setTitle(
+                        StringUtilities.abbreviate(new File(_directory, file
+                                .getName()).toString()));
 
                 // If the tableau was unnamed before, then we need
                 // to close this window after doing the save.
@@ -1296,7 +1325,7 @@ public class TableauFrame extends Top {
                         effigy.setContainer(null);
                     }
                 }
-                    
+
                 dispose();
                 return newURL;
             } catch (Exception ex) {
@@ -1379,7 +1408,7 @@ public class TableauFrame extends Top {
                             effigy.setContainer(null);
                         }
                     }
-                    
+
                     dispose();
 
                     return newURL;
@@ -1397,6 +1426,27 @@ public class TableauFrame extends Top {
         }
     }
 
+    /** Clear  placeable or porablePlacable or by passing a null container to it.  
+     *
+     */
+    private void _clearPlaceable() {
+        if (_placeable != null) {
+            _placeable.place(null);
+        }
+        if (_portablePlaceable != null) {
+            _portablePlaceable.place(null);
+        }
+    }
+
+    /** Get the appropriate instance of intance of Placeable or PortablePlaceable,
+     *  depending upon what is initialized.  
+     *
+     *  @return Instance of Placeable or PortablePlaceable 
+     */
+    private Object _getPlaceable() {
+        return _placeable != null ? _placeable : _portablePlaceable;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The container of view factories, if one has been found.
@@ -1411,14 +1461,17 @@ public class TableauFrame extends Top {
     /** Associated placeable. */
     private Placeable _placeable;
 
+    /** Associated portablePlaceable. */
+    private PortablePlaceable _portablePlaceable;
+
     /** Set to true when the pack() method is called.  Used by TopPack.pack(). */
     private boolean _packCalled = false;
 
     /** Set in pack() if an alternate topPack is used. */
     protected TopPack _topPack = null;
-    
+
     /** A vector to keep track of ActionListeners on menu items. */
-    private Vector<AbstractButton> _newMenuItems;
+    private final Vector<AbstractButton> _newMenuItems;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -1433,29 +1486,31 @@ public class TableauFrame extends Top {
          * @param configuration The Configuration for this instance
          * of Ptolemy.
          */
-        public MenuItemListener (EffigyFactory factory,
+        public MenuItemListener(EffigyFactory factory,
                 ModelDirectory directory, Configuration configuration) {
             _factory = factory;
             _directory = directory;
             _configuration = configuration;
         }
+
+        @Override
         public void actionPerformed(ActionEvent event) {
             Effigy effigy = null;
-    
+
             try {
                 effigy = _factory.createEffigy(_directory);
             } catch (Exception ex) {
-                MessageHandler.error(
-                        "Could not create new effigy", ex);
+                MessageHandler.error("Could not create new effigy", ex);
             }
-    
+
             _configuration.createPrimaryTableau(effigy);
         }
-        private EffigyFactory _factory;
-        private ModelDirectory _directory;
-        private Configuration _configuration;
+
+        private final EffigyFactory _factory;
+        private final ModelDirectory _directory;
+        private final Configuration _configuration;
     }
-    
+
     /** File filter that filters out files that do not have one of a
      *  pre-specified list of extensions.
      *  Note that as of Java 1.6, there is a FileNameExtensionFilter which
@@ -1464,7 +1519,9 @@ public class TableauFrame extends Top {
      *
      *  @deprecated Use diva.gui.ExtensionFileFilter or javax.swing.filechooser.FileNameExtensionFilter
      */
-    protected static class ExtensionFileFilter extends diva.gui.ExtensionFileFilter {
+    @Deprecated
+    protected static class ExtensionFileFilter extends
+            diva.gui.ExtensionFileFilter {
         // NetBeans wants this protected.  If it is package visibility,
         // then there are problems accessing it from the same package
         // but a different jar.
@@ -1478,6 +1535,7 @@ public class TableauFrame extends Top {
          *   a String.
          *  @deprecated Use diva.gui.ExtensionFileFilter.addExtension().
          */
+        @Deprecated
         public ExtensionFileFilter(List extensions) {
             super(extensions);
         }
@@ -1485,6 +1543,7 @@ public class TableauFrame extends Top {
 
     /** Listener for view menu commands. */
     class ViewMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler.setContext(TableauFrame.this);

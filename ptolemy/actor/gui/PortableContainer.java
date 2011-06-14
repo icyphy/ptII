@@ -33,15 +33,13 @@ package ptolemy.actor.gui;
 /**
  * Platform independent container for placing UI components into itself.
  * The implementor of this interface would wrap the platform dependent container.
- * @param <C> The type of the platform dependent container.
- * @param <T> The type of the components that the container contains.
  * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public interface PortableContainer<C, T> {
+public interface PortableContainer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -49,12 +47,12 @@ public interface PortableContainer<C, T> {
      * Add the specified component into the container.
      * @param component the component to be added.
      */
-    public void add(T component);
+    public void add(Object component);
 
     /**
      * Return the platform dependent container that this instance wraps.
      * @return the platform dependent container 
      */
-    public C getPlatformContainer();
+    public Object getPlatformContainer();
 
 }

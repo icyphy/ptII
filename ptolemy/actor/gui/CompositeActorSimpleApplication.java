@@ -178,7 +178,8 @@ public class CompositeActorSimpleApplication {
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
 
-            if (object instanceof Placeable) {
+            if (object instanceof Placeable
+                    || object instanceof PortablePlaceable) {
                 throw new IllegalActionException(
                         "CompositeActorSimpleApplication does not support "
                                 + "actors that are instances of placeable, "
@@ -426,8 +427,8 @@ public class CompositeActorSimpleApplication {
     private boolean _expectingClass = false;
 
     // List of parameter names seen on the command line.
-    private List _parameterNames = new LinkedList();
+    private final List _parameterNames = new LinkedList();
 
     // List of parameter values seen on the command line.
-    private List _parameterValues = new LinkedList();
+    private final List _parameterValues = new LinkedList();
 }

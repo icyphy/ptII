@@ -47,6 +47,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -109,6 +110,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @param functions An array of functions.
      *  @return The code that declares functions.
      */
+    @Override
     public Object generateFunctionTable(Object[] types, Object[] functions) {
         StringBuffer code = new StringBuffer();
 
@@ -164,6 +166,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the initialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateInitializeEntryCode() throws IllegalActionException {
         // If the container is in the top level, we are generating code
         // for the whole model.
@@ -196,6 +199,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the initialization procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateInitializeExitCode() throws IllegalActionException {
         return "}" + _eol;
     }
@@ -204,6 +208,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the initialization procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateInitializeProcedureName()
             throws IllegalActionException {
         if (_hasPlaceable() && target.getExpression().equals("posix")) {
@@ -226,6 +231,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  code blocks.
      *  @return text that is suitable for the C preprocessor.
      */
+    @Override
     public String generateLineInfo(int lineNumber, String filename) {
         return "#line " + lineNumber + " \"" + filename + "\"" + _eol;
     }
@@ -235,6 +241,7 @@ public class CCodeGenerator extends CodeGenerator {
      *   In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainEntryCode() throws IllegalActionException {
         StringBuffer mainEntryCode = new StringBuffer();
 
@@ -415,6 +422,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return Return a string that declares the end of the main() function.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainExitCode() throws IllegalActionException {
         if (isTopLevel()) {
             return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
@@ -428,6 +436,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the postfire procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireEntryCode() throws IllegalActionException {
         // If the container is in the top level, we are generating code
         // for the whole model.
@@ -447,6 +456,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the postfire procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireExitCode() throws IllegalActionException {
         return _INDENT1 + "return true;" + _eol + "}" + _eol;
     }
@@ -455,6 +465,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the postfire procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireProcedureName() throws IllegalActionException {
 
         return _INDENT1 + "postfire(void);" + _eol;
@@ -476,6 +487,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  director cannot be found, or if an error occurs when the helper
      *  actor generates the type resolution code.
      */
+    @Override
     public String generateTypeConvertCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
@@ -785,6 +797,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableDeclaration());
@@ -813,6 +826,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -829,15 +843,20 @@ public class CCodeGenerator extends CodeGenerator {
 
                 NamedObj container = variable.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
-                code.append(comment(1, "Variable: "
-                        + variable
-                        + " simpleName: "
-                        + CodeGeneratorHelper.generateSimpleName(variable)
-                        + " value: "
-                        + containerHelper.getParameterValue(CodeGeneratorHelper
-                                .generateSimpleName(variable), variable
-                                .getContainer()) + " variable Type: "
-                        + containerHelper.targetType(variable.getType())));
+                code.append(comment(
+                        1,
+                        "Variable: "
+                                + variable
+                                + " simpleName: "
+                                + CodeGeneratorHelper
+                                        .generateSimpleName(variable)
+                                + " value: "
+                                + containerHelper.getParameterValue(
+                                        CodeGeneratorHelper
+                                                .generateSimpleName(variable),
+                                        variable.getContainer())
+                                + " variable Type: "
+                                + containerHelper.targetType(variable.getType())));
 
                 code.append(_INDENT1
                         + generateVariableName(variable)
@@ -855,6 +874,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the wrapup procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupEntryCode() throws IllegalActionException {
 
         // If the container is in the top level, we are generating code
@@ -875,6 +895,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the wrapup procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupExitCode() throws IllegalActionException {
 
         return "}" + _eol;
@@ -884,6 +905,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return a string for the wrapup procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupProcedureName() throws IllegalActionException {
 
         return _INDENT1 + "wrapup();" + _eol;
@@ -903,6 +925,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  the code parameter.
      *  @exception IOException If thrown will reading the code.
      */
+    @Override
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
             throws IOException {
         BufferedReader bufferedReader = null;
@@ -956,6 +979,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException If thrown when getting an actor's
      *   include directories.
      */
+    @Override
     protected void _addActorIncludeDirectories() throws IllegalActionException {
         ActorCodeGenerator helper = _getHelper(getContainer());
 
@@ -970,6 +994,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException If thrown when getting an actor's
      *   libraries.
      */
+    @Override
     protected void _addActorLibraries() throws IllegalActionException {
         ActorCodeGenerator helper = _getHelper(getContainer());
 
@@ -992,6 +1017,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException If the helper of the
      *   top composite actor is unavailable.
      */
+    @Override
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
         _overloadedFunctionSet = new LinkedHashSet<String>();
@@ -1057,6 +1083,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException If there are problems reading
      *  parameters or executing the commands.
      */
+    @Override
     protected int _executeCommands() throws IllegalActionException {
 
         List commands = new LinkedList();
@@ -1113,6 +1140,7 @@ public class CCodeGenerator extends CodeGenerator {
      * @return The processed code.
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
+    @Override
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
@@ -1175,6 +1203,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException If the helper class for some actor
      *   cannot be found.
      */
+    @Override
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -1217,13 +1246,13 @@ public class CCodeGenerator extends CodeGenerator {
      *  the code generated by _recordStartTime() was called.
      *  @return Return the code for printing the total execution time.
      */
+    @Override
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
-        endCode
-                .append("clock_gettime(CLOCK_REALTIME, &end);\n"
-                        + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
-                        + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
+        endCode.append("clock_gettime(CLOCK_REALTIME, &end);\n"
+                + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
+                + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
         return endCode.toString();
     }
 
@@ -1231,6 +1260,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  This writes current time into a timespec struct called "start".
      *  @return Return the code for recording the current time.
      */
+    @Override
     protected String _recordStartTime() {
         StringBuffer startCode = new StringBuffer();
         startCode.append(super._recordStartTime());
@@ -1289,6 +1319,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
+    @Override
     protected void _writeMakefile() throws IllegalActionException {
 
         // Write the code to a file with the same name as the model into
@@ -1366,8 +1397,8 @@ public class CCodeGenerator extends CodeGenerator {
                     }
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
                     // Need when we call the plotter from generated C code.
-                    substituteMap.put("@PTJNI_PLATFORM_LDFLAG@", widthFlag +
-                            "-framework JavaVM -framework CoreFoundation");
+                    substituteMap.put("@PTJNI_PLATFORM_LDFLAG@", widthFlag
+                            + "-framework JavaVM -framework CoreFoundation");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
 
@@ -1410,7 +1441,8 @@ public class CCodeGenerator extends CodeGenerator {
             String uriString = uri.toString();
             templateList.add(uriString.substring(0,
                     uriString.lastIndexOf("/") + 1)
-                    + _sanitizedModelName + ".mk.in");
+                    + _sanitizedModelName
+                    + ".mk.in");
         }
         // 2. If the target parameter is set, look for a makefile.
         String generatorDirectory = generatorPackage.stringValue().replace('.',
@@ -1507,7 +1539,7 @@ public class CCodeGenerator extends CodeGenerator {
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
 
-            if (object instanceof Placeable
+            if ((object instanceof Placeable || object instanceof PortablePlaceable)
                     && !(object instanceof ptolemy.actor.lib.gui.Display)) {
                 hasPlaceable = true;
                 break;

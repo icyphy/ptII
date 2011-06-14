@@ -26,7 +26,6 @@
 
 package ptolemy.actor.gui;
 
-import java.awt.Container;
 
 ///////////////////////////////////////////////////////////////////
 //// PortablePlaceable
@@ -77,5 +76,5 @@ public interface PortablePlaceable {
      *  @param container The container in which to place the object, or
      *   null to specify that there is no current container.
      */
-    public void place(Container container);
+    public void place(PortableContainer container);
 }

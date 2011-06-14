@@ -88,7 +88,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @param document The document containing text, or null if none.
      */
     public TextEditor(String title, Document document) {
-        this(title, document, null);
+        this(title, document, (Placeable) null);
     }
 
     /** Construct an empty text editor with the specified title and
@@ -102,21 +102,22 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     public TextEditor(String title, Document document, Placeable placeable) {
         // NOTE: Create with no status bar, since we have no use for it now.
         super(null, null, placeable);
-        setTitle(title);
+        _init(title, document);
+    }
 
-        text = new JTextArea(document);
-
-        // Since the document may have been null, request it...
-        document = text.getDocument();
-        document.addDocumentListener(this);
-        _scrollPane = new JScrollPane(text);
-
-        getContentPane().add(_scrollPane, BorderLayout.CENTER);
-        _initialSaveAsFileName = "data.txt";
-
-        // Set the undo listener, with default key mappings.
-        text.getDocument().addUndoableEditListener(new UndoListener(text));
-
+    /** Construct an empty text editor with the specified title and
+     *  document and associated poratalbeplaceable.  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame
+     *  appear.
+     *  @param title The title to put in the title bar.
+     *  @param document The document containing text, or null if none.
+     *  @param portablePlaceable The associated PortablePlaceable.
+     */
+    public TextEditor(String title, Document document,
+            PortablePlaceable portablePlaceable) {
+        // NOTE: Create with no status bar, since we have no use for it now.
+        super(null, null, portablePlaceable);
+        _init(title, document);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,6 +132,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     /** React to notification that an attribute or set of attributes
      *  changed.
      */
+    @Override
     public void changedUpdate(DocumentEvent e) {
         // Do nothing... We don't care about attributes.
     }
@@ -139,12 +141,14 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @return The background color of the scroll pane.
      *  @see #setBackground(Color)
      */
+    @Override
     public Color getBackground() {
         return _scrollPane.getBackground();
     }
 
     /** React to notification that there was an insert into the document.
      */
+    @Override
     public void insertUpdate(DocumentEvent e) {
         setModified(true);
     }
@@ -158,6 +162,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
+    @Override
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         if (graphics == null) {
@@ -195,7 +200,8 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
         for (int line = startLine; line < endLine; line++) {
             try {
-                String linetext = text.getText(text.getLineStartOffset(line),
+                String linetext = text.getText(
+                        text.getLineStartOffset(line),
                         text.getLineEndOffset(line)
                                 - text.getLineStartOffset(line));
                 graphics2D.drawString(linetext, (int) format.getImageableX(),
@@ -216,6 +222,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** React to notification that there was a removal from the document.
      */
+    @Override
     public void removeUpdate(DocumentEvent e) {
         setModified(true);
     }
@@ -232,6 +239,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @param background The background color.
      *  @see #getBackground()
      */
+    @Override
     public void setBackground(Color background) {
         super.setBackground(background);
 
@@ -246,13 +254,14 @@ public class TextEditor extends TableauFrame implements DocumentListener,
             text.setBackground(background);
         }
     }
-    
+
     /** Dispose of this frame.
      *     Override this dispose() method to unattach any listeners that may keep
      *  this model from getting garbage collected.  This method invokes the 
      *  dispose() method of the superclass,
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("TextEditor.dispose() : " + this.getName());
@@ -270,6 +279,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  indicates that the user has canceled the action.
      *  @return False if the user cancels the clear.
      */
+    @Override
     protected boolean _clear() {
         if (super._clear()) {
             text.setText("");
@@ -281,9 +291,36 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** Display more detailed information than given by _about().
      */
+    @Override
     protected void _help() {
         // FIXME: Give instructions for the editor here.
         _about();
+    }
+
+    /** Initializes an empty text editor with the specified title and
+     *  document and associated placeable.  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame
+     *  appear.
+     *  
+     *  @param title The title to put in the title bar.
+     *  @param document The document containing text. 
+     */
+
+    protected void _init(String title, Document document) {
+        setTitle(title);
+
+        text = new JTextArea(document);
+
+        // Since the document may have been null, request it...
+        document = text.getDocument();
+        document.addDocumentListener(this);
+        _scrollPane = new JScrollPane(text);
+
+        getContentPane().add(_scrollPane, BorderLayout.CENTER);
+        _initialSaveAsFileName = "data.txt";
+
+        // Set the undo listener, with default key mappings.
+        text.getDocument().addUndoableEditListener(new UndoListener(text));
     }
 
     /** Query the user for a filename, save the model to that file,
@@ -291,12 +328,14 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  This overrides the base class to use the ".txt" extension.
      *  @return True if the save succeeds.
      */
+    @Override
     protected boolean _saveAs() {
         return _saveAs(".txt");
     }
 
     /** Print the contents.
      */
+    @Override
     protected void _print() {
         // FIXME: What should we print?
         super._print();

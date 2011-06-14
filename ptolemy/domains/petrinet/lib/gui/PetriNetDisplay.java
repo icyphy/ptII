@@ -29,6 +29,8 @@
 
 package ptolemy.domains.petrinet.lib.gui;
 
+import javax.swing.JTextArea;
+
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.domains.petrinet.kernel.PetriNetDisplayer;
 import ptolemy.kernel.CompositeEntity;
@@ -75,7 +77,7 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
         super(container, name);
         text = "";
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                      public methods                       ////   
 
@@ -84,27 +86,30 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
      * @exception IllegalActionException If _openWindow() in the base 
      * class throws it.
      */
+    @Override
     public void openDisplay() throws IllegalActionException {
         if (!_initialized) {
             _initialized = true;
             _openWindow();
         }
+        JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
         textArea.setText(text);
     }
-    
+
     /** Set the text for the display.  This method is called by the 
      * PetriNetDirector.
      * 
      * @param text
      *          The text to be shown in the display.
      */
+    @Override
     public void setText(String text) {
         this.text = text;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    private variables                      ////   
-    
+
     /** This string represents the evolution of the Petri Net and should
      * be set by the PetriNetDirector.
      */

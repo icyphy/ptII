@@ -32,8 +32,10 @@ import java.util.Iterator;
 import javax.swing.JPanel;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.gui.AWTContainer;
 import ptolemy.actor.gui.ModelPane;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.PortablePlaceable;
 
 ///////////////////////////////////////////////////////////////////
 //// HelicopterModelPane
@@ -90,6 +92,7 @@ public class HelicopterModelPane extends ModelPane {
      *  placed differently.
      *  @param model The model that contains the placeable objects.
      */
+    @Override
     protected void _createPlaceable(CompositeActor model) {
         if (_displays != null) {
             remove(_displays);
@@ -112,6 +115,9 @@ public class HelicopterModelPane extends ModelPane {
 
             if (object instanceof Placeable) {
                 ((Placeable) object).place(_displays);
+            } else if (object instanceof PortablePlaceable) {
+                ((PortablePlaceable) object).place(new AWTContainer(_displays));
+
             }
         }
     }

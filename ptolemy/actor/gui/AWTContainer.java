@@ -42,7 +42,7 @@ import java.awt.Container;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class AWTContainer implements PortableContainer<Container, Component> {
+public class AWTContainer implements PortableContainer {
 
     /**
      * Create a new instance of the object by wrapping the provided container.
@@ -58,17 +58,19 @@ public class AWTContainer implements PortableContainer<Container, Component> {
     /** 
      * Add the component to the container.
      * @param component the component to be added to the container.
-     * @see ptolemy.actor.gui.PortableContainer#add(java.lang.Object)
+     * @see ptolemy.actor.gui.portable.PortableContainer#add(java.lang.Object)
      */
-    public void add(Component component) {
-        _container.add(component);
+    @Override
+    public void add(Object component) {
+        _container.add((Component) component);
     }
 
     /**
      * Return the AWT container that this instance wraps. 
-     * @see ptolemy.actor.gui.PortableContainer#getPlatformContainer()
+     * @see ptolemy.actor.gui.portable.PortableContainer#getPlatformContainer()
      * @return the AWT container that this instance wraps.
      */
+    @Override
     public Container getPlatformContainer() {
         return _container;
     }

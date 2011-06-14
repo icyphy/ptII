@@ -113,6 +113,7 @@ import org.mlc.swing.layout.FormEditor;
 import org.mlc.swing.layout.LayoutConstraintsManager;
 
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.NamedObj;
@@ -815,7 +816,7 @@ public class PtolemyFormEditor extends JPanel {
                         .allAtomicEntityList().iterator();
                 while (atomicEntities.hasNext()) {
                     NamedObj object = (NamedObj) atomicEntities.next();
-                    if (object instanceof Placeable) {
+                    if (object instanceof Placeable  || object instanceof PortablePlaceable) {
                         components.add("Placeable:"
                                 + object.getName(_layoutFrame._pane._model));
                     }

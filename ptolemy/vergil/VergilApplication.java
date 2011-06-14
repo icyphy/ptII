@@ -33,6 +33,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.swing.SwingUtilities;
 
@@ -45,6 +46,8 @@ import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.UserActorLibrary;
+import ptolemy.actor.injection.PtolemyInjector;
+import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -204,6 +207,10 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String[] args) {
+        PtolemyModule module = new PtolemyModule(
+                ResourceBundle.getBundle("ptolemy.actor.AWTActorModule"));
+        PtolemyInjector.createInjector(module);
+
         // FIXME: Java superstition dictates that if you want something
         // to work, you should invoke it in event thread.  Otherwise,
         // weird things happens at the user interface level.  This
@@ -214,6 +221,7 @@ public class VergilApplication extends MoMLApplication {
             // getting read access the workspace is much more efficient
             // in PtolemyThread.
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         new VergilApplication(args);
@@ -258,6 +266,7 @@ public class VergilApplication extends MoMLApplication {
      *  opening the MoML file, or opening the MoML file as a new library.
      *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
      */
+    @Deprecated
     public static void openLibrary(Configuration configuration, File file)
             throws Exception {
         MoMLParser.setErrorHandler(new VergilErrorHandler());
@@ -280,6 +289,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
         try {
             if (_configurationURL == null) {
@@ -343,6 +353,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
         URL welcomeURL = null;
@@ -394,8 +405,8 @@ public class VergilApplication extends MoMLApplication {
                 }
 
             } else {
-                factory = new PtolemyEffigy.Factory(directory, directory
-                        .uniqueName("ptolemyEffigy"));
+                factory = new PtolemyEffigy.Factory(directory,
+                        directory.uniqueName("ptolemyEffigy"));
             }
             Effigy effigy = factory.createEffigy(directory, null, null);
             configuration.createPrimaryTableau(effigy);
@@ -447,6 +458,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
+    @Override
     protected void _parseArgs(final String[] args) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
 
@@ -480,6 +492,7 @@ public class VergilApplication extends MoMLApplication {
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
+    @Override
     protected String _usage() {
         return _configurationUsage(_commandTemplate, _commandOptions,
                 new String[] {});
