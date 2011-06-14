@@ -1238,8 +1238,16 @@ public class TableauFrame extends Top {
         }
 
         if (_initialSaveAsFileName != null) {
-            fileDialog.setFile(new File(fileDialog
-                            .getDirectory(), _initialSaveAsFileName).toString());
+            // Call setFile() with just the file name so that we don't
+            // get the path, which is too much information.
+
+            // FIXME: should we call setDirectory() or will
+            // the FileDialog use the user.dir Java property?
+
+            // fileDialog.setFile(new File(fileDialog
+            // .getDirectory(), _initialSaveAsFileName).toString());
+
+            fileDialog.setFile(_initialSaveAsFileName);
         }
         fileDialog.show();
 
@@ -1262,7 +1270,11 @@ public class TableauFrame extends Top {
                 // will contain a colon as a directory separator but not
                 // start with one?  Who knows?  Apple does, but there is no
                 // documentation about this and Apple bugs are not world readable.
-                file = new File(_directory, selectedFile);
+                //file = new File(_directory, selectedFile);
+                // The user may have selected a different directory, so
+                // get the directory from the FileDialog, but don't set
+                // _directory until we have called _confirm().
+                file = new File(fileDialog.getDirectory(), selectedFile);
             }
             if (extension != null && file.getName().indexOf(".") == -1) {
                 // if the user has not given the file an extension, add it
