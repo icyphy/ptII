@@ -264,8 +264,8 @@ public class RemoteModel {
     }
 
     /**
-     * Return the model's timeout period. if the period is less or equal to 0, 
-     * the model would never timeout. 
+     * Return the model's timeout period in milliseconds. if the period is less
+     * or equal to 0, the model would never timeout. 
      * @return the timeoutPeriod of the model.
      * @see #setTimeoutPeriod(int)
      */
@@ -514,8 +514,8 @@ public class RemoteModel {
     ////                         protected methods                 ////
 
     /**
-     * Set the model's timeout period.  If the period is set to 0 or less,
-     * the model would never timeout.
+     * Set the model's timeout period in milliseconds. If the period is set
+     * to 0 or less, the model would never timeout.
      * @param the timeout period of the model.
      * @see #getTimeoutPeriod()
      */
@@ -781,8 +781,7 @@ public class RemoteModel {
                 }
                 if (timeoutPeriod > 0) {
                     long lastPong = msTime - _getLastPongToken().getTimestamp();
-                    long timeOut = 1000 * timeoutPeriod;
-                    if (lastPong > timeOut) {
+                    if (lastPong > timeoutPeriod) {
                         _fireModelConnectionExpired();
                     }
                 }
@@ -906,6 +905,6 @@ public class RemoteModel {
     /**
      * Model time out period.
      */
-    private int timeoutPeriod = 30;
+    private int timeoutPeriod = 30000;
 
 }
