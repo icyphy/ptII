@@ -90,8 +90,8 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
         if (seedValue == 0) {
             args.add(Long.toString(actor.hashCode()));
             codeStream.appendCodeBlock("setSeedBlock0", args);
-        } else { // Use fixed seed + actorName.hashCode().
-            args.add(Long.toString(actor.getFullName().hashCode()));
+        } else { // Use fixed seed + actorDisplayName.hashCode().
+            args.add(Long.toString(actor.getDisplayName().hashCode()));
             codeStream.appendCodeBlock("setSeedBlock1", args);
         }
 
