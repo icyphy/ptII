@@ -63,6 +63,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
@@ -374,6 +375,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     public static int generateCode(String[] args) throws Exception {
         URL modelURL = null;
+        GenericCodeGenerator codeGenerator = null;
         try {
             if (args.length == 0) {
                 System.err
@@ -386,11 +388,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 return -1;
             }
 
-            GenericCodeGenerator codeGenerator = null;
-
             // See MoMLSimpleApplication for similar code
-            MoMLParser parser = new MoMLParser();
-            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            Workspace workspace = new Workspace("GenericCodeGeneratorWorkspace");
+            MoMLParser parser = new MoMLParser(workspace);
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters(), workspace);
             // Don't remove graphical classes here, it means
             // we can't generate code for plotters etc using $PTII/bin/ptcg
             //MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
@@ -512,9 +513,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
                             && toplevel.getManager() != null
                             && toplevel.getManager().getState().equals(Manager.IDLE)) {
                         try {
-                            // Only set the container to null if the Manager is IDLE.
-                            // If it is not IDLE, then we probably have thrown an exception.
+                            // Only set the container to null if the
+                            // Manager is IDLE.  If it is not IDLE,
+                            // then we probably have thrown an
+                            // exception.
+                            System.out.println("Setting toplevel container to null");
                             toplevel.setContainer(null);
+                            toplevel.setManager(null);
                         } catch (KernelException ex) {
                             throw new InternalErrorException(toplevel, null,
                                     "Failed to set the container of \""
@@ -529,6 +534,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         }
                     }
                 }
+                parser.resetAll();
+                MoMLParser.setMoMLFilters(null);
             }
             if (modelURL == null) {
                 throw new IllegalArgumentException("No model was read?");
@@ -548,6 +555,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
             return -2;
         } catch (Throwable ex) {
             MoMLApplication.throwArgsException(ex, args);
+        } finally {
+            if (codeGenerator != null) {
+                codeGenerator._reset();
+            }
         }
         return -1;
     }
