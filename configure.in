@@ -2099,7 +2099,7 @@ if test ! -d "$INJECTION_USER_DIR"; then
     so we need not find the Guice interface.])
 else
     AC_MSG_CHECKING([for Guice, used by injection ])
-    AC_ARG_WITH(dbxml, [  --with-guice=JAR       use guice.jar from JAR,
+    AC_ARG_WITH(guice, [  --with-guice=JAR       use guice.jar from JAR,
                           defaults to \$PTII/lib/guice-3.0.jar],
 	PTGUICE_JAR=$withval,
 	PTGUICE_JAR=$PTII/lib/guice-3.0.jar)
@@ -4023,6 +4023,7 @@ PTSERVLET_JAR=
 PTWMQTT_JAR=
 
 # Jar files necessary for compilation of ptserver.
+# This also includes guice.jar from above.
 PTSERVER_JARS=
 
 # We only need to look for Hessian if $PTSERVER_USER_DIR is present
@@ -4058,20 +4059,29 @@ else
 	        PT_MSG_RESULT([$PTSERVLET_JAR])
 
 
-		AC_MSG_CHECKING([for WMQTT, used by pserver ])
-	    	AC_ARG_WITH(dbxml, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
+		AC_MSG_CHECKING([for Guice, used by injection and ptserver ])
+		AC_ARG_WITH(guice, [  --with-guice=JAR       use guice.jar from JAR,
+                          defaults to \$PTII/lib/guice-3.0.jar],
+			  PTGUICE_JAR=$withval,
+			  PTGUICE_JAR=$PTII/lib/guice-3.0.jar)
+
+                if test  -f "$PTGUICE_JAR"; then
+
+		    AC_MSG_CHECKING([for WMQTT, used by pserver ])
+	    	    AC_ARG_WITH(dbxml, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
                           defaults to \$PTII/ptserver/lib/wmqtt.jar],
-	    	PTWMQTT_JAR=$withval,
-	        PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
+	    	    PTWMQTT_JAR=$withval,
+	            PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
 
-                if test  -f "$PTWMQTT_JAR"; then
-	            PT_MSG_RESULT([$PTWMQTT_JAR])
+                    if test  -f "$PTWMQTT_JAR"; then
+	                PT_MSG_RESULT([$PTWMQTT_JAR])
 
-	            # Set to ptserver and used in
-	            # $PTII/makefile
-	            PTSERVER_DIR=ptserver
-            	    # PTSERVER_PACKAGES is used in ptII/doc/makefile
-		    PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+	                # Set to ptserver and used in
+	                # $PTII/makefile
+	                PTSERVER_DIR=ptserver
+            	        # PTSERVER_PACKAGES is used in ptII/doc/makefile
+		        PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+                    fi
                 fi
             fi	
          fi
@@ -4082,7 +4092,7 @@ else
     The ptserver interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptserver/package.html] )
     else
-        PTSERVER_JARS="${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
+        PTSERVER_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
     fi
 fi
 
