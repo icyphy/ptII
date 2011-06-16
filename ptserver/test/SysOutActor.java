@@ -28,17 +28,21 @@ package ptserver.test;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class SysOutActor extends TypedAtomicActor {
+public class SysOutActor extends TypedAtomicActor implements PortablePlaceable {
 
     public interface TokenDelegator {
         public void getToken(Token token);
 
     }
+
     public SysOutActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -55,6 +59,7 @@ public class SysOutActor extends TypedAtomicActor {
         } else {
             System.out.println(token);
         }
+        _implementation.printToken(token);
     }
 
     /**
@@ -71,8 +76,12 @@ public class SysOutActor extends TypedAtomicActor {
         return _delegator;
     }
 
+    public void place(PortableContainer container) {
+        _implementation.place(container);
+    }
+
     private TokenDelegator _delegator;
     private final TypedIOPort _input;
-
-
+    private final SysOutActorInterface _implementation = PtolemyInjector
+            .getInjector().getInstance(SysOutActorInterface.class);
 }
