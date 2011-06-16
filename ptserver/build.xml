@@ -38,9 +38,9 @@
 		<pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
 		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
-		<pathelement location="ptolemy/lib/aopalliance.jar" />
-		<pathelement location="ptolemy/lib/guice-3.0.jar" />
-		<pathelement location="ptolemy/lib/javax.inject.jar" />
+		<pathelement location="lib/aopalliance.jar" />
+		<pathelement location="lib/guice-3.0.jar" />
+		<pathelement location="lib/javax.inject.jar" />
 	</path>
 
 	<target name="clean">
