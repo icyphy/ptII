@@ -2076,6 +2076,60 @@ if test -z "$PTJAI_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       $PTII/ptolemy/actor/injection is used for depdency injection
+#	to support different GUIs
+#	http://chess.eecs.berkeley.edu
+#	
+#--------------------------------------------------------------------
+
+# PTINJECTION_DIR is set to injection and used in
+# $PTII/ptolemy/actor/makefile if guice is found
+PTINJECTION_DIR=
+
+# Jar files used by injection
+PTGUICE_JAR=
+
+# Jar files necessary for compilation of injection
+PTINJECTION_JARS=
+
+# We only need to look for Hessian if $INJECTION_USER_DIR is present
+INJECTION_USER_DIR="$PTII/ptolemy/actor/injection"
+if test ! -d "$INJECTION_USER_DIR"; then
+    PT_MSG_STATUS([$INJECTION_USER_DIR is not present,
+    so we need not find the Guice interface.])
+else
+    AC_MSG_CHECKING([for Guice, used by injection ])
+    AC_ARG_WITH(dbxml, [  --with-guice=JAR       use guice.jar from JAR,
+                          defaults to \$PTII/lib/guice-3.0.jar],
+	PTGUICE_JAR=$withval,
+	PTGUICE_JAR=$PTII/lib/guice-3.0.jar)
+
+    if test  -f "$PTGUICE_JAR"; then
+	PT_MSG_RESULT([$PTGUICE_JAR])
+	# Set to injection and used in
+	# $PTII/ptolemy/actor/makefile
+	PTINJECTION_DIR=injection
+        # INJECTION_PACKAGES is used in ptII/doc/makefile
+	PTINJECTION_PACKAGES=ptolemy.actor.injection
+    fi
+
+    if test "$PTINJECTION_DIR" = ""; then
+        AC_MSG_WARN([Failed to find the jar files necessary to compile injection.
+    The injection code interface is used to support Ptolemy running on the Android.
+    For further instructions, see $PTII/ptolemy/actor/injection/package.html] )
+    else
+        PTINJECTION_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}"
+    fi
+fi
+
+if test -z "$PTINJECTION_JARS"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/injection/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTGUICE_JAR\"/>"
+fi 
+
+#--------------------------------------------------------------------
 #       JavaMail is a Java interface that sends email
 #	http://www.oracle.com/technetwork/java/index-138643.html
 #--------------------------------------------------------------------
@@ -5394,6 +5448,16 @@ AC_SUBST(PTGR_PACKAGES)
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 AC_SUBST(PTII)
+
+# PTINJECTION_DIR is set to injection and used in
+# $PTII/ptolemy/actor/makefile if guice is found
+AC_SUBST(PTINJECTION_DIR)
+
+# Jar files necessary for compilation of injection
+AC_SUBST(PTINJECTION_JARS)
+
+# INJECTION_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTINJECTION_PACKAGES)
 
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
