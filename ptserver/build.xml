@@ -38,6 +38,9 @@
 		<pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
 		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
+		<pathelement location="ptserver/lib/aopalliance.jar" />
+		<pathelement location="ptserver/lib/guice-3.0.jar" />
+		<pathelement location="ptserver/lib/javax.inject.jar" />
 	</path>
 
 	<target name="clean">
@@ -493,19 +496,17 @@
 		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m" includefilter="${basedir}/ptserver/findbugs-includes.xml" excludefilter="${basedir}/ptserver/findbugs-excludes.xml">
 			<auxclasspath refid="ptII.classpath" />
 			<sourcePath path="${basedir}" />
-
 			<class location="ptserver/actor" />
 			<class location="ptserver/communication" />
 			<class location="ptserver/control" />
 			<class location="ptserver/data" />
 			<class location="ptserver/test" />
-
 		</findbugs>
 	</target>
 	<target name="checkstyle" depends="initOutput">
 		<taskdef resource="checkstyletask.properties" classpath="ptserver/lib/checkstyle-5.3-all.jar" />
 		<checkstyle config="doc/checkstyle-ptII.xml" failOnViolation="false">
-			<fileset dir="ptserver" includes="**/*.java"/>
+			<fileset dir="ptserver" includes="**/*.java" />
 			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
 		</checkstyle>
 	</target>
