@@ -4033,7 +4033,7 @@ if test ! -d "$PTSERVER_USER_DIR"; then
     so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces.])
 else
     AC_MSG_CHECKING([for Hessian, used by ptserver ])
-    AC_ARG_WITH(dbxml, [  --with-hessian=JAR       use Hessian.jar from JAR,
+    AC_ARG_WITH(hessian, [  --with-hessian=JAR       use Hessian.jar from JAR,
                           defaults to \$PTII/ptserver/lib/hessian-4.0.7.jar],
 	PTHESSIAN_JAR=$withval,
 	PTHESSIAN_JAR=$PTII/ptserver/lib/hessian-4.0.7.jar)
@@ -4042,7 +4042,7 @@ else
 	PT_MSG_RESULT([$PTHESSIAN_JAR])
 
 	AC_MSG_CHECKING([for Jetty, used by ptserver ])
-	AC_ARG_WITH(dbxml, [  --with-jetty=JAR       use jetty.jar from JAR,
+	AC_ARG_WITH(jetty, [  --with-jetty=JAR       use jetty.jar from JAR,
                           defaults to \$PTII/ptserver/lib/jetty-all-7.4.1.v20110513.jar],
 	PTJETTY_JAR=$withval,
 	PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-7.4.1.v20110513.jar)
@@ -4050,14 +4050,13 @@ else
 	    PT_MSG_RESULT([$PTJETTY_JAR])
 	
             AC_MSG_CHECKING([for Servlet, used by ptserver ])
-	    AC_ARG_WITH(dbxml, [  --with-servlet=JAR       use servlet.jar from JAR,
+	    AC_ARG_WITH(servlet, [  --with-servlet=JAR       use servlet.jar from JAR,
                           defaults to \$PTII/ptserver/lib/jservlet-api-2.5.jar],
 	    PTSERVLET_JAR=$withval,
 	    PTSERVLET_JAR=$PTII/ptserver/lib/servlet-api-2.5.jar)
 
             if test  -f "$PTSERVLET_JAR"; then
 	        PT_MSG_RESULT([$PTSERVLET_JAR])
-
 
 		AC_MSG_CHECKING([for Guice, used by injection and ptserver ])
 		AC_ARG_WITH(guice, [  --with-guice=JAR       use guice.jar from JAR,
@@ -4068,7 +4067,7 @@ else
                 if test  -f "$PTGUICE_JAR"; then
 
 		    AC_MSG_CHECKING([for WMQTT, used by pserver ])
-	    	    AC_ARG_WITH(dbxml, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
+	    	    AC_ARG_WITH(wmqtt, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
                           defaults to \$PTII/ptserver/lib/wmqtt.jar],
 	    	    PTWMQTT_JAR=$withval,
 	            PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
@@ -4076,11 +4075,31 @@ else
                     if test  -f "$PTWMQTT_JAR"; then
 	                PT_MSG_RESULT([$PTWMQTT_JAR])
 
-	                # Set to ptserver and used in
-	                # $PTII/makefile
-	                PTSERVER_DIR=ptserver
-            	        # PTSERVER_PACKAGES is used in ptII/doc/makefile
-		        PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+		        AC_MSG_CHECKING([for javax.inject, used by ptserver runtime and tests ])
+	    	        AC_ARG_WITH(wmqtt, [  --with-javax-inject=JAR       use javax.inject.jar from JAR,
+                            defaults to \$PTII/lib/javax.inject.jar],
+	    	        PTJAVAX_INJECT_JAR=$withval,
+	                PTJAVAX_INJECT_JAR=$PTII/lib/javax.inject.jar)
+
+                        if test  -f "$PTJAVAX_INJECT_JAR"; then
+	                    PT_MSG_RESULT([$PTJAVAX_INJECT_JAR])
+
+		            AC_MSG_CHECKING([for aopalliance.jar used by ptserver runtime and tests ])
+	    	            AC_ARG_WITH(wmqtt, [  --with-aopalliance=JAR       use aopalliance.jar from JAR,
+                                 defaults to \$PTII/lib/aopalliance.jar],
+	    	            PTAOPALLIANCE_JAR=$withval,
+	                    PTAOPALLIANCE_JAR=$PTII/lib/aopalliance.jar)
+
+                            if test  -f "$PTAOPALLIANCE_JAR"; then
+	                        PT_MSG_RESULT([$PTAOPALLIANCE_JAR])
+
+	                        # Set to ptserver and used in
+	                        # $PTII/makefile
+	                        PTSERVER_DIR=ptserver
+            	                # PTSERVER_PACKAGES is used in ptII/doc/makefile
+		                PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+                            fi				
+                        fi			    
                     fi
                 fi
             fi	
@@ -4092,7 +4111,7 @@ else
     The ptserver interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptserver/package.html] )
     else
-        PTSERVER_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
+        PTSERVER_JARS="${PTAOPALLIANCE_JAR}${CLASSPATHSEPARATOR}${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}${CLASSPATHSEPARATOR}${PTJAVAX_INJECT_JAR}"
     fi
 fi
 
@@ -4100,7 +4119,11 @@ if test -z "$PTSERVER_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptserver/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTAOPALLIANCE_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$PTHESSIAN_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTJAVAX_INJECT_JAR\"/>"
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$PTJETTY_JAR\"/>"
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
