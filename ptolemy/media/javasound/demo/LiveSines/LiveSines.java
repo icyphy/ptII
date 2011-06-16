@@ -53,7 +53,7 @@ public class LiveSines {
     public static void main(String[] args) {
 
         PtolemyModule module = new PtolemyModule(
-                ResourceBundle.getBundle("ptolemy.actor.AWTActorModule"));
+                ResourceBundle.getBundle("ptolemy.actor.JavaSEActorModule"));
         PtolemyInjector.createInjector(module);
 
         // The pitch of the signal to synthesize.

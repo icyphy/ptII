@@ -55,7 +55,7 @@ public class SoftClip {
     public static void main(String[] args) {
 
         PtolemyModule module = new PtolemyModule(
-                ResourceBundle.getBundle("ptolemy.actor.AWTActorModule"));
+                ResourceBundle.getBundle("ptolemy.actor.JavaSEActorModule"));
         PtolemyInjector.createInjector(module);
 
         // Create a sound capture object that captures audio

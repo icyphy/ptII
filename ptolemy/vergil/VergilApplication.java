@@ -208,7 +208,7 @@ public class VergilApplication extends MoMLApplication {
      */
     public static void main(final String[] args) {
         PtolemyModule module = new PtolemyModule(
-                ResourceBundle.getBundle("ptolemy.actor.AWTActorModule"));
+                ResourceBundle.getBundle("ptolemy.actor.JavaSEActorModule"));
         PtolemyInjector.createInjector(module);
 
         // FIXME: Java superstition dictates that if you want something
