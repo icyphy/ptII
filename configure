@@ -7779,9 +7779,9 @@ else
     { echo "$as_me:$LINENO: checking for Guice, used by injection " >&5
 echo $ECHO_N "checking for Guice, used by injection ... $ECHO_C" >&6; }
 
-# Check whether --with-dbxml was given.
-if test "${with_dbxml+set}" = set; then
-  withval=$with_dbxml; PTGUICE_JAR=$withval
+# Check whether --with-guice was given.
+if test "${with_guice+set}" = set; then
+  withval=$with_guice; PTGUICE_JAR=$withval
 else
   PTGUICE_JAR=$PTII/lib/guice-3.0.jar
 fi
@@ -10926,6 +10926,7 @@ PTSERVLET_JAR=
 PTWMQTT_JAR=
 
 # Jar files necessary for compilation of ptserver.
+# This also includes guice.jar from above.
 PTSERVER_JARS=
 
 # We only need to look for Hessian if $PTSERVER_USER_DIR is present
@@ -10984,7 +10985,20 @@ echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTSERVLET_JAR" 
 echo "${ECHO_T}$PTSERVLET_JAR" >&6; }; fi
 
 
-		{ echo "$as_me:$LINENO: checking for WMQTT, used by pserver " >&5
+		{ echo "$as_me:$LINENO: checking for Guice, used by injection and ptserver " >&5
+echo $ECHO_N "checking for Guice, used by injection and ptserver ... $ECHO_C" >&6; }
+
+# Check whether --with-guice was given.
+if test "${with_guice+set}" = set; then
+  withval=$with_guice; PTGUICE_JAR=$withval
+else
+  PTGUICE_JAR=$PTII/lib/guice-3.0.jar
+fi
+
+
+                if test  -f "$PTGUICE_JAR"; then
+
+		    { echo "$as_me:$LINENO: checking for WMQTT, used by pserver " >&5
 echo $ECHO_N "checking for WMQTT, used by pserver ... $ECHO_C" >&6; }
 
 # Check whether --with-dbxml was given.
@@ -10995,16 +11009,17 @@ else
 fi
 
 
-                if test  -f "$PTWMQTT_JAR"; then
-	            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+                    if test  -f "$PTWMQTT_JAR"; then
+	                if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTWMQTT_JAR" >&5
 echo "${ECHO_T}$PTWMQTT_JAR" >&6; }; fi
 
-	            # Set to ptserver and used in
-	            # $PTII/makefile
-	            PTSERVER_DIR=ptserver
-            	    # PTSERVER_PACKAGES is used in ptII/doc/makefile
-		    PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+	                # Set to ptserver and used in
+	                # $PTII/makefile
+	                PTSERVER_DIR=ptserver
+            	        # PTSERVER_PACKAGES is used in ptII/doc/makefile
+		        PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+                    fi
                 fi
             fi
          fi
@@ -11018,7 +11033,7 @@ echo "$as_me: WARNING: Failed to find the jar files necessary to compile ptserve
     The ptserver interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptserver/package.html " >&2;}
     else
-        PTSERVER_JARS="${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
+        PTSERVER_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
     fi
 fi
 
