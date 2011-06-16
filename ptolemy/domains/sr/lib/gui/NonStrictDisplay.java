@@ -108,8 +108,8 @@ public class NonStrictDisplay extends Display {
         for (int i = 0; i < width; i++) {
             String value;
 
-            if (!_initialized) {
-                _initialized = true;
+            if (!initialized) {
+                initialized = true;
                 _openWindow();
             }
 
@@ -178,7 +178,7 @@ public class NonStrictDisplay extends Display {
         // If the current input is not a blank line, or the supressBlankLines
         // parameter is configured to false, append a newline character.
         if ((textArea != null)
-                && !(_suppressBlankLines && currentInputIsBlankLine)) {
+                && !(isSuppressBlankLines && currentInputIsBlankLine)) {
             textArea.append("\n");
         }
 

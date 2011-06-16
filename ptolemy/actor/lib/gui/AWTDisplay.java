@@ -107,7 +107,7 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
         textArea.append(value);
 
         // Append a newline character.
-        if (value.length() > 0 || !display._suppressBlankLines) {
+        if (value.length() > 0 || !display.isSuppressBlankLines) {
             textArea.append("\n");
         }
 
@@ -399,7 +399,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
     @Override
     public void setTitle(String stringValue) throws IllegalActionException {
 
-        System.out.println("hello");
         if (_tableau != null) {
             if (display.title.stringValue().trim().equals("")) {
                 _tableau.setTitle(stringValue);

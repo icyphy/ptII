@@ -157,6 +157,7 @@ public class LiveSoundActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not
      *   allowed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         try {
@@ -221,6 +222,7 @@ public class LiveSoundActor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is a problem
      *   beginning audio playback.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isExecuting = true;
@@ -230,6 +232,7 @@ public class LiveSoundActor extends TypedAtomicActor {
      *  to release access to the audio resources.
      *  @exception IllegalActionException May be thrown by derived classes.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _isExecuting = false;

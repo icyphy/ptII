@@ -138,6 +138,7 @@ public class AudioCapture extends LiveSoundActor {
                 "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("transferSize");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,6 +166,7 @@ public class AudioCapture extends LiveSoundActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AudioCapture newObject = (AudioCapture) super.clone(workspace);
 
@@ -180,6 +182,7 @@ public class AudioCapture extends LiveSoundActor {
      *  @exception IllegalActionException If there is a problem
      *   starting audio capture.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -217,6 +220,7 @@ public class AudioCapture extends LiveSoundActor {
      *  @return True
      *  @exception IllegalActionException If audio cannot be captured.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -254,6 +258,7 @@ public class AudioCapture extends LiveSoundActor {
     /** Stop capturing audio. Free up any system resources involved
      *  in the capturing process.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
