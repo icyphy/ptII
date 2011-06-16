@@ -52,6 +52,7 @@ import ptserver.control.PtolemyServer;
 import ptserver.control.Ticket;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
+import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.ibm.mqtt.IMqttClient;
@@ -70,6 +71,9 @@ import com.ibm.mqtt.MqttClient;
  *  @Pt.AcceptedRating Red (jkillian)
  */
 public class RemoteModelTest {
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

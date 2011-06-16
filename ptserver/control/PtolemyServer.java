@@ -51,6 +51,7 @@ import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelListener;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
+import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer
@@ -93,7 +94,9 @@ import ptserver.communication.RemoteModelResponse;
  * @Pt.AcceptedRating Red (jkillian)
  */
 public class PtolemyServer implements IServerManager {
-
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
 

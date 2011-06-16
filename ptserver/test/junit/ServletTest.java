@@ -43,6 +43,7 @@ import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
 import ptserver.control.Ticket;
+import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 
@@ -59,7 +60,9 @@ import com.caucho.hessian.client.HessianProxyFactory;
  *  @Pt.AcceptedRating Red (pdf)
  */
 public class ServletTest {
-
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -135,7 +138,7 @@ public class ServletTest {
      *  @exception Exception If there is an problem opening the model URL, starting, pausing,
      *  or resuming the simulation, or communicating with the command servlet.
      */
-    @Test (expected=AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void pauseAndResumeSimulation() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();
@@ -183,14 +186,14 @@ public class ServletTest {
         _servletProxy.stop(ticket);
         assertEquals(simulations, _ptolemyServer.numberOfSimulations());
         assertEquals(Manager.IDLE, _ptolemyServer.getStateOfSimulation(ticket));
-    }    
-    
+    }
+
     /** Test the ability to close an existing simulation request and to ensure
      *  that the simulation is removed from the server.
      *  @exception Exception If there is an problem opening the model URL, starting the
      *  simulation, closing it, or communicating with the command servlet.
      */
-    @Test (expected=IllegalActionException.class)
+    @Test(expected = IllegalActionException.class)
     public void closeSimulation() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();
@@ -205,7 +208,7 @@ public class ServletTest {
         // and the ticket is no longer valid.
         _servletProxy.close(ticket);
         assertEquals(simulations - 1, _ptolemyServer.numberOfSimulations());
-        
+
         // Try to start the ticket again. This should result in an exception.
         _servletProxy.start(ticket);
     }
