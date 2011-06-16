@@ -64,6 +64,9 @@ public class PtolemyInjector {
      * @return the PtolemyInjector that was created with the supplied modules.
      */
     public static Injector getInjector() {
+        if (_instance == null) {
+            throw new IllegalStateException("The injector is not created.");
+        }
         return _instance;
     }
 

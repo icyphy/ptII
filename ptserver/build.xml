@@ -227,8 +227,6 @@
 		</junit>
 		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
-
-
 	<target name="ptdroid.clean">
 		<delete includeemptydirs="true">
 			<fileset dir="${ptdroid.bin}/ptserver" includes="**/*" />
