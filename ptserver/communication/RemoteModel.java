@@ -191,7 +191,7 @@ public class RemoteModel {
     /**
      * Return the last PongToken.
      * @return the last PongToken.
-     * @set {@link #setLastPongToken(PongToken)}
+     * @see {@link #setLastPongToken(PongToken)}
      */
     public synchronized PongToken getLastPongToken() {
         return _lastPongToken;
@@ -207,7 +207,7 @@ public class RemoteModel {
 
     /**
      * Return the roundtrip latency of sending ping/echo requests.
-     * @return
+     * @return the roundtrip latency of sending ping/echo requests.
      */
     public long getPingPongLatency() {
         return _pingPonglatency;
@@ -516,7 +516,7 @@ public class RemoteModel {
     /**
      * Set the model's timeout period in milliseconds. If the period is set
      * to 0 or less, the model would never timeout.
-     * @param the timeout period of the model.
+     * @param timeoutPeriod the timeout period of the model.
      * @see #getTimeoutPeriod()
      */
     public void setTimeoutPeriod(int timeoutPeriod) {

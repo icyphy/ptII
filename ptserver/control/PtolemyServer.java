@@ -341,10 +341,10 @@ public class PtolemyServer implements IServerManager {
     }
 
     /**
-     * TODO
-     * @param ticket
-     * @return
-     * @throws IllegalActionException
+     * Return the simulation task of the provided ticket.
+     * @param ticket The ticket associated with the simulation task.
+     * @return the simulation task associated with the provided ticket.
+     * @throws IllegalActionException if the ticket is invalid.
      */
     public synchronized SimulationTask getSimulationTask(Ticket ticket)
             throws IllegalActionException {

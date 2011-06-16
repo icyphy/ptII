@@ -79,7 +79,6 @@ public class RemoteValueListener implements ValueListener {
      * Return TokenPublisher that would be used to publish
      * AttributeChange tokens produced by this actor on value change.
      * @return TokenPublisher the token publisher
-     * @see #setTokenPublisher(TokenPublisher)
      */
     public TokenPublisher getTokenPublisher() {
         return _tokenPublisher;
