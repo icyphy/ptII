@@ -35,7 +35,7 @@ ME =		ptolemy/configs
 # in PTCLASSALLJARS below
 DIRS =		codegen bcvtb doc dsp full fullViewer hyvisual jxta \
 		luminary pn ptdb ptiny ptinyKepler \
-		ptinyViewer \
+		ptinyViewer ptserver \
 		space viptos visualsense test
 
 # Root of the Java directory
