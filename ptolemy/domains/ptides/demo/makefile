@@ -68,7 +68,8 @@ PTCLASSALLJARS = \
 	PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
-	PrintingPress/PrintingPress.jar
+	PrintingPress/PrintingPress.jar \
+	TREX/TREX.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
