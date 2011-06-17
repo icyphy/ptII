@@ -41,8 +41,8 @@ DIRS =		PtidesBasicDistributedPowerPlant\
 		PtidesNetworkLatencyTest \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
-		PrintingPress
-
+		PrintingPress \
+		TREX
 # Root of the Java directory
 ROOT =		../../../..
 
