@@ -32,6 +32,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -277,11 +278,14 @@ public class PtolemyServer implements IServerManager {
      *  @return An array of URLs for the layouts available for the model on the server.
      *  @exception IllegalActionException If there was a problem discovering available layouts.
      */
-    public String[] getLayoutListing(String url) throws IllegalActionException {
+    public String[] getLayoutListing(final String url)
+            throws IllegalActionException {
         FilenameFilter layoutFilter = new FilenameFilter() {
             public boolean accept(File file, String filename) {
-                // TODO add naming convention restrictions.
-                return (filename.endsWith(".xml"));
+                String modelName = url.substring(url.lastIndexOf("/") + 1,url.lastIndexOf(".xml"));
+                String layoutEnding = ".layout.xml";
+                
+                return (filename.startsWith(modelName) && filename.endsWith(layoutEnding));
             }
         };
 
@@ -313,7 +317,8 @@ public class PtolemyServer implements IServerManager {
 
         FilenameFilter modelFilter = new FilenameFilter() {
             public boolean accept(File file, String filename) {
-                return (filename.endsWith(".xml"));
+                return (filename.endsWith(".xml") && !filename
+                        .endsWith(".layout.xml"));
             }
         };
 
@@ -449,20 +454,21 @@ public class PtolemyServer implements IServerManager {
 
     /** Open a model with the provided model URL and wait for the user to request
      *  the execution of the simulation.
-     *  @param url  The path to the model file
+     *  @param modelUrl The path to the model file
+     *  @param layoutUrl The path to a model's layout file
      *  @exception IllegalActionException  If the model fails to load from the provided URL.
      *  @return The user's reference to the simulation task
      */
-    public synchronized RemoteModelResponse open(String url)
-            throws IllegalActionException {
+    public synchronized RemoteModelResponse open(String modelUrl,
+            String layoutUrl) throws IllegalActionException {
         RemoteModelResponse response = null;
         Ticket ticket = null;
 
         try {
             // Generate a unique ticket for the request.
-            ticket = Ticket.generateTicket(url);
+            ticket = Ticket.generateTicket(modelUrl, layoutUrl);
             while (_requests.contains(ticket)) {
-                ticket = Ticket.generateTicket(url);
+                ticket = Ticket.generateTicket(modelUrl, layoutUrl);
             }
 
             // Save the simulation request.
@@ -471,14 +477,18 @@ public class PtolemyServer implements IServerManager {
                     remoteModelListener);
             RemoteModel clientModel = new RemoteModel(null, null,
                     RemoteModelType.CLIENT);
-            clientModel.loadModel(new URL(url));
-
+            String modelXML = new String(
+                    downloadModel(ticket.getLayoutUrl()));
+            HashMap<String, String> resolvedTypes = simulationTask.getRemoteModel().getResolvedTypes();
+            clientModel.initModel(modelXML, resolvedTypes);
+            simulationTask.getRemoteModel().createRemoteAttributes(clientModel.getSettableAttributesMap().keySet());
+            simulationTask.getRemoteModel().setUpInfrastructure();
+            
             // Populate the response.
             response = new RemoteModelResponse();
             response.setTicket(ticket);
-            response.setModelTypes(clientModel.getResolvedTypes());
-            response.setModelXML(clientModel.getTopLevelActor().exportMoML());
-
+            response.setModelTypes(resolvedTypes);
+            response.setModelXML(modelXML);
             _requests.put(ticket, simulationTask);
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)

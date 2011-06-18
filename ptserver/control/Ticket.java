@@ -70,15 +70,17 @@ public class Ticket implements java.io.Serializable {
         return true;
     }
 
-    /** Generate a new ticket for the provided model URL.
-     *  @param url The path to the model file.
+    /** Generate a new ticket for the provided model and layout URL.
+     *  @param modelUrl The path to the model file.
+     *  @param layoutUrl The path to the layout file.
      *  @return Ticket corresponding to simulation request.
      */
-    public static Ticket generateTicket(String url) {
+    public static Ticket generateTicket(String modelUrl, String layoutUrl) {
 
         Ticket ticket = new Ticket();
         ticket.setTicketID(Long.toHexString(_randomGenerator.nextLong()));
-        ticket.setUrl(url);
+        ticket.setModelUrl(modelUrl);
+        ticket.setLayoutUrl(layoutUrl);
         ticket.setDateRequested(new Date());
 
         return ticket;
@@ -101,8 +103,23 @@ public class Ticket implements java.io.Serializable {
     /** Get the URL of the model file.
      *  @return Path to the model file.
      */
-    public String getUrl() {
-        return _url;
+    public String getModelUrl() {
+        return _modelUrl;
+    }
+
+    /** Set the URL of the requested layout.
+     *  @param layoutUrl The path to the model file.
+     */
+    public void setLayoutUrl(String layoutUrl) {
+        _layoutUrl = layoutUrl;
+    }
+
+
+    /** Get the URL of the layout file.
+     *  @return Path to the layout file.
+     */
+    public String getLayoutUrl() {
+        return _layoutUrl;
     }
 
     /** Return a hash code value for this ticket.  This method uses the hashcode()
@@ -134,17 +151,32 @@ public class Ticket implements java.io.Serializable {
     }
 
     /** Set the URL of the requested model.
-     *  @param url The path to the model file.
+     *  @param modelUrl The path to the model file.
      */
-    private void setUrl(String url) {
-        _url = url;
+    private void setModelUrl(String modelUrl) {
+        _modelUrl = modelUrl;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** A unique identifier of the ticket.
+     */
     private String _ticketID;
-    private String _url;
+
+    /** Path to the model file.
+     */
+    private String _modelUrl;
+
+    /** Path to the layout file.
+     */
+    private String _layoutUrl;
+
+    /** Date of the ticket creation.
+     */
     private Date _dateRequested;
+
+    /** Random number generator used for the ticket identifier.
+     */
     private static transient Random _randomGenerator = new Random();
 }

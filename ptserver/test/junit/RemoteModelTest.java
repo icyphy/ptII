@@ -167,7 +167,14 @@ public class RemoteModelTest {
         assertTrue(modelUrls.length > 0);
         String adderModel = getAdderModel(modelUrls);
         assertNotNull(adderModel);
-        RemoteModelResponse response = _proxy.open(adderModel);
+        
+        String[] layoutUrls = _proxy.getLayoutListing(adderModel);
+        assertNotNull(layoutUrls);
+        assertTrue(layoutUrls.length > 0);
+        String adderModelLayout = getAdderModelLayout(layoutUrls);
+        assertNotNull(adderModelLayout);
+        
+        RemoteModelResponse response = _proxy.open(adderModel, adderModelLayout);
         assertNotNull(response);
 
         // Open the model on the client.
@@ -282,6 +289,15 @@ public class RemoteModelTest {
     private String getAdderModel(String[] modelUrls) {
         for (String model : modelUrls) {
             if (model.endsWith("addermodel.xml")) {
+                return model;
+            }
+        }
+        return null;
+    }
+
+    private String getAdderModelLayout(String[] layoutUrls) {
+        for (String model : layoutUrls) {
+            if (model.contains("addermodel") && model.endsWith(".layout.xml")) {
                 return model;
             }
         }

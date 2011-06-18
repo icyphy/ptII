@@ -87,14 +87,15 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Open a model with the provided model URL and wait for the
      *  user to request the execution of the simulation.
-     *  @param url The path to the model file
+     *  @param modelUrl The path to the model file
+     *  @param layoutUrl The path to a model's layout file
      *  @return The user's reference to the simulation task along with 
      *  specifically formatted for the client model XML and its inferred types
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      */
-    public RemoteModelResponse open(String url) throws IllegalActionException {
-        return PtolemyServer.getInstance().open(url);
+    public RemoteModelResponse open(String modelUrl, String layoutUrl) throws IllegalActionException {
+        return PtolemyServer.getInstance().open(modelUrl, layoutUrl);
     }
 
     /** Pause the execution of the selected simulation.

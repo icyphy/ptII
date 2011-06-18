@@ -99,7 +99,6 @@
    		<property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true"></property>
    		<property name="droid_fixed" class="ptolemy.data.expr.Parameter" value="true"></property>
    		<!-- Any additional properties that the model specifies. -->
-   		<property name="exampleAttribute" class="ptolemy.data.expr.Parameter" value="test"></property>
     </entity>
     <!-- Remote actor created to retain the connections of the original source and facilitate
     	communication. -->
@@ -121,8 +120,8 @@
     	Originally we wanted to create a structure based on ComponentEntity, but
     	TypedCompositeActor requires entities to extend TypedActor, which would create
     	a new unnecessary thread. -->
-    <property name="Display" class="ptolemy.kernel.util.Attribute">
-        <property name="exampleAttribute" class="ptolemy.kernel.util.StringAttribute" value="test">
+    <property name="Ramp2" class="ptolemy.kernel.util.Attribute">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         	<property name="_remote" class="ptolemy.data.expr.Parameter" value="attribute"></property>
 	        <!-- User interface properties to indicate position. -->
    			<property name="droid_location" class="ptserver.test.helper.AndroidLocation" value="[10.0, 15.0, 10.0, 10.0]"></property>
@@ -135,16 +134,16 @@
     <!-- End of settable parameter example. -->
     
     <!-- Relations and links for the client structure. -->
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Ramp.output" relation="relation"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Display.input" relation="relation4"/>
-    <link port="Ramp_remote.output" relation="relation"/>
     <link port="Display_remote.input" relation="relation4"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Ramp_remote.output" relation="relation"/>
     <!-- End of relations and links example. -->
 </entity>
 

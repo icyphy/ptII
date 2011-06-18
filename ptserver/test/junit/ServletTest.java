@@ -234,9 +234,12 @@ public class ServletTest {
      *  @return Ticket The ticket reference to the simulation request.
      */
     private RemoteModelResponse _openRemoteModel() throws Exception {
-        URL url = ServletTest.class
-                .getResource("/ptserver/test/junit/HelloWorld.xml");
-        RemoteModelResponse response = _servletProxy.open(url.toExternalForm());
+        URL modelUrl = ServletTest.class
+                .getResource("/ptserver/test/junit/addermodel.xml");
+        URL layoutUrl = ServletTest.class
+                .getResource("/ptserver/test/junit/addermodel_test.layout.xml");
+        RemoteModelResponse response = _servletProxy.open(
+                modelUrl.toExternalForm(), layoutUrl.toExternalForm());
         return response;
     }
 

@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -539,6 +540,13 @@ public class RemoteModel {
         _setUpMonitoring();
         _setUpManager();
         return _topLevelActor.getManager();
+    }
+    
+    public void createRemoteAttributes(Set<String> attributeNames) {
+        for (String attributeName : attributeNames) {
+            Settable attribute = (Settable) _topLevelActor.getAttribute(attributeName.substring(attributeName.substring(1).indexOf(".") + 2));
+            _settableAttributesMap.put(attributeName, attribute);
+        }
     }
 
     /**

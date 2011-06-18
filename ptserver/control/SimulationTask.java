@@ -75,8 +75,7 @@ public class SimulationTask implements Runnable {
         getRemoteModel().setMqttClient(mqttClient);
 
         // Load the model specified within the ticket.
-        getRemoteModel().loadModel(new URL(_ticket.getUrl()));
-        getRemoteModel().setUpInfrastructure();
+        getRemoteModel().loadModel(new URL(_ticket.getModelUrl()));
     }
 
     ///////////////////////////////////////////////////////////////////
