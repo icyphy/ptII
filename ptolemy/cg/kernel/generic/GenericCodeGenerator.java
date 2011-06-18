@@ -517,7 +517,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
                             // Manager is IDLE.  If it is not IDLE,
                             // then we probably have thrown an
                             // exception.
-                            System.out.println("Setting toplevel container to null");
                             toplevel.setContainer(null);
                             toplevel.setManager(null);
                         } catch (KernelException ex) {
@@ -557,7 +556,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
             MoMLApplication.throwArgsException(ex, args);
         } finally {
             if (codeGenerator != null) {
-                codeGenerator._reset();
+                codeGenerator._resetAll();
+                codeGenerator.setContainer(null);
             }
         }
         return -1;
@@ -1043,8 +1043,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
     }
 
     /** Reset the code generator.
+     *  @exception IllegalActionException If the container of the model
+     *  cannot be set to null.
      */
-    protected void _reset() {
+    protected void _reset() throws IllegalActionException {
         // Reset the code file name so that getCodeFileName()
         // accurately reports whether code was generated.
         _codeFileName = null;
@@ -1052,6 +1054,24 @@ public abstract class GenericCodeGenerator extends Attribute implements
         _adapterStore.clear();
     }
 
+    /** Reset the code generator, including setting the model to null.
+     *  @exception IllegalActionException If the container of the model
+     *  cannot be set to null.
+     */
+    protected void _resetAll() throws IllegalActionException {
+        _reset();
+
+        if (_model != null) {
+            try {
+                _model.setContainer(null);
+            } catch (KernelException ex) {
+                throw new IllegalActionException(_model, ex,
+                        "Could not set the container of "
+                        + _model.getFullName() + " to null.");
+            }
+            _model = null;
+        }
+    }
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and an extension that is the last package of
