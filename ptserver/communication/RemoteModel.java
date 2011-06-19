@@ -192,7 +192,7 @@ public class RemoteModel {
     /**
      * Return the last PongToken.
      * @return the last PongToken.
-     * @see {@link #setLastPongToken(PongToken)}
+     * @see #setLastPongToken(PongToken)
      */
     public synchronized PongToken getLastPongToken() {
         return _lastPongToken;
