@@ -1000,8 +1000,13 @@ public class StaticSchedulingDirector extends Director {
             }
 
             for (int i = 0; i < length; i++) {
-                int channelBufferSize = getBufferSize(i);
-
+                int channelBufferSize = 1;
+                try {
+                    channelBufferSize = getBufferSize(i);
+                } catch (ptolemy.actor.sched.NotSchedulableException ex) {
+                    // Ignore.  Probably a modal model.
+                    // $PTII/bin/ptcg -inline true -language java /Users/cxh/ptII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml 
+                }
                 if (channelBufferSize > bufferSize) {
                     bufferSize = channelBufferSize;
                 }
