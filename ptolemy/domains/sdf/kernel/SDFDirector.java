@@ -425,16 +425,17 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  If not, it returns current time plus the period.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
+     *  @param microstep The microstep (ignored by this director).
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      *  @return Either the requested time or the current time plus the
      *  period.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         if (_periodicDirectorHelper != null) {
             return _periodicDirectorHelper.fireAt(actor, time);
         }
-        return super.fireAt(actor, time);
+        return super.fireAt(actor, time, microstep);
     }
 
     /** Initialize the actors associated with this director and then
@@ -515,6 +516,10 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  if they do.  If there are no input ports, then also return true.
      *  Otherwise, return false.  Note that this does not call prefire()
      *  on the contained actors.
+     *  <p>
+     *  This method also implements the functionality of
+     *  <i>synchronizeToRealTime</i> by waiting for real time
+     *  to elapse if the parameter value is true.
      *  @exception IllegalActionException If port methods throw it.
      *  @return true If all of the input ports of the container of this
      *  director have enough tokens.
