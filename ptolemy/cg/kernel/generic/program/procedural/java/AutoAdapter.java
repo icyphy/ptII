@@ -151,20 +151,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                  getComponent().getClass().getField(parameterName);
             } catch (NoSuchFieldException ex) {
                 privateParameter = true;
+                // FIXME: make this be a method that gets called.
                 code.append(// "try{" + _eol
                         "{" + _eol
                         // Accessing private field
                         + "Object actor = $actorSymbol(actor);" + _eol
+                        // Use getDeclaredFields() so that we get private fields.
+                        + "java.lang.reflect.Field declaredFields[] = actor.getClass().getDeclaredFields();" + _eol
                         // Use getFields() instead of getDeclaredFields() so that we get fields in parent classes
                         + "java.lang.reflect.Field fields[] = actor.getClass().getFields();" + _eol
-                        + "for (int i = 0; i < fields.length; i++){" + _eol
+                        // Note that there is overlap between the two arrays
+                        + "java.lang.reflect.Field allFields[] = java.util.Arrays.copyOf(declaredFields, declaredFields.length + fields.length);" + _eol
+                        +  "System.arraycopy(fields, 0, allFields, declaredFields.length, fields.length);" + _eol
+                        + "for (int i = 0; i < allFields.length; i++){" + _eol
                         + "    ptolemy.data.expr.Parameter parameter = null;" + _eol
-                        + "    fields[i].setAccessible(true);" + _eol 
-                        + "    if (fields[i].getName().equals(\"" + parameterName + "\")) {" + _eol
-                        + "        parameter = (ptolemy.data.expr.Parameter)fields[i].get(actor);" + _eol
+                        + "    allFields[i].setAccessible(true);" + _eol 
+                        + "    if (allFields[i].getName().equals(\"" + parameterName + "\")) {" + _eol
+                        + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
                         // If the field is a StringParameter, then we want to to assign to it.
-                        + "    } else if (ptolemy.data.expr.Parameter.class.isAssignableFrom(fields[i].getType())) {" + _eol
-                        + "        parameter = (ptolemy.data.expr.Parameter)fields[i].get(actor);" + _eol
+                        + "    } else if (ptolemy.data.expr.Parameter.class.isAssignableFrom(allFields[i].getType())) {" + _eol
+                        + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
                         // Check for private parameters that have setName() different than the name of the field.
                         // $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml 
                         // Uninitialized parameters may be null.
@@ -284,11 +290,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "TypedAtomicActor $actorSymbol(actor);" + _eol);
 
         // Handle inputs and outputs on a per-actor basis.
+        // There is very similar code in generatePreinitializeMethodBodyCode()
         Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
         while (entityPorts.hasNext()) {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof TypedIOPort) {
                 TypedIOPort castPort = (TypedIOPort) insidePort;
+                if (!castPort.isOutsideConnected()) {
+                    continue;
+                }
                 String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
                     code.append("TypedIOPort $actorSymbol(" + name + ");" + _eol);
@@ -424,13 +434,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         StringBuffer code = new StringBuffer();
         // Generate code that creates and connects each port.
+        // There is very similar code in generatePreinitializeCode();
         Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
         while (entityPorts.hasNext()) {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof TypedIOPort) {
                 TypedIOPort castPort = (TypedIOPort) insidePort;
+                if (!castPort.isOutsideConnected()) {
+                    continue;
+                }
                 String name = TemplateParser.escapePortName(castPort.getName());
-                if (!castPort.isMultiport() && castPort.isOutsideConnected()) {
+                if (!castPort.isMultiport()) {
                     // Only instantiate ports that are outside connected and avoid
                     // "Cannot put a token in a full mailbox."  See
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml
@@ -458,18 +472,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + actorPort.getName().replace("\\", "\\\\") + "\", " 
                                 + actorPort.isInput() + ", "
                                 + actorPort.isOutput() + ").setMultiport(true);" + _eol);
-
                     }
 
 
                     int sources = actorPort.numberOfSources();
                     for (int i = 0; i < sources; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort, i));
+                        if (actorPort.isOutsideConnected()) {
+                            code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort, i));
+                        }
                     }
 
                     int sinks = actorPort.numberOfSinks();
                     for (int i = 0; i < sinks; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort, i));
+                        if (actorPort.isOutsideConnected()) {
+                            code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort, i));
+                        }
                     }
                 }
 
