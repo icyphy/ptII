@@ -56,61 +56,69 @@ public class AndroidLocation extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
-    /** Gets the relative x position of the top-left corner.
-     *  Special constants:
-     *          MATCH_PARENT = -1
+    /** Get the relative x position of the top-left corner. <br/>
+     *  Special constants: <br/>
+     *          MATCH_PARENT = -1 <br/>
      *          WRAP_CONTENT = -2
      *  @return The relative x position.
-     *  @throws IllegalActionException If the underlying token is not
+     *  @exception IllegalActionException If the underlying token is not
      *  an IntMatrixToken.
      */
     public int getX() throws IllegalActionException {
-        if (_layout_x < -3)
+        if (_layout_x < -3) {
             _setSize();
+        }
+        
         return _layout_x;
     }
 
-    /** Gets the relative y position of the top-left corner.
-     *  Special constants:
-     *          MATCH_PARENT = -1
+    /** Get the relative y position of the top-left corner. <br/>
+     *  Special constants: <br/>
+     *          MATCH_PARENT = -1 <br/>
      *          WRAP_CONTENT = -2
      *  @return The relative y position.
-     *  @throws IllegalActionException If the underlying token is not
+     *  @exception IllegalActionException If the underlying token is not
      *  an IntMatrixToken.
      */
     public int getY() throws IllegalActionException {
-        if (_layout_y < -3)
+        if (_layout_y < -3) {
             _setSize();
+        }
+        
         return _layout_y;
     }
 
-    /** Gets the width of the element.
+    /** Get the width of the element.
      *  @return The width of the element.
-     *  @throws IllegalActionException If the underlying token is not
+     *  @exception IllegalActionException If the underlying token is not
      *  an IntMatrixToken.
      */
     public int getWidth() throws IllegalActionException {
-        if (_width < -3)
+        if (_width < -3) {
             _setSize();
+        }
+        
         return _width;
     }
 
-    /** Gets the height of the element.
+    /** Get the height of the element.
      *  @return The height of the element.
-     *  @throws IllegalActionException If the underlying token is not
+     *  @exception IllegalActionException If the underlying token is not
      *  an IntMatrixToken.
      */
     public int getHeight() throws IllegalActionException {
-        if (_height < -3)
+        if (_height < -3) {
             _setSize();
+        }
+        
         return _height;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                private methods                            ////
 
-    /** Sets all the location attributes based on the underlying token.
-     *  @throws IllegalActionException If the underlying token is not
+    /** Set all the location attributes based on the underlying token.
+     *  @exception IllegalActionException If the underlying token is not
      *  an IntMatrixToken.
      */
     private void _setSize() throws IllegalActionException {
@@ -127,16 +135,16 @@ public class AndroidLocation extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
-    /** Relative x position of the top-left corner.
-     *  Special constants:
-     *          MATCH_PARENT = -1
+    /** Relative x position of the top-left corner. <br/>
+     *  Special constants: <br/>
+     *          MATCH_PARENT = -1 <br/>
      *          WRAP_CONTENT = -2
      */
     private int _layout_x = -5;
 
-    /** Relative y position of the top-left corner.
-     *  Special constants:
-     *          MATCH_PARENT = -1
+    /** Relative y position of the top-left corner. <br/>
+     *  Special constants: <br/>
+     *          MATCH_PARENT = -1 <br/>
      *          WRAP_CONTENT = -2
      */
     private int _layout_y = -5;
