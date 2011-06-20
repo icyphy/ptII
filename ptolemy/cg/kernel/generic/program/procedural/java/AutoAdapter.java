@@ -28,6 +28,7 @@
 package ptolemy.cg.kernel.generic.program.procedural.java;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -193,7 +194,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (!privateParameter) {
                 String setParameter = "";
                 if (parameter instanceof Parameter) {
-                    setParameter = "    ptolemy.data.expr.Parameter " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";" + _eol
+                    setParameter = "    Parameter " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";" + _eol
                         + "    " + parameterName + ".setExpression(\""
                         + parameterValue
                         + "\");" + _eol;
@@ -492,6 +493,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                 List<TypeAttribute> typeAttributes = insidePort.attributeList(TypeAttribute.class);
                 if (typeAttributes.size() > 0) {
+                    _headerFiles.add("ptolemy.actor.TypeAttribute");
                     if (typeAttributes.size() > 1) {
                         new Exception("Warning, " + insidePort.getFullName()
                                 + " has more than one typeAttribute."
@@ -504,8 +506,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // This is needed by:
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
                     code.append("{" + _eol
-                            + "ptolemy.actor.TypeAttribute _type = "
-                            + "new ptolemy.actor.TypeAttribute("
+                            + "TypeAttribute _type = "
+                            + "new TypeAttribute("
 
                             //+ "$actorSymbol("
                             //+ TemplateParser.escapePortName(insidePort.getName()) + "), \"inputType\");" + _eol
@@ -602,11 +604,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
+        files.addAll(_headerFiles);
+        files.add("ptolemy.actor.Director;");
+        files.add("ptolemy.actor.Manager;");
+        files.add("ptolemy.data.expr.Parameter;");
         files.add("ptolemy.data.type.ArrayType;");
         // Need IntToken etc.
         files.add("ptolemy.data.*;");
-        // FIXME: we should only import Complex if necessary.
-        files.add("ptolemy.math.Complex;");
         files.add("ptolemy.data.type.BaseType;");
         files.add("ptolemy.actor.TypedAtomicActor;");
         files.add("ptolemy.actor.TypedCompositeActor;");
@@ -628,7 +632,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Generate shared code that includes the declaration of the toplevel
-     * composite.
+     * composite.  If necessary a method that sets a private parameter is
+     * added.
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set<String> getSharedCode() throws IllegalActionException {
@@ -640,8 +645,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "    if (_toplevel == null) { " + _eol
                 + "        _toplevel = new TypedCompositeActor();" + _eol
                 + "        _toplevel.setName(name);" + _eol
-                + "        new ptolemy.actor.Director(_toplevel, \"director\");" + _eol
-                + "        _toplevel.setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
+                + "        new Director(_toplevel, \"director\");" + _eol
+                + "        _toplevel.setManager(new Manager(\"manager\"));" + _eol
                 + "    }" + _eol
                 + "}" + _eol
 //                + getCodeGenerator().comment("Instantiate the containment hierarchy and return the container.")
@@ -654,6 +659,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 //                 + "    }" + _eol
 //                 + "}" + _eol
                        );
+
         return sharedCode;
     }
     ///////////////////////////////////////////////////////////////////
@@ -872,10 +878,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // Create an array for the codegen data.
                 + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
                 + " Token codeGenData = $Array_new("
-                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length() , 0);" + _eol
+                + "((ArrayToken)" + ptolemyData + ").length() , 0);" + _eol
 
                 // Copy from the Ptolemy data to the codegen data.
-                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData +").length(); i++) {" + _eol
+                + " for (int i = 0; i < ((ArrayToken)" + ptolemyData +").length(); i++) {" + _eol
                 + "   Array_set(codeGenData, i, "
                 + getCodeGenerator().codeGenType(array.getDeclaredElementType())
                 + "_new(((("
@@ -941,10 +947,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // Create an array for the codegen data.
                 + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
                 + " Token $actorSymbol(" + portData + ") = $Array_new("
-                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length(), 0);" + _eol
+                + "((ArrayToken)" + ptolemyData + ").length(), 0);" + _eol
 
                 // Copy from the Ptolemy data to the codegen data.
-                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData + ").length(); i++) {" + _eol
+                + " for (int i = 0; i < ((ArrayToken)" + ptolemyData + ").length(); i++) {" + _eol
                 + "   Array_set($actorSymbol(" + portData + "), i, "
                 + getCodeGenerator().codeGenType(array.getDeclaredElementType())
                 + "_new(((("
@@ -953,6 +959,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "  }" + _eol
                 + _generateGetInside(actorPortName, codegenPortName, type, channel);
         } else if (type == BaseType.COMPLEX) {
+            _headerFiles.add("ptolemy.math.Complex;");
             return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
                 + "Complex complex = (Complex)(((" + type.getTokenClass().getName() + ")"
                 + "($actorSymbol(" + codegenPortName + ").getInside(0"
@@ -1033,6 +1040,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     List<Parameter> parameters = container.attributeList(Parameter.class);
                     if (parameters.size() > 0) {
                         readingRemoteParameters = true;
+                        break;
                     }
                 }
             }
@@ -1040,21 +1048,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         StringBuffer code = new StringBuffer("{" + _eol);
         if (readingRemoteParameters) {
-            code.append("ptolemy.actor.TypedCompositeActor c0 = new ptolemy.actor.TypedCompositeActor($actorSymbol(container), \"c0" + codegenPortName + "\");" + _eol);
+            code.append("TypedCompositeActor c0 = new TypedCompositeActor($actorSymbol(container), \"c0" + codegenPortName + "\");" + _eol);
 
             // Iterate through all the parameters in the remote actor.
             List ports = port.connectedPortList();
             NamedObj remoteActor = ((IOPort)ports.get(channelNumber)).getContainer();
             List<Parameter> parameters = remoteActor.attributeList(Parameter.class);
             for (Parameter parameter : parameters) {
-                code.append("new ptolemy.data.expr.Parameter(c0, \""
+                code.append("new Parameter(c0, \""
                         + parameter.getName() + "\").setExpression(\""
                         + parameter.getExpression() + "\");" + _eol);
             }
 
             // Create the input and output ports and connect them.
-            code.append("ptolemy.actor.TypedIOPort c0PortA = new ptolemy.actor.TypedIOPort(c0, \"c0PortA\", false, true);" + _eol
-                    + "ptolemy.actor.TypedIOPort c0PortB = new ptolemy.actor.TypedIOPort(c0, \"c0PortB\", true, false);" + _eol
+            code.append("TypedIOPort c0PortA = new TypedIOPort(c0, \"c0PortA\", false, true);" + _eol
+                    + "TypedIOPort c0PortB = new TypedIOPort(c0, \"c0PortB\", true, false);" + _eol
                     + "c0.connect(c0PortB, c0PortA);" + _eol);
         }
         code.append("$actorSymbol(" + escapedCodegenPortName + ") = new TypedIOPort($actorSymbol(container)"
@@ -1246,4 +1254,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return "BaseType." + type.toString().toUpperCase();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set of imports, where each element is a dot separate string,
+     *  that ends in a semicolon, such as ""ptolemy.actor.TypeAttribute;".
+     */
+    private Set<String> _headerFiles = new HashSet<String>();
 }
