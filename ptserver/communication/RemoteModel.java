@@ -78,8 +78,9 @@ import com.ibm.mqtt.MqttException;
 ///////////////////////////////////////////////////////////////////
 //// RemoteModel
 /**
- * Initialize the Ptolemy model by making needed replacement for sinks and sources with appropriate proxy actors and
- * set up infrastructure for sending and receiving MQTT messages.
+ * Initialize the Ptolemy model by making needed replacement for sinks
+ * and sources with appropriate proxy actors and set up infrastructure
+ * for sending and receiving MQTT messages.
  *
  * The model can set up the infrastructure for client or server
  * which differ slightly in actor replacement mechanisms.
@@ -91,6 +92,16 @@ import com.ibm.mqtt.MqttException;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class RemoteModel {
+
+    /**
+     * Create a new instance of the remoteModel with the specified parameters.
+     * @param modelType the type of the model which must be either client or server
+     */
+    public RemoteModel(RemoteModelType modelType) {
+        _tokenPublisher = new TokenPublisher(100, 1000);
+        _modelType = modelType;
+        _executor = Executors.newCachedThreadPool();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -130,20 +141,10 @@ public class RemoteModel {
     }
 
     /**
-     * The quality of service that would be required from the MQTT broker.  
+     * The quality of service that would be required from the MQTT broker.
      * All messages must be send or received only once.
      */
     public static final int QOS_LEVEL = 2;
-
-    /**
-     * Create a new instance of the remoteModel with the specified parameters.
-     * @param modelType the type of the model which must be either client or server
-     */
-    public RemoteModel(RemoteModelType modelType) {
-        _tokenPublisher = new TokenPublisher(100, 1000);
-        _modelType = modelType;
-        _executor = Executors.newCachedThreadPool();
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -176,22 +177,21 @@ public class RemoteModel {
         }
     }
 
-    /** 
-     * Close the model before finalizing
-     * @see java.lang.Object#finalize()
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        this.close();
+    public void createRemoteAttributes(Set<String> attributeNames) {
+        for (String attributeName : attributeNames) {
+            Settable attribute = (Settable) _topLevelActor
+                    .getAttribute(attributeName.substring(attributeName
+                            .substring(1).indexOf(".") + 2));
+            _settableAttributesMap.put(attributeName, attribute);
+        }
     }
 
     /**
      * Return the executor to schedule short lived tasks.
-     * 
+     *
      * <p>It's used to send PongTokens outside of the MQTT listener thread
-     * since MQTTClient disallows that. </p> 
-     * @return the executor to schedule short lived tasks. 
+     * since MQTTClient disallows that. </p>
+     * @return the executor to schedule short lived tasks.
      */
     public Executor getExecutor() {
         return _executor;
@@ -225,7 +225,8 @@ public class RemoteModel {
     /**
      * Return the mappings from remote source full names to their RemoteSourceData
      * data-structure.
-     * @return the remoteSourceMap the mappings between full name and RemoteSourceData.
+     * @return the remoteSourceMap the mappings between full name and
+     * RemoteSourceData.
      */
     public HashMap<String, RemoteSourceData> getRemoteSourceMap() {
         return _remoteSourceMap;
@@ -241,7 +242,7 @@ public class RemoteModel {
     }
 
     /**
-     * Return the map with RemoteValueListeners of the model's remote attributes. 
+     * Return the map with RemoteValueListeners of the model's remote attributes.
      * @return the map with RemoteValueListeners of the model's remote attributes.
      */
     public HashMap<String, RemoteValueListener> getSettableAttributeListenersMap() {
@@ -249,8 +250,10 @@ public class RemoteModel {
     }
 
     /**
-     * Return the mappings from remote attribute full names to their remote Settable instance.
-     * @return the settableAttributesMap the mappings from remote attribute full names to their remote Settable instance.
+     * Return the mappings from remote attribute full names to their
+     * remote Settable instance.
+     * @return the settableAttributesMap the mappings from remote
+     * attribute full names to their remote Settable instance.
      */
     public HashMap<String, Settable> getSettableAttributesMap() {
         return _settableAttributesMap;
@@ -258,7 +261,8 @@ public class RemoteModel {
 
     /**
      * Return the subscription topic of the current model.
-     * @return the subscriptionTopic used to listen for tokens from other remote model.
+     * @return the subscriptionTopic used to listen for tokens from
+     * other remote model.
      */
     public String getSubscriptionTopic() {
         return _subscriptionTopic;
@@ -273,8 +277,8 @@ public class RemoteModel {
     }
 
     /**
-     * Return the model's timeout period in milliseconds. if the period is less
-     * or equal to 0, the model would never timeout. 
+     * Return the model's timeout period in milliseconds. if the
+     * period is less or equal to 0, the model would never timeout.
      * @return the timeoutPeriod of the model.
      * @see #setTimeoutPeriod(int)
      */
@@ -299,10 +303,13 @@ public class RemoteModel {
     }
 
     /**
-     * Initialize the model that already has RemoteSinks/Sources from the 
-     * supplied xml string and set appropriate model types from the inferred model mapping.
-     * 
-     * <p>This method is indented to be used on the Android to avoid loading unneeded actors.</p>
+     * Initialize the model that already has RemoteSinks/Sources from
+     * the supplied xml string and set appropriate model types from
+     * the inferred model mapping.
+     *
+     * <p>This method is indented to be used on the Android to avoid
+     * loading unneeded actors.</p>
+     *
      * @param modelXML The modelXML file containing or
      * @param modelTypes The map of ports and their resolved types
      * @exception Exception If there is a problem parsing the modelXML.
@@ -366,11 +373,12 @@ public class RemoteModel {
 
     /**
      * Return true if the model is stopped, otherwise return false.
-     * TODO: Figure out if there is a difference for this class between stopped and paused state. 
      * @return the stopped state of the model.
      * @see #setStopped(boolean)
      */
     public boolean isStopped() {
+        // TODO: Figure out if there is a difference for this class
+        // between stopped and paused state.
         return _stopped;
     }
 
@@ -378,7 +386,8 @@ public class RemoteModel {
      * Load the model from the specified URL.
      *
      * @param modelURL the model URL to be loaded
-     * @exception Exception if there is a problem parsing the model, connecting to the mqtt broker or replacing actors.
+     * @exception Exception If there is a problem parsing the model,
+     * connecting to the mqtt broker or replacing actors.
      */
     public void loadModel(URL modelURL) throws Exception {
         MoMLParser parser = _createMoMLParser();
@@ -471,7 +480,7 @@ public class RemoteModel {
     }
 
     /**
-     * Set the PongToken instance that was received the last. 
+     * Set the PongToken instance that was received the last.
      * @param lastPongToken The last PongToken.
      * @see #getLastPongToken()
      */
@@ -499,9 +508,6 @@ public class RemoteModel {
         _stopped = stopped;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /**
      * Set the model's timeout period in milliseconds. If the period is set
      * to 0 or less, the model would never timeout.
@@ -512,15 +518,12 @@ public class RemoteModel {
         this.timeoutPeriod = timeoutPeriod;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /**
      * Set up the communication infrastructure.
      * @param ticket The ticket associated with this remote model.
      * @param brokerHostname The hostname of the MQTT broker.
      * @return The manager of the model
-     * @exception MqttException if there is a problem connecting to the broker.
+     * @exception MqttException If there is a problem connecting to the broker.
      * @exception IllegalActionException If there is problem creating the manager.
      */
     public Manager setUpInfrastructure(Ticket ticket, String brokerHostname)
@@ -545,13 +548,17 @@ public class RemoteModel {
         return _topLevelActor.getManager();
     }
 
-    public void createRemoteAttributes(Set<String> attributeNames) {
-        for (String attributeName : attributeNames) {
-            Settable attribute = (Settable) _topLevelActor
-                    .getAttribute(attributeName.substring(attributeName
-                            .substring(1).indexOf(".") + 2));
-            _settableAttributesMap.put(attributeName, attribute);
-        }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Close the model before finalizing
+     * @see java.lang.Object#finalize()
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.close();
     }
 
     /**
@@ -563,11 +570,15 @@ public class RemoteModel {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
      * Capture inferred types of the entities.
      * @param entities The entities whose inferred types are captured
      * @param portTypes The mapping that stores the types
-     * @exception IllegalActionException If there is a problem inferring type of Typeable.
+     * @exception IllegalActionException If there is a problem
+     * inferring type of Typeable.
      */
     private void _captureModelTypes(HashSet<ComponentEntity> entities,
             HashMap<String, String> portTypes) throws IllegalActionException {
@@ -577,19 +588,25 @@ public class RemoteModel {
                 if (port instanceof IOPort) {
                     // if it's TypedIOPort, capture its types.
                     if (port instanceof TypedIOPort) {
-                        //FIXME using toString on Type is not elegant and could break.
+                        //FIXME using toString on Type is not elegant
+                        //and could break.
                         portTypes.put(port.getFullName(), ((TypedIOPort) port)
                                 .getType().toString());
                     }
-                    // this port might be connected to other TypedIOPorts whose types are needed on the client.
+                    // This port might be connected to other
+                    // TypedIOPorts whose types are needed on the
+                    // client.
                     IOPort ioPort = (IOPort) port;
                     for (Object relationObject : ioPort.linkedRelationList()) {
                         Relation relation = (Relation) relationObject;
                         List<Port> portList = relation.linkedPortList(port);
                         for (Port connectingPort : portList) {
-                            // TODO: only the first port connection is used on the client, consider skipping the rest here.
+                            // TODO: only the first port connection is
+                            // used on the client, consider skipping
+                            // the rest here.
                             if (connectingPort instanceof TypedIOPort) {
-                                // FIXME using toString on Type is not elegant and could break.
+                                // FIXME using toString on Type is not
+                                // elegant and could break.
                                 portTypes.put(connectingPort.getFullName(),
                                         ((TypedIOPort) connectingPort)
                                                 .getType().toString());
@@ -600,7 +617,7 @@ public class RemoteModel {
 
             }
             for (Typeable attribute : entity.attributeList(Typeable.class)) {
-                //FIXME using toString on Type is not elegant and could break
+                // FIXME using toString on Type is not elegant and could break
                 portTypes.put(((Nameable) attribute).getFullName(), attribute
                         .getType().toString());
             }
@@ -623,8 +640,9 @@ public class RemoteModel {
      * Create a new instance of the RemoteSink either by replacing the targetEntity
      * or by replacing all entities connected to it.
      * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
-     * otherwise replace all entities connecting to it with one proxy
+     * @param replaceTargetEntity replaceTargetEntity true to replace
+     * the target entity with the proxy, otherwise replace all
+     * entities connecting to it with one proxy
      * @param portTypes The map of ports and their resolved types
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
@@ -645,10 +663,12 @@ public class RemoteModel {
     }
 
     /**
-     * Create a new instance of the RemoteSource either by replacing the targetEntity or by replacing all entities connected to it.
+     * Create a new instance of the RemoteSource either by replacing
+     * the targetEntity or by replacing all entities connected to it.
      * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
-     * otherwise replace all entities connecting to it with one proxy
+     * @param replaceTargetEntity replaceTargetEntity true to replace
+     * the target entity with the proxy, otherwise replace all
+     * entities connecting to it with one proxy
      * @param portTypes The map of ports and their resolved types
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
@@ -677,7 +697,8 @@ public class RemoteModel {
     }
 
     /**
-     * Find all remote attributes of the model and add them to the _settableAttributesMap.
+     * Find all remote attributes of the model and add them to the
+     * _settableAttributesMap.
      * @param container
      */
     private void _initRemoteAttributes(NamedObj container) {
@@ -711,8 +732,23 @@ public class RemoteModel {
     }
 
     /**
+     * Set up MQTT connection.
+     * @exception MqttException if there is a problem subscribing to topic.
+     */
+    private void _setUpMQTT(String address) throws MqttException {
+        _mqttClient = MqttClient.createMqttClient(address, null);
+        _mqttClient.connect(getTicket().getTicketID() + _modelType, true,
+                (short) 10);
+        _tokenPublisher.setMqttClient(_mqttClient);
+        _tokenPublisher.setTopic(_publishingTopic);
+        _mqttClient.registerSimpleHandler(new TokenListener(this));
+        _mqttClient.subscribe(new String[] { getSubscriptionTopic() },
+                new int[] { QOS_LEVEL });
+    }
+
+    /**
      * Initialize the manager of the model.
-     * @throws IllegalActionException if there is a problem setting the 
+     * @exception IllegalActionException If there is a problem setting the
      * manager of the top level actor.
      */
     private void _setUpManager() throws IllegalActionException {
@@ -804,21 +840,6 @@ public class RemoteModel {
     }
 
     /**
-     * Set up MQTT connection.
-     * @throws MqttException if there is a problem subscribing to topic.
-     */
-    private void _setUpMQTT(String address) throws MqttException {
-        _mqttClient = MqttClient.createMqttClient(address, null);
-        _mqttClient.connect(getTicket().getTicketID() + _modelType, true,
-                (short) 10);
-        _tokenPublisher.setMqttClient(_mqttClient);
-        _tokenPublisher.setTopic(_publishingTopic);
-        _mqttClient.registerSimpleHandler(new TokenListener(this));
-        _mqttClient.subscribe(new String[] { getSubscriptionTopic() },
-                new int[] { QOS_LEVEL });
-    }
-
-    /**
      * Set up remote attribute listeners.
      */
     private void _setUpRemoteAttributes() {
@@ -847,8 +868,10 @@ public class RemoteModel {
      * The map from the Typeable's full name to its type
      */
     private HashMap<String, String> _resolvedTypes;
+
     /**
-     * The mapping from the original source actor name to its remote source actor and queue.
+     * The mapping from the original source actor name to its remote
+     * source actor and queue.
      */
     private final HashMap<String, RemoteSourceData> _remoteSourceMap = new HashMap<String, RemoteSourceData>();
 
@@ -858,12 +881,14 @@ public class RemoteModel {
     private final HashMap<String, RemoteSink> _remoteSinkMap = new HashMap<String, RemoteSink>();
 
     /**
-     * The mapping from the original settable object name to the remote representation.
+     * The mapping from the original settable object name to the
+     * remote representation.
      */
     private final HashMap<String, Settable> _settableAttributesMap = new HashMap<String, Settable>();
 
     /**
-     * The mapping from the original settable object name to its attribute listener.
+     * The mapping from the original settable object name to its
+     * attribute listener.
      */
     private final HashMap<String, RemoteValueListener> _settableAttributeListenersMap = new HashMap<String, RemoteValueListener>();
 

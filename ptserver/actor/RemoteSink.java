@@ -94,7 +94,8 @@ public class RemoteSink extends RemoteActor {
     /**
      * Read tokens from all ports, package them as one CommunicationToken and send
      * it via tokenPublisher.
-     * @exception IllegalActionException parameters.getToken, port.get throw it
+     * @exception IllegalActionException If parameters.getToken(), or
+     * port.get() throw it
      * @see TokenPublisher
      */
     @Override
