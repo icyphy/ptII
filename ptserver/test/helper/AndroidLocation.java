@@ -65,7 +65,7 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getX() throws IllegalActionException {
-        if (_layout_x < -3) {
+        if (_layout_x == Integer.MIN_VALUE) {
             _setSize();
         }
         
@@ -81,7 +81,7 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getY() throws IllegalActionException {
-        if (_layout_y < -3) {
+        if (_layout_y == Integer.MIN_VALUE) {
             _setSize();
         }
         
@@ -94,7 +94,7 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getWidth() throws IllegalActionException {
-        if (_width < -3) {
+        if (_width == Integer.MIN_VALUE) {
             _setSize();
         }
         
@@ -107,7 +107,7 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getHeight() throws IllegalActionException {
-        if (_height < -3) {
+        if (_height == Integer.MIN_VALUE) {
             _setSize();
         }
         
@@ -140,20 +140,20 @@ public class AndroidLocation extends Parameter {
      *          MATCH_PARENT = -1 <br/>
      *          WRAP_CONTENT = -2
      */
-    private int _layout_x = -5;
+    private int _layout_x = Integer.MIN_VALUE;
 
     /** Relative y position of the top-left corner. <br/>
      *  Special constants: <br/>
      *          MATCH_PARENT = -1 <br/>
      *          WRAP_CONTENT = -2
      */
-    private int _layout_y = -5;
+    private int _layout_y = Integer.MIN_VALUE;
 
     /** Width of the element.
      */
-    private int _width = -5;
+    private int _width = Integer.MIN_VALUE;
 
     /** Height of the element.
      */
-    private int _height = -5;
+    private int _height = Integer.MIN_VALUE;
 }
