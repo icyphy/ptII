@@ -544,13 +544,6 @@ public class RemoteModel {
         _setUpManager();
         return _topLevelActor.getManager();
     }
-    
-    public void createRemoteAttributes(Set<String> attributeNames) {
-        for (String attributeName : attributeNames) {
-            Settable attribute = (Settable) _topLevelActor.getAttribute(attributeName.substring(attributeName.substring(1).indexOf(".") + 2));
-            _settableAttributesMap.put(attributeName, attribute);
-        }
-    }
 
     public void createRemoteAttributes(Set<String> attributeNames) {
         for (String attributeName : attributeNames) {
