@@ -9,7 +9,7 @@ static Token subtract_Array_Double(Token a1, double a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
-    for (i = 0; i < ((Array)(a2.payload)).size; i++) {
+    for (i = 0; i < ((Array)(a1.payload)).size; i++) {
         Array_set(result, i, $subtract_Token_Double(Array_get(a1, i), a2));
     }
     return result;
@@ -17,11 +17,11 @@ static Token subtract_Array_Double(Token a1, double a2) {
 /**/
 
 /*** subtract_Array_Integer() ***/
-static Token subtract_Integer_Array(Token a1, int a2) {
+static Token subtract_Array_Integer(Token a1, int a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
-    for (i = 0; i < ((Array)(a2.payload)).size; i++) {
+    for (i = 0; i < ((Array)(a1.payload)).size; i++) {
         Array_set(result, i, $subtract_Token_Integer(Array_get(a1, i), a2));
     }
     return result;
@@ -120,9 +120,10 @@ int subtract_Integer_Integer(int a1, int a2) {
 /**/
 
 /*** subtract_Integer_Token() ***/
-int subtract_Integer_Token(int a1, Token a2) {
-    Token token = $new(Integer, a1);
-    return $typeFunc(TYPE_Integer::subtract(token, a2));
+static Token subtract_Integer_Token(int a1, Token a2) {
+    Token token = $new(Integer(a1));
+    //return $typeFunc(TYPE_Integer::subtract(token, a2));
+    return $subtract_Token_Token(token, a2);
 }
 /**/
 
@@ -159,9 +160,9 @@ static Token subtract_Token_Double(Token a1, double a2) {
 /**/
 
 /*** subtract_Token_Integer() ***/
-int subtract_Token_Integer(Token a1, int a2) {
-    Token token = $new(Integer, a2);
-    return $typeFunc(TYPE_Integer::subtract(a1, token));
+static Token subtract_Token_Integer(Token a1, int a2) {
+    Token token = $new(Integer(a2));
+    return $subtract_Token_Token(a1, token);
 }
 /**/
 
@@ -169,12 +170,36 @@ int subtract_Token_Integer(Token a1, int a2) {
 static Token subtract_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
+#ifdef PTCG_TYPE_Complex
+    case TYPE_Complex:
+        switch (a2.type) {
+            case TYPE_Complex:
+                    result = Complex_add(a1, a2);
+                break;
+            default:
+                System.out.println("add_Token_Token(): a1 is a Complex, "
+                        + "a2 is a " + a2.type);
+                result = null;
+
+        }
+        break;
+#endif
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
         switch (a2.type) {
             case TYPE_Double:
                     result = Double_new((Double)a1.payload - (Double)a2.payload);
                 break;
+#ifdef PTCG_TYPE_Array
+            case TYPE_Array:
+                    result = $subtract_Double_Array((Double)a1.payload, a2);
+                break;
+#endif
+#ifdef PTCG_TYPE_Integer
+            case TYPE_Integer:
+                    result = Double_new((Double)a1.payload - (Integer)a2.payload);
+	        break;
+#endif
             default:
                 System.out.println("subtract_Token_Token(): a1 is a Double, "
                         + "a2 is a " + a2.type);
@@ -186,13 +211,20 @@ static Token subtract_Token_Token(Token a1, Token a2) {
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
         switch (a2.type) {
+            case TYPE_Integer:
+                    result = Integer_new((Integer)(a1.payload) - (Integer)a2.payload);
+                break;
+#ifdef PTCG_TYPE_Array
+            case TYPE_Array:
+                    result = $subtract_Integer_Array((Integer)a1.payload, a2);
+                break;
+#endif
+#ifdef PTCG_TYPE_Double
             case TYPE_Double:
                 //FIXME: is this cast safe?
                     result = Integer_new((Integer)(a1.payload) - ((Double)a2.payload).intValue());
                 break;
-            case TYPE_Integer:
-                    result = Integer_new((Integer)(a1.payload) - (Integer)a2.payload);
-                break;
+#endif
             default:
                 System.out.println("subtract_Token_Token(): a1 is a Integer, "
                         + "a2 is a " + a2.type);
@@ -207,6 +239,16 @@ static Token subtract_Token_Token(Token a1, Token a2) {
             case TYPE_Array:
                     result = $Array_subtract(a1, a2);
                 break;
+#ifdef PTCG_TYPE_Double
+            case TYPE_Double:
+                    result = $subtract_Array_Double(a1, (Double)a2.payload);
+                break;
+#endif
+#ifdef PTCG_TYPE_Integer
+            case TYPE_Integer:
+                    result = $subtract_Array_Integer(a1, (Integer)a2.payload);
+	        break;
+#endif
             default:
                 result = null;
 
