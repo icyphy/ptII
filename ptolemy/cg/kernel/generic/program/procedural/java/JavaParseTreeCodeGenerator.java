@@ -1084,6 +1084,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
 
         //_fireCode.append("->" + node.getMethodName() + "()");
+        // FIXME: Applying functions to tokens does not work
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/xslt/test/auto/XSLTransformerTest.xml
         result.append("->" + node.getMethodName() + "()");
         _childCode = result.toString();
     }

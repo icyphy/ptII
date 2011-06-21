@@ -66,7 +66,7 @@ static Token convert_Double_Token(double a) {
 
 /*** convert_Integer_Array() ***/
 static Token convert_Integer_Array(int a) {
-    return $new(Array(1, 1, $new(Integer(a))));
+    return $new(Array(1, 1, $new(Integer(a)), TYPE_Integer));
 }
 /**/
 
