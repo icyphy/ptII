@@ -2,8 +2,12 @@
 $type $actorSymbol(result);
 /**/
 
-/***initSum($type1, $type2)***/
+/***initSumOld($type1, $type2)***/
 $actorSymbol(result) = $zero_$cgType(output)OneArg($get(plus#0));
+/**/
+
+/***initSum($zero) ***/
+$actorSymbol(result) = $zero;
 /**/
 
 /***minusOnlyInitSum($minusType)***/

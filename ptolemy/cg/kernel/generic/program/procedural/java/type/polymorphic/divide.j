@@ -112,9 +112,10 @@ int divide_Integer_Integer(int a1, int a2) {
 /**/
 
 /*** divide_Integer_Token() ***/
-int divide_Integer_Token(int a1, Token a2) {
-    Token token = $new(Int, a1);
-    return $typeFunc(TYPE_Int::divide(token, a2));
+static Token divide_Integer_Token(int a1, Token a2) {
+    Token token = $new(Integer(a1));
+    //return $typeFunc(TYPE_Int::divide(token, a2));
+    return $divide_Token_Token(token, a2);
 }
 /**/
 
@@ -177,20 +178,36 @@ static Token divide_Token_Integer(Token a1, int a2) {
 static Token divide_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
+#ifdef PTCG_TYPE_Complex
+    case TYPE_Complex:
+        switch (a2.type) {
+            case TYPE_Complex:
+                    result = Complex_add(a1, a2);
+                break;
+            default:
+                System.out.println("add_Token_Token(): a1 is a Complex, "
+                        + "a2 is a " + a2.type);
+                result = null;
+
+        }
+        break;
+#endif
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
         switch (a2.type) {
             case TYPE_Double:
                     result = Double_new((Double)a1.payload / (Double)a2.payload);
                 break;
+#ifdef PTCG_TYPE_Array
+            case TYPE_Array:
+                    result = $divide_Double_Array((Double)a1.payload, a2);
+                break;
 #endif
-// FIXME: this is wrong because if Double is not defined, but Integer is, we are hosed.
 #ifdef PTCG_TYPE_Integer
             case TYPE_Integer:
                     result = Double_new((Double)a1.payload / (Integer)a2.payload);
                 break;
 #endif
-#ifdef PTCG_TYPE_Double
             default:
                 System.out.println("divide_Token_Token(): a1 is a Double, "
                         + "a2 is a " + a2.type);
@@ -199,12 +216,23 @@ static Token divide_Token_Token(Token a1, Token a2) {
         }
         break;
 #endif
+
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
         switch (a2.type) {
             case TYPE_Integer:
                     result = Integer_new((Integer)a1.payload / (Integer)a2.payload);
                 break;
+#ifdef PTCG_TYPE_Array
+            case TYPE_Array:
+                    result = $divide_Integer_Array((Integer)a1.payload, a2);
+                break;
+#endif
+#ifdef PTCG_TYPE_Double
+            case TYPE_Double
+                    result = Integer_new((Integer)a1.payload/(Double)a2.payload));
+                break;
+#endif
             default:
                 System.out.println("divide_Token_Token(): a1 is a Integer, "
                         + "a2 is a " + a2.type);
@@ -214,17 +242,28 @@ static Token divide_Token_Token(Token a1, Token a2) {
         }
         break;
 #endif
+#ifdef PTCG_TYPE_Array
     case TYPE_Array:
         switch (a2.type) {
             case TYPE_Array:
                     result = $Array_divide(a1, a2);
-                System.out.println("divide_Token_Token: " + a1.type + " " + a2.type + " " + result);
                 break;
+#ifdef PTCG_TYPE_Double
+            case TYPE_Double:
+                    result = $divide_Array_Double(a1, (Double)a2.payload);
+                break;
+#endif
+#ifdef PTCG_TYPE_Integer
+            case TYPE_Integer:
+                    result = $divide_Array_Integer(a1, (Integer)a2.payload);
+	        break;
+#endif
             default:
                 result = null;
 
         }
         break;
+#endif
     default:
         System.out.println("divide_Token_Token(): a1 is a " + a1.type
                         + "a2 is a " + a2.type);

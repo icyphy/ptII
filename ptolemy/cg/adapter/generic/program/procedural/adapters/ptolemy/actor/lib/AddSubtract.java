@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -84,13 +85,24 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         boolean minusOnly = !actor.plus.isOutsideConnected();
         if (minusOnly) {
             initArgs.add(minusType);
+            codeStream.appendCodeBlock("minusOnlyInitSum", initArgs);
         } else {
-            initArgs.add(plusType);
-            initArgs.add(outputType);
+            Type type = actor.output.getType();
+             if (!getCodeGenerator().isPrimitive(type)) {
+                 initArgs.add("$tokenFunc($get(output)::zero())");
+            } else {
+                // FIXME: this seems wrong, why doesn't zero work here?
+                //$PTII/bin/ptcg -language java ./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/AddSubtract.xml
+                if (type == BaseType.BOOLEAN) {
+                    initArgs.add("false");
+                } else if (type == BaseType.STRING) {
+                    initArgs.add("\"\"");
+                } else {
+                    initArgs.add("0");
+                }
+            }
+            codeStream.append(getTemplateParser().generateBlockCode("initSum", initArgs));
         }
-        codeStream.appendCodeBlock(minusOnly ? "minusOnlyInitSum" : "initSum",
-                initArgs);
-
         args.add("");
         args.add(outputType);
         args.add(plusType);

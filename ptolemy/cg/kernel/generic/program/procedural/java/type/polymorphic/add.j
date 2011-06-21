@@ -11,8 +11,8 @@ static Token add_Array_Double(Token a1, double a2) {
 /**/
 
 /*** add_Array_Integer() ***/
-static Token add_Integer_Array(Token a1, int a2) {
-    return $add_Array_Integer(a2, a1);
+static Token add_Array_Integer(Token a1, int a2) {
+    return $add_Integer_Array(a2, a1);
 }
 /**/
 
@@ -113,9 +113,10 @@ int add_Integer_String(int a1, String a2) {
 /**/
 
 /*** add_Integer_Token() ***/
-int add_Integer_Token(int a1, Token a2) {
-    Token token = $new(Integer, a1);
-    return $typeFunc(TYPE_Integer::add(token, a2));
+static Token add_Integer_Token(int a1, Token a2) {
+    Token token = $new(Integer(a1));
+    //   return $typeFunc(TYPE_Integer::add(token, a2));
+    return $add_Token_Token(token, a2);
 }
 /**/
 
@@ -173,7 +174,7 @@ static Token add_Token_Double(Token a1, double a2) {
 /**/
 
 /*** add_Token_Integer() ***/
-int add_Token_Integer(Token a1, int a2) {
+static Token add_Token_Integer(Token a1, int a2) {
     return $add_Integer_Token(a2, a1);
 }
 /**/
@@ -202,6 +203,16 @@ static Token add_Token_Token(Token a1, Token a2) {
             case TYPE_Double:
                     result = Double_new((Double)a1.payload + (Double)a2.payload);
                 break;
+#ifdef PTCG_TYPE_Array
+            case TYPE_Array:
+                    result = $add_Double_Array((Double)a1.payload, a2);
+                break;
+#endif
+#ifdef PTCG_TYPE_Integer
+            case TYPE_Integer:
+                    result = Double_new((Double)a1.payload + (Integer)a2.payload);
+	        break;
+#endif
             default:
                 System.out.println("add_Token_Token(): a1 is a Double, "
                         + "a2 is a " + a2.type);
@@ -216,6 +227,16 @@ static Token add_Token_Token(Token a1, Token a2) {
             case TYPE_Integer:
                     result = Integer_new((Integer)a1.payload + (Integer)a2.payload);
                 break;
+#ifdef PTCG_TYPE_Array
+            case TYPE_Array:
+                    result = $add_Integer_Array((Integer)a1.payload, a2);
+                break;
+#endif
+#ifdef PTCG_TYPE_Double
+            case TYPE_Double:
+                    result = Double_new((Integer)a1.payload + (Double)a2.payload);
+                break;
+#endif
             default:
                 System.out.println("add_Token_Token(): a1 is a Integer, "
                         + "a2 is a " + a2.type);
@@ -231,6 +252,16 @@ static Token add_Token_Token(Token a1, Token a2) {
             case TYPE_Array:
                     result = $Array_add(a1, a2);
                 break;
+#ifdef PTCG_TYPE_Double
+            case TYPE_Double:
+                    result = $add_Array_Double(a1, (Double)a2.payload);
+                break;
+#endif
+#ifdef PTCG_TYPE_Integer
+            case TYPE_Integer:
+                    result = $add_Array_Integer(a1, (Integer)a2.payload);
+	        break;
+#endif
             default:
                 result = null;
 

@@ -12,7 +12,7 @@
 	<property name="ptserver.output" value="${basedir}/tempoutput" />
 	<property name="ptdroid.bin" value="${basedir}/../ptdroid/ptbin" />
 	<path id="ptII.classpath">
-		<pathelement location="." />
+		<pathelement location="${basedir}" />
 		<pathelement location="lib/bsh-2.0b4.jar" />
 		<pathelement location="lib/ptCal.jar" />
 		<pathelement location="lib/java_cup.jar" />
@@ -45,7 +45,7 @@
 
 	<target name="clean">
 		<delete>
-			<fileset dir="." includes="**/*.class" />
+			<fileset dir="${basedir}" includes="**/*.class" />
 			<fileset dir="${ptserver.output}" />
 		</delete>
 	</target>
@@ -55,7 +55,7 @@
 	<target name="build-project">
 		<echo message="${ant.project.name}: ${ant.file}" />
 		<javac debug="true" debuglevel="${debuglevel}" destdir="." source="${source}" target="${target}" includeAntRuntime="false" fork="true" memoryinitialsize="256m" memorymaximumsize="256m">
-			<src path="." />
+			<src path="${basedir}" />
 			<exclude name="**/CVS/" />
 			<exclude name="**/adm/" />
 			<exclude name="**/codeDoc/" />
@@ -174,18 +174,6 @@
 			<classpath refid="ptII.classpath" />
 		</javac>
 	</target>
-	<target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects" />
-	<target name="PtolemyTestServer">
-		<java classname="ptserver.communication.PtolemyTestServer" failonerror="true" fork="yes">
-			<arg line="/Users/anarhuseynov/Desktop/addermodel.xml" />
-			<classpath refid="ptII.classpath" />
-		</java>
-	</target>
-	<target name="VergilApplication">
-		<java classname="ptolemy.vergil.VergilApplication" failonerror="true" fork="yes">
-			<classpath refid="ptII.classpath" />
-		</java>
-	</target>
 	<target name="initOutput">
 		<mkdir dir="${junit.output.dir}" />
 	</target>
@@ -227,14 +215,10 @@
 		</junit>
 		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
-	<target name="ptdroid.clean">
-		<delete includeemptydirs="true">
-			<fileset dir="${ptdroid.bin}/ptserver" includes="**/*" />
-		</delete>
-	</target>
+	<property name="ptdroid.builddir" location="${basedir}/../ptdroid/ptbin" />
 	<target name="ptdroid.build">
-		<copy includeemptydirs="false" todir="${ptdroid.bin}">
-			<fileset dir=".">
+		<copy includeemptydirs="false" todir="${ptdroid.builddir}">
+			<fileset dir="${basedir}">
 				<include name="**/*.xml" />
 				<include name="**/*.properties" />
 				<exclude name="**/*.html" />
@@ -366,8 +350,8 @@
 			</fileset>
 		</copy>
 		<echo message="${ant.project.name}: ${ant.file}" />
-		<javac debug="true" debuglevel="${debuglevel}" destdir="${ptdroid.bin}" source="${source}" includeAntRuntime="false" fork="true" memoryinitialsize="256m" memorymaximumsize="256m">
-			<src path="." />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${ptdroid.builddir}" source="${source}" includeAntRuntime="false" fork="true" memoryinitialsize="256m" memorymaximumsize="256m">
+			<src path="${basedir}" />
 			<exclude name="**/CVS/" />
 			<exclude name="**/adm/" />
 			<exclude name="**/codeDoc/" />
@@ -502,9 +486,9 @@
 		</findbugs>
 	</target>
 	<target name="checkstyle" depends="initOutput">
-		<taskdef resource="checkstyletask.properties" classpath="ptserver/lib/checkstyle-5.3-all.jar" />
+		<taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
 		<checkstyle config="doc/checkstyle-ptII.xml" failOnViolation="false">
-			<fileset dir="ptserver" includes="**/*.java" />
+			<fileset dir="${basedir}/ptserver" includes="**/*.java" />
 			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
 		</checkstyle>
 	</target>
