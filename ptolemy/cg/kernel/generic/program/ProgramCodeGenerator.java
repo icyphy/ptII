@@ -1228,7 +1228,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // can be overridden in derived classes. We mostly invoke
         // these methods in the order that the code will be
         // executed, except for some exceptions as noted.
-        String sharedCode = _generateSharedCode();
         String preinitializeCode = _generatePreinitializeCode();
 
         // Typically, the preinitialize code consists of variable
@@ -1284,9 +1283,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         //String globalCode = generateGlobalCode();
 
+        // The code generation methods above may require generated code.
+        String sharedCode = _generateSharedCode();
+
         // Include files depends the generated code, so it
         // has to be generated after everything.
         String includeFiles = _generateIncludeFiles();
+
 
         startTime = _printTimeAndMemory(startTime,
                 "CodeGenerator: generating code consumed: ");

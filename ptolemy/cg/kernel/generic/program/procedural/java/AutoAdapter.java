@@ -152,40 +152,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                  getComponent().getClass().getField(parameterName);
             } catch (NoSuchFieldException ex) {
                 privateParameter = true;
-                // FIXME: make this be a method that gets called.
-                code.append(// "try{" + _eol
-                        "{" + _eol
-                        // Accessing private field
-                        + "Object actor = $actorSymbol(actor);" + _eol
-                        // Use getDeclaredFields() so that we get private fields.
-                        + "java.lang.reflect.Field declaredFields[] = actor.getClass().getDeclaredFields();" + _eol
-                        // Use getFields() instead of getDeclaredFields() so that we get fields in parent classes
-                        + "java.lang.reflect.Field fields[] = actor.getClass().getFields();" + _eol
-                        // Note that there is overlap between the two arrays
-                        + "java.lang.reflect.Field allFields[] = java.util.Arrays.copyOf(declaredFields, declaredFields.length + fields.length);" + _eol
-                        +  "System.arraycopy(fields, 0, allFields, declaredFields.length, fields.length);" + _eol
-                        + "for (int i = 0; i < allFields.length; i++){" + _eol
-                        + "    ptolemy.data.expr.Parameter parameter = null;" + _eol
-                        + "    allFields[i].setAccessible(true);" + _eol 
-                        + "    if (allFields[i].getName().equals(\"" + parameterName + "\")) {" + _eol
-                        + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
-                        // If the field is a StringParameter, then we want to to assign to it.
-                        + "    } else if (ptolemy.data.expr.Parameter.class.isAssignableFrom(allFields[i].getType())) {" + _eol
-                        + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
-                        // Check for private parameters that have setName() different than the name of the field.
-                        // $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml 
-                        // Uninitialized parameters may be null.
-                        + "        if (parameter != null && !parameter.getName().equals(\"" + parameter.getName() + "\")) {" + _eol
-                        + "            parameter = null;" + _eol
-                        + "        }" + _eol
-                        + "    }" + _eol 
-                        + "    if (parameter != null) {" + _eol
-                        + "        parameter.setExpression(\"" + parameterValue + "\");" + _eol
-                        + "       ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(parameter);" + _eol
-                        + "        break;" + _eol
-                        + "    }" + _eol
-                        + "}" + _eol
-                        + "}" + _eol);
+                _needAutoAdapterSetPrivateParameter = true;
+                // Call the method that sets the parameter.  We use a method
+                // here so as to save space.
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml
+                code.append("_autoAdapterSetPrivateParameter($actorSymbol(actor), "
+                        + "\"" + parameter.getName() + "\", "
+                        + "\"" + parameterName + "\", "
+                        + "\"" + parameterValue + "\");" + _eol);
             } catch (SecurityException ex2) {
                 throw new IllegalActionException(getComponent(), ex2,
                         "Can't access " + parameterName + " field.");
@@ -493,7 +467,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                 List<TypeAttribute> typeAttributes = insidePort.attributeList(TypeAttribute.class);
                 if (typeAttributes.size() > 0) {
-                    _headerFiles.add("ptolemy.actor.TypeAttribute");
+                    _headerFiles.add("ptolemy.actor.TypeAttribute;");
                     if (typeAttributes.size() > 1) {
                         new Exception("Warning, " + insidePort.getFullName()
                                 + " has more than one typeAttribute."
@@ -660,6 +634,41 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 //                 + "}" + _eol
                        );
 
+        if (_needAutoAdapterSetPrivateParameter) {
+            sharedCode.add("// Search the fields of the class for a parameter by name." + _eol
+                    + "static void _autoAdapterSetPrivateParameter(Object actor, " + _eol
+                    + "String parameterName, String parameterSanitizedName, String parameterValue) throws Exception {" + _eol
+                    +  "// Accessing private field." + _eol
+                    +  "// Use getDeclaredFields() so that we get private fields." + _eol
+                    + "java.lang.reflect.Field declaredFields[] = actor.getClass().getDeclaredFields();" + _eol
+                    +  "// Use getFields() instead of getDeclaredFields() so that we get fields in parent classes." + _eol
+                    + "java.lang.reflect.Field fields[] = actor.getClass().getFields();" + _eol
+                    + "// Note that there is overlap between the two arrays." + _eol
+                    + "java.lang.reflect.Field allFields[] = java.util.Arrays.copyOf(declaredFields, declaredFields.length + fields.length);" + _eol
+                    + "System.arraycopy(fields, 0, allFields, declaredFields.length, fields.length);" + _eol
+                    + "for (int i = 0; i < allFields.length; i++){" + _eol
+                    + "    ptolemy.data.expr.Parameter parameter = null;" + _eol
+                    + "    allFields[i].setAccessible(true);" + _eol 
+                    + "    if (allFields[i].getName().equals(parameterSanitizedName)) {" + _eol
+                    + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
+                    + "    // If the field is a StringParameter, then we want to to assign to it." + _eol
+                    + "    } else if (ptolemy.data.expr.Parameter.class.isAssignableFrom(allFields[i].getType())) {" + _eol
+                    + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
+                    + "// Check for private parameters that have setName() different than the name of the field." + _eol
+                    + "// $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml" + _eol 
+                    + "// Uninitialized parameters may be null." + _eol
+                    + "        if (parameter != null && !parameter.getName().equals(parameterName)) {" + _eol
+                    + "            parameter = null;" + _eol
+                    + "        }" + _eol
+                    + "    }" + _eol 
+                    + "    if (parameter != null) {" + _eol
+                    + "        parameter.setExpression(parameterValue );" + _eol
+                    + "       ((ptolemy.kernel.util.NamedObj)actor).attributeChanged(parameter);" + _eol
+                    + "        break;" + _eol
+                    + "    }" + _eol
+                    + "}" + _eol
+                    + "}" + _eol);
+        }
         return sharedCode;
     }
     ///////////////////////////////////////////////////////////////////
@@ -1261,4 +1270,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  that ends in a semicolon, such as ""ptolemy.actor.TypeAttribute;".
      */
     private Set<String> _headerFiles = new HashSet<String>();
+
+    /** True if _autoAdapterSetPrivateParameter() should be declared. */
+    private boolean _needAutoAdapterSetPrivateParameter = false;
 }
