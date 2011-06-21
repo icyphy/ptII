@@ -163,8 +163,11 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
     ////                         protected methods                 ////
 
     /** Reset the code generator.
+     *  @exception IllegalActionException Not thrown in this base
+     *  class, thrown by the parent if the container of the model
+     *  cannot be set to null.
      */
-    protected void _reset() {
+    protected void _reset() throws IllegalActionException {
         super._reset();
 
         _includes.clear();

@@ -253,8 +253,6 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  @param container The container in which to place the object, or
      *   null to specify that there is no current container.
      */
-
-    @Override
     public void place(PortableContainer container) {
         _getImplementation().place(container);
     }

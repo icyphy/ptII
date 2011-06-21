@@ -2021,6 +2021,31 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return startCode.toString();
     }
 
+    /** Reset the code generator.
+     *  After calling _reset(), you must call _analyzeTypeConversions()
+     *  before calling the generate methods again.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  thrown by the parent if the container of the model
+     *  cannot be set to null.
+     */
+    protected void _reset() throws IllegalActionException {
+        super._reset();
+        _overloadedFunctions = null;
+        if (_overloadedFunctionSet != null) {
+            _overloadedFunctionSet.clear();
+        }
+        _typeDeclarations = null;
+        if (_variableTypeMap != null) {
+            _variableTypeMap.clear();
+        }
+        if (_variableTypeMaxIndex != null) {
+            _variableTypeMaxIndex.clear();
+        }
+        if (_substituteMap != null) {
+            _substituteMap.clear();
+        }
+    }
+
     /** Return the class of the templateParser class. In cse
      *  there isn't one return null.
      *  @return The base class for templateParser.  

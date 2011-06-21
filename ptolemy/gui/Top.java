@@ -1532,6 +1532,11 @@ public abstract class Top extends JFrame {
         // dialog so that subclasses can customize this dialog.
         FileDialog fileDialog = _saveAsFileDialogComponent();
 
+        if (fileDialog == null) {
+            // Action was canceled.
+            return false;
+        }
+
         fileDialog.show();
 
         _directory = new File(fileDialog.getDirectory());

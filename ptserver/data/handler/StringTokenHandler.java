@@ -64,7 +64,7 @@ public class StringTokenHandler implements TokenHandler<StringToken> {
      */
     
     public StringToken convertToToken(DataInputStream inputStream,
-            Class<StringToken> tokenType)
+            Class<? extends StringToken> tokenType)
             throws IOException {
         return new StringToken(inputStream.readUTF());
     }

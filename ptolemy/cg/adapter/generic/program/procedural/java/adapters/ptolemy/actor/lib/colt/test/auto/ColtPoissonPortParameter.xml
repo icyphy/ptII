@@ -20,8 +20,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430, 50}">
+        </property>
+    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{7, 15, 39, 39, 67, 43, 67, 82, 85, 95, 98, 120, 125, 142, 130, 163, 158, 195, 197, 179}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{14, 15, 35, 47, 43, 57, 76, 57, 97, 89, 134, 139, 136, 141, 166, 150, 178, 175, 190, 186}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
@@ -60,4 +64,12 @@
     <link port="ColtPoisson.output" relation="relation2"/>
     <link port="ColtPoisson.mean" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>
+    <property name="SDF Director._ColtPoissonPortParameter_JavaCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator">
+        </property>
+    </property>
 </entity>

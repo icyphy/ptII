@@ -226,7 +226,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class Plot extends PlotBox {
+public class Plot extends PlotBox implements PlotInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -1071,8 +1071,8 @@ public class Plot extends PlotBox {
             defaults.append(" marks=\"pixels\"");
             break;
         default:
-            throw new RuntimeException("Internal Error.  Mark "
-                    + "style " + _marks + " not supported.");
+            throw new RuntimeException("Internal Error.  Mark " + "style "
+                    + _marks + " not supported.");
         }
 
         // Write the defaults for formats that can be controlled by dataset
@@ -1493,7 +1493,7 @@ public class Plot extends PlotBox {
     protected String _exportLatexPlotData() {
         StringBuilder result = new StringBuilder();
         Formatter formatter = new Formatter(result, Locale.US);
-        
+
         for (int i = 0; i < _points.size(); i++) {
             result.append("\\pscurve[showpoints=true]{-}");
             ArrayList<PlotPoint> pts = _points.get(i);
@@ -1940,8 +1940,8 @@ public class Plot extends PlotBox {
             output.println("Marks: pixelss");
             break;
         default:
-            throw new RuntimeException("Internal Error.  Mark "
-                    + "style " + _marks + " not supported.");
+            throw new RuntimeException("Internal Error.  Mark " + "style "
+                    + _marks + " not supported.");
         }
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
@@ -2582,8 +2582,8 @@ public class Plot extends PlotBox {
 
         if (connectedFlag && bin.isConnected() && bin.rangeChanged()
                 && bin.minYPos() != bin.maxYPos()) {
-            _drawLine(graphics, dataset, xpos, bin.minYPos(), xpos, bin
-                    .maxYPos(), true, _DEFAULT_WIDTH);
+            _drawLine(graphics, dataset, xpos, bin.minYPos(), xpos,
+                    bin.maxYPos(), true, _DEFAULT_WIDTH);
         }
 
         if ((fmt.impulsesUseDefault && _impulses)
@@ -3096,8 +3096,9 @@ public class Plot extends PlotBox {
         }
         assert bin.firstPointIndex() >= 0;
 
-        _pointInBinOffset.set(dataset, _pointInBinOffset.get(dataset)
-                + bin.afterLastPointIndex() - bin.firstPointIndex());
+        _pointInBinOffset.set(dataset,
+                _pointInBinOffset.get(dataset) + bin.afterLastPointIndex()
+                        - bin.firstPointIndex());
         //FIXME? Warning: Could overflow for scopes with a really large history...
         //  (the points aren't kept in memory, since it is only here where it goes wrong.
         //  We could check for overflow and in this case reset the _pointInBinOffset to
@@ -3245,8 +3246,10 @@ public class Plot extends PlotBox {
         while (_scheduledBinsToErase.size() <= dataset) {
             _scheduledBinsToErase.add(0);
         }
-        _scheduledBinsToErase.set(dataset, Math.max(nbrOfElementsToErase,
-                _scheduledBinsToErase.get(dataset)));
+        _scheduledBinsToErase.set(
+                dataset,
+                Math.max(nbrOfElementsToErase,
+                        _scheduledBinsToErase.get(dataset)));
         _needBinRedraw = true;
     }
 

@@ -132,7 +132,6 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     /** React to notification that an attribute or set of attributes
      *  changed.
      */
-    @Override
     public void changedUpdate(DocumentEvent e) {
         // Do nothing... We don't care about attributes.
     }
@@ -148,7 +147,6 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** React to notification that there was an insert into the document.
      */
-    @Override
     public void insertUpdate(DocumentEvent e) {
         setModified(true);
     }
@@ -162,7 +160,6 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
-    @Override
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         if (graphics == null) {
@@ -222,7 +219,6 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** React to notification that there was a removal from the document.
      */
-    @Override
     public void removeUpdate(DocumentEvent e) {
         setModified(true);
     }

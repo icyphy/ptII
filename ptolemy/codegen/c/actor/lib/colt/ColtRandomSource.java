@@ -89,9 +89,9 @@ public abstract class ColtRandomSource extends CCodeGeneratorHelper {
             args.add(Long.valueOf(actor.hashCode()));
             _codeStream.appendCodeBlock("setSeedBlock0", args);
 
-        } else { // Use fixed seed + actorName.hashCode().
+        } else { // Use fixed seed + actorDisplayName.hashCode().
 
-            args.add(Long.valueOf(actor.getFullName().hashCode()));
+            args.add(Long.valueOf(actor.getDisplayName().hashCode()));
             _codeStream.appendCodeBlock("setSeedBlock1", args);
         }
 

@@ -90,7 +90,7 @@ public class ComplexMatrixTokenHandler implements
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ComplexMatrixToken convertToToken(DataInputStream inputStream,
-            Class<ComplexMatrixToken> tokenType) throws IOException,
+            Class<? extends ComplexMatrixToken> tokenType) throws IOException,
             IllegalActionException {
 
         int rowCount = inputStream.readInt();

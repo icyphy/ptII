@@ -57,14 +57,19 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 # Keep this list alphabetized.
 JSRCS = \
 	IServerManager.java \
+	PtolemyServer.java \
 	ServerManager.java \
+	SimulationTask.java \
 	Ticket.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = 
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'PtolemyServer$$1.class' \
+	'PtolemyServer$$2.class' \
+	'PtolemyServer$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

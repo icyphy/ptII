@@ -60,7 +60,6 @@ public class AWTContainer implements PortableContainer {
      * @param component the component to be added to the container.
      * @see ptolemy.actor.gui.portable.PortableContainer#add(java.lang.Object)
      */
-    @Override
     public void add(Object component) {
         _container.add((Component) component);
     }
@@ -70,7 +69,6 @@ public class AWTContainer implements PortableContainer {
      * @see ptolemy.actor.gui.portable.PortableContainer#getPlatformContainer()
      * @return the AWT container that this instance wraps.
      */
-    @Override
     public Container getPlatformContainer() {
         return _container;
     }

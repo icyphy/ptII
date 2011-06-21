@@ -225,6 +225,7 @@ static Token add_Token_Token(Token a1, Token a2) {
         }
         break;
 #endif
+#ifdef PTCG_TYPE_Array
     case TYPE_Array:
         switch (a2.type) {
             case TYPE_Array:
@@ -235,6 +236,19 @@ static Token add_Token_Token(Token a1, Token a2) {
 
         }
         break;
+#endif
+#ifdef PTCG_TYPE_Matrix
+    case TYPE_Matrix:
+        switch (a2.type) {
+            case TYPE_Matrix:
+                    result = $Matrix_add(a1, a2);
+                break;
+            default:
+                result = null;
+
+        }
+        break;
+#endif
     default:
         System.out.println("add_Token_Token(): a1 is a " + a1.type
                         + "a2 is a " + a2.type);

@@ -1850,7 +1850,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         reset();
         _workspace = new Workspace();
         if (_filterMoMLParser != null) {
-            _filterMoMLParser.purgeAllModelRecords();
+            MoMLParser.purgeAllModelRecords();
             _filterMoMLParser.reset();
             _filterMoMLParser = new MoMLParser(_workspace);
         }

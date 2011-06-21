@@ -28,28 +28,34 @@
 package ptserver.test.junit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
 import java.util.ResourceBundle;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.pn.kernel.PNDirector;
-import ptserver.PtolemyServer;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Settable;
 import ptserver.communication.RemoteModel;
+import ptserver.communication.RemoteModel.RemoteModelListener;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
+import ptserver.control.PtolemyServer;
+import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
+import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 import com.caucho.hessian.client.HessianProxyFactory;
-import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttClient;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoteModelTest
@@ -64,56 +70,65 @@ import com.ibm.mqtt.MqttClient;
  *  @Pt.AcceptedRating Red (jkillian)
  */
 public class RemoteModelTest {
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Access the ResourceBundle containing configuration parameters.
+     */
     public static final ResourceBundle CONFIG = PtolemyServer.CONFIG;
+
+    /** Used to ensure that a minimum number of tokens are received
+     *  during the test.
+     */
     private volatile int counter = 0;
+
+    /** Control the loop that synchronizes the response from the server.
+     */
     private volatile boolean isWaiting = true;
 
-    /** Start the server and client
-     *  @exception Exception If the the setup or shutdown of the simulation fails.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set up the initial singleton reference and Hessian proxy factory
+     *  that will be used within the JUnit test cases.
+     *  @exception Exception If there is an error creating the Hessian proxy.
      */
-    @Test(timeout = 2000)
-    public void initialize() throws Exception {
-        String servletUrl = String.format("http://%s:%s%s", "localhost",
+    @Before
+    public void setup() throws Exception {
+        _server = PtolemyServer.getInstance();
+        _servletUrl = String.format("http://%s:%s%s", "localhost",
                 CONFIG.getString("SERVLET_PORT"),
                 CONFIG.getString("SERVLET_PATH"));
-        String brokerUrl = String.format("tcp://%s@%s", "localhost",
+        _brokerUrl = String.format("tcp://%s@%s", "localhost",
                 CONFIG.getString("BROKER_PORT"));
+        _proxy = (IServerManager) new HessianProxyFactory().create(
+                IServerManager.class, _servletUrl);
+        counter = 0;
+        isWaiting = true;
+    }
 
-        // Create the server and servlet proxy.
-        PtolemyServer server = PtolemyServer.getInstance();
-        IServerManager serverManager = (IServerManager) new HessianProxyFactory()
-                .create(IServerManager.class, servletUrl);
-
+    /** Find the model file on the server and execute the simulation.
+     *  @exception Exception If the the setup or shutdown of the simulation fails.
+     */
+    @Test(timeout = 3000)
+    public void runSimulation() throws Exception {
         // Open the model on the server.
-        RemoteModelResponse response = serverManager.open(IServerManager.class
-                .getResource("/ptserver/test/junit/addermodel.xml").toString());
-
-        // Open the model on the client.
-        Ticket ticket = response.getTicket();
-        RemoteModel model = new RemoteModel(ticket.getTicketID() + "_SERVER",
-                ticket.getTicketID() + "_CLIENT", RemoteModelType.CLIENT);
-
-        // Initialize the client.
-        IMqttClient mqttClient = MqttClient.createMqttClient(brokerUrl, null);
-        mqttClient.connect("Android" + new Random().nextInt(1000), true,
-                (short) 10);
-
-        model.setMqttClient(mqttClient);
-        model.initModel(response.getModelXML(), response.getModelTypes());
-        model.setUpInfrastructure();
-
-        CompositeActor topLevelActor = model.getTopLevelActor();
-        topLevelActor.setDirector(new PNDirector(topLevelActor, "PNDirector"));
-
+        RemoteModelResponse response = _openRemoteModel();
+        RemoteModel model = _setUpClientModel(response);
         // Set the delegate for a returned token.
-        SysOutActor actor = (SysOutActor) topLevelActor.getEntity("Display");
+        SysOutActor actor = (SysOutActor) model.getTopLevelActor().getEntity(
+                "Display");
+        assertNotNull(actor);
         actor.setDelegator(new TokenDelegator() {
 
             public void getToken(Token token) {
                 if (counter < 10) {
-                    if ((token != null) && (token instanceof IntToken)) {
-                        assertEquals(((IntToken) token).intValue() / 2, counter);
+                    if (token instanceof IntToken) {
+                        assertEquals(counter, ((IntToken) token).intValue() / 2);
                         counter++;
                     }
                 } else {
@@ -126,7 +141,7 @@ public class RemoteModelTest {
         });
 
         // Wait for a roundtrip response from the server.
-        serverManager.start(ticket);
+        _proxy.start(response.getTicket());
         model.getManager().startRun();
 
         synchronized (RemoteModelTest.this) {
@@ -135,10 +150,202 @@ public class RemoteModelTest {
             }
         }
 
-        // Cleanup running processes. 
-        serverManager.stop(ticket);
+        // stop running processes. 
+        _proxy.stop(response.getTicket());
         model.getManager().stop();
-        server.shutdown();
-        server = null;
+        // close the simulation
+        _proxy.close(response.getTicket());
+        model.close();
+        assertEquals(10, counter);
     }
+
+    private RemoteModelResponse _openRemoteModel()
+            throws IllegalActionException {
+        String[] modelUrls = _proxy.getModelListing();
+        assertNotNull(modelUrls);
+        assertTrue(modelUrls.length > 0);
+        String adderModel = getAdderModel(modelUrls);
+        assertNotNull(adderModel);
+        
+        String[] layoutUrls = _proxy.getLayoutListing(adderModel);
+        assertNotNull(layoutUrls);
+        assertTrue(layoutUrls.length > 0);
+        String adderModelLayout = getAdderModelLayout(layoutUrls);
+        assertNotNull(adderModelLayout);
+        
+        RemoteModelResponse response = _proxy.open(adderModel, adderModelLayout);
+        assertNotNull(response);
+
+        // Open the model on the client.
+        Ticket ticket = response.getTicket();
+        assertNotNull(ticket);
+        return response;
+    }
+
+    private RemoteModel _setUpClientModel(RemoteModelResponse response)
+            throws Exception {
+        Ticket ticket = response.getTicket();
+        RemoteModel model = new RemoteModel(RemoteModelType.CLIENT);
+        model.initModel(response.getModelXML(), response.getModelTypes());
+        model.setUpInfrastructure(ticket, _brokerUrl);
+
+        CompositeActor topLevelActor = model.getTopLevelActor();
+        assertNotNull(topLevelActor);
+
+        topLevelActor.setDirector(new PNDirector(topLevelActor, "PNDirector"));
+        return model;
+    }
+
+    @Test
+    public void testRemoteAttribute() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        RemoteModel clientModel = _setUpClientModel(response);
+        clientModel.setTimeoutPeriod(0);
+        RemoteModel serverModel = PtolemyServer.getInstance()
+                .getSimulationTask(response.getTicket()).getRemoteModel();
+        serverModel.setTimeoutPeriod(0);
+        Settable clientSettable = (Settable) clientModel.getTopLevelActor()
+                .getAttribute("Ramp2.init");
+        assertNotNull(clientSettable);
+        clientSettable.setExpression("1");
+        Settable serverSettable = (Settable) serverModel.getTopLevelActor()
+                .getAttribute("Ramp2.init");
+        assertNotNull(serverSettable);
+        Thread.sleep(1000);
+        assertEquals("1", serverSettable.getExpression());
+        _proxy.close(response.getTicket());
+        clientModel.close();
+    }
+
+    @Test(timeout = 3000)
+    public void testRemoteAttributeSimulation() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        RemoteModel clientModel = _setUpClientModel(response);
+        clientModel.setTimeoutPeriod(0);
+        Settable clientSettable = (Settable) clientModel.getTopLevelActor()
+                .getAttribute("Ramp2.init");
+        assertNotNull(clientSettable);
+        clientSettable.setExpression("1");
+        SysOutActor actor = (SysOutActor) clientModel.getTopLevelActor()
+                .getEntity("Display");
+        assertNotNull(actor);
+        actor.setDelegator(new TokenDelegator() {
+
+            public void getToken(Token token) {
+                if (counter < 10) {
+                    if (token instanceof IntToken) {
+                        assertEquals(counter, ((IntToken) token).intValue() / 2);
+                        assertEquals(1, ((IntToken) token).intValue() % 2);
+                        counter++;
+                    }
+                } else {
+                    synchronized (RemoteModelTest.this) {
+                        isWaiting = false;
+                        RemoteModelTest.this.notifyAll();
+                    }
+                }
+            }
+        });
+
+        // Wait for a roundtrip response from the server.
+        _proxy.start(response.getTicket());
+        clientModel.getManager().startRun();
+
+        synchronized (RemoteModelTest.this) {
+            while (isWaiting) {
+                wait();
+            }
+        }
+
+        // stop running processes. 
+        _proxy.stop(response.getTicket());
+        clientModel.getManager().stop();
+        // close the simulation
+        _proxy.close(response.getTicket());
+        clientModel.close();
+        assertEquals(10, counter);
+    }
+
+    @Test()
+    public void testModelTimeout() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        // Wait for a roundtrip response from the server.
+        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
+                response.getTicket());
+        final int timeoutPeriod = 1000;
+        task.getRemoteModel().setTimeoutPeriod(timeoutPeriod);
+        final long time = System.currentTimeMillis();
+        task.getRemoteModel().addRemoteModelListener(new RemoteModelListener() {
+
+            public void modelException(RemoteModel remoteModel,
+                    Throwable exception) {
+
+            }
+
+            public void modelConnectionExpired(RemoteModel remoteModel) {
+                synchronized (RemoteModelTest.this) {
+                    long diff = System.currentTimeMillis() - time;
+                    assertTrue(timeoutPeriod - 1000 < diff
+                            && diff < timeoutPeriod + 1000);
+                    isWaiting = false;
+                    RemoteModelTest.this.notifyAll();
+                }
+            }
+        });
+        _proxy.start(response.getTicket());
+        synchronized (this) {
+            while (isWaiting) {
+                this.wait();
+            }
+        }
+        assertTrue(!isWaiting);
+    }
+
+    /** Call the shutdown() method on the singleton and destroy all
+     *  references to it.
+     *  @exception Exception If there was an error shutting down the broker or
+     *  servlet.
+     */
+    @After
+    public void shutdown() throws Exception {
+        _server.shutdown();
+        _server = null;
+    }
+
+    private String getAdderModel(String[] modelUrls) {
+        for (String model : modelUrls) {
+            if (model.endsWith("addermodel.xml")) {
+                return model;
+            }
+        }
+        return null;
+    }
+
+    private String getAdderModelLayout(String[] layoutUrls) {
+        for (String model : layoutUrls) {
+            if (model.contains("addermodel") && model.endsWith(".layout.xml")) {
+                return model;
+            }
+        }
+        return null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Handle to the Ptolemy server singleton.
+     */
+    private PtolemyServer _server;
+
+    /** Handle to the Hessian servlet proxy.
+     */
+    private IServerManager _proxy;
+
+    /** Store the address to the Hessian servlet.
+     */
+    private String _servletUrl;
+
+    /** Store the address to the MQTT broker.
+     */
+    private String _brokerUrl;
 }

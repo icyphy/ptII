@@ -144,14 +144,16 @@ public class Sampler extends Transformer {
         if (trigger.hasToken(0)) {
             // Read and record the input.
             int width = Math.min(input.getWidth(), output.getWidth());
-            for (int i = 0; i < width; i++) {
+            for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
                     if (_debugging) {
                         _debug("Sampled input value " + token + " at time "
                                 + getDirector().getModelTime());
                     }
-                    output.send(i, token);
+                    if (i < width) {
+                        output.send(i, token);
+                    }
                 }
             }
         }

@@ -1493,7 +1493,6 @@ public class TableauFrame extends Top {
             _configuration = configuration;
         }
 
-        @Override
         public void actionPerformed(ActionEvent event) {
             Effigy effigy = null;
 
@@ -1543,7 +1542,6 @@ public class TableauFrame extends Top {
 
     /** Listener for view menu commands. */
     class ViewMenuListener implements ActionListener {
-        @Override
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler.setContext(TableauFrame.this);

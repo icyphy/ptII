@@ -264,7 +264,6 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
-    @Override
     public void windowClosed(Window window, String button) {
         // FIXME: This is not getting invoked. Need to override
         // TableauFrame above with an override to _close().
@@ -327,7 +326,6 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton goButton = new JButton("Go");
             goButton.setToolTipText("Execute the model");
             goButton.addActionListener(new ActionListener() {
-                @Override
                 public void actionPerformed(ActionEvent event) {
                     startRun();
                 }
@@ -341,7 +339,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton pauseButton = new JButton("Pause");
             pauseButton.setToolTipText("Pause the model");
             pauseButton.addActionListener(new ActionListener() {
-                @Override
+                
                 public void actionPerformed(ActionEvent event) {
                     pauseRun();
                 }
@@ -355,7 +353,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton button = new JButton("Resume");
             button.setToolTipText("Resume the model");
             button.addActionListener(new ActionListener() {
-                @Override
+                
                 public void actionPerformed(ActionEvent event) {
                     resumeRun();
                 }
@@ -369,7 +367,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton button = new JButton("Stop");
             button.setToolTipText("Stop the model");
             button.addActionListener(new ActionListener() {
-                @Override
+                
                 public void actionPerformed(ActionEvent event) {
                     stopRun();
                 }

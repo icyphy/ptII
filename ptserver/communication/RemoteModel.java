@@ -31,6 +31,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
@@ -51,6 +58,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -58,8 +66,12 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptserver.actor.RemoteSink;
 import ptserver.actor.RemoteSource;
+import ptserver.control.Ticket;
+import ptserver.data.PingToken;
+import ptserver.data.PongToken;
 
 import com.ibm.mqtt.IMqttClient;
+import com.ibm.mqtt.MqttClient;
 import com.ibm.mqtt.MqttException;
 
 ///////////////////////////////////////////////////////////////////
@@ -83,10 +95,23 @@ public class RemoteModel {
     ////                         public variables                  ////
 
     /**
-     * The quality of service that would be required from the MQTT broker.  
-     * All messages must be send or received only once.
+     * The listener that notifies about events happening in the RemoteModel.
+     *
      */
-    public static final int QOS_LEVEL = 2;
+    public interface RemoteModelListener {
+        /**
+         * Notify listener about the expiration of the model connection to another remote model.
+         * @param remoteModel The remote model whose connection expired.
+         */
+        public void modelConnectionExpired(RemoteModel remoteModel);
+
+        /**
+         * Notify listener the exception in the given model
+         * @param remoteModel The model where the exception happened.
+         * @param exception The exception that triggered this event.
+         */
+        public void modelException(RemoteModel remoteModel, Throwable exception);
+    }
 
     /**
      * An enumerations that specifies the remote model type: client or server.
@@ -104,21 +129,80 @@ public class RemoteModel {
     }
 
     /**
+     * The quality of service that would be required from the MQTT broker.  
+     * All messages must be send or received only once.
+     */
+    public static final int QOS_LEVEL = 2;
+
+    /**
      * Create a new instance of the remoteModel with the specified parameters.
-     * @param subscriptionTopic the topic name that this model would subscribe to receive tokens from other remote model
-     * @param publishingTopic the topic name that this model would publish its tokens to be received by other remote model
      * @param modelType the type of the model which must be either client or server
      */
-    public RemoteModel(String subscriptionTopic, String publishingTopic,
-            RemoteModelType modelType) {
+    public RemoteModel(RemoteModelType modelType) {
         _tokenPublisher = new TokenPublisher(100, 1000);
-        _subscriptionTopic = subscriptionTopic;
-        _publishingTopic = publishingTopic;
         _modelType = modelType;
+        _executor = Executors.newCachedThreadPool();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /**
+     * Add RemoteModelListener for notifications about the model events.
+     * @param listener The listener to add.
+     */
+    public void addRemoteModelListener(RemoteModelListener listener) {
+        if (_modelListeners.contains(listener)) {
+            return;
+        } else {
+            _modelListeners.add(listener);
+        }
+    }
+
+    /**
+     * Close the model along with all its connection.
+     */
+    public void close() {
+        _pingTimer.cancel();
+        _tokenPublisher.cancelTimer();
+        try {
+            _mqttClient.unsubscribe(new String[] { getSubscriptionTopic() });
+            _mqttClient.registerSimpleHandler(null);
+            _mqttClient.disconnect();
+        } catch (MqttException e) {
+            // TODO handle exception
+        }
+    }
+
+    /** 
+     * Close the model before finalizing
+     * @see java.lang.Object#finalize()
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.close();
+    }
+
+    /**
+     * Return the executor to schedule short lived tasks.
+     * 
+     * <p>It's used to send PongTokens outside of the MQTT listener thread
+     * since MQTTClient disallows that. </p> 
+     * @return the executor to schedule short lived tasks. 
+     */
+    public Executor getExecutor() {
+        return _executor;
+    }
+
+    /**
+     * Return the last PongToken.
+     * @return the last PongToken.
+     * @see #setLastPongToken(PongToken)
+     */
+    public synchronized PongToken getLastPongToken() {
+        return _lastPongToken;
+    }
 
     /**
      * Return the manager controlling this model.
@@ -129,12 +213,79 @@ public class RemoteModel {
     }
 
     /**
+     * Return the roundtrip latency of sending ping/echo requests.
+     * @return the roundtrip latency of sending ping/echo requests.
+     */
+    public long getPingPongLatency() {
+        return _pingPonglatency;
+    }
+
+    /**
+     * Return the mappings from remote source full names to their RemoteSourceData
+     * data-structure.
+     * @return the remoteSourceMap the mappings between full name and RemoteSourceData.
+     */
+    public HashMap<String, RemoteSourceData> getRemoteSourceMap() {
+        return _remoteSourceMap;
+    }
+
+    /**
      * Get the map from the Typeable's full name to its type.
      * @return The map from the Typeable's full name to its type.
      * @see #setResolvedTypes(HashMap)
      */
     public HashMap<String, String> getResolvedTypes() {
         return _resolvedTypes;
+    }
+
+    /**
+     * Return the map with RemoteValueListeners of the model's remote attributes. 
+     * @return the map with RemoteValueListeners of the model's remote attributes.
+     */
+    public HashMap<String, RemoteValueListener> getSettableAttributeListenersMap() {
+        return _settableAttributeListenersMap;
+    }
+
+    /**
+     * Return the mappings from remote attribute full names to their remote Settable instance.
+     * @return the settableAttributesMap the mappings from remote attribute full names to their remote Settable instance.
+     */
+    public HashMap<String, Settable> getSettableAttributesMap() {
+        return _settableAttributesMap;
+    }
+
+    /**
+     * Return the subscription topic of the current model.
+     * @return the subscriptionTopic used to listen for tokens from other remote model.
+     */
+    public String getSubscriptionTopic() {
+        return _subscriptionTopic;
+    }
+
+    /**
+     * Return the ticket that uniquely identifies the model.
+     * @return the ticket identifying the model.
+     */
+    public Ticket getTicket() {
+        return _ticket;
+    }
+
+    /**
+     * Return the model's timeout period in milliseconds. if the period is less
+     * or equal to 0, the model would never timeout. 
+     * @return the timeoutPeriod of the model.
+     * @see #setTimeoutPeriod(int)
+     */
+    public int getTimeoutPeriod() {
+        return timeoutPeriod;
+    }
+
+    /**
+     * Return the tokenPublisher used to send and batch tokens.
+     * @return The token publisher used for sending tokens.
+     */
+    public TokenPublisher getTokenPublisher() {
+        return _tokenPublisher;
     }
 
     /**
@@ -170,7 +321,7 @@ public class RemoteModel {
                 RemoteSourceData remoteSourceData = new RemoteSourceData(
                         remoteSource, this);
                 remoteSource.setRemoteSourceData(remoteSourceData);
-                _remoteSourceMap.put(remoteSource.getTargetEntityName(),
+                getRemoteSourceMap().put(remoteSource.getTargetEntityName(),
                         remoteSourceData);
 
             }
@@ -193,13 +344,14 @@ public class RemoteModel {
                         port.setTypeEquals(type);
                         port.typeConstraints().clear();
                     } else {
-                        //TODO: is this possible?
+                        //Not sure if this is possible, but just in case.
                         throw new IllegalActionException(port,
                                 "Type constraint for the port was not found");
                     }
                 }
             }
             for (Typeable attribute : actor.attributeList(Typeable.class)) {
+                //Cast to Nameable is safe because it's an attribute.
                 if ((type = BaseType.forName(modelTypes
                         .get(((Nameable) attribute).getFullName()))) != null) {
                     attribute.setTypeEquals(type);
@@ -207,13 +359,14 @@ public class RemoteModel {
                 }
             }
         }
+        _initRemoteAttributes(_topLevelActor);
     }
 
     /**
      * Return true if the model is stopped, otherwise return false.
      * TODO: Figure out if there is a difference for this class between stopped and paused state. 
      * @return the stopped state of the model.
-     * @see #getStopped()
+     * @see #setStopped(boolean)
      */
     public boolean isStopped() {
         return _stopped;
@@ -234,10 +387,10 @@ public class RemoteModel {
         _topLevelActor = (CompositeActor) parser.parse(null, modelURL);
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
-            Attribute attribute = actor.getAttribute("_remote");
+            Attribute remoteAttribute = actor.getAttribute("_remote");
             boolean isSinkOrSource = false;
-            if (attribute instanceof Parameter) {
-                Parameter parameter = (Parameter) attribute;
+            if (remoteAttribute instanceof Parameter) {
+                Parameter parameter = (Parameter) remoteAttribute;
                 if (parameter.getExpression().equals("source")) {
                     sources.add(actor);
                     isSinkOrSource = true;
@@ -249,7 +402,9 @@ public class RemoteModel {
             if (!isSinkOrSource && _modelType == RemoteModelType.CLIENT) {
                 unneededActors.add(actor);
             }
+            _initRemoteAttributes(actor);
         }
+        _initRemoteAttributes(_topLevelActor);
         if (_topLevelActor instanceof TypedCompositeActor) {
             TypedCompositeActor typedActor = (TypedCompositeActor) _topLevelActor;
             TypedCompositeActor.resolveTypes(typedActor);
@@ -273,23 +428,55 @@ public class RemoteModel {
             for (ComponentEntity entity : sinks) {
                 _createSource(entity, false, getResolvedTypes());
             }
+            HashMap<NamedObj, StringAttribute> containerToDummyAttributeMap = new HashMap<NamedObj, StringAttribute>();
+            for (Settable settable : _settableAttributesMap.values()) {
+                Attribute attribute = (Attribute) settable;
+                NamedObj container = attribute.getContainer();
+                Attribute lastAttribute = attribute;
+                while (container != _topLevelActor) {
+                    StringAttribute dummyAttribute = containerToDummyAttributeMap
+                            .get(container);
+                    if (dummyAttribute == null) {
+                        dummyAttribute = new StringAttribute(
+                                container.getContainer(), container
+                                        .getContainer().uniqueName("dummy"));
+                        dummyAttribute.setPersistent(true);
+                        containerToDummyAttributeMap.put(container,
+                                dummyAttribute);
+                    }
+                    container = container.getContainer();
+                    lastAttribute.setContainer(dummyAttribute);
+                    lastAttribute = dummyAttribute;
+                }
+            }
             for (ComponentEntity componentEntity : unneededActors) {
                 componentEntity.setContainer(null);
             }
+            for (Entry<NamedObj, StringAttribute> entry : containerToDummyAttributeMap
+                    .entrySet()) {
+                entry.getValue().setName(entry.getKey().getName());
+            }
             break;
         }
-
     }
 
     /**
-     * Set the MQTT client instance that is connected to the broker.
-     * @param mqttClient the mqttClient that the model would use to send and receive MQTT messages
-     * @exception MqttException if there is a problem connecting to the broker
+     * Unsubscribe the listener from the model events.
+     * @param listener The listener to remove.
      */
-    public void setMqttClient(IMqttClient mqttClient) throws MqttException {
-        _mqttClient = mqttClient;
-        _tokenPublisher.setMqttClient(_mqttClient);
-        _tokenPublisher.setTopic(_publishingTopic);
+    public void removeRemoteModelListener(RemoteModelListener listener) {
+        _modelListeners.remove(listener);
+    }
+
+    /**
+     * Set the PongToken instance that was received the last. 
+     * @param lastPongToken The last PongToken.
+     * @see #getLastPongToken()
+     */
+    public synchronized void setLastPongToken(PongToken lastPongToken) {
+        _lastPongToken = lastPongToken;
+        _pingPonglatency = System.currentTimeMillis()
+                - lastPongToken.getTimestamp();
     }
 
     /**
@@ -304,24 +491,227 @@ public class RemoteModel {
     /**
      * Set the stopped state of the model.
      * @param stopped indicates if the model is stopped or not.
-     * @see #getStopped()
+     * @see #isStopped()
      */
     public void setStopped(boolean stopped) {
         _stopped = stopped;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Set the model's timeout period in milliseconds. If the period is set
+     * to 0 or less, the model would never timeout.
+     * @param timeoutPeriod the timeout period of the model.
+     * @see #getTimeoutPeriod()
+     */
+    public void setTimeoutPeriod(int timeoutPeriod) {
+        this.timeoutPeriod = timeoutPeriod;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
      * Set up the communication infrastructure.
+     * @param ticket The ticket associated with this remote model.
+     * @param brokerHostname The hostname of the MQTT broker.
      * @return The manager of the model
      * @exception MqttException if there is a problem connecting to the broker.
      * @exception IllegalActionException If there is problem creating the manager.
      */
-    public Manager setUpInfrastructure() throws MqttException,
-            IllegalActionException {
-        _mqttClient.registerSimpleHandler(new MQTTTokenListener(
-                _remoteSourceMap, _settableAttributesMap, _subscriptionTopic));
-        _mqttClient.subscribe(new String[] { _subscriptionTopic },
-                new int[] { QOS_LEVEL });
+    public Manager setUpInfrastructure(Ticket ticket, String brokerHostname)
+            throws MqttException, IllegalActionException {
+        _ticket = ticket;
+        switch (_modelType) {
+        case CLIENT:
+            _subscriptionTopic = ticket.getTicketID() + RemoteModelType.SERVER;
+            _publishingTopic = ticket.getTicketID() + RemoteModelType.CLIENT;
+            break;
+        case SERVER:
+            _subscriptionTopic = ticket.getTicketID() + RemoteModelType.CLIENT;
+            _publishingTopic = ticket.getTicketID() + RemoteModelType.SERVER;
+            break;
+        }
+
+        _tokenPublisher.startTimer(ticket);
+        _setUpMQTT(brokerHostname);
+        _setUpRemoteAttributes();
+        _setUpMonitoring();
+        _setUpManager();
+        return _topLevelActor.getManager();
+    }
+    
+    public void createRemoteAttributes(Set<String> attributeNames) {
+        for (String attributeName : attributeNames) {
+            Settable attribute = (Settable) _topLevelActor.getAttribute(attributeName.substring(attributeName.substring(1).indexOf(".") + 2));
+            _settableAttributesMap.put(attributeName, attribute);
+        }
+    }
+
+    /**
+     * Notify the model listeners about the model connection experiation.
+     */
+    protected final void _fireModelConnectionExpired() {
+        for (RemoteModelListener listener : _modelListeners) {
+            listener.modelConnectionExpired(this);
+        }
+    }
+
+    /**
+     * Capture inferred types of the entities.
+     * @param entities The entities whose inferred types are captured
+     * @param portTypes The mapping that stores the types
+     * @exception IllegalActionException If there is a problem inferring type of Typeable.
+     */
+    private void _captureModelTypes(HashSet<ComponentEntity> entities,
+            HashMap<String, String> portTypes) throws IllegalActionException {
+        for (ComponentEntity entity : entities) {
+            for (Object portObject : entity.portList()) {
+                Port port = (Port) portObject;
+                if (port instanceof IOPort) {
+                    // if it's TypedIOPort, capture its types.
+                    if (port instanceof TypedIOPort) {
+                        //FIXME using toString on Type is not elegant and could break.
+                        portTypes.put(port.getFullName(), ((TypedIOPort) port)
+                                .getType().toString());
+                    }
+                    // this port might be connected to other TypedIOPorts whose types are needed on the client.
+                    IOPort ioPort = (IOPort) port;
+                    for (Object relationObject : ioPort.linkedRelationList()) {
+                        Relation relation = (Relation) relationObject;
+                        List<Port> portList = relation.linkedPortList(port);
+                        for (Port connectingPort : portList) {
+                            // TODO: only the first port connection is used on the client, consider skipping the rest here.
+                            if (connectingPort instanceof TypedIOPort) {
+                                // FIXME using toString on Type is not elegant and could break.
+                                portTypes.put(connectingPort.getFullName(),
+                                        ((TypedIOPort) connectingPort)
+                                                .getType().toString());
+                            }
+                        }
+                    }
+                }
+
+            }
+            for (Typeable attribute : entity.attributeList(Typeable.class)) {
+                //FIXME using toString on Type is not elegant and could break
+                portTypes.put(((Nameable) attribute).getFullName(), attribute
+                        .getType().toString());
+            }
+        }
+    }
+
+    /**
+     * Create and initialize a new MoMLParser.
+     * @return new MoMLParser with BackwardCompatibility filters.
+     */
+    private MoMLParser _createMoMLParser() {
+        MoMLParser parser = new MoMLParser(new Workspace());
+        parser.resetAll();
+        // TODO: is this thread safe?
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        return parser;
+    }
+
+    /**
+     * Create a new instance of the RemoteSink either by replacing the targetEntity
+     * or by replacing all entities connected to it.
+     * @param targetEntity The target entity to be processed
+     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
+     * otherwise replace all entities connecting to it with one proxy
+     * @param portTypes The map of ports and their resolved types
+     * @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     * @exception CloneNotSupportedException If port cloning is not supported
+     * @see ptserver.actor.RemoteSink
+     */
+    private void _createSink(ComponentEntity targetEntity,
+            boolean replaceTargetEntity, HashMap<String, String> portTypes)
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
+        RemoteSink remoteSink = new RemoteSink(
+                (CompositeEntity) targetEntity.getContainer(), targetEntity,
+                replaceTargetEntity, portTypes);
+        remoteSink.setTokenPublisher(_tokenPublisher);
+        _remoteSinkMap.put(remoteSink.getTargetEntityName(), remoteSink);
+    }
+
+    /**
+     * Create a new instance of the RemoteSource either by replacing the targetEntity or by replacing all entities connected to it.
+     * @param targetEntity The target entity to be processed
+     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
+     * otherwise replace all entities connecting to it with one proxy
+     * @param portTypes The map of ports and their resolved types
+     * @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     * @exception CloneNotSupportedException If port cloning is not supported
+     * @see ptserver.actor.RemoteSource
+     */
+    private void _createSource(ComponentEntity targetEntity,
+            boolean replaceTargetEntity, HashMap<String, String> portTypes)
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
+        RemoteSource remoteSource = new RemoteSource(
+                (CompositeEntity) targetEntity.getContainer(), targetEntity,
+                replaceTargetEntity, portTypes);
+        RemoteSourceData data = new RemoteSourceData(remoteSource, this);
+        getRemoteSourceMap().put(remoteSource.getTargetEntityName(), data);
+    }
+
+    /**
+     * Return the last pong token.
+     * @return the last pong token.
+     */
+    private synchronized PongToken _getLastPongToken() {
+        return _lastPongToken;
+    }
+
+    /**
+     * Find all remote attributes of the model and add them to the _settableAttributesMap.
+     * @param container
+     */
+    private void _initRemoteAttributes(NamedObj container) {
+        for (Object attributeObject : container.attributeList()) {
+            Attribute attribute = (Attribute) attributeObject;
+            if (_isRemoteAttribute(attribute)) {
+                _settableAttributesMap.put(attribute.getFullName(),
+                        (Settable) attribute);
+            } else {
+                _initRemoteAttributes(attribute);
+            }
+        }
+    }
+
+    /**
+     * Return true if the attribute is marked as remote attribute, false otherwise.
+     * @param attribute the attribute to check.
+     * @return true if the attribute is marked as remote attribute, false otherwise.
+     */
+    private boolean _isRemoteAttribute(Attribute attribute) {
+        if (attribute instanceof Settable) {
+            Attribute isRemoteAttribute = attribute.getAttribute("_remote");
+            if (isRemoteAttribute instanceof Parameter) {
+                if (((Parameter) isRemoteAttribute).getExpression().equals(
+                        "attribute")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Initialize the manager of the model.
+     * @throws IllegalActionException if there is a problem setting the 
+     * manager of the top level actor.
+     */
+    private void _setUpManager() throws IllegalActionException {
         Manager manager = new Manager(_topLevelActor.workspace(), null);
         _topLevelActor.setManager(manager);
         _topLevelActor.addPiggyback(new Executable() {
@@ -365,7 +755,7 @@ public class RemoteModel {
 
             public void stop() {
                 setStopped(true);
-                for (RemoteSourceData data : _remoteSourceMap.values()) {
+                for (RemoteSourceData data : getRemoteSourceMap().values()) {
                     synchronized (data.getRemoteSource()) {
                         data.getRemoteSource().notifyAll();
                     }
@@ -381,121 +771,64 @@ public class RemoteModel {
             public void wrapup() throws IllegalActionException {
             }
         });
-        return manager;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /**
-     * Capture inferred types of the entities.
-     * @param entities The entities whose inferred types are captured
-     * @param portTypes The mapping that stores the types
-     * @exception IllegalActionException If there is a problem inferring type of Typeable.
+     * Set up model monitoring infrastructure.
      */
-    private void _captureModelTypes(HashSet<ComponentEntity> entities,
-            HashMap<String, String> portTypes) throws IllegalActionException {
-        for (ComponentEntity entity : entities) {
-            for (Object portObject : entity.portList()) {
-                Port port = (Port) portObject;
-                if (port instanceof IOPort) {
-                    // if it's TypedIOPort, capture its types.
-                    if (port instanceof TypedIOPort) {
-                        //FIXME using toString on Type is not elegant and could break.
-                        portTypes.put(port.getFullName(), ((TypedIOPort) port)
-                                .getType().toString());
-                    }
-                    // this port might be connected to other TypedIOPorts whose types are needed on the client.
-                    IOPort ioPort = (IOPort) port;
-                    for (Object relationObject : ioPort.linkedRelationList()) {
-                        Relation relation = (Relation) relationObject;
-                        List<Port> portList = relation.linkedPortList(port);
-                        for (Port connectingPort : portList) {
-                            // TODO: only the first port connection is used on the client, consider skipping the rest here.
-                            if (connectingPort instanceof TypedIOPort) {
-                                // FIXME using toString on Type is not elegant and could break.
-                                portTypes.put(connectingPort.getFullName(),
-                                        ((TypedIOPort) connectingPort)
-                                                .getType().toString());
-                            }
-                        }
+    private void _setUpMonitoring() {
+        setLastPongToken(new PongToken(System.currentTimeMillis()));
+        _pingTimer = new Timer("Ping-pong Timer " + getTicket());
+        _pingTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                long msTime = System.currentTimeMillis();
+                try {
+                    _tokenPublisher.sendToken(new PingToken(msTime));
+                } catch (IllegalActionException e) {
+                    //TODO handle this
+                }
+                if (timeoutPeriod > 0) {
+                    long lastPong = msTime - _getLastPongToken().getTimestamp();
+                    if (lastPong > timeoutPeriod) {
+                        _fireModelConnectionExpired();
                     }
                 }
+            }
+        }, 0, 1000);
+    }
 
-            }
-            for (Typeable attribute : entity.attributeList(Typeable.class)) {
-                //FIXME: not sure if case to Nameable is safe
-                //FIXME using toString on Type is not elegant and could break
-                portTypes.put(((Nameable) attribute).getFullName(), attribute
-                        .getType().toString());
-            }
+    /**
+     * Set up MQTT connection.
+     * @throws MqttException if there is a problem subscribing to topic.
+     */
+    private void _setUpMQTT(String address) throws MqttException {
+        _mqttClient = MqttClient.createMqttClient(address, null);
+        _mqttClient.connect(getTicket().getTicketID() + _modelType, true,
+                (short) 10);
+        _tokenPublisher.setMqttClient(_mqttClient);
+        _tokenPublisher.setTopic(_publishingTopic);
+        _mqttClient.registerSimpleHandler(new TokenListener(this));
+        _mqttClient.subscribe(new String[] { getSubscriptionTopic() },
+                new int[] { QOS_LEVEL });
+    }
+
+    /**
+     * Set up remote attribute listeners.
+     */
+    private void _setUpRemoteAttributes() {
+        for (Settable settable : _settableAttributesMap.values()) {
+            RemoteValueListener listener = new RemoteValueListener(
+                    _tokenPublisher);
+            settable.addValueListener(listener);
+            _settableAttributeListenersMap
+                    .put(settable.getFullName(), listener);
         }
-    }
-
-    /**
-     * Create and initialize a new MoMLParser.
-     * @return new MoMLParser
-     */
-    private MoMLParser _createMoMLParser() {
-        MoMLParser parser = new MoMLParser(new Workspace());
-        parser.resetAll();
-        // TODO: is this thread safe?
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-        return parser;
-    }
-
-    /**
-     * Create a new instance of the RemoteSink either by replacing the targetEntity
-     * or by replacing all entities connected to it.
-     * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
-     * otherwise replace all entities connecting to it with one proxy
-     * @param portTypes The map of ports and their resolved types
-     * @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     * @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     * @exception CloneNotSupportedException If port cloning is not supported
-     * @see {@link RemoteSink}
-     */
-    private void _createSink(ComponentEntity targetEntity,
-            boolean replaceTargetEntity, HashMap<String, String> portTypes)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
-        RemoteSink remoteSink = new RemoteSink(
-                (CompositeEntity) targetEntity.getContainer(), targetEntity,
-                replaceTargetEntity, portTypes);
-        remoteSink.setTokenPublisher(_tokenPublisher);
-        _remoteSinkMap.put(remoteSink.getTargetEntityName(), remoteSink);
-    }
-
-    /**
-     * Create a new instance of the RemoteSource either by replacing the targetEntity or by replacing all entities connected to it.
-     * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
-     * otherwise replace all entities connecting to it with one proxy
-     * @param portTypes The map of ports and their resolved types
-     * @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     * @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     * @exception CloneNotSupportedException If port cloning is not supported
-     * @see {@link RemoteSource}
-     */
-    private void _createSource(ComponentEntity targetEntity,
-            boolean replaceTargetEntity, HashMap<String, String> portTypes)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
-        RemoteSource remoteSource = new RemoteSource(
-                (CompositeEntity) targetEntity.getContainer(), targetEntity,
-                replaceTargetEntity, portTypes);
-        RemoteSourceData data = new RemoteSourceData(remoteSource, this);
-        _remoteSourceMap.put(remoteSource.getTargetEntityName(), data);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     /**
      * The type of the remote model.
      */
@@ -526,6 +859,11 @@ public class RemoteModel {
     private final HashMap<String, Settable> _settableAttributesMap = new HashMap<String, Settable>();
 
     /**
+     * The mapping from the original settable object name to its attribute listener.
+     */
+    private final HashMap<String, RemoteValueListener> _settableAttributeListenersMap = new HashMap<String, RemoteValueListener>();
+
+    /**
      * The token publisher used to batch tokens sent by the remote sink.
      */
     private final TokenPublisher _tokenPublisher;
@@ -543,10 +881,45 @@ public class RemoteModel {
     /**
      * The topic used to listen for incoming mqtt messages.
      */
-    private final String _subscriptionTopic;
+    private String _subscriptionTopic;
 
     /**
      * The topic used to publish outgoing mqtt messages.
      */
-    private final String _publishingTopic;
+    private String _publishingTopic;
+
+    /**
+     * The timer used to send periodical pings.
+     */
+    private Timer _pingTimer;
+
+    /**
+     * The last pong token received from the remoteModel.
+     */
+    private PongToken _lastPongToken;
+
+    /**
+     * The model listeners.
+     */
+    private final List<RemoteModelListener> _modelListeners = new CopyOnWriteArrayList<RemoteModelListener>();
+
+    /**
+     * The ticket identifying the model.
+     */
+    private Ticket _ticket;
+    /**
+     * The roundtrip latency for sending ping token and receiving pong token back.
+     */
+    private long _pingPonglatency;
+
+    /**
+     * The executor used to schedule short lived tasks.
+     */
+    private final Executor _executor;
+
+    /**
+     * Model time out period.
+     */
+    private int timeoutPeriod = 30000;
+
 }

@@ -20,7 +20,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @param listener The LiveSoundListener to add.
      *  @see #removeLiveSoundListener(LiveSoundListener)
      */
-    @Override
     public void addLiveSoundListener(LiveSoundListener listener) {
         if (!_liveSoundListeners.contains(listener)) {
             _liveSoundListeners.add(listener);
@@ -47,7 +46,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @exception IOException If the calling program does not have permission
      *  to access the audio capture resources.
      */
-    @Override
     public void flushCaptureBuffer(Object consumer) throws IOException,
             IllegalStateException {
         if (!isCaptureActive()) {
@@ -87,7 +85,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @exception IOException If the calling program does not have permission
      *  to access the audio playback resources.
      */
-    @Override
     public void flushPlaybackBuffer(Object producer) throws IOException,
             IllegalStateException {
         _flushPlaybackBuffer();
@@ -100,7 +97,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      * @return The sample size in bits.
      * @see #setBitsPerSample(int)
      */
-    @Override
     public int getBitsPerSample() {
         return _bitsPerSample;
     }
@@ -116,7 +112,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   channel.
      *  @see #setBufferSize(int)
      */
-    @Override
     public int getBufferSize() {
         return _bufferSize;
     }
@@ -128,7 +123,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *
      *  @exception IllegalStateException If audio capture is inactive.
      */
-    @Override
     public int getBufferSizeCapture() throws IllegalStateException {
         if (_targetLine != null) {
             return _targetLine.getBufferSize() / (_bytesPerSample * _channels);
@@ -146,7 +140,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @return The internal buffer size in samples per channel.
      *  @exception IllegalStateException If audio playback is inactive.
      */
-    @Override
     public int getBufferSizePlayback() {
         if (_sourceLine != null) {
             return _sourceLine.getBufferSize() / (_bytesPerSample * _channels);
@@ -162,7 +155,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @return The number of audio channels.
      *  @see #setChannels(int)
      */
-    @Override
     public int getChannels() {
         return _channels;
     }
@@ -174,7 +166,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @return The sample rate in Hz.
      *  @see #setSampleRate(int)
      */
-    @Override
     public int getSampleRate() {
         return (int) _sampleRate;
     }
@@ -219,7 +210,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @exception IOException If the calling program does not have permission
      *   to access the audio capture resources.
      */
-    @Override
     public double[][] getSamples(Object consumer) throws IOException,
             IllegalStateException {
         if (!isCaptureActive()) {
@@ -268,7 +258,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   array used by the putSamples() and getSamples() methods.
      *  @see #setTransferSize(int)
      */
-    @Override
     public int getTransferSize() {
         return _transferSize;
     }
@@ -279,7 +268,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @return True If audio capture is currently active.
      *  Otherwise return false.
      */
-    @Override
     public boolean isCaptureActive() {
         return _captureIsActive;
     }
@@ -290,7 +278,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @return True If audio playback is currently active.
      *  Otherwise return false.
      */
-    @Override
     public boolean isPlaybackActive() {
         return _playbackIsActive;
     }
@@ -339,7 +326,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  inactive. That is, If startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
      */
-    @Override
     public void putSamples(Object producer, double[][] samplesArray)
             throws IOException, IllegalStateException {
         if (!isPlaybackActive()) {
@@ -365,7 +351,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @param listener The LiveSoundListener to remove.
      *  @see #addLiveSoundListener(LiveSoundListener)
      */
-    @Override
     public void removeLiveSoundListener(LiveSoundListener listener) {
         if (_liveSoundListeners.contains(listener)) {
             _liveSoundListeners.remove(listener);
@@ -380,7 +365,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  is by calling the stopCapture() method.
      *
      */
-    @Override
     public void resetCapture() {
         if (_targetLine != null) {
             if (_targetLine.isOpen() == true) {
@@ -401,7 +385,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  is by calling the stopPlayback() method.
      *
      */
-    @Override
     public void resetPlayback() {
         _stopPlayback();
         _playbackIsActive = false;
@@ -417,7 +400,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   not supported by the audio hardware or by Java.
      *  @see #getBitsPerSample()
      */
-    @Override
     public void setBitsPerSample(int bitsPerSample) throws IOException {
         _bitsPerSample = bitsPerSample;
         // FIXME: The following is wrong. Probably should just set bytes per sample.
@@ -477,7 +459,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   not supported by the audio hardware or by Java.
      *  @see #getBufferSize()
      */
-    @Override
     public void setBufferSize(int bufferSize) throws IOException {
         _bufferSize = bufferSize;
         if ((_captureIsActive) && (_playbackIsActive)) {
@@ -514,7 +495,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   not supported by the audio hardware or by Java.
      *  @see #getChannels()
      */
-    @Override
     public void setChannels(int channels) throws IOException {
         _channels = channels;
         if ((_captureIsActive) && (_playbackIsActive)) {
@@ -548,7 +528,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   not supported by the audio hardware or by Java.
      *  @see #getSampleRate()
      */
-    @Override
     public void setSampleRate(int sampleRate) throws IOException {
         _sampleRate = sampleRate;
         if ((_captureIsActive) && (_playbackIsActive)) {
@@ -589,7 +568,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   while audio capture or playback are active.
      *  @see #getTransferSize()
      */
-    @Override
     public void setTransferSize(int transferSize) throws IllegalStateException {
         // This change only affects capture, so it's OK for it to occur
         // while there is playback.
@@ -623,7 +601,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @exception IllegalStateException If this method is called
      *   while audio capture is already active.
      */
-    @Override
     public void startCapture(Object consumer) throws IOException,
             IllegalStateException {
         // FIXME: consider allowing several object to
@@ -678,7 +655,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *  @exception IllegalStateException If this method is called
      *   while audio playback is already active.
      */
-    @Override
     public void startPlayback(Object producer) throws IOException,
             IllegalStateException {
         if (!_playbackIsActive) {
@@ -703,7 +679,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   object did not hold an exclusive lock on the
      *   captured audio resources when this method was invoked.
      */
-    @Override
     public void stopCapture(Object consumer) throws IOException,
             IllegalStateException {
         if (_soundConsumers.contains(consumer)) {
@@ -736,7 +711,6 @@ public class VergilLiveSound implements LiveSoundInterface {
      *   playback audio resources when this method was invoked.
      *
      */
-    @Override
     public void stopPlayback(Object producer) throws IOException,
             IllegalStateException {
         if (_playbackIsActive) {

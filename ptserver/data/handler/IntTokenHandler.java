@@ -63,7 +63,7 @@ public class IntTokenHandler implements TokenHandler<IntToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public IntToken convertToToken(DataInputStream inputStream,
-            Class<IntToken> tokenType)
+            Class<? extends IntToken> tokenType)
             throws IOException {
         return new IntToken(inputStream.readInt());
     }

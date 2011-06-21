@@ -86,7 +86,6 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
      * @exception IllegalActionException If _openWindow() in the base 
      * class throws it.
      */
-    @Override
     public void openDisplay() throws IllegalActionException {
         if (!initialized) {
             initialized = true;
@@ -102,7 +101,6 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
      * @param text
      *          The text to be shown in the display.
      */
-    @Override
     public void setText(String text) {
         this.text = text;
     }

@@ -60,12 +60,12 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	PtolemyServerConfig.properties.default
 
-EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
+	findbugs-excludes.xml \
+	findbugs-includes.xml
 
 # Keep this list alphabetized.
 JSRCS = \
-	PtolemyServer.java \
-	SimulationTask.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

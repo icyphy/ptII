@@ -221,7 +221,6 @@ public class VergilApplication extends MoMLApplication {
             // getting read access the workspace is much more efficient
             // in PtolemyThread.
             SwingUtilities.invokeLater(new Runnable() {
-                @Override
                 public void run() {
                     try {
                         new VergilApplication(args);

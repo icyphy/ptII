@@ -37,10 +37,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ptserver.PtolemyServer;
+import ptolemy.actor.Manager;
 import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
+import ptserver.control.PtolemyServer;
 import ptserver.control.Ticket;
+import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 
@@ -57,7 +59,9 @@ import com.caucho.hessian.client.HessianProxyFactory;
  *  @Pt.AcceptedRating Red (pdf)
  */
 public class ServletTest {
-
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -85,67 +89,140 @@ public class ServletTest {
                 IServerManager.class, servletUrl);
     }
 
-    /** Test the ability to create a new simulation request ensure that
-     *  a non-null ticket is returned, the returned ticket has an id, and the
-     *  number of simulations stored has increased by one.
+    /** Test the ability to create a new simulation request and to ensure that
+     *  a non-null ticket is returned, the returned ticket has an id, the number
+     *  of simulations stored has increased by one, and the simulation is in Idle
+     *  state. 
      *  @exception Exception If there is an problem opening the model URL or
      *  communicating with the command servlet.
      */
     @Test
-    public void openThread() throws Exception {
+    public void openSimulation() throws Exception {
         int simulations = _ptolemyServer.numberOfSimulations();
-        RemoteModelResponse response = _openRemoteModel();
+        _response = _openRemoteModel();
 
-        assertNotNull(response);
-        assertNotNull(response.getTicket().getTicketID());
+        assertNotNull(_response);
+        assertNotNull(_response.getTicket().getTicketID());
         assertEquals(simulations + 1, _ptolemyServer.numberOfSimulations());
+        assertEquals(Manager.IDLE,
+                _ptolemyServer.getStateOfSimulation(_response.getTicket()));
     }
 
-    /** Open, start, stop, and close the simulation request.
-     *  @exception Exception If there is an problem opening the model URL or
-     *  communicating with the command servlet.
+    /** Test the ability to start a newly created simulation request and to ensure that
+     *  the state of the execution changed to preinitialize and iterating.
+     *  @exception Exception If there is an problem opening the model URL, starting the
+     *  simulation, or communicating with the command servlet.
      */
     @Test
-    public void manipulateThread() throws Exception {
+    public void startSimulation() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
-        assertNotNull(response);
         Ticket ticket = response.getTicket();
         int simulations = _ptolemyServer.numberOfSimulations();
-        try {
-            _servletProxy.start(ticket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         // Start the thread and verify that doing so has not altered the thread count.
+        _servletProxy.start(ticket);
         assertEquals(simulations, _ptolemyServer.numberOfSimulations());
-
-        try {
-            _servletProxy.stop(ticket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Stop the thread and verify that doing so has not altered the thread count.
-        assertEquals(simulations, _ptolemyServer.numberOfSimulations());
-
-        try {
-            _servletProxy.close(ticket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Close the thread and verify that the number of threads decreased.
-        assertEquals(simulations - 1, _ptolemyServer.numberOfSimulations());
+        // Wait until the simulation had time to start iterating.
+        Thread.sleep(1000);
+        assertEquals(Manager.ITERATING,
+                _ptolemyServer.getStateOfSimulation(ticket));
     }
 
-    @After
+    /** Test the ability to pause and resume a newly created and started simulation request
+     *  and to ensure that the state of the execution changed to paused and back.
+     *  
+     *  This test can fail if the execution cannot pause. For example, some models using the
+     *  PN director cannot get into the paused state.
+     *  
+     *  @exception Exception If there is an problem opening the model URL, starting, pausing,
+     *  or resuming the simulation, or communicating with the command servlet.
+     */
+    @Test(expected = AssertionError.class)
+    public void pauseAndResumeSimulation() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        Ticket ticket = response.getTicket();
+        int simulations = _ptolemyServer.numberOfSimulations();
+
+        _servletProxy.start(ticket);
+        // Wait until the simulation had time to start iterating.
+        Thread.sleep(1000);
+        assertEquals(Manager.ITERATING,
+                _ptolemyServer.getStateOfSimulation(ticket));
+
+        // Pause the thread, verify that doing so has not altered the thread count,
+        // and also check for valid state transition in the simulation.
+        _servletProxy.pause(ticket);
+        assertEquals(simulations, _ptolemyServer.numberOfSimulations());
+        // Wait a bit for the simulation to pause as every actor needs to get into
+        // the right state.
+        Thread.sleep(1000);
+        assertEquals(Manager.PAUSED,
+                _ptolemyServer.getStateOfSimulation(ticket));
+        // Wait a bit and restart the simulation.
+        Thread.sleep(1000);
+        _servletProxy.resume(ticket);
+        assertEquals(Manager.ITERATING,
+                _ptolemyServer.getStateOfSimulation(ticket));
+    }
+
+    /** Test the ability to stop an already iterating simulation request and to ensure
+     *  that the state of the execution changed to idle.
+     *  @exception Exception If there is an problem opening the model URL, starting the
+     *  simulation, stopping it, or communicating with the command servlet.
+     */
+    @Test
+    public void stopSimulation() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        Ticket ticket = response.getTicket();
+        int simulations = _ptolemyServer.numberOfSimulations();
+
+        // Start the thread
+        _servletProxy.start(ticket);
+        // Wait until the simulation had time to start iterating.
+        Thread.sleep(1000);
+
+        // Stop the thread and verify that doing so has not altered the thread count.
+        _servletProxy.stop(ticket);
+        assertEquals(simulations, _ptolemyServer.numberOfSimulations());
+        assertEquals(Manager.IDLE, _ptolemyServer.getStateOfSimulation(ticket));
+    }
+
+    /** Test the ability to close an existing simulation request and to ensure
+     *  that the simulation is removed from the server.
+     *  @exception Exception If there is an problem opening the model URL, starting the
+     *  simulation, closing it, or communicating with the command servlet.
+     */
+    @Test
+    public void closeSimulation() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        Ticket ticket = response.getTicket();
+        int simulations = _ptolemyServer.numberOfSimulations();
+
+        // Start the thread
+        _servletProxy.start(ticket);
+        // Wait until the simulation had time to start iterating.
+        Thread.sleep(1000);
+
+        // Close the thread and verify that doing so decreased the thread count,
+        // and the ticket is no longer valid.
+        _servletProxy.close(ticket);
+        assertEquals(simulations - 1, _ptolemyServer.numberOfSimulations());
+
+        // Try to start the ticket again. This should result in an exception.
+        assertEquals(null, PtolemyServer.getInstance()
+                .getSimulationTask(ticket));
+    }
+
     /** Call the shutdown() method on the singleton and destroy all
      *  references to it.
      *  @exception Exception If there was an error shutting down the broker or
      *  servlet.
      */
+    @After
     public void shutdown() throws Exception {
+        if (_response != null) {
+            _ptolemyServer.close(_response.getTicket());
+        }
         _ptolemyServer.shutdown();
         _ptolemyServer = null;
     }
@@ -160,9 +237,12 @@ public class ServletTest {
      *  @return Ticket The ticket reference to the simulation request.
      */
     private RemoteModelResponse _openRemoteModel() throws Exception {
-        URL url = ServletTest.class
-                .getResource("/ptserver/test/junit/HelloWorld.xml");
-        RemoteModelResponse response = _servletProxy.open(url.toExternalForm());
+        URL modelUrl = ServletTest.class
+                .getResource("/ptserver/test/junit/addermodel.xml");
+        URL layoutUrl = ServletTest.class
+                .getResource("/ptserver/test/junit/addermodel_test.layout.xml");
+        RemoteModelResponse response = _servletProxy.open(
+                modelUrl.toExternalForm(), layoutUrl.toExternalForm());
         return response;
     }
 
@@ -176,4 +256,6 @@ public class ServletTest {
     /** Handle to the Hessian proxy.
      */
     private IServerManager _servletProxy;
+
+    private RemoteModelResponse _response;
 }

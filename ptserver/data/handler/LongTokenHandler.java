@@ -64,7 +64,7 @@ public class LongTokenHandler implements TokenHandler<LongToken> {
      * @exception IOException if there is a problem reading from the stream
      */
     public LongToken convertToToken(DataInputStream inputStream,
-            Class<LongToken> tokenType)
+            Class<? extends LongToken> tokenType)
             throws IOException {
         return new LongToken(inputStream.readLong());
     }

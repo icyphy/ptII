@@ -44,23 +44,34 @@ import ptserver.data.AttributeChangeToken;
 */
 public class RemoteValueListener implements ValueListener {
 
+    /**
+     * Initialize the instance with the given token publisher
+     *  and enable its listener.
+     * @param tokenPublisher the tokenPublisher used for sending value change events.
+     */
+    public RemoteValueListener(TokenPublisher tokenPublisher) {
+        _tokenPublisher = tokenPublisher;
+        setEnabled(true);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     /**
      * Capture value changes of the settable and send them via the publisher to the remote model.
      * @param settable The settable whose value changed.
      * @see ptolemy.kernel.util.ValueListener#valueChanged(ptolemy.kernel.util.Settable)
      */
-    public void valueChanged(Settable settable) {
-        AttributeChangeToken token = new AttributeChangeToken();
-        token.setTargetSettableName(settable.getName());
-        token.setExpression(settable.getExpression());
-        try {
-            getTokenPublisher().sendToken(token);
-        } catch (IllegalActionException e) {
-            // FIXME Add logging and exception delegation
-            e.printStackTrace();
+    public synchronized void valueChanged(Settable settable) {
+        if (isEnabled()) {
+            AttributeChangeToken token = new AttributeChangeToken();
+            token.setTargetSettableName(settable.getFullName());
+            token.setExpression(settable.getExpression());
+            try {
+                getTokenPublisher().sendToken(token);
+            } catch (IllegalActionException e) {
+                // FIXME Add logging and exception delegation
+                e.printStackTrace();
+            }
         }
     }
 
@@ -68,28 +79,40 @@ public class RemoteValueListener implements ValueListener {
      * Return TokenPublisher that would be used to publish
      * AttributeChange tokens produced by this actor on value change.
      * @return TokenPublisher the token publisher
-     * @see #setTokenPublisher(TokenPublisher)
      */
     public TokenPublisher getTokenPublisher() {
         return _tokenPublisher;
     }
 
     /**
-     * Set the token publisher that would be used to send
-     * AttributeChange tokens.
-     * @param tokenPublisher the token publisher used to send attribute change messages.
-     * @see #getTokenPublisher()
+     * Set enabled flag of the listener.  If it's true,
+     * the listener would send the attribute value change token.
+     * @param enabled the enabled flag.
+     * @see #isEnabled()
      */
-    public void setTokenPublisher(TokenPublisher tokenPublisher) {
-        _tokenPublisher = tokenPublisher;
+    public synchronized void setEnabled(boolean enabled) {
+        _enabled = enabled;
+    }
+
+    /**
+     * Return the enabled flag of the listener. If it's true,
+     * the listener would send the attribute value change token.
+     * @return the enabled flag.
+     * @see #setEnabled(boolean)
+     */
+    public synchronized boolean isEnabled() {
+        return _enabled;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     /**
      * Token Publisher is used to publish AttributeChange to a queue for serializing
      * into a binary.
      */
-    private TokenPublisher _tokenPublisher;
+    private final TokenPublisher _tokenPublisher;
+    /**
+     * TODO
+     */
+    private boolean _enabled;
 }

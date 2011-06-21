@@ -819,6 +819,9 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 // FIXME: handle the rest of the constants from data.expr.Constants
                 if (label.equals("Infinity")) {
                     _childCode = "Double.POSITIVE_INFINITY";
+                } else if (label.equals("NaN")) {
+                    // $PTII/bin/ptcg -language java ./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/TestNaN.xml
+                    _childCode = "Double.NaN";
                 } else {
                     //_fireCode.append(label);
                     _childCode = label;
@@ -1081,6 +1084,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
 
         //_fireCode.append("->" + node.getMethodName() + "()");
+        // FIXME: Applying functions to tokens does not work
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/xslt/test/auto/XSLTransformerTest.xml
         result.append("->" + node.getMethodName() + "()");
         _childCode = result.toString();
     }

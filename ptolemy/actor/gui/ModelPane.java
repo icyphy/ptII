@@ -141,7 +141,6 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_goButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _goButton.addActionListener(new ActionListener() {
-                    @Override
                     public void actionPerformed(ActionEvent event) {
                         startRun();
                     }
@@ -152,7 +151,6 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_pauseButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _pauseButton.addActionListener(new ActionListener() {
-                    @Override
                     public void actionPerformed(ActionEvent event) {
                         pauseRun();
                     }
@@ -163,7 +161,6 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_resumeButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _resumeButton.addActionListener(new ActionListener() {
-                    @Override
                     public void actionPerformed(ActionEvent event) {
                         resumeRun();
                     }
@@ -173,7 +170,6 @@ public class ModelPane extends JPanel implements CloseListener {
                 _stopButton.setToolTipText("Stop executing the model");
                 _buttonPanel.add(_stopButton);
                 _stopButton.addActionListener(new ActionListener() {
-                    @Override
                     public void actionPerformed(ActionEvent event) {
                         stopRun();
                     }
@@ -421,7 +417,6 @@ public class ModelPane extends JPanel implements CloseListener {
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
-    @Override
     public void windowClosed(Window window, String button) {
         if (_directorQuery != null) {
             _directorQuery.windowClosed(window, button);

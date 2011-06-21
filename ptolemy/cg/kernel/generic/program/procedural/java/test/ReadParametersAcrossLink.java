@@ -29,17 +29,18 @@ package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// ReadParameterAcrossLink
@@ -129,15 +130,17 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
         // The list of PopulationGroups is used in fire().
         _groups = new LinkedList<PopulationGroup>();
         for (Relation relation : linkedRelationList) {
-            NamedObj container = ((TypedIOPort)relation.linkedPortList(input).get(0)).getContainer();
+            NamedObj container = ((TypedIOPort) relation.linkedPortList(input)
+                    .get(0)).getContainer();
             // The index of the relation.
-            int relationIndex = TypedIOPort.getRelationIndex(input, relation, true);
+            int relationIndex = IOPort.getRelationIndex(input, relation, true);
 
             // Add the current group to the list of groups.
             PopulationGroup group = new PopulationGroup();
             _groups.add(relationIndex, group);
 
-            double remoteParameter = ((DoubleToken)((Variable)container.getAttribute("remoteParameter")).getToken()).doubleValue();
+            double remoteParameter = ((DoubleToken) ((Variable) container
+                    .getAttribute("remoteParameter")).getToken()).doubleValue();
             group.setRemoteParameter(remoteParameter);
         }
     }
@@ -162,10 +165,11 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
             // the value * 2.0
             return _remoteParameter * 2.0;
         }
+
         public void setRemoteParameter(double remoteParameter) {
             _remoteParameter = remoteParameter;
         }
+
         private double _remoteParameter;
     }
 }
-

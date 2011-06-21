@@ -72,9 +72,6 @@ if {[info procs testJavaCG] == "" } then {
 # $PTII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml   Fails to compile, needs function types
 # $PTII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml  Fails to compile, uses DE
 # $PTII/ptolemy/actor/lib/hoc/test/auto/Case.xml  Fails to compile, uses DE
-# $PTII/ptolemy/actor/lib/hoc/test/auto/Case1.xml  Fails to compile:
-#  Case1.java:487: cannot find symbol
-#   symbol  : variable Case1_Case_true_output
 
 # $PTII/ptolemy/actor/lib/string/test/auto/StringMatches.xml   Runs, but gets wrong results
 #     Won't fix right now, the problem is backslash hell.
@@ -94,6 +91,7 @@ if {[info procs testJavaCG] == "" } then {
 
 set models [list \
 		$PTII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml \
+		$PTII/ptolemy/actor/lib/hoc/test/auto/Case1.xml \
 		$PTII/ptolemy/actor/lib/test/auto/AbsoluteValue.xml \
 		$PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Gaussian1.xml \

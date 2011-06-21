@@ -38,8 +38,8 @@
 		<pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
 		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
-		<pathelement location="lib/guice-3.0.jar" />
 		<pathelement location="lib/aopalliance.jar" />
+		<pathelement location="lib/guice-3.0.jar" />
 		<pathelement location="lib/javax.inject.jar" />
 	</path>
 
@@ -227,11 +227,9 @@
 		</junit>
 		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
-
-
 	<target name="ptdroid.clean">
 		<delete includeemptydirs="true">
-			<fileset dir="${ptdroid.bin}" includes="**/*" />
+			<fileset dir="${ptdroid.bin}/ptserver" includes="**/*" />
 		</delete>
 	</target>
 	<target name="ptdroid.build">
@@ -494,9 +492,20 @@
 	<target name="findbugs" depends="build, initOutput">
 		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m" includefilter="${basedir}/ptserver/findbugs-includes.xml" excludefilter="${basedir}/ptserver/findbugs-excludes.xml">
-			<auxclasspath refid="ptII.classpath"/>
+			<auxclasspath refid="ptII.classpath" />
 			<sourcePath path="${basedir}" />
-			<class location="${basedir}/ptserver/" />
+			<class location="ptserver/actor" />
+			<class location="ptserver/communication" />
+			<class location="ptserver/control" />
+			<class location="ptserver/data" />
+			<class location="ptserver/test" />
 		</findbugs>
+	</target>
+	<target name="checkstyle" depends="initOutput">
+		<taskdef resource="checkstyletask.properties" classpath="ptserver/lib/checkstyle-5.3-all.jar" />
+		<checkstyle config="doc/checkstyle-ptII.xml" failOnViolation="false">
+			<fileset dir="ptserver" includes="**/*.java" />
+			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
+		</checkstyle>
 	</target>
 </project>

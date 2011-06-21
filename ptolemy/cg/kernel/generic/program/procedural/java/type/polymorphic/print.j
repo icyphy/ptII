@@ -29,7 +29,7 @@ static void print_Integer(long l) {
 /**/
 
 /*** print_Token() ***/
-static void print_Token(Token a) {
+static void print_Token(Token token) {
      //$tokenFunc(a::print());
     switch (token.type) {
         case TYPE_Double:
@@ -50,7 +50,7 @@ static void print_Token(Token a) {
 
 /*** print_Token_Token() ***/
 static Token print_Token_Token(Token a) {
-     print_Token(a);
+     $print_Token(a);
      return null;
 }
 /**/

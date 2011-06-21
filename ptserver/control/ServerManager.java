@@ -27,10 +27,7 @@
 
 package ptserver.control;
 
-import java.util.logging.Level;
-
 import ptolemy.kernel.util.IllegalActionException;
-import ptserver.PtolemyServer;
 import ptserver.communication.RemoteModelResponse;
 
 import com.caucho.hessian.server.HessianServlet;
@@ -58,66 +55,47 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  destroy the simulation thread.
      */
     public void close(Ticket ticket) throws IllegalActionException {
-        try {
-            PtolemyServer.getInstance().close(ticket);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to close the simulation request.");
-            throw new IllegalActionException(null, e,
-                    "Unable to close the simulation request.");
-        }
+        PtolemyServer.getInstance().close(ticket);
     }
 
     /** Download the selected model to the client.
-     *  @param filename Name of the model XML file.
+     *  @param url URL of the model file.
      *  @return Byte array containing the model data.
      *  @exception IllegalActionException If the server encountered an error opening the model file.
      */
-    public byte[] downloadModel(String modelName) throws IllegalActionException {
-        try {
-            return PtolemyServer.getInstance().downloadModel(modelName);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to download the model file.");
-            throw new IllegalActionException(null, e,
-                    "Unable to download the model file.");
-        }
+    public byte[] downloadModel(String url) throws IllegalActionException {
+        return PtolemyServer.getInstance().downloadModel(url);
     }
 
     /** Get a listing of the models available on the server in either the
      *  database or the local file system.
-     *  @return The Array of strings containing names of available models.
-     *  @exception IllegalActionException If there was a problem discovering
-     *  available models.
+     *  @return An array of URLs for the models available on the server.
+     *  @exception IllegalActionException If there was a problem discovering available models.
      */
     public String[] getModelListing() throws IllegalActionException {
-        try {
-            return PtolemyServer.getInstance().getModelListing();
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to list available model files.");
-            throw new IllegalActionException(null, e,
-                    "Unable to list available model files.");
-        }
+        return PtolemyServer.getInstance().getModelListing();
+    }
+
+    /** Get a listing of the layouts for a specific model available on the
+     *  server in either the database or the local file system.
+     *  @return An array of URLs for the layouts available for the model on the server.
+     *  @exception IllegalActionException If there was a problem discovering available layouts.
+     */
+    public String[] getLayoutListing(String url) throws IllegalActionException {
+        return PtolemyServer.getInstance().getLayoutListing(url);
     }
 
     /** Open a model with the provided model URL and wait for the
      *  user to request the execution of the simulation.
-     *  @param url The path to the model file
+     *  @param modelUrl The path to the model file
+     *  @param layoutUrl The path to a model's layout file
      *  @return The user's reference to the simulation task along with 
      *  specifically formatted for the client model XML and its inferred types
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      */
-    public RemoteModelResponse open(String url) throws IllegalActionException {
-        try {
-            return PtolemyServer.getInstance().open(url);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to open the requested model file.");
-            throw new IllegalActionException(null, e,
-                    "Unable to open the requested model file.");
-        }
+    public RemoteModelResponse open(String modelUrl, String layoutUrl) throws IllegalActionException {
+        return PtolemyServer.getInstance().open(modelUrl, layoutUrl);
     }
 
     /** Pause the execution of the selected simulation.
@@ -126,14 +104,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  pause the running simulation.
      */
     public void pause(Ticket ticket) throws IllegalActionException {
-        try {
-            PtolemyServer.getInstance().pause(ticket);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to pause the running simulation.");
-            throw new IllegalActionException(null, e,
-                    "Unable to pause the running simulation.");
-        }
+        PtolemyServer.getInstance().pause(ticket);
     }
 
     /** Resume the execution of the selected simulation.
@@ -142,14 +113,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  resume the execution of the simulation.
      */
     public void resume(Ticket ticket) throws IllegalActionException {
-        try {
-            PtolemyServer.getInstance().resume(ticket);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to resume the idle simulation.");
-            throw new IllegalActionException(null, e,
-                    "Unable to resume the idle simulation.");
-        }
+        PtolemyServer.getInstance().resume(ticket);
     }
 
     /** Start the execution of the selected simulation.
@@ -158,14 +122,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  start the simulation.
      */
     public void start(Ticket ticket) throws IllegalActionException {
-        try {
-            PtolemyServer.getInstance().start(ticket);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to start the requested simulation.");
-            throw new IllegalActionException(null, e,
-                    "Unable to start the requested simulation.");
-        }
+        PtolemyServer.getInstance().start(ticket);
     }
 
     /** Stop the execution of the selected simulation.
@@ -174,14 +131,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  stop the simulation.
      */
     public void stop(Ticket ticket) throws IllegalActionException {
-        try {
-            PtolemyServer.getInstance().stop(ticket);
-        } catch (Exception e) {
-            PtolemyServer.LOGGER.log(Level.SEVERE,
-                    "Unable to stop the running simulation.");
-            throw new IllegalActionException(null, e,
-                    "Unable to stop the running simulation.");
-        }
+        PtolemyServer.getInstance().stop(ticket);
 
     }
 }

@@ -88,7 +88,7 @@ public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken>
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public DoubleMatrixToken convertToToken(DataInputStream inputStream,
-            Class<DoubleMatrixToken> tokenType)
+            Class<? extends DoubleMatrixToken> tokenType)
             throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();

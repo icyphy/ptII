@@ -85,7 +85,7 @@ public class RecordTokenHandler implements TokenHandler<RecordToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public RecordToken convertToToken(DataInputStream inputStream,
-            Class<RecordToken> tokenType)
+            Class<? extends RecordToken> tokenType)
             throws IOException, IllegalActionException {
 
         int size = inputStream.readInt();

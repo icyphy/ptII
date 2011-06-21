@@ -3,3 +3,5 @@ BROKER_PORT=1883
 SERVLET_PATH=/PtolemyServer
 SERVLET_PORT=8081
 LOG_FILENAME=PtolemyLog.log
+#enter the location of the directory where the model files are stored on the server 
+MODELS_DIRECTORY=    

@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.Enumeration;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
@@ -229,6 +231,7 @@ public abstract class ActorController extends AttributeController {
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
+        GUIUtilities.addHotKey(jgraph, _openInstanceAction);
     }
 
     /**
@@ -805,6 +808,9 @@ public abstract class ActorController extends AttributeController {
     private class OpenInstanceAction extends FigureAction {
         public OpenInstanceAction() {
             super("Open Instance");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                            KeyEvent.VK_L,
+                            java.awt.Event.ALT_MASK));
         }
 
         public void actionPerformed(ActionEvent event) {

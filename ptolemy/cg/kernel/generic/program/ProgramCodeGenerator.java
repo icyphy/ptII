@@ -1603,8 +1603,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Reset the code generator.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  thrown by the parent if the container of the model
+     *  cannot be set to null.
      */
-    protected void _reset() {
+    protected void _reset() throws IllegalActionException {
         super._reset();
         // Reset the indent to zero.
         _indent = 0;

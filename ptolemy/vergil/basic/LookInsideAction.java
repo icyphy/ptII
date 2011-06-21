@@ -54,8 +54,8 @@ import ptolemy.vergil.toolbox.FigureAction;
  *  backward compatibility.</p>
  *  <p>This used to be a private class contained in
  *  {@link ptolemy.vergil.actor.ActorController ActorController}, but it is
- *  now relevant for {@link ptolemy.vergil.ontologies.OntologyEntityController
- *  OntologyEntityController} and
+ *  now relevant for ptolemy.vergil.ontologies.OntologyEntityController
+ *  OntologyEntityController and
  *  {@link ptolemy.vergil.basic.MoMLModelAttributeController MoMLModelAttributeController},
  *  so it has been pulled out into a public class. Additionally MoMLModelAttributeController
  *  requires a different implementation to open its contained model since it is
@@ -67,7 +67,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  *  model, a shortcut key can only bind one action for every node in the entire model
  *  graphical space to any given key. If a model contains both normal
  *  {@link ptolemy.kernel.CompositeEntity CompositeEntity}
- *  (including {@link ptolemy.data.ontologies.Ontology Ontology} entities)
+ *  (including ptolemy.data.ontologies.Ontology entities)
  *  elements and MoMLModelAttributes, then only one look inside action will be bound
  *  to the shortcut L key even though each action will be accessible from their
  *  individual context menus (See {@link GUIUtilities#addHotKey(javax.swing.JComponent,

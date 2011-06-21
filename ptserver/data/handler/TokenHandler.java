@@ -66,11 +66,11 @@ public interface TokenHandler<T extends Token> {
      * defined in the handler.
      * @param inputStream The inputStream that contains serialized version
      * of a token
-     * @param tokenType TODO
+     * @param tokenType the type of token to be read.
      * @return Token parsed from inputStream
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
-    public T convertToToken(DataInputStream inputStream, Class<T> tokenType) throws IOException,
+    public T convertToToken(DataInputStream inputStream, Class<? extends T> tokenType) throws IOException,
             IllegalActionException;
 }

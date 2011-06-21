@@ -63,7 +63,7 @@ public class FloatTokenHandler implements TokenHandler<FloatToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public FloatToken convertToToken(DataInputStream inputStream,
-            Class<FloatToken> tokenType)
+            Class<? extends FloatToken> tokenType)
             throws IOException {
         return new FloatToken(inputStream.readFloat());
     }

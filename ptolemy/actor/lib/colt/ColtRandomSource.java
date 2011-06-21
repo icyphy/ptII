@@ -150,7 +150,10 @@ public abstract class ColtRandomSource extends RandomSource {
         if (seedValue == 0L) {
             seedValue = System.currentTimeMillis() + hashCode();
         } else {
-            seedValue = seedValue + getFullName().hashCode();
+            // Use getDisplayName() so that Colt actors that do not have
+            // ptolemy/cg templates will have the same results in both
+            // interpreted mode and in cg.
+            seedValue = seedValue + getDisplayName().hashCode();
         }
 
         StringToken generatorToken = ((StringToken) generatorClass.getToken());

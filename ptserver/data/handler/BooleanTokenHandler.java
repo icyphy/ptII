@@ -63,7 +63,7 @@ public class BooleanTokenHandler implements TokenHandler<BooleanToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public BooleanToken convertToToken(DataInputStream inputStream,
-            Class<BooleanToken> tokenType) throws IOException {
+            Class<? extends BooleanToken> tokenType) throws IOException {
         return new BooleanToken(inputStream.readBoolean());
     }
 

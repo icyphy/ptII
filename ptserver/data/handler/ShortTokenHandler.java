@@ -63,7 +63,7 @@ public class ShortTokenHandler implements TokenHandler<ShortToken> {
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ShortToken convertToToken(DataInputStream inputStream,
-            Class<ShortToken> tokenType)
+            Class<? extends ShortToken> tokenType)
             throws IOException {
         return new ShortToken(inputStream.readShort());
     }

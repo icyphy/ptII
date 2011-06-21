@@ -241,6 +241,9 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                     ASTPtRootNode guardParseTree = parser
                             .generateParseTree(guard);
 
+                    if (getTemplateParser() == null) {
+                        getCodeGenerator().getAdapter(this);
+                    }
                     ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
                             .getParseTreeCodeGenerator();
                     parseTreeCodeGenerator.evaluateParseTree(guardParseTree,

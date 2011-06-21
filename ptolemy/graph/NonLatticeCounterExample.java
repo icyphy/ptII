@@ -135,9 +135,9 @@ public class NonLatticeCounterExample {
     /** Marker interface for the counter example type. This allows
      *  us to create other enumerations of counter example types in
      *  subclasses. In particular, this is needed for the ontologies
-     *  package classes {@link ptolemy.data.ontologies.lattice.ProductLatticeOntology
-     *  ProductLatticeOntology} and
-     *  {@link ptolemy.data.ontologies.lattice.ProductLatticeCPO ProductLatticeCPO}.
+     *  package classes ptolemy.data.ontologies.lattice.ProductLatticeOntology
+     *  ProductLatticeOntology and
+     *  ptolemy.data.ontologies.lattice.ProductLatticeCPO ProductLatticeCPO.
      *  When a product lattice is not a lattice, the reason is because one of
      *  its component lattices is not a lattice. This is only relevant for
      *  product lattice ontologies.

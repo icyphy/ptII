@@ -97,7 +97,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
      *  character.
      */
 
-    @Override
     public void display(String value) {
 
         if (textArea == null) {
@@ -150,7 +149,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
 
     /** Get the TextArea object 
      */
-    @Override
     public Object getTextArea() {
         return textArea;
     }
@@ -160,7 +158,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
     *  @param displayActor The Display actor 
     */
 
-    @Override
     public void init(Display displayActor) throws IllegalActionException,
             NameDuplicationException {
 
@@ -173,7 +170,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
      *  @exception IllegalActionException If there is a problem creating
      *  the effigy and tableau.
      */
-    @Override
     public void openWindow() throws IllegalActionException {
 
         if (textArea == null) {
@@ -252,8 +248,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
      *  @param portableContainer The container into which to place the text area, or
      *   null to specify that there is no current container.
      */
-
-    @Override
     public void place(PortableContainer portableContainer) {
         Container container = (Container) (portableContainer != null ? portableContainer
                 .getPlatformContainer() : null);
@@ -322,11 +316,9 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
 
     /** Remove the display from the current container, if there is one.
      */
-    @Override
     public void remove() {
 
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 if (textArea != null) {
                     if ((AWTContainer != null) && (_scrollPane != null)) {
@@ -348,7 +340,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
 
-    @Override
     public void setRows(int numRows) throws IllegalActionException {
 
         if (textArea != null) {
@@ -373,7 +364,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
 
-    @Override
     public void setColumns(int numColumns) throws IllegalActionException {
 
         if (textArea != null) {
@@ -396,7 +386,6 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
      *  and the Display window has been rendered, then the title of the
      *  Display window will be updated to the value of the name parameter.</p>
      */
-    @Override
     public void setTitle(String stringValue) throws IllegalActionException {
 
         if (_tableau != null) {
