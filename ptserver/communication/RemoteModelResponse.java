@@ -34,71 +34,82 @@ import ptserver.control.Ticket;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoteModelResponse
-/**
- * The server's response to the request to open a model.
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+
+/** The server's response to the request to open a model.
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class RemoteModelResponse implements Serializable {
-    /**
-     * Return the map from the model's Typeable objects to its inferred type.
-     * 
-     * <p>This map contains only types for the sinks and sources intended to run on Android.</p>
-     * @return the map from the Typeable to its inferred type.
-     * @see #setModelTypes(HashMap)
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the URL of the message broker.
+     *  @return The URL of the message broker to which the client should publish tokens.
+     *  @see #setBrokerUrl(String)
+     */
+    public String getBrokerUrl() {
+        return _brokerUrl;
+    }
+
+    /** Get the map from the model's Typeable objects to its inferred type.
+     *  <p>This map contains only types for the sinks and sources intended to run on Android.</p>
+     *  @return the map from the Typeable to its inferred type.
+     *  @see #setModelTypes(HashMap)
      */
     public HashMap<String, String> getModelTypes() {
         return _modelTypes;
     }
 
-    /**
-     * Return the model XML string containing the model specifically created for
-     * the Android client
-     * that includes only actors that need to run there.
-     * @return the model XML for the Android client.
-     * @see #setModelXML(String)
+    /** Get the model XML string containing the model specifically created for
+     *  the Android client
+     *  that includes only actors that need to run there.
+     *  @return The model XML for the Android client.
+     *  @see #setModelXML(String)
      */
     public String getModelXML() {
         return _modelXML;
     }
 
-    /**
-     * Return the ticket identifying the model on the server.
-     * @return the ticket identifying the model on the server.
-     * @see #setTicket(Ticket)
+    /** Get the ticket identifying the model on the server.
+     *  @return The ticket identifying the model on the server.
+     *  @see #setTicket(Ticket)
      */
     public Ticket getTicket() {
         return _ticket;
     }
 
-    /**
-     * Set the map from the model's Typeable objects to its inferred type.
-     * @param modelTypes The map from the Typeable to its inferred type.
-     * @see #getModelTypes()
+    /** Set the URL of the message broker.
+     *  @param brokerUrl The URL of the message broker to which the client should publish tokens.
+     *  @see #getBrokerUrl()
+     */
+    public void setBrokerUrl(String brokerUrl) {
+        _brokerUrl = brokerUrl;
+    }
+
+    /** Set the map from the model's Typeable objects to its inferred type.
+     *  @param modelTypes The map from the Typeable to its inferred type.
+     *  @see #getModelTypes()
      */
     public void setModelTypes(HashMap<String, String> modelTypes) {
         _modelTypes = modelTypes;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    /**
-     * Set the model XML string containing the model specifically created for the Android client
-     * that includes only actors that need to run there.
-     * @param modelXML the model XML for the Android client.
-     * @see #getModelXML()
+    /** Set the model XML string containing the model specifically created for the Android client
+     *  that includes only actors that need to run there.
+     *  @param modelXML The model XML for the Android client.
+     *  @see #getModelXML()
      */
     public void setModelXML(String modelXML) {
         _modelXML = modelXML;
     }
 
-    /**
-     * Set the ticket identifying the model on the server.
-     * @param ticket the ticket identifying the model on the server.
-     * @see #getTicket()
+    /** Set the ticket identifying the model on the server.
+     *  @param ticket The ticket identifying the model on the server.
+     *  @see #getTicket()
      */
     public void setTicket(Ticket ticket) {
         _ticket = ticket;
@@ -106,16 +117,20 @@ public class RemoteModelResponse implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The model XML containing only actors needed for the client.
+
+    /** The model XML containing only actors needed for the client.
      */
     private String _modelXML;
-    /**
-     * The ticket opened for the remote model.
+
+    /** The ticket opened for the remote model.
      */
     private Ticket _ticket;
-    /**
-     * The mapping from Typeable full names to its types needed to initialize ports on the client.
+
+    /** The URL of the server's message broker.
+     */
+    private String _brokerUrl;
+
+    /** The mapping from Typeable full names to its types needed to initialize ports on the client.
      */
     private HashMap<String, String> _modelTypes;
 }

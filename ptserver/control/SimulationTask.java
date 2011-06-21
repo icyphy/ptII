@@ -59,15 +59,14 @@ public class SimulationTask implements Runnable {
     public SimulationTask(Ticket ticket) throws Exception {
         _remoteModel = new RemoteModel(RemoteModelType.SERVER);
 
-        // Set the MQTT client.
-        // Load the model specified within the ticket.
+        // Set the MQTT client and load the model specified within the ticket.
         getRemoteModel().loadModel(new URL(ticket.getModelUrl()));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Close the remote model.
+
+    /** Close the remote model.
      */
     public void close() {
         getRemoteModel().close();
@@ -94,9 +93,8 @@ public class SimulationTask implements Runnable {
         return getRemoteModel().getManager();
     }
 
-    /**
-     * Return the task's remote model.
-     * @return the remoteModel of the instance.
+    /** Return the task's remote model.
+     *  @return the remoteModel of the instance.
      */
     public RemoteModel getRemoteModel() {
         return _remoteModel;
