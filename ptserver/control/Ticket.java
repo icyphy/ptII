@@ -133,6 +133,16 @@ public class Ticket implements java.io.Serializable {
         return result;
     }
 
+    /** 
+     * Return the ticket id.
+     * @return the ticket id.
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return _ticketID;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -156,7 +166,7 @@ public class Ticket implements java.io.Serializable {
     private void setModelUrl(String modelUrl) {
         _modelUrl = modelUrl;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

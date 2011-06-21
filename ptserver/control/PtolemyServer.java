@@ -282,10 +282,12 @@ public class PtolemyServer implements IServerManager {
             throws IllegalActionException {
         FilenameFilter layoutFilter = new FilenameFilter() {
             public boolean accept(File file, String filename) {
-                String modelName = url.substring(url.lastIndexOf("/") + 1,url.lastIndexOf(".xml"));
+                String modelName = url.substring(url.lastIndexOf("/") + 1,
+                        url.lastIndexOf(".xml"));
                 String layoutEnding = ".layout.xml";
-                
-                return (filename.startsWith(modelName) && filename.endsWith(layoutEnding));
+
+                return (filename.startsWith(modelName) && filename
+                        .endsWith(layoutEnding));
             }
         };
 
@@ -357,7 +359,6 @@ public class PtolemyServer implements IServerManager {
     public synchronized SimulationTask getSimulationTask(Ticket ticket)
             throws IllegalActionException {
         try {
-            _checkTicket(ticket);
             return _requests.get(ticket);
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
@@ -475,15 +476,16 @@ public class PtolemyServer implements IServerManager {
             SimulationTask simulationTask = new SimulationTask(ticket);
             simulationTask.getRemoteModel().addRemoteModelListener(
                     remoteModelListener);
-            RemoteModel clientModel = new RemoteModel(null, null,
-                    RemoteModelType.CLIENT);
-            String modelXML = new String(
-                    downloadModel(ticket.getLayoutUrl()));
-            HashMap<String, String> resolvedTypes = simulationTask.getRemoteModel().getResolvedTypes();
+            RemoteModel clientModel = new RemoteModel(RemoteModelType.CLIENT);
+            String modelXML = new String(downloadModel(ticket.getLayoutUrl()));
+            HashMap<String, String> resolvedTypes = simulationTask
+                    .getRemoteModel().getResolvedTypes();
             clientModel.initModel(modelXML, resolvedTypes);
-            simulationTask.getRemoteModel().createRemoteAttributes(clientModel.getSettableAttributesMap().keySet());
-            simulationTask.getRemoteModel().setUpInfrastructure();
-            
+            simulationTask.getRemoteModel().createRemoteAttributes(
+                    clientModel.getSettableAttributesMap().keySet());
+            simulationTask.getRemoteModel().setUpInfrastructure(ticket,
+                    "tcp://localhost@" + Integer.toString(getBrokerPort()));
+
             // Populate the response.
             response = new RemoteModelResponse();
             response.setTicket(ticket);
@@ -537,7 +539,15 @@ public class PtolemyServer implements IServerManager {
      */
     public synchronized void shutdown() throws IllegalActionException {
         //TODO: send ShutdownNotifierToken and sleep(5000)
-        //TODO: shutdown active simulations via Manager
+        for (SimulationTask task : _requests.values()) {
+            try {
+                this.close(task.getRemoteModel().getTicket());
+            } catch (Throwable error) {
+                PtolemyServer.LOGGER.log(Level.SEVERE,
+                        "Failed to close the simulation"
+                                + task.getRemoteModel().getTicket(), error);
+            }
+        }
 
         try {
             _broker.destroy();
@@ -561,7 +571,6 @@ public class PtolemyServer implements IServerManager {
         }
 
         _requests.clear();
-        _requests = null;
         // FindBugs is wrong here, it's OK to set the instance to null since the server is shutting down.
         _instance = null;
     }
@@ -603,16 +612,16 @@ public class PtolemyServer implements IServerManager {
     /** Check to ensure that the provided ticket is valid and refers to
      *  a current simulation request on the server.
      *  @param ticket The ticket to be validated.
-     *  @exception IllegalStateException If the ticket is null or does not
+     *  @exception IllegalActionException If the ticket is null or does not
      *  reference a valid simulation request on the server.
      */
-    private void _checkTicket(Ticket ticket) throws IllegalStateException {
+    private void _checkTicket(Ticket ticket) throws IllegalActionException {
         if (ticket == null) {
-            throw new IllegalStateException("The ticket was null.");
+            throw new IllegalActionException("The ticket was null.");
             // TODO: create InvalidTicketException
         }
         if (_requests.get(ticket) == null) {
-            throw new IllegalStateException(
+            throw new IllegalActionException(
                     "The ticket does not reference a simulation: "
                             + ticket.getTicketID());
             // TODO: create InvalidTicketException

@@ -28,14 +28,11 @@
 package ptserver.test;
 
 import java.net.URL;
-import java.util.Random;
 
 import ptolemy.actor.Manager;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
-
-import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttClient;
+import ptserver.control.Ticket;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyTestServer
@@ -59,17 +56,12 @@ public class PtolemyTestServer {
      */
     public static void main(String[] args) {
         try {
-            RemoteModel model = new RemoteModel("Client", "Server",
-                    RemoteModelType.SERVER);
-            IMqttClient mqttClient = MqttClient.createMqttClient(
-                    "tcp://localhost@1883", null);
-            mqttClient.connect("Ptolemy" + new Random().nextInt(1000), true,
-                    (short) 10);
-            model.setMqttClient(mqttClient);
+            RemoteModel model = new RemoteModel(RemoteModelType.SERVER);
             URL resource = PtolemyTestClient.class
                     .getResource("/ptserver/test/junit/addermodel.xml");
             model.loadModel(resource);
-            Manager manager = model.setUpInfrastructure();
+            Manager manager = model.setUpInfrastructure(
+                    Ticket.generateTicket(null, null), "tcp://localhost@1883");
             //CompositeActor topLevelActor = model.getTopLevelActor();
             //            topLevelActor.getDirector().addDebugListener(new DebugListener() {
             //

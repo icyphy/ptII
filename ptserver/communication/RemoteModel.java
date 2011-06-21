@@ -71,6 +71,7 @@ import ptserver.data.PingToken;
 import ptserver.data.PongToken;
 
 import com.ibm.mqtt.IMqttClient;
+import com.ibm.mqtt.MqttClient;
 import com.ibm.mqtt.MqttException;
 
 ///////////////////////////////////////////////////////////////////
@@ -135,15 +136,10 @@ public class RemoteModel {
 
     /**
      * Create a new instance of the remoteModel with the specified parameters.
-     * @param subscriptionTopic the topic name that this model would subscribe to receive tokens from other remote model
-     * @param publishingTopic the topic name that this model would publish its tokens to be received by other remote model
      * @param modelType the type of the model which must be either client or server
      */
-    public RemoteModel(String subscriptionTopic, String publishingTopic,
-            RemoteModelType modelType) {
+    public RemoteModel(RemoteModelType modelType) {
         _tokenPublisher = new TokenPublisher(100, 1000);
-        _subscriptionTopic = subscriptionTopic;
-        _publishingTopic = publishingTopic;
         _modelType = modelType;
         _executor = Executors.newCachedThreadPool();
     }
@@ -176,6 +172,16 @@ public class RemoteModel {
         } catch (MqttException e) {
             // TODO handle exception
         }
+    }
+
+    /** 
+     * Close the model before finalizing
+     * @see java.lang.Object#finalize()
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.close();
     }
 
     /**
@@ -474,17 +480,6 @@ public class RemoteModel {
     }
 
     /**
-     * Set the MQTT client instance that is connected to the broker.
-     * @param mqttClient the mqttClient that the model would use to send and receive MQTT messages
-     * @exception MqttException if there is a problem connecting to the broker
-     */
-    public void setMqttClient(IMqttClient mqttClient) throws MqttException {
-        _mqttClient = mqttClient;
-        _tokenPublisher.setMqttClient(_mqttClient);
-        _tokenPublisher.setTopic(_publishingTopic);
-    }
-
-    /**
      * Set the map from the Typeable's full name to its type.
      * @param portTypes the _portTypes to set
      * @see #getResolvedTypes()
@@ -500,15 +495,6 @@ public class RemoteModel {
      */
     public void setStopped(boolean stopped) {
         _stopped = stopped;
-    }
-
-    /**
-     * Set the ticket uniquely identifying the model
-     * @param ticket the ticket to set
-     * @see #getTicket()
-     */
-    public void setTicket(Ticket ticket) {
-        _ticket = ticket;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -529,13 +515,28 @@ public class RemoteModel {
 
     /**
      * Set up the communication infrastructure.
+     * @param ticket The ticket associated with this remote model.
+     * @param brokerHostname The hostname of the MQTT broker.
      * @return The manager of the model
      * @exception MqttException if there is a problem connecting to the broker.
      * @exception IllegalActionException If there is problem creating the manager.
      */
-    public Manager setUpInfrastructure() throws MqttException,
-            IllegalActionException {
-        _setUpMQTT();
+    public Manager setUpInfrastructure(Ticket ticket, String brokerHostname)
+            throws MqttException, IllegalActionException {
+        _ticket = ticket;
+        switch (_modelType) {
+        case CLIENT:
+            _subscriptionTopic = ticket.getTicketID() + RemoteModelType.SERVER;
+            _publishingTopic = ticket.getTicketID() + RemoteModelType.CLIENT;
+            break;
+        case SERVER:
+            _subscriptionTopic = ticket.getTicketID() + RemoteModelType.CLIENT;
+            _publishingTopic = ticket.getTicketID() + RemoteModelType.SERVER;
+            break;
+        }
+
+        _tokenPublisher.startTimer(ticket);
+        _setUpMQTT(brokerHostname);
         _setUpRemoteAttributes();
         _setUpMonitoring();
         _setUpManager();
@@ -777,6 +778,7 @@ public class RemoteModel {
      */
     private void _setUpMonitoring() {
         setLastPongToken(new PongToken(System.currentTimeMillis()));
+        _pingTimer = new Timer("Ping-pong Timer " + getTicket());
         _pingTimer.schedule(new TimerTask() {
 
             @Override
@@ -801,7 +803,12 @@ public class RemoteModel {
      * Set up MQTT connection.
      * @throws MqttException if there is a problem subscribing to topic.
      */
-    private void _setUpMQTT() throws MqttException {
+    private void _setUpMQTT(String address) throws MqttException {
+        _mqttClient = MqttClient.createMqttClient(address, null);
+        _mqttClient.connect(getTicket().getTicketID() + _modelType, true,
+                (short) 10);
+        _tokenPublisher.setMqttClient(_mqttClient);
+        _tokenPublisher.setTopic(_publishingTopic);
         _mqttClient.registerSimpleHandler(new TokenListener(this));
         _mqttClient.subscribe(new String[] { getSubscriptionTopic() },
                 new int[] { QOS_LEVEL });
@@ -874,17 +881,17 @@ public class RemoteModel {
     /**
      * The topic used to listen for incoming mqtt messages.
      */
-    private final String _subscriptionTopic;
+    private String _subscriptionTopic;
 
     /**
      * The topic used to publish outgoing mqtt messages.
      */
-    private final String _publishingTopic;
+    private String _publishingTopic;
 
     /**
      * The timer used to send periodical pings.
      */
-    private final Timer _pingTimer = new Timer(true);
+    private Timer _pingTimer;
 
     /**
      * The last pong token received from the remoteModel.

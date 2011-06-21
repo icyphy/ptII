@@ -31,7 +31,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import org.junit.After;
@@ -45,18 +44,18 @@ import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
 import ptserver.communication.RemoteModel;
+import ptserver.communication.RemoteModel.RemoteModelListener;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
+import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
 import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 import com.caucho.hessian.client.HessianProxyFactory;
-import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttClient;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoteModelTest
@@ -186,17 +185,9 @@ public class RemoteModelTest {
     private RemoteModel _setUpClientModel(RemoteModelResponse response)
             throws Exception {
         Ticket ticket = response.getTicket();
-        RemoteModel model = new RemoteModel(ticket.getTicketID() + "_SERVER",
-                ticket.getTicketID() + "_CLIENT", RemoteModelType.CLIENT);
-
-        // Initialize the client.
-        IMqttClient mqttClient = MqttClient.createMqttClient(_brokerUrl, null);
-        mqttClient.connect("Android" + new Random().nextInt(1000), true,
-                (short) 10);
-
-        model.setMqttClient(mqttClient);
+        RemoteModel model = new RemoteModel(RemoteModelType.CLIENT);
         model.initModel(response.getModelXML(), response.getModelTypes());
-        model.setUpInfrastructure();
+        model.setUpInfrastructure(ticket, _brokerUrl);
 
         CompositeActor topLevelActor = model.getTopLevelActor();
         assertNotNull(topLevelActor);
@@ -273,6 +264,41 @@ public class RemoteModelTest {
         _proxy.close(response.getTicket());
         clientModel.close();
         assertEquals(10, counter);
+    }
+
+    @Test()
+    public void testModelTimeout() throws Exception {
+        RemoteModelResponse response = _openRemoteModel();
+        // Wait for a roundtrip response from the server.
+        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
+                response.getTicket());
+        final int timeoutPeriod = 1000;
+        task.getRemoteModel().setTimeoutPeriod(timeoutPeriod);
+        final long time = System.currentTimeMillis();
+        task.getRemoteModel().addRemoteModelListener(new RemoteModelListener() {
+
+            public void modelException(RemoteModel remoteModel,
+                    Throwable exception) {
+
+            }
+
+            public void modelConnectionExpired(RemoteModel remoteModel) {
+                synchronized (RemoteModelTest.this) {
+                    long diff = System.currentTimeMillis() - time;
+                    assertTrue(timeoutPeriod - 1000 < diff
+                            && diff < timeoutPeriod + 1000);
+                    isWaiting = false;
+                    RemoteModelTest.this.notifyAll();
+                }
+            }
+        });
+        _proxy.start(response.getTicket());
+        synchronized (this) {
+            while (isWaiting) {
+                this.wait();
+            }
+        }
+        assertTrue(!isWaiting);
     }
 
     /** Call the shutdown() method on the singleton and destroy all

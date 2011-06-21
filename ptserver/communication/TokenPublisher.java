@@ -34,6 +34,7 @@ import java.util.TimerTask;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptserver.control.Ticket;
 import ptserver.data.TokenParser;
 
 import com.ibm.mqtt.IMqttClient;
@@ -62,7 +63,13 @@ public class TokenPublisher {
     public TokenPublisher(long period, int tokensPerPeriod) {
         _period = period;
         //        _tokensPerPeriod = tokensPerPeriod;
-        _timer = new Timer(true);
+    }
+
+    /**
+     * Start the timer that sends token batches.
+     */
+    public void startTimer(Ticket ticket) {
+        _timer = new Timer("TokenPublisher timer " + ticket);
         _timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
@@ -99,7 +106,9 @@ public class TokenPublisher {
      * Cancel the publisher's timer used for sending batch of tokens.
      */
     public void cancelTimer() {
-        _timer.cancel();
+        if (_timer != null) {
+            _timer.cancel();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -61,7 +61,6 @@ public class TokenListener implements MqttSimpleCallback {
      */
     public TokenListener(RemoteModel remoteModel) {
         _remoteModel = remoteModel;
-        _topic = remoteModel.getSubscriptionTopic();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -86,9 +85,6 @@ public class TokenListener implements MqttSimpleCallback {
      */
     public void publishArrived(String topicName, byte[] payload, int qos,
             boolean retained) throws Exception {
-        if (!_topic.equals(topicName)) {
-            return;
-        }
         Tokenizer tokenizer = new Tokenizer(payload);
         Token token = null;
         while ((token = tokenizer.getNextToken()) != null) {
@@ -132,15 +128,11 @@ public class TokenListener implements MqttSimpleCallback {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The topic that the instance is subscribed to
-     */
-    private final String _topic;
 
     /**
      * The remote model that created the publisher.
      */
-    private RemoteModel _remoteModel;
+    private final RemoteModel _remoteModel;
 
     /**
      * The task that sends the pong back. 
@@ -170,7 +162,7 @@ public class TokenListener implements MqttSimpleCallback {
         /**
          * The pong token of the current object.
          */
-        private PongToken _token;
+        private final PongToken _token;
 
     }
 

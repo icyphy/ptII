@@ -36,9 +36,6 @@ import ptolemy.kernel.util.KernelException;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 
-import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttClient;
-
 ///////////////////////////////////////////////////////////////////
 //// SimulationTask
 
@@ -60,22 +57,11 @@ public class SimulationTask implements Runnable {
      *  the director or getting workspace access.
      */
     public SimulationTask(Ticket ticket) throws Exception {
-        _owner = PtolemyServer.getInstance();
-        _ticket = ticket;
-        _remoteModel = new RemoteModel(_ticket.getTicketID() + "_CLIENT",
-                _ticket.getTicketID() + "_SERVER", RemoteModelType.SERVER);
-        _remoteModel.setTicket(ticket);
-       
+        _remoteModel = new RemoteModel(RemoteModelType.SERVER);
 
         // Set the MQTT client.
-        // FIXME:MQTT hostname is hardcoded; should we allow remote mosquitto servers?
-        IMqttClient mqttClient = MqttClient.createMqttClient("tcp://localhost@"
-                + Integer.toString(_owner.getBrokerPort()), null);
-        mqttClient.connect(_ticket.getTicketID(), true, (short) 10);
-        getRemoteModel().setMqttClient(mqttClient);
-
         // Load the model specified within the ticket.
-        getRemoteModel().loadModel(new URL(_ticket.getModelUrl()));
+        getRemoteModel().loadModel(new URL(ticket.getModelUrl()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,14 +104,6 @@ public class SimulationTask implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                private variables
-
-    /** The Ptolemy server singleton.
-     */
-    private final PtolemyServer _owner;
-
-    /** The ticket reference to the simulation request.
-     */
-    private final Ticket _ticket;
 
     /** The remote model that is used to replaced model actors.
      */

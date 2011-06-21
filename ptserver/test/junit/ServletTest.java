@@ -38,7 +38,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ptolemy.actor.Manager;
-import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.RemoteModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
@@ -100,13 +99,13 @@ public class ServletTest {
     @Test
     public void openSimulation() throws Exception {
         int simulations = _ptolemyServer.numberOfSimulations();
-        RemoteModelResponse response = _openRemoteModel();
+        _response = _openRemoteModel();
 
-        assertNotNull(response);
-        assertNotNull(response.getTicket().getTicketID());
+        assertNotNull(_response);
+        assertNotNull(_response.getTicket().getTicketID());
         assertEquals(simulations + 1, _ptolemyServer.numberOfSimulations());
         assertEquals(Manager.IDLE,
-                _ptolemyServer.getStateOfSimulation(response.getTicket()));
+                _ptolemyServer.getStateOfSimulation(_response.getTicket()));
     }
 
     /** Test the ability to start a newly created simulation request and to ensure that
@@ -193,7 +192,7 @@ public class ServletTest {
      *  @exception Exception If there is an problem opening the model URL, starting the
      *  simulation, closing it, or communicating with the command servlet.
      */
-    @Test(expected = IllegalActionException.class)
+    @Test
     public void closeSimulation() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();
@@ -210,16 +209,20 @@ public class ServletTest {
         assertEquals(simulations - 1, _ptolemyServer.numberOfSimulations());
 
         // Try to start the ticket again. This should result in an exception.
-        _servletProxy.start(ticket);
+        assertEquals(null, PtolemyServer.getInstance()
+                .getSimulationTask(ticket));
     }
 
-    @After
     /** Call the shutdown() method on the singleton and destroy all
      *  references to it.
      *  @exception Exception If there was an error shutting down the broker or
      *  servlet.
      */
+    @After
     public void shutdown() throws Exception {
+        if (_response != null) {
+            _ptolemyServer.close(_response.getTicket());
+        }
         _ptolemyServer.shutdown();
         _ptolemyServer = null;
     }
@@ -253,4 +256,6 @@ public class ServletTest {
     /** Handle to the Hessian proxy.
      */
     private IServerManager _servletProxy;
+
+    private RemoteModelResponse _response;
 }
