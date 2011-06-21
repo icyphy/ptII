@@ -37,6 +37,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ptolemy.actor.CompositeActor;
@@ -165,6 +166,7 @@ public class RemoteModel {
     public void close() {
         _pingTimer.cancel();
         _tokenPublisher.cancelTimer();
+        _executor.shutdown();
         try {
             _mqttClient.unsubscribe(new String[] { getSubscriptionTopic() });
             _mqttClient.registerSimpleHandler(null);
@@ -542,10 +544,12 @@ public class RemoteModel {
         _setUpManager();
         return _topLevelActor.getManager();
     }
-    
+
     public void createRemoteAttributes(Set<String> attributeNames) {
         for (String attributeName : attributeNames) {
-            Settable attribute = (Settable) _topLevelActor.getAttribute(attributeName.substring(attributeName.substring(1).indexOf(".") + 2));
+            Settable attribute = (Settable) _topLevelActor
+                    .getAttribute(attributeName.substring(attributeName
+                            .substring(1).indexOf(".") + 2));
             _settableAttributesMap.put(attributeName, attribute);
         }
     }
@@ -915,7 +919,7 @@ public class RemoteModel {
     /**
      * The executor used to schedule short lived tasks.
      */
-    private final Executor _executor;
+    private final ExecutorService _executor;
 
     /**
      * Model time out period.
