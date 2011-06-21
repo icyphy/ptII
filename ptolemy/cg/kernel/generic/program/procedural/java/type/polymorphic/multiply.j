@@ -91,9 +91,10 @@ int multiply_Integer_Integer(int a1, int a2) {
 /**/
 
 /*** multiply_Integer_Token() ***/
-int multiply_Integer_Token(int a1, Token a2) {
-    Token token = $new(Int, a1);
-    return $typeFunc(TYPE_Int::multiply(token, a2));
+static Token multiply_Integer_Token(int a1, Token a2) {
+    Token token = $new(Integer(a1));
+    //return $typeFunc(TYPE_Int::multiply(token, a2));
+    return $multiply_Token_Token(token, a2);
 }
 /**/
 
@@ -135,7 +136,7 @@ static Token multiply_Token_Double(Token a1, double a2) {
 /**/
 
 /*** multiply_Token_Integer() ***/
-int multiply_Token_Integer(Token a1, int a2) {
+static Token multiply_Token_Integer(Token a1, int a2) {
     return $multiply_Integer_Token(a2, a1);
 }
 /**/
@@ -172,6 +173,11 @@ static Token multiply_Token_Token(Token a1, Token a2) {
             case TYPE_Integer:
                     result = Integer_new((Integer)a1.payload * (Integer)a2.payload);
                 break;
+#ifdef PTCG_TYPE_Array
+            case TYPE_Array:
+                    result = $multiply_Integer_Array((Integer)a1.payload, a2);
+                break;
+#endif
             default:
                 System.out.println("multiply_Token_Token(): a1 is a Integer, "
                         + "a2 is a " + a2.type);
