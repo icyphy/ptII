@@ -435,7 +435,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         if (_periodicDirectorHelper != null) {
             return _periodicDirectorHelper.fireAt(actor, time);
         }
-        return super.fireAt(actor, time, microstep);
+        return super.fireAt(actor, time);
     }
 
     /** Initialize the actors associated with this director and then
