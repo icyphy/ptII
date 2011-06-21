@@ -223,10 +223,10 @@ if (($type(input) != TYPE_Array
     ) {
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration "
                                  + $actorSymbol(numberOfTokensSeen)
-                             + ".\n Value was:"
-                             + $actorSymbol(inputToken).getPayload()
-                             /* + $Array_toString($actorSymbol(inputToken)).getPayload()*/
-                             + "Should have been within " + $param(tolerance) + " of: "
+                             + ".\n Value was: "
+                             /*+ $actorSymbol(inputToken).getPayload()*/
+                             + $Array_toString($actorSymbol(inputToken)).getPayload()
+                             + ". Should have been within " + $param(tolerance) + " of: "
                              + $Array_toString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))).getPayload()
                              + ".\n"));
 }

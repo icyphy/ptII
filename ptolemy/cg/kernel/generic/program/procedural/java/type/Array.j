@@ -343,7 +343,6 @@ static Token Array_subtract(Token thisToken, Token... tokens) {
             Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::subtract(Array_get(otherToken, i))));
         }
     }
-
     return result;
 }
 /**/
