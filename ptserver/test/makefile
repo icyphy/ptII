@@ -32,7 +32,7 @@
 ME =		ptserver/test
 
 # PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
-DIRS =		$(PTJUNIT_DIR)
+DIRS =		$(PTJUNIT_DIR) helper
 
 # Root of Ptolemy II directory
 ROOT =		../..
