@@ -183,22 +183,23 @@ static Token Matrix_print(Token thisToken, Token... tokens) {
 
     int i, j;
     Token element;
-    printf("[");
+    System.out.print("[");
     for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
         if (i != 0) {
-            printf(", ");
+            System.out.print(", ");
         }
         for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             if (j != 0) {
-                printf("; ");
+                System.out.print("; ");
             }
             //functionTable[((Matrix)(thisToken.payload)).elements[i * ((Matrix)(thisToken.payload)).row + j].type][FUNC_print](((Matrix)(thisToken.payload)).elements[i]);
             element = element = Matrix_get(thisToken, j, i);
-            $tokenFunc(element::print(element));
+            $tokenFunc(element::print());
 
         }
     }
-    printf("]");
+    System.out.print("]");
+    return null;
 }
 /**/
 
@@ -237,12 +238,12 @@ static Token Matrix_add(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
 
-    result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
+    Token result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
 
     for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
         for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             //Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_add](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
-            Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::add(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))));
+            Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::add(Matrix_get(otherToken, i, j))));
         }
     }
 
