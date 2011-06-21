@@ -11,14 +11,14 @@ static Token multiply_Array_Double(Token a1, double a2) {
 /**/
 
 /*** multiply_Array_Integer() ***/
-static Token multiply_Integer_Array(Token a1, int a2) {
-    return $multiply_Array_Integer(a2, a1);
+static Token multiply_Array_Integer(Token a1, int a2) {
+    return $multiply_Integer_Array(a2, a1);
 }
 /**/
 
 /*** multiply_Array_Long() ***/
-static Token multiply_Long_Array(Token a1, long a2) {
-    return $multiply_Array_Long(a2, a1);
+static Token multiply_Array_Long(Token a1, long a2) {
+    return $multiply_Long_Array(a2, a1);
 }
 /**/
 
@@ -191,8 +191,12 @@ static Token multiply_Token_Token(Token a1, Token a2) {
         switch (a2.type) {
             case TYPE_Array:
                     result = $Array_multiply(a1, a2);
-                System.out.println("multiply_Token_Token: " + a1.type + " " + a2.type + " " + result);
                 break;
+#ifdef PTCG_TYPE_Integer
+            case TYPE_Integer:
+                    result = $multiply_Array_Integer(a1, (Integer)a2.payload);
+	        break;
+#endif
             default:
                 result = null;
 

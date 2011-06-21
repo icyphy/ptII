@@ -11,8 +11,8 @@ static Token add_Array_Double(Token a1, double a2) {
 /**/
 
 /*** add_Array_Integer() ***/
-static Token add_Integer_Array(Token a1, int a2) {
-    return $add_Array_Integer(a2, a1);
+static Token add_Array_Integer(Token a1, int a2) {
+    return $add_Integer_Array(a2, a1);
 }
 /**/
 
@@ -113,9 +113,10 @@ int add_Integer_String(int a1, String a2) {
 /**/
 
 /*** add_Integer_Token() ***/
-int add_Integer_Token(int a1, Token a2) {
-    Token token = $new(Integer, a1);
-    return $typeFunc(TYPE_Integer::add(token, a2));
+static Token add_Integer_Token(int a1, Token a2) {
+    Token token = $new(Integer(a1));
+    //   return $typeFunc(TYPE_Integer::add(token, a2));
+    return $add_Token_Token(token, a2);
 }
 /**/
 

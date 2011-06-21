@@ -238,7 +238,7 @@ static Token Matrix_add(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
 
-    Token result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
+    Token result = $new(Matrix(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0));
 
     for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
         for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
@@ -265,7 +265,7 @@ static Token Matrix_subtract(Token thisToken, Token... tokens) {
     for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
         for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             //Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_subtract](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
-            Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::subtract(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))));
+            Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::subtract(Matrix_get(thisToken, i, j))));
         }
     }
 
