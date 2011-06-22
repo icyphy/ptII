@@ -37,6 +37,7 @@ import java.util.Hashtable;
 import java.util.Stack;
 
 import ptolemy.plot.PlotBox;
+import ptolemy.plot.PlotBoxInterface;
 
 import com.microstar.xml.HandlerBase;
 import com.microstar.xml.XmlException;
@@ -65,7 +66,7 @@ public class PlotBoxMLParser extends HandlerBase {
     /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
      */
-    public PlotBoxMLParser(PlotBox plot) {
+    public PlotBoxMLParser(PlotBoxInterface plot) {
         super();
         _plot = plot;
     }
@@ -420,7 +421,7 @@ public class PlotBoxMLParser extends HandlerBase {
     protected XmlParser _parser = new XmlParser();
 
     /** The plot object to which to apply commands. */
-    protected PlotBox _plot;
+    protected PlotBoxInterface _plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

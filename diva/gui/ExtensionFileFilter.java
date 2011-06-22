@@ -30,12 +30,12 @@
 package diva.gui;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import java.io.FilenameFilter;
 import javax.swing.filechooser.FileFilter;
 
 /**

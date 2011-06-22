@@ -30,8 +30,8 @@
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.io.IOException;
-import java.lang.Object;
 import java.util.StringTokenizer;
+
 import ptolemy.actor.lib.URLReader;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

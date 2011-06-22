@@ -37,7 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.plot.Plot;
+import ptolemy.plot.PlotInterface;
 
 ///////////////////////////////////////////////////////////////////
 //// SequencePlotter
@@ -162,7 +162,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
                     // NOTE: We assume the superclass ensures this
                     // cast is safe.
 
-                    ((Plot) plot).addPoint(i + offset, _xValue, curValue,
+                    ((PlotInterface) plot).addPoint(i + offset, _xValue, curValue,
                             _connected[i]);
                     _connected[i] = true;
                 }

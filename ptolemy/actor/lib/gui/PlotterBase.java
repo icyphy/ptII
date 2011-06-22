@@ -27,9 +27,6 @@
  */
 package ptolemy.actor.lib.gui;
 
-import java.awt.Container;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -41,15 +38,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import javax.swing.SwingUtilities;
-
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.gui.PlotTableau;
-import ptolemy.actor.gui.PlotTableauFrame;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -62,8 +54,8 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.plot.Plot;
-import ptolemy.plot.PlotBox;
+import ptolemy.plot.PlotBoxInterface;
+import ptolemy.plot.PlotInterface;
 import ptolemy.plot.plotml.PlotMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -89,7 +81,7 @@ import ptolemy.plot.plotml.PlotMLParser;
  @Pt.AcceptedRating Green (cxh)
  */
 public class PlotterBase extends TypedAtomicActor implements Configurable,
-        Placeable {
+        PortablePlaceable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -112,18 +104,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
         legend = new StringAttribute(this, "legend");
 
-        _windowProperties = new WindowPropertiesAttribute(this,
-                "_windowProperties");
-        // Note that we have to force this to be persistent because
-        // there is no real mechanism for the value of the properties
-        // to be updated when the window is moved or resized. By
-        // making it persistent, when the model is saved, the
-        // attribute will determine the current size and position
-        // of the window and save it.
-        _windowProperties.setPersistent(true);
-
-        _plotSize = new SizeAttribute(this, "_plotSize");
-        _plotSize.setPersistent(true);
+        getImplementation().initWindowAndSizeProperties();
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
@@ -147,7 +128,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     public Parameter automaticRescale;
 
     /** The plot object. */
-    public transient PlotBox plot;
+    public transient PlotBoxInterface plot;
 
     /** If true, fill the plot when wrapup is called.
      *  This parameter has type BooleanToken, and default value true.
@@ -201,8 +182,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PlotterBase newObject = (PlotterBase) super.clone(workspace);
         newObject.plot = null;
-        newObject._container = null;
-        newObject._frame = null;
+        newObject._implementation = null;
         return newObject;
     }
 
@@ -224,8 +204,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         _source = source;
         _text = text;
 
-        if (plot instanceof Plot) {
-            PlotMLParser parser = new PlotMLParser((Plot) plot);
+        if (plot instanceof PlotInterface) {
+            PlotMLParser parser = new PlotMLParser((PlotInterface) plot);
 
             if ((source != null) && !source.trim().equals("")) {
                 URL xmlFile = new URL(base, source);
@@ -327,33 +307,14 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @param container The container into which to place the plot, or
      *   null to specify that a new plot should be created.
      */
-    public void place(Container container) {
-        _container = container;
-
-        // NOTE: This actor always shows the plot buttons, even if
-        // the plot is in a separate frame.  They are very useful.
-        if (_container == null) {
-            // Dissociate with any container.
-            // NOTE: _remove() doesn't work here.  Why?
-            if (_frame != null) {
-                _frame.dispose();
-            }
-
-            _frame = null;
-
-            // If we forget the plot, then its properties get lost.
-            // Also, if the window is deleted during a run, the data
-            // will be lost. So do not forget the plot.
-            // plot = null;
-            return;
-        }
-
-        if (_container instanceof PlotBox) {
+    public void place(PortableContainer container) {
+        getImplementation().place(container);
+        if (container != null && container.getPlatformContainer() instanceof PlotBoxInterface) {
             // According to FindBugs the cast is an error:
             //  [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
             // However it is checked that _container instanceof PlotBox,
             // so FindBugs is wrong.
-            plot = (PlotBox) _container;
+            plot = (PlotBoxInterface) container.getPlatformContainer();
             plot.setButtons(true);
         } else {
             if (plot == null) {
@@ -362,14 +323,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             }
 
             plot.setButtons(true);
-            _container.add(plot);
 
             // java.awt.Component.setBackground(color) says that
             // if the color "parameter is null then this component
             // will inherit the  background color of its parent."
             plot.setBackground(null);
         }
-
         // If configurations have been deferred, implement them now.
         _implementDeferredConfigurations();
     }
@@ -419,9 +378,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
-        if (_tableau != null) {
-            _tableau.setTitle(name);
-        }
+        getImplementation().setTableauTitle(name);
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -444,9 +401,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
-        if (_tableau != null) {
-            _tableau.setTitle(name);
-        }
+        getImplementation().setTableauTitle(name);
     }
 
     /** If the <i>fillOnWrapup</i> parameter is true, rescale the
@@ -483,14 +438,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
-        if (_frame != null) {
-            _windowProperties.recordProperties(_frame);
-        }
-
-        if (plot != null) {
-            _plotSize.recordSize(plot);
-        }
-
         super._exportMoMLContents(output, depth);
 
         // NOTE: Cannot include xml spec in the header because processing
@@ -584,30 +531,16 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  In derived classes, it can be classes derived from Plot.
      *  @return A new plot object.
      */
-    protected PlotBox _newPlot() {
-        return new Plot();
+    protected PlotBoxInterface _newPlot() {
+        return getImplementation().newPlot();
     }
     
     /** Specify the associated frame and set its properties (size, etc.)
      *  to match those stored in the _windowProperties attribute.
      *  @param frame The associated frame.
      */
-    public void setFrame(PlotTableauFrame frame) {
-        if (_frame != null) {
-            _frame.removeWindowListener(_windowClosingAdapter);
-        }
-        
-        if (frame == null) {
-            _frame = null;
-            return;
-        }
-        
-        _frame = frame;
-
-        _windowClosingAdapter = new WindowClosingAdapter();
-        frame.addWindowListener(_windowClosingAdapter);
-        
-        _windowProperties.setProperties(_frame);
+    public void setFrame(Object frame) {
+        getImplementation().setFrame(frame);
     }
 
     /** Propagate the value of this object to the
@@ -631,7 +564,15 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     /** Free up memory when closing. */
     protected void cleanUp() {
         setFrame(null);
-        _tableau = null;
+        getImplementation().cleanUp();
+    }
+    
+    protected PlotterBaseInterface getImplementation() {
+        if (_implementation== null) {
+            _implementation = PtolemyInjector.getInjector().getInstance(PlotterBaseInterface.class);
+            _implementation.init(this);
+        }
+        return _implementation;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -640,30 +581,11 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     /** The base specified in configure(). */
     protected URL _base;
 
-    /** Container into which this plot should be placed. */
-    protected Container _container;
-
-    /** Frame into which plot is placed, if any. */
-    protected transient PlotTableauFrame _frame;
-
-    /** A specification of the size of the plot if it's in its own window. */
-    protected SizeAttribute _plotSize;
-
     /** The source specified in configure(). */
     protected String _source;
 
-    /** The version of PlotWindowTableau that creates a Plot window. */
-    protected PlotWindowTableau _tableau;
-
     /** The text specified in configure(). */
     protected String _text;
-
-    /** A specification for the window properties of the frame.
-     */
-    protected WindowPropertiesAttribute _windowProperties;
-
-    /** A reference to the listener for removal purposes. */
-    protected WindowClosingAdapter _windowClosingAdapter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -671,19 +593,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     /** Remove the plot from the current container, if there is one.
      */
     private void _remove() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (plot != null) {
-                    if (_container != null) {
-                        _container.remove(plot);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
-                    }
-                }
-            }
-        });
+        getImplementation().remove();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -696,37 +606,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     private List<String> _configureTexts = null;
 
     private String _configureSource;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
     
-    /** Listener for windowClosing action. */
-    class WindowClosingAdapter extends WindowAdapter {
-        public void windowClosing(WindowEvent e) {
-            cleanUp();
-        }
-    }
-    
-    /** Tableau that creates a PlotterPlotFrame.
-     */
-    protected class PlotWindowTableau extends PlotTableau {
-        /** Construct a new tableau for the model represented by the
-         *  given effigy.
-         *  @param container The container.
-         *  @param name The name.
-         *  @exception IllegalActionException If the container does not accept
-         *   this entity (this should not occur).
-         *  @exception NameDuplicationException If the name coincides with an
-         *   attribute already in the container.
-         */
-        public PlotWindowTableau(PlotEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-            frame = new PlotTableauFrame(this, plot, PlotterBase.this);
-            setFrame(frame);
-        }
-
-        /** The frame. */
-        public PlotTableauFrame frame;
-    }
+    private PlotterBaseInterface _implementation;
 }

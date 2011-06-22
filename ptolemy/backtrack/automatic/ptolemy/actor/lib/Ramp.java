@@ -29,7 +29,6 @@
 //// Ramp
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.Manager;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.actor.parameters.PortParameter;

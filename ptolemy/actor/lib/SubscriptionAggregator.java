@@ -27,9 +27,8 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.regex.Pattern;
-
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;

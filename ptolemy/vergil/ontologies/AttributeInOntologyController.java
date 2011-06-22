@@ -32,7 +32,7 @@ import java.util.List;
 
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;;
+import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// AttributeInOntologyController

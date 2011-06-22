@@ -34,6 +34,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
+import ptolemy.actor.lib.gui.PlotterBaseAWT.PlotWindowTableau;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -254,31 +255,9 @@ public class HistogramPlotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-        if ((_frame == null) && (_container == null)) {
+        if ((getImplementation().getFrame() == null) && (getImplementation().getPlatformContainer() == null)) {
             // Need an effigy and a tableau so that menu ops work properly.
-            Effigy containerEffigy = Configuration.findEffigy(toplevel());
-
-            if (containerEffigy == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                                + toplevel().getFullName());
-            }
-
-            try {
-                PlotEffigy plotEffigy = new PlotEffigy(containerEffigy,
-                        containerEffigy.uniqueName("plot"));
-
-                // The default identifier is "Unnamed", which is no good for
-                // two reasons: Wrong title bar label, and it causes a save-as
-                // to destroy the original window.
-                plotEffigy.identifier.setExpression(getFullName());
-
-                _tableau = new PlotWindowTableau(plotEffigy, "tableau");
-                setFrame(_tableau.frame);
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
-            }
+            getImplementation().initializeEffigy();
 
             _implementDeferredConfigurations();
 
@@ -288,23 +267,14 @@ public class HistogramPlotter extends PlotterBase {
             // there appears to be no way to control the size of the
             // Plot from the size of the Frame, which is specified
             // by the WindowPropertiesAttribute.
-            if (_plotSize != null) {
-                _plotSize.setSize(plot);
-            }
-
-            _frame.pack();
+            getImplementation().updateSize();
         } else {
             // Clear the histogram without clearing the axes.
             plot.clear(false);
             plot.repaint();
         }
 
-        if (_frame != null) {
-            // show() used to override manual placement by calling pack.
-            // No more.
-            _frame.show();
-            _frame.toFront();
-        }
+        getImplementation().bringToFront();
     }
 
     /** Read at most one input token from each input channel

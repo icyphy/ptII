@@ -29,7 +29,9 @@ package ptolemy.domains.sdf.demo.Sketch;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.actor.gui.AWTContainer;
 import ptolemy.actor.gui.MoMLApplet;
+import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.lib.gui.SketchedSource;
 import ptolemy.data.IntToken;
 import ptolemy.domains.sdf.kernel.SDFDirector;
@@ -101,7 +103,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
             plot.setXRange(0, iterations);
             plot.setButtons(true);
             getContentPane().add(plot);
-            _sketchedSource.place(plot);
+            _sketchedSource.place(new AWTContainer(plot));
             plot.setBackground(null);
             plot.addEditListener(this);
         } catch (Exception ex) {

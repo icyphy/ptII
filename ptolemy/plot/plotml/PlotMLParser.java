@@ -29,6 +29,7 @@ package ptolemy.plot.plotml;
 
 // Ptolemy imports.
 import ptolemy.plot.Plot;
+import ptolemy.plot.PlotInterface;
 
 import com.microstar.xml.XmlException;
 
@@ -56,7 +57,7 @@ public class PlotMLParser extends PlotBoxMLParser {
     /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
      */
-    public PlotMLParser(Plot plot) {
+    public PlotMLParser(PlotInterface plot) {
         super(plot);
     }
 

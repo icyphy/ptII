@@ -31,6 +31,7 @@ import java.awt.Container;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.PortableContainer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -323,7 +324,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     /** Override the base class to create an initial trace.
      *  @param container The container into which to place the plot.
      */
-    public void place(Container container) {
+    public void place(PortableContainer container) {
         super.place(container);
 
         if (container != null) {

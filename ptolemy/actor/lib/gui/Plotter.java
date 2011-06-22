@@ -27,9 +27,6 @@
  */
 package ptolemy.actor.lib.gui;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -38,7 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.plot.Plot;
+import ptolemy.plot.PlotInterface;
 
 ///////////////////////////////////////////////////////////////////
 //// Plotter
@@ -60,7 +57,7 @@ import ptolemy.plot.Plot;
  number when more than one instance of a plotter actor shares
  the same plot object.
 
- @see ptolemy.plot.Plot
+ @see ptolemy.plot.PlotInterface
 
  @author  Edward A. Lee
  @version $Id$
@@ -141,57 +138,17 @@ public class Plotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-        if ((_frame == null) && (_container == null)) {
-            // Need an effigy and a tableau so that menu ops work properly.
-            Effigy containerEffigy = Configuration.findEffigy(toplevel());
-
-            if (containerEffigy == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                                + toplevel().getFullName());
-            }
-
-            try {
-                PlotEffigy plotEffigy = new PlotEffigy(containerEffigy,
-                        containerEffigy.uniqueName("plot"));
-                // Specify that the associated plot is the one created here.
-                plotEffigy.setPlot(plot);
-                // Specify that the associated Ptolemy model is this actor.
-                plotEffigy.setModel(this);
-
-                // The default identifier is "Unnamed", which is no good for
-                // two reasons: Wrong title bar label, and it causes a save-as
-                // to destroy the original window.
-                plotEffigy.identifier.setExpression(getFullName());
-
-                _tableau = new PlotWindowTableau(plotEffigy, "tableau");
-
-                setFrame(_tableau.frame);
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
-            }
-
+        if ((getImplementation().getFrame() == null) && ((getImplementation().getPlatformContainer() == null))) {
+            getImplementation().initializeEffigy();
             _implementDeferredConfigurations();
-
-            // The SizeAttribute property is used to specify the size
-            // of the Plot component. Unfortunately, with Swing's
-            // mysterious and undocumented handling of component sizes,
-            // there appears to be no way to control the size of the
-            // Plot from the size of the Frame, which is specified
-            // by the WindowPropertiesAttribute.
-            if (_plotSize != null) {
-                _plotSize.setSize(plot);
-            }
-
-            _frame.pack();
+            getImplementation().updateSize();
         } else {
-            if (plot instanceof Plot) {
-                int width = ((Plot) plot).getNumDataSets();
+            if (plot instanceof PlotInterface) {
+                int width = ((PlotInterface) plot).getNumDataSets();
                 int offset = ((IntToken) startingDataset.getToken()).intValue();
 
                 for (int i = width - 1; i >= 0; i--) {
-                    ((Plot) plot).clear(i + offset);
+                    ((PlotInterface) plot).clear(i + offset);
                 }
 
                 plot.repaint();
@@ -201,11 +158,6 @@ public class Plotter extends PlotterBase {
             }
         }
 
-        if (_frame != null) {
-            // show() used to call pack, which would override any manual
-            // changes in placement. No more.
-            _frame.show();
-            _frame.toFront();
-        }
+        getImplementation().bringToFront();
     }
 }
