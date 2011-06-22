@@ -1228,6 +1228,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // can be overridden in derived classes. We mostly invoke
         // these methods in the order that the code will be
         // executed, except for some exceptions as noted.
+
+        // Perform any setup in the adapter.  EmbeddedCodeActor uses this.
+        _setupAdapter();
         String preinitializeCode = _generatePreinitializeCode();
 
         // Typically, the preinitialize code consists of variable
@@ -1283,7 +1286,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         //String globalCode = generateGlobalCode();
 
-        // The code generation methods above may require generated code.
+        // Generate shared code.  Some adapter optionally add methods
+        // to the shared code block, so we generate the shared code at the
+        // end.
         String sharedCode = _generateSharedCode();
 
         // Include files depends the generated code, so it
@@ -1617,6 +1622,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         _newTypesUsed.clear();
         _tokenFuncUsed.clear();
         _typeFuncUsed.clear();
+    }
+
+    /** Perform any setup or initialization of the adapter.
+     *  Note that this is not the Ptolemy initialize() method,
+     *  this method merely sets up any codegen-time variables 
+     *  in the adapters.
+     *  @exception IllegalActionException If an error occurrs while
+     *   initializing an adapter.
+     */
+    protected void _setupAdapter() throws IllegalActionException {
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        adapter.setupAdapter();
     }
 
     /** Split the variable declaration into possibly two sections.

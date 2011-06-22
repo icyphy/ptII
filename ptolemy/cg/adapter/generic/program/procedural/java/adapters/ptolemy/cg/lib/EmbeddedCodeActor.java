@@ -86,19 +86,18 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
             super(actor);
         }
 
-        /** Generate the shared code. Since this is the first generate
-         *  method invoked out of all, the CodeStream object is reset
-         *  so that its code table will be re-constructed.
-         *  @exception IllegalActionException Not thrown in this base class.
+        /** Reset the template parser and set the code blocks to
+         *  the value of the embeddedCode parameter.   
+         *  @exception IllegalActionException If there is problem
+         *  reading the embeddedCode parameter.
          */
-        public Set<String> getSharedCode() throws IllegalActionException {
+        public void setupAdapter() throws IllegalActionException {
             // FIXME: One can do optimization here so that reset
             // happens only when the embedded Java code is modified.
             _templateParser.getCodeStream().reset();
             _templateParser.getCodeStream().setCodeBlocks(
                     ((ptolemy.cg.lib.EmbeddedCodeActor) getComponent()
                             .getContainer()).embeddedCode.getExpression());
-            return super.getSharedCode();
         }
     }
 }
