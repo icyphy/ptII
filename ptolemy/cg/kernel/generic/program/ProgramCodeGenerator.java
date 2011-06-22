@@ -1275,9 +1275,19 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String closingExitCode = generateClosingExitCode();
 
         String variableInitCode = generateVariableInitialization();
+
+        // Generate shared code.  Some adapter optionally add methods
+        // to the shared code block, so we generate the shared code as
+        // late as possible.  However, we have to generateSharedCode()
+        // before generateTypeConvertCode() so that any polymorphic
+        // codegen token methods used in the shared code are recorded.  See
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml 
+        String sharedCode = _generateSharedCode();
+
         // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
+
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).  Also, we want to generate the type convert code
         // so that we know if we need to import Array etc.
@@ -1285,11 +1295,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 "Variables", generateVariableDeclaration());
 
         //String globalCode = generateGlobalCode();
-
-        // Generate shared code.  Some adapter optionally add methods
-        // to the shared code block, so we generate the shared code at the
-        // end.
-        String sharedCode = _generateSharedCode();
 
         // Include files depends the generated code, so it
         // has to be generated after everything.
