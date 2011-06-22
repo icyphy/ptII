@@ -31,8 +31,9 @@
 				<!-- AndroidLocation is a currently non-existing class. It will contain 
 					the following information: The x and y position of the top-left corner The 
 					height and width of the draw area. -->
+				<property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle"></property>
 				<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
-					value="[10, 15, 40, 40]"></property>
+					value="[10, 15, 100, 40]"></property>
 				<!-- <property name="droid_typeface" class="ptolemy.data.expr.Parameter" 
 					value="sans"></property> <property name="droid_style" class="ptolemy.data.expr.Parameter" 
 					value="italic"></property> <property name="droid_size" class="ptolemy.data.expr.Parameter" 
@@ -51,7 +52,7 @@
 					the following information: The x and y position of the top-left corner The 
 					height and width of the draw area. -->
 				<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
-					value="[50, 150, 150, 20]"></property>
+					value="[10, 15, 100, 40]"></property>
 				<property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle"></property>
 				<!-- <property name="droid_typeface" class="ptolemy.data.expr.Parameter" 
 					value="sans"></property> <property name="droid_style" class="ptolemy.data.expr.Parameter" 
@@ -99,7 +100,7 @@
 		<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
 			value="[10, 55, 150, 150]"></property>
 		<property name="droid_tab" class="ptolemy.data.expr.Parameter"
-			value="First tab"></property>
+			value="tab1"></property>
 		<!-- The following properties will set up whether users can view the entity's 
 			parameters, change them, etc. -->
 		<property name="droid_visible" class="ptolemy.data.expr.Parameter"
@@ -137,9 +138,9 @@
 				value="attribute"></property>
 			<!-- User interface properties to indicate position. -->
 			<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
-				value="[10.0, 15.0, 10.0, 10.0]"></property>
+				value="[10, 65, 100, 100]"></property>
 			<property name="droid_tab" class="ptolemy.data.expr.Parameter"
-				value="1"></property>
+				value="tab2"></property>
 			<!-- Similarly to Vergil, style information can be added. Note: NotEditableLineStyle 
 				is dependent on awt. <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"></property> -->
 		</property>
