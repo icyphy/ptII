@@ -95,7 +95,20 @@
 		</module>
 		<module name="PackageName" />
 		<module name="ParameterName" />
-		<module name="StaticVariableName" />
+		<module name="StaticVariableName">
+			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
+			<property name="applyToProtected" value="false" />
+			<property name="applyToPrivate" value="false" />
+			<property name="applyToPackage" value="false" />
+			<property name="applyToPublic" value="true" />
+		</module>
+		<module name="StaticVariableName">
+			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
+			<property name="applyToProtected" value="true" />
+			<property name="applyToPrivate" value="true" />
+			<property name="applyToPackage" value="true" />
+			<property name="applyToPublic" value="false" />
+		</module>
 		<module name="TypeName" />
 
 
@@ -137,8 +150,8 @@
 		<module name="EmptyForIteratorPad" />
 		<module name="GenericWhitespace" />
 		<module name="MethodParamPad" />
-<!-- 		<module name="NoWhitespaceAfter" /> -->
-<!-- 		<module name="NoWhitespaceBefore" /> -->
+		<!-- <module name="NoWhitespaceAfter" /> -->
+		<!-- <module name="NoWhitespaceBefore" /> -->
 		<module name="OperatorWrap" />
 		<module name="ParenPad" />
 		<module name="TypecastParenPad" />
@@ -155,7 +168,7 @@
 		<!-- Checks for blocks. You know, those {}'s -->
 		<!-- See http://checkstyle.sf.net/config_blocks.html -->
 		<module name="AvoidNestedBlocks" />
-		<module name="EmptyBlock" />
+		<!-- <module name="EmptyBlock" /> -->
 		<module name="LeftCurly" />
 		<module name="NeedBraces" />
 		<module name="RightCurly" />
@@ -163,7 +176,7 @@
 
 		<!-- Checks for common coding problems -->
 		<!-- See http://checkstyle.sf.net/config_coding.html -->
-		<module name="AvoidInlineConditionals" />
+		<!-- <module name="AvoidInlineConditionals" /> -->
 		<module name="DoubleCheckedLocking" />    <!-- MY FAVOURITE -->
 		<module name="EmptyStatement" />
 		<module name="EqualsHashCode" />
@@ -180,7 +193,7 @@
 
 		<!-- Checks for class design -->
 		<!-- See http://checkstyle.sf.net/config_design.html -->
-<!-- 		<module name="DesignForExtension" /> -->
+		<!-- <module name="DesignForExtension" /> -->
 		<module name="FinalClass" />
 		<module name="HideUtilityClassConstructor" />
 		<module name="InterfaceIsType" />
