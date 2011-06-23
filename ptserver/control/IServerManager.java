@@ -83,7 +83,7 @@ public interface IServerManager {
      *  @return The token handler map from the server.
      *  @exception IllegalActionException If the server was unable to get the handler map.
      */
-    public LinkedHashMap<String, String> getTokenHandlerMap()
+    LinkedHashMap<String, String> getTokenHandlerMap()
             throws IllegalActionException;
 
     /** Open a model with the provided model URL and wait for the

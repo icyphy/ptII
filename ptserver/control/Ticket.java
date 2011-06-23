@@ -55,18 +55,23 @@ public class Ticket implements java.io.Serializable {
      */
     @Override
     public boolean equals(Object object) {
-        if (this == object)
+        if (this == object) {
             return true;
-        if (object == null)
+        } else if (object == null) {
             return false;
-        if (getClass() != object.getClass())
+        } else if (getClass() != object.getClass()) {
             return false;
+        }
+
         Ticket other = (Ticket) object;
         if (_ticketID == null) {
-            if (other._ticketID != null)
+            if (other._ticketID != null) {
                 return false;
-        } else if (!_ticketID.equals(other._ticketID))
+            }
+        } else if (!_ticketID.equals(other._ticketID)) {
             return false;
+        }
+
         return true;
     }
 
@@ -78,10 +83,10 @@ public class Ticket implements java.io.Serializable {
     public static Ticket generateTicket(String modelUrl, String layoutUrl) {
 
         Ticket ticket = new Ticket();
-        ticket.setTicketID(Long.toHexString(_randomGenerator.nextLong()));
-        ticket.setModelUrl(modelUrl);
-        ticket.setLayoutUrl(layoutUrl);
-        ticket.setDateRequested(new Date());
+        ticket._setTicketID(Long.toHexString(_randomGenerator.nextLong()));
+        ticket._setModelUrl(modelUrl);
+        ticket._setLayoutUrl(layoutUrl);
+        ticket._setDateRequested(new Date());
 
         return ticket;
     }
@@ -93,11 +98,11 @@ public class Ticket implements java.io.Serializable {
         return (Date) _dateRequested.clone();
     }
 
-    /** Get the unique ticket identifier.
-     *  @return Identifier used to reference the request.
+    /** Get the URL of the layout file.
+     *  @return Path to the layout file.
      */
-    public String getTicketID() {
-        return _ticketID;
+    public String getLayoutUrl() {
+        return _layoutUrl;
     }
 
     /** Get the URL of the model file.
@@ -107,19 +112,11 @@ public class Ticket implements java.io.Serializable {
         return _modelUrl;
     }
 
-    /** Set the URL of the requested layout.
-     *  @param layoutUrl The path to the model file.
+    /** Get the unique ticket identifier.
+     *  @return Identifier used to reference the request.
      */
-    public void setLayoutUrl(String layoutUrl) {
-        _layoutUrl = layoutUrl;
-    }
-
-
-    /** Get the URL of the layout file.
-     *  @return Path to the layout file.
-     */
-    public String getLayoutUrl() {
-        return _layoutUrl;
+    public String getTicketID() {
+        return _ticketID;
     }
 
     /** Return a hash code value for this ticket.  This method uses the hashcode()
@@ -149,22 +146,29 @@ public class Ticket implements java.io.Serializable {
     /** Set the date of the simulation request.
      *  @param dateRequested The date and time of the request.
      */
-    private void setDateRequested(Date dateRequested) {
+    private void _setDateRequested(Date dateRequested) {
         _dateRequested = dateRequested;
     }
 
-    /** Set the unique ticket identifier.
-     *  @param ticketID The universally unique identifier.
+    /** Set the URL of the requested layout.
+     *  @param layoutUrl The path to the model file.
      */
-    private void setTicketID(String ticketID) {
-        _ticketID = ticketID;
+    public void _setLayoutUrl(String layoutUrl) {
+        _layoutUrl = layoutUrl;
     }
 
     /** Set the URL of the requested model.
      *  @param modelUrl The path to the model file.
      */
-    private void setModelUrl(String modelUrl) {
+    private void _setModelUrl(String modelUrl) {
         _modelUrl = modelUrl;
+    }
+
+    /** Set the unique ticket identifier.
+     *  @param ticketID The universally unique identifier.
+     */
+    private void _setTicketID(String ticketID) {
+        _ticketID = ticketID;
     }
 
     ///////////////////////////////////////////////////////////////////
