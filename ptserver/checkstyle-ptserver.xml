@@ -69,28 +69,28 @@
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="false" />
 			<property name="applyToPrivate" value="false" />
-			<property name="applyToPackage" value="false" />
+			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
 		<module name="MemberName">
 			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
-			<property name="applyToPackage" value="true" />
+			<property name="applyToPackage" value="false" />
 			<property name="applyToPublic" value="false" />
 		</module>
 		<module name="MethodName">
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="false" />
 			<property name="applyToPrivate" value="false" />
-			<property name="applyToPackage" value="false" />
+			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
 		<module name="MethodName">
 			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
-			<property name="applyToPackage" value="true" />
+			<property name="applyToPackage" value="false" />
 			<property name="applyToPublic" value="false" />
 		</module>
 		<module name="PackageName" />
@@ -99,14 +99,14 @@
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="false" />
 			<property name="applyToPrivate" value="false" />
-			<property name="applyToPackage" value="false" />
+			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
 		<module name="StaticVariableName">
 			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
-			<property name="applyToPackage" value="true" />
+			<property name="applyToPackage" value="false" />
 			<property name="applyToPublic" value="false" />
 		</module>
 		<module name="TypeName" />
