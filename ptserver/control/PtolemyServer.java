@@ -34,6 +34,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -53,6 +54,8 @@ import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelListener;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
+import ptserver.data.TokenParser;
+import ptserver.data.TokenParser.HandlerData;
 import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 ///////////////////////////////////////////////////////////////////
@@ -614,6 +617,21 @@ public class PtolemyServer implements IServerManager {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
         }
+    }
+    
+    public synchronized LinkedHashMap<String, String> getTokenHandlerMap() throws IllegalActionException {
+        try {
+
+            LinkedHashMap<String, String> tokenHandlerMap = new LinkedHashMap<String, String>();
+            for (HandlerData<?> data : TokenParser.getInstance().getHandlerList()) {
+                tokenHandlerMap.put(data.getTokenType().getName(), data.getTokenHandler().getClass().getName());
+            }
+            return tokenHandlerMap;
+        } catch (Exception e) {
+            _handleException("Problem sending token handler map"
+                    + ": " + e.getMessage(), e);
+        }
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////

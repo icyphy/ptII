@@ -28,6 +28,8 @@
 
 package ptserver.control;
 
+import java.util.LinkedHashMap;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.RemoteModelResponse;
 
@@ -113,4 +115,11 @@ public interface IServerManager {
      *  stop the simulation.
      */
     public void stop(Ticket ticket) throws IllegalActionException;
+    
+    /**
+     * TODO
+     * @return
+     * @throws IllegalActionException
+     */
+    public LinkedHashMap<String, String> getTokenHandlerMap() throws IllegalActionException;
 }

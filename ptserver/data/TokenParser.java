@@ -35,11 +35,14 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.handler.TokenHandler;
+
 
 ///////////////////////////////////////////////////////////////////
 ////TokenParser
@@ -73,12 +76,28 @@ public class TokenParser {
      */
     private TokenParser() throws IllegalActionException {
         //key is the token class name
+        //value is the token handler class name
         //We have to use ResourceBundle.getKeys() method because Android does not support .keySet() method.
+        LinkedHashMap<String, String> tokenHandlerMap = new LinkedHashMap<String, String>();
         Enumeration<String> keys = _tokenHandlersBundle.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
-            //value is the token handler class name
-            String value = _tokenHandlersBundle.getString(key);
+            tokenHandlerMap.put(key, _tokenHandlersBundle.getString(key));
+        }
+        setTokenHandlers(tokenHandlerMap);
+    }
+    
+    /**
+     * TODO
+     * @param tokenHandlerMap
+     * @throws IllegalActionException
+     */
+    public void setTokenHandlers(LinkedHashMap<String, String> tokenHandlerMap) throws IllegalActionException {
+        getHandlerList().clear();
+        _handlerMap.clear();
+        for (Entry<String, String> entry : tokenHandlerMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
             try {
                 ClassLoader classLoader = getClass().getClassLoader();
                 Class<Token> tokenClass = (Class<Token>) classLoader
@@ -86,9 +105,9 @@ public class TokenParser {
                 TokenHandler<Token> tokenHandler = (TokenHandler<Token>) classLoader
                         .loadClass(value).newInstance();
                 HandlerData<Token> data = new HandlerData<Token>(tokenHandler,
-                        tokenClass, (short) _handlerList.size());
+                        tokenClass, (short) getHandlerList().size());
                 _handlerMap.put(tokenClass, data);
-                _handlerList.add(data);
+                getHandlerList().add(data);
             } catch (ClassNotFoundException e) {
                 throw new IllegalActionException(null, e,
                         "Class was not found for " + key + " or " + value);
@@ -136,7 +155,7 @@ public class TokenParser {
                     + token.getClass());
         }
         outputStream.writeShort(handlerData._position);
-        handlerData._tokenHandler.convertToBytes(token, outputStream);
+        handlerData.getTokenHandler().convertToBytes(token, outputStream);
     }
 
     /**
@@ -166,12 +185,12 @@ public class TokenParser {
     public <T extends Token> T convertToToken(DataInputStream inputStream)
             throws IOException, IllegalActionException {
         short position = inputStream.readShort();
-        HandlerData<T> data = (HandlerData<T>) _handlerList.get(position);
+        HandlerData<T> data = (HandlerData<T>) getHandlerList().get(position);
         if (data == null) {
             throw new NullPointerException("No handler found for position "
                     + position);
         }
-        return data._tokenHandler.convertToToken(inputStream, data._tokenType);
+        return data.getTokenHandler().convertToToken(inputStream, data.getTokenType());
     }
 
     /**
@@ -187,6 +206,13 @@ public class TokenParser {
             throws IOException, IllegalActionException {
         // this keyword is required here
         return this.<T> convertToToken(new DataInputStream(inputStream));
+    }
+    /**
+     * TODO
+     * @return the _handlerList
+     */
+    public ArrayList<HandlerData<?>> getHandlerList() {
+        return _handlerList;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,7 +243,7 @@ public class TokenParser {
     /**
      * Data structure that stores handler, token type and position tuple
      */
-    private static class HandlerData<T extends Token> {
+    public static class HandlerData<T extends Token> {
 
         /**
          * Create new instance of HandlerData
@@ -230,6 +256,22 @@ public class TokenParser {
             _tokenHandler = tokenHandler;
             _tokenType = tokenType;
             _position = position;
+        }
+
+        /**
+         * TODO
+         * @return the _tokenHandler
+         */
+        public TokenHandler<T> getTokenHandler() {
+            return _tokenHandler;
+        }
+
+        /**
+         * TODO
+         * @return the _tokenType
+         */
+        public Class<T> getTokenType() {
+            return _tokenType;
         }
 
         /**

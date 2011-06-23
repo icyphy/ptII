@@ -178,7 +178,6 @@ public abstract class RemoteActor extends TypedAtomicActor {
             HashMap<String, String> portTypes)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
-
         for (Object portObject : targetEntity.portList()) {
             if (!(portObject instanceof IOPort)) {
                 continue;
@@ -191,19 +190,20 @@ public abstract class RemoteActor extends TypedAtomicActor {
                 for (Port connectingPort : linkedPortList) {
                     if (connectingPort instanceof IOPort
                             && isValidConnectingPort((IOPort) connectingPort)) {
-                        remotePort = (IOPort) connectingPort.clone(port
-                                .workspace());
+                        remotePort = (IOPort) port.clone(port.workspace());
+                        // FIXME: what if the port is both input and output?
+                        remotePort.setInput(!port.isInput());
+                        remotePort.setOutput(!port.isOutput());
                         remotePort.setPersistent(true);
-                        remotePort.setName(port.getName());
                         remotePort.setContainer(this);
+                        remotePort.setMultiport(false);
                         if (remotePort instanceof TypedIOPort) {
-                            Type type = BaseType.forName(portTypes
-                                    .get(connectingPort.getFullName()));
+                            Type type = BaseType.forName(portTypes.get(port
+                                    .getFullName()));
                             ((TypedIOPort) remotePort).setTypeEquals(type);
                             StringAttribute targetPortName = new StringAttribute(
                                     remotePort, "targetPortName");
-                            targetPortName.setExpression(connectingPort
-                                    .getFullName());
+                            targetPortName.setExpression(port.getFullName());
                         }
                         break;
                     }
