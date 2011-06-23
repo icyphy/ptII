@@ -278,6 +278,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Get a listing of the layouts for a specific model available on the
      *  server in either the database or the local file system.
+     *  @param url Address of the model file for which layouts are found.
      *  @return An array of URLs for the layouts available for the model on the server.
      *  @exception IllegalActionException If there was a problem discovering available layouts.
      */
@@ -389,6 +390,29 @@ public class PtolemyServer implements IServerManager {
         }
 
         return state;
+    }
+
+    /** Get the token handlers loaded on the server so that they can be
+     *  set up on the client.
+     *  @return The token handler map from the server.
+     *  @exception IllegalActionException If the server was unable to get the handler map.
+     */
+    public synchronized LinkedHashMap<String, String> getTokenHandlerMap()
+            throws IllegalActionException {
+        LinkedHashMap<String, String> tokenHandlerMap = null;
+        try {
+            tokenHandlerMap = new LinkedHashMap<String, String>();
+            for (HandlerData<?> data : TokenParser.getInstance()
+                    .getHandlerList()) {
+                tokenHandlerMap.put(data.getTokenType().getName(), data
+                        .getTokenHandler().getClass().getName());
+            }
+        } catch (Exception e) {
+            _handleException(
+                    "Problem sending token handler map: " + e.getMessage(), e);
+        }
+
+        return tokenHandlerMap;
     }
 
     /** Initialize the Ptolemy server, launch the broker process, set up the servlet host, 
@@ -617,21 +641,6 @@ public class PtolemyServer implements IServerManager {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
         }
-    }
-    
-    public synchronized LinkedHashMap<String, String> getTokenHandlerMap() throws IllegalActionException {
-        try {
-
-            LinkedHashMap<String, String> tokenHandlerMap = new LinkedHashMap<String, String>();
-            for (HandlerData<?> data : TokenParser.getInstance().getHandlerList()) {
-                tokenHandlerMap.put(data.getTokenType().getName(), data.getTokenHandler().getClass().getName());
-            }
-            return tokenHandlerMap;
-        } catch (Exception e) {
-            _handleException("Problem sending token handler map"
-                    + ": " + e.getMessage(), e);
-        }
-        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
