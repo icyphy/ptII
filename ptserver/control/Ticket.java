@@ -153,7 +153,7 @@ public class Ticket implements java.io.Serializable {
     /** Set the URL of the requested layout.
      *  @param layoutUrl The path to the model file.
      */
-    public void _setLayoutUrl(String layoutUrl) {
+    private void _setLayoutUrl(String layoutUrl) {
         _layoutUrl = layoutUrl;
     }
 
