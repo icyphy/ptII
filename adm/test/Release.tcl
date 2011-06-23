@@ -112,6 +112,7 @@ ptolemy.domains.wireless.lib.tinyOS
 ptolemy.kernel.test.junit
 ptolemy.moml.jxta
 ptolemy.plot.servlet
+ptserver.test.helper
 ptserver.test.junit}
 
 set currentDirectory [pwd]

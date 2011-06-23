@@ -30,9 +30,11 @@ package ptserver.control;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -52,6 +54,8 @@ import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelListener;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.communication.RemoteModelResponse;
+import ptserver.data.TokenParser;
+import ptserver.data.TokenParser.HandlerData;
 import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 ///////////////////////////////////////////////////////////////////
@@ -95,9 +99,7 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
  * @Pt.AcceptedRating Red (jkillian)
  */
 public class PtolemyServer implements IServerManager {
-    static {
-        PtolemyModuleJavaSEInitializer.initializeInjector();
-    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
 
@@ -113,6 +115,7 @@ public class PtolemyServer implements IServerManager {
     /** Initialize the logger used for error handling.
      */
     static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
         Logger logger = null;
         FileHandler logFile = null;
 
@@ -350,21 +353,22 @@ public class PtolemyServer implements IServerManager {
         return _servletPort;
     }
 
-    /**
-     * Return the simulation task of the provided ticket.
-     * @param ticket The ticket associated with the simulation task.
-     * @return the simulation task associated with the provided ticket.
-     * @throws IllegalActionException if the ticket is invalid.
+    /** Get the simulation task of the provided ticket.
+     *  @param ticket The ticket associated with the simulation task.
+     *  @return the simulation task associated with the provided ticket.
+     *  @exception IllegalActionException if the ticket is invalid.
      */
     public synchronized SimulationTask getSimulationTask(Ticket ticket)
             throws IllegalActionException {
+        SimulationTask task = null;
         try {
-            return _requests.get(ticket);
+            task = _requests.get(ticket);
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
         }
-        return null;
+
+        return task;
     }
 
     /** Get the current state of a specific simulation based on the simulation manager's state. 
@@ -376,12 +380,14 @@ public class PtolemyServer implements IServerManager {
         try {
             _checkTicket(ticket);
             SimulationTask task = _requests.get(ticket);
+
             // FindBugs is wrong here since _checkTicket ensures that task is not null
             state = task.getManager().getState();
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
         }
+
         return state;
     }
 
@@ -473,24 +479,31 @@ public class PtolemyServer implements IServerManager {
             }
 
             // Save the simulation request.
+            RemoteModel clientModel = new RemoteModel(RemoteModelType.CLIENT);
             SimulationTask simulationTask = new SimulationTask(ticket);
             simulationTask.getRemoteModel().addRemoteModelListener(
                     remoteModelListener);
-            RemoteModel clientModel = new RemoteModel(RemoteModelType.CLIENT);
+
             String modelXML = new String(downloadModel(ticket.getLayoutUrl()));
             HashMap<String, String> resolvedTypes = simulationTask
                     .getRemoteModel().getResolvedTypes();
+            String brokerUrl = "tcp://"
+                    + InetAddress.getLocalHost().getHostAddress() + "@"
+                    + getBrokerPort();
+
             clientModel.initModel(modelXML, resolvedTypes);
             simulationTask.getRemoteModel().createRemoteAttributes(
                     clientModel.getSettableAttributesMap().keySet());
             simulationTask.getRemoteModel().setUpInfrastructure(ticket,
-                    "tcp://localhost@" + Integer.toString(getBrokerPort()));
+                    brokerUrl);
 
             // Populate the response.
             response = new RemoteModelResponse();
             response.setTicket(ticket);
             response.setModelTypes(resolvedTypes);
             response.setModelXML(modelXML);
+            response.setBrokerUrl(brokerUrl);
+
             _requests.put(ticket, simulationTask);
         } catch (Exception e) {
             _handleException((ticket != null ? ticket.getTicketID() : null)
@@ -605,6 +618,21 @@ public class PtolemyServer implements IServerManager {
                     + ": " + e.getMessage(), e);
         }
     }
+    
+    public synchronized LinkedHashMap<String, String> getTokenHandlerMap() throws IllegalActionException {
+        try {
+
+            LinkedHashMap<String, String> tokenHandlerMap = new LinkedHashMap<String, String>();
+            for (HandlerData<?> data : TokenParser.getInstance().getHandlerList()) {
+                tokenHandlerMap.put(data.getTokenType().getName(), data.getTokenHandler().getClass().getName());
+            }
+            return tokenHandlerMap;
+        } catch (Exception e) {
+            _handleException("Problem sending token handler map"
+                    + ": " + e.getMessage(), e);
+        }
+        return null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                   private methods                         ////
@@ -642,6 +670,7 @@ public class PtolemyServer implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
+
     private final RemoteModelListener remoteModelListener = new RemoteModelListener() {
 
         public void modelConnectionExpired(RemoteModel remoteModel) {

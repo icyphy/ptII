@@ -311,6 +311,24 @@ public class TokenParserTest {
         assertEquals(token, convertedToken);
 
     }
+    
+    @Test
+    public void testCommunicationToken2() throws IOException,
+            IllegalActionException {
+        CommunicationToken token = new CommunicationToken();
+        token.setTargetActorName("targetActor");
+        token.addPort("testPort1", 1);
+        Token[] tokens = new Token[1];
+        tokens[0] = new DoubleToken(0.0);
+        token.putTokens("testPort1", 0, tokens);
+        PipedOutputStream outputStream = new PipedOutputStream();
+        PipedInputStream inputStream = new PipedInputStream(outputStream);
+        TokenParser.getInstance().convertToBytes(token, outputStream);
+        CommunicationToken convertedToken = TokenParser.getInstance().convertToToken(
+                inputStream);
+        assertEquals(token, convertedToken);
+        assertEquals(token.getPortChannelTokenMap().values().iterator().next().get(0)[0], convertedToken.getPortChannelTokenMap().values().iterator().next().get(0)[0]);
+    }
 
     @Test
     public void testAttributeChangeToken() throws IOException, IllegalActionException {

@@ -229,8 +229,8 @@ static Token divide_Token_Token(Token a1, Token a2) {
                 break;
 #endif
 #ifdef PTCG_TYPE_Double
-            case TYPE_Double
-                    result = Integer_new((Integer)a1.payload/(Double)a2.payload));
+            case TYPE_Double:
+                    result = Double_new((Integer)a1.payload/(Double)a2.payload);
                 break;
 #endif
             default:

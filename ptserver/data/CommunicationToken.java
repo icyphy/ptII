@@ -197,7 +197,8 @@ public class CommunicationToken extends Token {
                 * result
                 + ((_portChannelTokenMap == null) ? 0 : _portChannelTokenMap
                         .hashCode());
-        result = prime * result
+        result = prime
+                * result
                 + ((_targetActorName == null) ? 0 : _targetActorName.hashCode());
         return result;
     }

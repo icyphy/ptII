@@ -103,9 +103,9 @@
 			value="sink">
 		</property>
 		<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
-			value="[0, 0, 300, 300]"></property>
+			value="[0, 30, 500, 600]"></property>
 		<property name="droid_tab" class="ptolemy.data.expr.Parameter"
-			value="1"></property>
+			value="tab1"></property>
 		<!-- The following properties will set up whether users can view the entity's 
 			parameters, change them, etc. -->
 		<property name="droid_visible" class="ptolemy.data.expr.Parameter"
@@ -122,7 +122,7 @@
 		<port name="input" class="ptolemy.actor.TypedIOPort">
 			<property name="output" />
 			<property name="targetPortName" class="ptolemy.kernel.util.StringAttribute"
-				value=".addermodel.AddSubtract.output">
+				value=".addermodel.Plotter.input">
 			</property>
 		</port>
 	</entity>

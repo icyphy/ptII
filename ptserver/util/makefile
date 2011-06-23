@@ -1,6 +1,6 @@
-# Makefile for ptserver - a system that allows execution of models on handheld devices
+# Makefile for ptserver utilities.
 #
-# @Version: $Id$
+# @Version: $Id: makefile 61072 2011-06-01 00:06:23Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011 The Regents of the University of California.
@@ -29,12 +29,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptserver
+ME =		ptserver/util
 
-DIRS =		actor communication control data test util
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		..
+ROOT =		../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -43,48 +43,31 @@ include $(CONFIG)
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Used to build jar files
-PTPACKAGE = 	ptserver
-PTCLASSJAR =
+PTPACKAGE = 	util
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	communication/communication.jar \
-	control/control.jar \
-	data/data.jar \
-	util/util.jar
+#PTCLASSALLJARS =
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED =
 
-OTHER_FILES_TO_BE_JARED = \
-	PtolemyServerConfig.properties.default
-
-EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
-	findbugs-excludes.xml \
-	findbugs-includes.xml
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Keep this list alphabetized.
 JSRCS = \
+	PtolemyModuleJavaSEInitializer.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	actor \
-	build.xml \
-	communication \
-	control \
-	data \
-	lib \
-	test \
-	util
+MISC_FILES = 
 
-OPTIONAL_FILES = \
-	PtolemyServerConfig.properties
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass $(EXTRA_SRCS)
-install: jclass jars
+install: subinstall jars
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

@@ -1,7 +1,8 @@
-# Makefile for ptserver tests - a system that allows execution of models on handheld devices
+# Makefile for the CG actor modal tests
+#
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
@@ -27,70 +28,56 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptserver/test
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test
 
-# PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
-DIRS =		$(PTJUNIT_DIR) helper
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../../../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
-
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
-	PtolemyTestClient.java \
-	PtolemyTestServer.java \
-	QMTest.java \
-	StringAttributeWidget.java \
-	SysOutActor.java
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.
-JSIMPLE_TESTS = \
-	dummy.tcl
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = dummy.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS) 
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS)
+
+#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	\
-	alljtests.tcl \
-	alljsimpletests.tcl \
-	junit
+MISC_FILES =	alljtests.tcl \
+                     auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'QMTest$$1.class' \
-	'SysOutActor$$TokenDelegator.class'
+OPTIONAL_FILES =
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-# The test rule is the first rule so if the user runs make test, then
-# we get the graphical tests
-test: $(EXTRA_SRCS) jclass test_java #test_jsimple #test_jgraphical
-
-# The nightly build runs make tests, so don't had graphical tests here
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
@@ -98,13 +85,22 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
-	$(JTCLSH) alljsimpletests.tcl
+# If necessary, build the actors and domains
+RAMP_CLASS = $(ROOT)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/Ramp.class
 
-# These tests do require a graphics terminal, but do use Jacl and Java
-test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+$(RAMP_CLASS): 
+	if [ ! -f $(RAMP_CLASS) ]; then \
+	    echo "Building cg/adapter classes so tests work"; \
+	    cd $(ROOT)/ptolemy/cg/adapter; $(MAKE) fast; \
+        fi
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) \
+		alljtests.tcl test_auto test_java_cg
 	$(JTCLSH) alljtests.tcl
 
-# Include rules for directories that contain only subdirectories.
+# 'make clean' removes $(KRUFT)
+KRUFT = 
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

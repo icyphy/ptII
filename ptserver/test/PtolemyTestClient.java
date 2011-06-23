@@ -35,6 +35,7 @@ import ptolemy.domains.pn.kernel.PNDirector;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 import ptserver.control.Ticket;
+import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 //////////////////////////////////////////////////////////////////////////
 ////PtolemyTestClient
@@ -51,6 +52,9 @@ import ptserver.control.Ticket;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class PtolemyTestClient {
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
 
     /**
      * Entry point to the Ptolemy MQTT Client which is used for testing purposes.
@@ -62,15 +66,13 @@ public class PtolemyTestClient {
             RemoteModel model = new RemoteModel(RemoteModelType.CLIENT);
 
             URL resource = PtolemyTestClient.class
-                    .getResource("/ptserver/test/junit/addermodel.xml");
+                    .getResource("/ptserver/test/junit/sequence.xml");
             model.loadModel(resource);
-            Manager manager = model.setUpInfrastructure(
-                    Ticket.generateTicket(null, null), "tcp://localhost@1883");
             CompositeActor topLevelActor = model.getTopLevelActor();
 
-            topLevelActor.getDirector().setContainer(null);
-            topLevelActor.setDirector(new PNDirector(topLevelActor,
-                    "PNDirector"));
+//            topLevelActor.getDirector().setContainer(null);
+//            topLevelActor.setDirector(new PNDirector(topLevelActor,
+//                    "PNDirector"));
             //            topLevelActor.getDirector().addDebugListener(new DebugListener() {
             //
             //                public void message(String message) {
@@ -82,8 +84,6 @@ public class PtolemyTestClient {
             //                }
             //            });
             System.out.println(topLevelActor.exportMoML());
-
-            manager.execute();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

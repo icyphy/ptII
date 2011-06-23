@@ -44,7 +44,7 @@
 	</path>
 
 	<target name="clean">
-		<delete failonerror="false">
+		<delete>
 			<fileset dir="${basedir}" includes="**/*.class" />
 			<fileset dir="${ptserver.output}" />
 		</delete>
