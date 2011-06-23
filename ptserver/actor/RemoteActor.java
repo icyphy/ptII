@@ -149,7 +149,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @param connectingPort The connecting port to check
      * @return true if connectingPort is valid, false otherwise
      */
-    protected abstract boolean isValidConnectingPort(IOPort connectingPort);
+    protected abstract boolean _isValidConnectingPort(IOPort connectingPort);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -189,7 +189,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
                 IOPort remotePort = null;
                 for (Port connectingPort : linkedPortList) {
                     if (connectingPort instanceof IOPort
-                            && isValidConnectingPort((IOPort) connectingPort)) {
+                            && _isValidConnectingPort((IOPort) connectingPort)) {
                         remotePort = (IOPort) port.clone(port.workspace());
                         // FIXME: what if the port is both input and output?
                         remotePort.setInput(!port.isInput());

@@ -135,10 +135,10 @@ public class RemoteSource extends RemoteActor {
 
     /**
      * Return true if connectingPort is output port.
-     * @see ptserver.actor.RemoteActor#isValidConnectingPort(ptolemy.actor.IOPort)
+     * @see ptserver.actor.RemoteActor#_isValidConnectingPort(ptolemy.actor.IOPort)
      */
     @Override
-    protected boolean isValidConnectingPort(IOPort connectingPort) {
+    protected boolean _isValidConnectingPort(IOPort connectingPort) {
         return connectingPort.isOutput();
     }
 

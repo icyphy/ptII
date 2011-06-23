@@ -175,10 +175,10 @@ public class RemoteSink extends RemoteActor {
 
     /**
      * Return true if connectingPort is inputPort.
-     * @see ptserver.actor.RemoteActor#isValidConnectingPort(ptolemy.actor.IOPort)
+     * @see ptserver.actor.RemoteActor#_isValidConnectingPort(ptolemy.actor.IOPort)
      */
     @Override
-    protected boolean isValidConnectingPort(IOPort connectingPort) {
+    protected boolean _isValidConnectingPort(IOPort connectingPort) {
         return connectingPort.isInput();
     }
 
