@@ -632,11 +632,12 @@ public class ThreadedComposite extends MirrorComposite {
          *  throw an exception if the modified time is not acceptable.
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
+         *  @param microstep The microstep.
          *  @return The time at which the actor passed as an argument
          *   will be fired.
          *  @exception IllegalActionException If the executive director throws it.
          */
-        public Time fireAt(Actor actor, Time time)
+        public Time fireAt(Actor actor, Time time, int microstep)
                 throws IllegalActionException {
             Time result = time;
             Director director = ThreadedComposite.this.getExecutiveDirector();
@@ -647,7 +648,7 @@ public class ThreadedComposite extends MirrorComposite {
                                     + " for actor: " + actor.getFullName());
                 }
                 try {
-                    result = director.fireAt(ThreadedComposite.this, time);
+                    result = director.fireAt(ThreadedComposite.this, time, microstep);
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex, "Actor "
                             + actor.getFullName()

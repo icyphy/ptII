@@ -471,9 +471,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
     }
 
-
     /**
-     * Schedule a firing of the given actor at the given time. If there exists an executive
+     * Schedule a firing of the given actor at the given time
+     * and microstep. If there exists an executive
      * director, this method delegates to the fireAt() method of the executive director by
      * requesting a firing of the container of this director at the given time adjusted by the
      * current offset between local time and the environment time.
@@ -491,10 +491,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * 
      * @param actor The actor scheduled to be fired.
      * @param time The scheduled time.
+     * @param microstep The microstep.
      * @return The time at which the actor passed as an argument will be fired.
      * @exception IllegalActionException If thrown by the executive director.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         if (_currentOffset != null) {
@@ -505,7 +506,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
             if (executiveDirector != null) {
-                Time result = executiveDirector.fireAt(modalModel, time);
+                Time result = executiveDirector.fireAt(modalModel, time, microstep);
                 if (_currentOffset != null) {
                     result = result.subtract(_currentOffset);
                 }

@@ -369,6 +369,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
+     *  @param microstep The microstep (ignored by this director).
      *  @return The time at which the actor passed as an argument
      *   will be fired.
      *  @exception IllegalActionException If the operation is not
@@ -376,7 +377,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *   does not support fireAt() precisely (it does not agree to refire
      *   this Ptera model at the requested time).
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         if (getContainer() instanceof ModalModel
                 && actor instanceof RefinementActor) {
             Event event = (Event) ((RefinementActor) actor).getRefinedState();

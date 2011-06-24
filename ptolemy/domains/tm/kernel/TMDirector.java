@@ -493,11 +493,12 @@ public class TMDirector extends Director implements TimedDirector {
      *  time of this director reaches the specified time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
+     *  @param microstep The microstep (ignored by this director).
      *  @return The same time argument passed in.
      *  @exception IllegalActionException If requested time is in
      *  the past.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         // ignore requests that are later than the stop time.
         if (_debugging) {
             _debug("+ requesting firing of " + ((Nameable) actor).getFullName()

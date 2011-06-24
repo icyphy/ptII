@@ -346,11 +346,12 @@ QuasiTransparentDirector {
      *  DEDirector and SDFDirector behave exactly this way.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
+     *  @param microstep The microstep.
      *  @return The time at which the actor passed as an argument
      *   will be fired.
      *  @exception IllegalActionException If thrown by the executive director.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
@@ -358,7 +359,7 @@ QuasiTransparentDirector {
             Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
             if (executiveDirector != null) {
-                return executiveDirector.fireAt(modalModel, time);
+                return executiveDirector.fireAt(modalModel, time, microstep);
             }
         }
         setModelTime(time);

@@ -210,10 +210,13 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  calling process until the time has advanced to at least the time
      *  specified by the method argument. Resume the execution of the calling
      *  process and return.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The scheduled time.
+     *  @param microstep The microstep (ignored by this director).
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */
-    public synchronized Time fireAt(Actor actor, Time newFiringTime)
+    public synchronized Time fireAt(Actor actor, Time newFiringTime, int microstep)
             throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this, "The process wants to "

@@ -366,12 +366,13 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  then return the requested time.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
+     *  @param microstep The microstep (ignored by this director).
      *  @return The time at which the actor passed as an argument
      *   will be fired.
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         if (_debugging) {
             _debug("fireAt method was called for actor: " + actor.getFullName());
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ContinuousInDEDifferentRefinements" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ContinuousInDEDifferentRefinementsPreemptive" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -64,7 +64,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={245, 342, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -122,7 +122,7 @@
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -371,7 +371,7 @@
         <link port="state2.ramp" relation="rampRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 3.0, 7.0, 9.0, 11.0, 14.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 3.0, 5.0, 7.0, 9.0, 11.0, 14.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -409,7 +409,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 1, 1, 1, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 1, 2, 1, 1, 1, 1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

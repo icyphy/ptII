@@ -205,7 +205,7 @@ public class ResettableTimer extends Transformer {
                         _debug("No more pending requests.");
                     }
                     _pendingOutputTime = Time.NEGATIVE_INFINITY;
-                    _pendingOutputMicrostep = 0;
+                    _pendingOutputMicrostep = 1;
                     break;
                 }
                 // NOTE: The following changes the state of the actor, but this is
@@ -230,7 +230,7 @@ public class ResettableTimer extends Transformer {
                         .doubleValue();
                 _pendingOutputTime = _pendingOutputTime.add(delayValue);
                 if (delayValue > 0) {
-                    _pendingOutputMicrostep = 0;
+                    _pendingOutputMicrostep = 1;
                 } else {
                     _pendingOutputMicrostep = currentMicrostep + 1;
                 }
@@ -256,7 +256,7 @@ public class ResettableTimer extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _pendingOutputTime = Time.NEGATIVE_INFINITY;
-        _pendingOutputMicrostep = 0;
+        _pendingOutputMicrostep = 1;
         if (_pendingRequests != null) {
             _pendingRequests.clear();
         }
@@ -286,7 +286,7 @@ public class ResettableTimer extends Transformer {
         if (currentTime.equals(_pendingOutputTime)
                 && currentMicrostep == _pendingOutputMicrostep) {
             _pendingOutputTime = Time.NEGATIVE_INFINITY;
-            _pendingOutputMicrostep = 0;
+            _pendingOutputMicrostep = 1;
         }
         if (input.hasToken(0)) {
             inputToken = input.get(0);
@@ -305,7 +305,7 @@ public class ResettableTimer extends Transformer {
                     // Cancel the currently pending output value, if there one.
                     if (_pendingOutputTime.compareTo(currentTime) >= 0) {
                         _pendingOutputTime = Time.NEGATIVE_INFINITY;
-                        _pendingOutputMicrostep = 0;
+                        _pendingOutputMicrostep = 1;
                     }
                 }
                 // Continue with the code below as if no new input has arrived.
@@ -318,7 +318,7 @@ public class ResettableTimer extends Transformer {
                 // If there is an input, update the pending output time.
                 _pendingOutputTime = currentTime.add(delayValue);
                 if (delayValue != 0.0) {
-                    _pendingOutputMicrostep = 0;
+                    _pendingOutputMicrostep = 1;
                 } else {
                     _pendingOutputMicrostep = currentMicrostep + 1;
                 }
@@ -378,7 +378,7 @@ public class ResettableTimer extends Transformer {
                 delayValue = ((DoubleToken) event.contents).doubleValue();
                 _pendingOutputTime = currentTime.add(delayValue);
                 if (delayValue != 0.0) {
-                    _pendingOutputMicrostep = 0;
+                    _pendingOutputMicrostep = 1;
                 } else {
                     _pendingOutputMicrostep = currentMicrostep + 1;
                 }

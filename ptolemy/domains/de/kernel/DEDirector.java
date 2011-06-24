@@ -363,7 +363,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         newObject._eventQueue = null;
         newObject._exceedStopTime = false;
         newObject._isInitializing = false;
-        newObject._microstep = 0;
+        newObject._microstep = 1;
         newObject._noMoreActorsToFire = false;
         newObject._realStartTime = 0;
         newObject._stopFireRequested = false;
@@ -475,13 +475,36 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *   a time value that is already in the past.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        return fireAt(actor, time, 1);
+    }
+    
+    /** Request a firing of the given actor at the given model
+     *  time with the given microstep. Most actors will not want to use
+     *  this method, but if you need for a firing to occur at microstep 0,
+     *  then use this method to trigger that firing. Note that any actor
+     *  that fires at microstep 0 is expected to not produce any output
+     *  events at that firing.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The requested time.
+     *  @param index The microstep.
+     *  @return An instance of Time with value NEGATIVE_INFINITY, or
+     *   if there is an executive director, the time at which the
+     *   container of this director will next be fired
+     *   in response to this request.
+     *  @see #fireAtCurrentTime(Actor)
+     *  @exception IllegalActionException If there is an executive director
+     *   and it throws it. Derived classes may choose to throw this
+     *   exception for other reasons.
+     */
+    public Time fireAt(Actor actor, Time time, int index) throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
                     "Calling fireAt() before preinitialize().");
         }
         if (_debugging) {
             _debug("DEDirector: Actor " + actor.getFullName()
-                    + " requests refiring at " + time);
+                    + " requests refiring at " + time
+                    + " with microstep " + index);
         }
         // Normally, we do not need to delegate the request up
         // the hierarchy. This will be done in postfire.
@@ -518,14 +541,15 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             }
             CompositeActor container = (CompositeActor) getContainer();
             if (_debugging) {
-                _debug("DEDirector: Requests refiring of: "
-                        + container.getName() + " at time " + time);
+                _debug("DEDirector: Requests refiring of container: "
+                        + container.getName() + " at time " + time
+                        + " with microstep " + index);
             }
             // Enqueue a pure event to fire the container of this director.
             // Note that if the enclosing director is ignoring fireAt(),
             // or if it cannot refire at exactly the requested time,
             // then the following will throw an exception.
-            result = _fireContainerAt(result);
+            result = _fireContainerAt(result, index);
         }
         synchronized (_eventQueue) {
             if (!_delegateFireAt) {
@@ -543,7 +567,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                     result = getModelTime();
                 }
             }
-            _enqueueEvent(actor, result);
+            if (result.compareTo(getModelTime()) == 0 && index <= _microstep && !_isInitializing) {
+                // NOTE: Incrementing the microstep here is wrong if we are in initialize().
+                index = _microstep + 1;
+            }
+
+            _enqueueEvent(actor, result, index);
 
             // Findbugs: Multithreaded correctness,
             // [M M MWN] Mismatched notify() [MWN_MISMATCHED_NOTIFY]
@@ -732,6 +761,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         _realStartTime = System.currentTimeMillis();
         _stopFireRequested = false;
 
+        // Initialize the microstep to zero, even though
+        // DE normally wants to run with microstep 1 or higher.
+        // During initialization, some contained actors will request
+        // firings. One of those might be a Continuous subsystem,
+        // which will explicitly request a firing at microstep 0.
+        // Others will have their requests automatically set
+        // to microstep 1. Thus, with normal DE-only models,
+        // the only events in the event queue after initialization
+        // will all have microstep 1, and hence that is where the
+        // simulation will start.
         _microstep = 0;
         // This could be getting re-initialized during execution
         // (e.g., if we are inside a modal model), in which case,
@@ -760,7 +799,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // further to integrate into future. But only do this if the
         // stop time is finite.
         if (!_stopTime.isPositiveInfinite()) {
-            fireAt((Actor) getContainer(), _stopTime);
+            fireAt((Actor) getContainer(), _stopTime, 1);
         }
 
         if (isEmbedded() && !_eventQueue.isEmpty()) {
@@ -815,6 +854,17 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
+        
+        // Reset the microstep to zero if the next event is
+        // in the future.
+        synchronized (_eventQueue) {
+            if (!_eventQueue.isEmpty()) {
+                DEEvent next = _eventQueue.get();
+                if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
+                    _microstep = 0;
+                }
+            }
+        }
         boolean stop = ((BooleanToken) stopWhenQueueIsEmpty.getToken())
                 .booleanValue();
 
@@ -908,6 +958,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // if this director is not at the top level.
         boolean result = super.prefire();
         // Have to also do this for the microstep.
+        /* NOTE: No, this is no longer the case.
+         * The microstep should start at the lowest value of the microstep
+         * in the event queue. Unless there is an enclosed Continuous model,
+         * this will normally be 1.
         if (isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
@@ -919,11 +973,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 }
             }
         }
-
-        if (_debugging) {
-            _debug("Current time is: (" + getModelTime() + ", " + getIndex()
-                    + ")");
-        }
+         */
 
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
@@ -1249,12 +1299,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                   // If the next event is in the future time,
                   // jump out of the big while loop in fire() and
                   // proceed to postfire().
-                  // NOTE: we reset the microstep to 0 because it is
-                  // the contract that if the event queue has some events
-                  // at a time point, the first event must have the
-                  // microstep as 0. See the
-                  // _enqueueEvent(Actor actor, Time time) method.
-                  _microstep = 0;
                   return false;
               } else if (next.microstep() > _microstep) {
                   // If the next event has a bigger microstep,
@@ -1302,7 +1346,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     /** Put a pure event into the event queue to schedule the given actor to
      *  fire at the specified timestamp.
      *  <p>
-     *  The default microstep for the queued event is equal to zero,
+     *  The default microstep for the queued event is equal to one,
      *  unless the time is equal to the current time, where the microstep
      *  will be the current microstep plus one.
      *  </p><p>
@@ -1314,11 +1358,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *
      *  @param actor The actor to be fired.
      *  @param time The timestamp of the event.
+     *  @param defaultMicrostep If the requested firing time is in the future,
+     *   then use this defaultMicrostep for the microstep.
      *  @exception IllegalActionException If the time argument is less than
      *  the current model time, or the depth of the actor has not be calculated,
      *  or the new event can not be enqueued.
      */
-    protected void _enqueueEvent(Actor actor, Time time)
+    protected void _enqueueEvent(Actor actor, Time time, int defaultMicrostep)
             throws IllegalActionException {
         if ((_eventQueue == null)
                 || ((_disabledActors != null) && _disabledActors
@@ -1326,18 +1372,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             return;
         }
 
-        // Adjust the microstep.
-        int microstep = 0;
-
-        if (time.compareTo(getModelTime()) == 0) {
+        // Adjust the microstep if it is less than or equal to the current
+        // microstep.
+        int microstep = defaultMicrostep;
+        if (time.compareTo(getModelTime()) == 0 && microstep <= _microstep) {
             // If during initialization, do not increase the microstep.
             // This is based on the assumption that an actor only requests
             // one firing during initialization. In fact, if an actor requests
             // several firings at the same time,
             // only the first request will be granted.
-            if (_isInitializing) {
-                microstep = _microstep;
-            } else {
+            if (!_isInitializing) {
                 microstep = _microstep + 1;
             }
         } else if (time.compareTo(getModelTime()) < 0) {
@@ -1359,15 +1403,17 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         _eventQueue.put(newEvent);
     }
 
-    /** Put a trigger event into the event queue.
-     *  <p>
-     *  The trigger event has the same timestamp as that of the director.
-     *  The microstep of this event is always equal to the current microstep
-     *  of this director. The depth for the queued event is the
-     *  depth of the destination IO port.
+    /** Put a trigger event into the event queue. A trigger event is
+     *  an event destined for the specified port that will convey
+     *  data to that port at the current time and microstep.
+     *  The depth for the queued event is the
+     *  depth of the destination IO port. The microstep of
+     *  the enqueued event will be the greater of the current
+     *  microstep and 1. That is, an event destined for a port
+     *  is never queued with microstep less than 1.
      *  </p><p>
-     *  If the event queue is not ready or the actor contains the destination
-     *  port is disabled, do nothing.</p>
+     *  If the event queue is not ready or the actor containing the destination
+     *  port is disabled, do nothing.
      *
      *  @param ioPort The destination IO port.
      *  @exception IllegalActionException If the time argument is not the
@@ -1383,18 +1429,47 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                         .contains(actor))) {
             return;
         }
+        
+        /* NOTE: We would like to throw an exception if the microstep is
+         * zero, but this breaks models with CT inside DE.
+         * The CTDirector does not have a notion of superdense time.
+         * Ideally, we could detect that is coming from a submodel that
+         * does not implement SuperdenseTimeDirector, and hence doesn't
+         * know any better.
+         * Unfortunately, it is rather difficult to determine where
+         * the event originated, since it could have come from arbitrarily
+         * deep in the hiearchy. At a minimum, this would create
+         * a dependency on domains/modal.
+        if (_microstep < 1) {
+            throw new IllegalActionException(this, ioPort.getContainer(),
+                    "Received a non-discrete event at port "
+                    + ioPort.getName()
+                    + " of actor "
+                    + ioPort.getContainer().getName()
+                    + ". Discrete events are required to have microstep greater than zero,"
+                    + " but this one has microstep "
+                    + _microstep
+                    + ". Perhaps a Continuous submodel is sending a continuous rather than"
+                    + " discrete signal?");
+        }
+         */
 
         int depth = _getDepthOfIOPort(ioPort);
+        
+        int microstep = _microstep;
+        if (microstep < 1) {
+            microstep = 1;
+        }
 
         if (_debugging) {
             _debug("enqueue a trigger event for ",
                     ((NamedObj) actor).getName(), " time = " + getModelTime()
-                            + " microstep = " + _microstep + " depth = "
+                            + " microstep = " + microstep + " depth = "
                             + depth);
         }
 
         // Register this trigger event.
-        DEEvent newEvent = new DEEvent(ioPort, getModelTime(), _microstep,
+        DEEvent newEvent = new DEEvent(ioPort, getModelTime(), microstep,
                 depth);
         _eventQueue.put(newEvent);
     }
@@ -1978,6 +2053,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
 
                     // Advance the current microstep to the event microstep.
                     _microstep = lastFoundEvent.microstep();
+                    if (_debugging) {
+                        _debug("Current time is: (" + currentTime + ", " + _microstep + ")");
+                    }
                 }
 
                 // Exceeding stop time means the current time is strictly
@@ -2054,7 +2132,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     protected boolean _isInitializing = false;
 
     /** The current microstep. */
-    protected int _microstep = 0;
+    protected int _microstep = 1;
 
     /** Set to true when it is time to end the execution. */
     protected boolean _noMoreActorsToFire = false;
@@ -2128,7 +2206,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         }
 
         // Enqueue a pure event to fire the container of this director.
-        _fireContainerAt(nextEvent.timeStamp());
+        _fireContainerAt(nextEvent.timeStamp(), nextEvent.microstep());
     }
 
     ///////////////////////////////////////////////////////////////////

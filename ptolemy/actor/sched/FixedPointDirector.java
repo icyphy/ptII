@@ -34,7 +34,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -262,7 +261,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                     + iterationCount + " iterations.");
         }
     }
-
+    
     /** Return the current index of the director.
      *  The current index is a portion of the superdense time.
      *  Superdense time means that time is a real value and an index,
@@ -314,6 +313,9 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         // NOTE: Some (weird) directors pretend they are not embedded even
         // if they are (e.g. in Ptides), so we call _isEmbedded() to give
         // the subclass the option of pretending it is not embedded.
+        /* NOTE: No, this doesn't make sense. Initialization should
+         * reset the microstep to zero, otherwise actors like clocks
+         * and PeriodicSampler won't work properly.
         if (isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
@@ -325,6 +327,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                 }
             }
         }
+         */
 
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1L;

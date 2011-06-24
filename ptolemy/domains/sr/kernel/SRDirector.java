@@ -231,12 +231,13 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  If not, it returns current time plus the period.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
+     *  @param microstep The microstep (ignored by this director).
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      *  @return Either the requested time or the current time plus the
      *  period.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         return _periodicDirectorHelper.fireAt(actor, time);
     }
 

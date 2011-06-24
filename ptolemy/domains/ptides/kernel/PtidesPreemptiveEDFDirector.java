@@ -94,7 +94,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _pureEventDeadlines = new HashMap<NamedObj, Time>();
+        
     }
 
     /** Clear what's stored in _eventToProcess, and call the super method
@@ -104,7 +104,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
+        _pureEventDeadlines = new HashMap<NamedObj, Time>();
         _eventToProcess = null;
         _calculateDeadline();
 

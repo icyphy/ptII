@@ -543,10 +543,11 @@ public class RealTimeComposite extends MirrorComposite {
          *  container.
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
+         *  @param microstep The microstep.
          *  @return The time at which the actor passed as an argument
          *   will be fired.
          */
-        public Time fireAt(Actor actor, Time time)
+        public Time fireAt(Actor actor, Time time, int microstep)
                 throws IllegalActionException {
             Time result = time;
             Director director = RealTimeComposite.this.getExecutiveDirector();
@@ -556,7 +557,7 @@ public class RealTimeComposite extends MirrorComposite {
                             ._debug("---- Actor requests firing at time "
                                     + time + ": " + actor.getFullName());
                 }
-                result = director.fireAt(RealTimeComposite.this, time);
+                result = director.fireAt(RealTimeComposite.this, time, microstep);
             }
             if (actor != RealTimeComposite.this) {
                 // The fireAt() request is coming from the inside, so
