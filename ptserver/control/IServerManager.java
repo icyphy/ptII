@@ -125,11 +125,4 @@ public interface IServerManager {
      *  stop the simulation.
      */
     void stop(Ticket ticket) throws IllegalActionException;
-    
-    /**
-     * TODO
-     * @return
-     * @throws IllegalActionException
-     */
-    public LinkedHashMap<String, String> getTokenHandlerMap() throws IllegalActionException;
 }

@@ -147,13 +147,4 @@ public class ServerManager extends HessianServlet implements IServerManager {
     public void stop(Ticket ticket) throws IllegalActionException {
         PtolemyServer.getInstance().stop(ticket);
     }
-
-    /**
-     * TODO
-     * @see ptserver.control.IServerManager#getTokenHandlerMap()
-     */
-    public LinkedHashMap<String, String> getTokenHandlerMap()
-            throws IllegalActionException {
-        return PtolemyServer.getInstance().getTokenHandlerMap();
-    }
 }
