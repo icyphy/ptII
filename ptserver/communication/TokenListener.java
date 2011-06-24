@@ -159,7 +159,7 @@ public class TokenListener implements MqttSimpleCallback {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-        /** Send the token back via the model's publisher;
+        /** Send the token back via the model's publisher.
          *  @see java.lang.Runnable#run()
          */
         public void run() {
