@@ -40,24 +40,27 @@ import ptserver.data.TokenParser;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordTokenHandler
-/**
- * RecordTokenHandler converts RecordToken to/from byte stream
+
+/** RecordTokenHandler converts RecordToken to/from byte stream.
  *
- * @author ishwinde
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- *
+ *  @author ishwinde
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class RecordTokenHandler implements TokenHandler<RecordToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert RecordToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @exception IllegalActionException
+    /** Convert RecordToken to a byte stream using an algorithm defined in the DataOutputStream.
      * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+     *
+     *  @param token The token to be converted to the byte stream.
+     *  @param outputStream The byte stream to write the token to.
+     *  @exception IOException If cannot write to the stream.
+     *  @exception IllegalActionException If there is a problem loading the mapping from the
+     *  properties file. 
      */
     public void convertToBytes(RecordToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
@@ -79,10 +82,15 @@ public class RecordTokenHandler implements TokenHandler<RecordToken> {
 
     }
 
-    /**
-     * Read from the inputStream and converts it to the RecordToken.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read from the inputStream and converts it to the RecordToken.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+     *  
+     *  @param inputStream The stream that contains the token.
+     *  @param tokenType The type of the token. Should be UnionToken or it's derivatives. 
+     *  @return The token that arrived on the stream.
+     *  @exception IOException If the stream cannot be read.
+     *  @exception IllegalActionException If there is a problem loading the mapping from the
+     *  properties file. 
      */
     public RecordToken convertToToken(DataInputStream inputStream,
             Class<? extends RecordToken> tokenType)
