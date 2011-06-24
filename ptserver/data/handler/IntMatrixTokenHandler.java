@@ -1,5 +1,4 @@
-/*
- IntMatrixTokenHandler converts IntMatrixToken to/from byte stream
+/* IntMatrixTokenHandler converts IntMatrixToken to/from byte stream.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -27,7 +26,6 @@
  */
 package ptserver.data.handler;
 
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -39,76 +37,67 @@ import ptserver.data.TokenParser;
 
 ///////////////////////////////////////////////////////////////////
 //// IntMatrixTokenHandler
-/**
- * IntMatrixTokenHandler converts IntMatrixToken to/from byte stream
- *
- * @author ishwinde
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- *
+
+/** IntMatrixTokenHandler converts IntMatrixToken to/from byte stream.
+ *  @author ishwinde
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class IntMatrixTokenHandler implements TokenHandler<IntMatrixToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert IntMatrixToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the IntMatrixToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(IntMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
 
-        int colunmCount = token.getColumnCount();
-        int rowCount = token.getRowCount();
+        outputStream.writeInt(token.getRowCount());
+        outputStream.writeInt(token.getColumnCount());
 
-        outputStream.writeInt(rowCount);
-        outputStream.writeInt(colunmCount);
-
-        for (int row = 0; row < rowCount; row++) {
-            for (int column = 0; column < colunmCount; column++) {
-
-                IntToken elementToken = (IntToken)token.getElementAsToken(row, column);
-
+        for (int row = 0; row < token.getRowCount(); row++) {
+            for (int column = 0; column < token.getColumnCount(); column++) {
+                IntToken elementToken = (IntToken) token.getElementAsToken(row,
+                        column);
                 TokenParser.getInstance().convertToBytes(elementToken,
                         outputStream);
-
             }
-
         }
-
     }
 
-    /**
-     * Read from the inputStream and converts it to the IntMatrixToken.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read an IntMatrixToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated IntMatrixToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public IntMatrixToken convertToToken(DataInputStream inputStream,
-            Class<? extends IntMatrixToken> tokenType)
-            throws IOException, IllegalActionException {
+            Class<? extends IntMatrixToken> tokenType) throws IOException,
+            IllegalActionException {
 
         int rowCount = inputStream.readInt();
         int colunmCount = inputStream.readInt();
-
         int[][] matrix = new int[rowCount][colunmCount];
 
         for (int row = 0; row < rowCount; row++) {
             for (int column = 0; column < colunmCount; column++) {
-
-                IntToken elementToken = (IntToken)TokenParser.getInstance().convertToToken(
-                        inputStream);
-
+                IntToken elementToken = (IntToken) TokenParser.getInstance()
+                        .convertToToken(inputStream);
                 matrix[row][column] = elementToken.intValue();
-
             }
-
         }
 
         return new IntMatrixToken(matrix);
-
     }
 }

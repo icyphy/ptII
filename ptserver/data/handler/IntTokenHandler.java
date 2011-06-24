@@ -1,5 +1,4 @@
-/*
- IntTokenHandler converts IntToken to/from byte stream
+/* IntTokenHandler converts IntToken to/from byte stream.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -35,36 +34,39 @@ import ptolemy.data.IntToken;
 
 ///////////////////////////////////////////////////////////////////
 //// IntTokenHandler
-/**
- * IntTokenHandler converts IntToken to/from byte stream
- *
- * @author ahuseyno
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
- *
+
+/** IntTokenHandler converts IntToken to/from byte stream.
+ *  @author ahuseyno
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class IntTokenHandler implements TokenHandler<IntToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert IntToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the IntToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(IntToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeInt(token.intValue());
     }
 
-    /**
-     * Reads a long from the inputStream and converts it to the IntToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read an IntToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated IntToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public IntToken convertToToken(DataInputStream inputStream,
-            Class<? extends IntToken> tokenType)
-            throws IOException {
+            Class<? extends IntToken> tokenType) throws IOException {
         return new IntToken(inputStream.readInt());
     }
 }

@@ -1,5 +1,4 @@
-/*
- FloatTokenHandler converts FloatToken to/from byte stream
+/* FloatTokenHandler converts FloatToken to/from byte stream.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -35,36 +34,39 @@ import ptolemy.data.FloatToken;
 
 //////////////////////////////////////////////////////////////////////////
 //// FloatTokenHandler
-/**
- * FloatTokenHandler converts FloatToken to/from byte stream
- * 
- * @author ishwinde
- * @version $Id $ 
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- * 
+
+/** FloatTokenHandler converts FloatToken to/from byte stream.
+ *  @author ishwinde
+ *  @version $Id $ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class FloatTokenHandler implements TokenHandler<FloatToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert FloatToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the FloatToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(FloatToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeFloat(token.floatValue());
     }
 
-    /** 
-     * Reads a float from the inputStream and converts it to the FloatToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read an FloatToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated FloatToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public FloatToken convertToToken(DataInputStream inputStream,
-            Class<? extends FloatToken> tokenType)
-            throws IOException {
+            Class<? extends FloatToken> tokenType) throws IOException {
         return new FloatToken(inputStream.readFloat());
     }
 }

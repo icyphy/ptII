@@ -1,5 +1,4 @@
-/*
- RecordTokenHandler converts RecordToken to/from byte stream
+/* RecordTokenHandler converts RecordToken to/from byte stream.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -31,7 +30,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Set;
 
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
@@ -42,71 +40,61 @@ import ptserver.data.TokenParser;
 //// RecordTokenHandler
 
 /** RecordTokenHandler converts RecordToken to/from byte stream.
- *
  *  @author ishwinde
  *  @version $Id$
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (ishwinde)
  *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class RecordTokenHandler implements TokenHandler<RecordToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Convert RecordToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
-     *
-     *  @param token The token to be converted to the byte stream.
-     *  @param outputStream The byte stream to write the token to.
-     *  @exception IOException If cannot write to the stream.
-     *  @exception IllegalActionException If there is a problem loading the mapping from the
-     *  properties file. 
+    /** Write the RecordToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(RecordToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
-        int size = token.length();
 
-        Set labelSet = token.labelSet();
-        outputStream.writeInt(size);
+        outputStream.writeInt(token.length());
 
-        Iterator iterator = labelSet.iterator();
-
+        Iterator iterator = token.labelSet().iterator();
         while (iterator.hasNext()) {
             String label = (String) iterator.next();
             Token valueToken = token.get(label);
             outputStream.writeUTF(label);
 
             TokenParser.getInstance().convertToBytes(valueToken, outputStream);
-
         }
-
     }
 
-    /** Read from the inputStream and converts it to the RecordToken.
-     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
-     *  
-     *  @param inputStream The stream that contains the token.
-     *  @param tokenType The type of the token. Should be UnionToken or it's derivatives. 
-     *  @return The token that arrived on the stream.
+    /** Read an RecordToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated RecordToken object.
      *  @exception IOException If the stream cannot be read.
-     *  @exception IllegalActionException If there is a problem loading the mapping from the
-     *  properties file. 
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public RecordToken convertToToken(DataInputStream inputStream,
-            Class<? extends RecordToken> tokenType)
-            throws IOException, IllegalActionException {
+            Class<? extends RecordToken> tokenType) throws IOException,
+            IllegalActionException {
 
         int size = inputStream.readInt();
         String[] labels = new String[size];
         Token[] tokens = new Token[size];
 
         for (int index = 0; index < size; index++) {
-
             labels[index] = inputStream.readUTF();
             tokens[index] = TokenParser.getInstance().convertToToken(
                     inputStream);
-
         }
+
         return new RecordToken(labels, tokens);
     }
 }

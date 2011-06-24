@@ -43,12 +43,13 @@ import ptserver.data.TokenParser;
  *
  * @author ishwinde
  * @version $Id $
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
  *
  */
-public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken> {
+public class DoubleMatrixTokenHandler implements
+        TokenHandler<DoubleMatrixToken> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -88,8 +89,8 @@ public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken>
      * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public DoubleMatrixToken convertToToken(DataInputStream inputStream,
-            Class<? extends DoubleMatrixToken> tokenType)
-            throws IOException, IllegalActionException {
+            Class<? extends DoubleMatrixToken> tokenType) throws IOException,
+            IllegalActionException {
 
         int rowCount = inputStream.readInt();
         int colunmCount = inputStream.readInt();
@@ -99,8 +100,8 @@ public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken>
         for (int row = 0; row < rowCount; row++) {
             for (int column = 0; column < colunmCount; column++) {
 
-                DoubleToken elementToken = (DoubleToken) TokenParser.getInstance()
-                        .convertToToken(inputStream);
+                DoubleToken elementToken = (DoubleToken) TokenParser
+                        .getInstance().convertToToken(inputStream);
 
                 matrix[row][column] = elementToken.doubleValue();
 

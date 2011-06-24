@@ -35,37 +35,39 @@ import ptolemy.data.LongToken;
 
 ///////////////////////////////////////////////////////////////////
 //// LongTokenHandler
-/**
- * Convert a LongToken to/from byte stream format for communication over MQTT protocol with a remote model.
- *
- * @author Anar Huseynov
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+
+/** Convert a LongToken to/from byte stream format for communication over MQTT protocol with a remote model. *
+ *  @author Anar Huseynov
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class LongTokenHandler implements TokenHandler<LongToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert a LongToken to a byte stream using an algorithm defined into the DataOutputStream.
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
-     * @exception IOException if there is a problem writing to the stream
+    /** Write the LongToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(LongToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeLong(token.longValue());
     }
 
-    /**
-     * Reads a long from the inputStream and converts it to the LongToken.
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
-     * @exception IOException if there is a problem reading from the stream
+    /** Read an LongToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated LongToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public LongToken convertToToken(DataInputStream inputStream,
-            Class<? extends LongToken> tokenType)
-            throws IOException {
+            Class<? extends LongToken> tokenType) throws IOException {
         return new LongToken(inputStream.readLong());
     }
 }
