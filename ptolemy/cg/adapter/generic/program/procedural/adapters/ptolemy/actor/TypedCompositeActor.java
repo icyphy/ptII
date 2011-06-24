@@ -414,6 +414,34 @@ public class TypedCompositeActor extends
         return sharedCode;
     }
 
+    /** Set up adapters contained by the composite actor.
+     *  This method is run very early in the code generation sequence,
+     *  so adapters that need to set up code generation-time variables
+     *  may have setupAdapter() methods that need to be invoked.
+     *  Variables and shared code that are to be generated should be
+     *  in generateSharedCode() or other methods, not this method.
+     *  @exception IllegalActionException If the adapter associated with
+     *  an actor throws it while being set up.
+     */
+    @Override
+    public void setupAdapter() throws IllegalActionException {
+
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
+            adapter.setupAdapter();
+        }
+
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        directorAdapter.setupAdapter();
+
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

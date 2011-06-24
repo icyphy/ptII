@@ -11,11 +11,12 @@ if ($param(scaleOnLeft)) {
 }
 /**/
 
-/***sharedScaleOnLeftBlock***/
+/***Scale_scaleOnLeftBlock***/
 Token Scale_scaleOnLeft(Token input, double factor) {
     int i;
     Token result = new Token();
 
+#ifdef PTCG_TYPE_Array
     if (input.type == TYPE_Array) {
             result = $new(Array(((Array)(input.payload)).size, 0));
 
@@ -25,16 +26,22 @@ Token Scale_scaleOnLeft(Token input, double factor) {
 
         return result;
     } else {
+#endif
+
         return $tokenFunc($new(Double(factor))::multiply(input));
+
+#ifdef PTCG_TYPE_Array
     }
+#endif
 }
 /**/
 
-/***sharedScaleOnRightBlock***/
+/***Scale_scaleOnRightBlock***/
 Token Scale_scaleOnRight(Token input, double factor) {
     int i;
     Token result = new Token();
 
+#ifdef PTCG_TYPE_Array
     if (input.type == TYPE_Array) {
             result = $new(Array(((Array)(input.payload)).size, 0));
 
@@ -44,7 +51,12 @@ Token Scale_scaleOnRight(Token input, double factor) {
 
         return result;
     } else {
+#endif
+
         return $tokenFunc(input::multiply($new(Double(factor))));
+
+#ifdef PTCG_TYPE_Array
     }
+#endif
 }
 /**/
