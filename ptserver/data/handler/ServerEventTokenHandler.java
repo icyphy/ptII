@@ -58,11 +58,10 @@ public class ServerEventTokenHandler implements TokenHandler<ServerEventToken> {
      *  @exception IOException If the stream cannot be written.
      *  @exception IllegalActionException Not thrown in this class.
      */
-    @Override
     public void convertToBytes(ServerEventToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
-        outputStream.writeInt((int) token.getEventType().ordinal());
+        outputStream.writeInt(token.getEventType().ordinal());
         outputStream.writeUTF(token.getMessage());
     }
 
@@ -72,7 +71,6 @@ public class ServerEventTokenHandler implements TokenHandler<ServerEventToken> {
      *  @exception IOException If the stream cannot be read.
      *  @exception IllegalActionException Not thrown in this class.
      */
-    @Override
     public ServerEventToken convertToToken(DataInputStream inputStream,
             Class<? extends ServerEventToken> tokenType) throws IOException,
             IllegalActionException {
