@@ -176,25 +176,38 @@ public abstract class RemoteActor extends TypedAtomicActor {
     private void _replaceConnectingEntities(ComponentEntity targetEntity,
             HashMap<String, Type> portTypes) throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
+
+        for (Object attributeObject : targetEntity.attributeList()) {
+            Attribute attribute = (Attribute) attributeObject;
+            Attribute clonedAttribute = (Attribute) attribute.clone(attribute
+                    .workspace());
+            clonedAttribute.setContainer(this);
+            clonedAttribute.setPersistent(true);
+        }
+
         for (Object portObject : targetEntity.portList()) {
             if (!(portObject instanceof IOPort)) {
                 continue;
             }
+
             IOPort port = (IOPort) portObject;
             for (Object relationObject : port.linkedRelationList()) {
                 Relation relation = (Relation) relationObject;
                 List<Port> linkedPortList = relation.linkedPortList(port);
                 IOPort remotePort = null;
+
                 for (Port connectingPort : linkedPortList) {
                     if (connectingPort instanceof IOPort
                             && _isValidConnectingPort((IOPort) connectingPort)) {
                         remotePort = (IOPort) port.clone(port.workspace());
+
                         // FIXME: what if the port is both input and output?
                         remotePort.setInput(!port.isInput());
                         remotePort.setOutput(!port.isOutput());
                         remotePort.setPersistent(true);
                         remotePort.setContainer(this);
                         remotePort.setMultiport(false);
+
                         if (remotePort instanceof TypedIOPort) {
                             Type type = portTypes.get(port.getFullName());
                             ((TypedIOPort) remotePort).setTypeEquals(type);
@@ -202,9 +215,11 @@ public abstract class RemoteActor extends TypedAtomicActor {
                                     remotePort, "targetPortName");
                             targetPortName.setExpression(port.getFullName());
                         }
+
                         break;
                     }
                 }
+
                 relation.unlinkAll();
                 if (remotePort != null) {
                     port.link(relation);
