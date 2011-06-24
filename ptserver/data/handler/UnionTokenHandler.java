@@ -31,7 +31,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ptolemy.data.Token;
 import ptolemy.data.UnionToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.TokenParser;
@@ -40,7 +39,6 @@ import ptserver.data.TokenParser;
 //// UnionTokenHandler
 
 /** UnionTokenHandler converts UnionToken to/from byte stream.
- *
  *  @author ishwinde
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -48,43 +46,36 @@ import ptserver.data.TokenParser;
  *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class UnionTokenHandler implements TokenHandler<UnionToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Convert UnionToken to a byte stream using an algorithm defined in the DataOutputStream.
+    /** Write the UnionToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
-     *  
-     *  @param token The token to be converted to the byte stream.
-     *  @param outputStream The byte stream to write the token to.
-     *  @exception IOException If cannot write to the stream.
-     *  @exception IllegalActionException If there is a problem loading the mapping from the
-     *  properties file. 
      */
     public void convertToBytes(UnionToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
 
         outputStream.writeUTF(token.label());
         TokenParser.getInstance().convertToBytes(token.value(), outputStream);
-
     }
 
-    /** Read from the inputStream and converts it to the UnionToken.
-     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
-
-     *  @param inputStream The stream that contains the token.
-     *  @param tokenType The type of the token. Should be UnionToken or it's derivatives. 
-     *  @return The token that arrived on the stream.
+    /** Read a UnionToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated UnionToken object.
      *  @exception IOException If the stream cannot be read.
-     *  @exception IllegalActionException If there is a problem loading the mapping from the
-     *  properties file. 
+     *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public UnionToken convertToToken(DataInputStream inputStream,
-            Class<? extends UnionToken> tokenType)
-            throws IOException, IllegalActionException {
-        String label = inputStream.readUTF();
-        Token value = TokenParser.getInstance().convertToToken(
-                inputStream);
-        UnionToken token = new UnionToken(label,value);
-        return token;
+            Class<? extends UnionToken> tokenType) throws IOException,
+            IllegalActionException {
+        return new UnionToken(inputStream.readUTF(), TokenParser.getInstance()
+                .convertToToken(inputStream));
     }
 }

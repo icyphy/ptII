@@ -1,5 +1,4 @@
-/*
- LongMatrixTokenHandler converts LongMatrixToken to/from byte stream
+/* LongMatrixTokenHandler converts LongMatrixToken to/from byte stream.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -38,76 +37,67 @@ import ptserver.data.TokenParser;
 
 ///////////////////////////////////////////////////////////////////
 //// LongMatrixTokenHandler
-/**
- * LongMatrixTokenHandler converts LongMatrixToken to/from byte stream
- *
- * @author ishwinde
- * @version $Id $
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- *
+
+/** LongMatrixTokenHandler converts LongMatrixToken to/from byte stream.
+ *  @author ishwinde
+ *  @version $Id $
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert LongMatrixToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the LongMatrixToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(LongMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
 
-        int rowCount = token.getRowCount();
-        int colunmCount = token.getColumnCount();
+        outputStream.writeInt(token.getRowCount());
+        outputStream.writeInt(token.getColumnCount());
 
-        outputStream.writeInt(rowCount);
-        outputStream.writeInt(colunmCount);
-
-        for (int row = 0; row < rowCount; row++) {
-            for (int column = 0; column < colunmCount; column++) {
-
-                LongToken elementToken = (LongToken) token
-                        .getElementAsToken(row, column);
-
+        for (int row = 0; row < token.getRowCount(); row++) {
+            for (int column = 0; column < token.getColumnCount(); column++) {
+                LongToken elementToken = (LongToken) token.getElementAsToken(
+                        row, column);
                 TokenParser.getInstance().convertToBytes(elementToken,
                         outputStream);
-
             }
-
         }
-
     }
 
-    /**
-     * Read from the inputStream and converts it to the LongMatrixToken.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read a LongMatrixToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated LongMatrixToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public LongMatrixToken convertToToken(DataInputStream inputStream,
-            Class<? extends LongMatrixToken> tokenType)
-            throws IOException, IllegalActionException {
+            Class<? extends LongMatrixToken> tokenType) throws IOException,
+            IllegalActionException {
 
         int rowCount = inputStream.readInt();
-        int colunmCount = inputStream.readInt();
-
-        long[][] matrix = new long[rowCount][colunmCount];
+        int columnCount = inputStream.readInt();
+        long[][] matrix = new long[rowCount][columnCount];
 
         for (int row = 0; row < rowCount; row++) {
-            for (int column = 0; column < colunmCount; column++) {
-
+            for (int column = 0; column < columnCount; column++) {
                 LongToken elementToken = (LongToken) TokenParser.getInstance()
                         .convertToToken(inputStream);
-
                 matrix[row][column] = elementToken.longValue();
-
             }
-
         }
-        return new LongMatrixToken(matrix);
 
+        return new LongMatrixToken(matrix);
     }
 }

@@ -31,7 +31,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ptolemy.data.BooleanToken;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanTokenHandler
@@ -53,7 +52,6 @@ public class BooleanTokenHandler implements TokenHandler<BooleanToken> {
      *  @param token Token to be converted to bytes.
      *  @param outputStream The stream to write to.
      *  @exception IOException If the stream cannot be written.
-     *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(BooleanToken token, DataOutputStream outputStream)

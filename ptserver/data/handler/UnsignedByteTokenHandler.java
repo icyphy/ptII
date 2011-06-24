@@ -37,40 +37,38 @@ import ptolemy.data.UnsignedByteToken;
 //// UnsignedByteTokenHandler
 /**
  * UnsignedByteTokenHandler converts UnsignedByteToken to/from byte stream.
- *
  * @author ishwinde
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
- *
  */
-public class UnsignedByteTokenHandler implements TokenHandler<UnsignedByteToken> {
+public class UnsignedByteTokenHandler implements
+        TokenHandler<UnsignedByteToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Convert UnsignedByteToken to a byte stream using an algorithm defined in the DataOutputStream.
+    /** Write the UnsignedByteToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
-     *  
-     *  @param token The token to be converted to the byte stream.
-     *  @param outputStream The byte stream to write the token to.
      */
-    public void convertToBytes(UnsignedByteToken token, DataOutputStream outputStream)
-            throws IOException {
+    public void convertToBytes(UnsignedByteToken token,
+            DataOutputStream outputStream) throws IOException {
         outputStream.writeByte(token.byteValue());
     }
 
-    /** Read from the inputStream and converts it to the UnsignedByteToken.
-     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
-     *  
-     *  @param inputStream The stream that contains the token.
-     *  @param tokenType The type of the token. Should be UnsignedByteToken or it's derivatives. 
-     *  @return The token that arrived on the stream.
+    /** Read a UnsignedByteToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated UnsignedByteToken object.
      *  @exception IOException If the stream cannot be read.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public UnsignedByteToken convertToToken(DataInputStream inputStream,
-            Class<? extends UnsignedByteToken> tokenType)
-            throws IOException {
+            Class<? extends UnsignedByteToken> tokenType) throws IOException {
         return new UnsignedByteToken(inputStream.readByte());
     }
 }
