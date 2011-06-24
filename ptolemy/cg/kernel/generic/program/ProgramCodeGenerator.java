@@ -1228,6 +1228,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // can be overridden in derived classes. We mostly invoke
         // these methods in the order that the code will be
         // executed, except for some exceptions as noted.
+
+        // Perform any setup in the adapter.  EmbeddedCodeActor uses this.
+        _setupAdapter();
         String preinitializeCode = _generatePreinitializeCode();
 
         // Typically, the preinitialize code consists of variable
@@ -1272,9 +1275,19 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String closingExitCode = generateClosingExitCode();
 
         String variableInitCode = generateVariableInitialization();
+
+        // Generate shared code.  Some adapter optionally add methods
+        // to the shared code block, so we generate the shared code as
+        // late as possible.  However, we have to generateSharedCode()
+        // before generateTypeConvertCode() so that any polymorphic
+        // codegen token methods used in the shared code are recorded.  See
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml 
+        String sharedCode = _generateSharedCode();
+
         // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
+
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).  Also, we want to generate the type convert code
         // so that we know if we need to import Array etc.
@@ -1282,9 +1295,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 "Variables", generateVariableDeclaration());
 
         //String globalCode = generateGlobalCode();
-
-        // The code generation methods above may require generated code.
-        String sharedCode = _generateSharedCode();
 
         // Include files depends the generated code, so it
         // has to be generated after everything.
@@ -1617,6 +1627,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         _newTypesUsed.clear();
         _tokenFuncUsed.clear();
         _typeFuncUsed.clear();
+    }
+
+    /** Perform any setup or initialization of the adapter.
+     *  Note that this is not the Ptolemy initialize() method,
+     *  this method merely sets up any codegen-time variables 
+     *  in the adapters.
+     *  @exception IllegalActionException If an error occurrs while
+     *   initializing an adapter.
+     */
+    protected void _setupAdapter() throws IllegalActionException {
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        adapter.setupAdapter();
     }
 
     /** Split the variable declaration into possibly two sections.

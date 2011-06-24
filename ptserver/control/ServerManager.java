@@ -80,11 +80,22 @@ public class ServerManager extends HessianServlet implements IServerManager {
 
     /** Get a listing of the layouts for a specific model available on the
      *  server in either the database or the local file system.
+     *  @param url Address of the model file for which layouts are found.
      *  @return An array of URLs for the layouts available for the model on the server.
      *  @exception IllegalActionException If there was a problem discovering available layouts.
      */
     public String[] getLayoutListing(String url) throws IllegalActionException {
         return PtolemyServer.getInstance().getLayoutListing(url);
+    }
+
+    /** Get the token handlers loaded on the server so that they can be
+     *  set up on the client.
+     *  @return The token handler map from the server.
+     *  @exception IllegalActionException If the server was unable to get the handler map.
+     */
+    public LinkedHashMap<String, String> getTokenHandlerMap()
+            throws IllegalActionException {
+        return PtolemyServer.getInstance().getTokenHandlerMap();
     }
 
     /** Open a model with the provided model URL and wait for the
@@ -96,7 +107,8 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      */
-    public RemoteModelResponse open(String modelUrl, String layoutUrl) throws IllegalActionException {
+    public RemoteModelResponse open(String modelUrl, String layoutUrl)
+            throws IllegalActionException {
         return PtolemyServer.getInstance().open(modelUrl, layoutUrl);
     }
 
@@ -134,7 +146,6 @@ public class ServerManager extends HessianServlet implements IServerManager {
      */
     public void stop(Ticket ticket) throws IllegalActionException {
         PtolemyServer.getInstance().stop(ticket);
-
     }
 
     /**

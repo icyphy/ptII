@@ -54,29 +54,38 @@ public interface IServerManager {
      *  @exception IllegalActionException If the server was unable to
      *  destroy the simulation thread.
      */
-    public void close(Ticket ticket) throws IllegalActionException;
+    void close(Ticket ticket) throws IllegalActionException;
 
     /** Download the selected model to the client.
      *  @param url URL of the model file.
      *  @return Byte array containing the model data.
      *  @exception IllegalActionException If the server encountered an error opening the model file.
      */
-    public byte[] downloadModel(String url) throws IllegalActionException;
+    byte[] downloadModel(String url) throws IllegalActionException;
 
     /** Get a listing of the models available on the server in either the
      *  database or the local file system.
      *  @return An array of URLs for the models available on the server.
      *  @exception IllegalActionException If there was a problem discovering available models.
      */
-    public String[] getModelListing() throws IllegalActionException;
+    String[] getModelListing() throws IllegalActionException;
 
     /** Get a listing of the layouts for a specific model available on the
      *  server in either the database or the local file system.
+     *  @param url Address of the model file for which layouts are found.
      *  @return An array of URLs for the layouts available for the model on the server.
      *  @exception IllegalActionException If there was a problem discovering available layouts.
      */
-    public String[] getLayoutListing(String url) throws IllegalActionException;
-    
+    String[] getLayoutListing(String url) throws IllegalActionException;
+
+    /** Get the token handlers loaded on the server so that they can be
+     *  set up on the client.
+     *  @return The token handler map from the server.
+     *  @exception IllegalActionException If the server was unable to get the handler map.
+     */
+    LinkedHashMap<String, String> getTokenHandlerMap()
+            throws IllegalActionException;
+
     /** Open a model with the provided model URL and wait for the
      *  user to request the execution of the simulation.
      *  @param modelUrl The path to the model file
@@ -86,35 +95,36 @@ public interface IServerManager {
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      */
-    public RemoteModelResponse open(String modelUrl, String layoutUrl) throws IllegalActionException;
+    RemoteModelResponse open(String modelUrl, String layoutUrl)
+            throws IllegalActionException;
 
     /** Pause the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to
      *  pause the running simulation.
      */
-    public void pause(Ticket ticket) throws IllegalActionException;
+    void pause(Ticket ticket) throws IllegalActionException;
 
     /** Resume the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to
      *  resume the execution of the simulation.
      */
-    public void resume(Ticket ticket) throws IllegalActionException;
+    void resume(Ticket ticket) throws IllegalActionException;
 
     /** Start the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to
      *  start the simulation.
      */
-    public void start(Ticket ticket) throws IllegalActionException;
+    void start(Ticket ticket) throws IllegalActionException;
 
     /** Stop the execution of the selected simulation.
      *  @param ticket The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to
      *  stop the simulation.
      */
-    public void stop(Ticket ticket) throws IllegalActionException;
+    void stop(Ticket ticket) throws IllegalActionException;
     
     /**
      * TODO

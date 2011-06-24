@@ -49,6 +49,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptolemy.actor.Manager.State;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelListener;
@@ -98,7 +99,7 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
  * @Pt.ProposedRating Red (jkillian)
  * @Pt.AcceptedRating Red (jkillian)
  */
-public class PtolemyServer implements IServerManager {
+public final class PtolemyServer implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
@@ -141,6 +142,11 @@ public class PtolemyServer implements IServerManager {
      *  only one instance should ever exist at a time.  An embedded servlet container
      *  is initialized for the servlet (synchronous command handler) and a separate
      *  process is launched for the MQTT message broker (asynchronous simulation data).
+     *  @param servletPath The name of the virtual directory of the servlet.
+     *  @param servletPort The port on which the servlet operates.
+     *  @param brokerPath The path to the broker executable.
+     *  @param brokerPort The port of the broker.
+     *  @param modelDirectory The root directory of where model files are stored.
      *  @exception IllegalActionException If the server was unable to load the default 
      *  configuration from the resource file.
      */
@@ -206,8 +212,14 @@ public class PtolemyServer implements IServerManager {
     ////                  public methods                           ////
 
     /** Create the singleton with non-default configuration values.
+     *  @param servletPath The name of the virtual directory of the servlet.
+     *  @param servletPort The port on which the servlet operates.
+     *  @param brokerPath The path to the broker executable.
+     *  @param brokerPort The port of the broker.
+     *  @param modelDirectory The root directory of where model files are stored.
+     *  @exception IllegalActionException If the server could not be created.
      */
-    public synchronized static void createInstance(String servletPath,
+    public static synchronized void createInstance(String servletPath,
             int servletPort, String brokerPath, int brokerPort,
             String modelDirectory) throws IllegalActionException {
         _instance = new PtolemyServer(servletPath, servletPort, brokerPath,
@@ -278,6 +290,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Get a listing of the layouts for a specific model available on the
      *  server in either the database or the local file system.
+     *  @param url Address of the model file for which layouts are found.
      *  @return An array of URLs for the layouts available for the model on the server.
      *  @exception IllegalActionException If there was a problem discovering available layouts.
      */
@@ -372,7 +385,10 @@ public class PtolemyServer implements IServerManager {
     }
 
     /** Get the current state of a specific simulation based on the simulation manager's state. 
+     *  @param ticket The ticket reference to the simulation request.
      *  @return The state of the queried simulation.
+     *  @exception IllegalActionException If the ticket is invalid or the state
+     *  of the running situation could not be determined.
      */
     public synchronized State getStateOfSimulation(Ticket ticket)
             throws IllegalActionException {
@@ -389,6 +405,29 @@ public class PtolemyServer implements IServerManager {
         }
 
         return state;
+    }
+
+    /** Get the token handlers loaded on the server so that they can be
+     *  set up on the client.
+     *  @return The token handler map from the server.
+     *  @exception IllegalActionException If the server was unable to get the handler map.
+     */
+    public synchronized LinkedHashMap<String, String> getTokenHandlerMap()
+            throws IllegalActionException {
+        LinkedHashMap<String, String> tokenHandlerMap = null;
+        try {
+            tokenHandlerMap = new LinkedHashMap<String, String>();
+            for (HandlerData<?> data : TokenParser.getInstance()
+                    .getHandlerList()) {
+                tokenHandlerMap.put(data.getTokenType().getName(), data
+                        .getTokenHandler().getClass().getName());
+            }
+        } catch (Exception e) {
+            _handleException(
+                    "Problem sending token handler map: " + e.getMessage(), e);
+        }
+
+        return tokenHandlerMap;
     }
 
     /** Initialize the Ptolemy server, launch the broker process, set up the servlet host, 
@@ -482,10 +521,10 @@ public class PtolemyServer implements IServerManager {
             RemoteModel clientModel = new RemoteModel(RemoteModelType.CLIENT);
             SimulationTask simulationTask = new SimulationTask(ticket);
             simulationTask.getRemoteModel().addRemoteModelListener(
-                    remoteModelListener);
+                    _remoteModelListener);
 
             String modelXML = new String(downloadModel(ticket.getLayoutUrl()));
-            HashMap<String, String> resolvedTypes = simulationTask
+            HashMap<String, Type> resolvedTypes = simulationTask
                     .getRemoteModel().getResolvedTypes();
             String brokerUrl = "tcp://"
                     + InetAddress.getLocalHost().getHostAddress() + "@"
@@ -514,7 +553,7 @@ public class PtolemyServer implements IServerManager {
 
     /** Pause the execution of the simulation by calling the pause() method
      *  on its Manager.
-     *  @param ticket  The ticket reference to the simulation request.
+     *  @param ticket The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to pause the running simulation.
      */
     public synchronized void pause(Ticket ticket) throws IllegalActionException {
@@ -671,7 +710,7 @@ public class PtolemyServer implements IServerManager {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
-    private final RemoteModelListener remoteModelListener = new RemoteModelListener() {
+    private final RemoteModelListener _remoteModelListener = new RemoteModelListener() {
 
         public void modelConnectionExpired(RemoteModel remoteModel) {
             System.out.println("Removing model " + remoteModel.getTicket());
