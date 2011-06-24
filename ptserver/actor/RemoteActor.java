@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptserver.util.TypeParser;
 
 ///////////////////////////////////////////////////////////////////
 ////RemoteActor
@@ -102,7 +103,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @exception CloneNotSupportedException If port cloning is not supported
      */
     public RemoteActor(CompositeEntity container, ComponentEntity targetEntity,
-            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
+            boolean replaceTargetEntity, HashMap<String, String> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         this(container, targetEntity.getName() + "_remote");
@@ -174,8 +175,9 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @exception CloneNotSupportedException If port cloning is not supported
      */
     private void _replaceConnectingEntities(ComponentEntity targetEntity,
-            HashMap<String, Type> portTypes) throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
+            HashMap<String, String> portTypes)
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
 
         for (Object attributeObject : targetEntity.attributeList()) {
             Attribute attribute = (Attribute) attributeObject;
@@ -209,7 +211,8 @@ public abstract class RemoteActor extends TypedAtomicActor {
                         remotePort.setMultiport(false);
 
                         if (remotePort instanceof TypedIOPort) {
-                            Type type = portTypes.get(port.getFullName());
+                            Type type = TypeParser.parse(portTypes.get(port
+                                    .getFullName()));
                             ((TypedIOPort) remotePort).setTypeEquals(type);
                             StringAttribute targetPortName = new StringAttribute(
                                     remotePort, "targetPortName");
@@ -241,8 +244,9 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @exception NameDuplicationException
      */
     private void _replaceTargetEntity(ComponentEntity targetEntity,
-            HashMap<String, Type> portTypes) throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
+            HashMap<String, String> portTypes)
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
         ArrayList<Attribute> attributes = new ArrayList<Attribute>(
                 targetEntity.attributeList());
         for (Attribute attribute : attributes) {
@@ -258,7 +262,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
             remotePort.setContainer(this);
             remotePort.setPersistent(true);
             if (remotePort instanceof TypedIOPort) {
-                Type type = portTypes.get(port.getFullName());
+                Type type = TypeParser.parse(portTypes.get(port.getFullName()));
                 ((TypedIOPort) remotePort).setTypeEquals(type);
                 StringAttribute targetPortName = new StringAttribute(
                         remotePort, "targetPortName");

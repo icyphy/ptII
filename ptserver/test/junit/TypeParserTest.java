@@ -1,5 +1,4 @@
-/* Test suite of the ptserver.
-
+/*
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -24,25 +23,38 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+
 package ptserver.test.junit;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import static org.junit.Assert.assertEquals;
 
-//////////////////////////////////////////////////////////////////////////
-//// AllTests
-/**
- * Test suite of the ptserver.
- * 
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
- */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({ TokenParserTest.class, ServletTest.class,
-        RemoteModelTest.class, FileDownloadTest.class, TypeParserTest.class })
-public class AllTests {
+import org.junit.Test;
+
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
+import ptserver.util.TypeParser;
+
+///////////////////////////////////////////////////////////////////
+//// TypeParserTest
+
+public class TypeParserTest {
+
+    public void test(Type type) throws IllegalActionException {
+        assertEquals(type, TypeParser.parse(type.toString()));
+    }
+
+    @Test
+    public void testBaseType() throws IllegalActionException {
+        test(BaseType.INT);
+        test(BaseType.DOUBLE);
+    }
+
+    @Test
+    public void testArrayType() throws IllegalActionException {
+        test(new ArrayType(BaseType.INT));
+        test(new ArrayType(BaseType.DOUBLE, 3));
+    }
 
 }
