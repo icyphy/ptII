@@ -33,6 +33,7 @@ import java.util.HashMap;
 import ptolemy.actor.IOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -82,7 +83,7 @@ public class RemoteSink extends RemoteActor {
      * @see RemoteActor
      */
     public RemoteSink(CompositeEntity container, ComponentEntity targetSink,
-            boolean replaceTargetEntity, HashMap<String, String> portTypes)
+            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         super(container, targetSink, replaceTargetEntity, portTypes);

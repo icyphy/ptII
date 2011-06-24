@@ -237,7 +237,7 @@ public class RemoteModel {
      * @return The map from the Typeable's full name to its type.
      * @see #setResolvedTypes(HashMap)
      */
-    public HashMap<String, String> getResolvedTypes() {
+    public HashMap<String, Type> getResolvedTypes() {
         return _resolvedTypes;
     }
 
@@ -314,10 +314,20 @@ public class RemoteModel {
      * @param modelTypes The map of ports and their resolved types
      * @exception Exception If there is a problem parsing the modelXML.
      */
-    public void initModel(String modelXML, HashMap<String, String> modelTypes)
+    public void initModel(String modelXML, HashMap<String, Type> modelTypes)
             throws Exception {
         MoMLParser parser = _createMoMLParser();
         _topLevelActor = (CompositeActor) parser.parse(modelXML);
+        // Since BaseType's equals method assumes equality by reference, we need to replace
+        // all instances of BaseType types with the static instances defined within BaseType
+        // Bug URL: http://msesrv5h-vm.mse.cs.cmu.edu/bugzilla/show_bug.cgi?id=17
+        for (Entry<String, Type> entry : modelTypes.entrySet()) {
+            if (entry.getValue() instanceof BaseType) {
+                BaseType type = (BaseType) entry.getValue();
+                Type staticTypeInstance = BaseType.forName(type.toString());
+                entry.setValue(staticTypeInstance);
+            }
+        }
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             if (actor instanceof RemoteSink) {
@@ -342,14 +352,12 @@ public class RemoteModel {
                             .getAttribute("targetPortName");
 
                     if (targetPortName != null) {
-                        type = BaseType.forName(modelTypes.get(targetPortName
-                                .getExpression()));
+                        type = modelTypes.get(targetPortName.getExpression());
                         if (type != null) {
                             port.setTypeEquals(type);
                         }
                         port.typeConstraints().clear();
-                    } else if ((type = BaseType.forName(modelTypes.get(port
-                            .getFullName()))) != null) {
+                    } else if ((type = modelTypes.get(port.getFullName())) != null) {
                         port.setTypeEquals(type);
                         port.typeConstraints().clear();
                     } else {
@@ -361,8 +369,8 @@ public class RemoteModel {
             }
             for (Typeable attribute : actor.attributeList(Typeable.class)) {
                 //Cast to Nameable is safe because it's an attribute.
-                if ((type = BaseType.forName(modelTypes
-                        .get(((Nameable) attribute).getFullName()))) != null) {
+                if ((type = modelTypes
+                        .get(((Nameable) attribute).getFullName())) != null) {
                     attribute.setTypeEquals(type);
                     attribute.typeConstraints().clear();
                 }
@@ -394,7 +402,7 @@ public class RemoteModel {
         HashSet<ComponentEntity> unneededActors = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sinks = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sources = new HashSet<ComponentEntity>();
-        setResolvedTypes(new HashMap<String, String>());
+        _resolvedTypes = new HashMap<String, Type>();
         _topLevelActor = (CompositeActor) parser.parse(null, modelURL);
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
@@ -491,15 +499,6 @@ public class RemoteModel {
     }
 
     /**
-     * Set the map from the Typeable's full name to its type.
-     * @param portTypes the _portTypes to set
-     * @see #getResolvedTypes()
-     */
-    public void setResolvedTypes(HashMap<String, String> portTypes) {
-        _resolvedTypes = portTypes;
-    }
-
-    /**
      * Set the stopped state of the model.
      * @param stopped indicates if the model is stopped or not.
      * @see #isStopped()
@@ -581,7 +580,7 @@ public class RemoteModel {
      * inferring type of Typeable.
      */
     private void _captureModelTypes(HashSet<ComponentEntity> entities,
-            HashMap<String, String> portTypes) throws IllegalActionException {
+            HashMap<String, Type> portTypes) throws IllegalActionException {
         for (ComponentEntity entity : entities) {
             for (Object portObject : entity.portList()) {
                 Port port = (Port) portObject;
@@ -590,8 +589,8 @@ public class RemoteModel {
                     if (port instanceof TypedIOPort) {
                         //FIXME using toString on Type is not elegant
                         //and could break.
-                        portTypes.put(port.getFullName(), ((TypedIOPort) port)
-                                .getType().toString());
+                        portTypes.put(port.getFullName(),
+                                ((TypedIOPort) port).getType());
                     }
                     // This port might be connected to other
                     // TypedIOPorts whose types are needed on the
@@ -609,7 +608,7 @@ public class RemoteModel {
                                 // elegant and could break.
                                 portTypes.put(connectingPort.getFullName(),
                                         ((TypedIOPort) connectingPort)
-                                                .getType().toString());
+                                                .getType());
                             }
                         }
                     }
@@ -618,8 +617,8 @@ public class RemoteModel {
             }
             for (Typeable attribute : entity.attributeList(Typeable.class)) {
                 // FIXME using toString on Type is not elegant and could break
-                portTypes.put(((Nameable) attribute).getFullName(), attribute
-                        .getType().toString());
+                portTypes.put(((Nameable) attribute).getFullName(),
+                        attribute.getType());
             }
         }
     }
@@ -652,7 +651,7 @@ public class RemoteModel {
      * @see ptserver.actor.RemoteSink
      */
     private void _createSink(ComponentEntity targetEntity,
-            boolean replaceTargetEntity, HashMap<String, String> portTypes)
+            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         RemoteSink remoteSink = new RemoteSink(
@@ -678,7 +677,7 @@ public class RemoteModel {
      * @see ptserver.actor.RemoteSource
      */
     private void _createSource(ComponentEntity targetEntity,
-            boolean replaceTargetEntity, HashMap<String, String> portTypes)
+            boolean replaceTargetEntity, HashMap<String, Type> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         RemoteSource remoteSource = new RemoteSource(
@@ -867,7 +866,7 @@ public class RemoteModel {
     /**
      * The map from the Typeable's full name to its type
      */
-    private HashMap<String, String> _resolvedTypes;
+    private HashMap<String, Type> _resolvedTypes;
 
     /**
      * The mapping from the original source actor name to its remote
