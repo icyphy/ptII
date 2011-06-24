@@ -1,5 +1,4 @@
-/*
-Serialize an AttributeChangeToken to and from binary format.
+/* Serialize an AttributeChangeToken to and from binary format.
 
 Copyright (c) 2011 The Regents of the University of California.
 All rights reserved.
@@ -36,20 +35,23 @@ import ptserver.data.AttributeChangeToken;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeChangeTokenHandler
-/**
-* <p>Serialize a AttributeChangeToken to and from binary format.</p>
-*
-* @author Peter Foldes
-* @version $Id$
-* @since Ptolemy II 8.0
-* @Pt.ProposedRating Red (pdf)
-* @Pt.AcceptedRating Red (pdf)
-*/
+
+/** Serialize an AttributeChangeToken to and from binary format.
+ *  @author Peter Foldes
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
+ */
 public class AttributeChangeTokenHandler implements
         TokenHandler<AttributeChangeToken> {
 
-    /**
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the AttributeChangeToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(AttributeChangeToken token,
             DataOutputStream outputStream) throws IOException,
@@ -58,16 +60,21 @@ public class AttributeChangeTokenHandler implements
         outputStream.writeUTF(token.getExpression());
     }
 
-    /**
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read an AttributeChangeToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated AttributeChangeToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public AttributeChangeToken convertToToken(DataInputStream inputStream,
-            Class<? extends AttributeChangeToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends AttributeChangeToken> tokenType)
+            throws IOException, IllegalActionException {
         AttributeChangeToken token = new AttributeChangeToken();
-        String targetSettableName = inputStream.readUTF();
-        token.setTargetSettableName(targetSettableName);
+        token.setTargetSettableName(inputStream.readUTF());
         token.setExpression(inputStream.readUTF());
+
         return token;
     }
 }

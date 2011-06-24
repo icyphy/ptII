@@ -1,5 +1,4 @@
-/*
- BooleanTokenHandler converts BooleanToken to/from byte stream
+/* BooleanTokenHandler converts BooleanToken to/from byte stream.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -32,39 +31,45 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanTokenHandler
-/**
- * BooleanTokenHandler converts BooleanToken to/from byte stream
+
+/** BooleanTokenHandler converts BooleanToken to/from byte stream.
  * 
- * @author ishwinde
- * @version $Id$ 
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- * 
+ *  @author ishwinde
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class BooleanTokenHandler implements TokenHandler<BooleanToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert BooleanToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the BooleanToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(BooleanToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeBoolean(token.booleanValue());
     }
 
-    /** 
-     * Reads from the inputStream and converts it to the BooleanToken
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read a BooleanToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated BooleanToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public BooleanToken convertToToken(DataInputStream inputStream,
             Class<? extends BooleanToken> tokenType) throws IOException {
         return new BooleanToken(inputStream.readBoolean());
     }
-
 }

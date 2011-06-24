@@ -1,5 +1,4 @@
-/*
- ComplexMatrixTokenHandler converts ComplexMatrixToken to/from byte stream
+/* ComplexMatrixTokenHandler converts ComplexMatrixToken to/from byte stream.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -39,77 +38,68 @@ import ptserver.data.TokenParser;
 
 ///////////////////////////////////////////////////////////////////
 //// ComplexMatrixTokenHandler
-/**
- * ComplexMatrixTokenHandler converts ComplexMatrixToken to/from byte stream
- *
- * @author ishwinde
- * @version $Id $
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- *
+
+/** ComplexMatrixTokenHandler converts ComplexMatrixToken to/from byte stream.
+ *  @author ishwinde
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class ComplexMatrixTokenHandler implements
         TokenHandler<ComplexMatrixToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert ComplexMatrixToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the ComplexMatrixToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(ComplexMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
 
-        int rowCount = token.getRowCount();
-        int colunmCount = token.getColumnCount();
+        outputStream.writeInt(token.getRowCount());
+        outputStream.writeInt(token.getColumnCount());
 
-        outputStream.writeInt(rowCount);
-        outputStream.writeInt(colunmCount);
-
-        for (int row = 0; row < rowCount; row++) {
-            for (int column = 0; column < colunmCount; column++) {
-
+        for (int row = 0; row < token.getRowCount(); row++) {
+            for (int column = 0; column < token.getColumnCount(); column++) {
                 ComplexToken elementToken = (ComplexToken) token
                         .getElementAsToken(row, column);
-
                 TokenParser.getInstance().convertToBytes(elementToken,
                         outputStream);
-
             }
-
         }
-
     }
 
-    /**
-     * Reads from the inputStream and converts it to the ComplexMatrixToken.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read a ComplexMatrixToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated ComplexMatrixToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ComplexMatrixToken convertToToken(DataInputStream inputStream,
             Class<? extends ComplexMatrixToken> tokenType) throws IOException,
             IllegalActionException {
 
         int rowCount = inputStream.readInt();
-        int colunmCount = inputStream.readInt();
+        int columnCount = inputStream.readInt();
 
-        Complex[][] matrix = new Complex[rowCount][colunmCount];
-
+        Complex[][] matrix = new Complex[rowCount][columnCount];
         for (int row = 0; row < rowCount; row++) {
-            for (int column = 0; column < colunmCount; column++) {
-
+            for (int column = 0; column < columnCount; column++) {
                 ComplexToken elementToken = (ComplexToken) TokenParser
                         .getInstance().convertToToken(inputStream);
-
                 matrix[row][column] = elementToken.complexValue();
-
             }
-
         }
-        return new ComplexMatrixToken(matrix);
 
+        return new ComplexMatrixToken(matrix);
     }
 }

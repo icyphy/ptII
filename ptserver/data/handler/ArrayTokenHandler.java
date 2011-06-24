@@ -1,5 +1,4 @@
-/*
- ArrayTokenHandler converts ArrayToken to/from byte stream
+/* ArrayTokenHandler converts ArrayToken to/from byte stream.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -38,60 +37,59 @@ import ptserver.data.TokenParser;
 
 ///////////////////////////////////////////////////////////////////
 //// ArrayTokenHandler
-/**
- * ArrayTokenHandler converts ArrayToken to/from byte stream
- *
- * @author ishwinde
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- *
+
+/** ArrayTokenHandler converts ArrayToken to/from byte stream.
+ *  @author ishwinde
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert ArrayToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the ArrayToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(ArrayToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
-        int size = token.length();
 
+        int size = token.length();
         outputStream.writeInt(size);
 
         for (int index = 0; index < size; index++) {
-
             Token elementToken = token.getElement(index);
-
             TokenParser.getInstance()
                     .convertToBytes(elementToken, outputStream);
-
         }
-
     }
 
-    /**
-     * Read from the inputStream and converts it to the ArrayToken.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read an ArrayToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated ArrayToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ArrayToken convertToToken(DataInputStream inputStream,
-            Class<? extends ArrayToken> tokenType)
-            throws IOException, IllegalActionException {
+            Class<? extends ArrayToken> tokenType) throws IOException,
+            IllegalActionException {
 
         int size = inputStream.readInt();
         Token[] tokens = new Token[size];
 
         for (int index = 0; index < size; index++) {
-
             tokens[index] = TokenParser.getInstance().convertToToken(
                     inputStream);
-
         }
+
         return new ArrayToken(tokens);
     }
 }
