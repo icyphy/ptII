@@ -657,21 +657,6 @@ public final class PtolemyServer implements IServerManager {
                     + ": " + e.getMessage(), e);
         }
     }
-    
-    public synchronized LinkedHashMap<String, String> getTokenHandlerMap() throws IllegalActionException {
-        try {
-
-            LinkedHashMap<String, String> tokenHandlerMap = new LinkedHashMap<String, String>();
-            for (HandlerData<?> data : TokenParser.getInstance().getHandlerList()) {
-                tokenHandlerMap.put(data.getTokenType().getName(), data.getTokenHandler().getClass().getName());
-            }
-            return tokenHandlerMap;
-        } catch (Exception e) {
-            _handleException("Problem sending token handler map"
-                    + ": " + e.getMessage(), e);
-        }
-        return null;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                   private methods                         ////
