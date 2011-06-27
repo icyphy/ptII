@@ -1,5 +1,5 @@
 /*
- MQTTTokenListener is responsible for processing MQTT messages received,
+ TokenListener is responsible for processing MQTT messages received,
  converting back to tokens and putting those tokens into appropriate queues.
 
  Copyright (c) 2011 The Regents of the University of California.
@@ -42,9 +42,9 @@ import ptserver.data.Tokenizer;
 import com.ibm.mqtt.MqttSimpleCallback;
 
 ///////////////////////////////////////////////////////////////////
-//// MQTTTokenListener
+//// TokenListener
 
-/** MQTTTokenListener is responsible for processing MQTT messages received,
+/** TokenListener is responsible for processing MQTT messages received,
  *  converting back to tokens and putting those tokens into appropriate queues.
  *
  *  @author Anar Huseynov
@@ -162,6 +162,7 @@ public class TokenListener implements MqttSimpleCallback {
         /** Send the token back via the model's publisher.
          *  @see java.lang.Runnable#run()
          */
+        @Override
         public void run() {
             try {
                 _remoteModel.getTokenPublisher().sendToken(_token);

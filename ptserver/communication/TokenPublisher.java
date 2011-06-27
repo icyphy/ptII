@@ -145,10 +145,10 @@ public class TokenPublisher {
             _tokenCount++;
         } catch (IllegalActionException e) {
             throw new IllegalActionException(null, e,
-                    "Problem convernting a token to a byte stream");
+                    "Problem converting a token to a byte stream");
         } catch (IOException e) {
             throw new IllegalActionException(null, e,
-                    "Problem convernting a token to a byte stream");
+                    "Can't write to the communication stream");
         }
     }
 
