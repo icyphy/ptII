@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DEinSRinDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 711, 482}, maximized=false}">
     </property>
@@ -308,11 +308,27 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 55}">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
             <port name="in" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 170.0]">
                 </property>
             </port>
+            <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, -1, -2, -3, -4, 5, 4, 3, 2, 1, 0, 3, 2, 1, 0, -1, -2, 2, 1}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 170.0]">
+                </property>
+            </entity>
             <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 170}">
                 </property>
@@ -328,15 +344,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 250.0]">
                 </property>
             </entity>
-            <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, -1, -2, -3, -4, 5, 4, 3, 2, 1, 0, 3, 2, 1, 0, -1, -2, 2, 1}">
-                </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 170.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
@@ -344,16 +352,16 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
             <link port="in" relation="relation"/>
+            <link port="NonStrictTest.input" relation="relation3"/>
             <link port="Sampler.input" relation="relation"/>
             <link port="Sampler.output" relation="relation3"/>
             <link port="Sampler.trigger" relation="relation2"/>
             <link port="Clock.output" relation="relation2"/>
-            <link port="NonStrictTest.input" relation="relation3"/>
         </entity>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">

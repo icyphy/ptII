@@ -55,6 +55,14 @@ public class RemoteModelResponse implements Serializable {
         return _brokerUrl;
     }
 
+    /** Get the model image (PNG) byte array.
+     *  @return The image of the model.
+     *  @see #setModelImage(byte[])
+     */
+    public byte[] getModelImage() {
+        return _modelImage;
+    }
+
     /** Get the map from the model's Typeable objects to its inferred type.
      *  <p>This map contains only types for the sinks and sources intended to run on Android.</p>
      *  @return the map from the Typeable to its inferred type.
@@ -90,6 +98,14 @@ public class RemoteModelResponse implements Serializable {
         _brokerUrl = brokerUrl;
     }
 
+    /** Set the model image (PNG) byte array.
+     *  @param modelImage The byte array of the model image.
+     *  @see #getModelImage()
+     */
+    public void setModelImage(byte[] modelImage) {
+        _modelImage = modelImage;
+    }
+
     /** Set the map from the model's Typeable objects to its inferred type.
      *  @param modelTypes The map from the Typeable to its inferred type.
      *  @see #getModelTypes()
@@ -118,6 +134,18 @@ public class RemoteModelResponse implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The URL of the server's message broker.
+     */
+    private String _brokerUrl;
+
+    /** The image of the model in byte form.
+     */
+    private byte[] _modelImage;
+
+    /** The mapping from Typeable full names to its types needed to initialize ports on the client.
+     */
+    private HashMap<String, String> _modelTypes;
+
     /** The model XML containing only actors needed for the client.
      */
     private String _modelXML;
@@ -125,12 +153,4 @@ public class RemoteModelResponse implements Serializable {
     /** The ticket opened for the remote model.
      */
     private Ticket _ticket;
-
-    /** The URL of the server's message broker.
-     */
-    private String _brokerUrl;
-
-    /** The mapping from Typeable full names to its types needed to initialize ports on the client.
-     */
-    private HashMap<String, String> _modelTypes;
 }

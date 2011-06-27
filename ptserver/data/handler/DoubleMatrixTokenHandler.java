@@ -38,76 +38,67 @@ import ptserver.data.TokenParser;
 
 ///////////////////////////////////////////////////////////////////
 //// DoubleMatrixTokenHandler
-/**
- * DoubleMatrixTokenHandler converts DoubleMatrixToken to/from byte stream
- *
- * @author ishwinde
- * @version $Id $
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
- *
+
+/** DoubleMatrixTokenHandler converts DoubleMatrixToken to/from byte stream.
+ *  @author ishwinde
+ *  @version $Id $
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
-public class DoubleMatrixTokenHandler implements TokenHandler<DoubleMatrixToken> {
+public class DoubleMatrixTokenHandler implements
+        TokenHandler<DoubleMatrixToken> {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Convert DoubleMatrixToken to a byte stream using an algorithm defined in the DataOutputStream.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+    /** Write the DoubleMatrixToken to a byte array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(DoubleMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
 
-        int rowCount = token.getRowCount();
-        int colunmCount = token.getColumnCount();
+        outputStream.writeInt(token.getRowCount());
+        outputStream.writeInt(token.getColumnCount());
 
-        outputStream.writeInt(rowCount);
-        outputStream.writeInt(colunmCount);
-
-        for (int row = 0; row < rowCount; row++) {
-            for (int column = 0; column < colunmCount; column++) {
-
+        for (int row = 0; row < token.getRowCount(); row++) {
+            for (int column = 0; column < token.getColumnCount(); column++) {
                 DoubleToken elementToken = (DoubleToken) token
                         .getElementAsToken(row, column);
-
                 TokenParser.getInstance().convertToBytes(elementToken,
                         outputStream);
-
             }
-
         }
-
     }
 
-    /**
-     * Reads from the inputStream and converts it to the DoubleMatrixToken.
-     * @exception IllegalActionException
-     * @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+    /** Read a DoubleMatrixToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated DoubleMatrixToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public DoubleMatrixToken convertToToken(DataInputStream inputStream,
-            Class<? extends DoubleMatrixToken> tokenType)
-            throws IOException, IllegalActionException {
+            Class<? extends DoubleMatrixToken> tokenType) throws IOException,
+            IllegalActionException {
 
         int rowCount = inputStream.readInt();
         int colunmCount = inputStream.readInt();
-
         double[][] matrix = new double[rowCount][colunmCount];
 
         for (int row = 0; row < rowCount; row++) {
             for (int column = 0; column < colunmCount; column++) {
-
-                DoubleToken elementToken = (DoubleToken) TokenParser.getInstance()
-                        .convertToToken(inputStream);
-
+                DoubleToken elementToken = (DoubleToken) TokenParser
+                        .getInstance().convertToToken(inputStream);
                 matrix[row][column] = elementToken.doubleValue();
-
             }
-
         }
-        return new DoubleMatrixToken(matrix);
 
+        return new DoubleMatrixToken(matrix);
     }
 }

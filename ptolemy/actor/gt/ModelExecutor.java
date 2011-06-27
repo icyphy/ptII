@@ -397,10 +397,11 @@ public class ModelExecutor extends TypedAtomicActor {
              *
              *  @param actor The actor that requests to be fired.
              *  @param time The time to fire the actor.
+             *  @param microstep The microstep (ignored by this director).
              *  @return The time at which the actor will be fired.
              *  @exception IllegalActionException Not thrown in this class.
              */
-            public Time fireAt(Actor actor, Time time)
+            public Time fireAt(Actor actor, Time time, int microstep)
                     throws IllegalActionException {
                 _eventQueue.add(new TimedEvent(time, actor));
                 return time;

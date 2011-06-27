@@ -48,6 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  event until the next discrete event arrives. Specifically,
  on each firing, if an input is present, then record the
  value of the input. Then produce the recorded value.
+ Prior to receipt of the first input, output the token
+ given by <i>defaultValue</i>, if one is given.
  This actor will throw an exception if the input is not
  purely discrete. Specifically, this means that when the input
  is present, the step size of the solver has to be 0.0.
@@ -151,7 +153,7 @@ public class ZeroOrderHold extends Transformer {
     }
 
     /** Override the method in the base class so that the type
-     *  constraint for the <i>initialValue</i> parameter will be set
+     *  constraint for the <i>defaultValue</i> parameter will be set
      *  if it contains a value.
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
@@ -173,7 +175,7 @@ public class ZeroOrderHold extends Transformer {
             // Errors in the initialValue parameter should
             // already have been caught in getAttribute() method
             // of the base class.
-            throw new InternalErrorException("Bad defaultValue value!\n" + ex);
+            throw new InternalErrorException("Bad defaultValue!\n" + ex);
         }
 
         return typeConstraints;

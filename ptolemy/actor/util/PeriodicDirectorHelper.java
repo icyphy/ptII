@@ -186,7 +186,7 @@ public class PeriodicDirectorHelper {
             // Set the index to zero because the next firing will occur at
             // a strictly greater time.
             if (_director instanceof SuperdenseTimeDirector) {
-                ((SuperdenseTimeDirector) _director).setIndex(0);
+                ((SuperdenseTimeDirector) _director).setIndex(1);
             }
         }
     }

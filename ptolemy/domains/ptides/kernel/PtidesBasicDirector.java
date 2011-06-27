@@ -1148,7 +1148,7 @@ public class PtidesBasicDirector extends DEDirector {
                     // at a time point, the first event must have the
                     // microstep as 0. See the
                     // _enqueueEvent(Actor actor, Time time) method.
-                    _microstep = 0;
+                    _microstep = 1;
                     return false;
                 } else if (next.microstep() != _microstep) {
                     // If the next event is has a different microstep,
@@ -1325,7 +1325,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the current model time, or the depth of the actor has not be calculated,
      *  or the new event can not be enqueued.
      */
-    protected void _enqueueEvent(Actor actor, Time time)
+    protected void _enqueueEvent(Actor actor, Time time, int defaultMicrostep)
             throws IllegalActionException {
         if ((_eventQueue == null)
                 || ((_disabledActors != null) && _disabledActors
@@ -1333,8 +1333,8 @@ public class PtidesBasicDirector extends DEDirector {
             return;
         }
 
-        // Reset the microstep to 0.
-        int microstep = 0;
+        // Reset the microstep to 1.
+        int microstep = 1;
 
         if (time.compareTo(getModelTime()) == 0) {
             // If during initialization, do not increase the microstep.
@@ -2555,7 +2555,7 @@ public class PtidesBasicDirector extends DEDirector {
                 if (_isNetworkInputPort(realTimeEvent.port)) {
                     // If transferring a network input, make it always safe to
                     // process.
-                    setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
+                    setTag(new Time(this, Double.NEGATIVE_INFINITY), 1);
                 } else {
                     setTag(realTimeEvent.timestampTag.timestamp,
                             realTimeEvent.timestampTag.microstep);
@@ -2593,7 +2593,7 @@ public class PtidesBasicDirector extends DEDirector {
             int lastMicrostep = _microstep;
             // If transferring a network input, make it always safe to process.
             if (_isNetworkInputPort(port)) {
-                setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
+                setTag(new Time(this, Double.NEGATIVE_INFINITY), 1);
             } else {
                 // By default we assume the input is a sensor input, and
                 // a sensor event would have timestamp equal to the platform's
@@ -2630,7 +2630,7 @@ public class PtidesBasicDirector extends DEDirector {
                         // while the timestamp of this event is based
                         // on platformPhysicalTime.
                         RealTimeEvent realTimeEvent = new RealTimeEvent(
-                                port, i, t, new Tag(waitUntilTime, 0),
+                                port, i, t, new Tag(waitUntilTime, 1),
                                 //executionPhysicalTag.microstep),
                                 new Tag(platformPhysicalTag.timestamp,
                                         // Even though it may seem like the sensor should

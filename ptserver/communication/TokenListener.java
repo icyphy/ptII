@@ -1,5 +1,5 @@
 /*
- MQTTTokenListener is responsible for processing MQTT messages received,
+ TokenListener is responsible for processing MQTT messages received,
  converting back to tokens and putting those tokens into appropriate queues.
 
  Copyright (c) 2011 The Regents of the University of California.
@@ -42,22 +42,24 @@ import ptserver.data.Tokenizer;
 import com.ibm.mqtt.MqttSimpleCallback;
 
 ///////////////////////////////////////////////////////////////////
-////MQTTTokenListener
-/**
-*  MQTTTokenListener is responsible for processing MQTT messages received,
-*  converting back to tokens and putting those tokens into appropriate queues.
-*
-* @author Anar Huseynov
-* @version $Id$
-* @since Ptolemy II 8.0
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
-*/
+//// TokenListener
+
+/** TokenListener is responsible for processing MQTT messages received,
+ *  converting back to tokens and putting those tokens into appropriate queues.
+ *
+ *  @author Anar Huseynov
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class TokenListener implements MqttSimpleCallback {
 
-    /**
-     * Initialize the instance by reading needed fields from the remoteModel.
-     * @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Initialize the instance by reading needed fields from the remoteModel.
+     *  @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
      */
     public TokenListener(RemoteModel remoteModel) {
         _remoteModel = remoteModel;
@@ -65,35 +67,38 @@ public class TokenListener implements MqttSimpleCallback {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Callback method when the connection with the broker is lost.
-     * @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
+
+    /** Callback method when the connection with the broker is lost.
+     *  @exception Exception If the connection was lost.
+     *  @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
      */
     public void connectionLost() throws Exception {
         //TODO: handle connection lost case
         System.out.println("Connection was lost at " + new Date());
     }
 
-    /**
-     * Callback method when a message from the topic is received.
-     * @param topicName The name of the topic from which the message was received.
-     * @param payload The MQTT message.
-     * @param qos The Quality of Service at which the message was delivered by the broker.
-     * @param retained indicates if this message is retained by the broker.
-     * @see com.ibm.mqtt.MqttSimpleCallback#publishArrived(java.lang.String, byte[], int, boolean)
-     * @exception Exception if there is a problem reading next token or setting attribute value
+    /** Callback method when a message from the topic is received.
+     *  @param topicName The name of the topic from which the message was received.
+     *  @param payload The MQTT message.
+     *  @param qos The Quality of Service at which the message was delivered by the broker.
+     *  @param retained indicates if this message is retained by the broker.
+     *  @see com.ibm.mqtt.MqttSimpleCallback#publishArrived(java.lang.String, byte[], int, boolean)
+     *  @exception Exception if there is a problem reading next token or setting attribute value
      */
     public void publishArrived(String topicName, byte[] payload, int qos,
             boolean retained) throws Exception {
         Tokenizer tokenizer = new Tokenizer(payload);
         Token token = null;
+
         while ((token = tokenizer.getNextToken()) != null) {
+
             // The listener is only concerned about the following types.
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
                 RemoteSourceData data = _remoteModel.getRemoteSourceMap().get(
                         communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
+
                 //Notify remote sources to read from the queue.
                 synchronized (data.getRemoteSource()) {
                     data.getRemoteSource().notifyAll();
@@ -103,6 +108,7 @@ public class TokenListener implements MqttSimpleCallback {
                 Settable remoteAttribute = _remoteModel
                         .getSettableAttributesMap().get(
                                 attributeChangeToken.getTargetSettableName());
+
                 RemoteValueListener listener = _remoteModel
                         .getSettableAttributeListenersMap().get(
                                 attributeChangeToken.getTargetSettableName());
@@ -129,27 +135,32 @@ public class TokenListener implements MqttSimpleCallback {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * The remote model that created the publisher.
+    /** The remote model that created the publisher.
      */
     private final RemoteModel _remoteModel;
 
-    /**
-     * The task that sends the pong back. 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** The task that sends the pong back. 
      */
     private class PongTask implements Runnable {
 
-        /**
-         * Create an instance with the provided token.
-         * @param token The pong token to send back.
+        ///////////////////////////////////////////////////////////////////
+        ////                         constructor                       ////
+
+        /** Create an instance with the provided token.
+         *  @param token The pong token to send back.
          */
         public PongTask(PongToken token) {
             _token = token;
         }
 
-        /** 
-         * Send the token back via the model's publisher;
-         * @see java.lang.Runnable#run()
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Send the token back via the model's publisher.
+         *  @see java.lang.Runnable#run()
          */
         public void run() {
             try {
@@ -159,11 +170,11 @@ public class TokenListener implements MqttSimpleCallback {
             }
         }
 
-        /**
-         * The pong token of the current object.
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+
+        /** The pong token of the current object.
          */
         private final PongToken _token;
-
     }
-
 }

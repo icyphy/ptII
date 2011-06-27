@@ -40,12 +40,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 Produce an output token on each firing with a value that is
-the current microstep.
+the current microstep, also called the current index,
+of superdense time. This can only be used with
+directors that implement SuperdenseTimeDirector.
+
 @author Jia Zou
 @version $Id$
 @since Ptolemy II 8.0
+@see SuperdenseTimeDirector
+@deprecated Use actor.lib.GetCurrentMicrostep instead.
 @Pt.ProposedRating Yellow (jiazou)
-@Pt.AcceptedRating
+@Pt.AcceptedRating Red
 */
 public class GetCurrentMicrostep extends TimedSource {
     /** Construct an actor with the given container and name.

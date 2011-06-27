@@ -38,7 +38,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// DEReceiver
@@ -152,18 +151,16 @@ public class DEReceiver extends AbstractReceiver {
      *  whose input port contains this receiver. This receiver may contain
      *  more than one events.
      *  @param token The token to be put, or null to put no token.
+     *  @throws IllegalActionException If cannot get the director or if
+     *   the current microstep is zero.
      */
-    public void put(Token token) {
+    public void put(Token token) throws IllegalActionException {
         if (token == null) {
             return;
         }
-        try {
-            DEDirector dir = _getDirector();
-            dir._enqueueTriggerEvent(getContainer());
-            _tokens.add(token);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(null, ex, null);
-        }
+        DEDirector dir = _getDirector();
+        dir._enqueueTriggerEvent(getContainer());
+        _tokens.add(token);
     }
 
     ///////////////////////////////////////////////////////////////////

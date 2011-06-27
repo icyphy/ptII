@@ -615,22 +615,27 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  equal to the current time, then for the breakpoint table entry,
      *  use an index one larger than the current index, unless this director
      *  is currently in initialize(), in which case use the current index.
+     *  If the requested time is in the future, then use the requested index.
      *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
+     *  @param index The microstep.
      *  @return The time at which the actor passed as an argument
      *   will be fired.
      *  @exception IllegalActionException If the time is earlier than
      *  the current time.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int index) throws IllegalActionException {
         if (_debugging) {
-            _debug("** fireAt() called by " + actor.getName()
+            String name = "this director";
+            if (actor != null) {
+                name = actor.getName();
+            }
+            _debug("** fireAt() called by " + name
                     + ", which requests refiring at " + time);
         }
         synchronized (_breakpoints) {
             // Check if the request time is earlier than the current time.
             Time currentTime = getModelTime();
-            int index = 0;
             int comparisonResult = time.compareTo(currentTime);
             // Adjust time to at least match the current time.
             if (comparisonResult < 0) {
@@ -642,10 +647,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // one firing during initialization. In fact, if an actor requests
                 // several firings at the same time,
                 // only the first request will be granted.
-                if (_isInitializing) {
-                    index = _index;
-                } else {
-                    index = _index + 1;
+                if (index <= _index) {
+                    if (_isInitializing) {
+                        index = _index;
+                    } else {
+                        index = _index + 1;
+                    }
                 }
             }
             // Insert a superdense time object as a breakpoint into the
@@ -764,6 +771,15 @@ public class ContinuousDirector extends FixedPointDirector implements
 
         // set current time and initialize actors.
         super.initialize();
+        
+        // The above method sets the microstep to match the enclosing
+        // director if this director is embedded. In the Continuous
+        // domain, however, this is not the right thing to do. We
+        // might be getting initialized within a modal model, in
+        // which case the enclosing director may have a larger
+        // microstep. But we still want to begin with a microstep of zero.
+        // FIXME: No idea whether this is right!
+        // _index = 0;
 
         // Make sure the first step has zero step size.
         // This ensures that actors like plotters will be postfired at
@@ -789,9 +805,11 @@ public class ContinuousDirector extends FixedPointDirector implements
             // the maximum of _startTime and the current time as the
             // first firing time.
             if (_startTime.compareTo(_currentTime) >= 0) {
-                _fireContainerAt(_startTime);
+                _fireContainerAt(_startTime, 0);
             } else {
-                _fireContainerAt(_currentTime);
+                // Use a microstep of 1 here on the assumption
+                // that initialization could create discontinuities.
+                _fireContainerAt(_currentTime, 1);
             }
             if (!_stopTime.isInfinite()
                     && _stopTime.compareTo(_currentTime) >= 0) {
@@ -1687,6 +1705,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // next breakpoint time otherwise.
         if (_currentStepSize == 0.0) {
             _fireContainerAt(_currentTime);
+            // Have to increment the microstep.
+            // FIXME Doesn't seem to work!
+            // _index++;
         } else if (_breakpoints.size() > 0) {
             // Request a firing at the time of the first breakpoint.
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
@@ -1707,7 +1728,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // at the current time.
         if (_commitIsPending) {
             _commitIsPending = false;
-            _fireContainerAt(_currentTime);
+            _fireContainerAt(_currentTime, 0);
 
             // Commit the current state and postfire all actors.
             boolean result = _commit();
@@ -1733,7 +1754,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // the breakpoint table.
             // The following will throw an exception if the enclosing director
             // does not respect the fireAt() request exactly.
-            _fireContainerAt(_currentTime);
+            _fireContainerAt(_currentTime, 0);
             // When that firing occurs, we want the index to be 0.
             _index = 0;
             _commitIsPending = true;
@@ -1760,7 +1781,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // However, it could be that the current iteration is actually
             // a deferred commit, in which case local time has advanced
             // and we don't need to request a refiring at the current time.
-            _fireContainerAt(_currentTime);
+            _fireContainerAt(_currentTime, 0);
 
             // The following call will increment the index if the current step
             // size is zero, and set it to zero otherwise. At the top level,
@@ -1834,9 +1855,20 @@ public class ContinuousDirector extends FixedPointDirector implements
             _debug("-- Setting current time to match enclosing ContinuousDirector: "
                     + _currentTime);
         }
-        // Probably shouldn't make the index match that of the environment!
+        // FIXME: Probably shouldn't make the index match that of the environment!
         // There may have been suspensions happening. So what should the index be?
+        // Here we set it to zero if the round is greater than zero. But what
+        // about other conditions?
         // _index = enclosingDirector._index;
+        int round = enclosingDirector._ODESolver._getRound();
+        if (round > 0) {
+            _index = 0;
+        } else if (_currentStepSize == 0.0) {
+            /* FIXME: Bogus. This will force the first execution to be at microstep 1.
+            _index++;
+            */
+        }
+        
         _iterationBeginTime = enclosingDirector._iterationBeginTime
                 .subtract(_accumulatedSuspendTime);
         _iterationBeginIndex = enclosingDirector._iterationBeginIndex;

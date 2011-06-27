@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.continuous.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -49,11 +48,8 @@ import ptolemy.kernel.util.Workspace;
  0.1.  Specifically, if the actor is initialized at time <i>t</i> and the sample
  period is <i>T</i>, then the output will have the value of the input
  at times <i>t</i> + <i>nT</i>, for all natural numbers <i>n</i>.
- This sampler will send to the output the first non-absent input event that occurs
- at a sample time. This ensures that the
- sampler outputs the initial value of the input at the sample time.
- It produces the output one microstep later than that input event if
- the input event occurs at microstep 0, except on the first firing.
+ This sampler will send to the output the initial value of
+ the input (at microstep 0), but will send it one microstep later (at 1).
  This ensures that the output at microstep 0 is always absent, thus
  ensuring continuity from the left. That is, the input is absent prior
  to the sample time, so continuity requires that it be absent at
@@ -61,9 +57,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  This actor has multiport inputs and outputs. Signals in
  each input channel are sampled and produced to corresponding output
- channel. When there are multiple inputs, the first non-absent input
- from each channel is read, and the output is produced at the first
- microstep after the last of the inputs became non-absent.
+ channel.
  <p>
  Note that this actor does not tolerate changing input or output
  connections during execution.
@@ -139,60 +133,30 @@ public class PeriodicSampler extends Transformer {
     }
 
     /** Generate an output if the current time is one of the sampling
-     *  times. The value of the event is the value of the input signal at the
-     *  current time.
+     *  times and the current microstep is 1.
+     *  The value of the event is the value of the input signal at the
+     *  current time at microstep 0.
      *  @exception IllegalActionException If the transfer of tokens failed.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int width = Math.min(input.getWidth(), output.getWidth());
         ContinuousDirector director = (ContinuousDirector)getDirector();
         Time currentTime = director.getModelTime();
         int microstep = director.getIndex();
-        double samplePeriodValue = ((DoubleToken) samplePeriod.getToken()).doubleValue();
-        for (int i = 0; i < width; i++) {
-            // It is possible that a sample period was skipped due to input being absent,
-            // in which case, current time may actually exceed the _nextSampleTime for
-            // an input channel. To guard against this, we catch up the _nextSampleTime
-            // here.
-            while (currentTime.compareTo(_nextSamplingTime[i]) > 0) {
-                _nextSamplingTime[i] = _nextSamplingTime[i].add(samplePeriodValue);
-            }
-            if (currentTime.compareTo(_nextSamplingTime[i]) == 0) {
+        if (_debugging) {
+            _debug("Current time is " + currentTime
+                    + " with microstep " + microstep);
+        }
+        if (currentTime.compareTo(_nextSamplingTime) == 0 && microstep == 1) {
+            int width = Math.min(input.getWidth(), output.getWidth());
+            for (int i = 0; i < width; i++) {
                 if (_pendingOutputs[i] != null) {
                     // There is a deferred output for this input channel.
                     output.send(i, _pendingOutputs[i]);
-                    // Execution might be speculative, so we can only update
-                    // the tentative next sampling time.
-                    _tentativeNextSamplingTime[i] = currentTime.add(samplePeriodValue);
-                } else if (input.isKnown() && input.hasToken(i)) {
-                    Token inputValue = input.get(i);
-                    if (_firstFiring || microstep != 0) {
-                        output.send(i, inputValue);
-                        _pendingOutputs[i] = null;
-                        // Execution might be speculative, so we can only update
-                        // the tentative next sampling time.
-                        _tentativeNextSamplingTime[i] = currentTime.add(samplePeriodValue);
-                    } else {
-                        // Have to defer the output to the next firing.
-                        _pendingOutputs[i] = inputValue;
-                        // The output will occur in the next iteration at the same time.
-                        _tentativeNextSamplingTime[i] = _nextSamplingTime[i];
-                    }
                     if (_debugging) {
-                        _debug("Sending output value " + inputValue + " on channel " + i);
+                        _debug("Sending output value " + _pendingOutputs[i] + " on channel " + i);
                     }
-                } else {
-                    // If there is no input, or the input is not known, we need
-                    // to cancel the increment to _nextSamplingTime[i].
-                    _tentativeNextSamplingTime[i] = _nextSamplingTime[i];
-                    _pendingOutputs[i] = null;
                 }
-            } else {
-                // We may have backtracked, and no longer match the next
-                // sample time, so we don't want it to get incremented in postfire.
-                _tentativeNextSamplingTime[i] = _nextSamplingTime[i];
-                _pendingOutputs[i] = null;
             }
         }
     }
@@ -205,49 +169,46 @@ public class PeriodicSampler extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _firstFiring = true;
         int width = Math.min(input.getWidth(), output.getWidth());
-        if (_nextSamplingTime == null || _nextSamplingTime.length != width) {
-            _nextSamplingTime = new Time[width];
-            _tentativeNextSamplingTime = new Time[width];
+        if (_pendingOutputs == null || _pendingOutputs.length != width) {
             _pendingOutputs = new Token[width];
         }
         Time currentTime = getDirector().getModelTime();
-        _nextFireAtTime = currentTime;
+        _nextSamplingTime = currentTime;
         for (int i = 0; i < width; i++) {
-            _nextSamplingTime[i] = currentTime;
-            _tentativeNextSamplingTime[i] = currentTime;
             _pendingOutputs[i] = null;
         }
     }
 
-    /** To ensure that the solver includes the time of the next
-     *  sample, request a firing at that time.
+    /** If the current microstep is zero, sample the inputs and request
+     *  a refiring at the current time. If it is one, then request a refiring
+     *  at the next sample time.
      *  @return True.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        _firstFiring = false;
-        Director director = getDirector();
+        ContinuousDirector director = (ContinuousDirector)getDirector();
         Time currentTime = director.getModelTime();
-        if (currentTime.compareTo(_nextFireAtTime) == 0) {
-            double samplePeriodValue = ((DoubleToken) samplePeriod.getToken()).doubleValue();
-            _nextFireAtTime = currentTime.add(samplePeriodValue);
-            _fireAt(_nextFireAtTime);
-        }
-        int width = Math.min(input.getWidth(), output.getWidth());
-        for (int i = 0; i < width; i++) {
-            // Check for deferred outputs.
-            if (_pendingOutputs[i] != null) {
-                if (_tentativeNextSamplingTime[i].equals(_nextSamplingTime[i])) {
-                    // There is a deferred output on this channel.
-                    director.fireAtCurrentTime(this);
-                } else {
-                    // The deferred output was just produced in this iteration.
-                    _pendingOutputs[i] = null;
+        int microstep = director.getIndex();
+        if (currentTime.compareTo(_nextSamplingTime) == 0) {
+            if (microstep == 0) {
+                int width = Math.min(input.getWidth(), output.getWidth());
+                for (int i = 0; i < width; i++) {
+                    if (input.hasToken(i)) {
+                        _pendingOutputs[i] = input.get(i);
+                    } else {
+                        _pendingOutputs[i] = null;
+                    }
+                    if (_debugging) {
+                        _debug("Read input: " + _pendingOutputs[i] + " on channel " + i);
+                    }
                 }
+                director.fireAt(this, currentTime, 1);
+            } else if (microstep == 1) {
+                double samplePeriodValue = ((DoubleToken) samplePeriod.getToken()).doubleValue();
+                _nextSamplingTime = currentTime.add(samplePeriodValue);
+                director.fireAt(this, _nextSamplingTime, 0);
             }
-            _nextSamplingTime[i] = _tentativeNextSamplingTime[i];
         }
         return super.postfire();
     }
@@ -267,21 +228,12 @@ public class PeriodicSampler extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** Indicator that this is the first firing after initialize(). */
-    private boolean _firstFiring;
-    
-    /** The next sampling time for each input. */
-    private Time[] _nextSamplingTime;
-    
-    /** The next fireAt time. */
-    private Time _nextFireAtTime;
-    
+    /** The next sampling time. */
+    private Time _nextSamplingTime;
+        
     /** Record of pending output tokens (those that have been
      *  delayed because they appeared at the input when the
      *  the microstep was zero).
      */
     private Token[] _pendingOutputs;
-    
-    /** The tentative next sampling time for each input. */
-    private Time[] _tentativeNextSamplingTime;
 }

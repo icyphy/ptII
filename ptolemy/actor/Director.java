@@ -385,6 +385,12 @@ public class Director extends Attribute implements Executable {
      *  this method to simply fire the specified actor. The actor needs
      *  to be fired as part of the regular execution cycle of that director,
      *  and that needs to occur after this method has returned.
+     *  <p>
+     *  <b>Note to authors of subclasses:</b> Usually you should not
+     *  override this method, but rather override
+     *  {@link fireAt(Actor, Time, int)}. However, we cannot make
+     *  this method final because occasionally a domain will change the
+     *  default starting microstep. E.g., DE does this.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
      *  @return An instance of Time with value NEGATIVE_INFINITY, or
@@ -397,6 +403,25 @@ public class Director extends Attribute implements Executable {
      *   exception for other reasons.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        return fireAt(actor, time, 0);
+    }
+
+    /** Request a firing of the given actor at the given model
+     *  time with the given microstep. This method behaves exactly
+     *  like {@link #fireAt(Actor, Time)}, except that it also
+     *  passes up to the executive director the microstep.
+     *  @param time The requested time.
+     *  @param microstep The requested microstep.
+     *  @return An instance of Time with value NEGATIVE_INFINITY, or
+     *   if there is an executive director, the time at which the
+     *   container of this director will next be fired
+     *   in response to this request.
+     *  @see #fireAtCurrentTime(Actor)
+     *  @exception IllegalActionException If there is an executive director
+     *   and it throws it. Derived classes may choose to throw this
+     *   exception for other reasons.
+     */
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         // If this director is enclosed within another model, then we
         // pass the request up the chain. If the enclosing executive director
         // respects fireAt(), this will result in the container of this
@@ -406,7 +431,7 @@ public class Director extends Attribute implements Executable {
         // refiring at the specified time.
         if (isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
-            return container.getExecutiveDirector().fireAt(container, time);
+            return container.getExecutiveDirector().fireAt(container, time, microstep);
         }
         // If we are not embedded, then return a value indicating that the
         // fireAt() request is being ignored. If the caller is OK with that,
@@ -1442,15 +1467,39 @@ public class Director extends Attribute implements Executable {
      *   is no director.
      */
     protected Time _fireContainerAt(Time time) throws IllegalActionException {
+        return _fireContainerAt(time, 0);
+    }
+
+    /** Request a firing of the container of this director at the specified time
+     *  and microstep
+     *  and throw an exception if the executive director does not agree to
+     *  do it at the requested time. If there is no executive director (this
+     *  director is at the top level), then ignore the request and return
+     *  a Time with value Double.NEGATIVE_INFINITY.
+     *  This is a convenience method provided because several directors need it.
+     *  The microstep argument is used by directors that implement
+     *  {@link SuperdenseTimeDirector}.
+     *  @param time The requested time.
+     *  @param microstep The requested microstep.
+     *  @return The time that the executive director indicates it will fire this
+     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
+     *   if there is no executive director.
+     *  @exception IllegalActionException If the director does not
+     *   agree to fire the actor at the specified time, or if there
+     *   is no director.
+     */
+    protected Time _fireContainerAt(Time time, int microstep) throws IllegalActionException {
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();
             if (director != null) {
                 if (_debugging) {
                     _debug("**** Requesting that enclosing director refire me at "
-                            + time);
+                            + time
+                            + " with microstep "
+                            + microstep);
                 }
-                Time result = director.fireAt(container, time);
+                Time result = director.fireAt(container, time, microstep);
                 if (!result.equals(time)) {
                     throw new IllegalActionException(this, director.getName()
                             + " is unable to fire " + container.getName()

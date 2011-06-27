@@ -39,10 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * Convert a token of a particular type to a byte stream and back.
  *
- * @param <T> Type of Token that the handler handles
+ * @param <T> Type of Token that the handler handles.
  * @author ahuseyno
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
@@ -57,7 +57,7 @@ public interface TokenHandler<T extends Token> {
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
-    public void convertToBytes(T token, DataOutputStream outputStream)
+    void convertToBytes(T token, DataOutputStream outputStream)
             throws IOException, IllegalActionException;
 
     /**
@@ -71,6 +71,6 @@ public interface TokenHandler<T extends Token> {
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
-    public T convertToToken(DataInputStream inputStream, Class<? extends T> tokenType) throws IOException,
+    T convertToToken(DataInputStream inputStream, Class<? extends T> tokenType) throws IOException,
             IllegalActionException;
 }

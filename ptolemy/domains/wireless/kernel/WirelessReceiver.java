@@ -98,9 +98,11 @@ public class WirelessReceiver extends DEReceiver {
 
     /** Override the base class to attach an empty properties token.
      *  @param token The token to put, or null to send no token.
+     *  @throws IllegalActionException If cannot get the director or if
+     *   the current microstep is zero.
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
      */
-    public synchronized void put(Token token) {
+    public synchronized void put(Token token) throws IllegalActionException {
         put(token, (Token) null);
     }
 
@@ -108,8 +110,10 @@ public class WirelessReceiver extends DEReceiver {
      *  @param token The token to put, or null to send no token.
      *  @param properties The associated properties, or null to not
      *   put any in.
+     *  @throws IllegalActionException If cannot get the director or if
+     *   the current microstep is zero.
      */
-    public synchronized void put(Token token, Token properties) {
+    public synchronized void put(Token token, Token properties) throws IllegalActionException {
         if (token == null) {
             return;
         }

@@ -34,9 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  This is an interface for directors that use a superdense model of time.
- Actors can determine the index of current time by calling getIndex().
-
- <p>superdense time is defined by Haiyang Zheng as:
+ Actors can determine the index, also called the microstep,
+ of current time by calling getIndex().
+ <p>
+ Superdense time is defined by Haiyang Zheng as:
  <blockquote>
  <p>"The interactions between CT and DE subsystems and between DE
  subsystems themselves are captured by discontinuities in

@@ -379,12 +379,13 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
      *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
+     *  @param microstep The microstep (ignored by this director).
      *  @return The time at which the actor passed as an argument
      *   will be fired.
      *  @exception IllegalActionException If the time is earlier than
      *  the current time, or the breakpoint table is null.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
 

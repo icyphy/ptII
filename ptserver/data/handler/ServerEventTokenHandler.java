@@ -32,7 +32,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.ServerEventToken;
 import ptserver.data.ServerEventToken.EventType;
 
@@ -40,40 +39,38 @@ import ptserver.data.ServerEventToken.EventType;
 //// ServerEventTokenHandler
 
 /** ServerEventTokenHandler converts ServerEventToken to/from byte form.
-* 
-*  @author Justin Killian
-*  @version $Id$ 
-*  @since Ptolemy II 8.0
-*  @Pt.ProposedRating Red (jkillian)
-*  @Pt.AcceptedRating Red (jkillian)
-*/
+ *  @author Justin Killian
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
+ */
 public class ServerEventTokenHandler implements TokenHandler<ServerEventToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
 
-    /** Convert the ServerEventToken to its byte representation.
+    /** Write the ServerEventToken to a byte array.
      *  @param token Token to be converted to bytes.
      *  @param outputStream The stream to write to.
      *  @exception IOException If the stream cannot be written.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(ServerEventToken token,
-            DataOutputStream outputStream) throws IOException,
-            IllegalActionException {
+            DataOutputStream outputStream) throws IOException {
         outputStream.writeInt(token.getEventType().ordinal());
         outputStream.writeUTF(token.getMessage());
     }
 
-    /** Convert the byte stream to its ServerEventToken representation.
-     *  @param token Token to be converted to bytes.
+    /** Read an ServerEventToken from the input stream.
      *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated ServerEventToken object.
      *  @exception IOException If the stream cannot be read.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ServerEventToken convertToToken(DataInputStream inputStream,
-            Class<? extends ServerEventToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends ServerEventToken> tokenType) throws IOException {
 
         // Initialize values.
         EventType eventType = EventType.class.getEnumConstants()[inputStream
