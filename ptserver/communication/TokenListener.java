@@ -162,7 +162,6 @@ public class TokenListener implements MqttSimpleCallback {
         /** Send the token back via the model's publisher.
          *  @see java.lang.Runnable#run()
          */
-        @Override
         public void run() {
             try {
                 _remoteModel.getTokenPublisher().sendToken(_token);
