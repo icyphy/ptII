@@ -70,7 +70,6 @@ import ptserver.actor.RemoteSource;
 import ptserver.control.Ticket;
 import ptserver.data.PingToken;
 import ptserver.data.PongToken;
-import ptserver.util.RemoveNonPortableClasses;
 import ptserver.util.TypeParser;
 
 import com.ibm.mqtt.IMqttClient;
