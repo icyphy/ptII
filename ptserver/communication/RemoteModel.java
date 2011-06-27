@@ -64,6 +64,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptserver.actor.RemoteSink;
 import ptserver.actor.RemoteSource;
 import ptserver.control.Ticket;
@@ -338,8 +339,12 @@ public class RemoteModel {
             for (Object portObject : actor.portList()) {
                 if (portObject instanceof TypedIOPort) {
                     TypedIOPort port = (TypedIOPort) portObject;
+                    if (port.deepConnectedPortList().isEmpty()) {
+                        continue;
+                    }
                     StringAttribute targetPortName = (StringAttribute) port
                             .getAttribute("targetPortName");
+
 
                     if (targetPortName != null) {
                         type = TypeParser.parse(modelTypes.get(targetPortName
@@ -416,6 +421,8 @@ public class RemoteModel {
             _initRemoteAttributes(actor);
         }
         _initRemoteAttributes(_topLevelActor);
+        
+        _topLevelActor.setManager(new Manager(_topLevelActor.workspace(), "manager"));
         if (_topLevelActor instanceof TypedCompositeActor) {
             TypedCompositeActor typedActor = (TypedCompositeActor) _topLevelActor;
             TypedCompositeActor.resolveTypes(typedActor);
@@ -624,6 +631,11 @@ public class RemoteModel {
         parser.resetAll();
         // TODO: is this thread safe?
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        //TODO either fork RemoveGraphicalClasses or make its hashmap non-static (?)
+        RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
+        filter.remove("ptolemy.actor.lib.gui.ArrayPlotter");
+        filter.remove("ptolemy.actor.lib.gui.SequencePlotter");
+        MoMLParser.addMoMLFilter(filter);
         return parser;
     }
 

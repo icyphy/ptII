@@ -210,6 +210,24 @@ public abstract class RemoteActor extends TypedAtomicActor {
                         remotePort.setContainer(this);
                         remotePort.setMultiport(false);
 
+                        Attribute productionRate = port
+                                .getAttribute("tokenProductionRate");
+                        Attribute consumptionRate = port
+                                .getAttribute("tokenConsumptionRate");
+                        if (port.isOutput() && productionRate != null) {
+                            Attribute cloned = (Attribute) productionRate
+                                    .clone(productionRate.workspace());
+                            cloned.setPersistent(true);
+                            cloned.setName("tokenConsumptionRate");
+                            cloned.setContainer(remotePort);
+                        }
+                        if (port.isInput() && consumptionRate != null) {
+                            Attribute cloned = (Attribute) consumptionRate
+                                    .clone(consumptionRate.workspace());
+                            cloned.setPersistent(true);
+                            cloned.setName("tokenConsumptionRate");
+                            cloned.setContainer(remotePort);
+                        }
                         if (remotePort instanceof TypedIOPort) {
                             Type type = TypeParser.parse(portTypes.get(port
                                     .getFullName()));

@@ -1,4 +1,6 @@
 /*
+ Parse a string into a type.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -26,7 +28,6 @@
 
 package ptserver.util;
 
-import java.util.HashMap;
 import java.util.Scanner;
 
 import ptolemy.data.type.ArrayType;
@@ -37,8 +38,30 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// TypeParser
 
+/**
+ * This is a helper class that parses string into a type. The rationale
+ * for this class is to have an ability to send type information over the network
+ * as a string since Type instances are not serializable or their equals method (BaseType primarily) 
+ * checks for equality by reference which breaks after a new instance is deserialized.
+ * 
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class TypeParser {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Return a Type instance by parsing the provided type string.
+     * 
+     * <p> The type string must be created by calling toString() method on the Type.
+     * @param type the type string 
+     * @return the Type instance identified by its type string.
+     * @throws IllegalActionException if it was not possible to parse the type since it's not supported.
+     */
     public static Type parse(String type) throws IllegalActionException {
         if (type == null) {
             return null;
@@ -46,11 +69,10 @@ public class TypeParser {
         Scanner scanner = new Scanner(type);
         scanner.useDelimiter("[^a-zA-Z0-9]+");
         String token = scanner.next();
-        Type baseType = typeNames.get(token);
+        Type baseType = BaseType.forName(type);
         if (baseType != null) {
             return baseType;
-        }
-        if (token.equals("arrayType")) {
+        } else if (token.equals("arrayType")) {
             String innerTypeName = scanner.next();
             Type innerType = parse(innerTypeName);
             if (scanner.hasNextInt()) {
@@ -59,29 +81,7 @@ public class TypeParser {
                 return new ArrayType(innerType);
             }
         }
+        // TODO add support for other types
         throw new IllegalActionException(type + " type is not supported");
-    }
-
-    private static HashMap<String, Type> typeNames = new HashMap<String, Type>();
-
-    static {
-        typeNames.put("arrayBottom", BaseType.ARRAY_BOTTOM);
-        typeNames.put("booolean", BaseType.BOOLEAN);
-        typeNames.put("complex", BaseType.COMPLEX);
-        typeNames.put("double", BaseType.DOUBLE);
-        typeNames.put("event", BaseType.EVENT);
-        typeNames.put("float", BaseType.FLOAT);
-        typeNames.put("general", BaseType.GENERAL);
-        typeNames.put("int", BaseType.INT);
-        typeNames.put("long", BaseType.LONG);
-        typeNames.put("niltype", BaseType.NIL);
-        typeNames.put("petite", BaseType.PETITE);
-        typeNames.put("scalar", BaseType.SCALAR);
-        typeNames.put("short", BaseType.SHORT);
-        typeNames.put("string", BaseType.STRING);
-        typeNames.put("unknown", BaseType.UNKNOWN);
-        typeNames.put("unsignedByte", BaseType.UNSIGNED_BYTE);
-        typeNames.put("fixedpoint", BaseType.UNSIZED_FIX);
-        typeNames.put("xmltoken", BaseType.XMLTOKEN);
     }
 }

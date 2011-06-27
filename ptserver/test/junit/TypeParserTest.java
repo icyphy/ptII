@@ -1,4 +1,6 @@
 /*
+ Tests of the TypeParser.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +40,14 @@ import ptserver.util.TypeParser;
 
 ///////////////////////////////////////////////////////////////////
 //// TypeParserTest
-
+/**
+ * Tests of the TypeParser.
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class TypeParserTest {
 
     public void test(Type type) throws IllegalActionException {
