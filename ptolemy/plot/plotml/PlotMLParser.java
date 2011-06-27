@@ -28,7 +28,6 @@
 package ptolemy.plot.plotml;
 
 // Ptolemy imports.
-import ptolemy.plot.Plot;
 import ptolemy.plot.PlotInterface;
 
 import com.microstar.xml.XmlException;
@@ -83,7 +82,7 @@ public class PlotMLParser extends PlotBoxMLParser {
 
         if (elementName.equals("dataset")) {
             // Reset the default, in case it was changed for this dataset.
-            ((Plot) _plot).setConnected(_connected);
+            ((PlotInterface) _plot).setConnected(_connected);
         }
     }
 
@@ -116,16 +115,16 @@ public class PlotMLParser extends PlotBoxMLParser {
                 // NOTE: If only one of these is given, then the other
                 // is ignored.
                 if ((widthSpec == null) || (offsetSpec == null)) {
-                    ((Plot) _plot).setBars(true);
+                    ((PlotInterface) _plot).setBars(true);
                 } else {
                     double width = (Double.valueOf(widthSpec)).doubleValue();
                     double offset = (Double.valueOf(offsetSpec)).doubleValue();
-                    ((Plot) _plot).setBars(width, offset);
+                    ((PlotInterface) _plot).setBars(width, offset);
                 }
             } else if (elementName.equals("dataset")) {
                 String name = (String) _attributes.get("name");
 
-                if (!((Plot) _plot).getReuseDatasets() || (name == null)
+                if (!((PlotInterface) _plot).getReuseDatasets() || (name == null)
                         || (_currentDataset < 0)) {
                     // reuseDatasets was not present or if it was,
                     // the current dataset does not have a name
@@ -134,7 +133,7 @@ public class PlotMLParser extends PlotBoxMLParser {
                     _currentPointCount = 0.0;
                 } else {
                     // reuseDatasets was set to true and name is not null.
-                    int possibleDataset = ((Plot) _plot).getLegendDataset(name);
+                    int possibleDataset = ((PlotInterface) _plot).getLegendDataset(name);
 
                     if (possibleDataset != -1) {
                         _currentDataset = possibleDataset;
@@ -146,62 +145,62 @@ public class PlotMLParser extends PlotBoxMLParser {
                 }
 
                 if (name != null) {
-                    ((Plot) _plot).addLegend(_currentDataset, name);
+                    ((PlotInterface) _plot).addLegend(_currentDataset, name);
                 }
 
                 String connected = (String) _attributes.get("connected");
 
                 if (connected != null) {
                     if (connected.equals("no")) {
-                        ((Plot) _plot).setConnected(false, _currentDataset);
+                        ((PlotInterface) _plot).setConnected(false, _currentDataset);
                     } else {
-                        ((Plot) _plot).setConnected(true, _currentDataset);
+                        ((PlotInterface) _plot).setConnected(true, _currentDataset);
                     }
                 }
 
                 String lineStyle = (String) _attributes.get("lineStyle");
                 if (lineStyle != null) {
-                    ((Plot) _plot).setLineStyle(lineStyle, _currentDataset);
+                    ((PlotInterface) _plot).setLineStyle(lineStyle, _currentDataset);
                 }
 
                 String marks = (String) _attributes.get("marks");
 
                 if (marks != null) {
-                    ((Plot) _plot).setMarksStyle(marks, _currentDataset);
+                    ((PlotInterface) _plot).setMarksStyle(marks, _currentDataset);
                 }
 
                 String stems = (String) _attributes.get("stems");
 
                 if (stems != null) {
                     if (stems.equals("yes")) {
-                        ((Plot) _plot).setImpulses(true, _currentDataset);
+                        ((PlotInterface) _plot).setImpulses(true, _currentDataset);
                     } else {
-                        ((Plot) _plot).setImpulses(false, _currentDataset);
+                        ((PlotInterface) _plot).setImpulses(false, _currentDataset);
                     }
                 }
             } else if (elementName.equals("default")) {
                 String connected = (String) _attributes.get("connected");
 
                 if (connected.equals("yes")) {
-                    ((Plot) _plot).setConnected(true);
+                    ((PlotInterface) _plot).setConnected(true);
                     _connected = true;
                 } else {
-                    ((Plot) _plot).setConnected(false);
+                    ((PlotInterface) _plot).setConnected(false);
                     _connected = false;
                 }
 
                 String marks = (String) _attributes.get("marks");
 
                 if (marks != null) {
-                    ((Plot) _plot).setMarksStyle(marks);
+                    ((PlotInterface) _plot).setMarksStyle(marks);
                 }
 
                 String stems = (String) _attributes.get("stems");
 
                 if (stems.equals("no")) {
-                    ((Plot) _plot).setImpulses(false);
+                    ((PlotInterface) _plot).setImpulses(false);
                 } else {
-                    ((Plot) _plot).setImpulses(true);
+                    ((PlotInterface) _plot).setImpulses(true);
                 }
             } else if (elementName.equals("m")) {
                 _addPoint(false, elementName);
@@ -212,7 +211,7 @@ public class PlotMLParser extends PlotBoxMLParser {
             } else if (elementName.equals("point")) {
                 _addPoint(true, elementName);
             } else if (elementName.equals("reuseDatasets")) {
-                ((Plot) _plot).setReuseDatasets(true);
+                ((PlotInterface) _plot).setReuseDatasets(true);
             } else {
                 super.startElement(elementName);
             }
@@ -286,7 +285,7 @@ public class PlotMLParser extends PlotBoxMLParser {
         String highSpec = (String) _attributes.get("highErrorBar");
 
         if ((lowSpec == null) && (highSpec == null)) {
-            ((Plot) _plot).addPoint(_currentDataset, x, y, connected);
+            ((PlotInterface) _plot).addPoint(_currentDataset, x, y, connected);
         } else {
             double low;
             double high;
@@ -303,7 +302,7 @@ public class PlotMLParser extends PlotBoxMLParser {
                 high = x;
             }
 
-            ((Plot) _plot).addPointWithErrorBars(_currentDataset, x, y, low,
+            ((PlotInterface) _plot).addPointWithErrorBars(_currentDataset, x, y, low,
                     high, connected);
         }
     }

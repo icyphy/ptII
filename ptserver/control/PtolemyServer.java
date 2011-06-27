@@ -49,7 +49,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptolemy.actor.Manager.State;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelListener;
@@ -524,7 +523,7 @@ public final class PtolemyServer implements IServerManager {
                     _remoteModelListener);
 
             String modelXML = new String(downloadModel(ticket.getLayoutUrl()));
-            HashMap<String, Type> resolvedTypes = simulationTask
+            HashMap<String, String> resolvedTypes = simulationTask
                     .getRemoteModel().getResolvedTypes();
             String brokerUrl = "tcp://"
                     + InetAddress.getLocalHost().getHostAddress() + "@"

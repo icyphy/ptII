@@ -1,0 +1,299 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NoisySinewave" class="ptolemy.actor.TypedCompositeActor">
+	<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute"
+		value="8.1.devel">
+	</property>
+	<property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter"
+		value="1.0">
+	</property>
+	<property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter"
+		value="{300.0, 200.0}">
+	</property>
+	<property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+		<property name="iterations" class="ptolemy.data.expr.Parameter"
+			value="100">
+		</property>
+		<property name="_location" class="ptolemy.kernel.util.Location"
+			value="70.0, 55.0">
+		</property>
+	</property>
+	<property name="droid_screenSize" class="ptserver.test.helper.ScreenSize"
+		value="[600, 400]">
+	</property>
+	<property name="droid_client" class="ptolemy.data.expr.Parameter"
+		value="HTC EVO 4G">
+	</property>
+	<property name="droid_orientation" class="ptolemy.data.expr.Parameter"
+		value="portrait">
+	</property>
+
+	<!-- Static elements in the user interface, like tabs and labels. Tabs are 
+		in the same order as given here. -->
+	<property name="droid_tabs">
+		<!-- Example tab 1 -->
+		<property name="tab1" class="ptolemy.kernel.util.StringAttribute"
+			value="First tab">
+			<!-- Label example. -->
+			<property name="label1" class="ptolemy.kernel.util.StringAttribute"
+				value="Example label">
+				<!-- Some of the properties, like AndoridLocation, are required. -->
+				<!-- AndroidLocation is a currently non-existing class. It will contain 
+					the following information: The x and y position of the top-left corner The 
+					height and width of the draw area. -->
+				<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
+					value="[10, 15, -2, -2]"></property>
+				<!-- <property name="droid_typeface" class="ptolemy.data.expr.Parameter" 
+					value="sans"></property> <property name="droid_style" class="ptolemy.data.expr.Parameter" 
+					value="italic"></property> <property name="droid_size" class="ptolemy.data.expr.Parameter" 
+					value="12"></property> -->
+			</property>
+		</property>
+		<!-- End of example tab 1 -->
+		<!-- End of example tab 2 -->
+	</property>
+	<class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
+		<property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter"
+			value="1.0">
+		</property>
+		<property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter"
+			value="{298.0, 225.0}">
+		</property>
+		<property name="_remote" class="ptolemy.data.expr.Parameter"
+			value="source">
+		</property>
+		<property name="_location" class="ptolemy.kernel.util.Location"
+			value="60.0, 120.0">
+		</property>
+		<property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter"
+			value="0.1">
+			<property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+			</property>
+			<property name="_icon" class="ptolemy.kernel.util.Attribute">
+				<property name="_color" class="ptolemy.actor.gui.ColorAttribute"
+					value="{0.0, 0.0, 1.0, 1.0}">
+				</property>
+			</property>
+			<property name="_smallIconDescription"
+				class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+				<configure>
+					<svg>
+						<text x="20" style="font-size:14; font-family:SansSerif; fill:blue"
+							y="20">-P-</text>
+					</svg>
+				</configure>
+			</property>
+			<property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+			</property>
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="350.0, 30.0">
+			</property>
+		</property>
+		<port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+			<property name="input" />
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="[30.0, 90.0]">
+			</property>
+		</port>
+		<port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+			<property name="input" />
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="[30.0, 130.0]">
+			</property>
+		</port>
+		<port name="noisy" class="ptolemy.actor.TypedIOPort">
+			<property name="output" />
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="515.0, 355.0">
+			</property>
+			<property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+			</property>
+		</port>
+		<entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="445.0, 355.0">
+			</property>
+		</entity>
+		<entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+			<property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter"
+				value="noiseStandardDeviation">
+			</property>
+			<doc>Create a sequence of gaussian random variables</doc>
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="310.0, 345.0">
+			</property>
+		</entity>
+		<relation name="relation5" class="ptolemy.actor.TypedIORelation">
+		</relation>
+		<relation name="relation7" class="ptolemy.actor.TypedIORelation">
+		</relation>
+		<link port="noisy" relation="relation7" />
+		<link port="AddSubtract2.plus" relation="relation5" />
+		<link port="AddSubtract2.plus" relation="relation3" />
+		<link port="AddSubtract2.output" relation="relation7" />
+		<link port="Gaussian.output" relation="relation5" />
+	</class>
+	<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+		<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
+			value="[0, 0, 600, 400]"></property>
+		<property name="droid_tab" class="ptolemy.data.expr.Parameter"
+			value="tab1"></property>
+		<property name="automaticRescale" class="ptolemy.data.expr.Parameter"
+			value="true">
+		</property>
+		<property name="fillOnWrapup" class="ptolemy.data.expr.Parameter"
+			value="false">
+		</property>
+		<property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+		</property>
+		<property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+		</property>
+		<property name="_remote" class="ptolemy.data.expr.Parameter"
+			value="sink">
+		</property>
+		<property name="_location" class="ptolemy.kernel.util.Location"
+			value="[370.0, 235.0]">
+		</property>
+		<configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Clean and Noisy Sine Wave</title>
+<xLabel>sample number</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="99.0"/>
+<yRange min="-1.5" max="1.5"/>
+<noGrid/>
+</plot>?>
+		</configure>
+	</entity>
+	<entity name="InstanceOfNoisySinewave" class="NoisySinewave">
+		<property name="_location" class="ptolemy.kernel.util.Location"
+			value="175.0, 220.0">
+		</property>
+		<property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter"
+			value="0.3">
+		</property>
+		<port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+			<property name="input" />
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="{10.0, 85.0}">
+			</property>
+		</port>
+		<port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+			<property name="input" />
+			<property name="_location" class="ptolemy.kernel.util.Location"
+				value="{10.0, 125.0}">
+			</property>
+		</port>
+	</entity>
+	<entity name="InstanceOfNoisySinewave_remote" class="ptserver.actor.RemoteSink">
+		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
+			value=".NoisySinewave.InstanceOfNoisySinewave">
+		</property>
+		<property name="_iconDescription"
+			class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+			<configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:red" />
+<rect x="-28" y="-18" width="56" height="36" style="fill:lightgrey" />
+<rect x="-15" y="-10" width="10" height="8" style="fill:white" />
+<rect x="-15" y="2" width="10" height="8" style="fill:white" />
+<rect x="5" y="-4" width="10" height="8" style="fill:white" />
+<line x1="-5" y1="-6" x2="0" y2="-6" /><line x1="-5" y1="6"
+				x2="0" y2="6" /><line x1="0" y1="-6" x2="0" y2="6" /><line
+				x1="0" y1="0" x2="5" y2="0" /></svg>
+</configure>
+		</property>
+		<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute"
+			value="7.1.devel">
+		</property>
+		<doc>This composite actor generates a sine wave.</doc>
+		<property name="samplingFrequency" class="ptolemy.data.expr.Parameter"
+			value="8000.0">
+		</property>
+		<property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter"
+			value="1.0">
+		</property>
+		<property name="annotation" class="ptolemy.kernel.util.Attribute">
+		</property>
+		<property name="Documentation" class="ptolemy.kernel.util.Attribute">
+		</property>
+		<property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+		</property>
+		<property name="frequency" class="ptolemy.actor.parameters.PortParameter"
+			value="440.0">
+		</property>
+		<property name="phase" class="ptolemy.actor.parameters.PortParameter"
+			value="0.0">
+		</property>
+		<property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter"
+			value="{298.0, 225.0}">
+		</property>
+		<property name="_parser" class="ptolemy.moml.ParserAttribute">
+		</property>
+		<property name="_location" class="ptolemy.kernel.util.Location"
+			value="175.0, 220.0">
+		</property>
+		<property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter"
+			value="0.3">
+		</property>
+		<port name="noisy" class="ptolemy.actor.TypedIOPort">
+			<property name="input" />
+			<property name="targetPortName" class="ptolemy.kernel.util.StringAttribute"
+				value=".NoisySinewave.InstanceOfNoisySinewave.noisy">
+			</property>
+		</port>
+	</entity>
+	<entity name="SequencePlotter_remote" class="ptserver.actor.RemoteSource">
+		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
+			value=".NoisySinewave.SequencePlotter">
+		</property>
+		<property name="_iconDescription"
+			class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+			<configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white" />
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue" />
+</svg>
+</configure>
+		</property>
+		<property name="fillOnWrapup" class="ptolemy.data.expr.Parameter"
+			value="false">
+		</property>
+		<property name="automaticRescale" class="ptolemy.data.expr.Parameter"
+			value="false">
+		</property>
+		<property name="legend" class="ptolemy.kernel.util.StringAttribute">
+		</property>
+		<property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+		</property>
+		<property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+		</property>
+		<property name="startingDataset" class="ptolemy.data.expr.Parameter"
+			value="0">
+		</property>
+		<property name="xInit" class="ptolemy.data.expr.Parameter"
+			value="0.0">
+		</property>
+		<property name="xUnit" class="ptolemy.data.expr.Parameter"
+			value="1.0">
+		</property>
+		<property name="_location" class="ptolemy.kernel.util.Location"
+			value="[370.0, 235.0]">
+		</property>
+		<port name="input" class="ptolemy.actor.TypedIOPort">
+			<property name="output" />
+			<property name="targetPortName" class="ptolemy.kernel.util.StringAttribute"
+				value=".NoisySinewave.SequencePlotter.input">
+			</property>
+		</port>
+	</entity>
+	<relation name="relation2" class="ptolemy.actor.TypedIORelation">
+	</relation>
+	<relation name="relation" class="ptolemy.actor.TypedIORelation">
+	</relation>
+	<link port="SequencePlotter.input" relation="relation" />
+	<link port="InstanceOfNoisySinewave.noisy" relation="relation2" />
+	<link port="InstanceOfNoisySinewave_remote.noisy" relation="relation2" />
+	<link port="SequencePlotter_remote.input" relation="relation" />
+</entity>

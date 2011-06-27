@@ -34,7 +34,6 @@ import java.util.HashMap;
 
 import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -86,7 +85,7 @@ public class RemoteSource extends RemoteActor {
      */
     public RemoteSource(CompositeEntity container,
             ComponentEntity targetSource, boolean replaceTargetEntity,
-            HashMap<String, Type> portTypes) throws IllegalActionException,
+            HashMap<String, String> portTypes) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
         super(container, targetSource, replaceTargetEntity, portTypes);
     }

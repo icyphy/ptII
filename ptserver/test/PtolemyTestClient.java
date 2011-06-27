@@ -66,7 +66,7 @@ public class PtolemyTestClient {
             RemoteModel model = new RemoteModel(RemoteModelType.CLIENT);
 
             URL resource = PtolemyTestClient.class
-                    .getResource("/ptserver/test/junit/sequence.xml");
+                    .getResource("/ptserver/test/junit/NoisySinewave.xml");
             model.loadModel(resource);
             CompositeActor topLevelActor = model.getTopLevelActor();
 
