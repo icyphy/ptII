@@ -190,12 +190,14 @@ public class JoglDirector extends StaticSchedulingDirector{
      *            The actor scheduled to be fired.
      * @param time
      *            The scheduled time.
+     * @param microstep
+     *            The microstep.
      * @return The time returned by the executive director, or or the specified
      *         time if there isn't one.
      * @exception IllegalActionException
      *                If by the executive director.
      */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
@@ -205,7 +207,7 @@ public class JoglDirector extends StaticSchedulingDirector{
             Director executiveDirector = modalModel.getExecutiveDirector();
 
             if (executiveDirector != null) {
-                return executiveDirector.fireAt(modalModel, time);
+                return executiveDirector.fireAt(modalModel, time, microstep);
             }
         }
         setModelTime(time);
