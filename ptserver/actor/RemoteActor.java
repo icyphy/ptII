@@ -181,6 +181,9 @@ public abstract class RemoteActor extends TypedAtomicActor {
 
         for (Object attributeObject : targetEntity.attributeList()) {
             Attribute attribute = (Attribute) attributeObject;
+            if (attribute.getName().equals("_remote")) {
+                continue;
+            }
             Attribute clonedAttribute = (Attribute) attribute.clone(attribute
                     .workspace());
             clonedAttribute.setContainer(this);
@@ -215,6 +218,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
                         Attribute consumptionRate = port
                                 .getAttribute("tokenConsumptionRate");
                         if (port.isOutput() && productionRate != null) {
+                            remotePort.removeAttribute(remotePort.getAttribute("tokenConsumptionRate"));
                             Attribute cloned = (Attribute) productionRate
                                     .clone(productionRate.workspace());
                             cloned.setPersistent(true);
@@ -222,10 +226,11 @@ public abstract class RemoteActor extends TypedAtomicActor {
                             cloned.setContainer(remotePort);
                         }
                         if (port.isInput() && consumptionRate != null) {
+                            remotePort.removeAttribute(remotePort.getAttribute("tokenProductionRate"));
                             Attribute cloned = (Attribute) consumptionRate
                                     .clone(consumptionRate.workspace());
                             cloned.setPersistent(true);
-                            cloned.setName("tokenConsumptionRate");
+                            cloned.setName("tokenProductionRate");
                             cloned.setContainer(remotePort);
                         }
                         if (remotePort instanceof TypedIOPort) {

@@ -236,7 +236,7 @@ public class CommunicationToken extends Token {
     /**
      * Mapping from port to its channels with tokens.
      */
-    private final HashMap<String, ArrayList<Token[]>> _portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>();
+    private final HashMap<String, ArrayList<Token[]>> _portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>(2);
 
     /**
      * Number of tokens encapsulated by the communication token.

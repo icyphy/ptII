@@ -94,14 +94,16 @@ import com.ibm.mqtt.MqttException;
  */
 public class RemoteModel {
 
+    private static final int PING_PONG_PERIOD = 1000;
+
     /**
      * Create a new instance of the remoteModel with the specified parameters.
      * @param modelType the type of the model which must be either client or server
      */
     public RemoteModel(RemoteModelType modelType) {
-        _tokenPublisher = new TokenPublisher(100, 1000);
+        _tokenPublisher = new TokenPublisher(1000, 1000);
         _modelType = modelType;
-        _executor = Executors.newCachedThreadPool();
+        _executor = Executors.newFixedThreadPool(3);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -196,15 +198,6 @@ public class RemoteModel {
      */
     public Executor getExecutor() {
         return _executor;
-    }
-
-    /**
-     * Return the last PongToken.
-     * @return the last PongToken.
-     * @see #setLastPongToken(PongToken)
-     */
-    public synchronized PongToken getLastPongToken() {
-        return _lastPongToken;
     }
 
     /**
@@ -345,7 +338,6 @@ public class RemoteModel {
                     StringAttribute targetPortName = (StringAttribute) port
                             .getAttribute("targetPortName");
 
-
                     if (targetPortName != null) {
                         type = TypeParser.parse(modelTypes.get(targetPortName
                                 .getExpression()));
@@ -421,8 +413,9 @@ public class RemoteModel {
             _initRemoteAttributes(actor);
         }
         _initRemoteAttributes(_topLevelActor);
-        
-        _topLevelActor.setManager(new Manager(_topLevelActor.workspace(), "manager"));
+
+        _topLevelActor.setManager(new Manager(_topLevelActor.workspace(),
+                "manager"));
         if (_topLevelActor instanceof TypedCompositeActor) {
             TypedCompositeActor typedActor = (TypedCompositeActor) _topLevelActor;
             TypedCompositeActor.resolveTypes(typedActor);
@@ -631,7 +624,7 @@ public class RemoteModel {
         parser.resetAll();
         // TODO: is this thread safe?
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-        //TODO either fork RemoveGraphicalClasses or make its hashmap non-static (?)
+        // TODO either fork RemoveGraphicalClasses or make its hashmap non-static (?)
         RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
         filter.remove("ptolemy.actor.lib.gui.ArrayPlotter");
         filter.remove("ptolemy.actor.lib.gui.SequencePlotter");
@@ -832,14 +825,18 @@ public class RemoteModel {
                 } catch (IllegalActionException e) {
                     //TODO handle this
                 }
+                long latency = msTime - _getLastPongToken().getTimestamp();
+                // update ping pong latency if the token was not received roughly within last 2 periods.
+                if (latency > PING_PONG_PERIOD * 2) {
+                    _pingPonglatency = latency;
+                }
                 if (timeoutPeriod > 0) {
-                    long lastPong = msTime - _getLastPongToken().getTimestamp();
-                    if (lastPong > timeoutPeriod) {
+                    if (latency > timeoutPeriod) {
                         _fireModelConnectionExpired();
                     }
                 }
             }
-        }, 0, 1000);
+        }, 0, PING_PONG_PERIOD);
     }
 
     /**
@@ -928,7 +925,7 @@ public class RemoteModel {
     /**
      * The last pong token received from the remoteModel.
      */
-    private PongToken _lastPongToken;
+    private volatile PongToken _lastPongToken;
 
     /**
      * The model listeners.
@@ -942,7 +939,7 @@ public class RemoteModel {
     /**
      * The roundtrip latency for sending ping token and receiving pong token back.
      */
-    private long _pingPonglatency;
+    private volatile long _pingPonglatency;
 
     /**
      * The executor used to schedule short lived tasks.

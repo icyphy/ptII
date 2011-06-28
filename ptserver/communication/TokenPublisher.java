@@ -77,11 +77,15 @@ public class TokenPublisher {
                 synchronized (TokenPublisher.this) {
                     if (_tokenCount > 0) {
                         try {
+                            byte[] batch = _outputStream.toByteArray();
                             _mqttClient.publish(getTopic(),
-                                    _outputStream.toByteArray(),
+                                    batch,
                                     RemoteModel.QOS_LEVEL, false);
+                            // TODO remove this or add proper logging
+                            System.out.println("publishing batch " + _batchCount++ + " batch size " + batch.length);
                         } catch (MqttException e) {
-                            //TODO handle the exception;
+                            // TODO handle the exception;
+                            e.printStackTrace();
                         }
                         //FIXME: use a proper logger or remove
                         //System.out.println(_batchCount++);
@@ -206,8 +210,9 @@ public class TokenPublisher {
     /**
      * TODO: either remove this or add proper logging mechanism
      * The count of batches sent.
-     * private int _batchCount;
-    */
+     */
+    private int _batchCount;
+
     /**
      * The timer used for sending batch of tokens.
      */

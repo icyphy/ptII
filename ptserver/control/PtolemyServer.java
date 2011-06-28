@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -205,6 +207,18 @@ public final class PtolemyServer implements IServerManager {
                             + "' on port " + String.valueOf(_servletPort) + ".",
                     e);
         }
+        Timer timer = new Timer("PtolemyServer timer");
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                for (SimulationTask task : _requests.values()) {
+                    System.out.println(task.getRemoteModel().getTicket()
+                            + " latency "
+                            + task.getRemoteModel().getPingPongLatency());
+                }
+            }
+        }, 1000, 1000);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -699,8 +713,7 @@ public final class PtolemyServer implements IServerManager {
         public void modelConnectionExpired(RemoteModel remoteModel) {
             System.out.println("Removing model " + remoteModel.getTicket());
             System.out.println("Last pong was "
-                    + (System.currentTimeMillis() - remoteModel
-                            .getLastPongToken().getTimestamp()) + " ms ago");
+                    + remoteModel.getPingPongLatency() + " ms ago");
             try {
                 close(remoteModel.getTicket());
             } catch (IllegalActionException e) {

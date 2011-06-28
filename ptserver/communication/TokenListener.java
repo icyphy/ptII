@@ -89,7 +89,8 @@ public class TokenListener implements MqttSimpleCallback {
             boolean retained) throws Exception {
         Tokenizer tokenizer = new Tokenizer(payload);
         Token token = null;
-
+        // TODO remove this or change to proper logging
+        System.out.println("received batch " + _batchCount++);
         while ((token = tokenizer.getNextToken()) != null) {
 
             // The listener is only concerned about the following types.
@@ -177,4 +178,6 @@ public class TokenListener implements MqttSimpleCallback {
          */
         private final PongToken _token;
     }
+    
+    private int _batchCount;
 }
