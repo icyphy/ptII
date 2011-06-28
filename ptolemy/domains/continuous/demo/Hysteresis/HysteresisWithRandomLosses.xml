@@ -228,7 +228,7 @@ a constant output. The transitions change the value of that constant.</text></sv
             <entity name="high" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -238,7 +238,7 @@ a constant output. The transitions change the value of that constant.</text></sv
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>

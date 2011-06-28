@@ -250,7 +250,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         super(container, name);
         _initParameters();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -640,7 +640,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         if (_eventQueue.size() > 0) {
             aFutureTime = _eventQueue.get().timeStamp();
         }
-
+        
         // Iterate the event queue to find the earliest event with a bigger tag
         // ((either timestamp or microstop). If such an event exists,
         // use its time as the model next iteration time. If no such event

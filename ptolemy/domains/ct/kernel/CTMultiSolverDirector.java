@@ -369,7 +369,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // NOTE: the final states at the model stop time are resolved before
         // the model stops.
         // Also, if there is a stop request, stop the model immediately.
-        if (getModelTime().equals(getModelStopTime()) || _stopRequested) {
+        if (getModelTime().compareTo(getModelStopTime()) >= 0 || _stopRequested) {
             return;
         }
 
@@ -564,7 +564,7 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("Set the stop time as a breakpoint: " + getModelStopTime());
         }
 
-        fireAt((Actor) getContainer(), getModelStopTime());
+        _fireContainerAt(getModelStopTime());
 
         _initialStatesNotReady = true;
 

@@ -325,7 +325,7 @@
         <link port="B_733279297.shouldNotBePresent" relation="shouldNotBePresentRelation"/>
     </entity>
     <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Unknown inputs remain. Possible causality loop:&#10;L_in&#10;&#10;  in .CannotAnalysisWithPreemption4.model_region_1 and .CannotAnalysisWithPreemption4.model_region_1.L_in">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Unknown inputs remain. Possible causality loop:&#10;L_in&#10;&#10;  in .CannotAnalysisWithPreemption3.model_region_1 and .CannotAnalysisWithPreemption3.model_region_1.L_in">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

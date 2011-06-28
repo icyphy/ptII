@@ -416,7 +416,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             _ODESolver._setRound(round);
             if (_debugging) {
                 _debug("-- Get step size from enclosing Continuous director: "
-                        + _currentStepSize + ", and also round: " + round + ".");
+                        + _currentStepSize + ", and also the solver round: " + round + ".");
             }
             _resetAllReceivers();
             _transferInputsToInside();
@@ -935,7 +935,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Calling prefire() at time " + _currentTime + " and index "
+            _debug("\nCalling prefire() at time " + _currentTime + " and index "
                     + _index);
         }
         // This code is sufficiently confusing that, at the expense
@@ -1699,20 +1699,27 @@ public class ContinuousDirector extends FixedPointDirector implements
     private boolean _postfireWithEnclosingContinuousDirector()
             throws IllegalActionException {
         boolean postfireResult = _commit();
+        // The above call will increment the index if the current step
+        // size is zero, and set it to zero otherwise. At the top level,
+        // we want to set it to 1, not zero because we just committed
+        // the index 0 iteration for the current time. The next iteration
+        // should run with index 1.
+        if (_index == 0) {
+            _index++;
+        }
 
         // Request a refiring at the current time if the
         // next step size has been set to 0.0, and at the
         // next breakpoint time otherwise.
         if (_currentStepSize == 0.0) {
+            // We assume the enclosing director will
+            // post this firing request at the next microstep.
             _fireContainerAt(_currentTime);
-            // Have to increment the microstep.
-            // FIXME Doesn't seem to work!
-            // _index++;
         } else if (_breakpoints.size() > 0) {
             // Request a firing at the time of the first breakpoint.
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
                     .first();
-            _fireContainerAt(nextBreakpoint.timestamp());
+            _fireContainerAt(nextBreakpoint.timestamp(), nextBreakpoint.index());
         }
 
         return postfireResult;
@@ -1852,8 +1859,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentTime = enclosingDirector._currentTime
                 .subtract(_accumulatedSuspendTime);
         if (_debugging) {
-            _debug("-- Setting current time to match enclosing ContinuousDirector: "
-                    + _currentTime);
+            _debug("-- Setting current time to "
+                    + _currentTime
+                    + ", which aligns with the enclosing director's time of "
+                    + enclosingDirector._currentTime
+                    + ", given the accumulated suspend time of "
+                    + _accumulatedSuspendTime);
         }
         // FIXME: Probably shouldn't make the index match that of the environment!
         // There may have been suspensions happening. So what should the index be?

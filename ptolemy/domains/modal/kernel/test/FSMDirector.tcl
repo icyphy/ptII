@@ -259,7 +259,9 @@ test FSMDirector-5.1 {test fireAt} {
     set mag [$e0 getManager]
     $mag initialize
     set time [java::new ptolemy.actor.util.Time $dir]
-    $dir fireAt $fsm [$time {add double} 1.111]
+    $dir fireAt $fsm [$time {add double} 1.111] 0
+    # With DE change of 6/11, have to iterate twice to get to microstep 1.
+    $mag iterate
     $mag iterate
     $mag wrapup
     # In fsm, the results would be {1.111 -1000}

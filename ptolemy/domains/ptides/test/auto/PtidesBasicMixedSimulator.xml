@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 75.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 842, 582}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 841, 579}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 469]">
     </property>

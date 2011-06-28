@@ -262,6 +262,9 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         // Make sure it is only produced at the indicated time.
         if (_postponed != null && currentTime.equals(_postponed)) {
             if (microstep == 0) {
+                if (_debugging) {
+                    _debug("-- There is a postponed event but the microstep is still zero.");
+                }
                 dir.fireAtCurrentTime(this);
             } else {
                 if (_debugging) {
@@ -298,6 +301,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
                             _debug("-- Event is detected, but microstep is 0. Postpone output.");
                         }
                         _postponed = currentTime;
+                        _postponedOutputProduced = false;
                         dir.fireAtCurrentTime(this);
                     } else {
                         if (_debugging) {
@@ -313,6 +317,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
                         _debug("-- Event is detected with a non-zero step size. Request a refiring.");
                     }
                     _postponed = currentTime;
+                    _postponedOutputProduced = false;
                     dir.fireAtCurrentTime(this);
                 } else {
                     // Step size is nonzero and the current input is not

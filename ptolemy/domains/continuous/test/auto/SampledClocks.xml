@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={182, 275, 914, 536}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={231, 378, 914, 536}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 426]">
     </property>
@@ -96,28 +96,8 @@
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 105.0]">
         </property>
-    </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0,1}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 290.0}">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_hide" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </port>
     </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
@@ -137,30 +117,12 @@
             </property>
         </port>
     </entity>
-    <entity name="SampleTimes" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.2}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 350.0]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_hide" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </port>
-    </entity>
     <entity name="Sampler" class="ptolemy.actor.lib.Sampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 290.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -168,7 +130,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 165.0]">
         </property>
@@ -187,6 +149,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 290.0}">
         </property>
     </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0,1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 360.0]">
+        </property>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{105.0, 290.0}">
         </vertex>
@@ -194,8 +176,6 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{90.0, 105.0}">
         </vertex>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -209,16 +189,18 @@
         <vertex name="vertex1" value="{235.0, 290.0}">
         </vertex>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ContinuousClock.output" relation="relation"/>
-    <link port="DiscreteClock.output" relation="relation6"/>
     <link port="PeriodicSampler2.input" relation="relation"/>
     <link port="PeriodicSampler2.output" relation="relation4"/>
-    <link port="SampleTimes.output" relation="relation2"/>
     <link port="Sampler.input" relation="relation6"/>
     <link port="Sampler.output" relation="relation5"/>
-    <link port="Sampler.trigger" relation="relation2"/>
+    <link port="Sampler.trigger" relation="relation3"/>
     <link port="NonStrictTest.input" relation="relation4"/>
     <link port="NonStrictTest2.input" relation="relation"/>
     <link port="NonStrictTest3.input" relation="relation6"/>
     <link port="NonStrictTest4.input" relation="relation5"/>
+    <link port="DiscreteClock2.output" relation="relation6"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
 </entity>
