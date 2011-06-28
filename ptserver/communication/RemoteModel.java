@@ -101,7 +101,7 @@ public class RemoteModel {
      * @param modelType the type of the model which must be either client or server
      */
     public RemoteModel(RemoteModelType modelType) {
-        _tokenPublisher = new TokenPublisher(1000, 1000);
+        _tokenPublisher = new TokenPublisher(100, 1000);
         _modelType = modelType;
         _executor = Executors.newFixedThreadPool(3);
     }
