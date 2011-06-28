@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Butterfly" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2400">
@@ -44,7 +44,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 153, 652, 561}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 153, 865, 565}, maximized=false}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 40.0]">
@@ -77,7 +77,7 @@
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[83.5, 275.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 325.0]">
         </property>
     </entity>
     <entity name="Polar to Cartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
