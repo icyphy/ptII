@@ -65,11 +65,8 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getX() throws IllegalActionException {
-        if (_layout_x == Integer.MIN_VALUE) {
-            _setSize();
-        }
-        
-        return _layout_x;
+        validateLocation();
+        return ((IntMatrixToken) getToken()).getElementAt(0, 0);
     }
 
     /** Get the relative y position of the top-left corner. <br/>
@@ -81,11 +78,8 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getY() throws IllegalActionException {
-        if (_layout_y == Integer.MIN_VALUE) {
-            _setSize();
-        }
-        
-        return _layout_y;
+        validateLocation();
+        return ((IntMatrixToken) getToken()).getElementAt(0, 1);
     }
 
     /** Get the width of the element.
@@ -94,11 +88,8 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getWidth() throws IllegalActionException {
-        if (_width == Integer.MIN_VALUE) {
-            _setSize();
-        }
-        
-        return _width;
+        validateLocation();
+        return ((IntMatrixToken) getToken()).getElementAt(0, 2);
     }
 
     /** Get the height of the element.
@@ -107,53 +98,26 @@ public class AndroidLocation extends Parameter {
      *  an IntMatrixToken.
      */
     public int getHeight() throws IllegalActionException {
-        if (_height == Integer.MIN_VALUE) {
-            _setSize();
-        }
-        
-        return _height;
+        validateLocation();
+        return ((IntMatrixToken) getToken()).getElementAt(0, 3);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                private methods                            ////
-
-    /** Set all the location attributes based on the underlying token.
-     *  @exception IllegalActionException If the underlying token is not
-     *  an IntMatrixToken.
+    /** Validate the location. The location should have four parameters,
+     *  the top left position (x and y), the width, and the height.
+     *  
+     *  @exception IllegalActionException If the location is not valid.
      */
-    private void _setSize() throws IllegalActionException {
+    public void validateLocation() throws IllegalActionException {
         IntMatrixToken token = (IntMatrixToken) getToken();
 
-        if (token != null) {
-            _layout_x = token.getElementAt(0, 0);
-            _layout_y = token.getElementAt(0, 1);
-            _width = token.getElementAt(0, 2);
-            _height = token.getElementAt(0, 3);
+        // Check if the token is not a valid token, if it has the 4 required
+        // parameters (x, y, height, and width), and if the height and width
+        // make any sense.
+        if (token == null || token.getColumnCount() != 4
+                || token.getElementAt(0, 2) < -2
+                || token.getElementAt(0, 3) < -2) {
+            throw new IllegalActionException(this,
+                    "Invalid location information.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
-
-    /** Relative x position of the top-left corner. <br/>
-     *  Special constants: <br/>
-     *          MATCH_PARENT = -1 <br/>
-     *          WRAP_CONTENT = -2
-     */
-    private int _layout_x = Integer.MIN_VALUE;
-
-    /** Relative y position of the top-left corner. <br/>
-     *  Special constants: <br/>
-     *          MATCH_PARENT = -1 <br/>
-     *          WRAP_CONTENT = -2
-     */
-    private int _layout_y = Integer.MIN_VALUE;
-
-    /** Width of the element.
-     */
-    private int _width = Integer.MIN_VALUE;
-
-    /** Height of the element.
-     */
-    private int _height = Integer.MIN_VALUE;
 }
