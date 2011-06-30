@@ -774,8 +774,8 @@ public class TemplateParser {
                         return value;
                     } catch (Throwable throwable) {
                         CGException.throwException(_component, throwable,
-                                "Failed to find open paren or open curly bracket in \"" + code
-                                + "\".  Failed to create parse tree.");
+                                "Failed to find open paren or open curly bracket in \n" + code
+                                + "\nFailed to create parse tree.");
                     }
                 }
             }
@@ -1298,6 +1298,16 @@ public class TemplateParser {
                         .generateVariableName(((NamedObj) _component))
                         + "_" + processCode(parameter);
             }
+        } else if (macro.equals("containerSymbol")) {
+            if (parameter.trim().length() == 0) {
+                return _codeGenerator
+                    .generateVariableName((((NamedObj) _component).getContainer()));
+            } else {
+                return _codeGenerator
+                    .generateVariableName((((NamedObj) _component).getContainer()))
+                        + "_" + processCode(parameter);
+            }
+
         } else if (macro.equals("actorClass")) {
             return ((NamedObj) _component).getClassName().replace('.', '_')
                     + "_" + processCode(parameter);
