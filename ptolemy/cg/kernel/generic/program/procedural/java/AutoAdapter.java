@@ -1235,20 +1235,31 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     throw new NoSuchFieldException("Could not find port " + remotePort.getName());
                 }
                 if (port.isOutput()) {
+                    String relationAssignment = "";
+                    String relationSetWidth = "";
+                    if (port.isMultiport()) {
+                        // Needed for 
+                        // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
+                        _headerFiles.add("ptolemy.actor.IORelation;");
+                        relationAssignment = "IORelation relation = (IORelation)";
+                        relationSetWidth = "relation.setWidth("+ port.getWidth()  + "); " + _eol;
+                    }
+
                     // It is the responsibility of the custom actor
                     // with the output port to connect to the input
                     // port of the other custom actor.  This obviates
                     // the need for checking for the connection at
                     // runtime.
                     code.append(
-                            "$containerSymbol().connect("
+                            relationAssignment + "$containerSymbol().connect("
                             + portOrParameter + ", "
                             + "((" + remoteActor.getClass().getName()
                             + ")" + remoteActorSymbol + ")." 
                             + remoteFoundPortField.getName()
                             + ( portParameter != null
                                     ? ".getPort()" : "")
-                            + ");" + _eol);
+                            + ");" + _eol
+                            + relationSetWidth);
                 }
             } else {
                 if (!readingRemoteParameters) {
