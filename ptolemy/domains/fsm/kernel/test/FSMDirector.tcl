@@ -242,6 +242,8 @@ test FSMDirector-5.1 {test fireAt} {
     $mag initialize
     set time [java::new ptolemy.actor.util.Time $dir]
     $dir fireAt $fsm [$time {add double} 1.111]
+    # With DE change of 6/11, have to iterate twice to get to microstep 1.
+    $mag iterate
     $mag iterate
     $mag wrapup
     list [listToStrings [$rec getTimeHistory]] \

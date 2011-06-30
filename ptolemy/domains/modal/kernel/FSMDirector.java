@@ -513,7 +513,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 return result;
             }
         }
-        // FIXME: Is this still valid?
+        // If there is no executive director, use the
+        // this fireAt() call to advance time.
         setModelTime(time);
         return time;
     }

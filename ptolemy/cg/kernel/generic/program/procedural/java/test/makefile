@@ -50,6 +50,7 @@ JSRCS = \
 	ActorWithPrivateParameter.java \
 	PortParameterActor.java \
 	ReadParametersAcrossLink.java \
+	ReadParametersInContainer.java \
 	ExpressionActorToBeAutoCodeGenerated.java
 
 # Non-graphical Java tests written in Tcl

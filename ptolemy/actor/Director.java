@@ -1458,6 +1458,7 @@ public class Director extends Attribute implements Executable {
      *  do it at the requested time. If there is no executive director (this
      *  director is at the top level), then ignore the request.
      *  This is a convenience method provided because several directors need it.
+     *  The requested microstep will be zero.
      *  @param time The requested time.
      *  @return The time that the executive director indicates it will fire this
      *   director, or an instance of Time with value Double.NEGATIVE_INFINITY

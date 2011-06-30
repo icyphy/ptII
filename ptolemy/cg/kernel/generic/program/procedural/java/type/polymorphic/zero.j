@@ -134,6 +134,12 @@ static Token zero_Token_Token(Token token, Token... b) {
         return result;
 #endif
 
+#ifdef PTCG_TYPE_Complex
+    case TYPE_Complex:
+        result = $zero_Complex();
+        return result;
+#endif
+
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
         result = $Double_new($zero_Double());

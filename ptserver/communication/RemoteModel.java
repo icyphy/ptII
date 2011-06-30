@@ -338,6 +338,7 @@ public class RemoteModel {
                     StringAttribute targetPortName = (StringAttribute) port
                             .getAttribute("targetPortName");
 
+
                     if (targetPortName != null) {
                         type = TypeParser.parse(modelTypes.get(targetPortName
                                 .getExpression()));
@@ -628,6 +629,9 @@ public class RemoteModel {
         RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
         filter.remove("ptolemy.actor.lib.gui.ArrayPlotter");
         filter.remove("ptolemy.actor.lib.gui.SequencePlotter");
+        filter.remove("ptolemy.actor.lib.gui.Display");
+        filter.remove("ptolemy.actor.gui.style.CheckBoxStyle");
+        filter.remove("ptolemy.actor.gui.style.ChoiceStyle");
         MoMLParser.addMoMLFilter(filter);
         return parser;
     }

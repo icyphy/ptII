@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * checks for equality by reference which breaks after a new instance is deserialized.
  * 
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id: TypeParser.java 61328 2011-06-27 21:18:29Z ahuseyno $ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

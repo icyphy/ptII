@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 65.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 108, 814, 515}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 108, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -340,7 +340,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 0, payload = 0, timestamp = 0.8}, {microstep = 0, payload = 0, timestamp = 1.8}, {microstep = 0, payload = 0, timestamp = 2.8}, {microstep = 0, payload = 0, timestamp = 3.8}, {microstep = 0, payload = 0, timestamp = 4.8}, {microstep = 0, payload = 0, timestamp = 5.8}, {microstep = 0, payload = 0, timestamp = 6.8}, {microstep = 0, payload = 0, timestamp = 7.8}, {microstep = 0, payload = 0, timestamp = 8.8}, {microstep = 0, payload = 0, timestamp = 9.8}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 0, timestamp = 0.8}, {microstep = 1, payload = 0, timestamp = 1.8}, {microstep = 1, payload = 0, timestamp = 2.8}, {microstep = 1, payload = 0, timestamp = 3.8}, {microstep = 1, payload = 0, timestamp = 4.8}, {microstep = 1, payload = 0, timestamp = 5.8}, {microstep = 1, payload = 0, timestamp = 6.8}, {microstep = 1, payload = 0, timestamp = 7.8}, {microstep = 1, payload = 0, timestamp = 8.8}, {microstep = 1, payload = 0, timestamp = 9.8}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -361,7 +361,7 @@
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 0, payload = 0, timestamp = 0.8}, {microstep = 0, payload = 1, timestamp = 1.0}, {microstep = 0, payload = 0, timestamp = 1.8}, {microstep = 0, payload = 1, timestamp = 2.0}, {microstep = 0, payload = 0, timestamp = 2.8}, {microstep = 0, payload = 1, timestamp = 3.0}, {microstep = 0, payload = 0, timestamp = 3.8}, {microstep = 0, payload = 1, timestamp = 4.0}, {microstep = 0, payload = 0, timestamp = 4.8}, {microstep = 0, payload = 1, timestamp = 5.0}, {microstep = 0, payload = 0, timestamp = 5.8}, {microstep = 0, payload = 1, timestamp = 6.0}, {microstep = 0, payload = 0, timestamp = 6.8}, {microstep = 0, payload = 1, timestamp = 7.0}, {microstep = 0, payload = 0, timestamp = 7.8}, {microstep = 0, payload = 1, timestamp = 8.0}, {microstep = 0, payload = 0, timestamp = 8.8}, {microstep = 0, payload = 1, timestamp = 9.0}, {microstep = 0, payload = 0, timestamp = 9.8}, {microstep = 0, payload = 1, timestamp = 10.0}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 0, timestamp = 0.8}, {microstep = 1, payload = 1, timestamp = 1.0}, {microstep = 1, payload = 0, timestamp = 1.8}, {microstep = 1, payload = 1, timestamp = 2.0}, {microstep = 1, payload = 0, timestamp = 2.8}, {microstep = 1, payload = 1, timestamp = 3.0}, {microstep = 1, payload = 0, timestamp = 3.8}, {microstep = 1, payload = 1, timestamp = 4.0}, {microstep = 1, payload = 0, timestamp = 4.8}, {microstep = 1, payload = 1, timestamp = 5.0}, {microstep = 1, payload = 0, timestamp = 5.8}, {microstep = 1, payload = 1, timestamp = 6.0}, {microstep = 1, payload = 0, timestamp = 6.8}, {microstep = 1, payload = 1, timestamp = 7.0}, {microstep = 1, payload = 0, timestamp = 7.8}, {microstep = 1, payload = 1, timestamp = 8.0}, {microstep = 1, payload = 0, timestamp = 8.8}, {microstep = 1, payload = 1, timestamp = 9.0}, {microstep = 1, payload = 0, timestamp = 9.8}, {microstep = 1, payload = 1, timestamp = 10.0}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -382,7 +382,7 @@
         </property>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 0, payload = 1, timestamp = 1.0}, {microstep = 0, payload = 1, timestamp = 2.0}, {microstep = 0, payload = 1, timestamp = 3.0}, {microstep = 0, payload = 1, timestamp = 4.0}, {microstep = 0, payload = 1, timestamp = 5.0}, {microstep = 0, payload = 1, timestamp = 6.0}, {microstep = 0, payload = 1, timestamp = 7.0}, {microstep = 0, payload = 1, timestamp = 8.0}, {microstep = 0, payload = 1, timestamp = 9.0}, {microstep = 0, payload = 1, timestamp = 10.0}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 1, timestamp = 1.0}, {microstep = 1, payload = 1, timestamp = 2.0}, {microstep = 1, payload = 1, timestamp = 3.0}, {microstep = 1, payload = 1, timestamp = 4.0}, {microstep = 1, payload = 1, timestamp = 5.0}, {microstep = 1, payload = 1, timestamp = 6.0}, {microstep = 1, payload = 1, timestamp = 7.0}, {microstep = 1, payload = 1, timestamp = 8.0}, {microstep = 1, payload = 1, timestamp = 9.0}, {microstep = 1, payload = 1, timestamp = 10.0}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

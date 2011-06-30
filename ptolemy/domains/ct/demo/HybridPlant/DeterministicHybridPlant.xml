@@ -448,7 +448,7 @@
             <link port="init.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="processing" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 208, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 208, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -592,6 +592,8 @@
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 169]">
                 </property>
+                <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[385.5540008544922, 309.6210174560547]">
                 </property>
                 <configure>
@@ -601,7 +603,7 @@
 <title>Bottle Level</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="50.0"/>
+<xRange min="0.0" max="50.1"/>
 <yRange min="0.0" max="10.1085208594892"/>
 <noGrid/>
 </plot>?>

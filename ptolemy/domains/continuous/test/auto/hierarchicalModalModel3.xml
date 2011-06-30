@@ -29,7 +29,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{195, 145}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 145.0]">
         </property>
         <port name="port" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -76,7 +76,7 @@
                 </property>
                 <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{205, 150}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 150.0}">
                 </property>
                 <port name="port" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="output"/>
@@ -87,7 +87,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 341, 813, 511}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -174,11 +174,11 @@
                         </property>
                     </entity>
                     <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 165.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 165.0}">
                         </property>
                     </entity>
                     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.00005, 2.00005, 2.00005, 2.10005, 3.10005, 4.0001, 4.0001, 4.0001, 4.1001, 5.0, 5.0}">
+                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.00005, 2.00005, 2.10005, 3.10005, 4.0001, 4.0001, 4.0001, 4.1001, 5.0, 5.0}">
                         </property>
                         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                         </property>
@@ -225,7 +225,7 @@
         <link port="state.port" relation="portRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.00005, 2.00005, 2.00005, 2.10005, 3.10005, 4.0001, 4.0001, 4.0001, 4.1001, 5.0, 5.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.00005, 2.00005, 2.10005, 3.10005, 4.0001, 4.0001, 4.0001, 4.1001, 5.0, 5.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

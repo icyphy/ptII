@@ -410,6 +410,25 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         _breakpoints.insert(time);
         return time;
     }
+    
+    /** Request a firing of the container of this director at the specified time
+     *  and throw an exception if the executive director does not agree to
+     *  do it at the requested time. If there is no executive director (this
+     *  director is at the top level), then ignore the request.
+     *  This is a convenience method provided because several directors need it.
+     *  The requested microstep will be zero.
+     *  @param time The requested time.
+     *  @return The time that the executive director indicates it will fire this
+     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
+     *   if there is no executive director.
+     *  @exception IllegalActionException If the director does not
+     *   agree to fire the actor at the specified time, or if there
+     *   is no director.
+     */
+    protected Time _fireContainerAt(Time time) throws IllegalActionException {
+        return _fireContainerAt(time, 0);
+    }
+
 
     /** Return the breakpoint table. The result can be null if the breakpoint
      *  table has never been created.
@@ -565,6 +584,8 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
         // set current time and initialize actors.
         super.initialize();
+        
+        _breakpoints.insert(getModelStopTime());
     }
 
     /** Return true if this is the discrete phase of execution.

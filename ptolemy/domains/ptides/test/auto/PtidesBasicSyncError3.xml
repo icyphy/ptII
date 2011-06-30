@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={125, 218, 814, 515}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={125, 218, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -22,9 +22,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 210.0}">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
-            <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.5">
-            </property>
             <property name="initialPlatformSynchronizationError" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
+            <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
             </property>
@@ -122,13 +122,13 @@
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
             <port name="minus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -137,7 +137,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -150,7 +150,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -213,11 +213,11 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 0, payload = 1, timestamp = 0.5}, {microstep = 0, payload = 1, timestamp = 1.5}, {microstep = 0, payload = 1, timestamp = 2.5}, {microstep = 0, payload = 1, timestamp = 3.5}, {microstep = 0, payload = 1, timestamp = 4.5}, {microstep = 0, payload = 1, timestamp = 5.5}, {microstep = 0, payload = 1, timestamp = 6.5}, {microstep = 0, payload = 1, timestamp = 7.5}, {microstep = 0, payload = 1, timestamp = 8.5}, {microstep = 0, payload = 1, timestamp = 9.5}, {microstep = 0, payload = 1, timestamp = 10.5}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 1, timestamp = 0.5}, {microstep = 1, payload = 1, timestamp = 1.5}, {microstep = 1, payload = 1, timestamp = 2.5}, {microstep = 1, payload = 1, timestamp = 3.5}, {microstep = 1, payload = 1, timestamp = 4.5}, {microstep = 1, payload = 1, timestamp = 5.5}, {microstep = 1, payload = 1, timestamp = 6.5}, {microstep = 1, payload = 1, timestamp = 7.5}, {microstep = 1, payload = 1, timestamp = 8.5}, {microstep = 1, payload = 1, timestamp = 9.5}, {microstep = 1, payload = 1, timestamp = 10.5}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{349.078125, 277.84375}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 280.0}">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">

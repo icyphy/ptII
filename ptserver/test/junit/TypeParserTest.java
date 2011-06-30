@@ -43,8 +43,8 @@ import ptserver.util.TypeParser;
 /**
  * Tests of the TypeParser.
  * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.0
+ * @version $Id: TypeParserTest.java 61328 2011-06-27 21:18:29Z ahuseyno $ 
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */

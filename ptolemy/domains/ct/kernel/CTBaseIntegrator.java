@@ -209,7 +209,6 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
         if (_debugging) {
             _debug(getName() + "fire using solver: ", solver.getName());
         }
-
         solver.integratorFire(this);
     }
 
@@ -586,7 +585,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
     // Tentative state;
     private double _tentativeState;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                           Inner Class                     ////
 
