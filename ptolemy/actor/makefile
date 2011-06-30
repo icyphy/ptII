@@ -37,8 +37,11 @@ ME =		ptolemy/actor
 # Only go into ptalon if $(PTPTALON_DIR) is set by configure.
 # If $(PTPTALON_DIR) is empty, then configure failed and compilation
 # will fail.
+#
+# $(PTINJECTION_DIR) is set to injection if guice.jar was found
+# by configure.
 DIRS = 		util sched process gui lib corba parameters gt designs test \
-		$(PTPTALON_DIR)
+		$(PTINJECTION_DIR) $(PTPTALON_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../..
