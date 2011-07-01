@@ -27,21 +27,14 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// ReadParametersInContainer
@@ -102,14 +95,17 @@ public class ReadParametersInContainer extends TypedAtomicActor {
         super.fire();
         double sum = 0.0;
         if (input.hasToken(0)) {
-            sum = ((DoubleToken)input.get(0)).doubleValue();
+            sum = ((DoubleToken) input.get(0)).doubleValue();
         }
-        Variable variableInContainer = (Variable)getContainer().getAttribute("VariableInContainer");
+        Variable variableInContainer = (Variable) getContainer().getAttribute(
+                "VariableInContainer");
         if (variableInContainer == null) {
             throw new IllegalActionException(this,
-                    "Could not find a parameter named \"VariableInContainer\" in "  + getContainer().getFullName());
+                    "Could not find a parameter named \"VariableInContainer\" in "
+                            + getContainer().getFullName());
         }
-        double variableInContainerValue = ((DoubleToken)variableInContainer.getToken()).doubleValue();
+        double variableInContainerValue = ((DoubleToken) variableInContainer
+                .getToken()).doubleValue();
         output.send(0, new DoubleToken(sum + variableInContainerValue));
     }
 }
