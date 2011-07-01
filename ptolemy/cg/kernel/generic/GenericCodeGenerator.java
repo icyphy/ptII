@@ -228,7 +228,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
         if (attribute == codeDirectory) {
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
-            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+            File directory = codeDirectory.asFile();
+            if (directory != null) {
+                codeDirectory.setBaseDirectory(directory.toURI());
+            }
         } else if (attribute == generateInSubdirectory) {
             // FIXME: we should check to see if generateInSubdirectory is changing
             // before proceeding.
