@@ -3,13 +3,12 @@ package ptolemy.uidesigner;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
 
+import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.uidesigner.widgets.NamedObjectWidget;
-
-import com.sun.j3d.loaders.Scene;
 
 public class WidgetLoader {
 
