@@ -56,7 +56,8 @@ OTHER_FILES_TO_BE_JARED = \
 	curriculumOption1.xml \
 	curriculumOption4.xml \
 	curriculumProbStat.xml \
-	Curriculum.xml
+	Curriculum.xml \
+	Curriculum149.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
