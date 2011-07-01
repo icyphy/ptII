@@ -1223,11 +1223,11 @@ to another. Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 120.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 120.0">
             </property>
         </entity>
-        <entity name="Sampler2" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="SampleAndHold2" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 180.0">
             </property>
         </entity>
@@ -1287,12 +1287,12 @@ to another. Then delete this annotation.</text>
         <link port="Expression3.y" relation="relation3"/>
         <link port="Clock.output" relation="relation13"/>
         <link port="Poisson.output" relation="relation7"/>
-        <link port="Sampler.input" relation="relation6"/>
-        <link port="Sampler.output" relation="relation15"/>
-        <link port="Sampler.trigger" relation="relation13"/>
-        <link port="Sampler2.input" relation="relation12"/>
-        <link port="Sampler2.output" relation="relation9"/>
-        <link port="Sampler2.trigger" relation="relation13"/>
+        <link port="SampleAndHold.input" relation="relation6"/>
+        <link port="SampleAndHold.output" relation="relation15"/>
+        <link port="SampleAndHold.trigger" relation="relation13"/>
+        <link port="SampleAndHold2.input" relation="relation12"/>
+        <link port="SampleAndHold2.output" relation="relation9"/>
+        <link port="SampleAndHold2.trigger" relation="relation13"/>
     </entity>
     <entity name="Pursuer" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">

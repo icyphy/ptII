@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (acataldo)
  @Pt.AcceptedRating Red (acataldo)
- @see ptolemy.domains.de.lib.Sampler
+ @see ptolemy.domains.de.lib.SampleAndHold
  @deprecated Use Sampler instead.
  */
 public class Wire extends DETransformer {

@@ -58,7 +58,7 @@ PTCLASSALLJARS =
 JSRCS = \
 	PID.java \
 	Register.java \
-	Sampler.java \
+	SampleAndHold.java \
 	SingleEvent.java \
 	TimeGap.java
 

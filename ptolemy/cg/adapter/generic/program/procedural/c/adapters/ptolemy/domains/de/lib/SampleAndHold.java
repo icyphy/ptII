@@ -37,13 +37,13 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 @version $Id$
 @since Ptolemy II 8.0
  */
-public class Sampler 
-        extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.Sampler{
+public class SampleAndHold 
+        extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.SampleAndHold{
     /**
      *  Construct a Sampler adapter.
      *  @param actor The given ptolemy.actor.lib.Sampler actor.
      */
-    public Sampler(ptolemy.domains.de.lib.Sampler actor) {
+    public SampleAndHold(ptolemy.domains.de.lib.SampleAndHold actor) {
         super(actor);
     }
 }

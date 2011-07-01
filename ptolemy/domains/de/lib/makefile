@@ -62,7 +62,7 @@ JSRCS = \
 	Previous.java \
 	Queue.java \
 	Register.java \
-	Sampler.java \
+	SampleAndHold.java \
 	Server.java \
 	SharedQueue.java \
 	SingleEvent.java \

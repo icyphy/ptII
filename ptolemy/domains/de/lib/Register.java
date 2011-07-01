@@ -77,9 +77,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 4.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
- @see ptolemy.domains.de.lib.Sampler
+ @see ptolemy.domains.de.lib.SampleAndHold
  */
-public class Register extends Sampler {
+public class Register extends SampleAndHold {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

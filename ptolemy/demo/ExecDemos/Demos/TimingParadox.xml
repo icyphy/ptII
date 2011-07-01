@@ -235,7 +235,7 @@ delays.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 225.0]">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 135.0]">
             </property>
         </entity>
@@ -263,9 +263,9 @@ delays.</text></svg></configure>
         <link port="CurrentTime.trigger" relation="relation"/>
         <link port="TimedDelay.input" relation="relation3"/>
         <link port="TimedDelay.output" relation="relation"/>
-        <link port="Sampler.input" relation="relation4"/>
-        <link port="Sampler.output" relation="relation5"/>
-        <link port="Sampler.trigger" relation="relation2"/>
+        <link port="SampleAndHold.input" relation="relation4"/>
+        <link port="SampleAndHold.output" relation="relation5"/>
+        <link port="SampleAndHold.trigger" relation="relation2"/>
     </class>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>

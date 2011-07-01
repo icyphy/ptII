@@ -2819,7 +2819,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 295.0]">
             </property>
         </entity>
-        <entity name="sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="sampler" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 225.0]">
             </property>
         </entity>

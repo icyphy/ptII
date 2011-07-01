@@ -58,7 +58,7 @@ PTCLASSALLJARS =
 JSRCS = \
 	PID.java \
 	Register.java \
-	Sampler.java \
+	SampleAndHold.java \
 	TimeGap.java
 
 OTHER_FILES_TO_BE_JARED = 

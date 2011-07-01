@@ -31,6 +31,7 @@ package ptolemy.domains.de.lib;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Sampler;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -44,7 +45,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// Sampler
+//// SampleAndHold
 
 /**
  Output the most recent input token when the <i>trigger</i> port
@@ -79,6 +80,10 @@ import ptolemy.kernel.util.Workspace;
 
  <p> This actor is different from the Register actor in that the input
  tokens are consumed from the input ports before the outputs are generated.
+ Note that this actor is also different from the
+ {@link Sampler} actor, which produces the <i>current</i> input on the
+ output when a <i>trigger</i> input is present, rather than the most
+ recently received input signal.
 
  @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
  @version $Id$
@@ -88,7 +93,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.de.lib.Inhibit
  @see ptolemy.domains.de.lib.Register
  */
-public class Sampler extends Transformer {
+public class SampleAndHold extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -97,7 +102,7 @@ public class Sampler extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Sampler(CompositeEntity container, String name)
+    public SampleAndHold(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
@@ -174,7 +179,7 @@ public class Sampler extends Transformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Sampler newObject = (Sampler) super.clone(workspace);
+        SampleAndHold newObject = (SampleAndHold) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
 
         // Width constraint. Not bidirectional to not break any existing models.

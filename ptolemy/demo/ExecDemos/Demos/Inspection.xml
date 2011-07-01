@@ -336,7 +336,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
             </property>
         </entity>
@@ -376,9 +376,9 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <link port="report" relation="relation15"/>
         <link port="Average.input" relation="relation1"/>
         <link port="Average.output" relation="relation3"/>
-        <link port="Sampler.input" relation="relation3"/>
-        <link port="Sampler.output" relation="relation13"/>
-        <link port="Sampler.trigger" relation="relation9"/>
+        <link port="SampleAndHold.input" relation="relation3"/>
+        <link port="SampleAndHold.output" relation="relation13"/>
+        <link port="SampleAndHold.trigger" relation="relation9"/>
         <link port="AddSubtract.plus" relation="relation12"/>
         <link port="AddSubtract.plus" relation="relation13"/>
         <link port="AddSubtract.output" relation="relation15"/>
@@ -464,7 +464,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
             </property>
         </entity>
@@ -504,9 +504,9 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <link port="report" relation="relation15"/>
         <link port="Average.input" relation="relation1"/>
         <link port="Average.output" relation="relation3"/>
-        <link port="Sampler.input" relation="relation3"/>
-        <link port="Sampler.output" relation="relation13"/>
-        <link port="Sampler.trigger" relation="relation9"/>
+        <link port="SampleAndHold.input" relation="relation3"/>
+        <link port="SampleAndHold.output" relation="relation13"/>
+        <link port="SampleAndHold.trigger" relation="relation9"/>
         <link port="AddSubtract.plus" relation="relation12"/>
         <link port="AddSubtract.plus" relation="relation13"/>
         <link port="AddSubtract.output" relation="relation15"/>

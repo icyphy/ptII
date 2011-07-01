@@ -122,7 +122,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="10.0"/>
-<yRange min="-0.5" max="9.0"/>
+<yRange min="-0.5" max="8.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -317,7 +317,7 @@
         </configure>
     </entity>
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
-        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="2L">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="10L">
         </property>
         <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -373,7 +373,7 @@
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+    <entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 190.0]">
         </property>
     </entity>
@@ -408,8 +408,8 @@
     <link port="ColtExponential.trigger" relation="relation"/>
     <link port="TimedDelay.input" relation="relation2"/>
     <link port="TimedDelay.output" relation="relation6"/>
-    <link port="Sampler.input" relation="relation5"/>
-    <link port="Sampler.output" relation="relation3"/>
-    <link port="Sampler.trigger" relation="relation2"/>
+    <link port="SampleAndHold.input" relation="relation5"/>
+    <link port="SampleAndHold.output" relation="relation3"/>
+    <link port="SampleAndHold.trigger" relation="relation2"/>
     <link relation1="relation" relation2="relation5"/>
 </entity>

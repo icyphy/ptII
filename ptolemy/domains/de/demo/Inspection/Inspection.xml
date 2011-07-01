@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -199,7 +199,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="passenger, wait time, bus (Regular), bus (Poisson)">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 515, 508, 259}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 515, 500, 248}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 204]">
         </property>
@@ -215,7 +215,7 @@
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="5.188792482775604"/>
+<yRange min="0.0" max="5.1235144603"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -226,7 +226,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, Regular">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 512, 508, 260}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 512, 500, 249}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 205]">
         </property>
@@ -320,7 +320,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="Sampler" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
             </property>
         </entity>
@@ -370,9 +370,9 @@
         <link port="Const.trigger" relation="relation9"/>
     </entity>
     <entity name="Display Average Waiting Times" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 432, 103}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 724, 96}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 52]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -449,7 +449,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="Sampler" class="ptolemy.domains.de.lib.SampleAndHold">
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
             </property>
         </entity>

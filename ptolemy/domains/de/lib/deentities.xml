@@ -47,7 +47,7 @@
 <entity name="ResettableTimer" class="ptolemy.actor.lib.ResettableTimer">
 </entity>
 
-<entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+<entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
 </entity>
 
 <entity name="Server" class="ptolemy.domains.de.lib.Server">

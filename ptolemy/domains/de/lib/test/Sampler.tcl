@@ -45,8 +45,8 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test Sampler-1.1 {test constructor and clone} {
     set e0 [deModel 3.0]
-    set samplerbase [java::new ptolemy.domains.de.lib.Sampler $e0 sampler]
-    set sampler [java::cast ptolemy.domains.de.lib.Sampler \
+    set samplerbase [java::new ptolemy.domains.de.lib.SampleAndHold $e0 sampler]
+    set sampler [java::cast ptolemy.domains.de.lib.SampleAndHold \
 		     [$samplerbase clone [$e0 workspace]]]
     $samplerbase {setContainer ptolemy.kernel.CompositeEntity} [java::null]
     $sampler {setContainer ptolemy.kernel.CompositeEntity} $e0
