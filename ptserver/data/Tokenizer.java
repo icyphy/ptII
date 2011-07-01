@@ -1,5 +1,4 @@
-/*
- Tokenizer reads out tokens from the byte array.
+/* Tokenizer reads out tokens from the byte array.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -25,6 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+
 package ptserver.data;
 
 import java.io.ByteArrayInputStream;
@@ -36,45 +36,47 @@ import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// Tokenizer
-/**
- * Tokenizer reads out tokens from the byte array.
- * @author Anar Huseynov
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+
+/** Tokenizer reads out tokens from the byte array.
+ *  @author Anar Huseynov
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class Tokenizer {
 
-    /**
-     * Create a new instance of the tokenizer with the specified payload.
-     * @param payload the byte payload received from the MQTT broker.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create a new instance of the tokenizer with the specified payload.
+     *  @param payload the byte payload received from the MQTT broker.
      */
     public Tokenizer(byte[] payload) {
-        //there is no need to close the ByteArrayInputStream since it just wraps a byte array.
+        // There is no need to close the ByteArrayInputStream since it just wraps a byte array.
         _inputStream = new DataInputStream(new ByteArrayInputStream(payload));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Return the next token in the byte stream or null if there is none left.
-     * @return the next token or null if there is none left
-     * @exception IOException if there is a problem reading the byte stream
-     * @exception IllegalActionException if there is a problem loading a token handler
+
+    /** Return the next token in the byte stream or null if there is none left.
+     *  @return the next token or null if there is none left
+     *  @exception IOException if there is a problem reading the byte stream
+     *  @exception IllegalActionException if there is a problem loading a token handler
      */
     public Token getNextToken() throws IOException, IllegalActionException {
         if (_inputStream.available() > 0) {
             return TokenParser.getInstance().convertToToken(_inputStream);
         }
+
         return null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The input stream that wrapped the byte array.
+
+    /** The input stream that wrapped the byte array.
      */
     private final DataInputStream _inputStream;
-
 }

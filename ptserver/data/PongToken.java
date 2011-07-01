@@ -1,5 +1,4 @@
-/*
- The PongToken holds a timestamp of the PingToken.
+/* The PongToken holds a timestamp of the PingToken.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -32,25 +31,26 @@ import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
 //// PongToken
-/**
- * The PongToken holds a timestamp of the PingToken.  It's used for measuring the roundtrip latency.
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+
+/** The PongToken holds a timestamp of the PingToken.  It's used for measuring the roundtrip latency.
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class PongToken extends Token {
 
-    /**
-     * Create new instance of the token with timestamp set to zero.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create new instance of the token with timestamp set to zero.
      */
     public PongToken() {
         super();
     }
 
-    /**
-     * Create new instance of the token with the provided timestamp.
+    /** Create new instance of the token with the provided timestamp.
      * @param timestamp The timestamp of the ping.
      */
     public PongToken(long timestamp) {
@@ -58,9 +58,8 @@ public class PongToken extends Token {
         _timestamp = timestamp;
     }
 
-    /**
-     * Return the creation time of the token.
-     * @return the creation timestamp.
+    /** Return the creation time of the token.
+     *  @return the creation timestamp.
      */
     public long getTimestamp() {
         return _timestamp;
@@ -69,8 +68,7 @@ public class PongToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * The creation time.
+    /** The creation time.
      */
     private long _timestamp;
 }

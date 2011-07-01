@@ -1,6 +1,5 @@
-/*
- CommunicationToken encapsulates tokens from all ports and their channels
- that were received within one iteration.
+/* CommunicationToken encapsulates tokens from all ports and their channels
+   that were received within one iteration.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -26,6 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+
 package ptserver.data;
 
 import java.util.ArrayList;
@@ -36,29 +36,30 @@ import java.util.Map.Entry;
 import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
-////CommunicationToken
-/**
-* Encapsulate tokens that were received within one iteration.
+//// CommunicationToken
+
+/** Encapsulate tokens that were received within one iteration.
 *
-* <p>Note: Kahn process networks are not being handled right now.</p>
-* @author Anar Huseynov
-* @version $Id$
-* @since Ptolemy II 8.0
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
+*  <p>Note: Kahn process networks are not being handled right now.</p>
+*  @author Anar Huseynov
+*  @version $Id$
+*  @since Ptolemy II 8.0
+*  @Pt.ProposedRating Red (ahuseyno)
+*  @Pt.AcceptedRating Red (ahuseyno)
 */
 public class CommunicationToken extends Token {
 
-    /**
-     * Create a new instance with targetActor set to null.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructors                      ////
+
+    /** Create a new instance with targetActor set to null.
      */
     public CommunicationToken() {
         super();
     }
 
-    /**
-     * Create a new instance and set the name of the targetActor.
-     * @param targetActor the target actor whose tokens this instance encapsulates.
+    /** Create a new instance and set the name of the targetActor.
+     *  @param targetActor the target actor whose tokens this instance encapsulates.
      */
     public CommunicationToken(String targetActor) {
         setTargetActorName(targetActor);
@@ -67,31 +68,28 @@ public class CommunicationToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Add the port with the specified number of channels.
-     *
-     * @param port The port name as it's returned by NamedObj.getName() method.
-     * @param width The number of channel that the port has.
+    /** Add the port with the specified number of channels.
+     *  @param port The port name as it's returned by NamedObj.getName() method.
+     *  @param width The number of channel that the port has.
      */
     public void addPort(String port, int width) {
         ArrayList<Token[]> list = new ArrayList<Token[]>(width);
         _portChannelTokenMap.put(port, list);
     }
 
-    /**
-     * Return true if the object is equal to the instance, false otherwise.
-     *
-     * The method checks if the object has the same target name and
-     * the portChannelMap contains the same ports each having the same number of channels with the same tokens.
-     * @param object The reference object with which to compare.
-     * @return true if the objects are equal, false otherwise.
-     * @see java.lang.Object#equals(java.lang.Object)
+    /** Return true if the object is equal to the instance, false otherwise.
+     *  The method checks if the object has the same target name and
+     *  the portChannelMap contains the same ports each having the same number of channels with the same tokens.
+     *  @param object The reference object with which to compare.
+     *  @return true if the objects are equal, false otherwise.
+     *  @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
         }
+
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
             return false;
@@ -110,10 +108,10 @@ public class CommunicationToken extends Token {
             return false;
         }
 
-        /*portChannelTokenMap.equals(other.portChannelTokenMap) would not work because the maps contain array objects,
-         * and equals method on the array objects checks equality of a reference but in our case we need to check equality of each token within the array objects
-         *
-         */
+        // Calling portChannelTokenMap.equals(other.portChannelTokenMap) would not 
+        // work because the maps contain array objects, and equals method on the array 
+        // objects checks equality of a reference but in our case we need to check 
+        // equality of each token within the array objects.
         if (_portChannelTokenMap == null) {
             if (other._portChannelTokenMap != null) {
                 return false;
@@ -122,10 +120,12 @@ public class CommunicationToken extends Token {
             if (other._portChannelTokenMap == null) {
                 return false;
             }
+
             if (!_portChannelTokenMap.keySet().equals(
                     other._portChannelTokenMap.keySet())) {
                 return false;
             }
+
             for (Entry<String, ArrayList<Token[]>> entry : _portChannelTokenMap
                     .entrySet()) {
                 ArrayList<Token[]> otherChannelTokens = other._portChannelTokenMap
@@ -134,6 +134,7 @@ public class CommunicationToken extends Token {
                 if (otherChannelTokens.size() != channelTokens.size()) {
                     return false;
                 }
+
                 for (int i = 0; i < channelTokens.size(); i++) {
                     if (!Arrays.equals(channelTokens.get(i),
                             otherChannelTokens.get(i))) {
@@ -142,56 +143,55 @@ public class CommunicationToken extends Token {
                 }
             }
         }
+
         return true;
     }
 
-    /**
-    * Return the mapping from ports to their channels with tokens have been received within one iteration.
-    * @return the mapping from ports to their channels with tokens have been received within one iteration.
-    */
+    /** Return the mapping from ports to their channels with tokens have been 
+     *  received within one iteration.
+     *  @return the mapping from ports to their channels with tokens have been 
+     *  received within one iteration.
+     */
     public HashMap<String, ArrayList<Token[]>> getPortChannelTokenMap() {
         //TODO: decide if we need to wrap this map into a read object
         return _portChannelTokenMap;
     }
 
-    /**
-     * Return number of original tokens contained within the Communication Token.
-     * @return number of original tokens
+    /** Return number of original tokens contained within the Communication Token.
+     *  @return number of original tokens
      */
     public int getSize() {
         return _size;
     }
 
-    /**
-     * Return the full name of the target actor that received the tokens encapsulated by the
-     * CommunicationToken.
-     * @return the full name of the target actor that received the tokens encapsulated by the
-     * CommunicationToken.
-     * @see #setTargetActorName(String)
+    /** Return the full name of the target actor that received the tokens encapsulated by the
+     *  CommunicationToken.
+     *  @return the full name of the target actor that received the tokens encapsulated by the
+     *  CommunicationToken.
+     *  @see #setTargetActorName(String)
      */
     public String getTargetActorName() {
         return _targetActorName;
     }
 
-    /**
-     * Return the tokens of a specific port and channel.
-     * @param port Port of the targetActor
-     * @param channel Port's channel of the targetActor
-     * @return tokens of a specific port and channel
+    /** Return the tokens of a specific port and channel.
+     *  @param port Port of the targetActor
+     *  @param channel Port's channel of the targetActor
+     *  @return tokens of a specific port and channel
      */
     public Token[] getTokens(String port, int channel) {
         return _portChannelTokenMap.get(port).get(channel);
     }
 
-    /**
-     * Compute hash code of the instance based on the targetActorname and portChannelTokenMap.
-     * @return the hash code based on targetActorName and tokens in the portChannelTokanMap.
-     * @see java.lang.Object#hashCode()
+    /** Compute hash code of the instance based on the targetActorname and portChannelTokenMap.
+     *  @return the hash code based on targetActorName and tokens in the portChannelTokanMap.
+     *  @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+
         //FIXME: check if hashCode works correctly since equals is not using equals method of portChannelTokenMap
         result = prime
                 * result
@@ -200,26 +200,26 @@ public class CommunicationToken extends Token {
         result = prime
                 * result
                 + ((_targetActorName == null) ? 0 : _targetActorName.hashCode());
+
         return result;
     }
 
-    /**
-     * Put tokens received from the port and channel into the CommunicationToken.
-     * @param port port of the targetActor
-     * @param channel channel of the port
-     * @param tokens Array of tokens received from the channel within one iteration
+    /** Put tokens received from the port and channel into the CommunicationToken.
+     *  @param port port of the targetActor
+     *  @param channel channel of the port
+     *  @param tokens Array of tokens received from the channel within one iteration
      */
     public void putTokens(String port, int channel, Token[] tokens) {
         ArrayList<Token[]> channelTokenList = _portChannelTokenMap.get(port);
         channelTokenList.add(channel, tokens);
+
         _size += tokens.length;
     }
 
-    /**
-     * Set the full name of the targetActor that received the tokens that the
-     * CommunicationToken encapsulates.
-     * @param targetActorName the name of the target actor
-     * @see #getTargetActorName()
+    /** Set the full name of the targetActor that received the tokens that the
+     *  CommunicationToken encapsulates.
+     *  @param targetActorName the name of the target actor
+     *  @see #getTargetActorName()
      */
     public void setTargetActorName(String targetActorName) {
         _targetActorName = targetActorName;
@@ -228,19 +228,17 @@ public class CommunicationToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * Name of the target actor.
+    /** Name of the target actor.
      */
     private String _targetActorName;
 
-    /**
-     * Mapping from port to its channels with tokens.
+    /** Mapping from port to its channels with tokens.
      */
     private final HashMap<String, ArrayList<Token[]>> _portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>();
 
-    /**
-     * Number of tokens encapsulated by the communication token.
-     * It's transient to indicate that the size field won't be serialized but is here just for managing size of batching.
+    /** Number of tokens encapsulated by the communication token.
+     *  It's transient to indicate that the size field won't be serialized but 
+     *  is here just for managing the size of batching.
      */
     private transient int _size = 0;
 }

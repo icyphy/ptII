@@ -1,5 +1,4 @@
-/*
- The PingToken holds a timestamp it was generated at.
+/* The PingToken holds a timestamp it was generated at.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -33,35 +32,35 @@ import ptolemy.data.Token;
 ///////////////////////////////////////////////////////////////////
 //// PingToken
 
-/**
- * The PingToken holds a timestamp it was generated at. It's used for measuring the roundtrip latency.
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+/** The PingToken holds a timestamp it was generated at. It's used for 
+ *  measuring the roundtrip latency.
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class PingToken extends Token {
 
-    /**
-     * Create new instance of the token with timestamp set to zero.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create new instance of the token with timestamp set to zero.
      */
     public PingToken() {
         super();
     }
-    
-    /**
-     * Create new instance of the token with the provided timestamp.
-     * @param timestamp The timestamp of the ping.
+
+    /** Create new instance of the token with the provided timestamp.
+     *  @param timestamp The timestamp of the ping.
      */
     public PingToken(long timestamp) {
         this();
         _timestamp = timestamp;
     }
 
-    /**
-     * Return the creation time of the token.
-     * @return the creation timestamp.
+    /** Return the creation time of the token.
+     *  @return the creation timestamp.
      */
     public long getTimestamp() {
         return _timestamp;
@@ -69,9 +68,8 @@ public class PingToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /**
-     * The creation time.
+
+    /** The creation time.
      */
     private long _timestamp;
 }
