@@ -13,11 +13,19 @@ public class ComplexCG {
 
 /***Complex_new***/
 static Token Complex_new() {
-    return Complex_new(0.0, 0.0);
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = Complex_new(0.0, 0.0);
+#endif
+    return result;	    
 }
 
 static Token Complex_new(double real) {
-    return Complex_new(real, 0.0);
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = Complex_new(real, 0.0);
+#endif
+    return result;	    
 }
 
 static Token Complex_new(Token thisToken) {
@@ -41,22 +49,28 @@ static Token Complex_new(Token thisToken) {
 }
 
 static Token Complex_new(double real, double imag) {
-    Token result = new Token();
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = new Token();       
     result.payload = new ComplexCG();
     result.type = TYPE_Complex;
     ((ComplexCG)result.payload).real = real;
     ((ComplexCG)result.payload).imag = imag;
+#endif
     return result;
 }
 /**/
 
 /***Complex_equals***/
-#ifdef PTCG_TYPE_Complex
 static Token Complex_equals(Token thisToken, Token... tokens) {
     Token otherToken;
     otherToken = tokens[0];
-    return Boolean_new(((ComplexCG)thisToken.payload).real == ((ComplexCG)otherToken.payload).real
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = Boolean_new(((ComplexCG)thisToken.payload).real == ((ComplexCG)otherToken.payload).real
     && ((ComplexCG)thisToken.payload).imag == ((ComplexCG)otherToken.payload).imag);
+#endif
+    return result;
 }
 #endif
 /**/
@@ -67,10 +81,14 @@ static Token Complex_isCloseTo(Token thisToken, Token... tokens) {
     Token tolerance;
     otherToken = tokens[0];
     tolerance = tokens[1];
-    return Boolean_new(
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = Boolean_new(
         Math.abs(((ComplexCG)thisToken.payload).real - ((ComplexCG)otherToken.payload).real) < (Double)tolerance.payload
 	&&
         Math.abs(((ComplexCG)thisToken.payload).imag - ((ComplexCG)otherToken.payload).imag) < (Double)tolerance.payload);
+#endif
+    return result;  	
 }
 /**/
 
@@ -87,43 +105,58 @@ static Token Complex_print(Token thisToken, Token... tokens) {
 
 /***ComplextoString***/
 static String ComplextoString(Token thisToken) {
+    String result = null;
+#ifdef PTCG_TYPE_Complex
     if (((ComplexCG)thisToken.payload).imag >= 0) {
-        return Double.toString(((ComplexCG)thisToken.payload).real)
+        result = Double.toString(((ComplexCG)thisToken.payload).real)
 	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i";
     } else {
-        return Double.toString(((ComplexCG)thisToken.payload).real)
+        result = Double.toString(((ComplexCG)thisToken.payload).real)
 	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i";
     }
+#endif
+    return result;
 }
 /**/
 
 /***Complex_toString***/
 static Token Complex_toString(Token thisToken, Token... tokens) {
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
     if (((ComplexCG)thisToken.payload).imag >= 0) {
-        return String_new(Double.toString(((ComplexCG)thisToken.payload).real)
+        result = String_new(Double.toString(((ComplexCG)thisToken.payload).real)
 	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i");
     } else {
-        return String_new(Double.toString(((ComplexCG)thisToken.payload).real)
+        result = String_new(Double.toString(((ComplexCG)thisToken.payload).real)
 	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i");
 
     }
+#endif
+    return result;
 }
 /**/
 
 /***Complex_add***/
 static Token Complex_add(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
-    return Complex_new(((ComplexCG)thisToken.payload).real + ((ComplexCG)otherToken.payload).real,
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = Complex_new(((ComplexCG)thisToken.payload).real + ((ComplexCG)otherToken.payload).real,
         ((ComplexCG)thisToken.payload).imag + ((ComplexCG)otherToken.payload).imag);
+#endif
+    return result;
 }
 /**/
 
 /***Complex_subtract***/
 static Token Complex_subtract(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
     return Complex_new(((ComplexCG)thisToken.payload).real - ((ComplexCG)otherToken.payload).real,
         ((ComplexCG)thisToken.payload).imag - ((ComplexCG)otherToken.payload).imag);
-
+#endif
+    return result;
 }
 /**/
 
@@ -156,21 +189,27 @@ static Token Complex_multiply(Token thisToken, Token... tokens) {
 /***Complex_divide***/
 static Token Complex_divide(Token thisToken, Token... tokens) {
     Token divisor = tokens[0];
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
     double thisTokenReal = ((ComplexCG)thisToken.payload).real;
     double thisTokenImag = ((ComplexCG)thisToken.payload).imag;
     double divisorReal = ((ComplexCG)divisor.payload).real;
     double divisorImag = ((ComplexCG)divisor.payload).imag;
     double denominator = (divisorReal * divisorReal) + (divisorImag * divisorImag);
-    return Complex_new(((thisTokenReal * divisorReal) + (thisTokenImag * divisorImag))
+    result = Complex_new(((thisTokenReal * divisorReal) + (thisTokenImag * divisorImag))
             / denominator,
             ((thisTokenImag * divisorReal) - (thisTokenReal * divisorImag))
             / denominator);
+#endif
+    return result;  
 }
 
 /**/
 
 /***Complex_negate***/
 static Token Complex_negate(Token thisToken, Token... tokens) {
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
     double r = 0.0;
     double i = 0.0;
     if (((ComplexCG)thisToken.payload).real != 0.0) {
@@ -179,20 +218,31 @@ static Token Complex_negate(Token thisToken, Token... tokens) {
     if (((ComplexCG)thisToken.payload).imag != 0.0) {
         i = -((ComplexCG)thisToken.payload).imag;
     }
-    return Complex_new(r, i);
+    result = Complex_new(r, i);
+#endif
+    return result;    
 }
 /**/
 
 /***Complex_zero***/
 static Token Complex_zero(Token token, Token... tokens) {
-    return Complex_new(0.0, 0.0);
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = Complex_new(0.0, 0.0);
+#endif
+    return result;
 }
 /**/
 
 /***Complex_one***/
 static Token Complex_one(Token token, Token... tokens) {
-    return Complex_new(1.0, 0.0);
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = Complex_new(1.0, 0.0);
+#endif
+    return result;
 }
+
 /**/
 
 /***Complex_clone***/
@@ -205,7 +255,10 @@ static Token Complex_clone(Token thisToken, Token... tokens) {
 
 /***Complex_convert***/
 static Token Complex_convert(Token token, Token... tokens) {
-    Token result = $Complex_new();
+    Token result = null;
+#ifdef PTCG_TYPE_Complex
+    result = $Complex_new();
+#endif
     switch (token.type) {
 
 #ifdef PTCG_TYPE_Double
