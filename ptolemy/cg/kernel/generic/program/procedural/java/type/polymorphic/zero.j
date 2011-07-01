@@ -23,14 +23,24 @@ static boolean zero_BooleanOneArg(boolean a) {
 /**/
 
 /*** zero_Complex() ***/
+
 static Token zero_Complex() {
-        return $Complex_new(0.0);
+       Token result = null;         
+#ifdef PTCG_TYPE_Complex
+       result =  $Complex_new(0.0);
+#endif
+       return result;
 }
+
 /**/
 
 /*** zero_ComplexOneArg() ***/
 static Token zero_ComplexOneArg(Token a) {
-        return $Complex_new(0.0);
+       Token result = null;         
+#ifdef PTCG_TYPE_Complex
+       result = $Complex_new(0.0);
+#endif
+       return result;
 }
 /**/
 
