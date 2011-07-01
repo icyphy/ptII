@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib.gui;
 
-import java.awt.Container;
-
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.PortableContainer;

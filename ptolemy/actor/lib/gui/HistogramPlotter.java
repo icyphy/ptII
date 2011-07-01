@@ -31,10 +31,6 @@ import java.io.InputStream;
 import java.net.URL;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.lib.gui.PlotterBaseAWT.PlotWindowTableau;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -255,7 +251,8 @@ public class HistogramPlotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-        if ((getImplementation().getFrame() == null) && (getImplementation().getPlatformContainer() == null)) {
+        if ((getImplementation().getFrame() == null)
+                && (getImplementation().getPlatformContainer() == null)) {
             // Need an effigy and a tableau so that menu ops work properly.
             getImplementation().initializeEffigy();
 
