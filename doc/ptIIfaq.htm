@@ -717,7 +717,7 @@ for the nightly test suite.
  <p>MoMLApplication supports setting top level parameters using
 command line arguments.
 
- <p>The MoMLApplication docs say:
+ <p>The ConfigurationApplication docs say:
 
 <BLOCKQUOTE>
    If a Ptolemy model is instantiated on the command line, either
@@ -742,10 +742,18 @@ command line arguments.
    to the string <code>"bar"</code> it might be necessary to do
    something like:
    <pre>
-   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c "&amp;quot;bar&amp;quot;"
+   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c "\&amp;quot\;bar\&amp;quot\;"
    </pre>
    The <code>&amp;quot;</code> is necessary to convert the double quote
-   to something safe to in an XML file.
+   to something safe to in an XML file.  The backslashes are necessary
+   to protect the <code>&amp</code> and <code>;</code> from the shell
+   in the shell script.
+
+   <p>Note that the ptolemy.actor.parameters.ParameterSet attribute is
+   a better way to set parameters at run time.  ParameterSet is
+   an attribute that reads multiple values from a file and sets
+   corresponding parameters in the container.</p>
+
 </BLOCKQUOTE>
 Toplevel parameters can be set by calling vergil with a similar syntax:
 <pre>
