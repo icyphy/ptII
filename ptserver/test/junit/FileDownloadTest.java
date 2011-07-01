@@ -75,12 +75,8 @@ public class FileDownloadTest {
         _ptolemyServer = PtolemyServer.getInstance();
 
         HessianProxyFactory proxyFactory = new HessianProxyFactory();
-        String servletUrl = String.format("http://%s:%s%s", "localhost",
-                CONFIG.getString("SERVLET_PORT"),
-                CONFIG.getString("SERVLET_PATH"));
-
         _servletProxy = (IServerManager) proxyFactory.create(
-                IServerManager.class, servletUrl);
+                IServerManager.class, _ptolemyServer.getServletUrl());
     }
 
     /** Get the listing of models available on the server.

@@ -81,12 +81,8 @@ public class ServletTest {
         _ptolemyServer = PtolemyServer.getInstance();
 
         HessianProxyFactory proxyFactory = new HessianProxyFactory();
-        String servletUrl = String.format("http://%s:%s%s", "localhost",
-                CONFIG.getString("SERVLET_PORT"),
-                CONFIG.getString("SERVLET_PATH"));
-
         _servletProxy = (IServerManager) proxyFactory.create(
-                IServerManager.class, servletUrl);
+                IServerManager.class, _ptolemyServer.getServletUrl());
     }
 
     /** Test the ability to create a new simulation request and to ensure that
