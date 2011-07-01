@@ -41,6 +41,9 @@
 		<pathelement location="lib/aopalliance.jar" />
 		<pathelement location="lib/guice-3.0.jar" />
 		<pathelement location="lib/javax.inject.jar" />
+		<pathelement location="lib/org-netbeans-api-visual.jar" />
+		<pathelement location="lib/org-openide-util-lookup.jar" />
+		<pathelement location="lib/org-openide-util.jar" />				
 	</path>
 
 	<target name="clean">
