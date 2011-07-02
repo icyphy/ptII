@@ -28,9 +28,9 @@
 
 package ptolemy.homer.kernel;
 
-import ptolemy.actor.gui.PortablePlaceable;
-import ptolemy.actor.gui.style.ParameterEditorStyle;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.gui.PortableContainer;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// AttributeRepresentation
@@ -48,11 +48,9 @@ public interface AttributeRepresentation {
 
     /** Get a representation that can be later placed into a container.
      * 
-     *  @param style The style  
-     *  @param element
-     *  @return
+     * @param element The element to be represented.
+     * @param container The container to place the element's representation.
      */
-    PortablePlaceable getWidget(ParameterEditorStyle style,
-            NamedObj element);
+    void placeWidget(Attribute element, PortableContainer container) throws IllegalActionException;
 
 }

@@ -27,6 +27,7 @@
 
 package ptolemy.homer.kernel;
 
+import ptolemy.actor.gui.PortableContainer;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -48,5 +49,11 @@ public interface ContentWrapper {
      *  @exception IllegalActionException If the content area is not set.
      */
     void add(PositionableElement element) throws IllegalActionException;
+    
+    /** Get the content area.
+     * 
+     *  @return The content area.
+     */
+    Object getContent();
 
 }

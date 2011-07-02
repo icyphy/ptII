@@ -36,7 +36,7 @@ package ptolemy.actor.gui;
  *  
  *  @author Anar Huseynov
  *  @version $Id$ 
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */

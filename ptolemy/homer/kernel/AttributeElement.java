@@ -94,29 +94,9 @@ public class AttributeElement extends PositionableElement {
      *  to the container. 
      */
     @Override
-    public void addToContainer(PortableContainer container) {
+    public void addToContainer(PortableContainer container) throws IllegalActionException {
         // Place the representation into the given container.
-        _representation.getWidget(getAcceptedStyle(), getElement()).place(
-                container);
-    }
-
-    /** Check if there's an acceptable style defined for this attribute.
-     * 
-     *  @return The style if it's available ad acceptable, null otherwise.
-     */
-    public ParameterEditorStyle getAcceptedStyle() {
-        Attribute style = getElement().getAttribute(HomerConstants.STYLE_NODE);
-        if (style == null || !(style instanceof ParameterEditorStyle)) {
-            // Style not set or set incorrectly.
-            return null;
-        }
-
-        if (!((ParameterEditorStyle) style).acceptable((Settable) getElement())) {
-            // Style is not accepted for the given element.
-            return null;
-        }
-
-        return (ParameterEditorStyle) style;
+        _representation.placeWidget((Attribute) getElement(), container);
     }
 
     /** Change the style of the parameter to a new style.

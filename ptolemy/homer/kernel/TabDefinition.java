@@ -73,13 +73,23 @@ public class TabDefinition {
         return _name;
     }
 
-    /** Create and return the underlying layout with all the labels defined.
+    /** Return the content area of the tab.
      * 
-     * @return The wrapper through which the content of the tab can be
-     * accessed from, or null if it has not been set.
+     * @return The content area of the tab, or null if it has not been set.
      */
-    public ContentWrapper getContent() {
-        return _content;
+    public Object getContent() {
+        if (_content == null) {
+            return null;
+        }
+        return _content.getContent();
+    }
+
+    /** Set the content area of the tab.
+     * 
+     *  @param content The content to be used in the tab.
+     */
+    public void setContent(ContentWrapper content) {
+        _content = content;
     }
 
     /** Add an element to the contents of this tab. The element has to have

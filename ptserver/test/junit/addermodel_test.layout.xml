@@ -8,7 +8,7 @@
 	<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute"
 		value="8.1.devel">
 	</property>
-	<property name="droid_screenSize" class="ptserver.test.helper.ScreenSize"
+	<property name="droid_screenSize" class="ptolemy.homer.kernel.ScreenSize"
 		value="[600, 400]">
 	</property>
 	<property name="droid_client" class="ptolemy.data.expr.Parameter"
@@ -32,7 +32,7 @@
 				<!-- Some of the properties, like AndoridLocation, are required. -->
 				<!-- Contains the following information: The x and y position of the 
 					top-left corner and the height and width of the draw area. -->
-				<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
+				<property name="droid_location" class="ptolemy.homer.kernel.HomerLocation"
 					value="[10, 15, 100, 40]"></property>
 				<property name="droid_style"
 					class="ptolemy.actor.gui.style.NotEditableLineStyle"></property>
@@ -52,7 +52,7 @@
 				<property name="droid_tab" class="ptolemy.data.expr.Parameter"
 					value="tab2"></property>
 				<!-- Some of the properties, like AndoridLocation, are required. -->
-				<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
+				<property name="droid_location" class="ptolemy.homer.kernel.HomerLocation"
 					value="[10, 15, 100, 40]"></property>
 				<property name="droid_style"
 					class="ptolemy.actor.gui.style.NotEditableLineStyle"></property>
@@ -99,7 +99,7 @@
 		<property name="_remote" class="ptolemy.data.expr.Parameter"
 			value="sink"></property>
 		<!-- User interface properties to indicate position. -->
-		<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
+		<property name="droid_location" class="ptolemy.homer.kernel.HomerLocation"
 			value="[10, 55, 150, 150]"></property>
 		<property name="droid_tab" class="ptolemy.data.expr.Parameter"
 			value="tab1"></property>
@@ -139,7 +139,7 @@
 			<property name="_remote" class="ptolemy.data.expr.Parameter"
 				value="attribute"></property>
 			<!-- User interface properties to indicate position. -->
-			<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
+			<property name="droid_location" class="ptolemy.homer.kernel.HomerLocation"
 				value="[10, 65, 250, 50]"></property>
 			<property name="droid_tab" class="ptolemy.data.expr.Parameter"
 				value="tab2"></property>

@@ -174,6 +174,13 @@ public class LayoutParser {
         return attributeDefinitions;
     }
 
+    /** The different screen orientations possible for the visual
+     *  representation.
+     */
+    public enum ScreenOrientation {
+        PORTRAIT, LANDSCAPE, UNSPECIFIED
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                private methods                            ////
 
@@ -214,7 +221,7 @@ public class LayoutParser {
 
         return true;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
@@ -225,11 +232,4 @@ public class LayoutParser {
     /** The default screen orientation for the Android device.
      */
     private static final ScreenOrientation DEFAULT_SCREEN_ORIENTATION = ScreenOrientation.UNSPECIFIED;
-
-    /** The different screen orientations possible for the visual
-     *  representation.
-     */
-    private enum ScreenOrientation {
-        PORTRAIT, LANDSCAPE, UNSPECIFIED
-    }
 }
