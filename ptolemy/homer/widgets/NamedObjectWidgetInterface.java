@@ -1,4 +1,4 @@
-/*
+/* TODO
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -23,50 +23,27 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+package ptolemy.homer.widgets;
 
-/**
- * 
- */
-package ptserver.test.helper;
-
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
-//// ScreenSize
+////NamedObjectWidgetInterface
 
-/**  
- * @author Peter Foldes
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (pdf)
- * @Pt.AcceptedRating Red (pdf)
- */
-public class ScreenSize extends Parameter {
+/**
+* TODO
+* @author Anar Huseynov
+* @version $Id$ 
+* @since Ptolemy II 8.1
+* @Pt.ProposedRating Red (ahuseyno)
+* @Pt.AcceptedRating Red (ahuseyno)
+*/
+public interface NamedObjectWidgetInterface {
 
-    public ScreenSize(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        setVisibility(Settable.NONE);
-    }
+    /**
+     * TODO
+     * @return the _namedObject
+     */
+    NamedObj getNamedObject();
 
-    public boolean SetSize() {
-        try {
-            IntMatrixToken token = (IntMatrixToken) getToken();
-
-            if (token != null) {
-                int width = token.getElementAt(0, 0);
-                int height = token.getElementAt(0, 1);
-            }
-            
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
 }

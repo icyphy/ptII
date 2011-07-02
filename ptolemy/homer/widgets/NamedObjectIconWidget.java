@@ -23,21 +23,24 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.uidesigner.widgets;
+package ptolemy.homer.widgets;
 
-import java.awt.Image;
+import java.awt.Dimension;
 import java.net.URL;
 
-import javax.swing.ImageIcon;
-
+import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.Scene;
-import org.netbeans.api.visual.widget.general.IconNodeWidget;
-import org.openide.util.ImageUtilities;
+import org.netbeans.api.visual.widget.Widget;
 
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
 
 ///////////////////////////////////////////////////////////////////
-//// NamedObjectImageWidget
+//// NamedObjectIconWidget
 
 /**
 * TODO
@@ -47,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
 */
-public class NamedObjectImageWidget extends IconNodeWidget implements
+public class NamedObjectIconWidget extends Widget implements
         NamedObjectWidgetInterface {
 
     /**
@@ -56,12 +59,26 @@ public class NamedObjectImageWidget extends IconNodeWidget implements
      * @param namedObject
      * @param imageURL
      */
-    public NamedObjectImageWidget(Scene scene, NamedObj namedObject,
-            URL imageURL) {
+    public NamedObjectIconWidget(Scene scene, NamedObj namedObject, URL imageURL) {
         super(scene);
         _namedObject = namedObject;
-        Image image = ImageUtilities.icon2Image(new ImageIcon(imageURL));
-        setImage(image);
+        // adapted from DocViewer
+        ActorEditorGraphController controller = new ActorEditorGraphController();
+        // Create a modified graph model with alternative error reporting.
+        ActorGraphModel graphModel = new ActorGraphModel(namedObject);
+        GraphPane _graphPane = new GraphPane(controller, graphModel);
+        JGraph jgraph = new JGraph(_graphPane);
+        // The icon window is fixed size.
+        jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH,
+                _ICON_WINDOW_HEIGHT));
+        jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH,
+                _ICON_WINDOW_HEIGHT));
+        jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH,
+                _ICON_WINDOW_HEIGHT));
+        jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
+        jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
+        ComponentWidget componentWidget = new ComponentWidget(scene, jgraph);
+        addChild(componentWidget);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -69,7 +86,7 @@ public class NamedObjectImageWidget extends IconNodeWidget implements
 
     /* TODO
      *  (non-Javadoc)
-     * @see ptolemy.uidesigner.widgets.NamedObjectWidgetInterface#getNamedObject()
+     * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
      */
     public NamedObj getNamedObject() {
         return _namedObject;
@@ -81,4 +98,10 @@ public class NamedObjectImageWidget extends IconNodeWidget implements
      * TODO
      */
     private final NamedObj _namedObject;
+
+    /** Icon window width. */
+    private static int _ICON_WINDOW_HEIGHT = 200;
+
+    /** Icon window width. */
+    private static int _ICON_WINDOW_WIDTH = 200;
 }

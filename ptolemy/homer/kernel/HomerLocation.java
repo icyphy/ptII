@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptserver.test.helper;
+package ptolemy.homer.kernel;
 
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.expr.Parameter;
@@ -35,19 +35,19 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
-//// AndroidLocation
+//// HomerLocation
 
 /** Stores location information for Android specific elements.
  * 
  *  @author Peter Foldes
- *  @version $Id: AndroidLocation.java 61296 2011-06-23 04:26:22Z ahuseyno $
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */
-public class AndroidLocation extends Parameter {
+public class HomerLocation extends Parameter {
 
-    public AndroidLocation(NamedObj container, String name)
+    public HomerLocation(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);

@@ -1,5 +1,4 @@
-/* Wrap the implementation of a content area.
-
+/*
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -25,28 +24,49 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.uidesigner.kernel;
+/**
+ * 
+ */
+package ptolemy.homer.kernel;
 
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
-//// ContentWrapper
+//// ScreenSize
 
-/** Wrap the implementation of a content area. 
- *
- *  @author Peter Foldes
- *  @version $Id$
- *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating Red (pdf)
- *  @Pt.AcceptedRating Red (pdf)
+/**  
+ * @author Peter Foldes
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (pdf)
+ * @Pt.AcceptedRating Red (pdf)
  */
-public interface ContentWrapper {
+public class ScreenSize extends Parameter {
 
-    /** Add an element to the content area.
-     * 
-     *  @param element The element to be added to the content area.
-     *  @exception IllegalActionException If the content area is not set.
-     */
-    void add(PositionableElement element) throws IllegalActionException;
+    public ScreenSize(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        setVisibility(Settable.NONE);
+    }
 
+    public boolean SetSize() {
+        try {
+            IntMatrixToken token = (IntMatrixToken) getToken();
+
+            if (token != null) {
+                int width = token.getElementAt(0, 0);
+                int height = token.getElementAt(0, 1);
+            }
+            
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
 }

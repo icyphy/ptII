@@ -23,7 +23,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.uidesigner.widgets;
+package ptolemy.homer.widgets;
 
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
@@ -57,7 +57,7 @@ public class NamedObjectWidget extends Widget implements
 
     /* TODO
      * (non-Javadoc)
-     * @see ptolemy.uidesigner.widgets.NamedObjectWidgetInterface#getNamedObject()
+     * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
      */
     public NamedObj getNamedObject() {
         return _namedObject;

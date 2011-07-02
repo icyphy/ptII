@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.uidesigner.kernel;
+package ptolemy.homer.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
 

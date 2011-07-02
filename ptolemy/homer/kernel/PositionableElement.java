@@ -25,13 +25,12 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.uidesigner.kernel;
+package ptolemy.homer.kernel;
 
 import ptolemy.actor.gui.PortableContainer;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptserver.test.helper.HomerLocation;
 
 ///////////////////////////////////////////////////////////////////
 //// PositionableElement

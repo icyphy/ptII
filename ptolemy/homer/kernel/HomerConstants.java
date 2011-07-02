@@ -28,7 +28,7 @@
 /**
  * 
  */
-package ptolemy.uidesigner.kernel;
+package ptolemy.homer.kernel;
 
 ///////////////////////////////////////////////////////////////////
 //// HomerConstants

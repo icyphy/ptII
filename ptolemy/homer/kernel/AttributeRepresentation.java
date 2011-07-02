@@ -1,4 +1,6 @@
-/* TODO
+/* Specify an interface to access an attribute's visual representation
+   based on its style.
+   
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -23,27 +25,34 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.uidesigner.widgets;
 
+package ptolemy.homer.kernel;
+
+import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-////NamedObjectWidgetInterface
+//// AttributeRepresentation
 
-/**
-* TODO
-* @author Anar Huseynov
-* @version $Id$ 
-* @since Ptolemy II 8.1
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
-*/
-public interface NamedObjectWidgetInterface {
+/** Specify an interface to access an attribute's visual representation
+ *  based on its style.
+ *  
+ *  @author Peter Foldes
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
+ */
+public interface AttributeRepresentation {
 
-    /**
-     * TODO
-     * @return the _namedObject
+    /** Get a representation that can be later placed into a container.
+     * 
+     *  @param style The style  
+     *  @param element
+     *  @return
      */
-    NamedObj getNamedObject();
+    PortablePlaceable getWidget(ParameterEditorStyle style,
+            NamedObj element);
 
 }

@@ -1,4 +1,4 @@
-package ptolemy.uidesigner;
+package ptolemy.homer;
 
 import javax.swing.JPanel;
 

@@ -1,4 +1,4 @@
-package ptolemy.uidesigner;
+package ptolemy.homer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

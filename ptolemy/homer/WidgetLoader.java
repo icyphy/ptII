@@ -1,4 +1,4 @@
-package ptolemy.uidesigner;
+package ptolemy.homer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
@@ -6,9 +6,9 @@ import java.util.ResourceBundle;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
+import ptolemy.homer.widgets.NamedObjectWidget;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.uidesigner.widgets.NamedObjectWidget;
 
 public class WidgetLoader {
 
@@ -70,7 +70,7 @@ public class WidgetLoader {
     }
 
     private static final ResourceBundle OBJECT_WIDGET_BUNDLE = ResourceBundle
-            .getBundle("ptolemy.uidesigner.widgets.ObjectWidgets");
+            .getBundle("ptolemy.homer.widgets.ObjectWidgets");
     private static final ResourceBundle OBJECT_IMAGE_BUNDLE = ResourceBundle
-            .getBundle("ptolemy.uidesigner.widgets.ObjectImages");
+            .getBundle("ptolemy.homer.widgets.ObjectImages");
 }

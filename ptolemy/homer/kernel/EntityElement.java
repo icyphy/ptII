@@ -25,7 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
 
-package ptolemy.uidesigner.kernel;
+package ptolemy.homer.kernel;
 
 import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.gui.PortablePlaceable;
