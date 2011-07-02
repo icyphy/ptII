@@ -50,7 +50,6 @@ import org.eclipse.jetty.http.security.Constraint;
 import org.eclipse.jetty.security.ConstraintMapping;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
-import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -764,10 +763,9 @@ public final class PtolemyServer implements IServerManager {
 
         // Define the security context.
         ConstraintSecurityHandler security = new ConstraintSecurityHandler();
-        security.setAuthenticator(new BasicAuthenticator());
         security.setLoginService(new HashLoginService("PtolemyServer",
-                new File("ptserver" + File.separator
-                        + "PtolemyServerUsers.properties").toURI().toString()));
+                getClass().getResource("PtolemyServerUsers.properties")
+                        .toString()));
         security.setConstraintMappings(new ConstraintMapping[] { mapping });
 
         // Assign the servlet container context.
