@@ -88,7 +88,7 @@ public class TabDefinition {
      * 
      *  @param content The content to be used in the tab.
      */
-    public void setContent(ContentWrapper content) {
+    public void setContent(ContentPrototype content) {
         _content = content;
     }
 
@@ -123,5 +123,5 @@ public class TabDefinition {
 
     /** The complete content of the tab.
      */
-    private ContentWrapper _content = null;
+    private ContentPrototype _content = null;
 }

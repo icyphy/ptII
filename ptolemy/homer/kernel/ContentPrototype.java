@@ -1,4 +1,4 @@
-/* Wrap the implementation of a content area.
+/* Define a content area using Prototype pattern.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -27,13 +27,12 @@
 
 package ptolemy.homer.kernel;
 
-import ptolemy.actor.gui.PortableContainer;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
-//// ContentWrapper
+//// ContentPrototype
 
-/** Wrap the implementation of a content area. 
+/** Define a content area using Prototype pattern.
  *
  *  @author Peter Foldes
  *  @version $Id$
@@ -41,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */
-public interface ContentWrapper {
+public interface ContentPrototype {
 
     /** Add an element to the content area.
      * 
@@ -49,11 +48,16 @@ public interface ContentWrapper {
      *  @exception IllegalActionException If the content area is not set.
      */
     void add(PositionableElement element) throws IllegalActionException;
-    
+
     /** Get the content area.
      * 
      *  @return The content area.
      */
     Object getContent();
-
+    
+    /** Get a new instance of the prototype.
+     * 
+     *  @return The new instance of the prototype.
+     */
+    ContentPrototype getNewInstance();
 }
