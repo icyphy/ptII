@@ -193,6 +193,8 @@ public final class PtolemyServer implements IServerManager {
                     .getString("BROKER_PORT")));
             servletPort = (servletPort > 0 ? servletPort : Integer
                     .parseInt(CONFIG.getString("SERVLET_PORT")));
+            modelDirectory = (modelDirectory != null ? modelDirectory : CONFIG
+                    .getString("MODELS_DIRECTORY"));
 
             // If path is specified, attempt to launch the broker process.
             if (_configureBroker(brokerPath, brokerPort)) {
