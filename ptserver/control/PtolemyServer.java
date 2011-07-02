@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +46,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.XMLFormatter;
 
+import org.eclipse.jetty.http.security.Constraint;
+import org.eclipse.jetty.security.ConstraintMapping;
+import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.security.HashLoginService;
+import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -123,6 +129,10 @@ public final class PtolemyServer implements IServerManager {
      */
     public static final String SERVLET_NAME = "PtolemyServer";
 
+    /** Roles to classify users during basic authentication.
+     */
+    public static final String SERVLET_ROLE = "user";
+
     /** Export format of the model image.
      */
     public static final String IMAGE_FORMAT = "PNG";
@@ -171,61 +181,35 @@ public final class PtolemyServer implements IServerManager {
             String brokerAddress, int brokerPort, String modelDirectory)
             throws IllegalActionException {
 
-        // Initialize and launch the Jetty servlet container.
         try {
-            _executor = Executors.newCachedThreadPool();
-            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
+            // If not passed, attempt to pull from configuration.
+            brokerPath = (brokerPath != null ? brokerPath : CONFIG
+                    .getString("BROKER_PATH"));
+            brokerAddress = (brokerAddress != null ? brokerAddress : (CONFIG
+                    .getString("BROKER_ADDRESS") != null ? CONFIG
+                    .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
+                    .getHostAddress()));
+            brokerPort = (brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
+                    .getString("BROKER_PORT")));
+            servletPort = (servletPort > 0 ? servletPort : Integer
+                    .parseInt(CONFIG.getString("SERVLET_PORT")));
 
-            // If path is specified, launch the broker and use localhost.
-            if (brokerPath != null) {
-                try {
-                    // Launch the broker process.
-                    String[] commands = new String[] { brokerPath, "-p",
-                            String.valueOf(brokerPort) };
-                    _broker = new ProcessBuilder(commands).redirectErrorStream(
-                            true).start();
-                    brokerAddress = InetAddress.getLocalHost().getHostAddress();
-                } catch (IOException e) {
-                    _handleException(
-                            "Unable to spawn MQTT broker process at '"
-                                    + brokerPath + "' on port "
-                                    + String.valueOf(brokerPort) + ".", e);
-                }
-            } else if (brokerAddress == null) {
-                // If not specified as argument, use configuration for remote broker.
-                brokerAddress = CONFIG.getString("BROKER_ADDRESS");
-
-                // If no default broker address has been configured, assume localhost.
-                if (brokerAddress == null) {
-                    brokerAddress = InetAddress.getLocalHost().getHostAddress();
-                }
+            // If path is specified, attempt to launch the broker process.
+            if (_configureBroker(brokerPath, brokerPort)) {
+                brokerAddress = InetAddress.getLocalHost().getHostAddress();
             }
 
-            // If not passed, try to pull from configuration.
-            if (servletPort <= 0) {
-                servletPort = Integer
-                        .parseInt(CONFIG.getString("SERVLET_PORT"));
-            }
-
-            _brokerUrl = String.format(
-                    "tcp://%s@%s",
-                    brokerAddress,
-                    (brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
-                            .getString("BROKER_PORT"))));
-            _servletHost = new Server(servletPort);
+            _brokerUrl = String
+                    .format("tcp://%s@%s", brokerAddress, brokerPort);
             _servletUrl = String
                     .format("http://%s:%s/%s", InetAddress.getLocalHost()
                             .getHostAddress(), servletPort, SERVLET_NAME);
-            _modelsDirectory = (modelDirectory != null ? modelDirectory
-                    : CONFIG.getString("MODELS_DIRECTORY"));
-
-            ServletContextHandler context = new ServletContextHandler(
-                    _servletHost, "/", ServletContextHandler.SESSIONS);
-            ServletHolder container = new ServletHolder(ServerManager.class);
-            context.addServlet(container, "/" + SERVLET_NAME);
-
-            _servletHost.setHandler(context);
+            _modelsDirectory = modelDirectory;
+            _servletHost = new Server(servletPort);
+            _servletHost.setHandler(_configureServlet());
             _servletHost.start();
+            _executor = Executors.newCachedThreadPool();
+            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
         } catch (Exception e) {
             _handleException("Unable to initialize Ptolemy server.", e);
         }
@@ -732,6 +716,66 @@ public final class PtolemyServer implements IServerManager {
                             + ticket.getTicketID());
             // TODO: create InvalidTicketException
         }
+    }
+
+    /** Configure and launch the broker if path has been specified.
+     *  @param brokerPath The path to the broker.
+     *  @param brokerPort The port of the broker.
+     *  @return True if the broker was started locally, false otherwise.
+     *  @exception IllegalActionException If the broker could not be started.
+     */
+    private boolean _configureBroker(String brokerPath, int brokerPort)
+            throws IllegalActionException {
+        if (brokerPath != null) {
+            try {
+                _broker = new ProcessBuilder(new String[] { brokerPath, "-p",
+                        String.valueOf(brokerPort) }).redirectErrorStream(true)
+                        .start();
+
+                return true;
+            } catch (IOException e) {
+                _handleException(
+                        "Unable to spawn MQTT broker process at '" + brokerPath
+                                + "' on port " + String.valueOf(brokerPort)
+                                + ".", e);
+            }
+        }
+
+        return false;
+    }
+
+    /** Configure the context handler of the servlet.
+     *  @return The servlet context handler.
+     *  @exception MalformedURLException If the servlet address is invalid.
+     */
+    private ServletContextHandler _configureServlet()
+            throws MalformedURLException {
+        // Set up the servlet context and security settings.
+        // Optional: use com.eclipse.Util.Password for hashing
+
+        // Define the constraints for this servlet.
+        ConstraintMapping mapping = new ConstraintMapping();
+        mapping.setConstraint(new Constraint(Constraint.__BASIC_AUTH,
+                SERVLET_ROLE));
+        mapping.setPathSpec("/" + SERVLET_NAME);
+        mapping.getConstraint().setAuthenticate(true);
+
+        // Define the security context.
+        ConstraintSecurityHandler security = new ConstraintSecurityHandler();
+        security.setAuthenticator(new BasicAuthenticator());
+        security.setLoginService(new HashLoginService("PtolemyServer",
+                new File("ptserver" + File.separator
+                        + "PtolemyServerUsers.properties").toURI().toString()));
+        security.setConstraintMappings(new ConstraintMapping[] { mapping });
+
+        // Assign the servlet container context.
+        ServletContextHandler context = new ServletContextHandler(_servletHost,
+                "/", ServletContextHandler.SESSIONS);
+        context.setSecurityHandler(security);
+        context.addServlet(new ServletHolder(ServerManager.class), "/"
+                + SERVLET_NAME);
+
+        return context;
     }
 
     /** Log the message and exception into the Ptolemy server log.

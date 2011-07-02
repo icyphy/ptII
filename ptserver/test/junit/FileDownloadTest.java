@@ -72,11 +72,13 @@ public class FileDownloadTest {
      */
     @Before
     public void setup() throws Exception {
-        _ptolemyServer = PtolemyServer.getInstance();
+        HessianProxyFactory factory = new HessianProxyFactory();
+        factory.setUser("guest");
+        factory.setPassword("guest");
 
-        HessianProxyFactory proxyFactory = new HessianProxyFactory();
-        _servletProxy = (IServerManager) proxyFactory.create(
-                IServerManager.class, _ptolemyServer.getServletUrl());
+        _ptolemyServer = PtolemyServer.getInstance();
+        _servletProxy = (IServerManager) factory.create(IServerManager.class,
+                _ptolemyServer.getServletUrl());
     }
 
     /** Get the listing of models available on the server.

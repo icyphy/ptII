@@ -266,11 +266,15 @@ public class RemoteModelTest {
      */
     @Before
     public void setup() throws Exception {
+        HessianProxyFactory factory = new HessianProxyFactory();
+        factory.setUser("guest");
+        factory.setPassword("guest");
+
         _server = PtolemyServer.getInstance();
         _servletUrl = _server.getServletUrl();
         _brokerUrl = _server.getBrokerUrl();
-        _proxy = (IServerManager) new HessianProxyFactory().create(
-                IServerManager.class, _servletUrl);
+        _proxy = (IServerManager) factory.create(IServerManager.class,
+                _servletUrl);
         _counter = 0;
         _isWaiting = true;
     }
