@@ -25,14 +25,10 @@
  */
 package ptolemy.homer.widgets;
 
-import java.awt.Image;
 import java.net.URL;
-
-import javax.swing.ImageIcon;
 
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
-import org.openide.util.ImageUtilities;
 
 import ptolemy.kernel.util.NamedObj;
 
@@ -60,8 +56,8 @@ public class NamedObjectImageWidget extends IconNodeWidget implements
             URL imageURL) {
         super(scene);
         _namedObject = namedObject;
-        Image image = ImageUtilities.icon2Image(new ImageIcon(imageURL));
-        setImage(image);
+        //Image image = ImageUtilities.icon2Image(new ImageIcon(imageURL));
+        //setImage(image);
     }
 
     ///////////////////////////////////////////////////////////////////
