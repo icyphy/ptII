@@ -73,6 +73,7 @@ JSRCS = \
 	LongTokenHandler.java \
 	PingPongTokenHandler.java \
 	RecordTokenHandler.java \
+	ServerEventTokenHandler.java \
 	ShortTokenHandler.java \
 	StringTokenHandler.java \
 	TokenHandler.java \
