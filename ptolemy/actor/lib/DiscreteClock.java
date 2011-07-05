@@ -37,6 +37,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -124,7 +125,7 @@ import ptolemy.kernel.util.Workspace;
  be produced if a trigger input has been received since the last output
  or if the trigger input coincides with the time when an output should
  be produced. If a trigger input has not been received, then the
- output will be skipped, moving on the the next phase.
+ output will be skipped, moving on to the the next phase.
  The only exception is the first output, which is produced
  whether a trigger is provided or not. This is because the
  trigger input is typically useful
@@ -158,10 +159,11 @@ public class DiscreteClock extends TimedSource {
     public DiscreteClock(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        
         period = new PortParameter(this, "period");
         period.setExpression("1.0");
         period.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(period.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0}");
