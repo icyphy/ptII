@@ -43,7 +43,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.ImageFigure;
+import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageIcon
@@ -147,6 +149,22 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         _addLiveFigure(newFigure);
         
         return newFigure;
+    }
+    
+    /** Create a new Swing icon. This overrides the base class to
+     *  wait until image has been rendered. Otherwise, we get a null
+     *  pointer exception in Diva, and also the library collapses
+     *  and has to be re-opened.
+     *  @return A new Swing Icon.
+     */
+    public javax.swing.Icon createIcon() {
+        if (_scalePercentage == _scalePercentageImplemented) {
+            // Image processing is done.
+            return super.createIcon();
+        }
+        // Provide a placeholder, but do not store it in
+        // the icon cache.
+        return new FigureIcon(_PLACEHOLDER_ICON, 20, 15);
     }
 
     /** This method, which is required by the ImageObserver interface,
@@ -298,6 +316,9 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     // The image that is the master.
     private Image _image;
+    
+    // Placeholder icon to be used if images are not fully processed.
+    private static Figure _PLACEHOLDER_ICON = new BasicRectangle(0.0, 0.0, 10.0, 10.0);
 
     // The scaled version of the image that is the master.
     private Image _scaledImage;
