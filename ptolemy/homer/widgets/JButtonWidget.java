@@ -25,7 +25,7 @@ public class JButtonWidget extends Widget {
 
     }
 
-    private String getLabel() {
+    public String getLabel() {
         return button.getText();
     }
 

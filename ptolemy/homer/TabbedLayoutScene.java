@@ -1,5 +1,6 @@
 package ptolemy.homer;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -43,10 +44,11 @@ public class TabbedLayoutScene extends JTabbedPane {
         scene.getActions().addAction(ActionFactory.createZoomAction());
 
         mainLayer = new LayerWidget(scene);
+        mainLayer.setBackground(Color.black);
         scene.addChild(mainLayer);
         LayerWidget interractionLayer = new LayerWidget(scene);
         scene.addChild(interractionLayer);
-
+        interractionLayer.setBackground(Color.black);
         moveAction = ActionFactory.createAlignWithMoveAction(mainLayer,
                 interractionLayer, null, false);
 
@@ -57,9 +59,10 @@ public class TabbedLayoutScene extends JTabbedPane {
         JComponent sceneView = scene.createView();
 
         SceneDropTargetListener listener = new SceneDropTargetListener();
-        DropTarget dt = new DropTarget(sceneView, listener);
+        new DropTarget(sceneView, listener);
 
         JScrollPane shapePane = new JScrollPane();
+        shapePane.setBackground(Color.black);
         shapePane.setViewportView(sceneView);
 
         addTab("Home tab", null, shapePane, null);

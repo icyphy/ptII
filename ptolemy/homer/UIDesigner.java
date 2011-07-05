@@ -17,10 +17,11 @@ import javax.swing.tree.TreeModel;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
+import ptolemy.homer.tree.AttributeTreeModel;
+import ptolemy.homer.tree.NamedObjectTree;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.vergil.tree.EntityTreeModel;
 
 public class UIDesigner extends JFrame {
 
@@ -44,11 +45,12 @@ public class UIDesigner extends JFrame {
 
                     //enter the address of any model xml file
                     CompositeActor topLevelActor = (CompositeActor) parser
-                            .parseFile("C:/Users/Ishwinder/Desktop/Studio/Release 2/SoundSpectrum.xml");
+                            .parseFile("C:/Users/Ishwinder/Desktop/Studio/Release 1/addermodel.xml");
 
                     //if FullTreeModel is used it gives the complete model tree
                     // but due to some reason scroll bars does not appear  
-                    UIDesigner frame = new UIDesigner(new EntityTreeModel(
+                    //EntityTreeModel
+                    UIDesigner frame = new UIDesigner(new AttributeTreeModel(
                             topLevelActor));
                     frame.setVisible(true);
                 } catch (Exception e) {

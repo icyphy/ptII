@@ -1,4 +1,4 @@
-package ptolemy.homer;
+package ptolemy.homer.tree;
 
 import java.awt.BorderLayout;
 
@@ -16,10 +16,11 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
     private final PTree tree;
     private final JTextField currentSelectionField;
 
-    NamedObjectTree(TreeModel model) {
-
+    public NamedObjectTree(TreeModel model) {
+        this.setLayout(new BorderLayout());
         tree = new PTree(model);
         tree.addTreeSelectionListener(this);
+        tree.setScrollsOnExpand(true);
         add(new JScrollPane(tree), BorderLayout.CENTER);
         currentSelectionField = new JTextField("Current Selection: NONE");
 
