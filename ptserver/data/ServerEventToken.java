@@ -49,10 +49,15 @@ import ptolemy.data.Token;
  */
 public class ServerEventToken extends Token {
 
-    /** Type of notification message being sent to the user.
+    /** The type of notification message being sent to the user.
      */
     public enum EventType {
-        EXCEPTION, SERVER_SHUTDOWN
+        /** The simulation experienced an exception.
+         */
+        EXCEPTION,
+        /** The server has begun shutting down.
+         */
+        SERVER_SHUTDOWN
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,6 +120,11 @@ public class ServerEventToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The type of event that this token signifies.
+     */
     private EventType _eventType;
+
+    /** The message for the consumer of the token.
+     */
     private String _message;
 }

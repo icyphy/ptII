@@ -184,7 +184,8 @@ public final class TokenParser {
     }
 
     /** Set the list of token handlers.
-     *  @param tokenHandlerMap
+     *  @param tokenHandlerMap The map of loaded token handlers used to ensure that
+     *  both the client and server handlers have the same ordinal positions.
      *  @exception IllegalActionException If the token handler does not map to an
      *  existing class or reflection instantiation of the handler fails.
      */
