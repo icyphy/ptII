@@ -1535,7 +1535,11 @@ public class TableauFrame extends Top {
                     try {
                         Tableau tableau = factory
                                 .createTableau(tableauContainer);
-                        tableau.show();
+                        if (tableau == null) {
+                            MessageHandler.warning("Cannot create view. Perhaps the model needs to be saved first?");
+                        } else {
+                            tableau.show();
+                        }
                     } catch (Throwable throwable) {
                         // Copernicus might throw a java.lang.Error if
                         // jhdl.Main cannot be resolved
