@@ -34,6 +34,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.tree.TreePath;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -105,6 +107,18 @@ public class VisibleTreeModel extends FullTreeModel {
         return super.isLeaf(object);
     }
 
+    /** Override the base class to do nothing. This seems risky, but
+     *  the problem is that without it, every time you expand a library
+     *  that has a image or PDF icon it, the entire library collapses,
+     *  which is extremely annoying. I guess this is OK under the
+     *  assumption that the library does not change during execution.
+     *  @param path The path of the node that has changed.
+     *  @param newValue The new value of the node.
+     */
+    public void valueForPathChanged(TreePath path, Object newValue) {
+        // Do nothing.
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
