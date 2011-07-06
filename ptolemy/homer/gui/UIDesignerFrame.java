@@ -27,32 +27,26 @@ package ptolemy.homer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
+import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
-import org.netbeans.api.visual.widget.Widget;
+import javax.swing.filechooser.FileFilter;
 
 import ptolemy.homer.gui.tree.NamedObjectTree;
-import ptolemy.homer.kernel.WidgetLoader;
-import ptolemy.homer.widgets.NamedObjectIconWidget;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
-import ptserver.test.PtolemyTestClient;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,6 +60,10 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class UIDesignerFrame extends JFrame {
+
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
 
     /**
      * Create the frame.
@@ -119,50 +117,52 @@ public class UIDesignerFrame extends JFrame {
         _spnScreen = new JScrollPane();
         _contentPane.add(_spnScreen, BorderLayout.CENTER);
 
-        _tblScreen = new JTabbedPane(JTabbedPane.TOP);
-        _tblScreen.setBorder(new TitledBorder(null, "User Interface Layout",
-                TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        _spnScreen.setViewportView(_tblScreen);
-        setUpScene();
+        _pnlScreen = new TabbedLayoutScene();
+        _pnlScreen.addTab("Default");
+        _pnlScreen.selectTab(0);
+        _spnScreen.setViewportView(_pnlScreen);
+        _fileChooser = new JFileChooser();
+        _fileChooser.addChoosableFileFilter(new FileFilter() {
 
-    }
+            @Override
+            public String getDescription() {
+                return "Graph Model files";
+            }
 
-    private void setUpScene() {
-        PtolemyModuleJavaSEInitializer.initializeInjector();
-        MoMLParser parser = new MoMLParser();
-        URL resource = PtolemyTestClient.class
-                .getResource("/ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml");
-        try {
-            CompositeEntity topLevel = (CompositeEntity) parser.parse(null,
-                    resource);
-            TabScenePanel tabScenePanel = new TabScenePanel();
-            _tblScreen.add("Test2", tabScenePanel.getView());
-            ComponentEntity entity2 = topLevel.getEntity("AudioCapture");
-            NamedObjectIconWidget widget2 = new NamedObjectIconWidget(
-                    tabScenePanel.getScene(), entity2);
-            tabScenePanel.addWidget(widget2, new Point(10, 10));
-            ComponentEntity entity = topLevel.getEntity("ArrayPlotter");
-            Widget widget = WidgetLoader.loadWidget(tabScenePanel.getScene(),
-                    entity, entity.getClass());
-            tabScenePanel.addWidget(widget, new Point(30, 30));
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NameDuplicationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (Exception e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                }
+                if (f.getName().endsWith(".xml")) {
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void newMenuActionPerformed(ActionEvent e) {
-
+        int returnVal = _fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = _fileChooser.getSelectedFile();
+            MoMLParser parser = new MoMLParser(new Workspace());
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            try {
+                CompositeEntity topLevel = (CompositeEntity) parser.parse(null,
+                        file.toURI().toURL());
+                _pnlNamedObjectTree.setCompositeEntity(topLevel);
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
     }
 
     private JPanel _contentPane;
-    private JTabbedPane _tblScreen;
     private JScrollPane _spnScreen;
     private NamedObjectTree _pnlNamedObjectTree;
+    private TabbedLayoutScene _pnlScreen;
+    private final JFileChooser _fileChooser;
 }

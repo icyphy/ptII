@@ -32,7 +32,7 @@ import org.netbeans.api.visual.widget.Scene;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import diva.canvas.Figure;
@@ -72,7 +72,8 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
         } else {
             icon = XMLIcon.getXMLIcon(namedObject, "_icon");
         }
-        new StringAttribute(namedObject, "_hideName");
+
+        new SingletonAttribute(namedObject, "_hideName");
         Figure figure = icon.createFigure();
         double ratio = figure.getBounds().getHeight()
                 / figure.getBounds().getWidth();

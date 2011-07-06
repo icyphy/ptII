@@ -28,15 +28,22 @@
 package ptolemy.homer.gui.tree;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.tree.PTree;
+import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjectTree
@@ -60,8 +67,23 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
         _tree = new PTree(_treeModel);
         _tree.addTreeSelectionListener(this);
         _tree.setScrollsOnExpand(true);
+        _tree.setCellRenderer(new PtolemyTreeCellRenderer() {
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree,
+                    Object value, boolean sel, boolean expanded, boolean leaf,
+                    int row, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
+                        .getTreeCellRendererComponent(tree, value, sel,
+                                expanded, leaf, row, hasFocus);
+                if (value instanceof Settable && value instanceof Nameable) {
+                    component.setText(((Nameable) value).getName());
+                }
+                return component;
+            }
+        });
         add(new JScrollPane(_tree), BorderLayout.CENTER);
-        _currentSelectionField = new JTextField("Current Selection: NONE");
+        _currentSelectionField = new JTextField("Current Selection:");
         _currentSelectionField.setEditable(false);
         add(_currentSelectionField, BorderLayout.SOUTH);
         setSize(500, 200);
@@ -75,8 +97,13 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
      * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
-        _currentSelectionField.setText("Current Selection: "
-                + _tree.getLastSelectedPathComponent().toString());
+        Object lastSelectedPathComponent = _tree.getLastSelectedPathComponent();
+        if (lastSelectedPathComponent instanceof NamedObj) {
+            _currentSelectionField.setText("Current Selection: "
+                    + ((NamedObj) lastSelectedPathComponent).getName());
+        } else {
+            _currentSelectionField.setText("Current Selection:");
+        }
     }
 
     /**
@@ -85,6 +112,7 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
      */
     public void setCompositeEntity(CompositeEntity topLevelContainer) {
         _treeModel.setRoot(topLevelContainer);
+        _treeModel.valueForPathChanged(null, topLevelContainer);
     }
 
     ///////////////////////////////////////////////////////////////////

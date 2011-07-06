@@ -148,7 +148,7 @@ public class WidgetLoader {
         }
         String imageName = IMAGE_WIDGET_BUNDLE.getString(targetType.getName());
         return new NamedObjectImageWidget(scene, namedObject,
-                WidgetLoader.class.getResource("images/" + imageName));
+                WidgetLoader.class.getResource("../images/" + imageName));
     }
 
     ///////////////////////////////////////////////////////////////////

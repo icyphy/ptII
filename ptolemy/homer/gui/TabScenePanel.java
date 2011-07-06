@@ -30,6 +30,13 @@ package ptolemy.homer.gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
+import java.io.IOException;
+import java.util.List;
 
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.TwoStateHoverProvider;
@@ -39,6 +46,13 @@ import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Widget;
+
+import ptolemy.homer.kernel.WidgetLoader;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 //////////////////////////////////////////////////////////////////////////
 //// TabScenePanel
@@ -79,6 +93,48 @@ public class TabScenePanel {
         };
         _hoverAction = ActionFactory.createHoverAction(_hoverProvider);
         _scene.getActions().addAction(_hoverAction);
+        new DropTarget(_scene.getView(), new DropTargetAdapter() {
+
+            public void drop(DropTargetDropEvent dropEvent) {
+
+                if (dropEvent
+                        .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                    try {
+                        dropEvent.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                        List<?> dropObjects = (java.util.List) dropEvent
+                                .getTransferable().getTransferData(
+                                        PtolemyTransferable.namedObjFlavor);
+
+                        NamedObj dropObj = (NamedObj) dropObjects.get(0);
+                        Widget widget = WidgetLoader.loadWidget(_scene,
+                                dropObj, dropObj.getClass());
+                        addWidget(widget, dropEvent.getLocation());
+                    } catch (UnsupportedFlavorException e) {
+                        MessageHandler.error(
+                                "Can't find a supported data flavor for drop in "
+                                        + dropEvent, e);
+                        return;
+                    } catch (IOException e) {
+                        MessageHandler.error(
+                                "Can't find a supported data flavor for drop in "
+                                        + dropEvent, e);
+                        return;
+                    } catch (IllegalActionException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                        return;
+                    } catch (NameDuplicationException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                        return;
+                    }
+                } else {
+                    dropEvent.rejectDrop();
+                }
+            }
+        });
     }
 
     /**
@@ -93,6 +149,7 @@ public class TabScenePanel {
         widget.getActions().addAction(_hoverAction);
         widget.setBorder(DEFAULT_BORDER);
         _mainLayer.addChild(widget);
+        _scene.validate();
     }
 
     /**

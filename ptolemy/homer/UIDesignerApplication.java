@@ -26,7 +26,7 @@
 
 package ptolemy.homer;
 
-import java.awt.EventQueue;
+import javax.swing.SwingUtilities;
 
 import ptolemy.homer.gui.UIDesignerFrame;
 import ptolemy.util.MessageHandler;
@@ -40,7 +40,7 @@ public class UIDesignerApplication {
      * TODO
      */
     public UIDesignerApplication() {
-        EventQueue.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
                     UIDesignerFrame frame = new UIDesignerFrame();

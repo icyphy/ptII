@@ -25,39 +25,27 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+
 package ptolemy.homer.gui;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.geom.Point2D;
-import java.util.Iterator;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JComponent;
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
 
-import org.netbeans.api.visual.action.ActionFactory;
-import org.netbeans.api.visual.action.WidgetAction;
-import org.netbeans.api.visual.widget.LayerWidget;
-import org.netbeans.api.visual.widget.Scene;
-
-import ptolemy.homer.widgets.JButtonWidget;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.MessageHandler;
-import ptolemy.vergil.toolbox.PtolemyTransferable;
-import ptolemy.vergil.toolbox.SnapConstraint;
-
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TabbedLayoutScene
-
 /**
  * TODO
  * @author Anar Huseynov
@@ -66,111 +54,122 @@ import ptolemy.vergil.toolbox.SnapConstraint;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class TabbedLayoutScene extends JTabbedPane {
+public class TabbedLayoutScene extends JPanel {
+    /**
+     * TODO
+     */
+    public TabbedLayoutScene() {
+        setLayout(new BorderLayout(0, 0));
+        _tabScenes = new JTabbedPane(JTabbedPane.TOP);
+        add(_tabScenes, BorderLayout.CENTER);
+        _tabScenes.add("", null);
+        TabButton addTabButton = new TabButton();
+        addTabButton.setText("+");
+        _tabScenes.setTabComponentAt(0, addTabButton);
+        addTabButton.addActionListener(new ActionListener() {
 
-    Scene scene;
-    LayerWidget mainLayer;
-    WidgetAction moveAction;
+            public void actionPerformed(ActionEvent e) {
+                addTab("Tab " + _tabScenes.getTabCount());
+                selectTab(_tabScenes.getTabCount() - 2);
+            }
+        });
+    }
 
-    public TabbedLayoutScene(int placement) {
-        super(placement);
+    /**
+     * TODO
+     *
+     */
+    private class TabSceneButton extends JPanel {
 
-        setBorder(new TitledBorder(null, "User Interface Layout",
-                TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        public TabSceneButton() {
+            setOpaque(false);
+            setLayout(new BorderLayout(0, 0));
+            JLabel label = new JLabel() {
+                public String getText() {
+                    int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
+                    if (i != -1) {
+                        return _tabScenes.getTitleAt(i);
+                    }
+                    return null;
+                };
+            };
+            add(label, BorderLayout.CENTER);
+            JButton closeButton = new TabButton();
+            closeButton.setText("x");
+            add(closeButton, BorderLayout.EAST);
+            closeButton.addActionListener(new ActionListener() {
 
-        scene = new Scene();
-        scene.getActions().addAction(ActionFactory.createZoomAction());
-
-        mainLayer = new LayerWidget(scene);
-        mainLayer.setBackground(Color.black);
-        scene.addChild(mainLayer);
-        LayerWidget interractionLayer = new LayerWidget(scene);
-        scene.addChild(interractionLayer);
-        interractionLayer.setBackground(Color.black);
-        moveAction = ActionFactory.createAlignWithMoveAction(mainLayer,
-                interractionLayer, null, false);
-
-        JButtonWidget button = new JButtonWidget(scene);
-        button.getButton().setText("My Button1");
-        button.getActions().addAction(moveAction);
-        mainLayer.addChild(button);
-        JComponent sceneView = scene.createView();
-
-        SceneDropTargetListener listener = new SceneDropTargetListener();
-        new DropTarget(sceneView, listener);
-
-        JScrollPane shapePane = new JScrollPane();
-        shapePane.setBackground(Color.black);
-        shapePane.setViewportView(sceneView);
-
-        addTab("Home tab", null, shapePane, null);
-
-        JPanel pnlTab = new JPanel();
-        addTab("New tab", null, pnlTab, null);
+                public void actionPerformed(ActionEvent e) {
+                    int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
+                    if (i != -1) {
+                        _tabScenes.remove(i);
+                    }
+                }
+            });
+        }
 
     }
 
-    class SceneDropTargetListener implements DropTargetListener {
-
-        public void dragEnter(DropTargetDragEvent dtde) {
-            // TODO Auto-generated method stub
-
+    /**
+     * TODO
+     *
+     */
+    private class TabButton extends JButton {
+        public TabButton() {
+            int size = 17;
+            setPreferredSize(new Dimension(size, size));
+            setToolTipText("Delete");
+            //Make the button looks the same for all Laf's
+            setUI(new BasicButtonUI());
+            //Make it transparent
+            setContentAreaFilled(false);
+            //No need to be focusable
+            setFocusable(false);
+            setBorder(BorderFactory.createEtchedBorder());
+            setBorderPainted(false);
+            //Making nice rollover effect
+            //we use the same listener for all buttons
+            addMouseListener(_MOUSE_ADAPTER);
+            setRolloverEnabled(true);
         }
 
-        public void dragOver(DropTargetDragEvent dtde) {
-            // TODO Auto-generated method stub
+    }
 
-        }
-
-        public void dropActionChanged(DropTargetDragEvent dtde) {
-            // TODO Auto-generated method stub
-
-        }
-
-        public void dragExit(DropTargetEvent dte) {
-            // TODO Auto-generated method stub
-
-        }
-
-        public void drop(DropTargetDropEvent dropEvent) {
-
-            java.util.List dropObjects = null;
-            Iterator iterator = null;
-            if (dropEvent
-                    .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
-                try {
-                    dropEvent.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                    dropObjects = (java.util.List) dropEvent
-                            .getTransferable()
-                            .getTransferData(PtolemyTransferable.namedObjFlavor);
-
-                    NamedObj dropObj = (NamedObj) dropObjects.get(0);
-                    String name = dropObj.getName();
-                    Point2D originalPoint = SnapConstraint
-                            .constrainPoint(dropEvent.getLocation());
-
-                    JButtonWidget button = new JButtonWidget(scene);
-                    button.getButton().setText("Wigdet for Actor : " + name);
-                    button.getActions().addAction(moveAction);
-                    Point pointLocation = new Point();
-                    pointLocation.setLocation(originalPoint);
-                    button.setPreferredLocation(pointLocation);
-                    mainLayer.addChild(button);
-                    mainLayer.repaint();
-
-                    iterator = dropObjects.iterator();
-                } catch (Exception e) {
-                    MessageHandler.error(
-                            "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
-                    return;
-                }
-            } else {
-                dropEvent.rejectDrop();
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /**
+     * TODO
+     */
+    private JTabbedPane _tabScenes;
+    private static final MouseAdapter _MOUSE_ADAPTER = new MouseAdapter() {
+        public void mouseEntered(MouseEvent e) {
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(true);
             }
-
         }
 
+        public void mouseExited(MouseEvent e) {
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(false);
+            }
+        }
+    };
+
+    public void addTab(String tabName) {
+        TabScenePanel tabScenePanel = new TabScenePanel();
+        _tabScenes.insertTab(tabName, null, tabScenePanel.getView(), null,
+                _tabScenes.getTabCount() - 1);
+        _tabScenes.setTabComponentAt(
+                _tabScenes.indexOfComponent(tabScenePanel.getView()),
+                new TabSceneButton());
+    }
+
+    public void selectTab(int index) {
+        _tabScenes.setSelectedIndex(index);
     }
 
 }
