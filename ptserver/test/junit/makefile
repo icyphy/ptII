@@ -46,6 +46,7 @@ JSRCS = \
 	AllTests.java \
 	FileDownloadTest.java \
 	RemoteModelTest.java \
+	RESTGetHandlerTest.java \
 	ServerManagerTest.java \
 	ServletTest.java \
 	TokenParserTest.java \

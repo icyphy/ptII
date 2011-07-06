@@ -30,9 +30,6 @@
 package ptserver.actor.lib.io;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -162,7 +159,8 @@ public class RESTGetHandler extends TypedAtomicActor {
         
         if (_readyToFire) {
        
-            if (outputToFile.getToken().equals(BooleanToken.TRUE)) {
+            if (outputToFile != null && outputToFile.getToken() != null && 
+                    outputToFile.getToken().equals(BooleanToken.TRUE)) {
                 // TODO:  Output to file
             } else {
                 output.send(0, new StringToken(getHTML()));
@@ -194,7 +192,8 @@ public class RESTGetHandler extends TypedAtomicActor {
         // Open the destination file for writing.  
         // Produce an error message if there is a problem and prohibit firing.
         // TODO:  More error checking
-        if (outputToFile.getToken().equals(BooleanToken.TRUE)) {
+        if (outputToFile != null && outputToFile.getToken() != null && 
+                outputToFile.getToken().equals(BooleanToken.TRUE)) {
             // TODO:  Implement writing to file.  For now, throw an exception
             /*
             _destinationFile = destinationFileName.asFile();
@@ -241,11 +240,14 @@ public class RESTGetHandler extends TypedAtomicActor {
         
         // Parse the resource string
         // If blank, return the top-level container
-        if (resource.getExpression() != null && 
-                !resource.getExpression().isEmpty())
-        {
+        if (resource == null || resource.getExpression() == null) {
+          throw new IllegalActionException(this, "Please specify " +
+            "a resource.");
+        } else  {
+            String expression = resource.getExpression();
+            
             StringTokenizer tokenizer = 
-                new StringTokenizer(resource.getExpression());
+                new StringTokenizer(expression);
             
             while (tokenizer.hasMoreTokens()) {
                 String objectName = tokenizer.nextToken("/");
@@ -285,20 +287,14 @@ public class RESTGetHandler extends TypedAtomicActor {
                             containers.remove(0);
                         }
                     }
-                } else {
-                    if (resource == null || resource.getExpression() == null 
-                            || resource.getExpression().isEmpty()) {
-                      throw new IllegalActionException(this, "Please specify" +
-                        "a resource.");
-                    } else {
-                        throw new IllegalActionException(this, "The resource "+
-                        resource.getExpression() + " is not properly " +
-                        "formatted.  Please enter a valid resouce.");
+                }  else {   
+                    throw new IllegalActionException(this, "The resource "+
+                            expression + " is not properly " +
+                            "formatted.  Please enter a valid resouce.");
                     }
                 }
-            }
-        }
-                    
+            } 
+           
         return containers;
     }
     
