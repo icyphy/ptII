@@ -23,31 +23,38 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptolemy.homer.widgets;
 
-import java.awt.Color;
+import java.awt.Rectangle;
 
-import org.netbeans.api.visual.widget.LabelWidget;
+import javax.swing.JComboBox;
+
 import org.netbeans.api.visual.widget.Scene;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 
-public class TextViewWidget extends NamedObjectWidget {
+public class SpinnerWidget extends NamedObjectWidget {
 
-    public TextViewWidget(Scene scene, NamedObj namedObject) {
+    public SpinnerWidget(Scene scene, NamedObj namedObject) {
         super(scene, namedObject);
-        LabelWidget labelWidget = new LabelWidget(scene);
-        labelWidget.setOpaque(true);
-        labelWidget.setBackground(Color.gray);
-        labelWidget.setCheckClipping(true);
-        labelWidget.setAlignment(LabelWidget.Alignment.CENTER);
-        labelWidget.setVerticalAlignment(LabelWidget.VerticalAlignment.CENTER);
-        addChild(labelWidget);
-        if (namedObject instanceof Settable) {
-            labelWidget.setLabel(((Settable) namedObject).getExpression());
-        }
     }
+
+    public JComboBox getJComboBox() {
+        return box;
+    }
+
+    protected Rectangle calculateClientArea() {
+        return new Rectangle(box.getPreferredSize());
+    }
+
+    protected void paintWidget() {
+        box.setSize(getBounds().getSize());
+        box.paint(getGraphics());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private final JComboBox box = new JComboBox();
 
 }
