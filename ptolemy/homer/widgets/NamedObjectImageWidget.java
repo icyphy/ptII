@@ -27,8 +27,9 @@ package ptolemy.homer.widgets;
 
 import java.net.URL;
 
+import javax.swing.ImageIcon;
+
 import org.netbeans.api.visual.widget.Scene;
-import org.netbeans.api.visual.widget.general.IconNodeWidget;
 
 import ptolemy.kernel.util.NamedObj;
 
@@ -43,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
 */
-public class NamedObjectImageWidget extends IconNodeWidget implements
+public class NamedObjectImageWidget extends ResizableImageWidget implements
         NamedObjectWidgetInterface {
 
     /**
@@ -56,8 +57,9 @@ public class NamedObjectImageWidget extends IconNodeWidget implements
             URL imageURL) {
         super(scene);
         _namedObject = namedObject;
-        //Image image = ImageUtilities.icon2Image(new ImageIcon(imageURL));
-        //setImage(image);
+        ImageIcon imageIcon = new ImageIcon(imageURL);
+        setImage(imageIcon.getImage());
+        setCheckClipping(true);
     }
 
     ///////////////////////////////////////////////////////////////////

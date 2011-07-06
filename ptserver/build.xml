@@ -45,7 +45,6 @@
 		<pathelement location="lib/org-openide-util-lookup.jar" />
 		<pathelement location="lib/org-openide-util.jar" />				
 	</path>
-
 	<target name="clean">
 		<delete>
 			<fileset dir="${basedir}" includes="**/*.class" />

@@ -25,7 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-package ptolemy.homer.tree;
+package ptolemy.homer.gui.tree;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +48,7 @@ The indexes of the attributes are 0 to a-1, where a is the
 number of attributes. 
 
 @author Steve Neuendorffer and Edward A. Lee Contributors: Ishwinder Singh  
-@version $Id:$
+@version $Id$
 @since Ptolemy II 1.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)

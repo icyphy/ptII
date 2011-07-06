@@ -25,19 +25,18 @@
  */
 package ptolemy.homer.widgets;
 
-import java.awt.Dimension;
-import java.net.URL;
+import java.util.List;
 
-import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.Scene;
-import org.netbeans.api.visual.widget.Widget;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.icon.XMLIcon;
+import diva.canvas.Figure;
+import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// NamedObjectIconWidget
@@ -50,7 +49,7 @@ import diva.graph.JGraph;
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
 */
-public class NamedObjectIconWidget extends Widget implements
+public class NamedObjectIconWidget extends ResizableImageWidget implements
         NamedObjectWidgetInterface {
 
     /**
@@ -58,27 +57,29 @@ public class NamedObjectIconWidget extends Widget implements
      * @param scene
      * @param namedObject
      * @param imageURL
+     * @throws IllegalActionException 
+     * @throws NameDuplicationException 
      */
-    public NamedObjectIconWidget(Scene scene, NamedObj namedObject, URL imageURL) {
+    public NamedObjectIconWidget(Scene scene, NamedObj namedObject)
+            throws NameDuplicationException, IllegalActionException {
         super(scene);
         _namedObject = namedObject;
-        // adapted from DocViewer
-        ActorEditorGraphController controller = new ActorEditorGraphController();
-        // Create a modified graph model with alternative error reporting.
-        ActorGraphModel graphModel = new ActorGraphModel(namedObject);
-        GraphPane _graphPane = new GraphPane(controller, graphModel);
-        JGraph jgraph = new JGraph(_graphPane);
-        // The icon window is fixed size.
-        jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH,
-                _ICON_WINDOW_HEIGHT));
-        jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH,
-                _ICON_WINDOW_HEIGHT));
-        jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH,
-                _ICON_WINDOW_HEIGHT));
-        jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
-        jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
-        ComponentWidget componentWidget = new ComponentWidget(scene, jgraph);
-        addChild(componentWidget);
+        List<EditorIcon> attributeList = namedObject
+                .attributeList(EditorIcon.class);
+        EditorIcon icon;
+        if (!attributeList.isEmpty()) {
+            icon = attributeList.get(0);
+        } else {
+            icon = XMLIcon.getXMLIcon(namedObject, "_icon");
+        }
+        new StringAttribute(namedObject, "_hideName");
+        Figure figure = icon.createFigure();
+        double ratio = figure.getBounds().getHeight()
+                / figure.getBounds().getWidth();
+        FigureIcon figureIcon = new FigureIcon(figure, _ICON_WIDTH,
+                (int) (_ICON_HEIGHT * ratio));
+        setImage(figureIcon.getImage());
+        setCheckClipping(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,8 +101,8 @@ public class NamedObjectIconWidget extends Widget implements
     private final NamedObj _namedObject;
 
     /** Icon window width. */
-    private static int _ICON_WINDOW_HEIGHT = 200;
+    private static int _ICON_HEIGHT = 200;
 
     /** Icon window width. */
-    private static int _ICON_WINDOW_WIDTH = 200;
+    private static int _ICON_WIDTH = 200;
 }

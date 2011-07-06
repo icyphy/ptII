@@ -23,15 +23,11 @@
 		value="HTC EVO 4G">
 	</property>
 	<property name="droid_orientation" class="ptolemy.data.expr.Parameter"
-		value="portrait">
+		value="1">
 	</property>
 	<property name="droid_tabs">
 		<!-- Example tab 1 -->
 		<property name="tab1" class="ptolemy.kernel.util.StringAttribute"
-			value="First tab">
-			<!-- Label example. -->
-		</property>
-		<property name="tab2" class="ptolemy.kernel.util.StringAttribute"
 			value="First tab">
 			<!-- Label example. -->
 		</property>
@@ -43,7 +39,7 @@
 	
 	<entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
 		<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
-			value="[0, 0, 600, 300]"></property>
+			value="[0, 0, 800, 600]"></property>
 		<property name="droid_tab" class="ptolemy.data.expr.Parameter"
 			value="tab1"></property>
 		<property name="fillOnWrapup" class="ptolemy.data.expr.Parameter"
@@ -75,7 +71,7 @@
 	</entity>
 	<entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
 		<property name="droid_location" class="ptserver.test.helper.AndroidLocation"
-			value="[0, 300, 600, 300]"></property>
+			value="[0, 600, 800, 520]"></property>
 		<property name="droid_tab" class="ptolemy.data.expr.Parameter"
 			value="tab1"></property>
 		<property name="fillOnWrapup" class="ptolemy.data.expr.Parameter"

@@ -105,18 +105,18 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         legend = new StringAttribute(this, "legend");
 
         getImplementation().initWindowAndSizeProperties();
-//
-//        _attachText("_iconDescription", "<svg>\n"
-//                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-//                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-12\" y=\"-12\" "
-//                + "width=\"24\" height=\"24\" " + "style=\"fill:white\"/>\n"
-//                + "<rect x=\"2\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-//                + "style=\"fill:grey\"/>\n" + "<rect x=\"8\" y=\"-18\" "
-//                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-//                + "<rect x=\"14\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-//                + "style=\"fill:grey\"/>\n"
-//                + "<polyline points=\"-10,0, -5,-8, 5,8, 10,0\" "
-//                + "style=\"stroke:red\"/>\n" + "</svg>\n");
+
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-12\" y=\"-12\" "
+                + "width=\"24\" height=\"24\" " + "style=\"fill:white\"/>\n"
+                + "<rect x=\"2\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n" + "<rect x=\"8\" y=\"-18\" "
+                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"14\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<polyline points=\"-10,0, -5,-8, 5,8, 10,0\" "
+                + "style=\"stroke:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -309,7 +309,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     public void place(PortableContainer container) {
         getImplementation().place(container);
-        if (container != null && container.getPlatformContainer() instanceof PlotBoxInterface) {
+        if (container != null
+                && container.getPlatformContainer() instanceof PlotBoxInterface) {
             // According to FindBugs the cast is an error:
             //  [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
             // However it is checked that _container instanceof PlotBox,
@@ -534,7 +535,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     protected PlotBoxInterface _newPlot() {
         return getImplementation().newPlot();
     }
-    
+
     /** Specify the associated frame and set its properties (size, etc.)
      *  to match those stored in the _windowProperties attribute.
      *  @param frame The associated frame.
@@ -560,16 +561,17 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             throw new IllegalActionException(this, ex, "Propagation failed.");
         }
     }
-    
+
     /** Free up memory when closing. */
     protected void cleanUp() {
         setFrame(null);
         getImplementation().cleanUp();
     }
-    
+
     protected PlotterBaseInterface getImplementation() {
-        if (_implementation== null) {
-            _implementation = PtolemyInjector.getInjector().getInstance(PlotterBaseInterface.class);
+        if (_implementation == null) {
+            _implementation = PtolemyInjector.getInjector().getInstance(
+                    PlotterBaseInterface.class);
             _implementation.init(this);
         }
         return _implementation;
@@ -606,6 +608,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     private List<String> _configureTexts = null;
 
     private String _configureSource;
-    
+
     private PlotterBaseInterface _implementation;
 }
