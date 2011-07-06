@@ -28,8 +28,6 @@
  */
 package ptserver.communication;
 
-import java.util.Date;
-
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
@@ -37,6 +35,8 @@ import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
 import ptserver.data.PingToken;
 import ptserver.data.PongToken;
+import ptserver.data.ServerEventToken;
+import ptserver.data.ServerEventToken.EventType;
 import ptserver.data.Tokenizer;
 
 import com.ibm.mqtt.MqttSimpleCallback;
@@ -62,19 +62,20 @@ public class TokenListener implements MqttSimpleCallback {
      *  @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
      */
     public TokenListener(RemoteModel remoteModel) {
-        _remoteModel = remoteModel;
+        _owner = remoteModel;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Callback method when the connection with the broker is lost.
-     *  @exception Exception If the connection was lost.
+     *  @exception IllegalStateException If the connection was lost 
+     *  and could not be reconnected.
+     *  @exception IllegalStateException If the broker connection cannot be re-established.
      *  @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
      */
-    public void connectionLost() throws Exception {
-        //TODO: handle connection lost case
-        System.out.println("Connection was lost at " + new Date());
+    public void connectionLost() {
+        _owner._fireModelException("The token listener has disconnected.", null);
     }
 
     /** Callback method when a message from the topic is received.
@@ -95,7 +96,7 @@ public class TokenListener implements MqttSimpleCallback {
             // The listener is only concerned about the following types.
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
-                RemoteSourceData data = _remoteModel.getRemoteSourceMap().get(
+                RemoteSourceData data = _owner.getRemoteSourceMap().get(
                         communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
 
@@ -105,11 +106,10 @@ public class TokenListener implements MqttSimpleCallback {
                 }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
-                Settable remoteAttribute = _remoteModel
-                        .getSettableAttributesMap().get(
-                                attributeChangeToken.getTargetSettableName());
+                Settable remoteAttribute = _owner.getSettableAttributesMap()
+                        .get(attributeChangeToken.getTargetSettableName());
 
-                RemoteValueListener listener = _remoteModel
+                RemoteValueListener listener = _owner
                         .getSettableAttributeListenersMap().get(
                                 attributeChangeToken.getTargetSettableName());
                 synchronized (listener) {
@@ -123,11 +123,21 @@ public class TokenListener implements MqttSimpleCallback {
                     }
                 }
             } else if (token instanceof PingToken) {
-                _remoteModel.getExecutor().execute(
+                _owner.getExecutor().execute(
                         new PongTask(new PongToken(((PingToken) token)
                                 .getTimestamp())));
             } else if (token instanceof PongToken) {
-                _remoteModel.setLastPongToken((PongToken) token);
+                _owner.setLastPongToken((PongToken) token);
+            } else if (token instanceof ServerEventToken) {
+                ServerEventToken eventToken = (ServerEventToken) token;
+                if (eventToken.getEventType() == EventType.EXCEPTION) {
+                    // Raise the exception.
+                    throw new IllegalStateException(eventToken.getMessage());
+                } else {
+                    // Notify listeners of the event.
+                    _owner._fireModelEvent(eventToken.getMessage(),
+                            eventToken.getEventType());
+                }
             }
         }
     }
@@ -137,7 +147,7 @@ public class TokenListener implements MqttSimpleCallback {
 
     /** The remote model that created the publisher.
      */
-    private final RemoteModel _remoteModel;
+    private final RemoteModel _owner;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -164,9 +174,12 @@ public class TokenListener implements MqttSimpleCallback {
          */
         public void run() {
             try {
-                _remoteModel.getTokenPublisher().sendToken(_token);
+                TokenPublisher publisher = _owner.getTokenPublisher();
+                if (publisher != null) {
+                    publisher.sendToken(_token);
+                }
             } catch (IllegalActionException e) {
-                //TODO handle this
+                _owner._fireModelException("The pong token has failed.", e);
             }
         }
 

@@ -727,7 +727,8 @@ public final class PtolemyServer implements IServerManager {
      */
     private boolean _configureBroker(String brokerPath, int brokerPort)
             throws IllegalActionException {
-        if (brokerPath != null) {
+
+        if ((brokerPath != null) && (brokerPath.length() > 0)) {
             try {
                 _broker = new ProcessBuilder(new String[] { brokerPath, "-p",
                         String.valueOf(brokerPort) }).redirectErrorStream(true)
@@ -764,8 +765,9 @@ public final class PtolemyServer implements IServerManager {
         // Define the security context.
         ConstraintSecurityHandler security = new ConstraintSecurityHandler();
         security.setLoginService(new HashLoginService("PtolemyServer",
-                getClass().getResource("PtolemyServerUsers.properties")
-                        .toString()));
+                getClass().getResource(
+                        "/ptserver/PtolemyServerUsers.properties")
+                        .toExternalForm()));
         security.setConstraintMappings(new ConstraintMapping[] { mapping });
 
         // Assign the servlet container context.
