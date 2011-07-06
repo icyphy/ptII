@@ -30,6 +30,7 @@ package ptolemy.domains.de.lib;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.DiscreteClock;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -50,6 +51,10 @@ import ptolemy.kernel.util.Workspace;
  requesting that it be fired at the specified time.  If the <i>time</i>
  parameter changes before that time is reached, then the event is
  effectively canceled.  No event will be produced.
+ <p>
+ Note that you do not really need this actor. The
+ {@link DiscreteClock} actor can produce any finite sequence of
+ events by setting is <i>period</i> to Infinity.
 
  @author Edward A. Lee
  @version $Id$
