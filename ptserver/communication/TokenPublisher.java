@@ -37,6 +37,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptserver.control.Ticket;
 import ptserver.data.TokenParser;
 
+import com.ibm.mqtt.MqttException;
+
 ///////////////////////////////////////////////////////////////////
 //// TokenPublisher
 
@@ -133,7 +135,7 @@ public class TokenPublisher {
 
                             _outputStream.reset();
                             _tokenCount = 0;
-                        } catch (Exception e) {
+                        } catch (MqttException e) {
                             _owner._fireModelException(
                                     "The token publisher timer has failed.", e);
                         }

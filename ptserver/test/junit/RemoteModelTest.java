@@ -51,6 +51,7 @@ import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
 import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
+import ptserver.data.ServerEventToken.EventType;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
 import ptserver.util.PtolemyModuleJavaSEInitializer;
@@ -235,9 +236,6 @@ public class RemoteModelTest {
         final long time = System.currentTimeMillis();
 
         task.getRemoteModel().addRemoteModelListener(new RemoteModelListener() {
-            public void modelException(RemoteModel remoteModel,
-                    Throwable exception) {
-            }
 
             public void modelConnectionExpired(RemoteModel remoteModel) {
                 synchronized (RemoteModelTest.this) {
@@ -247,6 +245,14 @@ public class RemoteModelTest {
                     _isWaiting = false;
                     RemoteModelTest.this.notifyAll();
                 }
+            }
+
+            public void modelException(RemoteModel remoteModel, String message,
+                    Throwable exception) {
+            }
+
+            public void modelEvent(RemoteModel remoteModel, String message,
+                    EventType type) {
             }
         });
 

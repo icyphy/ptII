@@ -809,7 +809,12 @@ public final class PtolemyServer implements IServerManager {
             }
         }
 
-        public void modelException(RemoteModel remoteModel, Throwable cause) {
+        public void modelException(RemoteModel remoteModel, String message,
+                Throwable exception) {
+        }
+
+        public void modelEvent(RemoteModel remoteModel, String message,
+                EventType type) {
         }
     };
 
