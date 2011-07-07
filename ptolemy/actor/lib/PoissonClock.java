@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
@@ -227,11 +228,37 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        // If there is a trigger input, then it is time for an output.
+        boolean triggerInputPresent = false;
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.isKnown() && trigger.hasToken(i)) {
+                triggerInputPresent = true;
+            }
+        }
+
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        // It is time to produce an output if the current time equals
+        // or exceeds the next firing time (it should never exceed).
+        boolean timeForOutput = (currentTime.compareTo(_nextFiringTime) >= 0);
+        
+        if (!timeForOutput && !triggerInputPresent) {
+            // It is too early.
+            return;
+        }
+        if (director instanceof SuperdenseTimeDirector) {
+            int currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
+            if (currentMicrostep < 1 && !triggerInputPresent) {
+                // The time matches, but the microstep is too early.
+                return;
+            }
+        }
         // If this is the first call to fire() in an iteration,
         // the the superclass will generate a new random number
         // to be used in postfire().
         super.fire();
         output.send(0, _getValue(_nextOutputIndex));
+        _outputProduced = true;
     }
 
     /** Get the stop time.
@@ -283,6 +310,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
 
         _nextOutputIndex = 0;
         _nextFiringTime = currentTime;
+        _outputProduced = false;
 
         if (((BooleanToken) fireAtStart.getToken()).booleanValue()) {
             _fireAt(currentTime);
@@ -304,16 +332,25 @@ public class PoissonClock extends RandomSource implements TimedActor {
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         Time currentTime = getDirector().getModelTime();
-        _nextOutputIndex++;
-        if (_nextOutputIndex >= _length) {
-            _nextOutputIndex = 0;
+        if (_outputProduced) {
+            // An output was produced in this iteration.
+            _outputProduced = false;
+            _nextOutputIndex++;
+            if (_nextOutputIndex >= _length) {
+                _nextOutputIndex = 0;
+            }
+            // The following is not needed because the first call
+            // to fire() in the superclass generated a new random
+            // number.
+            // _generateRandomNumber();
+            _nextFiringTime = currentTime.add(_current);
+            _fireAt(_nextFiringTime);
+        } else if (currentTime.compareTo(_nextFiringTime) >= 0) {
+            // Output was not produced, but time matches, which
+            // means the microstep was too early. Request a refiring.
+            _fireAt(currentTime);
         }
-        // The following is not needed because the first call
-        // to fire() in the superclass generated a new random
-        // number.
-        // _generateRandomNumber();
-        _nextFiringTime = currentTime.add(_current);
-        _fireAt(_nextFiringTime);
+
 
         if (currentTime.compareTo(_stopTime) >= 0) {
             return false;
@@ -419,6 +456,9 @@ public class PoissonClock extends RandomSource implements TimedActor {
 
     // The index of the next output.
     private transient int _nextOutputIndex;
+    
+    // Indicator that an output was produced in this iteration.
+    private boolean _outputProduced;
 
     // stop time.
     private Time _stopTime;
