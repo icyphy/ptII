@@ -110,6 +110,8 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            </property>
         </port>
         <port name="tank1Full" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -118,6 +120,8 @@
             <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
