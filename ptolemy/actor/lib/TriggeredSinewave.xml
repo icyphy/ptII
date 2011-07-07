@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="TimedSine" extends="ptolemy.actor.TypedCompositeActor">
+<class name="TriggeredSinewave" extends="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <doc>This composite actor generates a timed sine wave.</doc>
@@ -95,14 +95,70 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.0, 225.0}">
     </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Generate a sinusoidal signal in response to a trigger input.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 295.0}">
+        </property>
+    </property>
+    <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="viewer" class="ptolemy.vergil.basic.DocViewerFactory">
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="-50" y="-20" width="100" height="20" style="fill:yellow"></rect>
+        <text x="-40" y="-5" style="font-size:12; font-family:SansSerif; fill:black">Documentation</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 350.0]">
+        </property>
+    </property>
+    <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="Generate a sinsoidal signal in response to a trigger input.&#10;Each time this actor fires, it outputs a sample of the&#10;specified sine wave at the time of the trigger input. ">
+        </property>
+        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Yuhong Xiong">
+        </property>
+        <property name="magnitude (parameter)" class="ptolemy.data.expr.StringParameter" value="The magnitude of the sine wave.">
+        </property>
+        <property name="frequency (port-parameter)" class="ptolemy.data.expr.StringParameter" value="The frequency of the sine wave (cycles/second, assuming time is in seconds).">
+        </property>
+        <property name="phase (port-parameter)" class="ptolemy.data.expr.StringParameter" value="The phase of the sine wave in radians (zero gives a sine function, pi/2 gives a cosine).">
+        </property>
+        <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="The trigger input, which defines when outputs are produced.">
+        </property>
+        <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The output for the samples of the sine wave.">
+        </property>
+    </property>
     <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 25.0}">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 65.0}">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -111,6 +167,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 240.0">
         </property>
         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">

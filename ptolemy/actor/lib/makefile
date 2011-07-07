@@ -275,10 +275,14 @@ OTHER_FILES_TO_BE_JARED = \
 	PowerEstimate.xml \
 	ResettableTimerIcon.xml \
 	SelectIcon.xml \
+	Sinewave.gif \
 	Sinewave.xml \
+	SinewaveIcon.xml \
 	SwitchIcon.xml \
 	TimeDelayIcon.xml \
 	TimedSine.xml \
+	TriggeredSinewave.xml \
+	TriggeredSinewaveIcon.xml \
 	UniformIcon.xml \
 	aggregators.xml \
 	array.xml \
