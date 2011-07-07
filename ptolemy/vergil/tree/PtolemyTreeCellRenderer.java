@@ -134,9 +134,9 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                     }
                 }
 
-                // FIXME: The following is not called on EntityLibrary,
-                // which means no tooltip for those. Does calling it
-                // force expansion of the library?
+                // NOTE: The following is not called on EntityLibrary,
+                // which means no tooltip for those. Calling it would
+                // force expansion of the library. No good solution here.
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
 
                 if ((tooltipAttribute != null)
