@@ -65,6 +65,7 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
         setLayout(new BorderLayout());
         _treeModel = new AttributeTreeModel(null);
         _tree = new PTree(_treeModel);
+        _tree.setRootVisible(false);
         _tree.addTreeSelectionListener(this);
         _tree.setScrollsOnExpand(true);
         _tree.setCellRenderer(new PtolemyTreeCellRenderer() {

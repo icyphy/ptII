@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -47,7 +49,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptserver.util.PtolemyModuleJavaSEInitializer;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// UIDesignerFrame
@@ -60,10 +62,6 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class UIDesignerFrame extends JFrame {
-
-    static {
-        PtolemyModuleJavaSEInitializer.initializeInjector();
-    }
 
     /**
      * Create the frame.
@@ -140,23 +138,31 @@ public class UIDesignerFrame extends JFrame {
                 return false;
             }
         });
-
+        openFile(this.getClass().getResource(
+                "/ptserver/test/junit/SoundSpectrum.xml"));
     }
 
     private void newMenuActionPerformed(ActionEvent e) {
         int returnVal = _fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = _fileChooser.getSelectedFile();
-            MoMLParser parser = new MoMLParser(new Workspace());
-            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
             try {
-                CompositeEntity topLevel = (CompositeEntity) parser.parse(null,
-                        file.toURI().toURL());
-                _pnlNamedObjectTree.setCompositeEntity(topLevel);
-            } catch (Exception e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                openFile(file.toURI().toURL());
+            } catch (MalformedURLException e1) {
+                MessageHandler.error("Unable to parse the file", e1);
             }
+        }
+    }
+
+    private void openFile(URL url) {
+        MoMLParser parser = new MoMLParser(new Workspace());
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        try {
+            CompositeEntity topLevel = (CompositeEntity) parser
+                    .parse(null, url);
+            _pnlNamedObjectTree.setCompositeEntity(topLevel);
+        } catch (Exception e1) {
+            MessageHandler.error("Unable to parse the file", e1);
         }
     }
 

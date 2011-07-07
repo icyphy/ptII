@@ -27,6 +27,7 @@
  */
 package ptolemy.homer.gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -39,15 +40,22 @@ import java.io.IOException;
 import java.util.List;
 
 import org.netbeans.api.visual.action.ActionFactory;
+import org.netbeans.api.visual.action.AlignWithMoveDecorator;
+import org.netbeans.api.visual.action.MoveStrategy;
 import org.netbeans.api.visual.action.TwoStateHoverProvider;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.border.Border;
 import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.model.ObjectScene;
+import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
+import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
+import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
+import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.homer.kernel.WidgetLoader;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -79,8 +87,24 @@ public class TabScenePanel {
         getScene().addChild(_mainLayer);
         _resizeAction = ActionFactory.createAlignWithResizeAction(_mainLayer,
                 _interactionLayer, null, false);
-        _moveAction = ActionFactory.createAlignWithMoveAction(_mainLayer,
-                _interactionLayer, null, false);
+        //        _moveAction = ActionFactory.createAlignWithMoveAction(_mainLayer,
+        //                _interactionLayer, null, false);
+        SingleLayerAlignWithWidgetCollector collector = new SingleLayerAlignWithWidgetCollector(
+                _mainLayer, false);
+        final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
+                collector, _interactionLayer,
+                ALIGN_WITH_MOVE_DECORATOR_DEFAULT, false);
+        _moveAction = ActionFactory.createMoveAction(new MoveStrategy() {
+
+            public Point locationSuggested(Widget widget,
+                    Point originalLocation, Point suggestedLocation) {
+                adjustLocation(widget, suggestedLocation);
+                Point locationSuggested = alignWithMoveStrategyProvider
+                        .locationSuggested(widget, originalLocation,
+                                suggestedLocation);
+                return locationSuggested;
+            }
+        }, alignWithMoveStrategyProvider);
         _hoverProvider = new TwoStateHoverProvider() {
 
             public void unsetHovering(Widget widget) {
@@ -105,9 +129,12 @@ public class TabScenePanel {
                                 .getTransferable().getTransferData(
                                         PtolemyTransferable.namedObjFlavor);
 
-                        NamedObj dropObj = (NamedObj) dropObjects.get(0);
+                        NamedObj droppedObject = (NamedObj) dropObjects.get(0);
+                        if (droppedObject instanceof Attribute) {
+
+                        }
                         Widget widget = WidgetLoader.loadWidget(_scene,
-                                dropObj, dropObj.getClass());
+                                droppedObject, droppedObject.getClass());
                         addWidget(widget, dropEvent.getLocation());
                     } catch (UnsupportedFlavorException e) {
                         MessageHandler.error(
@@ -150,6 +177,30 @@ public class TabScenePanel {
         widget.setBorder(DEFAULT_BORDER);
         _mainLayer.addChild(widget);
         _scene.validate();
+        adjustLocation(widget, location);
+        widget.setPreferredLocation(location);
+        _scene.validate();
+    }
+
+    private void adjustLocation(Widget widget, Point location) {
+
+        System.out.println(location);
+        if (location.getX() + widget.getBounds().getWidth() > getView()
+                .getWidth()) {
+            location.setLocation(getView().getWidth()
+                    - widget.getBounds().getWidth(), location.getY());
+        }
+        if (location.getY() + widget.getBounds().getHeight() > getView()
+                .getHeight()) {
+            location.setLocation(location.getX(), getView().getHeight()
+                    - widget.getBounds().getHeight());
+        }
+        if (location.getX() < 0) {
+            location.setLocation(0, location.getY());
+        }
+        if (location.getY() < 0) {
+            location.setLocation(location.getX(), 0);
+        }
     }
 
     /**
@@ -177,4 +228,15 @@ public class TabScenePanel {
     private final WidgetAction _resizeAction;
     private final TwoStateHoverProvider _hoverProvider;
     private WidgetAction _hoverAction;
+    private static final BasicStroke STROKE = new BasicStroke(1.0f,
+            BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
+                    6.0f, 3.0f }, 0.0f);
+    private static final AlignWithMoveDecorator ALIGN_WITH_MOVE_DECORATOR_DEFAULT = new AlignWithMoveDecorator() {
+        public ConnectionWidget createLineWidget(Scene scene) {
+            ConnectionWidget widget = new ConnectionWidget(scene);
+            widget.setStroke(STROKE);
+            widget.setForeground(Color.BLUE);
+            return widget;
+        }
+    };
 }

@@ -27,14 +27,20 @@
 package ptolemy.homer;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import ptolemy.homer.gui.UIDesignerFrame;
 import ptolemy.util.MessageHandler;
+import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 ///////////////////////////////////////////////////////////////////
 //// UIDesignerApplication
 
 public class UIDesignerApplication {
+
+    static {
+        PtolemyModuleJavaSEInitializer.initializeInjector();
+    }
 
     /** 
      * TODO
@@ -58,6 +64,7 @@ public class UIDesignerApplication {
     public static void main(String[] args) {
         try {
             new UIDesignerApplication();
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);

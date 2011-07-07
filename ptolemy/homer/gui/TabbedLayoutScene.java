@@ -29,6 +29,7 @@
 package ptolemy.homer.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -42,6 +43,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 ///////////////////////////////////////////////////////////////////
@@ -59,9 +61,9 @@ public class TabbedLayoutScene extends JPanel {
      * TODO
      */
     public TabbedLayoutScene() {
-        setLayout(new BorderLayout(0, 0));
+        setLayout(null);
         _tabScenes = new JTabbedPane(JTabbedPane.TOP);
-        add(_tabScenes, BorderLayout.CENTER);
+        add(_tabScenes);
         _tabScenes.add("", null);
         TabButton addTabButton = new TabButton();
         addTabButton.setText("+");
@@ -73,6 +75,10 @@ public class TabbedLayoutScene extends JPanel {
                 selectTab(_tabScenes.getTabCount() - 2);
             }
         });
+        _tabScenes.setLocation(0, 0);
+        _tabScenes.setSize(new Dimension(600, 400));
+        _tabScenes.setBorder(new LineBorder(Color.BLACK));
+        setPreferredSize(new Dimension(600, 400));
     }
 
     /**
@@ -103,11 +109,19 @@ public class TabbedLayoutScene extends JPanel {
                     int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
                     if (i != -1) {
                         _tabScenes.remove(i);
+                        if (_tabScenes.getTabCount() == 1) {
+                            addTab("Default");
+                        }
+                        if (_tabScenes.getSelectedIndex() == _tabScenes
+                                .getTabCount() - 1) {
+                            _tabScenes.setSelectedIndex(_tabScenes
+                                    .getTabCount() - 2);
+                        }
                     }
                 }
             });
+            _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 1, false);
         }
-
     }
 
     /**
@@ -161,15 +175,16 @@ public class TabbedLayoutScene extends JPanel {
 
     public void addTab(String tabName) {
         TabScenePanel tabScenePanel = new TabScenePanel();
-        _tabScenes.insertTab(tabName, null, tabScenePanel.getView(), null,
+        Component view = tabScenePanel.getView();
+        _tabScenes.insertTab(tabName, null, view, null,
                 _tabScenes.getTabCount() - 1);
-        _tabScenes.setTabComponentAt(
-                _tabScenes.indexOfComponent(tabScenePanel.getView()),
-                new TabSceneButton());
+        view.setMaximumSize(view.getPreferredSize());
+        int index = _tabScenes.indexOfComponent(tabScenePanel.getView());
+        _tabScenes.setTabComponentAt(index, new TabSceneButton());
+        _tabScenes.setSelectedIndex(index);
     }
 
     public void selectTab(int index) {
         _tabScenes.setSelectedIndex(index);
     }
-
 }
