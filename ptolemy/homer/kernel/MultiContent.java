@@ -47,6 +47,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class MultiContent {
 
+    /** 
+     * Create an empty MultiContent instance.
+     */
+    public MultiContent() {
+    }
+
     /** The constructor takes a model that is parsed for elements with
      *  location attributes. All that should be represented are parsed
      *  and placed in multiple content areas depending on their parameters.
@@ -67,6 +73,18 @@ public class MultiContent {
 
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
+
+    /**
+     * TODO
+     * @param tabName
+     * @param prototype
+     */
+    public void addTab(String tabName, ContentPrototype prototype) {
+        TabDefinition tabDefinition = new TabDefinition(tabName, tabName);
+        _contents.put(prototype, tabDefinition);
+        tabDefinition.setContent(prototype);
+        _order.add(tabName);
+    }
 
     /** Get a content area based on a unique tag value.
      * 
@@ -90,6 +108,15 @@ public class MultiContent {
         }
 
         return tabs;
+    }
+
+    /**
+     * TODO
+     * @param prototype
+     * @return
+     */
+    public TabDefinition getTabDefinition(ContentPrototype prototype) {
+        return _contents.get(prototype);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,10 +144,11 @@ public class MultiContent {
         // Create contents for each tab
         for (TabDefinition tab : tabs) {
             // Initialize content
-            tab.setContent(contentPrototype.getNewInstance());
+            ContentPrototype newInstance = contentPrototype.getNewInstance();
+            tab.setContent(newInstance);
 
             // Store content for switching tabs
-            _contents.put(tab.getTag(), tab);
+            _contents.put(newInstance, tab);
 
             // Store the order
             _order.add(tab.getTag());
@@ -144,7 +172,7 @@ public class MultiContent {
     /** Map of all available identifiers to different contents. Identifiers
      *  should be unique.
      */
-    private HashMap<String, TabDefinition> _contents = new HashMap<String, TabDefinition>();
+    private HashMap<ContentPrototype, TabDefinition> _contents = new HashMap<ContentPrototype, TabDefinition>();
 
     /** Store the order of the tabs by their identifiers.
      */

@@ -22,6 +22,8 @@ public interface PlotterBaseInterface extends PortablePlaceable {
 
     public void remove();
 
+    public void removeOldContainer();
+
     public Object getTableau();
 
     public Object getFrame();

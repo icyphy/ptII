@@ -29,7 +29,9 @@ package ptolemy.homer.kernel;
 
 import ptolemy.actor.gui.PortableContainer;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
@@ -66,13 +68,39 @@ public abstract class PositionableElement {
      *  is not defined.
      */
     public HomerLocation getLocation() throws IllegalActionException {
-
         HomerLocation location = (HomerLocation) getElement().getAttribute(
                 HomerConstants.POSITION_NODE);
         // Check whether the location information is valid.
         location.validateLocation();
-
         return location;
+    }
+
+    /**
+     * TODO
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @throws IllegalActionException 
+     */
+    public void setLocation(int x, int y, int width, int height)
+            throws IllegalActionException {
+        Attribute attribute = getElement().getAttribute(
+                HomerConstants.POSITION_NODE);
+        HomerLocation location;
+        if (attribute instanceof HomerLocation) {
+            location = (HomerLocation) attribute;
+        } else {
+            getElement().removeAttribute(attribute);
+            try {
+                location = new HomerLocation(getElement(),
+                        HomerConstants.POSITION_NODE);
+            } catch (NameDuplicationException e) {
+                // this can't happen.
+                location = null;
+            }
+        }
+        location.setLocation(x, y, width, height);
     }
 
     /** Get the location of the element.
@@ -97,16 +125,14 @@ public abstract class PositionableElement {
      *  @exception IllegalActionException If the element cannot be added
      *  to the container. 
      */
-    public abstract void addToContainer(PortableContainer container) throws IllegalActionException;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                protected methods                          ////
+    public abstract void addToContainer(PortableContainer container)
+            throws IllegalActionException;
 
     /** Get the underlying element.
      * 
      *  @return The Ptolemy element with Android specific location information.
      */
-    protected NamedObj getElement() {
+    public NamedObj getElement() {
         return _element;
     }
 

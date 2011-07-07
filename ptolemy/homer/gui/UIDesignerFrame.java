@@ -27,11 +27,14 @@ package ptolemy.homer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -44,8 +47,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 
+import org.netbeans.api.visual.widget.Widget;
+
 import ptolemy.homer.gui.tree.NamedObjectTree;
+import ptolemy.homer.kernel.WidgetLoader;
+import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
@@ -96,7 +106,7 @@ public class UIDesignerFrame extends JFrame {
         _contentPane.add(_pnlNamedObjectTree, BorderLayout.WEST);
 
         JPanel pnlEast = new JPanel();
-        pnlEast.setPreferredSize(new Dimension(150, 10));
+        pnlEast.setPreferredSize(new Dimension(200, 10));
         _contentPane.add(pnlEast, BorderLayout.EAST);
         pnlEast.setLayout(new BorderLayout(0, 0));
 
@@ -106,16 +116,18 @@ public class UIDesignerFrame extends JFrame {
         pnlModelImage.setPreferredSize(new Dimension(10, 150));
         pnlEast.add(pnlModelImage, BorderLayout.NORTH);
 
-        JPanel pnlRemoteObjects = new JPanel();
-        pnlRemoteObjects.setBorder(new TitledBorder(null,
+        _pnlRemoteObjects = new RemoteObjectList();
+        _pnlRemoteObjects.setMainFrame(this);
+        _pnlRemoteObjects.setBorder(new TitledBorder(null,
                 "Remote Named Objects", TitledBorder.LEADING, TitledBorder.TOP,
                 null, null));
-        pnlEast.add(pnlRemoteObjects, BorderLayout.CENTER);
+        pnlEast.add(_pnlRemoteObjects, BorderLayout.CENTER);
 
         _spnScreen = new JScrollPane();
         _contentPane.add(_spnScreen, BorderLayout.CENTER);
 
         _pnlScreen = new TabbedLayoutScene();
+        _pnlScreen.setMainFrame(this);
         _pnlScreen.addTab("Default");
         _pnlScreen.selectTab(0);
         _spnScreen.setViewportView(_pnlScreen);
@@ -166,9 +178,40 @@ public class UIDesignerFrame extends JFrame {
         }
     }
 
+    public void addNonVisualNamedObject(NamedObj object) {
+        _remoteObjectSet.add(object);
+        _pnlRemoteObjects.addItem(object);
+    }
+
+    public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
+            Point location) throws IllegalActionException,
+            NameDuplicationException {
+        // TODO handle attribute styles
+        NamedObjectWidgetInterface widget = (NamedObjectWidgetInterface) WidgetLoader
+                .loadWidget(panel.getScene(), object, object.getClass());
+        _widgetMap.put(object, widget);
+        _remoteObjectSet.add(object);
+        _widgetTabMap.put(widget, panel);
+        panel.addWidget((Widget) widget, location);
+        _pnlRemoteObjects.addItem(object);
+    }
+
+    public void removeNamedObject(NamedObj object) {
+        NamedObjectWidgetInterface widget = _widgetMap.get(object);
+        if (widget != null) {
+            _widgetTabMap.remove(widget);
+        }
+        _widgetMap.remove(object);
+        _remoteObjectSet.remove(object);
+    }
+
     private JPanel _contentPane;
     private JScrollPane _spnScreen;
     private NamedObjectTree _pnlNamedObjectTree;
     private TabbedLayoutScene _pnlScreen;
     private final JFileChooser _fileChooser;
+    private HashMap<NamedObj, NamedObjectWidgetInterface> _widgetMap = new HashMap<NamedObj, NamedObjectWidgetInterface>();
+    private HashMap<NamedObjectWidgetInterface, TabScenePanel> _widgetTabMap = new HashMap<NamedObjectWidgetInterface, TabScenePanel>();
+    private HashSet<NamedObj> _remoteObjectSet = new HashSet<NamedObj>();
+    private RemoteObjectList _pnlRemoteObjects;
 }

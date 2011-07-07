@@ -28,6 +28,7 @@
 
 package ptolemy.homer.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
@@ -49,9 +50,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-
-import org.netbeans.api.visual.model.ObjectScene;
-import org.netbeans.api.visual.widget.LayerWidget;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -77,8 +75,6 @@ public class RemoteObjectList extends JPanel {
     /** Create the listing of remote objects.
      */
     public RemoteObjectList() {
-
-        _scene.addChild(new LayerWidget(_scene));
         _list.setVisibleRowCount(16);
         _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         _list.setLayoutOrientation(JList.VERTICAL_WRAP);
@@ -145,7 +141,9 @@ public class RemoteObjectList extends JPanel {
                                 .getTransferData(
                                         PtolemyTransferable.namedObjFlavor);
                         if (dropItems.size() > 0) {
-                            _listModel.addElement((NamedObj) dropItems.get(0));
+                            _mainFrame
+                                    .addNonVisualNamedObject((NamedObj) dropItems
+                                            .get(0));
                         }
                     } catch (Exception e) {
                         MessageHandler.error(
@@ -159,6 +157,7 @@ public class RemoteObjectList extends JPanel {
                 }
             }
         });
+        setLayout(new BorderLayout(0, 0));
         add(new JScrollPane(_list));
     }
 
@@ -179,13 +178,18 @@ public class RemoteObjectList extends JPanel {
         return (NamedObj[]) _listModel.toArray();
     }
 
+    /**
+     * TODO
+     * @param _mainFrame the _mainFrame to set
+     */
+    public void setMainFrame(UIDesignerFrame mainFrame) {
+        _mainFrame = mainFrame;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The scene onto which model components are dropped.
-     */
-    private final ObjectScene _scene = new ObjectScene();
-
+    private UIDesignerFrame _mainFrame;
     /** The window list control that shows all remote items.
      */
     private final JList _list = new JList();

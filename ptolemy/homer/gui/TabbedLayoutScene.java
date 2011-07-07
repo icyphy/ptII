@@ -149,12 +149,35 @@ public class TabbedLayoutScene extends JPanel {
 
     }
 
+    public void addTab(String tabName) {
+        TabScenePanel tabScenePanel = new TabScenePanel(_mainFrame);
+        Component view = tabScenePanel.getView();
+        _tabScenes.insertTab(tabName, null, view, null,
+                _tabScenes.getTabCount() - 1);
+        view.setMaximumSize(view.getPreferredSize());
+        int index = _tabScenes.indexOfComponent(tabScenePanel.getView());
+        _tabScenes.setTabComponentAt(index, new TabSceneButton());
+        _tabScenes.setSelectedIndex(index);
+    }
+
+    public void selectTab(int index) {
+        _tabScenes.setSelectedIndex(index);
+    }
+
+    /**
+     * @param _mainFrame the _mainFrame to set
+     */
+    public void setMainFrame(UIDesignerFrame mainFrame) {
+        _mainFrame = mainFrame;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
      * TODO
      */
     private JTabbedPane _tabScenes;
+    private UIDesignerFrame _mainFrame;
     private static final MouseAdapter _MOUSE_ADAPTER = new MouseAdapter() {
         public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
@@ -173,18 +196,4 @@ public class TabbedLayoutScene extends JPanel {
         }
     };
 
-    public void addTab(String tabName) {
-        TabScenePanel tabScenePanel = new TabScenePanel();
-        Component view = tabScenePanel.getView();
-        _tabScenes.insertTab(tabName, null, view, null,
-                _tabScenes.getTabCount() - 1);
-        view.setMaximumSize(view.getPreferredSize());
-        int index = _tabScenes.indexOfComponent(tabScenePanel.getView());
-        _tabScenes.setTabComponentAt(index, new TabSceneButton());
-        _tabScenes.setSelectedIndex(index);
-    }
-
-    public void selectTab(int index) {
-        _tabScenes.setSelectedIndex(index);
-    }
 }

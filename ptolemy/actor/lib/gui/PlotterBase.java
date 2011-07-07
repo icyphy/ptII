@@ -308,7 +308,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *   null to specify that a new plot should be created.
      */
     public void place(PortableContainer container) {
-        getImplementation().place(container);
+        getImplementation().removeOldContainer();
         if (container != null
                 && container.getPlatformContainer() instanceof PlotBoxInterface) {
             // According to FindBugs the cast is an error:
@@ -330,6 +330,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // will inherit the  background color of its parent."
             plot.setBackground(null);
         }
+        getImplementation().place(container);
         // If configurations have been deferred, implement them now.
         _implementDeferredConfigurations();
     }

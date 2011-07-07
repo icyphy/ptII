@@ -102,12 +102,7 @@ public class TabDefinition {
     public void addContent(PositionableElement element)
             throws IllegalActionException {
         // Add representation to the tab contents
-        try {
-            _content.add(element);
-        } catch (Exception e) {
-            throw new IllegalActionException(
-                    "Content could not be added to tab " + _name + ".");
-        }
+        _content.add(element);
     }
 
     ///////////////////////////////////////////////////////////////////

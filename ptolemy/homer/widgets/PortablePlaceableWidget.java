@@ -1,4 +1,4 @@
-/* TODO
+/*
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -23,48 +23,46 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+
 package ptolemy.homer.widgets;
 
-import org.netbeans.api.visual.widget.Scene;
-import org.netbeans.api.visual.widget.Widget;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import javax.swing.JPanel;
+
+import org.netbeans.api.visual.widget.ComponentWidget;
+import org.netbeans.api.visual.widget.Scene;
+
+import ptolemy.actor.gui.AWTContainer;
+import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-//// NamedObjectWidget
+//// PortablePlaceableWidget
 
-/**
- * TODO
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
- */
-public class NamedObjectWidget extends Widget implements
+public class PortablePlaceableWidget extends NamedObjectWidget implements
         NamedObjectWidgetInterface {
 
-    /**
-     * TODO
-     * @param scene
-     * @param namedObject
-     */
-    public NamedObjectWidget(Scene scene, NamedObj namedObject) {
-        super(scene);
-        _namedObject = namedObject;
-        setCheckClipping(true);
-    }
+    public PortablePlaceableWidget(final Scene scene, NamedObj namedObject) {
+        super(scene, namedObject);
+        if (!(namedObject instanceof PortablePlaceable)) {
+            throw new IllegalArgumentException(
+                    "NamedObject must be instance of PortablePlaceable");
+        }
+        JPanel panel = new JPanel();
+        final ComponentWidget componentWidget = new ComponentWidget(scene,
+                panel);
+        componentWidget.setCheckClipping(true);
+        scene.validate();
+        Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
 
-    /* TODO
-     * (non-Javadoc)
-     * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
-     */
-    public NamedObj getNamedObject() {
-        return _namedObject;
+            public void run() {
+                componentWidget.setComponentVisible(false);
+                scene.validate();
+            }
+        }, 1000, TimeUnit.MILLISECONDS);
+        ((PortablePlaceable) namedObject).place(new AWTContainer(panel));
+        addChild(componentWidget);
     }
-
-    /**
-     * TODO
-     */
-    private final NamedObj _namedObject;
 }

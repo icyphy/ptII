@@ -36,12 +36,18 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
+
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.AlignWithMoveDecorator;
 import org.netbeans.api.visual.action.MoveStrategy;
+import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.action.TwoStateHoverProvider;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.border.Border;
@@ -54,8 +60,7 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
-import ptolemy.homer.kernel.WidgetLoader;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -78,7 +83,8 @@ public class TabScenePanel {
     /**
      * TODO
      */
-    public TabScenePanel() {
+    public TabScenePanel(UIDesignerFrame mainFrame) {
+        _mainFrame = mainFrame;
         _scene = new ObjectScene();
         _mainLayer = new LayerWidget(getScene());
         _interactionLayer = new LayerWidget(getScene());
@@ -124,18 +130,12 @@ public class TabScenePanel {
                 if (dropEvent
                         .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                     try {
-                        dropEvent.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                         List<?> dropObjects = (java.util.List) dropEvent
                                 .getTransferable().getTransferData(
                                         PtolemyTransferable.namedObjFlavor);
-
-                        NamedObj droppedObject = (NamedObj) dropObjects.get(0);
-                        if (droppedObject instanceof Attribute) {
-
-                        }
-                        Widget widget = WidgetLoader.loadWidget(_scene,
-                                droppedObject, droppedObject.getClass());
-                        addWidget(widget, dropEvent.getLocation());
+                        _mainFrame.addVisualNamedObject(TabScenePanel.this,
+                                (NamedObj) dropObjects.get(0),
+                                dropEvent.getLocation());
                     } catch (UnsupportedFlavorException e) {
                         MessageHandler.error(
                                 "Can't find a supported data flavor for drop in "
@@ -157,23 +157,63 @@ public class TabScenePanel {
                                         + dropEvent, e);
                         return;
                     }
+                    dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
                 } else {
                     dropEvent.rejectDrop();
                 }
             }
         });
+        _popupMenuAction = ActionFactory
+                .createPopupMenuAction(new PopupMenuProvider() {
+
+                    public JPopupMenu getPopupMenu(Widget widget,
+                            Point localLocation) {
+                        return new NamedObjectPopupMenu(
+                                (NamedObjectWidgetInterface) widget);
+                    }
+
+                });
+    }
+
+    private class NamedObjectPopupMenu extends JPopupMenu {
+        public NamedObjectPopupMenu(NamedObjectWidgetInterface widget) {
+            _widget = widget;
+            JMenuItem delete = new JMenuItem("Delete");
+            delete.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    _mainFrame.removeNamedObject(_widget.getNamedObject());
+                }
+            });
+            JMenuItem edit = new JMenuItem("Edit");
+            edit.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+            add(delete);
+            add(edit);
+        }
+
+        private NamedObjectWidgetInterface _widget;
     }
 
     /**
      * TODO
      * @param widget
      * @param location
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
-    public void addWidget(Widget widget, Point location) {
+    public void addWidget(Widget widget, Point location)
+            throws IllegalActionException, NameDuplicationException {
         widget.setPreferredLocation(location);
         widget.getActions().addAction(_resizeAction);
         widget.getActions().addAction(_moveAction);
         widget.getActions().addAction(_hoverAction);
+        widget.getActions().addAction(_scene.createSelectAction());
+        widget.getActions().addAction(_popupMenuAction);
         widget.setBorder(DEFAULT_BORDER);
         _mainLayer.addChild(widget);
         _scene.validate();
@@ -182,9 +222,11 @@ public class TabScenePanel {
         _scene.validate();
     }
 
-    private void adjustLocation(Widget widget, Point location) {
+    public void removeWidget(Widget widget) {
+        _mainLayer.removeChild(widget);
+    }
 
-        System.out.println(location);
+    private void adjustLocation(Widget widget, Point location) {
         if (location.getX() + widget.getBounds().getWidth() > getView()
                 .getWidth()) {
             location.setLocation(getView().getWidth()
@@ -221,12 +263,14 @@ public class TabScenePanel {
             .createResizeBorder(6, Color.BLACK, true);
     private static final Border DEFAULT_BORDER = BorderFactory
             .createEmptyBorder(6);
+    private final UIDesignerFrame _mainFrame;
     private final LayerWidget _mainLayer;
     private final LayerWidget _interactionLayer;
     private final ObjectScene _scene;
     private final WidgetAction _moveAction;
     private final WidgetAction _resizeAction;
     private final TwoStateHoverProvider _hoverProvider;
+    private WidgetAction _popupMenuAction;
     private WidgetAction _hoverAction;
     private static final BasicStroke STROKE = new BasicStroke(1.0f,
             BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
@@ -239,4 +283,5 @@ public class TabScenePanel {
             return widget;
         }
     };
+
 }

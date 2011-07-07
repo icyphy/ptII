@@ -102,6 +102,22 @@ public class HomerLocation extends Parameter {
         return ((IntMatrixToken) getToken()).getElementAt(0, 3);
     }
 
+    /**
+     * Set the location parameters of the attribute
+     * @param x x value
+     * @param y y value
+     * @param width width of the element
+     * @param height height of the element
+     */
+    public void setLocation(int x, int y, int width, int height) {
+        try {
+            setToken(new IntMatrixToken(new int[] { x, y, width, height }, 1,
+                    4, IntMatrixToken.DO_NOT_COPY));
+        } catch (IllegalActionException e) {
+            // matrix is non-null so this can't happen.
+        }
+    }
+
     /** Validate the location. The location should have four parameters,
      *  the top left position (x and y), the width, and the height.
      *  

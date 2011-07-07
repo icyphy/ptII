@@ -42,13 +42,7 @@ public class PlotterBaseAWT implements PlotterBaseInterface {
         _plotSize.setPersistent(true);
     }
 
-    public void place(PortableContainer container) {
-        if (container == null) {
-            _container = null;
-        } else {
-            _container = (Container) container.getPlatformContainer();
-        }
-
+    public void removeOldContainer() {
         // NOTE: This actor always shows the plot buttons, even if
         // the plot is in a separate frame.  They are very useful.
         if (_container == null) {
@@ -65,6 +59,14 @@ public class PlotterBaseAWT implements PlotterBaseInterface {
             // will be lost. So do not forget the plot.
             // plot = null;
             return;
+        }
+    }
+
+    public void place(PortableContainer container) {
+        if (container == null) {
+            _container = null;
+        } else {
+            _container = (Container) container.getPlatformContainer();
         }
 
         if (!(_container instanceof PlotBox)) {

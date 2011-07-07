@@ -201,6 +201,9 @@ public class LayoutParser {
             if (_isPositionable(attribute)) {
                 attributeContainer.add(new AttributeElement(attribute));
             } else {
+                // FIXME: what if inner attribute of the positionable attribute is positionable?
+                // I think we need to remove this else statement and execute the statement
+                // no matter what.
                 _initPositionableAttributes(attribute, attributeContainer);
             }
         }
@@ -221,7 +224,7 @@ public class LayoutParser {
 
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
