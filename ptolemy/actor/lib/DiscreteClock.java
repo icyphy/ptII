@@ -65,7 +65,17 @@ import ptolemy.kernel.util.Workspace;
  then the corresponding output will never be produced.
  To get a finite sequence of events that is not periodic,
  just set <i>period</i> to Infinity.
-  <p>
+ Alternatively, you can provide
+ a finite <i>stopTime</i>. Upon reaching that stop time,
+ postfire() returns false, which requests that the director
+ not fire this actor again.
+ The clock can also be started and stopped repeatedly
+ during an execution. A token at the <i>start</i> input will start the clock
+ at the beginning of a period. A token
+ at the <i>stop</i> input will stop the clock, if it is still running.
+ If both <i>start</i> and <i>stop</i> are received simultaneously, then
+ the clock will be stopped.
+ <p>
  The <i>values</i> parameter by default
  contains the array {1}.  The default
  <i>offsets</i> array is {0.0}.
@@ -105,21 +115,11 @@ import ptolemy.kernel.util.Workspace;
  and the modal model enters that mode with a reset transition.
  <p>
  If the <i>period</i> is changed at any time, either by
- providing an input or by changing the parameter, then the
+ provided by an input or by changing the parameter, then the
  new period will take effect immediately if the new period
  is provided at the same time (including the
  microstep) that the current cycle starts,
  or after the current cycle completes otherwise.
- <p>
- This actor can generate finite sequences by specifying
- a finite <i>stopTime</i>. Upon reaching that stop time,
- postfire() returns false, and the actor does not expect to
- be invoked again.
- <p>
- Alternatively, a token at the <i>start</i> input will start the clock. A token
- at the <i>stop</i> input will stop the clock, if it is still running.
- If both <i>start</i> and <i>stop</i> are received simultaneously, then
- the clock will be stopped.
  <p>
  If the <i>trigger</i> input is connected, then an output will only
  be produced if a trigger input has been received since the last output
