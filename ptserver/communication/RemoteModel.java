@@ -244,7 +244,6 @@ public class RemoteModel {
 
     /** Get the map from the Typeable's full name to its type.
      *  @return The map from the Typeable's full name to its type.
-     *  @see #setResolvedTypes(HashMap)
      */
     public HashMap<String, String> getResolvedTypes() {
         return _resolvedTypes;

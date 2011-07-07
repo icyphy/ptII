@@ -303,9 +303,9 @@ public class RESTGetHandler extends TypedAtomicActor {
      * entities.  If no entities are selected, an empty HTML page is returned.
      * Uses HTML5 syntax.  
      * 
-     * @return  The HTML response.
-     * @exception Thrown by findResource() if resource is improperly formatted 
-     * @see ExportHTMLAction  
+     * @return The HTML response.
+     * @exception IllegalActionException If the resource is improperly formatted 
+     * @see ptolemy.vergil.basic.ExportHTMLAction
      */
     protected String getHTML() throws IllegalActionException {
         
@@ -375,7 +375,7 @@ public class RESTGetHandler extends TypedAtomicActor {
      *  @return An HTML table displaying the parameter values for the
      *   specified object, or the string "Has no parameters" if the
      *   object has no parameters.
-     * @see ExportHTMLAction
+     * @see ptolemy.vergil.basic.ExportHTMLAction
      */
     private String _getParameterTable(NamedObj object) {
         StringBuffer table = new StringBuffer();

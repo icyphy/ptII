@@ -616,7 +616,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
 
         if (_checkingAutoAdapter) {
-            // If the static isAutoAdaptered() method is called, then
+            // If the static _isAutoAdaptered() method is called, then
             // we set _checkingAutoAdapter to true and call
             // GenericCodeGenerator.getAdapter(), which eventually
             // calls this method if the Object has no adapter.  This
@@ -1575,10 +1575,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
-    /** If {@link #isAutoAdaptered(Object)} is called, then
-     *  {@link getAutoAdapter(GenericCodeGenerator, Object) sets
+    /** If {@link #_isAutoAdaptered(Object)} is called, then
+     *  {@link getAutoAdapter(GenericCodeGenerator, Object)} sets
      *  checks this variable to determine whether to actually
-     *  create the AutoAdapter.  When isAutoAdapter() is called,
+     *  create the AutoAdapter.  When _isAutoAdapter() is called,
      *  getAutoAdapter() will not actually create the AutoAdapter
      *  and will instead set _wouldBeAutoAdapted and return null.
      */

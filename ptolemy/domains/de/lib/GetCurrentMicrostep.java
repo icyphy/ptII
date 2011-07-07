@@ -47,7 +47,7 @@ directors that implement SuperdenseTimeDirector.
 @author Jia Zou
 @version $Id$
 @since Ptolemy II 8.0
-@see SuperdenseTimeDirector
+@see ptolemy.actor.SuperdenseTimeDirector
 @deprecated Use actor.lib.GetCurrentMicrostep instead.
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating Red

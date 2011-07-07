@@ -389,7 +389,6 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     protected CalendarQueue _eventQueue = new CalendarQueue(
             new TimedEvent.TimeComparator());
 
-    /** The number of time-blocked processes.
-     * changed from private to protected on 7/13/08 by Patricia Derler */
+    /** The number of time-blocked processes. */
     protected int _delayBlockCount = 0;
 }

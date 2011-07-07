@@ -388,7 +388,7 @@ public class Director extends Attribute implements Executable {
      *  <p>
      *  <b>Note to authors of subclasses:</b> Usually you should not
      *  override this method, but rather override
-     *  {@link fireAt(Actor, Time, int)}. However, we cannot make
+     *  {@link #fireAt(Actor, Time, int)}. However, we cannot make
      *  this method final because occasionally a domain will change the
      *  default starting microstep. E.g., DE does this.
      *  @param actor The actor scheduled to be fired.
