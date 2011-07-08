@@ -40,14 +40,13 @@ import javax.swing.SpinnerNumberModel;
 //////////////////////////////////////////////////////////////////////////
 //// SizeDialog
 
-/** Class that defines the screen size dialog
-* TODO
-* @author Anar Huseynov
-* @version $Id$ 
-* @since Ptolemy II 8.1
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
-*/
+/** Class that defines the screen size dialog.
+ *  @author Justin Killian
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
+ */
 public class SizeDialog extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
