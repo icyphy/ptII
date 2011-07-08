@@ -1,4 +1,5 @@
 /*
+ TODO
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -28,7 +29,11 @@ package ptolemy.homer.widgets;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import org.netbeans.api.visual.layout.LayoutFactory;
@@ -41,42 +46,80 @@ import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// PortablePlaceableWidget
-
+/**
+ * TODO
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class PortablePlaceableWidget extends NamedObjectWidget implements
         NamedObjectWidgetInterface {
 
+    /**
+     * TODO
+     * @param scene
+     * @param namedObject
+     */
     public PortablePlaceableWidget(final Scene scene, NamedObj namedObject) {
         super(scene, namedObject);
         if (!(namedObject instanceof PortablePlaceable)) {
             throw new IllegalArgumentException(
                     "NamedObject must be instance of PortablePlaceable");
         }
-        final JPanel panel = new JPanel();
-        _componentWidget = new ComponentWidget(scene, panel);
-        ((PortablePlaceable) namedObject).place(new AWTContainer(panel) {
-            @Override
-            public void add(Object object) {
-                Component component = (Component) object;
-                getPlatformContainer().add(component, BorderLayout.CENTER);
-            }
+        final JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null);
+        final JPanel glassPane = new JPanel();
+        glassPane.setOpaque(false);
+        Dimension dimension = new Dimension(300, 200);
+        glassPane.setSize(dimension);
+        glassPane.setLocation(0, 0);
+        layeredPane.setLayer(glassPane, JLayeredPane.DRAG_LAYER);
+        layeredPane.add(glassPane);
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+        };
+        glassPane.addKeyListener(new KeyAdapter() {
         });
+        glassPane.addMouseMotionListener(mouseAdapter);
+        glassPane.addMouseListener(mouseAdapter);
+        glassPane.addMouseWheelListener(mouseAdapter);
+
+        final JPanel containerPanel = new JPanel();
+        containerPanel.setLayout(new BorderLayout());
+        containerPanel.setSize(dimension);
+        containerPanel.setLocation(0, 0);
+        layeredPane.setLayer(containerPanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(containerPanel);
+        _componentWidget = new ComponentWidget(scene, layeredPane);
+        _componentWidget.setPreferredSize(dimension);
+
         setLayout(LayoutFactory.createOverlayLayout());
         addChild(_componentWidget);
+        ((PortablePlaceable) namedObject)
+                .place(new AWTContainer(containerPanel) {
+                    @Override
+                    public void add(Object object) {
+                        Component component = (Component) object;
+                        containerPanel.add(component, BorderLayout.CENTER);
+                    }
+                });
         addDependency(new Dependency() {
 
             public void revalidateDependency() {
-                //
                 if (!isPreferredBoundsSet() || getPreferredBounds() == null) {
                     return;
                 }
-                //                if (_componentWidget.isComponentVisible()) {
-                //                    _componentWidget.setComponentVisible(false);
-                //                }
+                glassPane.setSize(_componentWidget.getClientArea().getSize());
+                containerPanel.setSize(_componentWidget.getClientArea()
+                        .getSize());
             }
         });
+
     }
 
+    /**
+     * TODO
+     */
     private ComponentWidget _componentWidget;
-    private JPanel panel;
-    private JPanel innerPanel;
 }
