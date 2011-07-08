@@ -56,9 +56,11 @@ public class TokenPublisher {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
-    /** Create instance of the TokenPublisher with specified period and tokensPerPeriod
+    /** Create instance of the TokenPublisher with specified period,
+     *  tokensPerPeriod, and remote model owner.
      *  @param period Period in millisecond between batches
      *  @param tokensPerPeriod Expected number of tokens per period
+     *  @param owner Parent remote model of the token publisher.
      */
     public TokenPublisher(long period, int tokensPerPeriod, RemoteModel owner) {
         _period = period;
@@ -109,15 +111,15 @@ public class TokenPublisher {
     }
 
     /** Set the topic for the message to publish.
-     *  @param topic the topic to publish the MQTT messages.
+     *  @param topic The topic to publish the MQTT messages.
      *  @see #getTopic()
      */
     public void setTopic(String topic) {
         _topic = topic;
     }
 
-    /**
-     * Start the timer that sends token batches.
+    /** Start the timer that sends token batches.
+     *  @param ticket The ticket associated with the simulation.
      */
     public void startTimer(Ticket ticket) {
         _timer = new Timer("TokenPublisher timer " + ticket);
@@ -126,6 +128,7 @@ public class TokenPublisher {
             @Override
             public void run() {
                 synchronized (TokenPublisher.this) {
+
                     // If tokens are queued up, attempt to publish.
                     if (_tokenCount > 0) {
                         try {

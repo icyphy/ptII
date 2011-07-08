@@ -33,21 +33,20 @@ import ptserver.data.AttributeChangeToken;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoteValueListener
-/**
-* A value listener that listens to changes made to a variable widget
-* and publishes the changes as an AttributeChangeToken.
-* @author Peter Foldes
-* @version $Id$
-* @since Ptolemy II 8.0
-* @Pt.ProposedRating Red (pdf)
-* @Pt.AcceptedRating Red (pdf)
-*/
+
+/** A value listener that listens to changes made to a variable widget
+ *  and publishes the changes as an AttributeChangeToken.
+ *  @author Peter Foldes
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
+ */
 public class RemoteValueListener implements ValueListener {
 
-    /**
-     * Initialize the instance with the given token publisher
+    /** Initialize the instance with the given token publisher
      *  and enable its listener.
-     * @param tokenPublisher the tokenPublisher used for sending value change events.
+     *  @param tokenPublisher the tokenPublisher used for sending value change events.
      */
     public RemoteValueListener(TokenPublisher tokenPublisher) {
         _tokenPublisher = tokenPublisher;
@@ -56,10 +55,36 @@ public class RemoteValueListener implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Capture value changes of the settable and send them via the publisher to the remote model.
-     * @param settable The settable whose value changed.
-     * @see ptolemy.kernel.util.ValueListener#valueChanged(ptolemy.kernel.util.Settable)
+
+    /** Return TokenPublisher that would be used to publish
+     *  AttributeChange tokens produced by this actor on value change.
+     *  @return TokenPublisher the token publisher
+     */
+    public TokenPublisher getTokenPublisher() {
+        return _tokenPublisher;
+    }
+
+    /** Return the enabled flag of the listener. If it's true,
+     *  the listener would send the attribute value change token.
+     *  @return the enabled flag.
+     *  @see #setEnabled(boolean)
+     */
+    public synchronized boolean isEnabled() {
+        return _enabled;
+    }
+
+    /** Set enabled flag of the listener.  If it's true,
+     *  the listener would send the attribute value change token.
+     *  @param enabled the enabled flag.
+     *  @see #isEnabled()
+     */
+    public synchronized void setEnabled(boolean enabled) {
+        _enabled = enabled;
+    }
+
+    /** Capture value changes of the settable and send them via the publisher to the remote model.
+     *  @param settable The settable whose value changed.
+     *  @see ptolemy.kernel.util.ValueListener#valueChanged(ptolemy.kernel.util.Settable)
      */
     public synchronized void valueChanged(Settable settable) {
         if (isEnabled()) {
@@ -75,44 +100,15 @@ public class RemoteValueListener implements ValueListener {
         }
     }
 
-    /**
-     * Return TokenPublisher that would be used to publish
-     * AttributeChange tokens produced by this actor on value change.
-     * @return TokenPublisher the token publisher
-     */
-    public TokenPublisher getTokenPublisher() {
-        return _tokenPublisher;
-    }
-
-    /**
-     * Set enabled flag of the listener.  If it's true,
-     * the listener would send the attribute value change token.
-     * @param enabled the enabled flag.
-     * @see #isEnabled()
-     */
-    public synchronized void setEnabled(boolean enabled) {
-        _enabled = enabled;
-    }
-
-    /**
-     * Return the enabled flag of the listener. If it's true,
-     * the listener would send the attribute value change token.
-     * @return the enabled flag.
-     * @see #setEnabled(boolean)
-     */
-    public synchronized boolean isEnabled() {
-        return _enabled;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * Token Publisher is used to publish AttributeChange to a queue for serializing
-     * into a binary.
-     */
-    private final TokenPublisher _tokenPublisher;
-    /**
-     * TODO
+
+    /** If the remote value listener is currently enabled.
      */
     private boolean _enabled;
+
+    /** Token Publisher is used to publish AttributeChange to a queue for
+     *  serializing into binary.
+     */
+    private final TokenPublisher _tokenPublisher;
 }

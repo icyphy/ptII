@@ -59,7 +59,8 @@ public class TokenListener implements MqttSimpleCallback {
     ////                         constructor                       ////
 
     /** Initialize the instance by reading needed fields from the remoteModel.
-     *  @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
+     *  @param remoteModel The remoteModel that created this publisher and 
+     *  controls the state of the simulation.
      */
     public TokenListener(RemoteModel remoteModel) {
         _owner = remoteModel;
@@ -69,9 +70,6 @@ public class TokenListener implements MqttSimpleCallback {
     ////                         public methods                    ////
 
     /** Callback method when the connection with the broker is lost.
-     *  @exception IllegalStateException If the connection was lost 
-     *  and could not be reconnected.
-     *  @exception IllegalStateException If the broker connection cannot be re-established.
      *  @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
      */
     public void connectionLost() {
