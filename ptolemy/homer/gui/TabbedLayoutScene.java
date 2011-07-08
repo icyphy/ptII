@@ -76,9 +76,13 @@ public class TabbedLayoutScene extends JPanel {
             }
         });
         _tabScenes.setLocation(0, 0);
-        _tabScenes.setSize(new Dimension(600, 400));
         _tabScenes.setBorder(new LineBorder(Color.BLACK));
-        setPreferredSize(new Dimension(600, 400));
+    }
+
+    @Override
+    public void setPreferredSize(Dimension preferredSize) {
+        super.setPreferredSize(preferredSize);
+        _tabScenes.setSize(preferredSize);
     }
 
     /**
