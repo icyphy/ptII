@@ -64,8 +64,7 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
      */
     public NamedObjectTree() {
         setLayout(new BorderLayout());
-        _treeModel = new AttributeTreeModel(null);
-        _tree = new PTree(_treeModel);
+        _tree = new PTree(new AttributeTreeModel(null));
         _tree.setShowsRootHandles(true);
         _tree.setRootVisible(false);
         _tree.addTreeSelectionListener(this);
@@ -114,14 +113,12 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
      * @param topLevelContainer
      */
     public void setCompositeEntity(CompositeEntity topLevelContainer) {
-        _treeModel.setRoot(topLevelContainer);
-        _treeModel.valueForPathChanged(null, topLevelContainer);
+        _tree.setModel(new AttributeTreeModel(topLevelContainer));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private final PTree _tree;
     private final JTextField _currentSelectionField;
-    private AttributeTreeModel _treeModel;
     private UIDesignerFrame _mainFrame;
 }
