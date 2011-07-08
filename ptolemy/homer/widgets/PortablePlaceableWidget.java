@@ -26,11 +26,12 @@
 
 package ptolemy.homer.widgets;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.JPanel;
 
+import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.Scene;
 
@@ -50,19 +51,32 @@ public class PortablePlaceableWidget extends NamedObjectWidget implements
             throw new IllegalArgumentException(
                     "NamedObject must be instance of PortablePlaceable");
         }
-        JPanel panel = new JPanel();
-        final ComponentWidget componentWidget = new ComponentWidget(scene,
-                panel);
-        componentWidget.setCheckClipping(true);
-        scene.validate();
-        Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
-
-            public void run() {
-                componentWidget.setComponentVisible(false);
-                scene.validate();
+        final JPanel panel = new JPanel();
+        _componentWidget = new ComponentWidget(scene, panel);
+        ((PortablePlaceable) namedObject).place(new AWTContainer(panel) {
+            @Override
+            public void add(Object object) {
+                Component component = (Component) object;
+                getPlatformContainer().add(component, BorderLayout.CENTER);
             }
-        }, 1000, TimeUnit.MILLISECONDS);
-        ((PortablePlaceable) namedObject).place(new AWTContainer(panel));
-        addChild(componentWidget);
+        });
+        setLayout(LayoutFactory.createOverlayLayout());
+        addChild(_componentWidget);
+        addDependency(new Dependency() {
+
+            public void revalidateDependency() {
+                //
+                if (!isPreferredBoundsSet() || getPreferredBounds() == null) {
+                    return;
+                }
+                //                if (_componentWidget.isComponentVisible()) {
+                //                    _componentWidget.setComponentVisible(false);
+                //                }
+            }
+        });
     }
+
+    private ComponentWidget _componentWidget;
+    private JPanel panel;
+    private JPanel innerPanel;
 }
