@@ -27,12 +27,17 @@
 
 package ptolemy.homer.gui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -55,6 +60,12 @@ import ptolemy.util.MessageHandler;
  */
 public class HomerMenu {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                constructor                                ////
+
+    /** Create the menu bar for the window.
+     *  @param parent The parent frame in which the menu bar will be shown.
+     */
     public HomerMenu(UIDesignerFrame parent) {
         _parent = parent;
 
@@ -64,72 +75,169 @@ public class HomerMenu {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
+    /** Get the file chooser.
+     *  @return The file chooser
+     */
+    public JFileChooser getFileChooser() {
+        return _fileChooser;
+    }
+
+    /** Get the layout file filter.
+     *  @return The filter for removing non-layout files from the dialog.
+     */
+    public FileFilter getLayoutFilter() {
+        return _layoutFilter;
+    }
+
+    /** Configure the window menu bar.
+     */
     public JMenuBar getMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         // Add top menus
         JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
         menuBar.add(fileMenu);
 
+        JMenu editMenu = new JMenu("Edit");
+        editMenu.setMnemonic(KeyEvent.VK_E);
+        menuBar.add(editMenu);
+
         JMenu helpMenu = new JMenu("Help");
+        helpMenu.setMnemonic(KeyEvent.VK_H);
         menuBar.add(helpMenu);
 
         // File menu items
-        JMenuItem newMenuItem = new JMenuItem("New");
+        JMenuItem newMenuItem = new JMenuItem("New", KeyEvent.VK_N);
         newMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 _newMenuActionPerformed(e);
             }
         });
-        fileMenu.add(newMenuItem);
 
-        JMenuItem openMenuItem = new JMenuItem("Open");
+        JMenuItem openMenuItem = new JMenuItem("Open", KeyEvent.VK_O);
         openMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 _openMenuActionPerformed(e);
             }
         });
-        fileMenu.add(openMenuItem);
 
-        JMenuItem saveMenuItem = new JMenuItem("Save");
+        JMenuItem saveMenuItem = new JMenuItem("Save", KeyEvent.VK_S);
         saveMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 _saveMenuActionPerformed(e);
             }
         });
-        fileMenu.add(saveMenuItem);
 
-        JMenuItem saveAsMenuItem = new JMenuItem("Save as");
+        JMenuItem saveAsMenuItem = new JMenuItem("Save as", KeyEvent.VK_A);
         saveAsMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 _saveAsMenuActionPerformed(e);
             }
         });
-        fileMenu.add(saveAsMenuItem);
 
-        fileMenu.addSeparator();
-
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_X);
         exitMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 _parent.dispose();
             }
         });
+
+        // Edit menu actions.
+        JMenuItem screenSizeItem = new JMenuItem("Screen Size", KeyEvent.VK_S);
+        screenSizeItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
+                if (scene != null) {
+                    SizeDialog dialog = new SizeDialog(scene.getSceneTabs()
+                            .getHeight(), scene.getSceneTabs().getWidth());
+                    if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
+                        try {
+                            scene.getSceneTabs().setPreferredSize(
+                                    dialog.getDimensions());
+                            scene.revalidate();
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(_parent, new JLabel(
+                                    ex.getClass().getName()),
+                                    "Invalid Size Specified",
+                                    JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                }
+            }
+        });
+
+        JCheckBoxMenuItem portraitItem = new JCheckBoxMenuItem("Portrait",
+                false);
+        portraitItem.setMnemonic(KeyEvent.VK_P);
+        portraitItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
+                if (scene != null) {
+                    double height = scene.getSceneTabs().getPreferredSize()
+                            .getHeight();
+                    double width = scene.getSceneTabs().getPreferredSize()
+                            .getWidth();
+
+                    if (height < width) {
+                        scene.getSceneTabs().setPreferredSize(
+                                new Dimension((int) height, (int) width));
+                        scene.revalidate();
+                    }
+                }
+            }
+        });
+
+        JCheckBoxMenuItem landscapeItem = new JCheckBoxMenuItem("Landscape",
+                true);
+        landscapeItem.setMnemonic(KeyEvent.VK_L);
+        landscapeItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
+                if (scene != null) {
+                    double height = scene.getSceneTabs().getPreferredSize()
+                            .getHeight();
+                    double width = scene.getSceneTabs().getPreferredSize()
+                            .getWidth();
+
+                    if (height > width) {
+                        scene.getSceneTabs().setPreferredSize(
+                                new Dimension((int) height, (int) width));
+                        scene.revalidate();
+                    }
+                }
+            }
+        });
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(portraitItem);
+        group.add(landscapeItem);
+
+        // Add all the items to the appropriate menu.
+        fileMenu.add(newMenuItem);
+        fileMenu.add(openMenuItem);
+        fileMenu.add(saveMenuItem);
+        fileMenu.add(saveAsMenuItem);
+        fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
+
+        editMenu.add(screenSizeItem);
+        editMenu.addSeparator();
+        editMenu.add(portraitItem);
+        editMenu.add(landscapeItem);
 
         return menuBar;
     }
 
-    public JFileChooser getFileChooser() {
-        return _fileChooser;
-    }
-
+    /** Get the model file filter.
+     *  @return The filter for removing non-model files from the dialog.
+     */
     public FileFilter getModelFilter() {
         return _modelFilter;
-    }
-
-    public FileFilter getLayoutFilter() {
-        return _layoutFilter;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,6 +250,7 @@ public class HomerMenu {
         int returnVal = _fileChooser.showOpenDialog(_parent);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = _fileChooser.getSelectedFile();
+
             try {
                 _parent.newLayout(file.toURI().toURL());
             } catch (MalformedURLException e1) {
@@ -154,15 +263,17 @@ public class HomerMenu {
         OpenLayoutDialog openLayoutDialog = new OpenLayoutDialog(_parent, this);
         Object result = openLayoutDialog.showDialog();
 
-        if (result == null || result == JOptionPane.UNINITIALIZED_VALUE
-                || (Integer) result == JOptionPane.CANCEL_OPTION) {
+        if ((result == null) || (result == JOptionPane.UNINITIALIZED_VALUE)
+                || ((Integer) result == JOptionPane.CANCEL_OPTION)) {
             return;
         }
 
         if ((Integer) result == JOptionPane.OK_OPTION) {
+
             // Check if files have been selected and they exist
             File model = openLayoutDialog.getModelFile();
             File layout = openLayoutDialog.getLayoutFile();
+
             if (model == null || layout == null) {
                 JOptionPane.showMessageDialog(_parent,
                         "The model or layout file was not selected.",
@@ -176,7 +287,6 @@ public class HomerMenu {
                         "Unable to open layout.", JOptionPane.PLAIN_MESSAGE);
                 return;
             }
-
         }
 
         JOptionPane.showConfirmDialog(_parent, openLayoutDialog.getLayoutFile()

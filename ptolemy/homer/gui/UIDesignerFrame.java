@@ -60,8 +60,10 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class UIDesignerFrame extends JFrame {
 
-    /**
-     * Create the frame.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create the UI designer frame.
      */
     public UIDesignerFrame() {
         setTitle("UI Designer");
@@ -76,64 +78,99 @@ public class UIDesignerFrame extends JFrame {
                         "/ptserver/test/junit/SoundSpectrum.xml")));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Add a non-visual NamedObj item to the panel.
+     *  @param object The NamedObj to be added to the list.
+     */
     public void addNonVisualNamedObject(NamedObj object) {
         _remoteObjectSet.add(object);
         _pnlRemoteObjects.addItem(object);
     }
 
+    /** Add a visual NamedObj item to the panel.
+     *  @param panel The target panel.
+     *  @param object The NamedObj to be added to the list.
+     *  @param location Location on the scene.
+     *  @exception IllegalActionException If the appropriate widget cannot be loaded.
+     *  @exception NameDuplicationException If the NamedObj duplicates a name of
+     *  an item already on the scene.
+     */
     public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
             Point location) throws IllegalActionException,
             NameDuplicationException {
+
         // TODO handle attribute styles
         NamedObjectWidgetInterface widget = (NamedObjectWidgetInterface) WidgetLoader
                 .loadWidget(panel.getScene(), object, object.getClass());
         _widgetMap.put(object, widget);
         _remoteObjectSet.add(object);
         _widgetTabMap.put(widget, panel);
-        panel.addWidget((Widget) widget, location);
         _pnlRemoteObjects.addItem(object);
+
+        panel.addWidget((Widget) widget, location);
     }
 
-    public void removeNamedObject(NamedObj object) {
-        NamedObjectWidgetInterface widget = _widgetMap.get(object);
-        if (widget != null) {
-            _widgetTabMap.remove(widget);
-        }
-        _widgetMap.remove(object);
-        _remoteObjectSet.remove(object);
-    }
-
-    public void newLayout(URL model) {
-        _widgetMap.clear();
-        _widgetTabMap.clear();
-        _remoteObjectSet.clear();
-        _pnlScreen.clear();
-        
-        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
-                .openModelFile(model));
-    }
-
-    /**
-     * @return the _widgetMap
-     */
-    public HashMap<NamedObj, NamedObjectWidgetInterface> getWidgetMap() {
-        return _widgetMap;
-    }
-
-    /**
-     * @return the _widgetTabMap
-     */
-    public HashMap<NamedObjectWidgetInterface, TabScenePanel> getWidgetTabMap() {
-        return _widgetTabMap;
-    }
-
-    /**
-     * @return the _remoteObjectSet
+    /** Get the set of references to on-screen remote objects.
+     *  @return The set of remote object references.
      */
     public HashSet<NamedObj> getRemoteObjectSet() {
         return _remoteObjectSet;
     }
 
+    /** Get the tabbed layout scene.
+     *  @return The reference to the tabbed area of the screen.
+     */
+    public TabbedLayoutScene getTabbedLayoutScene() {
+        return _pnlScreen;
+    }
+
+    /** Get the widget-to-NamedObj mapping.
+     *  @return The mapping of widgets to their respective NamedObj items.
+     */
+    public HashMap<NamedObj, NamedObjectWidgetInterface> getWidgetMap() {
+        return _widgetMap;
+    }
+
+    /** Get the widget-to-tab mapping.
+     *  @return The mapping of widgets to their respective tabs.
+     */
+    public HashMap<NamedObjectWidgetInterface, TabScenePanel> getWidgetTabMap() {
+        return _widgetTabMap;
+    }
+
+    /** Prepare the scene for creating a new layout and prompt the user for
+     *  file selection.
+     *  @param model The model file to be opened.
+     */
+    public void newLayout(URL model) {
+        _widgetMap.clear();
+        _widgetTabMap.clear();
+        _remoteObjectSet.clear();
+        _pnlScreen.clear();
+        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
+                .openModelFile(model));
+    }
+
+    /** Remove the NamedObj from the widget map and list of remote objects.
+     *  @param object The NamedObj item to be removed.
+     */
+    public void removeNamedObject(NamedObj object) {
+        NamedObjectWidgetInterface widget = _widgetMap.get(object);
+        if (widget != null) {
+            _widgetTabMap.remove(widget);
+        }
+
+        _widgetMap.remove(object);
+        _remoteObjectSet.remove(object);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the default look of the frame.
+     */
     private void _initializeFrame() {
         _contentPane = new JPanel();
         _contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -174,6 +211,9 @@ public class UIDesignerFrame extends JFrame {
         _spnScreen.setViewportView(_pnlScreen);
         _pnlScreen.getSceneTabs().setPreferredSize(new Dimension(600, 400));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private JPanel _contentPane;
     private JScrollPane _spnScreen;
