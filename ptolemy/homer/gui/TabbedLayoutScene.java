@@ -61,7 +61,6 @@ public class TabbedLayoutScene extends JPanel {
      * TODO
      */
     public TabbedLayoutScene() {
-        setLayout(null);
         _tabScenes = new JTabbedPane(JTabbedPane.TOP);
         add(_tabScenes);
         _tabScenes.add("", null);
@@ -75,14 +74,11 @@ public class TabbedLayoutScene extends JPanel {
                 selectTab(_tabScenes.getTabCount() - 2);
             }
         });
-        _tabScenes.setLocation(0, 0);
         _tabScenes.setBorder(new LineBorder(Color.BLACK));
     }
 
-    @Override
-    public void setPreferredSize(Dimension preferredSize) {
-        super.setPreferredSize(preferredSize);
-        _tabScenes.setSize(preferredSize);
+    public JTabbedPane getSceneTabs() {
+        return _tabScenes;
     }
 
     /**

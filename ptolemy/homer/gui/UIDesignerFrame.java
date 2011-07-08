@@ -152,7 +152,7 @@ public class UIDesignerFrame extends JFrame {
         });
         openFile(this.getClass().getResource(
                 "/ptserver/test/junit/SoundSpectrum.xml"));
-        _pnlScreen.setPreferredSize(new Dimension(600, 400));
+        _pnlScreen.getSceneTabs().setPreferredSize(new Dimension(600, 400));
     }
 
     private void newMenuActionPerformed(ActionEvent e) {
