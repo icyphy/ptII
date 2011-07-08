@@ -42,7 +42,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TokenParserTest.class, ServletTest.class,
-        RemoteModelTest.class, FileDownloadTest.class, TypeParserTest.class })
+        RemoteModelTest.class, FileDownloadTest.class, TypeParserTest.class,
+        RESTGetHandlerTest.class })
 public class AllTests {
 
 }
