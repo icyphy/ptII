@@ -35,6 +35,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,10 +61,12 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
+import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
@@ -124,6 +127,50 @@ public class TabScenePanel {
         _hoverAction = ActionFactory.createHoverAction(_hoverProvider);
         _scene.getActions().addAction(_hoverAction);
         new DropTarget(_scene.getView(), new DropTargetAdapter() {
+
+            /** Accept the event if the data is a known key.
+             *  This is called while a drag operation is ongoing,
+             *  when the mouse pointer enters the operable part of
+             *  the drop site for the DropTarget registered with
+             *  this listener.
+             *  @param dropEvent The drop event.
+             */
+            public void dragEnter(DropTargetDragEvent dropEvent) {
+
+                try {
+
+                    if (dropEvent
+                            .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                        List<?> dropObjects = (java.util.List) dropEvent
+                                .getTransferable().getTransferData(
+                                        PtolemyTransferable.namedObjFlavor);
+
+                        Object transfererable = dropObjects.get(0);
+
+                        if (transfererable instanceof PortablePlaceable
+                                || transfererable instanceof Settable) {
+                            dropEvent
+                                    .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                        } else {
+                            dropEvent.rejectDrag();
+                        }
+
+                    } else {
+                        dropEvent.rejectDrag();
+                    }
+
+                } catch (UnsupportedFlavorException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
+                } catch (IOException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
+                }
+            }
 
             public void drop(DropTargetDropEvent dropEvent) {
 
@@ -196,7 +243,7 @@ public class TabScenePanel {
             add(edit);
         }
 
-        private NamedObjectWidgetInterface _widget;
+        private final NamedObjectWidgetInterface _widget;
     }
 
     /**
