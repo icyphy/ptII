@@ -1487,7 +1487,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *
      *  <p>This is used to put two or more custom actors in to the
      *  same container.</p>
-     *  @param namedObj The NamedObj to check.
+     *  @param port The port to check.
      *  @return True if the remote port would be generated using
      *  an auto adapter.
      */
@@ -1575,8 +1575,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
-    /** If {@link #_isAutoAdaptered(Object)} is called, then
-     *  {@link getAutoAdapter(GenericCodeGenerator, Object)} sets
+    /** If {@link #_isAutoAdaptered(NamedObj)} is called, then
+     *  {@link #getAutoAdapter(GenericCodeGenerator, Object)} sets
      *  checks this variable to determine whether to actually
      *  create the AutoAdapter.  When _isAutoAdapter() is called,
      *  getAutoAdapter() will not actually create the AutoAdapter
@@ -1607,8 +1607,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private static boolean _toplevelTypesResolved = false;
 
-    /** If {@link #isAutoAdaptered(Object)} is called, then
-     *  {@link getAutoAdapter(GenericCodeGenerator, Object) sets
+    /** If {@link #isAutoAdaptered(NamedObj)} is called, then
+     *  {@link #getAutoAdapter(GenericCodeGenerator, Object)} sets
      *  this variable to true if the Object would use an AutoAdapter
      *  for code generation.  This is used to put two or more
      *  custom actors in to the same container.
