@@ -30,6 +30,7 @@
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.backtrack.Rollbackable;
@@ -118,6 +119,11 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
     // stop time request or returns some other value of time.
     // postfire() will return false on the next firing after time
     // equals the stop time or exceeds it.
+    // If there is a trigger input, then it is time for an output.
+    // It is time to produce an output if the current time equals
+    // or exceeds the next firing time (it should never exceed).
+    // It is too early.
+    // The time matches, but the microstep is too early.
     // If this is the first call to fire() in an iteration,
     // the the superclass will generate a new random number
     // to be used in postfire().
@@ -131,10 +137,13 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
     // Have to explicitly generate the first random number
     // becuase the superclass doesn't do it until the first
     // call to fire().
+    // An output was produced in this iteration.
     // The following is not needed because the first call
     // to fire() in the superclass generated a new random
     // number.
     // _generateRandomNumber();
+    // Output was not produced, but time matches, which
+    // means the microstep was too early. Request a refiring.
     // Do not call super.prefire() because that returns false if
     // there are no trigger inputs.
     // If any trigger input has a token, then return true.
@@ -165,6 +174,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
     // The length of the values parameter vector.
     // The next firing time requested of the director.
     // The index of the next output.
+    // Indicator that an output was produced in this iteration.
     // stop time.
     private double _current;
 
@@ -175,6 +185,8 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
     private transient Time _nextFiringTime;
 
     private transient int _nextOutputIndex;
+
+    private boolean _outputProduced;
 
     private Time _stopTime;
 
@@ -265,8 +277,27 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException  {
+        boolean triggerInputPresent = false;
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.isKnown() && trigger.hasToken(i)) {
+                triggerInputPresent = true;
+            }
+        }
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        boolean timeForOutput = (currentTime.compareTo(_nextFiringTime) >= 0);
+        if (!timeForOutput && !triggerInputPresent) {
+            return;
+        }
+        if (director instanceof SuperdenseTimeDirector) {
+            int currentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+            if (currentMicrostep < 1 && !triggerInputPresent) {
+                return;
+            }
+        }
         super.fire();
         output.send(0, _getValue(_nextOutputIndex));
+        $ASSIGN$_outputProduced(true);
     }
 
     /**     
@@ -310,6 +341,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         }
         $ASSIGN$_nextOutputIndex(0);
         $ASSIGN$_nextFiringTime(currentTime);
+        $ASSIGN$_outputProduced(false);
         if (((BooleanToken)fireAtStart.getToken()).booleanValue()) {
             _fireAt(currentTime);
         } else {
@@ -328,12 +360,17 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
     public boolean postfire() throws IllegalActionException  {
         boolean result = super.postfire();
         Time currentTime = getDirector().getModelTime();
-        $ASSIGN$SPECIAL$_nextOutputIndex(11, _nextOutputIndex);
-        if (_nextOutputIndex >= _length) {
-            $ASSIGN$_nextOutputIndex(0);
+        if (_outputProduced) {
+            $ASSIGN$_outputProduced(false);
+            $ASSIGN$SPECIAL$_nextOutputIndex(11, _nextOutputIndex);
+            if (_nextOutputIndex >= _length) {
+                $ASSIGN$_nextOutputIndex(0);
+            }
+            $ASSIGN$_nextFiringTime(currentTime.add(_current));
+            _fireAt(_nextFiringTime);
+        } else if (currentTime.compareTo(_nextFiringTime) >= 0) {
+            _fireAt(currentTime);
         }
-        $ASSIGN$_nextFiringTime(currentTime.add(_current));
-        _fireAt(_nextFiringTime);
         if (currentTime.compareTo(_stopTime) >= 0) {
             return false;
         }
@@ -467,6 +504,13 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         }
     }
 
+    private final boolean $ASSIGN$_outputProduced(boolean newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_outputProduced.add(null, _outputProduced, $CHECKPOINT.getTimestamp());
+        }
+        return _outputProduced = newValue;
+    }
+
     private final Time $ASSIGN$_stopTime(Time newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$_stopTime.add(null, _stopTime, $CHECKPOINT.getTimestamp());
@@ -485,6 +529,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         _length = $RECORD$_length.restore(_length, timestamp, trim);
         _nextFiringTime = (Time)$RECORD$_nextFiringTime.restore(_nextFiringTime, timestamp, trim);
         _nextOutputIndex = $RECORD$_nextOutputIndex.restore(_nextOutputIndex, timestamp, trim);
+        _outputProduced = $RECORD$_outputProduced.restore(_outputProduced, timestamp, trim);
         _stopTime = (Time)$RECORD$_stopTime.restore(_stopTime, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
@@ -499,6 +544,8 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
 
     private transient FieldRecord $RECORD$_nextOutputIndex = new FieldRecord(0);
 
+    private transient FieldRecord $RECORD$_outputProduced = new FieldRecord(0);
+
     private transient FieldRecord $RECORD$_stopTime = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
@@ -507,6 +554,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
             $RECORD$_length,
             $RECORD$_nextFiringTime,
             $RECORD$_nextOutputIndex,
+            $RECORD$_outputProduced,
             $RECORD$_stopTime
         };
 
