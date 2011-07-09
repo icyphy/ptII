@@ -147,7 +147,13 @@ public class DotProduct extends TypedAtomicActor {
                 throw e;
             }
         } else {
-            throw new IllegalActionException("Invalid types");
+            throw new IllegalActionException("Invalid types. "
+					     + "Input1 and input2 must both of "
+					     + "ArrayType or both be of MatrixType."
+					     + "The type of input1 was \""
+					     + input1.getType().getClass()
+					     + "\". The type of input2 was \""
+					     + input2.getType().getClass() + "\".");
         }
     }
 
