@@ -39,7 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  one output port, both of which are multiports.  When at least one token
  exists on every input channel, exactly one token is consumed from each
  input channel, and the tokens are output on the corresponding output
- channels.
+ channels. If any input channel is missing a token, then no output is
+ produced.
  <p>
  Note that the ordering of channels of a multiport is determined by the
  order of connection.  Thus the n<sup>th</sup> input channel connected
@@ -68,6 +69,10 @@ public class Synchronizer extends Transformer {
         output.setMultiport(true);
         
         input.setWidthEquals(output, true);
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                + "style=\"fill:yellow\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

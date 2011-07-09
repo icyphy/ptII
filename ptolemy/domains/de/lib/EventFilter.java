@@ -66,6 +66,14 @@ public class EventFilter extends DETransformer {
         output.setMultiport(true);
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
+        output.setWidthEquals(input, true);
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:yellow\"/>\n"
+                + "<text x=\"-15\" y=\"4\""
+                + "style=\"font-size:11; font-family:SansSerif\">true?</text>"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,11 +87,12 @@ public class EventFilter extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        int outputWidth = output.getWidth();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 BooleanToken token = (BooleanToken) input.get(i);
 
-                if (token.booleanValue()) {
+                if (token.booleanValue() && i < outputWidth) {
                     output.send(i, token);
                 }
             }

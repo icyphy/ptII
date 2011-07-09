@@ -29,10 +29,13 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -59,14 +62,14 @@ import ptolemy.kernel.util.Workspace;
  input.  This actor reacts to the absence of the other event, whereas
  Sampler reacts to the presence of it.
 
- @author Steve Neuendorffer
+ @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Yellow (neuendor)
  @see ptolemy.domains.de.lib.SampleAndHold
  */
-public class Inhibit extends DETransformer {
+public class Inhibit extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -81,8 +84,22 @@ public class Inhibit extends DETransformer {
         input.setMultiport(true);
         output.setMultiport(true);
         output.setTypeAtLeast(input);
+        output.setWidthEquals(input, true);
+        
         inhibit = new TypedIOPort(this, "inhibit", true, false);
+        inhibit.setMultiport(true);
         inhibit.setTypeEquals(BaseType.GENERAL);
+        StringAttribute cardinality = new StringAttribute(inhibit, "_cardinal");
+        cardinality.setExpression("SOUTH");
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"0,20 0,0\"/>\n"
+                + "<polyline points=\"-30,-0 -10,0\"/>\n"
+                + "<polyline points=\"-10,-10 10,10\" style=\"stroke:red\"/>\n"
+                + "<polyline points=\"-10,10 10,-10\" style=\"stroke:red\"/>\n"
+                + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,19 +138,21 @@ public class Inhibit extends DETransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         // FIXME: non-strict version would be preferred in SR
-        if (inhibit.hasToken(0)) {
-            // Consume the inhibit token.
-            inhibit.get(0);
-
-            for (int i = 0; i < input.getWidth(); i++) {
-                while (input.hasToken(i)) {
-                    input.get(i);
-                }
+        boolean hasInhibit = false;
+        for (int i = 0; i < inhibit.getWidth(); i++) {
+            if (inhibit.hasToken(i)) {
+                // Consume the inhibit token.
+                inhibit.get(i);
+                hasInhibit = true;
             }
-        } else {
-            for (int i = 0; i < input.getWidth(); i++) {
-                while (input.hasToken(i)) {
-                    output.send(i, input.get(i));
+        }
+        // Consume the inputs.
+        int outputWidth = output.getWidth();
+        for (int i = 0; i < input.getWidth(); i++) {
+            while (input.hasToken(i)) {
+                Token token = input.get(i);
+                if (!hasInhibit && i < outputWidth) {
+                    output.send(i, token);
                 }
             }
         }

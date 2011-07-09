@@ -86,6 +86,7 @@ public class Sampler extends Transformer {
                 + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
 
         trigger = new TypedIOPort(this, "trigger", true, false);
+        trigger.setMultiport(true);
 
         // Width constraint. Not bidirectional to not break any existing models.
         output.setWidthEquals(input, true);
@@ -140,13 +141,21 @@ public class Sampler extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
-        if (trigger.hasToken(0)) {
-            // Read and record the input.
-            int width = Math.min(input.getWidth(), output.getWidth());
-            for (int i = 0; i < input.getWidth(); i++) {
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
+        
+        boolean hasTrigger = false;
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
+                hasTrigger = true;
+            }
+        }
+        
+        // Read the input and send it to the output if a trigger has arrived.
+        int width = Math.min(input.getWidth(), output.getWidth());
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                Token token = input.get(i);
+                if (hasTrigger) {
                     if (_debugging) {
                         _debug("Sampled input value " + token + " at time "
                                 + getDirector().getModelTime());

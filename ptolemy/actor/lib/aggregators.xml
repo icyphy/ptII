@@ -15,6 +15,7 @@
   <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler"/>
   <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler"/>
   <entity name="RecordUpdater" class="ptolemy.actor.lib.RecordUpdater"/>
+  <entity name="Sampler" class="ptolemy.actor.lib.Sampler"/>
   <entity name="Select" class="ptolemy.actor.lib.Select"/>
   <entity name="SingleTokenCommutator" class="ptolemy.actor.lib.SingleTokenCommutator"/>
   <entity name="Switch" class="ptolemy.actor.lib.Switch"/>

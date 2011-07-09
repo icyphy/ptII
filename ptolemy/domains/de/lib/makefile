@@ -86,6 +86,7 @@ OTHER_FILES_TO_BE_JARED = \
 	NonInterruptibleTimerIcon.xml \
 	PIDicon.xml \
 	PIDicon.gif \
+	PreviousIcon.xml \
 	QueueIcon.xml \
 	ServerIcon.xml \
 	SharedQueueIcon.xml \
