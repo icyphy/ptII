@@ -131,8 +131,16 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // the _splitBody() calls.
 
         String resolveToplevelTypes = "";
-        if (!_toplevelTypesResolved) {
-            _toplevelTypesResolved = true;
+        if (_toplevelTypesResolved != getComponent().toplevel()) {
+	    // _toplevelTypesResolved is static, so we set it the the value
+	    // of the current toplevel in case we generate code for multiple
+	    // models.  The Tcl test suite replicates this by generating
+	    // code for the DotProduct model multiple times.  A short cut is the following:
+	    //
+	    // set args [java::new {String[]} 3 [list "-language" "java" "auto/DotProduct.xml"]]
+	    // java::call ptolemy.cg.kernel.generic.GenericCodeGenerator generateCode $args
+	    // java::call ptolemy.cg.kernel.generic.GenericCodeGenerator generateCode $args
+            _toplevelTypesResolved = getComponent().toplevel();
             resolveToplevelTypes = "try {" + _eol
                 //+ "    TypedCompositeActor.resolveTypes($containerSymbol());" + _eol
                 + "    TypedCompositeActor.resolveTypes(_toplevel);" + _eol
@@ -1603,9 +1611,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     /** True if _autoAdapterSetPrivateParameter() should be declared. */
     private boolean _needAutoAdapterSetPrivateParameter = false;
 
-    /** True if resolveTyped() has been called on the _toplevel.
+    /** The toplevel for which we generated code to call resolveTypes().
+     *  This is static, but changes for each model.	
      */
-    private static boolean _toplevelTypesResolved = false;
+    private static NamedObj _toplevelTypesResolved = null;
 
     /** If {@link #isAutoAdaptered(NamedObj)} is called, then
      *  {@link #getAutoAdapter(GenericCodeGenerator, Object)} sets
