@@ -30,6 +30,7 @@ package ptolemy.vergil.kernel.attributes;
 import java.util.Collection;
 
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -270,8 +271,11 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
         try {
             if (container != null) {
                 if (_attribute instanceof Variable) {
-                    String value = ((Variable) _attribute).getToken()
-                            .toString();
+                    Token token = ((Variable) _attribute).getToken();
+                    String value = "absent";
+                    if (token != null) {
+                        value = token.toString();
+                    }
                     String truncated = value;
                     int width = _displayWidth;
 
