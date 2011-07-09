@@ -82,19 +82,24 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
             super(actor);
         }
 
-        /** Generate the shared code. Since this is the first generate
-         *  method invoked out of all, the CodeStream object is reset
-         *  so that its code table will be re-constructed.
-         *  @exception IllegalActionException Not thrown in this base class.
+        /** Perform any setup or initialization of the adapter.
+         *  Note that this is not the Ptolemy initialize() method,
+         *  this method merely sets up any codegen-time variables 
+         *  in the adapters.  In this class, reset the gode stream and
+         *  set the code blocks to the value of the embeddedCode parameter.
+         *
+         *  @exception IllegalActionException If an error occurrs while
+         *   initializing an adapter.
          */
-        public Set<String> getSharedCode() throws IllegalActionException {
+        public void setupAdapter() throws IllegalActionException {
+            // To test this, run:
+            // $PTII/bin/vergil $PTII/ptolemy/cg/lib/test/auto/Scale_c.xml
             // FIXME: One can do optimization here so that reset
             // happens only when the embedded C code is modified.
             _templateParser.getCodeStream().reset();
             _templateParser.getCodeStream().setCodeBlocks(
                     ((ptolemy.cg.lib.EmbeddedCodeActor) getComponent()
                             .getContainer()).embeddedCode.getExpression());
-            return super.getSharedCode();
         }
     }
 }
