@@ -102,6 +102,14 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'BasicGraphController$$2.class' \
+	'BasicGraphController$$3.class' \
+	'ExportHTMLAction$$1.class' \
+	'ExportHTMLAction$$IconVisibleLocation.class' \
+	'ExportToWeb$$1.class' \
+	'ExportToWeb$$2.class' \
+	'ExportToWeb$$3.class' \
+	'LookInsideAction$$1.class' \
 	'BasicGraphController$$1.class' \
 	'BasicGraphController$$OpenBaseClassAction.class' \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \

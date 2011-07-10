@@ -72,6 +72,7 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	'SDFDirector$$1.class' \
 	'SDFDirector$$FullNameComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

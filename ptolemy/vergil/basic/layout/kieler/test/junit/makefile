@@ -64,11 +64,19 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = \
+	models
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'KielerJUnitTest$$1.class' \
+	'KielerJUnitTest$$2.class' \
+	'KielerJUnitTest$$3.class' \
+	'KielerJUnitTest$$4.class' \
+	'KielerJUnitTest$$5.class' \
+	'KielerJUnitTest$$6.class'
+
 
 
 JCLASS =	$(JSRCS:%.java=%.class)

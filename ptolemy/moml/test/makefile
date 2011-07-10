@@ -135,7 +135,8 @@ MISC_FILES =	alljtests.tcl \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	NoPackageActor.class \
-	'UnloadModelTest$$1.class'
+	'UnloadModelTest$$1.class' \
+	'UnloadModelTest$$UnloadThread.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

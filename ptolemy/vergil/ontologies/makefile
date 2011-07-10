@@ -76,11 +76,13 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'ConceptRelationController$$1.class' \
 	'ConceptController$$ToggleAcceptabilityAction.class' \
 	'ConceptRelationController$$RelationDropper.class' \
 	'ConceptRelationController$$RelationRenderer.class' \
 	'ConceptRelationController$$RelationTarget.class' \
 	'OntologyEntityController$$OpenInstanceAction.class' \
+	'OntologyGraphController$$1.class' \
 	'OntologyGraphController$$NewConceptAction.class' \
 	'OntologyGraphController$$RelationCreator.class' \
 	'OntologyGraphFrame$$DebugMenuListener.class' \
@@ -100,9 +102,11 @@ OPTIONAL_FILES = \
 	'OntologySolverGraphFrame$$InstantiateEntityAction.class' \
 	'OntologySolverGraphFrame$$LayoutAction.class' \
 	'OntologySolverGraphFrame$$SaveInLibraryAction.class' \
-	'OntologySolverGrpahModel$$OntologyModel.class' \
-	'OntologySolverGrpahModel$$OntologyModel$$1.class' \
-	'OntologySolverTableau$$Factory.class'
+	'OntologySolverGraphModel$$OntologyModel$$1.class' \
+	'OntologySolverGraphModel$$OntologyModel.class' \
+	'OntologySolverTableau$$Factory.class' \
+	'ReportOntologyLatticeStatus$$1.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

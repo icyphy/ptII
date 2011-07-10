@@ -79,7 +79,8 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	demo \
 	'CCodeGenerator$$1.class' \
-	'CCodeGeneratorAdapter$$1.class'
+	'CCodeGeneratorAdapter$$1.class' \
+	'CCodeGenerator$$_JniFileFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

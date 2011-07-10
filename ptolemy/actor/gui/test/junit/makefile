@@ -68,8 +68,9 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
-
+OPTIONAL_FILES = \
+	'HTMLAboutJUnitTest$$1.class' \
+	'HTMLAboutJUnitTest$$2.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
