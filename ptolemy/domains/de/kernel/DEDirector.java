@@ -570,6 +570,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             if (result.compareTo(getModelTime()) == 0 && index <= _microstep && !_isInitializing) {
                 // NOTE: Incrementing the microstep here is wrong if we are in initialize().
                 index = _microstep + 1;
+                
+                if (index == Integer.MAX_VALUE) {
+                    throw new IllegalActionException(this, actor,
+                            "Microstep has hit the maximum while scheduling a firing of "
+                            + actor.getFullName()
+                            + ". Perhaps the model has a stuttering Zeno Condition?");
+                }
             }
 
             _enqueueEvent(actor, result, index);
@@ -1383,6 +1390,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             // only the first request will be granted.
             if (!_isInitializing) {
                 microstep = _microstep + 1;
+                
+                if (microstep == Integer.MAX_VALUE) {
+                    throw new IllegalActionException(this, actor,
+                            "Microstep has hit the maximum while scheduling a firing of "
+                            + actor.getFullName()
+                            + ". Perhaps the model has a stuttering Zeno Condition?");
+                }
             }
         } else if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(actor,
