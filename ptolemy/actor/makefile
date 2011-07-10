@@ -122,11 +122,14 @@ JSRCS = \
 	TypedIOPort.java \
 	TypedIORelation.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	JavaSEActorModule.properties
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	util sched process gt gui lib parameters designs test ptalon
+MISC_FILES =	util sched process gt gui injection lib parameters designs test ptalon
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -136,6 +139,7 @@ OPTIONAL_FILES = \
 	'FiringEvent$$1.class' \
 	'FiringEvent$$FiringEventType.class' \
 	'LazyTypedCompositeActor$$ContainedObjectsIterator.class' \
+	'Manager$$1.class' \
 	'Manager$$ErrorReportingThread.class' \
 	'Manager$$PtolemyRunThread.class' \
 	'Manager$$State.class' \

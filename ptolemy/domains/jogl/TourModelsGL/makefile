@@ -68,6 +68,7 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'cubeTriangle$$1$$1$$1.class' \
 	'cubeTriangle$$1$$1.class' \
 	'cubeTriangle$$1.class' \
 	'TourModelsCanvasGL$$1.class' \

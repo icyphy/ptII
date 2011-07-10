@@ -96,6 +96,7 @@ OPTIONAL_FILES = \
     'InequalitySolver$$Info.class' \
     'LabeledList$$1.class' \
     'LabeledList$$SubList.class' \
+    'NonLatticeCounterExample$$1.class' \
     'NonLatticeCounterExample$$ExampleType.class' \
     'NonLatticeCounterExample$$GraphExampleType.class'
 
