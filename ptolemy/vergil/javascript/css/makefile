@@ -54,7 +54,9 @@ PTCLASSJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	jquery.lightbox-0.5.css
+	jquery.lightbox-license.htm \
+	jquery.lightbox-0.5.css \
+	logo_code.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

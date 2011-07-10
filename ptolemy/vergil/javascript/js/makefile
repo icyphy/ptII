@@ -54,6 +54,7 @@ PTCLASSJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	jquery-license.htm \
 	jquery.js \
 	jquery.lightbox-0.5.js \
 	jquery.lightbox-0.5.min.js \
