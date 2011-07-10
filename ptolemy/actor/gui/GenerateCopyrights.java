@@ -197,6 +197,10 @@ public class GenerateCopyrights {
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
         _addIfPresent(copyrightsMap,
+                "ptolemy.vergil.basic.ExportHTMLAction",
+                "ptolemy/vergil/javascript/javascript-license.htm");
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.opencv.OpenCVReader",
                 "ptolemy/actor/lib/opencv/opencv-copyright.htm");
 
