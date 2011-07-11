@@ -1,6 +1,6 @@
-/* RTMaude Code generator helper class for the VariableDelay class.
+/* RTMaude Code generator helper for Transformer
 
- Copyright (c) 2009-2010 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,29 +25,29 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.rtmaude.domains.de.lib;
+package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.rtmaude.actor.lib.Transformer;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
-//// VariableDelay
+////TypedAtomicActor
 
 /**
- * Generate RTMaude code for a VariableDelay in DE domain.
+ * Generate RTMaude code for a Transformer
  *
- * @see ptolemy.domains.de.lib.VariableDelay
- * @author Kyungmin Bae
+ * @see ptolemy.actor.Transformer
+ * @author Christopher Brooks
+ * @since Ptolemy II 8.1
  * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating red (kquine)
- * @Pt.AcceptedRating red (kquine)
+ * @Pt.ProposedRating red (cxh)
+ * @Pt.AcceptedRating red (cxh)
  */
-public class VariableDelay extends Transformer {
-    /**
-     * Constructor method for the VariableDelay adapter.
-     * @param component The associated actor
+public class Transformer extends TypedAtomicActor {
+    /** Construct the code generator helper associated
+     *  with the given Transformer.
+     *  @param component The associated TypedAtomicActor.
      */
-    public VariableDelay(ptolemy.domains.de.lib.VariableDelay component) {
+    public Transformer(ptolemy.actor.lib.Transformer component) {
         super(component);
     }
 }
