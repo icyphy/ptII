@@ -111,9 +111,9 @@ public class ActorGraphTableau extends Tableau {
         setFrame(frame);
         frame.setBackground(BACKGROUND_COLOR);
     }
-    
+
     /** Invoke the close() method of the superclass and optionally
-     *  print a debugging message.	
+     *  print a debugging message.
      *  If {@link ptolemy.actor.gui.Tableau#_debugClosing} is
      *  true, then a message is printed to standard out.
      *  This method is used for debugging memory leaks.
@@ -125,7 +125,7 @@ public class ActorGraphTableau extends Tableau {
         if (_debugClosing) {
             System.out.println("ActorGraphTableau.close() : " + getFrame().getName());
         }
-        
+
         return super.close();
     }
 
@@ -168,7 +168,7 @@ public class ActorGraphTableau extends Tableau {
          *  tableau.
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
-            // Need to check for PlotEffigy here, or 
+            // Need to check for PlotEffigy here, or
             // $PTII/bin/vergil $PTII/ptolemy/plot/demo/sinusoids.xml will not open the
             // plot.
             if (effigy instanceof PtolemyEffigy && ! (effigy instanceof PlotEffigy)) {

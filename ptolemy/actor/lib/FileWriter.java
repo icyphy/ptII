@@ -78,7 +78,7 @@ public class FileWriter extends Sink {
     public FileWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         if (_stdOut == null) {
             _stdOut = new OutputStreamWriter(System.out);
         }
@@ -90,7 +90,7 @@ public class FileWriter extends Sink {
         filename.setTypeEquals(BaseType.STRING);
         (new SingletonParameter(filename.getPort(), "_showName"))
                 .setToken(BooleanToken.TRUE);
-        
+
         (new SingletonParameter(input, "_showName"))
                 .setToken(BooleanToken.TRUE);
 
@@ -105,7 +105,7 @@ public class FileWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The name of the file to write to. 
+    /** The name of the file to write to.
      *  By default, this parameter contains an empty string, which
      *  is interpreted to mean that output should be directed to the
      *  standard output.
@@ -116,9 +116,9 @@ public class FileWriter extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Clone the actor. 
-     *  @throws CloneNotSupportedException If the superclass throws it.
+
+    /** Clone the actor.
+     *  @exception CloneNotSupportedException If the superclass throws it.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FileWriter newObject = (FileWriter)super.clone(workspace);
@@ -126,7 +126,7 @@ public class FileWriter extends Sink {
         newObject._writer = null;
         return newObject;
     }
-    
+
     /** Read at most one token from each input channel and write its
      *  string value.  If the filename input has changed since the
      *  last writing, then open the new file for writing. Otherwise,
@@ -210,10 +210,10 @@ public class FileWriter extends Sink {
         // To get the file to close.
         _setWriter(null);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Set the writer.  If there was a previous writer, close it.
      *  To set standard output, call this method with argument null.
      *  @param writer The writer to write to.
@@ -241,7 +241,7 @@ public class FileWriter extends Sink {
 
     /** The previously used filename, or null if none has been previously used. */
     private String _previousFilename = null;
-    
+
     /** Standard out as a writer. */
     private static java.io.Writer _stdOut = null;
 

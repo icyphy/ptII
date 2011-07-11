@@ -127,7 +127,7 @@ public abstract class ConceptGraph implements CPO {
     public Concept greatestLowerBound(Object[] subset) {
         return _getBoundForConceptSubset(subset, BoundType.GREATESTLOWER);
     }
-    
+
     /** Return whether this concept graph is a lattice.
      *  Should be true for all existing concept graphs.
      *
@@ -210,11 +210,11 @@ public abstract class ConceptGraph implements CPO {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
-    
+    ////                         private methods                   ////
+
     /** Return the concept that is either the greatest lower or least upper
      *  bound for the given array of concepts.
-     *  
+     *
      *  @param subset The array of concepts from which to calculate the bound.
      *  @param boundType Specifies the type of bound to be returned; either
      *   GREATESTLOWER or LEASTUPPER.
@@ -226,7 +226,7 @@ public abstract class ConceptGraph implements CPO {
     private Concept _getBoundForConceptSubset(Object[] subset,
             BoundType boundType) {
         Concept[] conceptSubset = _getConceptArrayFromObjectArray(subset);
-        
+
         if (conceptSubset != null && conceptSubset.length > 0) {
             Concept bound = conceptSubset[0];
             for (Concept concept : conceptSubset) {
@@ -248,10 +248,10 @@ public abstract class ConceptGraph implements CPO {
             return null;
         }
     }
-    
+
     /** Assuming the input array of objects is an array of concepts, return
      *  a new concept array that contains all the elements of the input array.
-     *  
+     *
      *  @param elementArray The input array of objects.
      *  @return An array of concepts that contains all the elements of the
      *   input array.
@@ -262,25 +262,25 @@ public abstract class ConceptGraph implements CPO {
         if (elementArray == null) {
             return null;
         }
-        
+
         Concept[] conceptArray = new Concept[elementArray.length];
         for (int i = 0; i < elementArray.length; i++) {
             if (elementArray[i] instanceof Concept) {
                 conceptArray[i] = (Concept) elementArray[i];
             } else {
                 throw new IllegalArgumentException("Array of element objects " +
-                		"are not all Concepts. Element " + i +
-                		"is " + elementArray[i] + " which is an instance " +
-                		"of " + elementArray[i].getClass() + ".");
+                                "are not all Concepts. Element " + i +
+                                "is " + elementArray[i] + " which is an instance " +
+                                "of " + elementArray[i].getClass() + ".");
             }
-        }        
+        }
         return conceptArray;
     }
 
     /** Return the concept from the given subset of concepts that is the
      *  least or greatest.
      *
-     *  @param subset The set of concepts in question. 
+     *  @param subset The set of concepts in question.
      *  @param direction The directionality of the extremity. CPO.HIGHER
      *    for greatest, and CPO.LOWER for least.
      *  @return The concept at the extremity, if it exists. Null, if no
@@ -288,7 +288,7 @@ public abstract class ConceptGraph implements CPO {
      */
     private Concept _superlativeElement(Object[] subset, int direction) {
         Concept[] conceptSubset = _getConceptArrayFromObjectArray(subset);
-        
+
         if (conceptSubset != null && conceptSubset.length > 0) {
             Concept superlative = conceptSubset[0];
             for (Object concept : conceptSubset) {

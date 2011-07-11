@@ -32,9 +32,9 @@ package ptdb.common.exception;
 //// CircularDependencyException
 
 /**
- * Exception thrown when an attempt to save a model with references or import a 
- * model by reference would result in a circular dependency.  A circular 
- * dependency occurs when a child model contains a reference to one of its 
+ * Exception thrown when an attempt to save a model with references or import a
+ * model by reference would result in a circular dependency.  A circular
+ * dependency occurs when a child model contains a reference to one of its
  * parents.
  *
  * @author Lyle Holsinger

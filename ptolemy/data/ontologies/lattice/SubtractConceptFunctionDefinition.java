@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Settable;
 //// SubtractConceptFunctionDefinition
 
 /** Concept function definition attribute specifically for arithmetic subtraction.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1

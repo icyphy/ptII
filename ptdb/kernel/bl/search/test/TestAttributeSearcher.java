@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -60,8 +60,8 @@ public class TestAttributeSearcher {
      *
      * <p>Test the case when there is no next result handler set in the
      * searcher. </p>
-     * @exception DBConnectionException Thrown if the DB connection cannot be 
-     * attained. 
+     * @exception DBConnectionException Thrown if the DB connection cannot be
+     * attained.
      */
     @Test
     public void testWholeSearchDoneWithoutNextHandler() throws DBConnectionException {

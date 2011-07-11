@@ -46,7 +46,7 @@ public interface IconLoader {
 
     // This interface is used by Kepler so that the createHierarchy
     // command brings up the proper icon.
-    // See kepler/gui/src/org/kepler/gui/KeplerGraphFrame.java   
+    // See kepler/gui/src/org/kepler/gui/KeplerGraphFrame.java
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

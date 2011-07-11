@@ -1,11 +1,11 @@
-/* 
+/*
 The source code is originally from:
 
 
  Pro Java 6 3D Game Development
  Andrew Davison
  Apress, April 2007
- ISBN: 1590598172 
+ ISBN: 1590598172
  http://www.apress.com/book/bookDisplay.html?bID=10256
  Web Site for the book: http://fivedots.coe.psu.ac.th/~ad/jg2
 
@@ -36,21 +36,21 @@ import javax.media.opengl.GL;
 /** Load the OBJ model from MODEL_DIR, centering and scaling it.
    The scale comes from the sz argument in the constructor, and
    is implemented by changing the vertices of the loaded model.
-   
+
    <p>The model can have vertices, normals and tex coordinates, and
    refer to materials in a MTL file.</p>
 
-   <p>The OpenGL commands for rendering the model are stored in 
+   <p>The OpenGL commands for rendering the model are stored in
    a display list (modelDispList), which is drawn by calls to
    draw().</p>
 
    <p>Information about the model is printed to stdout.</p>
 
    <p>Based on techniques used in the OBJ loading code in the
-   JautOGL multiplayer racing game by Evangelos Pournaras 
+   JautOGL multiplayer racing game by Evangelos Pournaras
    (<a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doccheck/ptolemy/cg/lib/PackageErrors.html">http://chess.eecs.berkeley.edu/ptexternal/nightly/doccheck/ptolemy/cg/lib/PackageErrors.html</a>
-   and <a href="https://jautogl.dev.java.net/">https://jautogl.dev.java.net/</a>), and the 
-   Asteroids tutorial by Kevin Glass 
+   and <a href="https://jautogl.dev.java.net/">https://jautogl.dev.java.net/</a>), and the
+   Asteroids tutorial by Kevin Glass
    (<a href="http://www.cokeandcode.com/asteroidstutorial">http://www.cokeandcode.com/asteroidstutorial</a>)</p>
 
    <p>CHANGES (Feb 2007)
@@ -70,9 +70,9 @@ public class OBJModel
   private ArrayList<Tuple3> verts;
   private ArrayList<Tuple3> normals;
   private ArrayList<Tuple3> texCoords;
-  private boolean hasTCs3D = true;  
+  private boolean hasTCs3D = true;
         // whether the model uses 3D or 2D tex coords
-  private boolean flipTexCoords = false;   
+  private boolean flipTexCoords = false;
     // whether tex coords should be flipped around the y-axis
 
   private Faces faces;              // model faces
@@ -89,7 +89,7 @@ public class OBJModel
   /** Construct a model.
    *  @param nm The model name.
    *  @param gl The GL object to be rendered.
-   */ 
+   */
   public OBJModel(String nm, GL gl)
   {  this(nm, 1.0f, gl, false);  }
 
@@ -100,7 +100,7 @@ public class OBJModel
    *  @param gl The GL object to be rendered.
    *  @param showDetails True if details are to be printed
    *  to standard out.
-   */ 
+   */
   public OBJModel(String nm, float sz, GL gl, boolean showDetails)
   {
     modelNm = nm;
@@ -138,7 +138,7 @@ public class OBJModel
       br.close();
     }
     catch(IOException e)
-    {  System.out.println(e.getMessage());  
+    {  System.out.println(e.getMessage());
        System.exit(1);
     }
   }  // end of loadModel()
@@ -160,7 +160,7 @@ public class OBJModel
         lineNum++;
         if (line.length() > 0) {
           line = line.trim();
-                    
+
           if (line.startsWith("v ")) {   // vertex
             isLoaded = addVert(line, isFirstCoord);
             if (isFirstCoord)
@@ -180,7 +180,7 @@ public class OBJModel
           else if (line.startsWith("mtllib "))   // load material
             materials = new Materials( line.substring(7) );
           else if (line.startsWith("usemtl "))   // use material
-            faceMats.addUse( numFaces, line.substring(7));   
+            faceMats.addUse( numFaces, line.substring(7));
           else if (line.charAt(0) == 'g') {  // group name
             // not implemented
           }
@@ -200,7 +200,7 @@ public class OBJModel
     }
 
     if (!isLoaded) {
-      System.out.println("Error loading model");  
+      System.out.println("Error loading model");
       System.exit(1);
     }
   } // end of readModel()
@@ -208,10 +208,10 @@ public class OBJModel
 
 
   private boolean addVert(String line, boolean isFirstCoord)
-  /* Add vertex from line "v x y z" to vert ArrayList, 
+  /* Add vertex from line "v x y z" to vert ArrayList,
      and update the model dimension's info. */
   {
-	Tuple3 vert = readTuple3(line);
+        Tuple3 vert = readTuple3(line);
     if (vert != null) {
       verts.add(vert);
       if (isFirstCoord)
@@ -232,16 +232,16 @@ public class OBJModel
   {
     StringTokenizer tokens = new StringTokenizer(line, " ");
     tokens.nextToken();    // skip the OBJ word
-		
+
     try {
       float x = Float.parseFloat(tokens.nextToken());
       float y = Float.parseFloat(tokens.nextToken());
       float z = Float.parseFloat(tokens.nextToken());
-			
+
       // System.out.println("Read tuple " + x + ", " + y + ", " + z);
       return new Tuple3(x,y,z);
-    } 
-    catch (NumberFormatException e) 
+    }
+    catch (NumberFormatException e)
     {  System.out.println(e.getMessage());  }
 
     return null;   // means an error occurred
@@ -250,7 +250,7 @@ public class OBJModel
 
 
   private boolean addTexCoord(String line, boolean isFirstTC)
-  /* Add the texture coordinate from the line "vt x y z" to 
+  /* Add the texture coordinate from the line "vt x y z" to
      the texCoords ArrayList. There may only be two tex coords
      on the line, which is determined by looking at the first
      tex coord line. */
@@ -260,7 +260,7 @@ public class OBJModel
       System.out.println("Using 3D tex coords: " + hasTCs3D);
     }
 
-	Tuple3 texCoord = readTCTuple(line);
+        Tuple3 texCoord = readTCTuple(line);
     if (texCoord != null) {
       texCoords.add( texCoord );
       return true;
@@ -287,7 +287,7 @@ public class OBJModel
   {
     StringTokenizer tokens = new StringTokenizer(line, " ");
     tokens.nextToken();    // skip "vt" OBJ word
-		
+
     try {
       float x = Float.parseFloat(tokens.nextToken());
       float y = Float.parseFloat(tokens.nextToken());
@@ -295,10 +295,10 @@ public class OBJModel
       float z = DUMMY_Z_TC;
       if (hasTCs3D)
         z = Float.parseFloat(tokens.nextToken());
-			
+
       return new Tuple3(x,y,z);
-    } 
-    catch (NumberFormatException e) 
+    }
+    catch (NumberFormatException e)
     {  System.out.println(e.getMessage());  }
 
     return null;   // means an error occurred
@@ -308,7 +308,7 @@ public class OBJModel
   private boolean addNormal(String line)
   // add normal from line "vn x y z" to the normals ArrayList
   {
-	Tuple3 normCoord = readTuple3(line);
+        Tuple3 normCoord = readTuple3(line);
     if (normCoord != null) {
       normals.add( normCoord );
       return true;
@@ -363,7 +363,7 @@ public class OBJModel
     for (int i = 0; i < faces.getNumFaces(); i++) {
       faceMat = faceMats.findMaterial(i);       // get material used by face i
       if (faceMat != null)
-        flipTexCoords = 
+        flipTexCoords =
            materials.renderWithMaterial(faceMat, gl);  // render using that material
       faces.renderFace(i, flipTexCoords, gl);                  // draw face i
     }
@@ -377,9 +377,9 @@ public class OBJModel
 
   /** Draw the model
    *  @param gl The GL object to be rendered.
-   */   
+   */
   public void draw(GL gl)
-  {  gl.glCallList(modelDispList);  } 
+  {  gl.glCallList(modelDispList);  }
 
 
 
@@ -390,11 +390,11 @@ public class OBJModel
     System.out.println("No. of tex coords: " + texCoords.size());
     System.out.println("No. of faces: " + faces.getNumFaces());
 
-    modelDims.reportDimensions();  
+    modelDims.reportDimensions();
         // dimensions of model (before centering and scaling)
 
     if (materials != null)
-      materials.showMaterials();   // list defined materials 
+      materials.showMaterials();   // list defined materials
     faceMats.showUsedMaterials();  // show what materials have been used by faces
   }  // end of reportOnModel()
 

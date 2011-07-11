@@ -786,15 +786,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _libraryModel.setRoot(null);
         }
         _openGraphFrames.remove(this);
-        
+
         GraphPane pain = _jgraph.getGraphPane();
         EventLayer fel = pain.getForegroundEventLayer();
         fel.removeLayerListener(_mousePressedLayerAdapter);
 
-        //int removed = 
+        //int removed =
         MemoryCleaner.removeActionListeners(_toolbar);
         //System.out.println("BasicGraphFrame toolbar action listeners removed: " + removed);
-        
+
         getModel().removeChangeListener(this);
         _rightComponent.removeMouseWheelListener(this);
         _rightComponent.removeMouseMotionListener(this);
@@ -803,9 +803,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (_libraryContextMenuCreator != null) {
             _libraryContextMenuCreator.clear();
         }
-        
+
         _mousePressedLayerAdapter = null;
-        
+
         // Top.dispose() sets all the AbstractAction to null.
         disposeSuper();
     }
@@ -817,7 +817,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (_debugClosing) {
             System.out.println("BasicGraphFrame.disposeSuper() : " + this.getName());
         }
-        
+
         // This method is used by Kepler for the tabbed pane interface.
         super.dispose();
     }
@@ -1080,7 +1080,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     Tableau kielerTableau = tableauFactory.createTableau(
                     //getModel(), this);
                             (PtolemyEffigy) getTableau().getContainer());
-                    
+
                     kielerTableau.show();
                     success = true;
                 } catch (Throwable throwable) {
@@ -1125,17 +1125,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     Class layoutGraphActionClass = Class
                             .forName(layoutGraphActionClassName);
                     Object layoutAction = null;
-                    
+
                     Constructor layoutGraphActionConstructor = layoutGraphActionClass
-                            .getDeclaredConstructor();         
-                    
+                            .getDeclaredConstructor();
+
                   layoutAction = (Object) layoutGraphActionConstructor
                   .newInstance();
-                  
+
                   if (layoutAction instanceof IGuiAction) {
                       ((IGuiAction)layoutAction).doAction(getModel());
                   }
-                  
+
                     success = true;
                 } catch (Throwable throwable) {
                     new Exception(
@@ -1389,7 +1389,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             MessageHandler.error("Undo failed", ex);
         }
     }
-    
+
     /** Write an HTML page based on the current view of the model
      *  to the specified destination directory. The file will be
      *  named "index.html," and supporting files, including at
@@ -1408,9 +1408,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  current view using the {@link #writeImage(OutputStream, String)}
      *  method.
      *  @param directory The directory in which to put any associated files.
-     *  @throws IOException If unable to write associated files, or if the
+     *  @exception IOException If unable to write associated files, or if the
      *   current configuration does not support it.
-     *  @throws PrinterException If unable to write associated files.
+     *  @exception PrinterException If unable to write associated files.
      */
     public void writeHTML(File directory) throws PrinterException, IOException {
         if (_exportHTMLAction != null) {
@@ -1419,15 +1419,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             throw new IOException("Export to Web not supported.");
         }
     }
-    
+
     /** Write an image to the specified output stream in the specified format.
      *  Supported formats include at least "gif" and "png", standard image file formats.
      *  The image is a rendition of the current view of the model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
      *  @see #writeHTML(File)
-     *  @throws IOException If writing to the stream fails.
-     *  @throws PrinterException  If the specified format is not supported.
+     *  @exception IOException If writing to the stream fails.
+     *  @exception PrinterException  If the specified format is not supported.
      */
     public void writeImage(OutputStream stream, String format) throws PrinterException, IOException {
         getJGraph().exportImage(stream, format);
@@ -1842,7 +1842,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
-        
+
         GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
         if (getModel() == getModel().toplevel()) {
             // If we are at the top level, disable
@@ -2012,10 +2012,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
-        
+
         JMenu exportMenu = (JMenu)fileMenuItems[_EXPORT_MENU_INDEX];
         exportMenu.setEnabled(true);
-        
+
         try {
             // Get the "export PDF" action classname from the configuration.
             // This may or many not be included because it depends on GPL'd code,
@@ -2053,7 +2053,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         }
                     }
                 }
-                
+
                 // Deal with the HTML Action first.
                 StringParameter exportHTMLActionClassNameParameter = (StringParameter) configuration
                         .getAttribute("_exportHTMLActionClassName",
@@ -2091,8 +2091,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // We don't want it always enabled because ptiny, the applets and
         // Web Start should not included this AGPL'd piece of software
 
-	// NOTE: Comment out the entire block with lines that begin with //
-	// so that the test in adm notices that the block is commented out.
+        // NOTE: Comment out the entire block with lines that begin with //
+        // so that the test in adm notices that the block is commented out.
 
 //          if (_exportPDFAction == null) {
 //              //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
@@ -2119,7 +2119,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             JMenuItem exportItem = new JMenuItem(_exportPDFAction);
             exportMenu.add(exportItem);
         }
-        
+
         // Next do the export GIF action.
         if (_exportGIFAction == null) {
             _exportGIFAction = new ExportImageAction("GIF");
@@ -2158,14 +2158,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected JComponent _createRightComponent(NamedObj entity) {
         GraphPane pane = _createGraphPane(entity);
-        
+
         FigureLayer fl = pane.getForegroundLayer();
         fl.setPickHalo(2);
-        
+
         EventLayer fel = pane.getForegroundEventLayer();
         fel.setConsuming(false);
         fel.setEnabled(true);
-        
+
         _mousePressedLayerAdapter = new MousePressedLayerAdapter();
         fel.addLayerListener(_mousePressedLayerAdapter);
 
@@ -2312,7 +2312,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     protected JComponent _getRightComponent() {
         return _rightComponent;
     }
-    
+
     /** Return a set of instances of NamedObj representing the objects
      *  that are currently selected.  This set has no particular order
      *  to it. If you need the selection objects in proper order, as
@@ -2340,7 +2340,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     NamedObj actual = (NamedObj) graphModel
                             .getSemanticObject(userObject);
                     //System.out.println("BasicGraphFrame._getSelectionSet() actual: " + actual.getClass().getName());
-                    //if ( !(actual instanceof PortParameter)) { 
+                    //if ( !(actual instanceof PortParameter)) {
                     nodeSet.add(userObject);
                     namedObjSet.add(actual);
                     //}
@@ -2410,7 +2410,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  and items are selected, then the user is asked if they
      *  want to save only the selected objects.
      *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true
-     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsJFileChooserComponent()} is used.</p>
      *  @return A file dialog for save as.
      */
@@ -2440,7 +2440,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  and items are selected, then the user is asked if they
      *  want to save only the selected objects.
      *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false
-     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsFileDialogComponent()} is used.</p>
 
      *  @return A file dialog for save as.
@@ -2728,7 +2728,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The export to PDF action. */
     protected Action _exportPDFAction;
-    
+
     /** The export to PNG action. */
     protected Action _exportPNGAction;
 
@@ -2804,7 +2804,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action for opening the container, moving uplevel. */
     private Action _openContainerAction = new OpenContainerAction(
             "Open the container");
-    
+
     /** X coordinate of where we last processed a press or drag of the
      *  middle mouse button.
      */
@@ -2828,7 +2828,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     private Action _undoAction = new UndoAction();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** A Layer Adapter to handle the mousePressed layer event. */
     protected class MousePressedLayerAdapter extends LayerAdapter {
@@ -2843,7 +2843,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// CopyAction
 
@@ -3024,11 +3024,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            }
     //        }
     //    }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ExportImageAction
 
-    /** Export an image of the model. */ 
+    /** Export an image of the model. */
     public class ExportImageAction extends AbstractAction {
         /** Create a new action to export an image.
          *  @param formatName The image format to be exported,
@@ -3075,7 +3075,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                 }
 
-                int returnVal = fileDialog.showDialog(BasicGraphFrame.this, "Export " 
+                int returnVal = fileDialog.showDialog(BasicGraphFrame.this, "Export "
                         + _formatName.toUpperCase());
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -3113,10 +3113,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 jFileChooserBugFix.restoreBackground(background);
             }
         }
-        
+
         private String _formatName;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ExportMapAction
 
@@ -3297,7 +3297,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    
+
     /** An ActionListener for handling deletion events. */
     private class DeletionListener implements ActionListener {
         /** Delete any nodes or edges from the graph that are
@@ -3308,7 +3308,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             delete();
         }
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     //// OpenContainerAction
     /** An action to open the container of this entity. */

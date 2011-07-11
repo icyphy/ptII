@@ -66,7 +66,7 @@ public class KielerLayoutTableauFactory extends TableauFactory {
      * the specified effigy is not an instance of PtolemyEffigy, then do not
      * create a tableau and return null. It is the responsibility of callers of
      * this method to check the return value and call show().
-     * 
+     *
      * @param effigy The model effigy.
      * @return A new control panel tableau if the effigy is a PtolemyEffigy, or
      *         null otherwise.

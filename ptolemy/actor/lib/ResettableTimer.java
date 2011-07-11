@@ -147,7 +147,7 @@ public class ResettableTimer extends Transformer {
         newObject.output.setTypeSameAs(newObject.value);
         return newObject;
     }
-    
+
     /** Declare that the output does not immediately depend on the input.
      *  @exception IllegalActionException If causality interface
      *  cannot be computed.
@@ -158,7 +158,7 @@ public class ResettableTimer extends Transformer {
         // though there is no lower bound on the time delay.
         _declareDelayDependency(input, output, 0.0);
     }
-    
+
     /** If an output is scheduled to be produced, then produce it.
      *  @exception IllegalActionException If there is no director, or can not
      *  send or get tokens from ports.

@@ -1,26 +1,26 @@
 /*
  * An attribute that contains a model described in MoML.
- * 
+ *
  * Copyright (c) 2008-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
+ *
  */
 package ptolemy.moml;
 
@@ -62,7 +62,7 @@ import ptolemy.util.FileUtilities;
  * as an attribute contained by this instance.  Instead of
  * having an explicit compile-time dependency between this class and
  * MoMLModelAttributeControllerFactory, derived classes should use MoML
- * to set up the containment relationship.  For example,      
+ * to set up the containment relationship.  For example,
  * <pre>
  * <property name="MyAttribute" class="ptolemy.moml.MoMLModelAttribute">
  *     <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
@@ -72,7 +72,7 @@ import ptolemy.util.FileUtilities;
  *     </configure>
  * </property>
  * </pre>
- *  
+ *
  * @author Dai Bui, Edward Lee, Ben Lickly, Charles Shelton
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -92,10 +92,10 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     public MoMLModelAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         modelURL = new StringParameter(this, "modelURL");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -116,21 +116,21 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     /** React to a change in an attribute. If the modelURL attribute
      *  changes, reconfigure the MoML model with the new URL string.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException Thrown if the URL string contained in the
+     *  @exception IllegalActionException Thrown if the URL string contained in the
      *   modelURL attribute is not valid.
      */
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
-        
+
         if (attribute.equals(modelURL)) {
-            if (modelURL != null && !modelURL.stringValue().equals("")) {                
+            if (modelURL != null && !modelURL.stringValue().equals("")) {
                 String modelURLString = modelURL.stringValue();
-                
+
                 // The modelURLString could be either an absolute URL string
                 // or a file location relative to the container model file location.
                 // If it is the latter, we need to create an absolute URL string.
                 modelURLString = _createAbsoluteModelURLString(modelURLString);
-                
+
                 try {
                     configure(null, modelURLString, null);
                 } catch (Exception ex) {
@@ -143,7 +143,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return a clone of this model attribute. This also creates a clone for the
      *  contained model.
      *  @param workspace The workspace for the cloned object.
@@ -171,13 +171,13 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      */
     public void configure(URL base, String source, String text)
             throws Exception {
-    	_source = null;
-    	MoMLParser parser = new MoMLParser(workspace());
-    	
-    	if (source != null && !source.trim().equals("")) {
-    	    _source = source;
+            _source = null;
+            MoMLParser parser = new MoMLParser(workspace());
+
+            if (source != null && !source.trim().equals("")) {
+                _source = source;
             _model = parser.parse(base, new URL(source));
-    	} else if (!text.trim().equals("")) {
+            } else if (!text.trim().equals("")) {
             _model = parser.parse(base, null, new StringReader(text));
         }
     }
@@ -198,13 +198,13 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      */
     public String getConfigureText() {
         // If the source is not null, there is no need for configure text,
-        // so return null. Otherwise return the model MoML text.        
+        // so return null. Otherwise return the model MoML text.
         if (_source != null) {
             return null;
         } else if (_model != null) {
             return _model.exportMoML();
         }
-        
+
         return null;
     }
 
@@ -242,19 +242,19 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  can provide a default model.
      */
     protected NamedObj _model;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return a string representing the full absolute URL of the contained model.
      *  If the input string is already an absolute URL, just return it.
-     *  If the input string is a file path location relative to the model's 
+     *  If the input string is a file path location relative to the model's
      *  directory, then return the full URL string by constructing the full
      *  URL from the base model path and the given relative path.
-     *  
+     *
      *  @param modelURLString The model URL string specified by the modelURL parameter.
      *  @return A string representing the full absolute URL for the model URL.
-     *  @throws IllegalActionException Thrown if the model URL string is invalid.
+     *  @exception IllegalActionException Thrown if the model URL string is invalid.
      */
     private String _createAbsoluteModelURLString(String modelURLString)
         throws IllegalActionException {
@@ -265,7 +265,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
             return modelURLString;
         } catch (MalformedURLException e) {
             try {
-                URI baseModelURI = URIAttribute.getModelURI(this);                
+                URI baseModelURI = URIAttribute.getModelURI(this);
                 URL modelURLObject = FileUtilities.nameToURL(modelURLString,
                         baseModelURI, null);
                 return modelURLObject.toString();
@@ -276,7 +276,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

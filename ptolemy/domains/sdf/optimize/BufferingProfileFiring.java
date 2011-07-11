@@ -1,4 +1,4 @@
-/* Firing object to be listed in a static Schedule to allow for different 
+/* Firing object to be listed in a static Schedule to allow for different
  * firing modes.
 
  Copyright (c) 1997-2010 The Regents of the University of California.
@@ -38,11 +38,11 @@ import ptolemy.actor.sched.Firing;
 <h1>Class comments</h1>
 BufferingProfileFiring is a subclass of Firing. A Schedule object represents a static
 schedule of actor firings. An object of this class enable the use of different firing modes.
-It is used by the OptimizingSDFDirector and OptimizingSDFSchedule duo when generating 
+It is used by the OptimizingSDFDirector and OptimizingSDFSchedule duo when generating
 schedules
 <p>
-See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
@@ -71,11 +71,11 @@ public class BufferingProfileFiring extends Firing {
 
 ///////////////////////////////////////////////////////////////
 ////                  public variables                     ////
-    
+
     /**
      * Indicates whether this firing is to be performed exclusively (true)
      * or shared (false).
      */
     public boolean fireExclusive;
-    
+
 }

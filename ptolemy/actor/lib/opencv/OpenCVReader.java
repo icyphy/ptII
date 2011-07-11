@@ -74,18 +74,18 @@ public class OpenCVReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
-    	_openCV.read();
-    	//_openCV.flip(OpenCV.FLIP_BOTH);
-    	
-    	PImage img = _openCV.image();
-    	OpenCVImageObject oio = new OpenCVImageObject(_openCV, img);
-    	
+            _openCV.read();
+            //_openCV.flip(OpenCV.FLIP_BOTH);
+
+            PImage img = _openCV.image();
+            OpenCVImageObject oio = new OpenCVImageObject(_openCV, img);
+
         output.send(0, new ObjectToken(oio));
     }
-   
+
     /** Open the video capture device.
      *  @exception IllegalActionException If thrown by the super class.
      */
@@ -97,9 +97,9 @@ public class OpenCVReader extends Source {
         // FIXME: Size of the image should be parameters of this object.
         _openCV.capture( 640, 480 );
         // _openCV.cascade( OpenCV.CASCADE_FRONTALFACE_ALT );
- 
+
     }
-    
+
     /** Stop the capture.
      *  @exception IllegalActionException If thrown by the super class.
      */
@@ -107,7 +107,7 @@ public class OpenCVReader extends Source {
         super.wrapup();
         _openCV.stop();
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

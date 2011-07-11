@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -60,14 +60,14 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RenameModelFrame
 
 /**
  * The frame for the user to input the new name to rename a model.  There is
  *  a text box in this frame for the user to input the new name, an update
- *   button and a close button. 
- * 
+ *   button and a close button.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -78,9 +78,9 @@ import ptolemy.util.MessageHandler;
 public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
     /**
-     * Construct the rename model frame. 
-     * 
-     * @param model The model to be renamed. 
+     * Construct the rename model frame.
+     *
+     * @param model The model to be renamed.
      * @param sourceFrame The source frame from which opened this frame.
      */
     public RenameModelFrame(NamedObj model, ActorGraphDBFrame sourceFrame) {
@@ -94,43 +94,43 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-            
+
             public void windowOpened(WindowEvent e) {
                 _sourceFrame.setEnabled(false);
 
             }
 
-            
+
             public void windowIconified(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
 
-            
+
             public void windowDeiconified(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
 
-            
+
             public void windowDeactivated(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
 
-            
+
             public void windowClosing(WindowEvent e) {
                 // Do nothing.
 
             }
 
-            
+
             public void windowClosed(WindowEvent e) {
                 _sourceFrame.setEnabled(true);
                 _sourceFrame.toFront();
 
             }
 
-            
+
             public void windowActivated(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
         });
 
@@ -202,25 +202,25 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    
-    //////////////////////////////////////////////////////////////////////
-    ////                    public methods                            ////
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Close this window.
      */
-    
+
     public void closeFrame() {
         dispose();
-        
+
     }
-    
-    //////////////////////////////////////////////////////////////////////
-    ////                    private methods                           ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
-     * Perform the update of the model renaming. 
-     * 
+     * Perform the update of the model renaming.
+     *
      * @exception IllegalNameException Thrown if the new model name is illegal.
      */
     private void _update() throws IllegalNameException {
@@ -249,7 +249,7 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
             _model.requestChange(change);
 
-            // If no exception thrown, show the update success message. 
+            // If no exception thrown, show the update success message.
             JOptionPane.showMessageDialog(this, "Rename model successfully!");
 
             _sourceFrame.setTitle(_model.getName());
@@ -287,8 +287,8 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private JPanel _bottomPanel;
 

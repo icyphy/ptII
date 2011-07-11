@@ -33,8 +33,8 @@ import com.sun.opengl.util.FPSAnimator;
 public class cubeTriangle extends JPanel implements GLEventListener {
    private static final int REFRESH_FPS = 60;    // Display refresh frames per second
    private GLU glu;             // For the GL Utility
-   final FPSAnimator animator;  // Used to drive display() 
-   
+   final FPSAnimator animator;  // Used to drive display()
+
    static float anglePyramid = 0; // rotational angle in degree for pyramid
    static float angleCube = 0; // rotational angle in degree for cube
    static float speedPyramid = 2.0f; // rotational speed for pyramid
@@ -46,7 +46,7 @@ public class cubeTriangle extends JPanel implements GLEventListener {
       this.setLayout(new BorderLayout());
       this.add(canvas, BorderLayout.CENTER);
       canvas.addGLEventListener(this);
-   
+
       // Run the animation loop using the fixed-rate Frame-per-second animator,
       // which calls back display() at this fixed-rate (FPS).
       animator = new FPSAnimator(canvas, REFRESH_FPS, true);
@@ -67,12 +67,12 @@ public class cubeTriangle extends JPanel implements GLEventListener {
                           final cubeTriangle joglMain = new cubeTriangle();
                           frame.setContentPane(joglMain);
                           frame.addWindowListener(new WindowAdapter() {
-                                  @Override 
+                                  @Override
                                   public void windowClosing(WindowEvent e) {
                                       // Use a dedicate thread to run the stop() to ensure that the
                                       // animator stops before program exits.
                                       new Thread() {
-                                          @Override 
+                                          @Override
                                           public void run() {
                                               joglMain.animator.stop(); // stop the animator loop
                                               System.exit(0);
@@ -101,10 +101,10 @@ public class cubeTriangle extends JPanel implements GLEventListener {
     // ------ Implement methods declared in GLEventListener ------
 
    /**
-    * Called back immediately after the OpenGL context is initialized. Can be used 
+    * Called back immediately after the OpenGL context is initialized. Can be used
     * to perform one-time initialization. Run only once.
     */
-  
+
    public void init(GLAutoDrawable drawable) {
       GL gl = drawable.getGL(); // Get the OpenGL graphics context
       glu = new GLU(); // GL Utilities
@@ -121,10 +121,10 @@ public class cubeTriangle extends JPanel implements GLEventListener {
    }
 
    /**
-    * Call-back handler for window re-size event. Also called when the drawable is 
+    * Call-back handler for window re-size event. Also called when the drawable is
     * first set to visible.
     */
-   
+
    public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
       GL gl = drawable.getGL(); // Get the OpenGL graphics context
 
@@ -150,7 +150,7 @@ public class cubeTriangle extends JPanel implements GLEventListener {
    /**
     * Called back by the animator to perform rendering.
     */
-   
+
    public void display(GLAutoDrawable drawable) {
       GL gl = drawable.getGL(); // Get the OpenGL graphics context
       gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
@@ -256,7 +256,7 @@ public class cubeTriangle extends JPanel implements GLEventListener {
     * Called back when the display mode (eg. resolution) has been changed.
     * (not implemented by JOGL)
     */
-  
+
    public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
          boolean deviceChanged) {}
 }

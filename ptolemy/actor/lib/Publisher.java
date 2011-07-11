@@ -146,7 +146,7 @@ public class Publisher extends TypedAtomicActor {
      *  references the same channel by name will see values published by
      *  this publisher. If this is set to false (the default), then only
      *  those subscribers that are fired by the same director will see
-     *  values published on this channel. 
+     *  values published on this channel.
      */
     public Parameter global;
 
@@ -168,7 +168,7 @@ public class Publisher extends TypedAtomicActor {
      *  then the channel names of the Subscribers are not changed.  If
      *  the value is true, then if the channel name is changed, the
      *  channel names of the connected Subscribers are updated.
-     * 
+     *
      *  <p>If the value is true, then SubscriptionAggregators that
      *  have the same regular expression as the channel name of the
      *  Publisher will be updated.  However, SubscriptionAggregators
@@ -223,7 +223,7 @@ public class Publisher extends TypedAtomicActor {
                                             .unregisterPublisherPort(_channel, output, true);
                                 }
                             }
-                            
+
                             if (attribute == channel
                                     && (!(_channel == null || _channel.trim()
                                             .equals("")))) {
@@ -235,7 +235,7 @@ public class Publisher extends TypedAtomicActor {
                             }
                             ((CompositeActor) container).registerPublisherPort(
                                     newValue, output, globalValue);
-                            
+
                             if (attribute == channel
                                     && (!(_channel == null || _channel.trim()
                                             .equals("")))) {
@@ -426,8 +426,8 @@ public class Publisher extends TypedAtomicActor {
                                                 // channel name.
                                                 subscriber.channel.setExpression(newChannelName);
                                                 subscriber.attributeChanged(subscriber.channel);
-                                                
-                                            } 
+
+                                            }
                                         }
                                     }
                                 }
@@ -436,7 +436,7 @@ public class Publisher extends TypedAtomicActor {
                     }
                 }
             }
-        } 
-    } 
+        }
+    }
 
 }

@@ -35,30 +35,30 @@ package ptolemy.cg.lib.syntactic;
  This class represents the rank of a SyntacticTerm. The rank is
  composed of four positive numbers referring respectively to the
  number of forward outputs, reverse outputs, forward inputs, and
- reverse inputs to the term. The reverse i/o, while supported 
- in this type has not been completely assigned semantics. 
+ reverse inputs to the term. The reverse i/o, while supported
+ in this type has not been completely assigned semantics.
  Currently, the forward elements are only used to characterize
  the compositionality of terms under combinational operations.
- 
- At the least, the reverse versions follow an analogy from 
- tensor ranks in linear algebra, where forward ranks refer 
- to vector spaces and reverse ranks to co-vector spaces. I 
- might use this concept to codify reverse propagation of 
+
+ At the least, the reverse versions follow an analogy from
+ tensor ranks in linear algebra, where forward ranks refer
+ to vector spaces and reverse ranks to co-vector spaces. I
+ might use this concept to codify reverse propagation of
  feedback edges against the feed-forward edges that constitute
  the acyclic component of a term.
- 
+
 @author Chris Shaver
 @version $Id$
 @since Ptolemy II 8.0
 @Pt.ProposedRating Red (shaver)
-@Pt.AcceptedRating Red 
+@Pt.AcceptedRating Red
 */
 public class SyntacticRank {
-    
+
     /** Construct a new rank.
-     *  See the class description for an explanation of 
+     *  See the class description for an explanation of
      *  these ranks.
-     * 
+     *
      * @param fo Forward output rank.
      * @param ro Reverse output rank.
      * @param fi Forward input rank.
@@ -71,12 +71,12 @@ public class SyntacticRank {
         _rank[_forwardIn]  = fi;
         _rank[_reverseIn]  = ri;
     }
-    
+
     /** Construct a new forward rank.
      *  Reverse ranks are set to 0.
-     *  See the class description for an explanation of 
+     *  See the class description for an explanation of
      *  these ranks.
-     * 
+     *
      * @param fo Forward output rank.
      * @param fi Forward input rank.
      */
@@ -87,96 +87,96 @@ public class SyntacticRank {
         _rank[_forwardIn]  = fi;
         _rank[_reverseIn]  = 0;
     }
-    
+
     /** Copy a rank.
-     * 
+     *
      * @return new copied rank.
      */
     public SyntacticRank copy() {
-        return new SyntacticRank(_rank[_forwardOut], _rank[_reverseOut], 
+        return new SyntacticRank(_rank[_forwardOut], _rank[_reverseOut],
                         _rank[_forwardIn],  _rank[_reverseIn]);
     }
-    
+
     /** Get the forward output rank.
-     *  See the class description for an explanation of 
+     *  See the class description for an explanation of
      *  these ranks.
-     * 
+     *
      *  @return forward output rank.
      */
     public int forwardOut() {
         return _rank[_forwardOut];
     }
-    
+
     /** Get the reverse output rank.
-     *  See the class description for an explanation of 
+     *  See the class description for an explanation of
      *  these ranks.
-     * 
+     *
      *  @return reverse output rank.
      */
     public int reverseOut() {
         return _rank[_reverseOut];
     }
-    
+
     /** Get the forward input rank.
-     *  See the class description for an explanation of 
+     *  See the class description for an explanation of
      *  these ranks.
-     * 
+     *
      *  @return forward input rank.
      */
     public int forwardIn() {
         return _rank[_forwardIn];
     }
-    
+
     /** Get the reverse input rank.
-     *  See the class description for an explanation of 
+     *  See the class description for an explanation of
      *  these ranks.
-     * 
+     *
      *  @return reverse input rank.
      */
     public int reverseIn() {
         return _rank[_reverseIn];
     }
-    
+
     /** Generate code representation of rank.
      *  The form of this representation is as follows:
-     *  
+     *
      *     &lt;forward in (reverse out) -> forward out (reverse in)&gt;
-     *     
+     *
      *     or, if the reverse components are 0:
-     *     
+     *
      *     &lt;forward in -> forward out&gt;
-     *     
+     *
      *  @return code representation of rank.
      */
     public String generateCode() {
         if (_rank[_reverseOut] == 0 && _rank[_reverseIn] == 0)
             return "<" + _rank[_forwardIn] + " -> " + _rank[_forwardOut] + ">";
-        else return "<" + 
+        else return "<" +
             + _rank[_forwardIn]  + "(" + _rank[_reverseOut] + ")" + " -> "
             + _rank[_forwardOut] + "(" + _rank[_reverseIn]  + ")" + ">";
     }
-    
-    /** Generate code representation for no rank information. 
-     * 
-     *  @return code representation of no rank. 
+
+    /** Generate code representation for no rank information.
+     *
+     *  @return code representation of no rank.
      */
     static public String noCode() {
         return "<>";
     }
-    
+
     // TODO: Add reverse rank logic.
     /** Compose two ranks if possible, else return null.
      *  Ranks <i>A</i> and <i>B</i> can be composed if the number of forward
-     *  outputs of B is equal to the number of forward inputs of A. If reverse 
+     *  outputs of B is equal to the number of forward inputs of A. If reverse
      *  connections exist, the number of reverse outputs of <i>B</i> must be
-     *  equal to the number of reverse inputs of <i>A</i>. (Note that this 
+     *  equal to the number of reverse inputs of <i>A</i>. (Note that this
      *  order is in fact opposite of the forward case since reverse connections
-     *  form in the opposite direction.) 
-     *  
+     *  form in the opposite direction.)
+     *
      *  Note that this composition operation should be interpreted as the first
      *  rank going into the second rank, rather than the first rank operating on
      *  the second as in function composition notation.
-     * 
+     *
      *  @param a First rank.
      *  @param b Second rank.
      *  @return composition of first and second rank.
@@ -184,12 +184,12 @@ public class SyntacticRank {
     static public SyntacticRank compose(SyntacticRank a, SyntacticRank b) {
         boolean canCompose = a.forwardOut() == b.forwardIn();
         if (!canCompose) System.out.print("Composition problem");
-        return canCompose 
+        return canCompose
             ? new SyntacticRank(a.forwardIn(), b.forwardOut()) : null;
     }
-    
+
     /** Compose the ranks of two terms.
-     * 
+     *
      * @param a First term.
      * @param b Second term.
      * @return composition of the ranks of the first and second term.
@@ -198,14 +198,14 @@ public class SyntacticRank {
     static public SyntacticRank compose(SyntacticTerm a, SyntacticTerm b) {
         return compose(a.rank(), b.rank());
     }
-    
+
     // TODO: Add reverse rank logic, and use copy function.
     /** Add the two ranks if possible, else return null.
-     *  Ranks are only able to be added if they are the same, and the result 
+     *  Ranks are only able to be added if they are the same, and the result
      *  is simply the same rank as the operands. A copy is returned. This is
-     *  a operation rather than just a check for purposes of modularity. An 
+     *  a operation rather than just a check for purposes of modularity. An
      *  operation adding terms can call this to be symmetric with other operations.
-     * 
+     *
      *  @param a First rank.
      *  @param b Second rank.
      *  @return sum of first and second ranks.
@@ -214,9 +214,9 @@ public class SyntacticRank {
         return a.forwardIn() == b.forwardIn() && a.forwardOut() == b.forwardOut()
             ? new SyntacticRank(a.forwardIn(), a.forwardOut()) : null;
     }
-    
+
     /** Add the ranks of two terms.
-     * 
+     *
      *  @param a First term.
      *  @param b Second term.
      *  @return sum of the ranks of the first and second terms.
@@ -225,12 +225,12 @@ public class SyntacticRank {
     static public SyntacticRank add(SyntacticTerm a, SyntacticTerm b) {
         return add(a.rank(), b.rank());
     }
-    
+
     // TODO: Add reverse rank logic.
-    /** Multiply two ranks. 
+    /** Multiply two ranks.
      *  This is always possible, following the analogy from tensor products.
      *  The product is simply the element-wise sum of the ranks.
-     * 
+     *
      *  @param a First rank.
      *  @param b Second rank.
      *  @return product of ranks.
@@ -238,9 +238,9 @@ public class SyntacticRank {
     static public SyntacticRank product(SyntacticRank a, SyntacticRank b) {
         return new SyntacticRank(a.forwardIn() + b.forwardIn(), a.forwardOut() + b.forwardOut());
     }
-    
+
     /** Multiply the ranks of two terms.
-     * 
+     *
      * @param a First term.
      * @param b Second term.
      * @return product of the ranks of first and second term.
@@ -248,12 +248,12 @@ public class SyntacticRank {
     static public SyntacticRank product(SyntacticTerm a, SyntacticTerm b) {
         return product(a.rank(), b.rank());
     }
-    
+
     // TODO: Add reverse rank logic. Is this possible with reverses?
     /** Contract rank about a given number of input/output pairs.
-     *  This is possible when the number of contracted pairs are fewer 
+     *  This is possible when the number of contracted pairs are fewer
      *  than then smaller of the numbers of inputs and outputs.
-     * 
+     *
      *  @param a Rank to contract.
      *  @param n Number of contractions.
      *  @return Contracted rank or null if not possible.
@@ -262,9 +262,9 @@ public class SyntacticRank {
         if (n < 0 || n > a.forwardIn() || n > a.forwardOut()) return null;
         return new SyntacticRank(a.forwardIn() - n, a.forwardOut() - n);
     }
-    
+
     /** Multiply with a given rank.
-     * 
+     *
      *  @param a Rank to multiply by.
      *  @return reference to this.
      *  @see #product(SyntacticRank, SyntacticRank)
@@ -274,11 +274,11 @@ public class SyntacticRank {
         _rank[_forwardOut]  += a.forwardOut();
         return this;
     }
-    
+
     // TODO: Add reverse rank logic.
     /** Divide by given rank.
      *  Division is simply point-wise subtraction in this case.
-     * 
+     *
      *  @param a Divisor rank.
      *  @return reference to this.
      *  @see #product(SyntacticRank, SyntacticRank)
@@ -288,23 +288,23 @@ public class SyntacticRank {
         _rank[_forwardOut]  = Math.max(_rank[_forwardOut] - a.forwardOut(), 0);
         return this;
     }
-    
-    
+
+
     /** Forward output index. */
     private static final int _forwardOut = 0;
-    
+
     /** Reverse output index. */
     private static final int _reverseOut = 1;
-    
+
     /** Forward input index. */
     private static final int _forwardIn  = 2;
-    
+
     /** Reverse input index. */
     private static final int _reverseIn  = 3;
-    
+
     /** Dimension of rank. */
     private static final int _dimension  = 4;
-    
+
     /** Rank stored as an array. */
     private int _rank[];
 }

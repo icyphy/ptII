@@ -34,7 +34,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GetCurrentMicrostep
 
 /**
@@ -66,7 +66,7 @@ public class GetCurrentMicrostep extends TimedSource {
 
         // set the type constraints.
         output.setTypeEquals(BaseType.INT);
-        
+
         // Override the clock to make it look a bit
         // different from the DiscreteClock and PoissonClock.
         _attachText("_iconDescription", "<svg>\n"

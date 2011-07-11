@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
 ////HTMLCodeGenerator
 
 /** Generate a HTML description of a model.
- *  <p>To generate an HTML version of a model, use:  
+ *  <p>To generate an HTML version of a model, use:
  *  <pre>
  java -classpath $PTII ptolemy.cg.kernel.generic.html.HTMLCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.html -generatorPackageList generic.html adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml
  * </pre>
@@ -124,7 +124,7 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
 
     /** Return the filter class to find adapters. All
      *  adapters have to extend this class.
-     *  @return The base class for the adapters.  
+     *  @return The base class for the adapters.
      */
     protected Class<?> _getAdapterClassFilter() {
         return HTMLCodeGeneratorAdapter.class;

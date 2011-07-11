@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -61,15 +61,15 @@ public class CommandSearcher extends AbstractSearcher implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     /**
      * Checks whether the command search criteria has been set in
      *  this command searcher instance.
      *
      * @return true - if the search criteria has been set.<br>
-     *         false - if the search criteria has not been set. 
+     *         false - if the search criteria has not been set.
      */
-    
+
     protected boolean _isSearchCriteriaSet() {
         if (_commandSearchCriteria == null || _commandSearchCriteria.equals("")) {
             return false;
@@ -77,13 +77,13 @@ public class CommandSearcher extends AbstractSearcher implements
         return true;
     }
 
-    
+
     /**
-     * Perform the actual search for the attributes search criteria. 
-     * 
+     * Perform the actual search for the attributes search criteria.
+     *
      * <p>This method has not been implemented yet.</p>
      */
-    
+
     protected void _search() {
         // to be implemented in the next requirement
 

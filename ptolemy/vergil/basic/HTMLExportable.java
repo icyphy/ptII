@@ -34,7 +34,7 @@ import java.io.IOException;
 
 ///////////////////////////////////////////////////////////////////
 //// HTMLExportable
-/** 
+/**
  * Interface indicating support for exporting an HTML file and supporting files.
  * @author Edward A. Lee
  * @version $Id$
@@ -43,15 +43,15 @@ import java.io.IOException;
  * @Pt.AcceptedRating Red (cxh)
  */
 public interface HTMLExportable {
-    
+
     /** Export to HTML in the specified directory.
      *  Implementers should write an "index.html" file plus any
-     *  required supporting files in the specified directory. 
+     *  required supporting files in the specified directory.
      *  The caller is responsible for checking with the user whether
      *  any contents of the specified directory can be overwritten.
      *  @param directory The directory in which to put the files.
-     *  @throws IOException If unable to write any files.
-     *  @throws PrinterException If unable to write associated files.
+     *  @exception IOException If unable to write any files.
+     *  @exception PrinterException If unable to write associated files.
      */
     public void writeHTML(File directory) throws PrinterException, IOException;
 }

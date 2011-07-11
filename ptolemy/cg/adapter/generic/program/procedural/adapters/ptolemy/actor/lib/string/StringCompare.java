@@ -70,7 +70,7 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
 
         String function = actor.function.getExpression();
         String ignoreCase = (((BooleanToken) actor.ignoreCase.getToken()).booleanValue() ? "ignoreCase" : "dontIgnoreCase");
-        String codeBlockName = ignoreCase 
+        String codeBlockName = ignoreCase
             + (function.equals("equals")
                     ? "EqualsBlock"
                     : (function.equals("startsWith")

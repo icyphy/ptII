@@ -49,7 +49,7 @@ import diva.graph.GraphController;;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class AttributeInOntologyController extends AttributeController {
-    
+
     /** Create an attribute controller associated with the specified graph
      *  controller.  The attribute controller is given full access.
      *  @param controller The associated graph controller.
@@ -65,7 +65,7 @@ public class AttributeInOntologyController extends AttributeController {
      */
     public AttributeInOntologyController(GraphController controller, Access access) {
         super(controller);
-        
+
         // Remove the "Listen To Attribute" menu action since it has no
         // relevance for an ontology models or ontology solvers.
         MenuActionFactory listenToActionFactory = _getListenToMenuActionFactory();
@@ -75,8 +75,8 @@ public class AttributeInOntologyController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
-    
+    ////                         private methods                   ////
+
     /** Get the MenuActionFactory in the _menuFactory object's menu item
      *  factory list that contains the "Listen To Attribute" menu action.
      *  @return the MenuActionFactory that contains the "Listen To Attribute"
@@ -91,7 +91,7 @@ public class AttributeInOntologyController extends AttributeController {
                     return (MenuActionFactory) menuItemFactory;
                 }
             }
-        }        
+        }
         return null;
     }
 }

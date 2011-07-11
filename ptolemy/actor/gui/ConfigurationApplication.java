@@ -265,7 +265,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     for (int i = 1; i <= 20; i++) {
                         // Use Manager.execute()
                         _runModels(false);
-                    } 
+                    }
                 } else {
                     // Use Manager.startRun() and run the model in
                     // a new thread.
@@ -316,7 +316,7 @@ public class ConfigurationApplication implements ExecutionListener {
     ////                         public methods                    ////
 
     /** Close the model without saving or exiting.
-     *   
+     *
      *  <p>The caller of this method should be in the Swing Event Thread.
      *  Typically, this is done with code like:</p>
      *  <pre>
@@ -331,14 +331,14 @@ public class ConfigurationApplication implements ExecutionListener {
      *   };
      *   SwingUtilities.invokeAndWait(openModelAction);
      *  </pre>
-     *  <p>This method is primarily used for testing.</p> 
+     *  <p>This method is primarily used for testing.</p>
      *  @param model The TypedCompositeActor to be closed.
      *  Typically, this comes from {@link #openModel(String)}.
      *  @exception IllegalActionException If the model cannot be closed.
      *  @see #openModel(String)
      *  @exception NameDuplicationException If the model cannot be closed.
      *  @see #openModel(String)
-     */   
+     */
     public static void closeModelWithoutSavingOrExiting(TypedCompositeActor model)
             throws IllegalActionException, NameDuplicationException {
         Effigy effigy = Configuration.findEffigy(model.toplevel());
@@ -426,11 +426,11 @@ public class ConfigurationApplication implements ExecutionListener {
 
         ModelDirectory directory = (ModelDirectory) _configuration
                 .getEntity(Configuration._DIRECTORY_NAME);
-	if (directory == null) {
-	    throw new InternalErrorException("Failed to get the "
-					     + "model directory? This can happen"
-					     + " in a headless environment?");
-	}
+        if (directory == null) {
+            throw new InternalErrorException("Failed to get the "
+                                             + "model directory? This can happen"
+                                             + " in a headless environment?");
+        }
         Iterator effigies = directory.entityList().iterator();
 
         while (effigies.hasNext()) {
@@ -446,7 +446,7 @@ public class ConfigurationApplication implements ExecutionListener {
     }
 
     /** Open a model and display it.
-     *   
+     *
      *  <p>The caller of this method should be in the Swing Event Thread.
      *  Typically, this is done with code like:</p>
      *  <pre>
@@ -1593,7 +1593,7 @@ public class ConfigurationApplication implements ExecutionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     /** Start the models running, each in a new thread, then return.
      *  @param useStartRun True if Manager.startRun() should be called,

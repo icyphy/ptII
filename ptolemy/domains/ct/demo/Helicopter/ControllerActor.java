@@ -56,35 +56,35 @@ import ptolemy.kernel.util.NameDuplicationException;
            [kInv21 kInv22]
  and
  kInv11 = ((MM*TM*Sin[th])/(Iy*m) + (hM*TM^2*Cos[a]*Sin[th])/(Iy*m))/
-    ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+    ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
       (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
- 
+
  kInv12 = (-((MM*TM*Cos[th])/(Iy*m)) - (hM*TM^2*Cos[a]*Cos[th])/(Iy*m))/
-    ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+    ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
       (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
- 
+
  kInv21 = Cos[th]/
-    (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+    (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
         (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
- 
+
  kInv22 = Sin[th]/
-    (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+    (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
         (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
- 
+
      [b1]
  b = [  ]
      [b2]
 
- b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m + 
-    (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) + 
-    (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) - 
-    (3*Dotth^2*DotTM*Sin[th])/m - 
+ b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m +
+    (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) +
+    (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) -
+    (3*Dotth^2*DotTM*Sin[th])/m -
     (3*Dotth*TM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
- 
- b2 = (3*Dotth^2*DotTM*Cos[th])/m + 
-    (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) + 
-    (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m + 
-    (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) + 
+
+ b2 = (3*Dotth^2*DotTM*Cos[th])/m +
+    (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) +
+    (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m +
+    (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) +
     (3*DotTM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
  </pre>
  The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz.

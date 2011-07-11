@@ -1,4 +1,4 @@
-/* An actor that begins tracking a "trackable" object in opti-track. 
+/* An actor that begins tracking a "trackable" object in opti-track.
  * returns x,y,z coordinates of markers as well as orientations (yaw-pitch-roll)
  * Uses the VRPN library.
 
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 
-//////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Tracker
 
 /**
@@ -72,13 +72,13 @@ public class Tracker extends Transformer {
         super(container, name);
         //input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV Object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         try {
@@ -92,11 +92,11 @@ public class Tracker extends Transformer {
             System.out.print("Error: exception " + e.getMessage());
             return;
         }
-       
+
        // double[] positions = tracker.pos;
         //double x = positions[0];
         //double y = positions[1];
         //double z = positions[2];
     }
-   
+
 }

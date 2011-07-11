@@ -65,7 +65,7 @@ public class MoMLVariableChecker {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Check for problems in the moml to be copied.  If there are
      *  missing variables references, search for the variables and
      *  return MoML definitions for any found variables.
@@ -77,7 +77,7 @@ public class MoMLVariableChecker {
      */
     public String checkCopy(String momlToBeChecked, NamedObj container)
             throws IllegalActionException {
-        
+
         return checkCopy(momlToBeChecked, container, false);
     }
 
@@ -94,7 +94,7 @@ public class MoMLVariableChecker {
      */
     public String checkCopy(String momlToBeChecked, NamedObj container, boolean hideVariables)
             throws IllegalActionException {
-        
+
         _variableBuffer = new StringWriter();
         Workspace workspace = new Workspace("copyWorkspace");
         MoMLParser parser = new MoMLParser(workspace);
@@ -153,20 +153,20 @@ public class MoMLVariableChecker {
                             parsedContainer, hideVariables);
                 }
             }
-            
+
             List<Attribute> allAttributes = new LinkedList<Attribute>(parsedContainer.attributeList());
-            for(Attribute attribute : allAttributes) {
+            for (Attribute attribute : allAttributes) {
                 _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(attribute, container,
                         parsedContainer, hideVariables);
             }
         }
-        
+
         return _variableBuffer.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Recursively search through an attribute and its contained attributes to
      *  find any unresolved references to other attributes.
      *  @param attribute The attribute to be traversed.
@@ -182,7 +182,7 @@ public class MoMLVariableChecker {
             Attribute attribute, NamedObj container,
             TypedCompositeActor parsedContainer, boolean hideVariables)
             throws IllegalActionException {
-        
+
         if (attribute instanceof Variable) {
             Variable variable = (Variable) attribute;
 
@@ -248,7 +248,7 @@ public class MoMLVariableChecker {
                     containedAttribute, container, parsedContainer,
                     hideVariables);
         }
-    }    
+    }
 
     /** Given a MissingClassException, find missing classes.
      *  @param exception The MissingClassException that contains the class
@@ -369,7 +369,7 @@ public class MoMLVariableChecker {
      *  @param hideVariables If true, add MoML that will make all the found
      *   variables hidden from the user interface when they are copied.
      *  @return true if the outer parse should be rerun, false otherwise.
-     *  @throws IllegalActionException If there is a problem finding
+     *  @exception IllegalActionException If there is a problem finding
      *   the undefined constants or identifiers or generating the MoML code for
      *   the _variableBuffer.
      */
@@ -411,7 +411,7 @@ public class MoMLVariableChecker {
                         String moml = node.exportMoML().replaceFirst(
                                 "<property",
                                 "<property createIfNecessary=\"true\"");
-                        
+
                         if (hideVariables) {
                             moml = _insertHiddenMoMLTagIntoProperty(moml);
                         }
@@ -441,7 +441,7 @@ public class MoMLVariableChecker {
         }
         return doRerun;
     }
-    
+
     /** Given a MoML string that represents an attribute, insert a MoML tag
      *  that will hide this attribute from the user interface.
      *  @param moml The original MoML string that should represent a Ptolemy
@@ -457,7 +457,7 @@ public class MoMLVariableChecker {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The previous node for which we searched.  We keep track of
      *  this to avoid infinite loops.
      */

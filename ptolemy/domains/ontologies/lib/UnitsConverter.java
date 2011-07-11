@@ -83,20 +83,20 @@ public class UnitsConverter extends Transformer {
     public UnitsConverter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
         unitSystemOntologySolver = new Parameter(this, "unitSystemOntologySolver");
         unitSystemOntologySolver.setTypeEquals(new ObjectType(OntologySolver.class));
-        
+
         dimensionConcept = new StringAttribute(this, "dimensionConcept");
         inputUnitConcept = new StringAttribute(this, "inputUnitConcept");
         outputUnitConcept = new StringAttribute(this, "outputUnitConcept");
-        
+
         transformOnLeft = new Parameter(this, "scaleOnLeft");
         transformOnLeft.setExpression("true");
-        
+
         conversionLabel = new StringAttribute(this, "conversionLabel");
         conversionLabel.setVisibility(Settable.NONE);
     }
@@ -106,8 +106,8 @@ public class UnitsConverter extends Transformer {
 
     /** The name of the dimension from which both units are derived. */
     public StringAttribute dimensionConcept;
-    
-    /** The conversion label string that will be displayed on the actor icon. 
+
+    /** The conversion label string that will be displayed on the actor icon.
      *  It is of the form "inputUnits -> outputUnits"
      *  For example, if the actor converts kilometers to miles, its icon label
      *  would be: "km -> mi"
@@ -120,29 +120,29 @@ public class UnitsConverter extends Transformer {
      *  unitSystem {@link ptolemy.data.ontologies.Ontology Ontology}.
      */
     public StringAttribute inputUnitConcept;
-    
+
     /** The output unit measurement for the actor. This specifies the units
      *  to which the output value is transformed. It will be a
      *  {@link ptolemy.data.ontologies.Concept Concept} in the
      *  unitSystem {@link ptolemy.data.ontologies.Ontology Ontology}.
      */
     public StringAttribute outputUnitConcept;
-    
+
     /** Multiply on the left.
      *  This parameter controls whether the units transformation factor is multiplied
      *  on the left. The default value is a boolean token of value true.
      *  Setting is to false will multiply the factor on the right.
      */
     public Parameter transformOnLeft;
-    
+
     /** The unitSystem ontology solver in the model that contains the unitSystem
      *  ontology.
      */
-    public Parameter unitSystemOntologySolver;    
+    public Parameter unitSystemOntologySolver;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Update the conversionLabel attribute value when either the inputUnitConcept
      *  or the outputUnitConcept attributes change. For any other attribute change
      *  call the superclass method.
@@ -165,11 +165,11 @@ public class UnitsConverter extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (input.hasToken(0)) {
-            Token in = input.get(0);            
+            Token in = input.get(0);
             Token result = null;
-            
+
             if (_inputUnitConcept == null || _outputUnitConcept == null) {
                 // If the units for the input and output have not been set, do
                 // not modify the values.
@@ -179,21 +179,21 @@ public class UnitsConverter extends Transformer {
                 ScalarToken inputOffset = _inputUnitConcept.getUnitOffset();
                 ScalarToken outputFactor = _outputUnitConcept.getUnitFactor();
                 ScalarToken outputOffset = _outputUnitConcept.getUnitOffset();
-                
+
                 Token valueSIUnits = null;
 
                 if (((BooleanToken) transformOnLeft.getToken()).booleanValue()) {
-                    // Scale on the left.                    
+                    // Scale on the left.
                     // Transform the input value from its original units to the SI units for this dimension.
                     valueSIUnits = inputFactor.multiply(in.add(inputOffset));
-                    
+
                     // Transform the value in SI units to the specified output units.
                     result = outputFactor.divideReverse(valueSIUnits).subtract(outputOffset);
                 } else {
                     // Scale on the right.
                     // Transform the input value from its original units to the SI units for this dimension.
                     valueSIUnits = in.add(inputOffset).multiply(inputFactor);
-                    
+
                     // Transform the value in SI units to the specified output units.
                     result = valueSIUnits.divide(outputFactor).subtract(outputOffset);
                 }
@@ -201,14 +201,14 @@ public class UnitsConverter extends Transformer {
             output.send(0, result);
         }
     }
-    
+
     /** Return the UnitInformation Concept in the unitSystem ontology for the
      *  specified string attribute which represents the unit specification
      *  for the either the actor's input or output port.
      *  @param fromInput true if we want the concept specified by the inputUnitConcept
      *   and false if we want the concept specified by the outputUnitConcept.
      *  @return The UnitInformation concept associated with this unit concept name.
-     *  @throws IllegalActionException Thrown if the ontology solver has not
+     *  @exception IllegalActionException Thrown if the ontology solver has not
      *   been specified, the unit name cannot be found in the unitSystem ontology, or
      *   the attribute passed in is not one of the actor's inputUnitConcept
      *   or outputUnitConcept attributes.
@@ -218,40 +218,40 @@ public class UnitsConverter extends Transformer {
         Ontology unitOntology = _getUnitOntology();
         if (unitOntology == null) {
             throw new IllegalActionException(this, "The unit system ontology " +
-            		"solver has not been specified.");
+                            "solver has not been specified.");
         }
-        
+
         StringAttribute unitConceptName = null;
         if (fromInput) {
             unitConceptName = inputUnitConcept;
         } else {
             unitConceptName = outputUnitConcept;
         }
-        String unitName = unitConceptName.getValueAsString();        
+        String unitName = unitConceptName.getValueAsString();
         if (unitName != null && !unitName.equals("")) {
             String dimensionConceptName = dimensionConcept.getValueAsString();
             if (dimensionConceptName == null) {
                 dimensionConceptName = "";
             }
-            
+
             Concept unitConcept = unitOntology.getConceptByString(
                     dimensionConceptName + "_" + unitName);
             if (unitConcept instanceof UnitConcept) {
                 return (UnitConcept) unitConcept;
             } else {
                 throw new IllegalActionException(this, "Could not find unit " +
-                		"named: " + dimensionConceptName + "_" +
-                		unitName + " in the ontology.");
+                                "named: " + dimensionConceptName + "_" +
+                                unitName + " in the ontology.");
             }
         } else {
             return null;
         }
     }
-    
+
     /** Return the unitSystem ontology solver specified by the actor's
      *  unitSystemOntologySolver parameter.
      *  @return The unitSystem ontology solver, or null if it is not specified.
-     *  @throws IllegalActionException Thrown if there is a problem getting
+     *  @exception IllegalActionException Thrown if there is a problem getting
      *   the ontology solver object from the parameter.
      */
     public OntologySolver getUnitOntologySolver() throws IllegalActionException {
@@ -262,27 +262,27 @@ public class UnitsConverter extends Transformer {
             return null;
         }
     }
-    
+
     /** Preinitialize the actor by setting the unit system ontology
      *  concepts for the input and output ports.
-     *  @throws IllegalActionException Thrown if the input or output unit
+     *  @exception IllegalActionException Thrown if the input or output unit
      *   concepts are incorrectly specified.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         _inputUnitConcept = getUnitConcept(true);
         _outputUnitConcept = getUnitConcept(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Get the unitSystem ontology from the ontology solver specified by the
      *  unitSystemOntologySolver parameter for this actor.
      *  @return The unitSystem ontology, or null if it is not specified or
      *   the ontology solver is not specified.
-     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *  @exception IllegalActionException Thrown if there is a problem getting the
      *   ontology object from the ontology solver.
      */
     private Ontology _getUnitOntology() throws IllegalActionException {
@@ -293,15 +293,15 @@ public class UnitsConverter extends Transformer {
             return null;
         }
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The ontology concept that represents the units specification for the
      *  input port.
      */
     private UnitConcept _inputUnitConcept;
-    
+
     /** The ontology concept that represents the units specification for the
      *  output port.
      */

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.StringAttribute;
 /** Model attribute that collects the details of the lattice ontology solver resolution
  *  on the constraints collected and produces string outputs.
  *  This attribute is meant mainly for testing the LatticeOntologySolver.
- *  
+ *
  *  @author Charles Shelton, Beth Latronico
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -87,7 +87,7 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
                 trainedResolvedSolverConstraints, "_style");
         resolvedStyle.height.setExpression("10");
         resolvedStyle.width.setExpression("80");
-        
+
         unacceptableTerms = new StringAttribute(this, "unacceptableTerms");
         unacceptableTerms.setExpression("");
         TextStyle unacceptableTermsStyle = new TextStyle(
@@ -120,19 +120,19 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
      *  the LatticeOntologySolver.
      */
     public StringAttribute trainedResolvedSolverConstraints;
-    
-    /** The string attribute holding the list of terms that resolved to 
-     *  unacceptable concepts for the LatticeOntologySolver.  
+
+    /** The string attribute holding the list of terms that resolved to
+     *  unacceptable concepts for the LatticeOntologySolver.
      *  For information only; not checked in the test() method.
      */
     public StringAttribute unacceptableTerms;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////    
+    ////                         public methods                    ////
 
     /** Test whether the details received from the LatticeOntologySolver
      *  matches the stored values in the actor.
-     *  
+     *
      *  @exception IllegalActionException If the test fails and the results are different.
      */
     public void test() throws IllegalActionException {

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -51,8 +51,8 @@ import ptolemy.kernel.util.Workspace;
 //// TestSearchCriteriaManager
 
 /**
- * Test cases for uniting testing class SearchCriteriaManager. 
- * 
+ * Test cases for uniting testing class SearchCriteriaManager.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -63,16 +63,16 @@ import ptolemy.kernel.util.Workspace;
 public class TestSearchCriteriaManager {
 
     /**
-     * Test methods open() and save() with the complete working flow. 
-     * 
+     * Test methods open() and save() with the complete working flow.
+     *
      * @exception IOException Thrown if IO exception happens during writing or
-     * reading the file. 
+     * reading the file.
      * @exception SearchCriteriaParseException Thrown if errors happen during
-     * the parsing of the search criteria file. 
+     * the parsing of the search criteria file.
      * @exception NameDuplicationException Thrown if attributes with duplicated
-     * names are found in the search criteria file. 
+     * names are found in the search criteria file.
      * @exception IllegalActionException Thrown if failed to create the Ptolemy
-     * configuration. 
+     * configuration.
      */
     @Test
     public void testOpenAndSave() throws IllegalActionException,
@@ -124,17 +124,17 @@ public class TestSearchCriteriaManager {
     }
 
     /**
-     * Test the method open() with the case no file can be found in the 
-     * given location. 
-     * 
+     * Test the method open() with the case no file can be found in the
+     * given location.
+     *
      * @exception IOException Thrown if IO exception happens during writing or
-     * reading the file. 
+     * reading the file.
      * @exception SearchCriteriaParseException Thrown if errors happen during
-     * the parsing of the search criteria file. 
+     * the parsing of the search criteria file.
      * @exception NameDuplicationException Thrown if attributes with duplicated
-     * names are found in the search criteria file. 
+     * names are found in the search criteria file.
      * @exception IllegalActionException Thrown if failed to create the Ptolemy
-     * configuration. 
+     * configuration.
      */
     @Test
     public void testOpenNoFileFound() throws IllegalActionException,

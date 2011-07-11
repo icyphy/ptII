@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -57,7 +57,7 @@ public class FetchHierarchyTask extends Task {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                                         ////
+    ////                         public methods                    ////
 
     /**
      * Return the list of models for which we need
@@ -82,7 +82,7 @@ public class FetchHierarchyTask extends Task {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                                ////
+    ////                         private variables                 ////
     /**
      * List of models for which we need to
      * fetch hierarchy.

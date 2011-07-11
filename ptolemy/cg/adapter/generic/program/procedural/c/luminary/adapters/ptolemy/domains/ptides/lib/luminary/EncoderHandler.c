@@ -3,12 +3,12 @@ int32 encoderInputInterruptStatus;
 /**/
 
 /*** sharedBlock ***/
-#define ENCODER_PERIF			SYSCTL_PERIPH_GPIOB
-#define ENCODER_INT				INT_GPIOB
-#define ENCODER_BASE 			GPIO_PORTB_BASE
-#define ENCODER_PIN_A			GPIO_PIN_4			// Set B[4] (PB4/C0+) as encoder input (encoder channel A)
-#define ENCODER_PIN_B			GPIO_PIN_6			// Set B[6] (PB6/C0-) as encoder input (encoder channel B)
-#define ENCODER_PIN_I			GPIO_PIN_2			// Set B[2] (PB2/SCL) as encoder input (encoder channel I)
+#define ENCODER_PERIF                        SYSCTL_PERIPH_GPIOB
+#define ENCODER_INT                                INT_GPIOB
+#define ENCODER_BASE                         GPIO_PORTB_BASE
+#define ENCODER_PIN_A                        GPIO_PIN_4                        // Set B[4] (PB4/C0+) as encoder input (encoder channel A)
+#define ENCODER_PIN_B                        GPIO_PIN_6                        // Set B[6] (PB6/C0-) as encoder input (encoder channel B)
+#define ENCODER_PIN_I                        GPIO_PIN_2                        // Set B[2] (PB2/SCL) as encoder input (encoder channel I)
 
 /**/
 

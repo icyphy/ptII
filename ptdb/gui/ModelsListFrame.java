@@ -54,12 +54,12 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (abijwe)
  */
 public class ModelsListFrame extends javax.swing.JFrame {
-    
+
     /**
      * Create new form ModelsListFrame.
      */
     public ModelsListFrame() {
-        
+
     }
     /** Create new form ModelsListFrame.
      * @param configuration The configuration under which Ptolemy is running.
@@ -92,17 +92,17 @@ public class ModelsListFrame extends javax.swing.JFrame {
 
         _hintLabel.setFont(new java.awt.Font("Dialog", 1, 12));
         _hintLabel.setText("Hint: Double click a model name to open it.");
-        
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         setResizable(false);
-        
+
         _setTableData();
-        _setPageNumbers();        
+        _setPageNumbers();
         jScrollPane1.setViewportView(_modelsListTable);
-        
+
 //        _modelsListTable.getColumnModel().getColumn(0).setPreferredWidth(20);
-        
+
         _modelsListTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -323,7 +323,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Paint the next page. 
+     * Paint the next page.
      * @param evt Click event for the button.
      */
     private void _goToNextPage(java.awt.event.ActionEvent evt) {
@@ -355,7 +355,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
             MessageHandler.error("Could not load the models list. ", e);
         }
     }
-    
+
     /**
      * Create an effigy of the model and open it in a new editing frame.
      */
@@ -366,19 +366,19 @@ public class ModelsListFrame extends javax.swing.JFrame {
             PtolemyEffigy effigy = LoadManager.loadModel(modelName,
                     _configuration);
 
-            if(effigy != null){
-                
+            if (effigy != null) {
+
                 effigy.showTableaux();
-                
+
             } else {
-                
+
                 JOptionPane
                 .showMessageDialog((Component) this,
                         "The specified model could " +
                         "not be found in the database.",
                         "Load Error",
                         JOptionPane.INFORMATION_MESSAGE, null);
-                
+
             }
 
         } catch (Exception e) {
@@ -440,7 +440,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Set the page numbers combo. 
+     * Set the page numbers combo.
      */
     private void _setPageNumbers() {
         Integer[] pages = new Integer[_noOfPages];
@@ -473,7 +473,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
     private java.awt.Label _numberOfModelsLabel;
     private java.awt.Label _hintLabel;
     // End of variables declaration//GEN-END:variables
-    
+
     /** List of models on the selected page. */
     private List<XMLDBModel> _modelsList = null;
     /** Instance of LoadManager that maintains the entire models list. */

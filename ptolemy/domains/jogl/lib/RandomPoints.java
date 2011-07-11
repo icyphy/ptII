@@ -12,14 +12,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**
- * An actor that is used for displaying 3D randomly generated points. 
+ * An actor that is used for displaying 3D randomly generated points.
  *
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
 
 public class RandomPoints extends Sink{
-    
+
     /**
      *  Construct a RandomPoints object in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -42,7 +42,7 @@ public class RandomPoints extends Sink{
     }
 
 
-    public void fire() throws IllegalActionException{ 
+    public void fire() throws IllegalActionException{
 
         if (_debugging) {
             _debug("Called fire()");
@@ -59,18 +59,18 @@ public class RandomPoints extends Sink{
             GL gl = (GL)inputObject;
 
             gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-            /* A random point is generated. Because animator will run display() again and again 
+            /* A random point is generated. Because animator will run display() again and again
              * in its thread, randomly generated points are displayed.
-             */ 
-            double x = Math.random()*480; 
-            double y = Math.random()*640; 
-            // specify to draw a point 
+             */
+            double x = Math.random()*480;
+            double y = Math.random()*640;
+            // specify to draw a point
             gl.glPointSize(4);
-            gl.glBegin(GL.GL_POINTS); 
-            gl.glVertex2d(x, y); 
-            gl.glEnd(); 
+            gl.glBegin(GL.GL_POINTS);
+            gl.glVertex2d(x, y);
+            gl.glEnd();
 
-            /* Different GL implementations buffer commands in several different locations, 
+            /* Different GL implementations buffer commands in several different locations,
              * including network buffers and the graphics
              * accelerator itself. glFlush empties all of these buffers, causing all issued commands to be
              * executed as quickly as they are accepted by the actual rendering engine.
@@ -79,7 +79,7 @@ public class RandomPoints extends Sink{
             gl.glFlush();
 
 
-        } 
+        }
 
     }
 }

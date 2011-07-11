@@ -675,7 +675,7 @@ public class TransitionRefinementPort extends RefinementPort {
                     try {
                         TransitionRefinement container = (TransitionRefinement) getContainer();
                         // Temporarily turn off mirroring while we create a port.
-                        // Needed by $PTII/ptolemy/domains/modal/demo/ModalBSC/ModalBSC.xml 
+                        // Needed by $PTII/ptolemy/domains/modal/demo/ModalBSC/ModalBSC.xml
                         // and $PTII/ptolemy/domains/modal/demo/StateTracker/StateTracker.xml
                         TransitionRefinementPort sibling = null;
                         try {

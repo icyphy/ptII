@@ -25,7 +25,7 @@
  */
 
 /**
- * 
+ *
  */
 package ptserver.test.helper;
 
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Settable;
 ///////////////////////////////////////////////////////////////////
 //// ScreenSize
 
-/**  
+/**
  * @author Peter Foldes
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -62,7 +62,7 @@ public class ScreenSize extends Parameter {
                 int width = token.getElementAt(0, 0);
                 int height = token.getElementAt(0, 1);
             }
-            
+
             return true;
         } catch (Exception e) {
             return false;

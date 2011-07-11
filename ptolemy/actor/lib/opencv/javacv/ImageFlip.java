@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Flip image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -68,12 +68,12 @@ public class ImageFlip extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
-        flipModeParam = new Parameter(this, "flip mode (0:vertical,1:horizontal,-1:both)", 
-                new IntToken(0)); 
+
+        flipModeParam = new Parameter(this, "flip mode (0:vertical,1:horizontal,-1:both)",
+                new IntToken(0));
         flipModeParam.setTypeEquals(BaseType.INT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -85,7 +85,7 @@ public class ImageFlip extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         int flipMode = ((IntToken) (flipModeParam.getToken())).intValue();

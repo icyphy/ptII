@@ -45,10 +45,10 @@ import ptolemy.kernel.util.StringAttribute;
 * A simple actor starts a video capture process using
 * the Open Computer Vision (OpenCV) Library.
 * @author Tatsuaki Iwata, Edward A. Lee, Christopher Brooks
-* @version 
-* @since 
-* @Pt.ProposedRating 
-* @Pt.AcceptedRating 
+* @version
+* @since
+* @Pt.ProposedRating
+* @Pt.AcceptedRating
 */
 public class ImageReader extends Source {
    /** Construct an actor with the given container and name.
@@ -69,12 +69,12 @@ public class ImageReader extends Source {
 
        pathName = new StringAttribute(this, "pathName");
        pathName.setExpression("test.png");
-       
+
        output.setTypeEquals(BaseType.OBJECT);
    }
 
    ///////////////////////////////////////////////////////////////////
-   ////                     ports and parameters                  ////       
+   ////                     ports and parameters                  ////
    /** The name of the file to write to. The default
     *  value of this parameter is "test.png"
     */   public StringAttribute pathName;
@@ -82,12 +82,12 @@ public class ImageReader extends Source {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
    /** Output a frame.
-    *  @exception IllegalActionException If thrown while writing to the port.   
+    *  @exception IllegalActionException If thrown while writing to the port.
     */
    public void fire() throws IllegalActionException {
        output.send(0, new ObjectToken(_image));
    }
-  
+
    /** Load image from file
     *  @exception IllegalActionException If thrown by the super class.
     */
@@ -100,10 +100,10 @@ public class ImageReader extends Source {
                throw new IllegalActionException(this,
                        "Fail to load image " + _image.getClass());
            }
-           
+
        }
    }
-   
+
    /** Stop the capture.
     *  @exception IllegalActionException If thrown by the super class.
     */
@@ -111,7 +111,7 @@ public class ImageReader extends Source {
        super.wrapup();
        _image.release();
    }
-  
+
    ///////////////////////////////////////////////////////////////////
    ////                         private variables                 ////
 

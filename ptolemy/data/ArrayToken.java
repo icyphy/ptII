@@ -759,7 +759,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
         return new ArrayToken(result);
     }
-    
+
     /** Return the contiguous subarray starting at the specified index to the
      *  end of this array. If the specified index is out of range,
      *  then return an empty array with the same type as this array.

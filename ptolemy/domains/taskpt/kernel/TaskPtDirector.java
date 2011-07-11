@@ -1,4 +1,4 @@
-/* A director for controlling threads and tasks in the taskpt domain. 
+/* A director for controlling threads and tasks in the taskpt domain.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -46,16 +46,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TaskPtDirector
 
 /** A director for controlling tasks and threads in the taskpt domain.
- * 
+ *
  * <p>A TaskPtDirector has a shared memory that can be accessed by the actors
  * that this director is controlling. The memory is local to this
- * director (and not accessible for higher level entities).</p> 
- * 
- * For more details on this MoC see 
- * Torsten Limberg, Bastian Ristau, and Gerhard Fettweis. 
+ * director (and not accessible for higher level entities).</p>
+ *
+ * For more details on this MoC see
+ * Torsten Limberg, Bastian Ristau, and Gerhard Fettweis.
  * <a href="http://dx.doi.org/10.1007/978-3-540-70550-5_9">
- * A Real-Time Programming Model for Heterogeneous MPSoCs</a>, Proc. of SAMOS VIII. 
- *  
+ * A Real-Time Programming Model for Heterogeneous MPSoCs</a>, Proc. of SAMOS VIII.
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -100,8 +100,8 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
     }
 
     /** Initialize the model controlled by this director.
-     *  
-     *  @throws IllegalActionException Thrown if the initialize() method of
+     *
+     *  @exception IllegalActionException Thrown if the initialize() method of
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
@@ -120,10 +120,10 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
     /** Return false if the system has finished executing. In addition to
      * calling the to invoking the base class method clear receivers and
      * the memory, if the system has finished executing.
-     * 
+     *
      *  @return True if the Director wants to be fired again in the
      *  future.
-     *  @throws IllegalActionException Thrown if the iterations parameter
+     *  @exception IllegalActionException Thrown if the iterations parameter
      *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
@@ -138,12 +138,12 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Initialize the shared memory for the actors and set the 
+    /** Initialize the shared memory for the actors and set the
      * iterations for this director to one.
-     * 
-     *  @throws IllegalActionException Thrown if there is a problem instantiating
+     *
+     *  @exception IllegalActionException Thrown if there is a problem instantiating
      *   the director's parameters.
-     *  @throws NameDuplicationException Thrown if there is a problem instantiating
+     *  @exception NameDuplicationException Thrown if there is a problem instantiating
      *   the director's parameters.
      */
     protected void _init() throws IllegalActionException,
@@ -154,7 +154,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
         }
         iterations.setExpression("1");
     }
-    
+
     /** Transfer at most one data token from the given input port of
      *  the container to the ports it is connected to on the inside.
      *  This method delegates the operation to the IOPort, so that the
@@ -171,16 +171,16 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
         // FIXME: Currently also PtrTokens are directly transferred. This
         // will lead to an error as this director has its own memory. If
         // the address specified in the passed PtrToken is read or written inside,
-        // it will not read/write to the intended location. 
+        // it will not read/write to the intended location.
         //
         // In case of a present
         // Token of type PtrToken, transfer the Tokens this PtrToken is pointing to
-        // instead. If the port is an input/output port and PtrTokens are 
+        // instead. If the port is an input/output port and PtrTokens are
         // present, do nothing (because it is an address for the output tokens send
         // from inside).
-        return super._transferInputs(port);        
+        return super._transferInputs(port);
     }
-    
+
     /** Transfer at most one data token from the given output port of
      *  the container to the ports it is connected to on the outside.
      *  @param port The port to transfer tokens from.
@@ -197,22 +197,22 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
         //
         // In case of a present
         // Token of type PtrToken, transfer the Tokens this PtrToken is pointing to
-        // instead. If the port is an input/output port and PtrTokens are 
+        // instead. If the port is an input/output port and PtrTokens are
         // present from outside, write data to the memory of the higher level director.
          return super._transferOutputs(port);
     }
 
     /** Set the initial Tokens present on the inputs of the actors. In
      * this case do not set any initial tokens. Remove already present tokens.
-     * 
-     * @throws IllegalActionException Thrown if already present tokens cannot be
+     *
+     * @exception IllegalActionException Thrown if already present tokens cannot be
      * removed.
      */
     protected void _setInitialValues() throws IllegalActionException {
         // remove initial values
         // FIXME: Currently the values are set in SequencedModelDirector
         // within the initialize() method. It will be a better idea to
-        // move the initialization into a method and 
+        // move the initialization into a method and
         // override that in this class with a method that does nothing.
         _clearReceivers();
     }

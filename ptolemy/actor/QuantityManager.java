@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 package ptolemy.actor;
- 
+
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -67,7 +67,7 @@ public interface QuantityManager {
      *  receiver. An implementer could, for example, delay the communication
      *  to account for resource contention. Or, it could make a record of the
      *  energy consumed by the communication.
-     *  @param source Receiver that sent the token. 
+     *  @param source Receiver that sent the token.
      *  @param receiver The receiver for which this quantity manager is mediating
      *   communication.
      *  @param token The token for the communication to mediate.

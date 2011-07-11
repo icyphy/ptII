@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ASTPtLeafNode
 
 /**
- The adapter class for ptolemy.data.expr.ASTPtRootNode for the 
+ The adapter class for ptolemy.data.expr.ASTPtRootNode for the
      abstractInterpretation ontology.
 
  @author Charles Shelton
@@ -70,20 +70,20 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        ptolemy.data.expr.ASTPtLeafNode node = 
-                (ptolemy.data.expr.ASTPtLeafNode) _getNode(); 
+        ptolemy.data.expr.ASTPtLeafNode node =
+                (ptolemy.data.expr.ASTPtLeafNode) _getNode();
         Token nodeToken = node.getToken();
 
         if (node.isConstant()) {
             if (nodeToken != null) {
-                // This abstract interpretation lattice does not support 
+                // This abstract interpretation lattice does not support
                 // booleans.  BooleanToken is a subclass of ScalarToken
-                if (nodeToken instanceof ScalarToken && 
+                if (nodeToken instanceof ScalarToken &&
                         !(nodeToken instanceof BooleanToken)) {
                     if (((ScalarToken) nodeToken)
                             .isEqualTo(nodeToken.zero()).booleanValue()) {
@@ -107,7 +107,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                         .getEntity("Unknown"));
             }
         }
-        
+
         return super.constraintList();
     }
 }

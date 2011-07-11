@@ -82,7 +82,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  *  LookInsideAction gets bound to the L key, it will work for all Ptolemy elements.</p>
  *  <p>If the element is not a CompositeEntity or a MoMLModelAttribute, it will
  *  just open the java text file of the element's class definition.</p>
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -90,7 +90,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class LookInsideAction extends FigureAction {
-    
+
     /** Create a new LookInsideAction object with the given
      *  string as its menu action label.
      *  @param menuActionLabel The label of the menu action to be displayed in
@@ -113,7 +113,7 @@ public class LookInsideAction extends FigureAction {
                             .getMenuShortcutKeyMask()));
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -131,24 +131,24 @@ public class LookInsideAction extends FigureAction {
         // Determine which entity was selected for the open actor action.
         super.actionPerformed(event);
         NamedObj object = getTarget();
-        
+
         if (object instanceof MoMLModelAttribute) {
             _openContainedModel((MoMLModelAttribute) object);
         } else {
             _openModel(object);
         }
     }
-    
+
     /** Set the configuration to be used by the LookInsideAction object.
      *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Open the model contained by the given MoMLModelAttribute. This is
      *  significantly different from opening a normal CompositeEntity.
      *  @param momlModelAttribute The MoMLModelAttribute to be opened.
@@ -159,13 +159,13 @@ public class LookInsideAction extends FigureAction {
             Tableau tableau = _configuration.openInstance(model);
             tableau.setMaster(false);
             Effigy effigy = (Effigy) tableau.getContainer();
-            
+
             // The effigy returned above has three problems. First,
             // it's container is the directory is the directory in the
             // configuration. We want it to be contained by the following
             // containerEffigy.
             final Effigy containerEffigy = _configuration.getEffigy(momlModelAttribute.getContainer());
-            
+
             // Second, the effigy returned above returns the wrong value in its
             // masterEffigy() method. That method returns the effigy associated
             // with the toplevel, which is the same as effigy. We want it to
@@ -184,7 +184,7 @@ public class LookInsideAction extends FigureAction {
             newEffigy.setModified(effigy.isModified());
             tableau.setContainer(newEffigy);
             effigy.setContainer(null);
-            
+
             // Third, the uri attribute of the effigy is not set to
             // refer to the file that will actually save the model.
             newEffigy.uri.setURI(containerEffigy.uri.getURI());
@@ -193,7 +193,7 @@ public class LookInsideAction extends FigureAction {
                     + "the model contained by " + momlModelAttribute.getName());
         }
     }
-    
+
     /** Open the model contained by the given NamedObj. If it is a CompositeEntity,
      *  the submodel will be opened in a separate window. Otherwise the java
      *  source code text file for the element's class will be displayed.
@@ -208,24 +208,24 @@ public class LookInsideAction extends FigureAction {
             if (actorInteractionAddonParameter != null) {
                 String actorInteractionAddonClassName = actorInteractionAddonParameter
                         .stringValue();
-                
+
                     Class actorInteractionAddonClass = Class
                         .forName(actorInteractionAddonClassName);
-                    
+
                     ActorInteractionAddon actorInteractionAddon =
                         (ActorInteractionAddon) actorInteractionAddonClass
                         .newInstance();
-                    
-                    if(actorInteractionAddon.isActorOfInterestForAddonController(modelObject)){
+
+                    if (actorInteractionAddon.isActorOfInterestForAddonController(modelObject)) {
                         actorInteractionAddon.lookInsideAction(this, modelObject);
-                    }                    
-                        
+                    }
+
                 }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         // NOTE: Used to open source code here if the object
         // was not a CompositeEntity. But this made it impossible
         // to associate a custom tableau with an atomic entity.
@@ -237,10 +237,10 @@ public class LookInsideAction extends FigureAction {
             MessageHandler.error("Open model element failed.", ex);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The configuration for the controller that contains this LookInsideAction. */
     private Configuration _configuration;
 }

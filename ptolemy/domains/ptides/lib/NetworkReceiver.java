@@ -71,10 +71,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  both simulation and code generation purposes.
  *  </p><p>
  *  This actor assumes the incoming token is a RecordToken, and includes a
- *  token value as well as a timestamp and microstep associated with the token 
+ *  token value as well as a timestamp and microstep associated with the token
  *  value. This actor parses the RecordToken and sends the output token with the
  *  timestamp and microstep equal to those stored in the RecordToken.
- *  To achieve this, the input RecordToken are expected to have these three 
+ *  To achieve this, the input RecordToken are expected to have these three
  *  labels: timestamp, microstep, and payload.
  *
  *  @author Jia Zou, Slobodan Matic
@@ -182,7 +182,7 @@ public class NetworkReceiver extends InputDevice {
      *  port.
      */
     public void preinitialize() throws IllegalActionException {
-        
+
         super.preinitialize();
 
         boolean flag = false;

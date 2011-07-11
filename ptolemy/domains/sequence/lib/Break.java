@@ -40,11 +40,11 @@ import ptolemy.kernel.util.StringAttribute;
  <p>An actor that implements a control break.
  If this actor is reached, control returns to the caller.
  This block has no functionality.
-  
+
   <p>Break is a ControlActor, meaning that it keeps a list of
   enabled output ports.  However, the Break actor has no output ports,
   so this list is always empty here.
-  
+
   @author Elizabeth Latronico (Bosch)
   @version $Id$
   @since Ptolemy II 8.0
@@ -77,7 +77,7 @@ public class Break extends ControlActor {
         // create inports
         input = new TypedIOPort(this, "input", true, false);
 
-        // Beth added 12/18/08 - Break input is now also a control input 
+        // Beth added 12/18/08 - Break input is now also a control input
         // Beth changed 02/04/09 - Break input changed back to a regular input
         // This is to be able to connect possibly unsequenced upstream actors
         // which do not necessarily output a boolean
@@ -91,13 +91,13 @@ public class Break extends ControlActor {
         StringAttribute inputCardinal = new StringAttribute(input, "_cardinal");
         inputCardinal.setExpression("WEST");
 
-        // set type constraints for ports   
+        // set type constraints for ports
         // The input to the break statement should be a control signal
         // which should be a boolean
         // Beth changed 02/04/09
         // Break input can now be any type
-        // This way, can handle Break actors that are introduced because of return 
-        // ports with sequence numbers.  
+        // This way, can handle Break actors that are introduced because of return
+        // ports with sequence numbers.
         // The input to the return port will now also be an input to the Break.
         // This way, the unsequenced actors upstream of the original return port
         // will be sequenced correctly.
@@ -118,7 +118,7 @@ public class Break extends ControlActor {
      *  If the port is unconnected, set the type, so that the type
      *  will not resolve to unknown
      *  Can't use setAtLeast in the constructor, because the input
-     *  could be any type, and booleans/integers/reals do not have a 
+     *  could be any type, and booleans/integers/reals do not have a
      *  common base type other than unknown
      *
      *  @exception IllegalActionException Not thrown here

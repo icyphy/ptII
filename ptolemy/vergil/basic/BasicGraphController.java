@@ -111,7 +111,7 @@ public abstract class BasicGraphController extends AbstractGraphController
         ChangeRequest request = _getClearAllErrorHighlightsChangeRequest();
         _frame.getModel().requestChange(request);
     }
-    
+
     /** Highlight the specified object and all its containers to
      *  indicate that it is the source of an error.
      *  @param culprit The culprit.
@@ -131,7 +131,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             ((NamedObj) culprit).requestChange(request);
         }
     }
-    
+
     /** Add commands to the specified menu and toolbar, as appropriate
      *  for this controller.  In this base class, nothing is added.
      *  @param menu The menu to add to, or null if none.
@@ -438,15 +438,15 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  will not have been fully constructed by the time this is called.
      */
     protected void _createControllers() {
-    }    
-    
+    }
+
     /** Return true if there are active highlights.
      *  @return True if the list if error highlights is not empty.
      */
     protected boolean _areThereActiveErrorHighlights() {
         return !_errorHighlights.isEmpty();
     }
-    
+
     /**
      * Return a change request that clears all the highlights.
      * @return a change request that clears all the highlights.
@@ -604,7 +604,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Add an error highlight color to the specified culprit if it is
      *  not already present.
      *  @param culprit The culprit to highlight.
@@ -625,7 +625,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             _errorHighlights.add(highlightColor);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -644,7 +644,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** List of error highlight attributes we have created. */
     private List<Attribute> _errorHighlights = new LinkedList<Attribute>();
-    
+
     // The get documentation action.
     private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
 

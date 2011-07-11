@@ -87,7 +87,7 @@ import ptolemy.kernel.util.Workspace;
  the arrival of the value.  If both <i>impulse</i> and
  <i>initialState</i> have data on the same microstep,
  then <i>initialState</i> dominates.
- 
+
  <P> Note that both <i>impulse</i> and <i>reset</i> expect to
  receive discrete inputs. To preserve continuity, this means
  that those inputs should be present only when the solver
@@ -567,7 +567,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The custom causality interface. */
     private CausalityInterface _causalityInterface;
-    
+
     /** Indicator that this is the first firing after initialize(). */
     private boolean _firstFiring;
 

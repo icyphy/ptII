@@ -1,6 +1,6 @@
 /*
  Platform independent container for placing UI components into itself.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,9 +33,9 @@ package ptolemy.actor.gui;
 
 /** Platform independent container for placing UI components into itself.
  *  The implementor of this interface would wrap the platform dependent container.
- *  
+ *
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
@@ -51,7 +51,7 @@ public interface PortableContainer {
     public void add(Object component);
 
     /** Return the platform dependent container that this instance wraps.
-     *  @return The platform dependent container. 
+     *  @return The platform dependent container.
      */
     public Object getPlatformContainer();
 }

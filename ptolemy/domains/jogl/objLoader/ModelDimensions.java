@@ -3,7 +3,7 @@
 // Andrew Davison, Novemeber 2006, ad@fivedots.coe.psu.ac.th
 
 /* This class calculates the 'edge' coordinates for the model
-   along its three dimensions. 
+   along its three dimensions.
 
    The edge coords are used to calculate the model's:
       * width, height, depth
@@ -57,12 +57,12 @@ public class ModelDimensions
       rightPt = vert.getX();
     if (vert.getX() < leftPt)
       leftPt = vert.getX();
-            
+
     if (vert.getY() > topPt)
       topPt = vert.getY();
     if (vert.getY() < bottomPt)
       bottomPt = vert.getY();
-            
+
     if (vert.getZ() > nearPt)
       nearPt = vert.getZ();
     if (vert.getZ() < farPt)
@@ -79,7 +79,7 @@ public class ModelDimensions
   {  return (topPt - bottomPt); }
 
   public float getDepth()
-  { return (nearPt - farPt); } 
+  { return (nearPt - farPt); }
 
 
   public float getLargest()
@@ -98,8 +98,8 @@ public class ModelDimensions
 
 
   public Tuple3 getCenter()
-  { 
-    float xc = (rightPt + leftPt)/2.0f; 
+  {
+    float xc = (rightPt + leftPt)/2.0f;
     float yc = (topPt + bottomPt)/2.0f;
     float zc = (nearPt + farPt)/2.0f;
     return new Tuple3(xc, yc, zc);
@@ -111,15 +111,15 @@ public class ModelDimensions
     Tuple3 center = getCenter();
 
     System.out.println("x Coords: " + df.format(leftPt) + " to " + df.format(rightPt));
-    System.out.println("  Mid: " + df.format(center.getX()) + 
+    System.out.println("  Mid: " + df.format(center.getX()) +
                        "; Width: " + df.format(getWidth()) );
 
     System.out.println("y Coords: " + df.format(bottomPt) + " to " + df.format(topPt));
-    System.out.println("  Mid: " + df.format(center.getY()) + 
+    System.out.println("  Mid: " + df.format(center.getY()) +
                        "; Height: " + df.format(getHeight()) );
 
     System.out.println("z Coords: " + df.format(nearPt) + " to " + df.format(farPt));
-    System.out.println("  Mid: " + df.format(center.getZ()) + 
+    System.out.println("  Mid: " + df.format(center.getZ()) +
                        "; Depth: " + df.format(getDepth()) );
   }  // end of reportDimensions()
 

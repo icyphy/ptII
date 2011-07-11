@@ -219,7 +219,7 @@ public class NameIcon extends EditorIcon {
         if (_iconCache != null) {
             return _iconCache;
         }
-    
+
         RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
                 _getFill(), 1.0f, 5.0, 5.0);
         _iconCache = new FigureIcon(figure, 20, 15);

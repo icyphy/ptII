@@ -72,7 +72,7 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
         }
         return sharedCode;
     }
-    
+
 
     /**
      * Generate fire code for the Scale actor.

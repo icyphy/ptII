@@ -193,10 +193,10 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
         setVisible(false);
     }
-    
+
     /** Dispose of this frame.
      *     Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
+     *  this model from getting garbage collected.  This method invokes the
      *  dispose() method of the superclass,
      *  {@link ptolemy.vergil.basic.BasicGraphFrame}.
      */
@@ -230,9 +230,9 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         GUIUtilities.addHotKey(_getRightComponent(), _fullScreenAction);
         GUIUtilities.addMenuItem(_viewMenu, _fullScreenAction);
     }
-    
+
     /** Invoke the close() method of the superclass and optionally
-     *  print a debugging message.	
+     *  print a debugging message.
      *  If {@link ptolemy.actor.gui.Tableau#_debugClosing} is
      *  true, then a message is printed to standard out.
      *  This method is used for debugging memory leaks.

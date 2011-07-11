@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -103,13 +103,13 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
 /**
-  Actor that calls a system command. 
+  Actor that calls a system command.
   This actor fires a system command that is defined by the parameter
   <code>programName</code> with arguments <code>programArguments</code>.
   It waits unit the command terminates. The output of the actor
-  are the exit flag, the standard output and standard error 
+  are the exit flag, the standard output and standard error
   of the command
- 
+
   <p>The parameters <code>programName</code> and <code>programArguments</code>
   can have references to the port name that will be replaced by the token
   value of the respective port. For example, a user may add an input port
@@ -207,7 +207,7 @@ public class SystemCommand extends TypedAtomicActor {
     /** Working directory of the simulation. */
     public FileParameter workingDirectory;
 
-    /** If <i>true</i> (the default), a window will be created that 
+    /** If <i>true</i> (the default), a window will be created that
         shows the console output. */
     public Parameter showConsoleWindow;
 
@@ -244,7 +244,7 @@ public class SystemCommand extends TypedAtomicActor {
 
     /** Read the input token, update the program name and program arguments,
      *  start the program and wait unit it terminates. Then, send the program's
-     *  exit value, the standard output and the standard error stream to 
+     *  exit value, the standard output and the standard error stream to
      *  the output ports.
      *
      *@exception IllegalActionException Not thrown in this base class.
@@ -316,11 +316,11 @@ public class SystemCommand extends TypedAtomicActor {
      *                           are invalid.
      */
     private void _initializeSimulation() throws IllegalActionException {
-        //////////////////////////////////////////////////////////////        
+        //////////////////////////////////////////////////////////////
         worDir = Simulator.resolveDirectory(getContainer(),
                 cutQuotationMarks(workingDirectory.getExpression()));
 
-        //////////////////////////////////////////////////////////////        
+        //////////////////////////////////////////////////////////////
         // Initialize the simulation process
         // Get the command as a File in case it has $CLASSPATH in it.
         File commandFile = programName.asFile();
@@ -342,7 +342,7 @@ public class SystemCommand extends TypedAtomicActor {
         final String argLin = cutQuotationMarks(programArguments
                 .getExpression());
         commandList = new ArrayList<String>();
-        /* mwetter: 
+        /* mwetter:
            Disabled section. Otherwise, C:\Program Files\xyz is parsed to
                     two tokens ("C:\Program" and "Files\xyz") in which case
                     the process builder would try to launch C:\Program
@@ -413,7 +413,7 @@ public class SystemCommand extends TypedAtomicActor {
 
         // Set simulation log file.
         // The call to System.gc() is required on Windows: If this actor is called multiple times
-        // on Windows using vmware fusion and vmware workstation, then the simulation log file 
+        // on Windows using vmware fusion and vmware workstation, then the simulation log file
         // exists but cannot be deleted. Calling System.gc() releases the resources which allows
         // Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
         // This error does not happen on Linux and on Mac OS X.
@@ -509,7 +509,7 @@ public class SystemCommand extends TypedAtomicActor {
     }
 
     /** Wraps up the base class.
-     * 
+     *
      *  @exception IllegalActionException if the base class throws it.
      */
     public void wrapup() throws IllegalActionException {
@@ -553,7 +553,7 @@ public class SystemCommand extends TypedAtomicActor {
     /** Flag, set the <code>true</code> if Ptolemy is run without any graphical
      *  interface
      *
-     * If <code>isHeadless=true</code>, this actor will not open any windows for 
+     * If <code>isHeadless=true</code>, this actor will not open any windows for
      * reporting outputs or warnings.
      */
     protected boolean isHeadless;

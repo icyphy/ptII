@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -105,10 +105,10 @@ public class TestDBConnectorFactory {
      */
     @Before
     public void setUp() throws Exception {
-        _testPath = ptIIPath + fileSeparator + "ptdb" 
-	    + fileSeparator + "kernel"
-	    + fileSeparator + "database"
-	    + fileSeparator + "test" + fileSeparator;
+        _testPath = ptIIPath + fileSeparator + "ptdb"
+            + fileSeparator + "kernel"
+            + fileSeparator + "database"
+            + fileSeparator + "test" + fileSeparator;
     }
 
     /**
@@ -120,7 +120,7 @@ public class TestDBConnectorFactory {
 
     /**
      * Test method for {@link ptdb.common.util.DBConnectorFactory#loadDBProperties()}.
-     * @throws IOException 
+     * @exception IOException
      */
     @Test
     public void testLoadDBProperties() throws IOException {
@@ -191,7 +191,7 @@ public class TestDBConnectorFactory {
 
             URL url = PowerMock.createMock(URL.class);
             InputStream is = new FileInputStream(_testPath
-					 + "ptdb-test1.properties");
+                                         + "ptdb-test1.properties");
 
             mockStatic(FileUtilities.class);
             expect(FileUtilities.nameToURL(ptdbParamsURL, null, null))
@@ -275,7 +275,7 @@ public class TestDBConnectorFactory {
 
     /**
      * Test method for {@link ptdb.common.util.DBConnectorFactory#getSyncConnection(boolean)}.
-     * @throws Exception 
+     * @exception Exception
      */
     @Test
     public void testGetSyncConnection() throws Exception {
@@ -409,7 +409,7 @@ public class TestDBConnectorFactory {
         } catch (NoSuchMethodException e) {
             fail("Unexpected error - " + e.getMessage());
         }
-        
+
         //////////////////////////////////////////////////////////////////////////////////////////
         //With wrong constructor - IllegalArgumentException
         try {
@@ -448,7 +448,7 @@ public class TestDBConnectorFactory {
 //////////////////////////////////////////////////////////////////////////////////////////
         //With wrong newInstance - InstantiationException
         try {
-            
+
             Class mockXmlDBClass = Class.class;
             Constructor xmlDBConstructor = PowerMock
                     .createMock(Constructor.class);
@@ -499,13 +499,13 @@ public class TestDBConnectorFactory {
         }
     }
     @Test
-    public void testGetSyncConnection_WithException() throws Exception { 
+    public void testGetSyncConnection_WithException() throws Exception {
 //////////////////////////////////////////////////////////////////////////////////////////
         DBConnectionParameters dbParams = DBConnectorFactory
         .getDBConnectionParameters();
         //With wrong newInstance - IllegalAccessException
         try {
-            
+
             Class mockXmlDBClass = Class.class;
             Constructor xmlDBConstructor = PowerMock
                     .createMock(Constructor.class);
@@ -523,7 +523,7 @@ public class TestDBConnectorFactory {
                     new IllegalAccessException());
 
             //expect(xmlDBConstructor.newInstance(dbParams)).andReturn(
-            //							     mockXmlDBClass);
+            //                                                             mockXmlDBClass);
 
             PowerMock.replay(DBConnectionParameters.class,Class.class,
                     mockXmlDBClass, xmlDBConstructor);
@@ -558,7 +558,7 @@ public class TestDBConnectorFactory {
     }
 
     @Test
-    public void testGetSyncConnection_WithException2() throws Exception { 
+    public void testGetSyncConnection_WithException2() throws Exception {
 //////////////////////////////////////////////////////////////////////////////////////////
         DBConnectionParameters dbParams = DBConnectorFactory
         .getDBConnectionParameters();
@@ -582,8 +582,8 @@ public class TestDBConnectorFactory {
             expect(mockXmlDBClass.getConstructor(parameterTypes)).andReturn(
                     xmlDBConstructor);
             expect(xmlDBConstructor.newInstance(dbParams)).andThrow(
-		    new InvocationTargetException(new Exception("Test")));
-		    //PowerMock.createMock(InvocationTargetException.class));
+                    new InvocationTargetException(new Exception("Test")));
+                    //PowerMock.createMock(InvocationTargetException.class));
             PowerMock.replay(DBConnectionParameters.class, Class.class,
                     mockXmlDBClass, xmlDBConstructor);
 
@@ -613,17 +613,17 @@ public class TestDBConnectorFactory {
             fail("Unexpected error - " + e.getMessage());
         } catch (InvocationTargetException e) {
             fail("Unexpected error - " + e.getMessage());
-        }        
+        }
     }
 
     /**
      * Test getSyncConnection when setup is not done.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testGetSyncConn_SetupNotDone() throws Exception {
-        
-        
+
+
         try {
             PowerMock
                     .mockStaticPartial(DBConnectorFactory.class, "isSetupDone");
@@ -633,17 +633,17 @@ public class TestDBConnectorFactory {
             DBConnectorFactory.getSyncConnection(true);
             fail("Did not give the expected DBConnectionException exception");
             PowerMock.verify(DBConnectorFactory.class);
-            
+
         } catch (DBConnectionException e) {
             assertTrue("Unexpected exception - " + e.getMessage(), e
                     .getMessage().startsWith(
                             "XML Database Connection is not configured."));
         }
     }
-    
+
     @Test
     public void testGetSetupParameters() throws Exception {
-        
+
         try {
             PowerMock
                     .mockStaticPartial(DBConnectorFactory.class, "isSetupDone");
@@ -656,11 +656,11 @@ public class TestDBConnectorFactory {
             assertTrue("Setup parameters should be null",
                     setupParameters == null);
             PowerMock.verifyAll();
-            
+
         } catch (DBConnectionException e) {
            fail("Unexpected exception - " + e.getMessage());
         }
-        
+
         PowerMock.mockStaticPartial(DBConnectorFactory.class, "isSetupDone");
         PowerMock.expectPrivate(DBConnectorFactory.class, "isSetupDone")
                 .andReturn(true);
@@ -679,11 +679,11 @@ public class TestDBConnectorFactory {
         assertTrue("Cache Container Name is incorrect.", parameters
                 .contains("_cacheContainerName = "
                         + setupParameters.getCacheContainerName()));
-        
+
     }
     /**
      * Test method for {@link ptdb.common.util.DBConnectorFactory#getAsyncConnection()}.
-     * @throws Exception 
+     * @exception Exception
      */
     @Test
     public void testGetAsyncConnection() throws Exception {
@@ -702,7 +702,7 @@ public class TestDBConnectorFactory {
 
     /**
      * Test method for {@link ptdb.common.util.DBConnectorFactory#getCacheConnection(boolean)}.
-     * @throws DBConnectionException 
+     * @exception DBConnectionException
      */
     @Test
     public void testGetCacheConnection() throws DBConnectionException {
@@ -718,7 +718,7 @@ public class TestDBConnectorFactory {
         }
 
     }
-    
+
     private String _getDatabasePath() {
         String path = StringUtilities.getProperty("ptolemy.ptII.dir")
                 + fileSeparator + "ptdb" + fileSeparator + "config"

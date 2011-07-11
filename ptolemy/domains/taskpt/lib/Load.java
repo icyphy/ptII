@@ -1,4 +1,4 @@
-/* An actor that loads tokens from memory. 
+/* An actor that loads tokens from memory.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Load
 
 /** An actor that loads tokens from memory.
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -49,14 +49,14 @@ public class Load extends LoadStore {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, define the <i>data</i>
      *  port as an output port and the <i>ptr</i> port as an input port.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException Thrown if the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Thrown if the container already has an
      *   actor with this name.
-     */    
+     */
     public Load(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -68,11 +68,11 @@ public class Load extends LoadStore {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
     /** Load tokens from a (shared) memory. Use the address given by the
      * the PtrToken in the <i>ptr</i> port.
-     * 
-     * @throws IllegalActionException Thrown if no memory is found.
+     *
+     * @exception IllegalActionException Thrown if no memory is found.
      */
     public void fire() throws IllegalActionException {
         Memory mem = getMemory();

@@ -32,69 +32,69 @@ import java.util.List;
 
 /** Represent terms in combinator expressions for Ptolemy models.
  *  <p>
- *  This interface should be inherited by any objects that will 
+ *  This interface should be inherited by any objects that will
  *  integrate into combinator expressions.
  *  <p>
  *  @author Chris Shaver
  *  @version $Id$
  *  @since
  *  @Pt.ProposedRating red (shaver)
- *  @Pt.AcceptedRating red 
+ *  @Pt.AcceptedRating red
  *
  */
 public interface SyntacticTerm {
-    
-    /** Return list of input Syntactic Ports to term. 
+
+    /** Return list of input Syntactic Ports to term.
      *  @return list of inputs.
      */
     public abstract List<SyntacticPort> getInputs();
-    
-    /** Return list of output Syntactic Ports to term. 
+
+    /** Return list of output Syntactic Ports to term.
      *  @return list of outputs.
      */
     public abstract List<SyntacticPort> getOutputs();
-    
-    /** Get number of inputs to term. 
-     *  @return number of inputs. 
+
+    /** Get number of inputs to term.
+     *  @return number of inputs.
      */
     public abstract int sizeInputs();
-    
-    /** Get number of outputs to term. 
+
+    /** Get number of outputs to term.
      *  @return number of outputs.
      */
     public abstract int sizeOutputs();
-    
-    /** Get rank of term. 
+
+    /** Get rank of term.
      *  @return rank of term.
      */
     public abstract SyntacticRank rank();
-    
+
     /** Get index of given port or null.
-     *  @param port to get the index of. 
+     *  @param port to get the index of.
      *  @return index of given port or null
      */
     public abstract Integer inputIndex(SyntacticPort port);
-    
+
     /** Get index of given port or null.
-     *  @param port to get the index of. 
+     *  @param port to get the index of.
      *  @return index of given port or null
      */
     public abstract Integer outputIndex(SyntacticPort port);
-    
+
     /** Generate code for given term.
      *  @return generated code string.
      */
     public abstract String generateCode();
-    
+
     /** Get the sort order of term.
      *  @return sort order of term.
      */
     public abstract int getOrder();
-    
+
     /** Decide whether term can generate code representation.
      *  @return whether term can generate code.
      */
     public abstract boolean hasCode();
-    
+
 }
 

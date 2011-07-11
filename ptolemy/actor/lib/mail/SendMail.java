@@ -89,7 +89,7 @@ import ptolemy.util.MessageHandler;
  *  $PTII. In Eclipse, you will then need to refresh the project.
  *  If for some reason the smtp.jar is missing, then you will get
  *  a cryptic NoSuchProviderException.
- * 
+ *
  *  @author Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -109,7 +109,7 @@ public class SendMail extends TypedAtomicActor {
     public SendMail(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         to = new PortParameter(this, "to");
         to.setStringMode(true);
         to.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
@@ -139,24 +139,24 @@ public class SendMail extends TypedAtomicActor {
         new SingletonParameter(message.getPort(), "_showName").setToken(BooleanToken.TRUE);
         TextStyle style = new TextStyle(message, "style");
         style.height.setExpression("30");
-        
+
         attach = new FileParameter(this, "attach");
 
         SMTPHostName = new StringParameter(this, "SMTPHostName");
         SMTPHostName.setExpression("smtp.myserver.com");
-        
+
         SMTPUserName = new StringParameter(this, "SMTPUserName");
         SMTPUserName.setExpression("myusername");
-        
+
         reallySendMail = new Parameter(this, "reallySendMail");
         reallySendMail.setTypeEquals(BaseType.BOOLEAN);
         reallySendMail.setExpression("false");
         reallySendMail.setPersistent(false);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -164,7 +164,7 @@ public class SendMail extends TypedAtomicActor {
      *  which means to not attach any file.
      */
     public FileParameter attach;
-        
+
     /** Email address to copy on the message. */
     public PortParameter cc;
 
@@ -173,12 +173,12 @@ public class SendMail extends TypedAtomicActor {
 
     /** The message to send. This defaults to an empty string. */
     public PortParameter message;
-    
+
     /** Output to which the formatted message is sent.
      *  The type of this output is string.
      */
     public TypedIOPort output;
-    
+
     /** The address to which replies should be directed.
      *  This is a comma-separated list that defaults to
      *  an empty string, which indicates that the reply
@@ -196,10 +196,10 @@ public class SendMail extends TypedAtomicActor {
 
     /** Host name for the send mail server. */
     public StringParameter SMTPHostName;
-    
+
     /** User name for the send mail server. */
     public StringParameter SMTPUserName;
-    
+
     /** The subject line. This defaults to an empty string. */
     public PortParameter subject;
 
@@ -227,7 +227,7 @@ public class SendMail extends TypedAtomicActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Set up the properties for the SMTP protocol.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -245,40 +245,40 @@ public class SendMail extends TypedAtomicActor {
     /** Update the parameters based on any available inputs
      *  and then send one email message.
      *  @exception IllegalActionException If any of several errors
-     *   occur while attempting to send the message. 
+     *   occur while attempting to send the message.
      */
     public boolean postfire() throws IllegalActionException {
         from.update();
         to.update();
         message.update();
         subject.update();
-        
+
         // Make sure the user name is valid, since parse errors will
         // be ignored in the authenticator below.
         SMTPUserName.stringValue();
-        
+
         // First construct the string to send to the output.
         StringBuffer result = new StringBuffer();
-        
+
         String toValue = ((StringToken)to.getToken()).stringValue();
         String fromValue = ((StringToken)from.getToken()).stringValue();
         String replyToValue = ((StringToken)replyTo.getToken()).stringValue().trim();
         String ccValue = ((StringToken)cc.getToken()).stringValue();
         String subjectValue = ((StringToken)subject.getToken()).stringValue();
         String messageValue = ((StringToken)message.getToken()).stringValue();
-        
+
         StringTokenizer tokenizer = new StringTokenizer(toValue, ",");
         while (tokenizer.hasMoreTokens()) {
             result.append("To: " + tokenizer.nextToken().trim() + "\n");
         }
-        
+
         tokenizer = new StringTokenizer(ccValue, ",");
         while (tokenizer.hasMoreTokens()) {
             result.append("Cc: " + tokenizer.nextToken().trim() + "\n");
         }
 
         result.append("From: " + fromValue + "\n");
-        
+
         if (!(replyToValue.equals(""))) {
             result.append("Reply-To: " + replyToValue + "\n");
         }
@@ -290,7 +290,7 @@ public class SendMail extends TypedAtomicActor {
         result.append("----\n");
         result.append(messageValue);
         result.append("\n----\n");
-        
+
         output.send(0, new StringToken(result.toString()));
 
         if (!((BooleanToken)reallySendMail.getToken()).booleanValue()) {
@@ -306,7 +306,7 @@ public class SendMail extends TypedAtomicActor {
             Transport transport = mailSession.getTransport();
 
             MimeMessage mimeMessage = new MimeMessage(mailSession);
-            
+
             // If there is an attachment, then we need
             // a multipart message to hold the attachment.
             if (attach.asFile() != null) {
@@ -322,7 +322,7 @@ public class SendMail extends TypedAtomicActor {
                 mimeMessage.setContent(messageValue, "text/plain");
             }
             mimeMessage.setFrom(new InternetAddress(fromValue));
-            
+
             if (!(replyToValue.equals(""))) {
                 ArrayList<Address> replyToAddresses = new ArrayList();
                 tokenizer = new StringTokenizer(replyToValue, ",");
@@ -333,7 +333,7 @@ public class SendMail extends TypedAtomicActor {
             }
 
             mimeMessage.setSubject(subjectValue);
-                        
+
             boolean atLeastOneToAddress = false;
             tokenizer = new StringTokenizer(toValue, ",");
             while (tokenizer.hasMoreTokens()) {
@@ -341,7 +341,7 @@ public class SendMail extends TypedAtomicActor {
                         new InternetAddress(tokenizer.nextToken().trim()));
                 atLeastOneToAddress = true;
             }
-            
+
             tokenizer = new StringTokenizer(ccValue, ",");
             while (tokenizer.hasMoreTokens()) {
                 String nextToken = tokenizer.nextToken().trim();
@@ -380,7 +380,7 @@ public class SendMail extends TypedAtomicActor {
 
         return true;
     }
-    
+
     /** Override the base class to set <i>reallySendMail</i> back
      *  to false if it is true.
      */
@@ -390,13 +390,13 @@ public class SendMail extends TypedAtomicActor {
             reallySendMail.setToken(BooleanToken.FALSE);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The password last entered. */
     private char[] _password;
-    
+
     /** Reference to a persistent set of properties used to configure
      *  the SMTP parameters.
      */

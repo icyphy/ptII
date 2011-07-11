@@ -229,10 +229,10 @@ public class Parameter extends Variable {
                     + "\"";
         }
 
-        // escape any < character in name. unescapeForXML occurs in 
+        // escape any < character in name. unescapeForXML occurs in
         // NamedObj.setName(String)
         name = StringUtilities.escapeForXML(name);
-        
+
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
                 + name + "\" class=\"" + getClassName() + "\"" + valueTerm
                 + ">\n");

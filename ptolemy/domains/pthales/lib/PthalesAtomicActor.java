@@ -137,16 +137,16 @@ public class PthalesAtomicActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////              static methods implementation              ////
-    
+
     /* Difference between iterations and repetitions is that
      * Iteration is the number of times the C function will be called,
      * Repetition is the number of times pattern is applied,
-     * Internal Repetition is the loop inside the C function only. 
+     * Internal Repetition is the loop inside the C function only.
      */
 
     /** Returns the total iterations value.
      * @param actor associated actor
-     * @return total repetitions number 
+     * @return total repetitions number
      */
     public static int getIteration(ComponentEntity actor) {
         return _computeIteration(_parseRepetitions(actor, _REPETITIONS),
@@ -155,7 +155,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
 
     /** Returns the total iterations values.
      * @param actor associated actor
-     * @return size array of repetitions 
+     * @return size array of repetitions
      */
     public static int[] getIterations(ComponentEntity actor) {
         return _computeIterations(_parseRepetitions(actor, _REPETITIONS),
@@ -164,7 +164,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
 
     /** Returns the total repetitions values.
      * @param actor associated actor
-     * @return size array of repetitions 
+     * @return size array of repetitions
      */
     public static Integer[] getRepetitions(ComponentEntity actor) {
         return _parseRepetitions(actor, _REPETITIONS);
@@ -172,14 +172,14 @@ public class PthalesAtomicActor extends TypedAtomicActor {
 
     /** Returns the internal repetitions values.
      * @param actor associated actor
-     * @return size array of repetitions 
+     * @return size array of repetitions
      */
     public static Integer[] getInternalRepetitions(ComponentEntity actor) {
         return _parseRepetitions(actor, _INTERNAL_REPETITIONS);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -218,12 +218,12 @@ public class PthalesAtomicActor extends TypedAtomicActor {
     protected static String _REPETITIONS = "repetitions";
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Compute the number of iterations to repeat the C function.
      * @param totalRepetitions The array of total repetitions.
      * @param internalRepetitions The array of internal repetitions,
-     * where an internal repetition is the loop inside the C function. 
+     * where an internal repetition is the loop inside the C function.
      * @return number of iterations to repeat the C function.
      */
     protected static int _computeIteration(Integer[] totalRepetitions,
@@ -258,12 +258,12 @@ public class PthalesAtomicActor extends TypedAtomicActor {
      * where external means the number of times C function is called.
      * @param totalRepetitions The array of total repetitions.
      * @param internalRepetitions The array of internal repetitions,
-     * where an internal repetition is the loop inside the C function. 
-     * @return external iteration numbers 
+     * where an internal repetition is the loop inside the C function.
+     * @return external iteration numbers
      */
     protected static int[] _computeIterations(Integer[] totalRepetitions,
             Integer[] internalRepetitions) {
-        // FIXME: prepend an underscore to the name of this protected method.        
+        // FIXME: prepend an underscore to the name of this protected method.
         // if no total repetition, no way to calculate
         int internal = 0;
         if (internalRepetitions != null) {
@@ -280,11 +280,11 @@ public class PthalesAtomicActor extends TypedAtomicActor {
         }
         return iterations;
     }
-    
+
 
     /** Set specific attributes common to all Pthales atomic actors.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
@@ -306,7 +306,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
      *  @param actor The name of the actor
      *  @param name The name of the parameter
      *  @return The dimension data, or an empty array if the parameter does not exist.
-     *  @throws IllegalActionException If the parameter cannot be evaluated.
+     *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
     protected static Integer[] _parseRepetitions(ComponentEntity actor,
             String name) {
@@ -334,5 +334,5 @@ public class PthalesAtomicActor extends TypedAtomicActor {
         return result;
     }
 
-    
+
 }

@@ -42,9 +42,9 @@ import javax.swing.JTextField;
 //// GenericAttributePanel
 
 /**
- * An extended JPanel displaying a generic attribute for searching.  
- * Multiple GenericAttributePanel objects may be displayed on the 
- * SimpleSearchFrame. 
+ * An extended JPanel displaying a generic attribute for searching.
+ * Multiple GenericAttributePanel objects may be displayed on the
+ * SimpleSearchFrame.
  *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
@@ -57,7 +57,7 @@ import javax.swing.JTextField;
 public class GenericAttributePanel extends JPanel {
 
     /** Construct a GenericAttributePanel.  All components are
-     * created and added to the panel. 
+     * created and added to the panel.
      *
      */
     public GenericAttributePanel() {
@@ -68,24 +68,24 @@ public class GenericAttributePanel extends JPanel {
         _currentNameText = "";
         _currentValueText = "";
         _currentClassText = "";
-        
+
         setBorder(BorderFactory.createEtchedBorder());
-        
+
         setMaximumSize(new Dimension(650, 30));
         setMinimumSize(getMaximumSize());
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        
+
         setAlignmentX(LEFT_ALIGNMENT);
         setAlignmentY(TOP_ALIGNMENT);
-        
+
         JLabel nameLabel = new JLabel(" Attribute ");
         nameLabel.setPreferredSize(new Dimension(50, 20));
         nameLabel.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         _attributeName = new JTextField();
         _attributeName.setPreferredSize(new Dimension(180, 20));
         _attributeName.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         JLabel valueLabel = new JLabel(" Value ");
         valueLabel.setPreferredSize(new Dimension(40, 20));
         valueLabel.setAlignmentX(LEFT_ALIGNMENT);
@@ -93,8 +93,8 @@ public class GenericAttributePanel extends JPanel {
         _attributeValue = new JTextField();
         _attributeValue.setPreferredSize(new Dimension(180, 20));
         _attributeValue.setAlignmentX(LEFT_ALIGNMENT);
-        
-        
+
+
         JLabel classLabel = new JLabel(" Class ");
         classLabel.setPreferredSize(new Dimension(40, 20));
         classLabel.setAlignmentX(LEFT_ALIGNMENT);
@@ -102,68 +102,68 @@ public class GenericAttributePanel extends JPanel {
         _attributeClass = new JTextField();
         _attributeClass.setPreferredSize(new Dimension(180, 20));
         _attributeClass.setAlignmentX(LEFT_ALIGNMENT);
-     
+
         _attributeName.addFocusListener(new FocusListener() {
 
-            
+
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
-                
+
             }
 
-            
+
             public void focusLost(FocusEvent arg0) {
-                
-                if(!_attributeName.getText().equals(_currentNameText)){
+
+                if (!_attributeName.getText().equals(_currentNameText)) {
                         setModified(true);
                         _currentNameText = _attributeName.getText();
                 }
-                
+
             }
 
         });
-        
+
         _attributeValue.addFocusListener(new FocusListener() {
 
-            
+
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
-                
+
             }
 
-            
+
             public void focusLost(FocusEvent arg0) {
-                
-                if(!_attributeValue.getText().equals(_currentValueText)){
+
+                if (!_attributeValue.getText().equals(_currentValueText)) {
                         setModified(true);
                         _currentValueText = _attributeValue.getText();
                 }
-                
+
             }
 
         });
-        
+
         _attributeClass.addFocusListener(new FocusListener() {
 
-            
+
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
-                
+
             }
 
-            
+
             public void focusLost(FocusEvent arg0) {
-                
-                if(!_attributeClass.getText().equals(_currentClassText)){
+
+                if (!_attributeClass.getText().equals(_currentClassText)) {
                         setModified(true);
                         _currentClassText = _attributeClass.getText();
                 }
-                
+
             }
 
         });
 
-      
+
         add(nameLabel);
         add(_attributeName);
         add(valueLabel);
@@ -182,31 +182,31 @@ public class GenericAttributePanel extends JPanel {
     *          The string value of the attribute,
     *          It is obtained from the applicable form Component based on
     *          the type mapped to the selected attribute.
-    * 
+    *
     */
    public String getValue() {
 
        return _attributeValue.getText();
 
    }
-    
+
     /** Get the selected attribute's name.
      *
      * @return
      *          This attribute's name.
-     * 
+     *
      */
     public String getAttributeName() {
 
         return _attributeName.getText();
 
     }
-    
+
     /** Get the selected attribute's class.
     *
     * @return
     *          This attribute's class.
-    * 
+    *
     */
    public String getAttributeClass() {
 
@@ -219,30 +219,30 @@ public class GenericAttributePanel extends JPanel {
      *
      * @return
      *         An indication if the panel has been modified.
-     * 
+     *
      * @see #setModified(boolean)
-     * 
+     *
      */
     public boolean isModified() {
-    
+
         return _modified;
-       
+
     }
-    
+
     /** Set the panel to modified or unmodified.
-     * 
+     *
      * @param modified True to set to modified.  False to set to unmodified.
-     * 
+     *
      * @see #isModified()
-     * 
+     *
      */
     public void setModified(boolean modified) {
-    
+
         _modified = modified;
-       
+
     }
-    
-   
+
+
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 

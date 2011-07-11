@@ -43,11 +43,11 @@ import ptolemy.kernel.util.BasicModelErrorHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportImage
-/** 
+/**
  * Export a model as a image.
  *
  * The default is to export a .gif file with the same name as the model.
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -186,7 +186,7 @@ public class ExportImage {
     }
 
     /** Export a model as an image.
-     *  
+     *
      *  <p>Note that the a graphical display must be present, this
      *  code displays the model and executes.  To use in a headless
      *  environment under Linux, install Xvfb.</p>
@@ -204,12 +204,12 @@ public class ExportImage {
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run png model.xml
      *  </pre>
-     * 
+     *
      *  @param args The arguments for the export image operation.
-     *  The arguments should be in the format: 
+     *  The arguments should be in the format:
      *  [-run] [-save] [GIF|gif|PNG|png] model.xml.
      *
-     *  @exception args If there is 1 argument, then it names a 
+     *  @exception args If there is 1 argument, then it names a
      *  Ptolemy MoML file and the model is exported as a .gif file.
      *  If there are two arguments, then the first argument names
      *  a format, current formats are GIF, gif, PNG and png and
@@ -246,7 +246,7 @@ public class ExportImage {
                     modelFileName = args[i];
                 }
             }
-        }                        
+        }
         try {
             new ExportImage().exportImage(formatName, modelFileName, run, save);
         } catch (Exception ex) {
@@ -254,7 +254,7 @@ public class ExportImage {
             System.exit(5);
         }
     }
- 
+
     /** Sleep the current thread, which is usually not the Swing Event
      *  Dispatch Thread.
      */

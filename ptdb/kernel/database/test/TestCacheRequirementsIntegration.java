@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -56,21 +56,21 @@ import ptolemy.moml.MoMLChangeRequest;
 
 /**
  * Unit tests for TestCacheManager.
- * 
+ *
  * @author lholsing
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (lholsing)
  * @Pt.AcceptedRating Red (lholsing)
- * 
+ *
  */
 
 public class TestCacheRequirementsIntegration {
-    
+
     /**
      * Verify that models in the cache can be updated.
-     * 
-     * @throws Exception 
+     *
+     * @exception Exception
      */
     @Test
     public void testUpdateCache() throws Exception {
@@ -103,41 +103,41 @@ public class TestCacheRequirementsIntegration {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-   
-        
+
+
         SaveModelManager saveManager = new SaveModelManager();
-        
+
         /*String modelID =*/ saveManager.save(dbModel);
-       
+
         // Load the model to place it into cache.
         PtolemyEffigy effigy = loadModel(dbModel.getModelName());
-        
+
         // Change the value of the attribute for the copy that will go in the cache.
         ((StringParameter) effigy.getModel().getAttribute("TestAttribute")).setExpression("NEW");
         changeModel(effigy.getModel());
-        
+
         // Create an assembly and update the cache.
         HashMap assemblies = new HashMap();
         assemblies.put(effigy.getModel().getName(), effigy.getModel().exportMoML());
         CacheManager.updateCache(assemblies);
-        
+
         // Now load the model from the cache.
         effigy = null;
         effigy = loadModel(dbModel.getModelName());
-        
+
         // Verify that the cache was actually updated.
-        //  Verify that the model is loaded from the cache.  
+        //  Verify that the model is loaded from the cache.
         // The Attribute value will be "NEW".
         assertEquals(((StringParameter) effigy.getModel().getAttribute("TestAttribute")).getExpression(), "NEW");
-        
+
         // Save the model again.  This should clear it from the cache.
         dbModel.setIsNew(false);
         /*modelID =*/ saveManager.save(dbModel);
-        
+
         // Now load the model again.  This time it will be from the DB (not the cache).
         effigy = null;
         effigy = loadModel(dbModel.getModelName());
-        
+
         // Verify it it is loaded from the DB.
         // Attribute value will be "OLD".
         assertEquals(((StringParameter) effigy.getModel().getAttribute("TestAttribute")).getExpression(), "OLD");
@@ -147,13 +147,13 @@ public class TestCacheRequirementsIntegration {
         modelsToRemove.add(new XMLDBModel(dbModel.getModelName()));
         CacheManager.removeFromCache(modelsToRemove);
         removeModel(new XMLDBModel(dbModel.getModelName()));
-        
+
     }
-  
+
     private void removeModel(XMLDBModel dbModel) throws Exception{
-        
+
         DBConnection dbConnection = null;
-        
+
         try {
 
             ArrayList<XMLDBModel> modelList = new ArrayList();
@@ -162,7 +162,7 @@ public class TestCacheRequirementsIntegration {
             RemoveModelsTask removeModelsTask = new RemoveModelsTask(modelList);
             dbConnection.executeRemoveModelsTask(removeModelsTask);
             dbConnection.commitConnection();
-            
+
         } catch (DBExecutionException e) {
 
             if (dbConnection != null) {
@@ -171,7 +171,7 @@ public class TestCacheRequirementsIntegration {
             }
 
             throw e;
-            
+
         } finally {
 
             if (dbConnection != null) {
@@ -180,11 +180,11 @@ public class TestCacheRequirementsIntegration {
 
             }
         }
-        
+
     }
-    
+
     private PtolemyEffigy loadModel(String modelName) throws Exception{
-        
+
        // MoMLParser parser = new MoMLParser();
         //parser.resetAll();
         //String configPath = "ptolemy/configs/ptdb/configuration.xml";
@@ -192,30 +192,30 @@ public class TestCacheRequirementsIntegration {
         //URL configURL = ConfigurationApplication.specToURL(configPath);
         //Configuration configuration = (Configuration) parser.parse(configURL,
          //       configURL);
-        
+
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
-        
+
         PtolemyEffigy effigy = null;
-        
+
         effigy = LoadManager.loadModel(modelName, configuration);
-        
+
         return effigy;
     }
 
     private void changeModel(NamedObj model) throws Exception{
-        
+
         try {
 
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, null, model.exportMoML());
             change.setUndoable(true);
-                            
+
             model.requestChange(change);
-            
+
         } catch (Exception e) {
             throw e;
         }

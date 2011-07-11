@@ -301,17 +301,17 @@ public class EditParametersDialog extends ComponentDialog implements
             ((Configurer) contents).restore();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** A runnable for the change executed event. */
     class ChangeExecutedRunnable implements Runnable {
         public void run() {
             new EditParametersDialog(_owner, _target);
         }
     }
-    
+
     /** A runnable for the change failed event. */
     class ChangeFailedRunnable implements Runnable {
         public ChangeFailedRunnable(Exception exception) {

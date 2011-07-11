@@ -114,7 +114,7 @@ public class OntologySolverTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        
+
         // Not too sure which type of GraphFrame is best, so I'm just using
         // ActorGraphFrame for now.
         ExtendedGraphFrame frame = new OntologySolverGraphFrame(model, this,

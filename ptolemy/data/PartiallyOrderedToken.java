@@ -49,13 +49,13 @@ public interface PartiallyOrderedToken {
 
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.
-     *  
+     *
      *  Only a partial order is assumed, so !(a < b) need not imply (a >= b).
      *
      *  @param rightArgument The token on greater than side of the inequality.
      *  @return BooleanToken.TRUE, if this token is less than the
-     *    argument token. BooleanToken.FALSE, otherwise. 
-     *  @throws IllegalActionException If the tokens are incomparable.
+     *    argument token. BooleanToken.FALSE, otherwise.
+     *  @exception IllegalActionException If the tokens are incomparable.
      */
     public abstract BooleanToken isLessThan(PartiallyOrderedToken rightArgument)
             throws IllegalActionException;

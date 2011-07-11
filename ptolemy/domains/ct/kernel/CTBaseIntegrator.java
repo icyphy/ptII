@@ -585,7 +585,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
     // Tentative state;
     private double _tentativeState;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                           Inner Class                     ////
 

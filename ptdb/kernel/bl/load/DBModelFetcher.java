@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -60,16 +60,16 @@ public class DBModelFetcher {
      *
      * @param id
      *          The id of the model to be loaded.
-     *          
+     *
      * @return An XMLDBModel object from the Database,
      *         containing its MoML string.
-     *         
+     *
      * @exception DBConnectionException
      *          Thrown if there a problem with the database connection.
-     *          
+     *
      * @exception DBExecutionException
      *          Thrown if there is a problem executing the database task.
-     *          
+     *
      */
     public static XMLDBModel loadUsingId(String id)
             throws DBConnectionException, DBExecutionException {
@@ -77,22 +77,22 @@ public class DBModelFetcher {
         GetModelTask getModelTask = new GetModelTask(null, id);
         return load(getModelTask);
     }
-    
+
     /** Given a model name representing the model to load, return
      *  an XMLDBModel object that contains the MoML.
      *
      * @param name
      *          The name of the model to be loaded.
-     *          
+     *
      * @return An XMLDBModel object from the Database,
      *         containing its MoML string.
-     *         
+     *
      * @exception DBConnectionException
      *          Thrown if there a problem with the database connection.
-     *          
+     *
      * @exception DBExecutionException
      *          Thrown if there is a problem executing the database task.
-     *          
+     *
      */
     public static XMLDBModel load(String name) throws DBConnectionException,
             DBExecutionException {
@@ -100,17 +100,17 @@ public class DBModelFetcher {
         GetModelTask getModelTask = new GetModelTask(name);
         return load(getModelTask);
     }
-    
+
     /**
-     * Given a GetModelTask representing the model(name or id) to load, return 
+     * Given a GetModelTask representing the model(name or id) to load, return
      * an XMLDBModel object that contains the MoML.
-     *  
-     * @param getModelTask GetModelTask that contains either the id or the model 
+     *
+     * @param getModelTask GetModelTask that contains either the id or the model
      * name.
      * @return An XMLDBModel object from the Database, containing its MoML string.
-     * @throws DBConnectionException Thrown if there a problem with the database 
+     * @exception DBConnectionException Thrown if there a problem with the database
      * connection.
-     * @throws DBExecutionException Thrown if there is a problem executing the 
+     * @exception DBExecutionException Thrown if there is a problem executing the
      * database task.
      */
     private static XMLDBModel load(GetModelTask getModelTask)
@@ -139,21 +139,21 @@ public class DBModelFetcher {
      * the revised ArrayList.
      *
      * @param modelList
-     *          An ArrayList of XMLDBModel objects 
+     *          An ArrayList of XMLDBModel objects
      *          without associated MoML strings.
-     *          
-     * @return An ArrayList of XMLDBModel objects 
+     *
+     * @return An ArrayList of XMLDBModel objects
      *         populated with their respective MoML strings.
      *         An empty list is returned if no objects could be added.
-     *         
+     *
      * @exception DBConnectionException
      *          Thrown if there a problem with the database connection.
-     *          
+     *
      * @exception DBExecutionException
      *          Thrown if there is a problem executing the database task.
-     *          
+     *
      */
-    public static ArrayList<XMLDBModel> load(ArrayList<XMLDBModel> modelList) 
+    public static ArrayList<XMLDBModel> load(ArrayList<XMLDBModel> modelList)
         throws DBConnectionException, DBExecutionException {
 
         ArrayList<XMLDBModel> returnList = new ArrayList();
@@ -162,29 +162,29 @@ public class DBModelFetcher {
 
         try {
 
-            for(XMLDBModel model: modelList){
-                
+            for (XMLDBModel model: modelList) {
+
                 XMLDBModel resultModel;
-                GetModelTask getModelTask = 
+                GetModelTask getModelTask =
                     new GetModelTask(model.getModelName());
                 resultModel = connection.executeGetCompleteModelTask(getModelTask);
-                
-                if(resultModel != null){
-                    
+
+                if (resultModel != null) {
+
                     returnList.add(resultModel);
-                    
+
                 }
-            
+
             }
 
-        } catch (DBExecutionException dbEx) {            
+        } catch (DBExecutionException dbEx) {
             throw dbEx;
         } finally {
             if (connection != null) {
                 connection.closeConnection();
             }
         }
-        
+
         return returnList;
     }
 }

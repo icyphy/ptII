@@ -45,11 +45,11 @@ to trigger it.
 @Pt.AcceptedRating Red (cmot)
 */
 public interface IGuiAction {
-    
+
     /**
      * Perform the action/modification on the current model triggered
-     * by a Vergil GUI action. 
-     * 
+     * by a Vergil GUI action.
+     *
      * @param model the current Ptolemy model
      */
     public void doAction(NamedObj model);

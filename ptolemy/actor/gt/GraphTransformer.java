@@ -1808,7 +1808,7 @@ public class GraphTransformer extends ChangeRequest {
     /**
      A temporary attribute to record the corresponding object in the replacement
      for any object in the pattern.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

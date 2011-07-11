@@ -53,11 +53,11 @@ import ptolemy.kernel.util.Workspace;
  *  input ports by setting a parameter with an ObjectToken that refers
  *  to this QuantityManager at the port. Note that the name of this
  *  parameter is irrelevant.
- *  
- *  <p>This quantity manager implements a crossbar switch. 
- *  
+ *
+ *  <p>This quantity manager implements a crossbar switch.
+ *
  *  <p> FIXME: add explanation
- *  
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -85,7 +85,7 @@ public class CrossbarSwitch extends BasicSwitch {
         _switchFabricQueue = new HashMap<Integer, TreeSet<TimedEvent>>();
         _waitingOnSwitchFabricQueue = new HashMap<Integer, FIFOQueue>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -104,24 +104,24 @@ public class CrossbarSwitch extends BasicSwitch {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CrossbarSwitch newObject = (CrossbarSwitch) super.clone(workspace);
-	// This is confusing.  The parent class has a private variable named _switchFabricQueue?
-	newObject._switchFabricQueue = new HashMap<Integer, TreeSet<TimedEvent>>();
+        // This is confusing.  The parent class has a private variable named _switchFabricQueue?
+        newObject._switchFabricQueue = new HashMap<Integer, TreeSet<TimedEvent>>();
         newObject._waitingOnSwitchFabricQueue = new HashMap<Integer, FIFOQueue>();
         newObject._crossbarSwitchStates = new boolean[_numberOfPorts][_numberOfPorts];
         return newObject;
     }
 
     /** Move tokens from the input queue to the switch fabric, move tokens
-     *  from the switch fabric to the output queues and send tokens from the 
-     *  output queues to the target receivers. When moving tokens between 
-     *  queues the appropriate delays are considered. 
+     *  from the switch fabric to the output queues and send tokens from the
+     *  output queues to the target receivers. When moving tokens between
+     *  queues the appropriate delays are considered.
      *  @exception IllegalActionException Thrown if token cannot be sent to
      *  target receiver.
      */
     public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
-        // been received; _nextTimeFree could be null. 
+        // been received; _nextTimeFree could be null.
         if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
 
             // move tokens from input queue to switch fabric
@@ -150,7 +150,7 @@ public class CrossbarSwitch extends BasicSwitch {
                     _inputTokens.get(i).remove(event);
                 }
             }
-            
+
             // move waiting tokens into switch fabric
 
             for (int i = 0; i < _numberOfPorts; i++) {
@@ -180,7 +180,7 @@ public class CrossbarSwitch extends BasicSwitch {
 
             for (int i = 0; i < _numberOfPorts; i++) {
                 event = _getEventForCurrentTime(_switchFabricQueue.get(i));
-                if (event != null) { 
+                if (event != null) {
                     Time lastTimeStamp = currentTime;
                     if (_switchFabricQueue.get(i).size() > 0) {
                         lastTimeStamp = _switchFabricQueue.get(i).last().timeStamp;
@@ -194,7 +194,7 @@ public class CrossbarSwitch extends BasicSwitch {
                     for (int j = 0; j < _numberOfPorts; j++) {
                         _crossbarSwitchStates[j][i] = true;
                     }
-                } 
+                }
             }
 
             // send tokens to target receiver
@@ -235,12 +235,12 @@ public class CrossbarSwitch extends BasicSwitch {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Schedule a refiring of the actor at the current or a future time. 
+    /** Schedule a refiring of the actor at the current or a future time.
      *  The actor is refired at current time if there are tokens waiting
      *  to be processed by the switch fabric and the state of the crossbar
-     *  switch indicates that the connection is free. It is refired at a 
+     *  switch indicates that the connection is free. It is refired at a
      *  future time if any of the queues contains tokens.
-     *  @exception IllegalActionException If actor cannot be refired at 
+     *  @exception IllegalActionException If actor cannot be refired at
      *  the computed time.
      */
     protected void _scheduleRefire() throws IllegalActionException {
@@ -276,19 +276,19 @@ public class CrossbarSwitch extends BasicSwitch {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Switch fabric queues for every output port. A token is in the 
+    /** Switch fabric queues for every output port. A token is in the
      *  switch fabric queue if it can be processed and for the amount of time
      *  defined by the delay.
      */
     protected HashMap<Integer, TreeSet<TimedEvent>> _switchFabricQueue;
-    
+
     /** Queue that stores tokens that have been put into the input queue but
      *  cannot be processed by the switch fabric because the crossbar switch
      *  for this connection is busy.
      */
     protected HashMap<Integer, FIFOQueue> _waitingOnSwitchFabricQueue;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -323,8 +323,8 @@ public class CrossbarSwitch extends BasicSwitch {
             }
         }
         return null;
-    } 
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                        privateVariables                   ////
 

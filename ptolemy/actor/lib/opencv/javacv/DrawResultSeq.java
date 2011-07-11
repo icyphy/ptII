@@ -48,12 +48,12 @@ import ptolemy.kernel.util.StringAttribute;
 import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
-//// Draw circles for the result sequence data 
+//// Draw circles for the result sequence data
 
 /**
  * Draw result
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks, Dorsa Sadigh, Steve Bako
- * @version 
+ * @version
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -77,19 +77,19 @@ public class DrawResultSeq extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
         rot_input = new TypedIOPort(this, "rotation", true, false);
         rot_input.setTypeEquals(BaseType.INT);
-        
+
         pathName = new StringAttribute(this, "pathName");
         pathName.setExpression("haarcascade_frontalface_default.xml");
-        
+
         seq = new TypedIOPort(this, "sequence", true, false);
-        seq.setTypeEquals(BaseType.OBJECT);      
+        seq.setTypeEquals(BaseType.OBJECT);
    }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////       
+    ////                     ports and parameters                  ////
     /** The name of the file to write to. The default
      *  value of this parameter is "haarcascade_frontalface_default.xml"
      */
@@ -102,10 +102,10 @@ public class DrawResultSeq extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
-    	rotation = 0;
+            rotation = 0;
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken)input.get(0);
             Object inputObject = inputToken.getValue();
@@ -115,8 +115,8 @@ public class DrawResultSeq extends Transformer {
                         + inputObject.getClass());
             }
             _srcFrame = (IplImage)inputObject;
-            if(rot_input.hasToken(0)) {
-            	rotation = ((IntToken)rot_input.get(0)).intValue();
+            if (rot_input.hasToken(0)) {
+                    rotation = ((IntToken)rot_input.get(0)).intValue();
             }
             if (seq.hasToken(0)) {
                 ObjectToken seqToken = (ObjectToken)seq.get(0);
@@ -146,17 +146,17 @@ public class DrawResultSeq extends Transformer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_dstFrame != null){
+        if (_dstFrame != null) {
             _dstFrame.release();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
     private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
         int i = 0;
         int objTotal = 0;
-        if(objs != null) objTotal = objs.total;
+        if (objs != null) objTotal = objs.total;
 
         for (i = 0; i < objTotal; i++) {
             Pointer r = cvGetSeqElem (objs, i);
@@ -165,47 +165,47 @@ public class DrawResultSeq extends Transformer {
             int radius;
             center.x = (int) round (rect.x + rect.width * 0.5);
             center.y = (int) round (rect.y + rect.height * 0.5);
-            if(rotation != 0){
-            	double xcord = (_srcFrame.width*.5) - center.x;
-            	double ycord = (_srcFrame.height*.5) - center.y;
-            	double altx = _srcFrame.width*.5;
-            	double alty = _srcFrame.height*.5;
-            	if(xcord < 0) {
-            		if(ycord < 0){
-            		center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-            		center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-            		} else {
-            			center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-                		center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-            		}
-            		
-            	} else {
-            		if(ycord > 0){
-            			center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-                		center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-                		} else {
-                			center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-                    		center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-                		}
-            	}         
-            } 
-            
+            if (rotation != 0) {
+                    double xcord = (_srcFrame.width*.5) - center.x;
+                    double ycord = (_srcFrame.height*.5) - center.y;
+                    double altx = _srcFrame.width*.5;
+                    double alty = _srcFrame.height*.5;
+                    if (xcord < 0) {
+                            if (ycord < 0) {
+                            center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+                            center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+                            } else {
+                                    center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+                                center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+                            }
+
+                    } else {
+                            if (ycord > 0) {
+                                    center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+                                center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+                                } else {
+                                        center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+                                    center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+                                }
+                    }
+            }
+
             radius = (int)round ((rect.width + rect.height) * 0.25);
             cvCircle (_image, center.byValue(), radius, colors[i % 8], 3, 8, 0);
 
         }
 
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _srcFrame;
-    private IplImage _dstFrame; 
+    private IplImage _dstFrame;
     private CvSeq _objectSeq;
     private int rotation;
-    
-    private CvScalar.ByValue[] colors = { 
+
+    private CvScalar.ByValue[] colors = {
             CvScalar.RED, CvScalar.BLUE, CvScalar.GREEN, CvScalar.CYAN,
             CvScalar.YELLOW, CvScalar.MAGENTA, CvScalar.WHITE, CvScalar.GRAY
             };

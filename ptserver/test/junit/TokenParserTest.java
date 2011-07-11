@@ -311,7 +311,7 @@ public class TokenParserTest {
         assertEquals(token, convertedToken);
 
     }
-    
+
     @Test
     public void testCommunicationToken2() throws IOException,
             IllegalActionException {

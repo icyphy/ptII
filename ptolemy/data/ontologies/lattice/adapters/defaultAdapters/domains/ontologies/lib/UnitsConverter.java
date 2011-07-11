@@ -35,7 +35,7 @@ import ptolemy.data.ontologies.lattice.unit.UnitConcept;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// UnitsConverter
 
 /** The ontology adapter class for ptolemy.domains.ontologies.lib.UnitsConverter.
@@ -58,38 +58,38 @@ public class UnitsConverter extends LatticeOntologyAdapter {
     public UnitsConverter(LatticeOntologySolver solver, ptolemy.domains.ontologies.lib.UnitsConverter actor)
             throws IllegalActionException {
         super(solver, actor, false);
-        
+
         if (!_solver.equals(actor.getUnitOntologySolver())) {
             _useDefaultConstraints = true;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return the list of constraints for the UnitsConverter actor.
      *  @return The list of constraints for this adapter.
-     *  @throws IllegalActionException If there is an error creating
+     *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.domains.ontologies.lib.UnitsConverter actor = (ptolemy.domains.ontologies.lib.UnitsConverter) getComponent();
-        
+
         // Check to make sure the unit system solver matches the solver specified
         // in the UnitsConverter actor.
         if (_solver.equals(actor.getUnitOntologySolver())) {
-            
+
             // The UnitsConverter actor specifies which units ontology concepts
             // should be applied to its input and output ports.
             UnitConcept inputConcept = actor.getUnitConcept(true);
             UnitConcept outputConcept = actor.getUnitConcept(false);
-            
+
             if (inputConcept != null) {
                 setAtLeast(actor.input, inputConcept);
             }
             if (outputConcept != null) {
                 setAtLeast(actor.output, outputConcept);
-            }            
+            }
         }
 
         return super.constraintList();

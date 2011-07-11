@@ -89,12 +89,12 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Call super's initialize method, and then 
+    /** Call super's initialize method, and then
      *  initialize saved deadline variable.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
     }
 
     /** Clear what's stored in _eventToProcess, and call the super method
@@ -488,7 +488,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     /** Call this method from the super class, then save the absolute
      *  deadline for the last executing event.
      *  @param eventsToProcess The set of events to be processed.
-     *  @throws IllegalActionException If the super class throws it or if failed
+     *  @exception IllegalActionException If the super class throws it or if failed
      *  to get the absolute deadline for input events.
      */
     protected void _saveEventInformation(List<PtidesEvent> eventsToProcess)
@@ -588,7 +588,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private method                 ////
 

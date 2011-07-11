@@ -75,7 +75,7 @@ public class OntologyMoMLHandler extends Attribute {
      *  for all property-able objects.
      *  @param colors True if the highlight colors should be cleared.
      *  @param text True if the ontology concept annotation text should be cleared.
-     *  @throws IllegalActionException If getting the resolved concept fails.
+     *  @exception IllegalActionException If getting the resolved concept fails.
      */
     public void clearDisplay(boolean colors, boolean text) throws IllegalActionException {
         if (colors || text) {
@@ -108,10 +108,10 @@ public class OntologyMoMLHandler extends Attribute {
             solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
         }
     }
-    
+
     /** Highlight all property-able objects with
      *  the specified colors for their property values.
-     *  @throws IllegalActionException If getting the resolved concept fails.
+     *  @exception IllegalActionException If getting the resolved concept fails.
      */
     public void highlightConcepts() throws IllegalActionException {
         // Get the PropertySolver.
@@ -122,7 +122,7 @@ public class OntologyMoMLHandler extends Attribute {
     /** Highlight concepts that have already been resolved, but do not run solver.
      *  Otherwise, do nothing.
      *  @param objects The set of objects to highlight.
-     *  @throws IllegalActionException Thrown if there is an error getting the
+     *  @exception IllegalActionException Thrown if there is an error getting the
      *   colors for the resolved concept values.
      */
     public void highlightConcepts(Set<Object> objects) throws IllegalActionException {
@@ -150,9 +150,9 @@ public class OntologyMoMLHandler extends Attribute {
             solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
         }
     }
-    
+
     /** Show all concept values as text annotations on each model element.
-     *  @throws IllegalActionException If getting the resolved concept fails.
+     *  @exception IllegalActionException If getting the resolved concept fails.
      */
     public void showConceptAnnotations() throws IllegalActionException {
         // Get the PropertySolver.

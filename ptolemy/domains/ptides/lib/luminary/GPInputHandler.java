@@ -86,7 +86,7 @@ public class GPInputHandler extends LuminarySensorHandler {
     public StringParameter pad;
 
     /** A GPInputHandler's configuration is its pad name.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     public String configuration() throws IllegalActionException {
         return pad.stringValue();

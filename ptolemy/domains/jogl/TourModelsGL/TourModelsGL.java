@@ -36,13 +36,13 @@ public class TourModelsGL extends JFrame implements WindowListener
   private static int DEFAULT_FPS = 80;
 
   private static final int PWIDTH = 512;   // size of panel
-  private static final int PHEIGHT = 512; 
+  private static final int PHEIGHT = 512;
 
 
   private TourModelsCanvasGL canvas;
 
 
-  public TourModelsGL(long period) 
+  public TourModelsGL(long period)
   {
     super("TourModelsGL");
 
@@ -103,16 +103,16 @@ public class TourModelsGL extends JFrame implements WindowListener
 
   // ----------------- window listener methods -------------
 
-  public void windowActivated(WindowEvent e) 
+  public void windowActivated(WindowEvent e)
   { canvas.resumeGame();  }
 
-  public void windowDeactivated(WindowEvent e) 
+  public void windowDeactivated(WindowEvent e)
   {  canvas.pauseGame();  }
 
-  public void windowDeiconified(WindowEvent e) 
+  public void windowDeiconified(WindowEvent e)
   {  canvas.resumeGame();  }
 
-  public void windowIconified(WindowEvent e) 
+  public void windowIconified(WindowEvent e)
   {  canvas.pauseGame(); }
 
   public void windowClosing(WindowEvent e)
@@ -124,7 +124,7 @@ public class TourModelsGL extends JFrame implements WindowListener
 // -----------------------------------------
 
   public static void main(String[] args)
-  { 
+  {
       try {
           // Run this in the Swing Event Thread.
           Runnable doActions = new Runnable() {
@@ -136,7 +136,7 @@ public class TourModelsGL extends JFrame implements WindowListener
 
                           long period = (long) 1000.0/fps;
                           System.out.println("fps: " + fps + "; period: " + period + " ms");
-                          new TourModelsGL(period*1000000L);    // ms --> nanosecs 
+                          new TourModelsGL(period*1000000L);    // ms --> nanosecs
                       } catch (Exception ex) {
                           System.err.println(ex.toString());
                           ex.printStackTrace();

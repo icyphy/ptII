@@ -61,7 +61,7 @@ $super.FuncProtoBlock();
 
 // If more int's are to be added to the argument of FuncBlock, change the
 // maxNumSensorInputs field in PtidesBasicDirector.
-/*** FuncBlock($dis1, $dis2, $dis3, $dis4, $dis5, $dis6, $dis7, $dis8, 
+/*** FuncBlock($dis1, $dis2, $dis3, $dis4, $dis5, $dis6, $dis7, $dis8,
 $en1, $en2, $en3, $en4, $en5, $en6, $en7, $en8) ***/
 
 #ifdef LCD_DEBUG
@@ -178,45 +178,45 @@ void die(char *mess) {
 // IntMasterDisable should not be called here, because the systick handler would be disabled.
 // Instead, we disable each interrupt individually.
 void disableInterrupts(void) {
-	// disable safe to process timer
+        // disable safe to process timer
     IntDisable(INT_TIMER0A);
-	IntDisable(INT_TIMER0B);
-	// disable actuation timer
-	IntDisable(INT_TIMER1A);
-	IntDisable(INT_TIMER1B);
-	// disable sensor input peripherals
-	$dis1
-	$dis2
-	$dis3
-	$dis4
-	$dis5
-	$dis6
-	$dis7
-	$dis8
+        IntDisable(INT_TIMER0B);
+        // disable actuation timer
+        IntDisable(INT_TIMER1A);
+        IntDisable(INT_TIMER1B);
+        // disable sensor input peripherals
+        $dis1
+        $dis2
+        $dis3
+        $dis4
+        $dis5
+        $dis6
+        $dis7
+        $dis8
 }
 // Enable all peripheral and timer interrupts (does not include the systick)
 // IntMasterEnable should not be called here, because the systick handler would be disabled.
 // Instead, we disable each interrupt individually.
 void enableInterrupts(void) {
-	// enable Timer0
-	IntEnable(INT_TIMER0A);
-	IntEnable(INT_TIMER0B);
-	// enable actuation timer
-	// FIXME: should probably not have this here....
-	// We have it because there's a bug if this is taken out...
-	if (actuatorRunning != -1) {
-		IntEnable(INT_TIMER1A);
-		IntEnable(INT_TIMER1B);
-	}
-	// enable sensor input peripherals
-	$en1
-	$en2
-	$en3
-	$en4
-	$en5
-	$en6
-	$en7
-	$en8
+        // enable Timer0
+        IntEnable(INT_TIMER0A);
+        IntEnable(INT_TIMER0B);
+        // enable actuation timer
+        // FIXME: should probably not have this here....
+        // We have it because there's a bug if this is taken out...
+        if (actuatorRunning != -1) {
+                IntEnable(INT_TIMER1A);
+                IntEnable(INT_TIMER1B);
+        }
+        // enable sensor input peripherals
+        $en1
+        $en2
+        $en3
+        $en4
+        $en5
+        $en6
+        $en7
+        $en8
 }
 
 //Return the real physical time.
@@ -235,14 +235,14 @@ void getRealTime(Time * const physicalTime){
     // If the system tick rolls over (the tick counts down) between accessing
     // the volatile variables _secs and _quartersecs, then we account for this here
     // by incrementing _quartersecs
-    	if(tick2 < tick1) {
-        	physicalTime->secs = tempSecs;
+            if(tick2 < tick1) {
+                physicalTime->secs = tempSecs;
             switch(tempQuarterSecs){
-				case 0:			physicalTime->nsecs = 0;		 break;
+                                case 0:                        physicalTime->nsecs = 0;                 break;
                 case 1:         physicalTime->nsecs = 250000000; break;
                 case 2:         physicalTime->nsecs = 500000000; break;
                 case 3:         physicalTime->nsecs = 750000000; break;
-                default:		die("quarterSecs is wrong");
+                default:                die("quarterSecs is wrong");
             }
             // convertCyclesToNsecs assumes 50MHz clock
             physicalTime->nsecs += (convertCyclesToNsecs((TIMER_ROLLOVER_CYCLES >> 2) - tick2));
@@ -253,17 +253,17 @@ void getRealTime(Time * const physicalTime){
 
 /* timer */
 void setTimedInterrupt(const Time* safeToProcessTime) {
-	Time currentTime, timeToWait;
+        Time currentTime, timeToWait;
     // it has already been checked, timer always needs to be set, so just set it.
     TimerConfigure(TIMER0_BASE, TIMER_CFG_32_BIT_OS);
     // interrupt 10 times per second
-	getRealTime(&currentTime);
-	if (-1 == timeSub(*safeToProcessTime, currentTime, &timeToWait)) {
-		TimerLoadSet(TIMER0_BASE, TIMER_BOTH, 0);
-		timerInterruptSecsLeft = 0;	
-	} else {
-    	TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(timeToWait.nsecs));
-    	timerInterruptSecsLeft = timeToWait.secs;
+        getRealTime(&currentTime);
+        if (-1 == timeSub(*safeToProcessTime, currentTime, &timeToWait)) {
+                TimerLoadSet(TIMER0_BASE, TIMER_BOTH, 0);
+                timerInterruptSecsLeft = 0;
+        } else {
+            TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(timeToWait.nsecs));
+            timerInterruptSecsLeft = timeToWait.secs;
     }
 
     //
@@ -275,7 +275,7 @@ void setTimedInterrupt(const Time* safeToProcessTime) {
 
     // Enable the timers.
     TimerEnable(TIMER0_BASE, TIMER_BOTH);
-    return;         
+    return;
 }
 
 void Timer0IntHandler(void) {
@@ -286,7 +286,7 @@ void Timer0IntHandler(void) {
                 timerInterruptSecsLeft--;
                 return;
         }
-		saveState();
+                saveState();
         // need to push the currentModelTag onto the stack.
         stackedModelTagIndex++;
         if (stackedModelTagIndex > MAX_EVENTS) {
@@ -320,7 +320,7 @@ $super.FuncBlock();
 void setActuationInterrupt(int actuatorToActuate) {
         // If timer already running
         // check if need to reload the interrupt value.
-        // If not       
+        // If not
         // Set it up to run.
         //set timer0 as a periodic 32 bit timer
         // FIXME: does TimerValueGet() return 0 if timer is not on?
@@ -392,7 +392,7 @@ void setActuationInterrupt(int actuatorToActuate) {
                         if (actuatorArrayHeadPtrs[actuatorRunning] == 0) {
                                 actuatorArrayHeadPtrs[actuatorRunning] = MAX_ACTUATOR_TIMER_VALUES - 1;
                         } else {
-                                actuatorArrayHeadPtrs[actuatorRunning]--;       
+                                actuatorArrayHeadPtrs[actuatorRunning]--;
                         }
                         // set the head to the previous lastActuateTime.
                         actuatorTimerValues[actuatorRunning][actuatorArrayHeadPtrs[actuatorRunning]] = lastActuateTime;
@@ -421,18 +421,18 @@ void setActuationInterrupt(int actuatorToActuate) {
 
                         actuatorArrayTailPtrs[actuatorToActuate]++;
                         if (actuatorArrayTailPtrs[actuatorToActuate] == MAX_ACTUATOR_TIMER_VALUES) {
-                                actuatorArrayTailPtrs[actuatorToActuate] = 0;   
+                                actuatorArrayTailPtrs[actuatorToActuate] = 0;
                         }
                 }
         }
 
         // actuatorArrayHead/TailPtrs/Counts are only added here, so check that we didn't have a overflow
         for (actuatorID = 0; actuatorID < numActuators; actuatorID++) {
-                if (actuatorArrayHeadPtrs[actuatorID] == actuatorArrayTailPtrs[actuatorID] 
+                if (actuatorArrayHeadPtrs[actuatorID] == actuatorArrayTailPtrs[actuatorID]
                 && actuatorArrayCounts[actuatorID] != 0) {
                         die("MAX_ACTUATOR_TIMER_VALUES is not large enough.");
                 }
-                if (actuatorArrayHeadPtrs[actuatorID] != actuatorArrayTailPtrs[actuatorID] 
+                if (actuatorArrayHeadPtrs[actuatorID] != actuatorArrayTailPtrs[actuatorID]
                 && actuatorArrayCounts[actuatorID] == 0) {
                         die("something wrong with actuator ptr algorithm.");
                 }
@@ -451,7 +451,7 @@ void Timer1IntHandler(void) {
 
         // Clear the timer interrupt.
         //
-        TimerIntClear(TIMER1_BASE, TIMER_TIMA_TIMEOUT); 
+        TimerIntClear(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
         if (actuatorTimerInterruptSecsLeft > 0) {
                 actuatorTimerInterruptSecsLeft--;
                 // setup this timer to run once more
@@ -462,7 +462,7 @@ void Timer1IntHandler(void) {
 
         // run the actuator actuation function to assert the output signal.
         if (actuatorRunning == -1) {
-        	die("no actuator to actuate");
+                die("no actuator to actuate");
         }
         actuatorActuations[actuatorRunning]();
 
@@ -486,7 +486,7 @@ void Timer1IntHandler(void) {
                 // there is another actuation to do.
                 Time actuationLeftOverTime;
 
-				#ifdef LCD_DEBUG
+                                #ifdef LCD_DEBUG
                 debugMessageNumber("next actuator", actuatorRunning);
                 #endif
                 //Setup the interrupts for the timer timeouts
@@ -524,7 +524,7 @@ void Timer1IntHandler(void) {
                 IntDisable(INT_TIMER1A);
                 IntDisable(INT_TIMER1B);
                 TimerIntDisable(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
-                TimerIntDisable(TIMER1_BASE, TIMER_TIMB_TIMEOUT); 
+                TimerIntDisable(TIMER1_BASE, TIMER_TIMB_TIMEOUT);
         }
 }
 /**/
@@ -559,14 +559,14 @@ void initializePDSystem() {
         // TIMER_ROLLOVER_CYCLES >> 2 gives 12500000. In other words, systick
         // rolls over 4 times every second.
         SysTickPeriodSet(TIMER_ROLLOVER_CYCLES >> 2);
-        IntPrioritySet(FAULT_SYSTICK, 0x00);  
+        IntPrioritySet(FAULT_SYSTICK, 0x00);
         SysTickEnable();
         IntEnable(FAULT_SYSTICK);  //sys tick vector
         // SVC should have lower priority than systick, but SVC should have
         // higher or the same priority than all other peripheral interrupts.
         // It is ok for systick to preempt SVC, since the SVC does not
         // leave the stack in an unknown state.
-	    IntPrioritySet(FAULT_SVCALL, 0x20);
+            IntPrioritySet(FAULT_SVCALL, 0x20);
         // Initialize LCD at 4 MHz
         RIT128x96x4Init(4000000);
         RIT128x96x4StringDraw("PtidyOSv1.0", 36,  0, 15);
@@ -594,25 +594,25 @@ void initializeInterrupts(void) {
 ; startup_rvmdk.S - Startup code for use with Keil's uVision.
 ;
 ; Copyright (c) 2005-2010 Luminary Micro, Inc.  All rights reserved.
-; 
+;
 ; Software License Agreement
-; 
+;
 ; Luminary Micro, Inc. (LMI) is supplying this software for use solely and
 ; exclusively on LMI's microcontroller products.
-; 
+;
 ; The software is owned by LMI and/or its suppliers, and is protected under
 ; applicable copyright laws.  All rights are reserved.  You may not combine
 ; this software with "viral" open-source software in order to form a larger
 ; program.  Any use in violation of the foregoing restrictions may subject
 ; the user to criminal sanctions under applicable laws, as well as to civil
 ; liability for the breach of the terms and conditions of this license.
-; 
+;
 ; THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
 ; OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
 ; MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
 ; LMI SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
 ; CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
-; 
+;
 ; This is part of revision 1900 of the Stellaris Peripheral Driver Library.
 ;
 ;******************************************************************************
@@ -675,7 +675,7 @@ __heap_limit
 ;
 ;******************************************************************************
 
-$externs                
+$externs
         EXTERN  Timer0IntHandler
                 EXTERN  Timer1IntHandler
                 EXTERN  SysTickHandler
@@ -800,20 +800,20 @@ IntDefaultHandler
 ;
 ;******************************************************************************
 saveState
-	POP			{R0, R1} 		
-	PUSH        {R4-R11}
-	PUSH        {R4-R11}
-	PUSH		{R0, R1}
-	BX			LR
+        POP                        {R0, R1}
+        PUSH        {R4-R11}
+        PUSH        {R4-R11}
+        PUSH                {R0, R1}
+        BX                        LR
 
 ;******************************************************************************
 ;
 ; Function called to add stack to the end of an ISR
 ;
-;******************************************************************************	
+;******************************************************************************
 ; IMPORTANT: this subroutine assumes addStack is compiled to run BEFORE popping out of ISR
 addStack
-	CPSID			I
+        CPSID                        I
     MRS                R1, MSP            ; move stackpointer to R1
     ; Copy previous R4, LR to very top of future stack
     LDRD        R2, R3, [R1, #0]
@@ -825,7 +825,7 @@ addStack
     STR                R3, [R1, #0]                        ; store this value into correct place in memory.
     SUB                R1, R1, #32
     MSR                MSP, R1            ; update Main Stack Pointer
-	CPSIE			I    
+        CPSIE                        I
     BX                LR
 
 ;******************************************************************************
@@ -834,23 +834,23 @@ addStack
 ;
 ;******************************************************************************
 stackRestore
-	; we do not need to disable interrupts for this routine, because it
+        ; we do not need to disable interrupts for this routine, because it
     ; is triggered through a SVC call, which has higher priority than
     ; all other external interrupts in the system.
     MRS                R0, MSP            ; move stackpointer to R0
     ADD                R0, R0, #64     ; the stack that was just pushed by the ISR is ignored
     ;ADD                R0, R0, #32     ; the stack that was just pushed by the ISR is ignored
-	MSR                MSP, R0            ; instead we use the stack that was saved before the first ISR
+        MSR                MSP, R0            ; instead we use the stack that was saved before the first ISR
     POP                {R4-R11}
-	; this doesn't pass the compiler: POP					{SP, PC}
-	BX                LR                    ; branch back to end this ISR
+        ; this doesn't pass the compiler: POP                                        {SP, PC}
+        BX                LR                    ; branch back to end this ISR
 
 loadState
-	POP			{R0, R1} 		
-	POP        {R4-R11}
-	POP        {R4-R11}
-	PUSH		{R0, R1}
-	BX			LR
+        POP                        {R0, R1}
+        POP        {R4-R11}
+        POP        {R4-R11}
+        PUSH                {R0, R1}
+        BX                        LR
 
 ;******************************************************************************
 ;
@@ -861,8 +861,8 @@ loadState
 ;
 ;******************************************************************************
 SVCallHandler
-                        B                stackRestore                                
-                        
+                        B                stackRestore
+
 ;******************************************************************************
 ;
 ; External declaration for the stack manipulation used by the application.

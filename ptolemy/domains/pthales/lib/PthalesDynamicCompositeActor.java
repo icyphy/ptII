@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
  A composite actor imposes the use of dynamic PthalesReceivers
  strips header information and computes the its iteration automatically.
  A PthalesCompositeActor can contain actors from different model (as SDF),
- but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
+ but the port must be a PthalesIOPort, because of the ArrayOL parameters.
 
  @author Dai Bui
  @see ptolemy.actor.TypedIOPort
@@ -116,9 +116,9 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     }
 
     /** Compute the number of iterations of the actor
-     * based on multiple input ports. The iteraions is the 
+     * based on multiple input ports. The iteraions is the
      * minimum of legal iterations from the ports.
-     * 
+     *
      * @return The number of iterations of the actor.
      * @exception IllegalActionException If thrown while reading a port
      */

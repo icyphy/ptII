@@ -1,5 +1,5 @@
 /* Test cases for the RemoteModel implementation.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -129,7 +129,7 @@ public class RemoteModelTest {
             }
         }
 
-        // Stop running processes. 
+        // Stop running processes.
         _proxy.stop(response.getTicket());
         model.getManager().stop();
 
@@ -211,7 +211,7 @@ public class RemoteModelTest {
             }
         }
 
-        // Stop running processes. 
+        // Stop running processes.
         _proxy.stop(response.getTicket());
         clientModel.getManager().stop();
 

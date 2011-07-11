@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -45,13 +45,13 @@ import ptolemy.actor.gui.Configuration;
 //// ParentHierarchyPanel
 
 /**
- * An extended JPanel displaying a single branch of 
- * parents for the search result.  A parent hierarchy 
- * is one branch of parents that contain the model 
- * matched by the model search.  The panel layout is 
- * taken care of in the constructor.  A public method 
- * getSelections() is available for getting the list 
- * of parent model names for models that have been 
+ * An extended JPanel displaying a single branch of
+ * parents for the search result.  A parent hierarchy
+ * is one branch of parents that contain the model
+ * matched by the model search.  The panel layout is
+ * taken care of in the constructor.  A public method
+ * getSelections() is available for getting the list
+ * of parent model names for models that have been
  * selected for loading.
  *
  * @author Lyle Holsinger

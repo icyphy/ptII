@@ -76,7 +76,7 @@ public class RegisterReceiver extends Mailbox {
         return _token;
     }
 
-    /** Put a token into the registerReceiver.  
+    /** Put a token into the registerReceiver.
      *  @param token The token to be put into the mailbox, or null to set
      *   the mailbox to empty.
      *  @exception NoRoomException Not thrown in this base class.

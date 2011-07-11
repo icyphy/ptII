@@ -84,7 +84,7 @@ public class SDFDirector
                 .getToken()).booleanValue())
                 // Findbugs says that we don't need this instance check
                 // because container is, by definition, a CompositeActor.
-                // thus, we could probably remove this if().
+                // thus, we could probably remove this if ().
                 || (container instanceof CompositeActor)) {
 
             // FindBugs wants this instanceof check.
@@ -192,7 +192,7 @@ public class SDFDirector
                 .getToken()).booleanValue())
                 // Findbugs says that we don't need this instance check
                 // because container is, by definition, a CompositeActor.
-                // thus, we could probably remove this if().
+                // thus, we could probably remove this if ().
                 || (container instanceof CompositeActor)) {
 
             ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);

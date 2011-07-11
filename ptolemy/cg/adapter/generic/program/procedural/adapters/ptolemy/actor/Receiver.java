@@ -96,7 +96,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         return _generateBlockByName(_defaultBlocks[1]);
     }
 
-    /** 
+    /**
      * Generate code for putting tokens to the receiver.
      * Note the type conversion is also done in this put method.
      * @param sourcePort The port for which to generate the send code.
@@ -111,14 +111,14 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
             String token) throws IllegalActionException;
 
     /** Get the corresponding component.
-     *  @return the component that corresponds with this receiver.   
+     *  @return the component that corresponds with this receiver.
      */
     public ptolemy.actor.Receiver getComponent() {
         return (ptolemy.actor.Receiver) _component;
     }
 
     /** Return the name of this receiver.
-     *  @return the name of this receiver.   
+     *  @return the name of this receiver.
      */
     public String getName() {
         if (_name == null) {
@@ -155,9 +155,9 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
             throws IllegalActionException;
 
     /** Given a String that is an assignment operation, return the
-     *  right hand side (the source).   
+     *  right hand side (the source).
      *  <p>The token should be in the form of "sinkRef = $convert(sourceRef)".</p>
-     *  @param token A string that contains the assignment.  
+     *  @param token A string that contains the assignment.
      *  @return The right hand side of the assignment.
      *  @exception IllegalActionException  If the token does contain a "=".
      */
@@ -180,8 +180,8 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
     /** Each receiver is associated with a director, return that director.
      *  @return The director associated with this receiver.
-     *  @exception IllegalActionException 
-     *  
+     *  @exception IllegalActionException
+     *
      *  FIXME: this is not exactly correct.
      */
     protected Director _getDirectorForReceiver() throws IllegalActionException {

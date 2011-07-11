@@ -236,7 +236,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     /** Attach the actor icon.
      *  @param name The name of the actor.
-     *  @exception IllegalActionException If thrown while getting the 
+     *  @exception IllegalActionException If thrown while getting the
      *  _iconDescription attribute.
      */
     protected void _attachActorIcon(String name) throws IllegalActionException {
@@ -250,7 +250,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         // Only update the parameter if the new value is different from the
         // old value.  This avoids a ConcurrentModificationException in
         // ptolemy/configs/test/allConfigs.tcl
-        if ( iconDescription == null 
+        if ( iconDescription == null
                 || !iconDescription.getConfigureText().equals(iconText)) {
             //System.out.println("AbstractCalInterpreter: iconText:\n " + iconText
             //        + "\n------\n" + (iconDescription == null ? "null" : iconDescription.getConfigureText()));

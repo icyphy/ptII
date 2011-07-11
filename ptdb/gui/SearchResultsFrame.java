@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -99,9 +99,9 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         _containerModel = model;
         _sourceFrame = frame;
         _configuration = configuration;
-        
-               
-        
+
+
+
         String title = "Search Results";
 
         setTitle(title);
@@ -115,7 +115,7 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         _innerPanel.setLayout(new BoxLayout(_innerPanel, BoxLayout.Y_AXIS));
         _innerPanel.setAlignmentX(LEFT_ALIGNMENT);
         _innerPanel.setMinimumSize(getMaximumSize());
-        
+
         JLabel _label = new JLabel(title + ":");
         _label.setFont(new Font("Title", Font.BOLD, 24));
         _label.setAlignmentX(LEFT_ALIGNMENT);
@@ -124,11 +124,11 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         _scrollPane = new JScrollPane(_innerPanel,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        
+
         _scrollPane.setLayout(new ScrollPaneLayout());
         _scrollPane.setPreferredSize(new Dimension(800, 200));
         _scrollPane.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         outerPanel.add(_scrollPane);
 
         _resultPanelList = new ArrayList();
@@ -173,27 +173,27 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             public void actionPerformed(ActionEvent event) {
 
                 _cancelObservable.notifyObservers();
-                
+
                 _cancelButton.setEnabled(false);
 
             }
 
         });
-        
-        
+
+
         JPanel statusPanel = new JPanel(new BorderLayout());
         statusPanel.setPreferredSize(new Dimension(ImageObserver.WIDTH, 50));
-        
+
         outerPanel.add(statusPanel);
-        
+
 
         _statusTextField = new JTextField();
-        
+
         _statusTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder
                 (javax.swing.border.EtchedBorder.RAISED));
         _statusTextField.setEditable(false);
         _statusTextField.setSize(statusPanel.getSize());
-        
+
         _statusTextField.setFont(new Font("", Font.BOLD, 12));
         statusPanel.add(_statusTextField, BorderLayout.SOUTH);
 
@@ -218,11 +218,11 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         repaint();
 
     }
-    
+
     /**
-     * Close this frame. 
+     * Close this frame.
      */
-    
+
     public void closeFrame() {
         dispose();
     }
@@ -275,13 +275,13 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
                 display(results);
             } else {
                 if (_resultPanelList.size() == 0) {
-                    // No result found. 
+                    // No result found.
 //                    JOptionPane.showMessageDialog(this, "No result found.");
-                    
+
                     _statusTextField.setText("No result found.");
                     _statusTextField.setForeground(Color.RED);
                 } else {
-                    // Searching is done. 
+                    // Searching is done.
 //                    JOptionPane.showMessageDialog(this, "Search is done.");
                     _statusTextField.setText("Search is done.");
                     _statusTextField.setForeground(Color.BLACK);
@@ -292,12 +292,12 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         }
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
-    private void _importByReference(){
-        
+
+    private void _importByReference() {
+
         ArrayList<String> modelNames = new ArrayList();
 
         for (SearchResultPanel panel : _resultPanelList) {
@@ -329,13 +329,13 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
 
                     }
 
-                } catch (CircularDependencyException e){
-                    
+                } catch (CircularDependencyException e) {
+
                     JOptionPane.showMessageDialog(this, "Importing this " +
                             "model by reference will result in a circular " +
-                            "dependency.", "Import Error", 
+                            "dependency.", "Import Error",
                             JOptionPane.INFORMATION_MESSAGE, null);
-                    
+
                 } catch (Exception e) {
 
                     MessageHandler.error("Cannot import the model - '" + modelName + "'.",
@@ -354,10 +354,10 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             JOptionPane.showMessageDialog(this,
                     "Please select at least one model to import.");
         }
-    }    
-    
-    private void _importByValue(){
-        
+    }
+
+    private void _importByValue() {
+
         ArrayList<String> modelNames = new ArrayList();
 
         for (SearchResultPanel panel : _resultPanelList) {

@@ -51,12 +51,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept in the unitSystem ontology for a specific unit for
  *  a specific physical dimension.
- *  
+ *
  *  A unit for a derived dimension is defined by the physical dimension it
  *  measures and the multiplication factor and offset values required to convert
  *  a value in its unit measurement to a unit measurement in the SI unit for this
  *  dimension.
- *  
+ *
 @see DerivedDimensionRepresentativeConcept
 @author Charles Shelton
 @version $Id$
@@ -65,19 +65,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cshelton)
 */
 public class DerivedUnitConcept extends UnitConcept {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
-    
+
     /** Create a new derived unit concept, belonging to the given
      *  ontology, with an automatically generated name.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents where the infinite
      *   token concepts belong in the ontology lattice.
      *  @param unitInfo The token value for this FlatTokenInfiniteConcept.
      *  @return The newly created RecordConcept.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public static DerivedUnitConcept createDerivedUnitConcept(
             Ontology ontology, DerivedDimensionRepresentativeConcept representative,
@@ -92,10 +92,10 @@ public class DerivedUnitConcept extends UnitConcept {
                   + "Original exception:" + e.toString());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                    public methods                         ////
-    
+    ////                         public methods                    ////
+
     /** Find the DerivedUnitConcept that contains the given dimension and
      *  component unit maps and the given unit conversion factor, or null if the
      *  unit doesn't exist in the ontology.
@@ -107,7 +107,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *  @param unitOntology The ontology for the unit dimensions.
      *  @return The DerivedUnitConcept that contains the dimension and component
      *   maps, or the top of the lattice if no matching unit is found.
-     *  @throws IllegalActionException Thrown if there is a problem getting
+     *  @exception IllegalActionException Thrown if there is a problem getting
      *   the unit dimension.
      */
     public static Concept findUnitByComponentMapsAndUnitFactor(
@@ -119,35 +119,35 @@ public class DerivedUnitConcept extends UnitConcept {
         if (_isDimensionMapEmpty(dimensionMap)) {
             return _getDimensionlessConcept(unitOntology);
         }
-        
+
         // If the dimension map has only one dimension with an exponent of
         // one, just return the corresponding unit in the component units map.
         if (_hasSingleDimensionWithExponentOne(dimensionMap)) {
             return _getSingleUnitConceptInComponentUnitsMap(componentUnitsMap,
                     newUnitFactor);
-        }        
+        }
         // If any of the component units have a non-zero offset value,
         // we cannot derive a new unit from the map.
         if (_anyUnitHasANonZeroOffset(componentUnitsMap)) {
             return null;
         }
-        
+
         Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap =
             DerivedDimensionRepresentativeConcept.deriveComponentBaseDimensionsMap(dimensionMap);
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>> baseUnitsMap =
             _deriveComponentBaseUnitsMap(componentUnitsMap, dimensionMap, baseDimensionMap);
-        
+
         if (_isDimensionMapEmpty(baseDimensionMap)) {
             return _getDimensionlessConcept(unitOntology);
-        }        
+        }
         if (_hasSingleDimensionWithExponentOne(baseDimensionMap)) {
             return _getSingleUnitConceptInComponentUnitsMap(baseUnitsMap,
                     newUnitFactor);
-        }        
+        }
         if (_anyUnitHasANonZeroOffset(baseUnitsMap)) {
             return null;
         }
-        
+
         List<DerivedDimensionRepresentativeConcept> candidateDimensions =
             _findMatchingDimensions(dimensionMap, baseDimensionMap, unitOntology);
         if (candidateDimensions.isEmpty()) {
@@ -158,11 +158,11 @@ public class DerivedUnitConcept extends UnitConcept {
                     candidateDimensions) {
                 candidateUnits.addAll(_findEquivalentUnitConcepts(
                         candidateDimension, newUnitFactor));
-            }            
+            }
             return _getResultUnitConceptFromList(candidateUnits);
         }
     }
-    
+
     /** Get the base component units map for this DerivedUnitConcept. This map links
      *  the base component dimensions with the list of base units for each dimension.
      *  @return The component units map.
@@ -170,7 +170,7 @@ public class DerivedUnitConcept extends UnitConcept {
     public Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>> getComponentBaseUnits() {
         return new HashMap<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>>(_componentBaseUnits);
     }
-    
+
     /** Get the component units map for this DerivedUnitConcept. This map links
      *  the component dimensions with the list of units for each dimension.
      *  @return The component units map.
@@ -184,15 +184,15 @@ public class DerivedUnitConcept extends UnitConcept {
 
     /** Create a new BaseUnitConcept, belonging to the given
      *  ontology.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents the physical
      *   dimension for the set infinite concepts that represent units for
      *   this dimension in the ontology lattice.
      *  @param unitInfo The record token value that has the name and scale
      *   factor information for this unit.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected DerivedUnitConcept(Ontology ontology,
             DerivedDimensionRepresentativeConcept representative,
@@ -204,19 +204,19 @@ public class DerivedUnitConcept extends UnitConcept {
         _setComponentUnitsMap(unitInfo, representative);
         _setConversionFactors(unitInfo);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                    private methods                        ////
-    
+    ////                         private methods                   ////
+
     /** Apply the individual unit conversion factors and offsets for each
      *  component unit to the conversion factor and offset for the derived unit.
-     *  @throws IllegalActionException Thrown if there is a problem getting
+     *  @exception IllegalActionException Thrown if there is a problem getting
      *   the component dimensions.
      */
     private void _applyComponentUnitConversionFactors() throws IllegalActionException {
         Map<DimensionRepresentativeConcept, Integer> componentDimensions =
             ((DerivedDimensionRepresentativeConcept) _representative).getComponentDimensions();
-        
+
         for (Map.Entry<DimensionRepresentativeConcept, Integer> componentDimensionsMapEntry : componentDimensions.entrySet()) {
             DimensionRepresentativeConcept dimension = componentDimensionsMapEntry.getKey();
             int dimensionExponent = componentDimensionsMapEntry.getValue().intValue();
@@ -227,12 +227,12 @@ public class DerivedUnitConcept extends UnitConcept {
                 } else if (dimensionExponent < 0) {
                     _unitFactor = (ScalarToken) _unitFactor.divide(unit._unitFactor);
                 }
-                
+
                 // FIXME: What do we do for units that have an offset as well as a factor?
             }
         }
     }
-    
+
     /** Get the array of component unit names for the specified component
      *  dimension from the unit record token for this derived unit concept.
      *  @param derivedUnitRecord The RecordToken that specifies the component
@@ -241,14 +241,14 @@ public class DerivedUnitConcept extends UnitConcept {
      *   to get the array of unit names.
      *  @return The array of unit names for this component dimension as an
      *   array of StringTokens.
-     *  @throws IllegalActionException Thrown if the units array cannot be found
+     *  @exception IllegalActionException Thrown if the units array cannot be found
      *   or it is invalid.
      */
     private Token[] _getUnitsArray(RecordToken derivedUnitRecord, String dimensionName) throws IllegalActionException {
         // First check to see if the record token has a label that matches
-        // the given dimensionName.        
+        // the given dimensionName.
         Token unitsArrayToken = derivedUnitRecord.get(dimensionName);
-        
+
         // If the unitsArrayToken is not found, the dimensionName might be
         // specified by a reference name used in the parent
         // DerivedDimensionRepresentativeConcept. Try to find the unitsArrayToken
@@ -260,10 +260,10 @@ public class DerivedUnitConcept extends UnitConcept {
                 unitsArrayToken = derivedUnitRecord.get(referenceName);
             }
         }
-        
+
         if (unitsArrayToken == null) {
             throw new IllegalActionException(this, "Could not find the units " +
-            		"information for the " + dimensionName + " dimension.");
+                            "information for the " + dimensionName + " dimension.");
         } else {
             if (unitsArrayToken instanceof ArrayToken &&
                     ((ArrayToken) unitsArrayToken).getElementType().
@@ -276,14 +276,14 @@ public class DerivedUnitConcept extends UnitConcept {
             }
         }
     }
-    
+
     /** Set the component units for the derived unit based on the given
      *  record token that specifies the component units for this derived unit.
      *  @param derivedUnitRecord The record token that contains the specified
      *   unit conversion information.
      *  @param unitDimensionRepresentative The dimension representative concept
      *   for this derived unit concept.
-     *  @throws IllegalActionException Thrown if the record token has invalid
+     *  @exception IllegalActionException Thrown if the record token has invalid
      *   unit conversion specifications.
      */
     private void _setComponentUnitsMap(RecordToken derivedUnitRecord,
@@ -291,7 +291,7 @@ public class DerivedUnitConcept extends UnitConcept {
                 throws IllegalActionException {
         Map<DimensionRepresentativeConcept, Integer> componentDimensions =
             unitDimensionRepresentative.getComponentDimensions();
-        
+
         for (Map.Entry<DimensionRepresentativeConcept, Integer>
             componentDimensionsMapEntry : componentDimensions.entrySet()) {
             DimensionRepresentativeConcept dimension =
@@ -325,18 +325,18 @@ public class DerivedUnitConcept extends UnitConcept {
                         " elements but it does not.");
             }
         }
-        
+
         _componentBaseUnits = _deriveComponentBaseUnitsMap(_componentUnits,
                 componentDimensions,
                 unitDimensionRepresentative.getComponentBaseDimensions());
     }
-    
+
     /** Set the unit conversion factor and offset for the derived unit based on
      *  the specified factor and offset and the component unit conversion
      *  factors that comprise this derived unit.
      *  @param derivedUnitRecord The record token that contains the specified
      *   unit conversion information.
-     *  @throws IllegalActionException Thrown if the unit factor or unit
+     *  @exception IllegalActionException Thrown if the unit factor or unit
      *   offset in the record token is invalid.
      */
     private void _setConversionFactors(RecordToken derivedUnitRecord)
@@ -348,9 +348,9 @@ public class DerivedUnitConcept extends UnitConcept {
             _unitFactor = (ScalarToken) unitFactorToken;
         } else {
             throw new IllegalActionException (this, "Invalid unit conversion " +
-            		"factor: " + unitFactorToken);
+                            "factor: " + unitFactorToken);
         }
-        
+
         Token unitOffsetToken = derivedUnitRecord.get(UnitConversionInfo.unitOffsetLabel);
         if (unitOffsetToken == null) {
             _unitOffset = DoubleToken.ZERO;
@@ -358,12 +358,12 @@ public class DerivedUnitConcept extends UnitConcept {
             _unitOffset = (ScalarToken) unitOffsetToken;
         } else {
             throw new IllegalActionException (this, "Invalid unit conversion " +
-            		"offset: " + unitOffsetToken);
+                            "offset: " + unitOffsetToken);
         }
-        
+
         _applyComponentUnitConversionFactors();
     }
-    
+
     /** Update the base component units map with the given base unit and
      *  exponent value. For each base dimension in the map, two lists of base
      *  units are kept. One for all the units with positive exponents, and
@@ -374,35 +374,35 @@ public class DerivedUnitConcept extends UnitConcept {
      *   added to the map.
      *  @param baseDimensionMapExponentValue The exponent value of the base
      *   dimension for the base unit to be added to the map.
-     *  @throws IllegalActionException Thrown if the exponentValue passed in is
+     *  @exception IllegalActionException Thrown if the exponentValue passed in is
      *   zero, because it should be either positive or negative.
      */
     private static void _addBaseUnit(Map<BaseDimensionRepresentativeConcept,
             List<BaseUnitConcept>[]> baseComponentUnits, BaseUnitConcept baseUnit,
             int exponentValue, int baseDimensionMapExponentValue)
         throws IllegalActionException {
-        
+
         BaseDimensionRepresentativeConcept baseDimension =
             (BaseDimensionRepresentativeConcept) baseUnit.getDimension();
         List<BaseUnitConcept>[] arrayOfBaseUnitLists = baseComponentUnits.get(baseDimension);
-        
+
         if (baseDimensionMapExponentValue != 0) {
             if (arrayOfBaseUnitLists == null) {
                 arrayOfBaseUnitLists = (ArrayList<BaseUnitConcept>[])
                     new ArrayList[]{new ArrayList<BaseUnitConcept>(),
                                     new ArrayList<BaseUnitConcept>()};
             }
-            
+
             if (exponentValue > 0) {
                 arrayOfBaseUnitLists[POSITIVE_EXPONENT_INDEX].add(baseUnit);
-            } else if (exponentValue < 0){
+            } else if (exponentValue < 0) {
                 arrayOfBaseUnitLists[NEGATIVE_EXPONENT_INDEX].add(baseUnit);
             } else {
                 throw new IllegalActionException("Exponent value should not " +
-                		"be zero since it was taken from a " +
-                		"dimension in the map.");
+                                "be zero since it was taken from a " +
+                                "dimension in the map.");
             }
-            
+
             baseComponentUnits.put(baseDimension, arrayOfBaseUnitLists);
         }
     }
@@ -417,7 +417,7 @@ public class DerivedUnitConcept extends UnitConcept {
             List<BaseUnitConcept>[]> baseUnitsMap,
             Map<BaseDimensionRepresentativeConcept,
             List<BaseUnitConcept>[]> baseUnitsMapFromDerivedUnit) {
-        
+
         for (Map.Entry<BaseDimensionRepresentativeConcept,
                 List<BaseUnitConcept>[]> baseUnitsMapEntry :
                     baseUnitsMapFromDerivedUnit.entrySet()) {
@@ -427,33 +427,33 @@ public class DerivedUnitConcept extends UnitConcept {
                 baseUnitsMapEntry.getValue();
             List<BaseUnitConcept>[] arrayOfBaseUnitsLists =
                 baseUnitsMap.get(baseDimension);
-            
+
             if (arrayOfBaseUnitsLists == null) {
                 arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
             } else {
                 arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX].addAll(
                         arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
                 arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX].addAll(
-                        arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);                
+                        arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
             }
             baseUnitsMap.put(baseDimension, arrayOfBaseUnitsLists);
         }
-        
+
     }
-    
+
     /** Return true if any unit in the given component units map has a non-zero
      *  offset value.
      *  @param componentUnitsMap The map of component UnitConcepts.
      *  @return true if none of the component UnitConcepts has a non-zero
      *   offset value, and false otherwise.
-     *  @throws IllegalActionException Thrown if there is a problem comparing
+     *  @exception IllegalActionException Thrown if there is a problem comparing
      *   the UnitConcept unit offset scalar token values.
      */
     private static boolean _anyUnitHasANonZeroOffset(
             Map<? extends DimensionRepresentativeConcept,
                     ? extends List<? extends UnitConcept>> componentUnitsMap)
         throws IllegalActionException {
-        
+
         for (List<? extends UnitConcept> unitList : componentUnitsMap.values()) {
             for (UnitConcept unit : unitList) {
                 ScalarToken unitOffset = unit.getUnitOffset();
@@ -461,10 +461,10 @@ public class DerivedUnitConcept extends UnitConcept {
                     return true;
                 }
             }
-        }        
+        }
         return false;
     }
-    
+
     /** Derive a map of base dimensions to lists of units that represents the
      *  given component units map and dimension map.
      *  @param componentUnitsMap The map of dimensions to lists of units from
@@ -475,7 +475,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *   for creating the base component units map.
      *  @return The map of base dimensions to exponents that composes the given
      *   dimension map.
-     *  @throws IllegalActionException Thrown if an invalid dimension concept
+     *  @exception IllegalActionException Thrown if an invalid dimension concept
      *   is found.
      */
     private static Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>>
@@ -484,17 +484,17 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap)
                 throws IllegalActionException {
-        
+
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>>
             baseComponentUnits =
                 new HashMap<BaseDimensionRepresentativeConcept,
                     List<BaseUnitConcept>>();
-        
+
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]>
             baseComponentUnitsSeparateExponents =
                 _deriveComponentBaseUnitsSeparateExponentsMap(
                         componentUnitsMap, dimensionMap, baseDimensionMap);
-            
+
         for (Map.Entry<BaseDimensionRepresentativeConcept, Integer>
             baseDimensionMapEntry : baseDimensionMap.entrySet()) {
             BaseDimensionRepresentativeConcept baseDimension =
@@ -503,7 +503,7 @@ public class DerivedUnitConcept extends UnitConcept {
             List<BaseUnitConcept> positiveExponentUnitList = baseComponentUnitsSeparateExponents.get(baseDimension)[POSITIVE_EXPONENT_INDEX];
             List<BaseUnitConcept> negativeExponentUnitList = baseComponentUnitsSeparateExponents.get(baseDimension)[NEGATIVE_EXPONENT_INDEX];
             List<BaseUnitConcept> composedUnitList = null;
-            
+
             if (exponent > 0) {
                 composedUnitList = _removeMatchingListElements(positiveExponentUnitList, negativeExponentUnitList);
             } else if (exponent < 0) {
@@ -524,7 +524,7 @@ public class DerivedUnitConcept extends UnitConcept {
                                 ", exponent value: " + exponent);
             }
         }
-        
+
         return baseComponentUnits;
     }
 
@@ -539,7 +539,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *   the dimension map input.
      *  @return The base component units map with separate lists of
      *   positive and negative exponent units.
-     *  @throws IllegalActionException Thrown if unit concepts that are
+     *  @exception IllegalActionException Thrown if unit concepts that are
      *   neither BaseUnitConcepts or DerivedUnitConcepts are found.
      */
     private static Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]>
@@ -548,12 +548,12 @@ public class DerivedUnitConcept extends UnitConcept {
                 Map<DimensionRepresentativeConcept, Integer> dimensionMap,
                 Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap)
                     throws IllegalActionException {
-        
+
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]>
             baseComponentUnitsSeparateExponents =
                 new HashMap<BaseDimensionRepresentativeConcept,
                     List<BaseUnitConcept>[]>();
-        
+
         for (Map.Entry<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMapEntry : componentUnitsMap.entrySet()) {
             DimensionRepresentativeConcept dimension = componentUnitsMapEntry.getKey();
             List<UnitConcept> unitsList = componentUnitsMapEntry.getValue();
@@ -587,7 +587,7 @@ public class DerivedUnitConcept extends UnitConcept {
                             "or a DerivedUnitConcept.");
                 }
             }
-        }        
+        }
         return baseComponentUnitsSeparateExponents;
     }
 
@@ -599,63 +599,63 @@ public class DerivedUnitConcept extends UnitConcept {
      *  @param newUnitFactor The unit conversion factor to match for the
      *   UnitConcepts.
      *  @return The list of matching UnitConcepts.
-     *  @throws IllegalActionException Thrown if there is a problem compating
+     *  @exception IllegalActionException Thrown if there is a problem compating
      *   the unit factor scalar token values.
      */
     private static List<UnitConcept> _findEquivalentUnitConcepts(
             DimensionRepresentativeConcept dimension,
             ScalarToken newUnitFactor) throws IllegalActionException {
-        
-        List<UnitConcept> matchingUnits = new ArrayList<UnitConcept>();        
+
+        List<UnitConcept> matchingUnits = new ArrayList<UnitConcept>();
         for (UnitConcept unit : dimension.getAllUnits()) {
             ScalarToken unitFactor = unit.getUnitFactor();
             ScalarToken unitOffset = unit.getUnitOffset();
             boolean noUnitOffsets = unitOffset.isEqualTo(unitOffset.zero()).booleanValue();
             if (unit instanceof DerivedUnitConcept) {
-                DerivedUnitConcept derivedUnit = (DerivedUnitConcept) unit;                
+                DerivedUnitConcept derivedUnit = (DerivedUnitConcept) unit;
                 noUnitOffsets = noUnitOffsets && !(_anyUnitHasANonZeroOffset(derivedUnit.getComponentUnits()));
                 noUnitOffsets = noUnitOffsets && !(_anyUnitHasANonZeroOffset(derivedUnit.getComponentBaseUnits()));
-            }            
+            }
             if (noUnitOffsets &&
                     newUnitFactor.isCloseTo(unitFactor).booleanValue()) {
                 matchingUnits.add(unit);
             }
-        }        
+        }
         return matchingUnits;
     }
 
-    /** Find all the matching dimension concepts with the given dimension map. 
+    /** Find all the matching dimension concepts with the given dimension map.
      *  @param dimensionMap The map of component dimensions to their exponents
      *   for this unit dimension.
      *  @param baseDimensionMap The already calculated base dimension map for
      *   the dimension map input.
      *  @param unitOntology The ontology for the unit dimensions.
      *  @return The List of found matching DerivedDimensionRepresentativeConcepts.
-     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *  @exception IllegalActionException Thrown if there is a problem getting the
      *   dimension concept.
      */
     private static List<DerivedDimensionRepresentativeConcept>
         _findMatchingDimensions(Map<DimensionRepresentativeConcept, Integer>
             dimensionMap, Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap,
             Ontology unitOntology) throws IllegalActionException {
-        
+
         List<DerivedDimensionRepresentativeConcept> foundDimensions =
             new ArrayList<DerivedDimensionRepresentativeConcept>();
-        
+
         List<DerivedDimensionRepresentativeConcept> allDimensions =
-            unitOntology.entityList(DerivedDimensionRepresentativeConcept.class);        
+            unitOntology.entityList(DerivedDimensionRepresentativeConcept.class);
         for (DerivedDimensionRepresentativeConcept dimension : allDimensions) {
             Map<DimensionRepresentativeConcept, Integer> componentDimensions =
                 dimension.getComponentDimensions();
-            
+
             if (dimensionMap.equals(componentDimensions) ||
                     baseDimensionMap.equals(dimension.getComponentBaseDimensions())) {
                 foundDimensions.add(dimension);
             }
-        }        
+        }
         return foundDimensions;
     }
-    
+
     /** Return the least upper bound of all the dimensionless concepts in the
      *  ontology, or null if there are no dimensionless
      *  concepts in the ontology.
@@ -663,11 +663,11 @@ public class DerivedUnitConcept extends UnitConcept {
      *   concept.
      *  @return The dimensionless concept, or the top of the lattice if none
      *   are in the ontology.
-     *  @throws IllegalActionException Thrown if the ontology's concept graph
+     *  @exception IllegalActionException Thrown if the ontology's concept graph
      *   is null.
      */
     private static Concept _getDimensionlessConcept(Ontology unitOntology)
-            throws IllegalActionException {        
+            throws IllegalActionException {
         List<DimensionlessConcept> allDimensionlessConcepts =
             unitOntology.entityList(DimensionlessConcept.class);
         if (allDimensionlessConcepts.isEmpty()) {
@@ -681,7 +681,7 @@ public class DerivedUnitConcept extends UnitConcept {
             return conceptGraph.leastUpperBound(allDimensionlessConcepts.toArray());
         }
     }
-    
+
     /** Given a component units map that is known to have one entry in the map
      *  with a list of unit concepts that has a single element, return that unit
      *  concept if its unit factor matches the given unit factor, or another
@@ -690,7 +690,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *  @param newUnitFactor The unit conversion factor to match for the
      *   UnitConcepts.
      *  @return The matching unit concept with the given unit factor.
-     *  @throws IllegalActionException Thrown if the component units map does
+     *  @exception IllegalActionException Thrown if the component units map does
      *   not have exactly one entry or the unit list has more than one element.
      */
     private static Concept _getSingleUnitConceptInComponentUnitsMap(
@@ -698,13 +698,13 @@ public class DerivedUnitConcept extends UnitConcept {
                     ? extends List<? extends UnitConcept>> componentUnitsMap,
                             ScalarToken newUnitFactor)
         throws IllegalActionException {
-        
+
         if (componentUnitsMap.values().size() != 1) {
             throw new IllegalActionException("The component units map does " +
                     "not have exactly one entry in the map. Number of " +
                     "entries: " + componentUnitsMap.values().size());
         }
-        
+
         for (List<? extends UnitConcept> unitList : componentUnitsMap.values()) {
             if (unitList == null || unitList.size() != 1) {
                 throw new IllegalActionException("There is one " +
@@ -724,13 +724,13 @@ public class DerivedUnitConcept extends UnitConcept {
                 }
             }
         }
-        
+
         // This code should be unreachable but is required by the java compiler.
         throw new IllegalActionException("The component units map was empty " +
                     "even though there is supposed to be exactly one " +
                     "entry in the map.");
     }
-    
+
     /** Return a single Concept from the given list of candidate UnitConcepts.
      *  If the list is null or empty, return null.
      *  @param candidateUnits The list of candidate UnitConcepts.
@@ -750,13 +750,13 @@ public class DerivedUnitConcept extends UnitConcept {
                 leastUpperBound(candidateUnits.toArray());
         }
     }
-    
+
     /** Return true if the input dimension map has a single dimension with
      *  an exponent value of 1, or false otherwise.
      *  @param dimensionMap The dimension map to be tested.
      *  @return True if the map has one entry with an exponent of 1, false
      *   otherwise.
-     */    
+     */
     private static boolean _hasSingleDimensionWithExponentOne(
             Map<? extends DimensionRepresentativeConcept, Integer> dimensionMap) {
         if (dimensionMap.size() == 1) {
@@ -765,10 +765,10 @@ public class DerivedUnitConcept extends UnitConcept {
                     return true;
                 }
             }
-        }        
+        }
         return false;
     }
-    
+
     /** Return true if the input dimension map is empty, and false otherwise.
      *  @param dimensionMap The input dimension map.
      *  @return true if the input dimension map is empty, and false otherwise.
@@ -781,7 +781,7 @@ public class DerivedUnitConcept extends UnitConcept {
             return false;
         }
     }
-    
+
     /** Return a new list of BaseUnitConcepts that removes all the elements
      *  of the elementsToBeRemoved list from the originalList.
      *  @param originalList The original list of BaseUnitConcepts.
@@ -789,7 +789,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *   from the originalList.
      *  @return A new list that contains all the elements of the original list
      *   minus the elements from the elementsToBeRemoved list.
-     *  @throws IllegalActionException Thrown if the original list is null,
+     *  @exception IllegalActionException Thrown if the original list is null,
      *   or the original list has fewer elements than the elementsToBeRemoved
      *   list.
      */
@@ -799,43 +799,43 @@ public class DerivedUnitConcept extends UnitConcept {
                 throws IllegalActionException {
         if (originalList == null) {
             throw new IllegalActionException("Original list is null so no " +
-            		"elements can be removed from it.");
+                            "elements can be removed from it.");
         } else if (elementsToBeRemoved == null || elementsToBeRemoved.isEmpty()) {
             return new ArrayList<BaseUnitConcept>(originalList);
         } else if (originalList.size() < elementsToBeRemoved.size()) {
             throw new IllegalActionException("Original list has fewer " +
-            		"elements that the number of elements to be removed, " +
-            		"so all elements cannot be successfully removed.");
+                            "elements that the number of elements to be removed, " +
+                            "so all elements cannot be successfully removed.");
         } else {
             List<BaseUnitConcept> resultList =
                 new ArrayList<BaseUnitConcept>(originalList);
-            for(BaseUnitConcept unitToBeRemoved : elementsToBeRemoved) {
+            for (BaseUnitConcept unitToBeRemoved : elementsToBeRemoved) {
                 resultList.remove(unitToBeRemoved);
             }
             return resultList;
-        }          
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
 
     /** Map that links the component base dimensions to the list of component
      *  base units for this derived unit. The unit list is the size of the exponent
      *  for that component base dimension.
      */
     private Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>> _componentBaseUnits;
-    
+
     /** Map that links the component dimensions to the list of component
      *  units for this derived unit. The unit list is the size of the exponent
      *  for that component dimension.
      */
     private Map<DimensionRepresentativeConcept, List<UnitConcept>> _componentUnits;
-    
+
     /** Index in the 2-element array of unit lists that contains all the units
      *  for positive exponents.
      */
     private static final int POSITIVE_EXPONENT_INDEX = 0;
-    
+
     /** Index in the 2-element array of unit lists that contains all the units
      *  for negative exponents.
      */

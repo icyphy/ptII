@@ -123,7 +123,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  the clip is stopped and restarted each time the actor fires.
      */
     public Parameter overlay;
-    
+
     /** If true, then play the clip to completion before returning
      *  from firing. This is a boolean that defaults to false.
      */
@@ -156,13 +156,13 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {
-        for(int i = 0; i < trigger.getWidth(); i++) {
+        for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 trigger.get(i);
             }
         }
         super.fire();
-        
+
         boolean overlayValue = ((BooleanToken) overlay.getToken()).booleanValue();
         if (overlayValue || _clips.size() == 0) {
             // If there is an inactive clip in the list, then use that.
@@ -210,7 +210,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         if (playToCompletionValue) {
             // Wait until the clip is finished.
             synchronized (_outputEvents) {
-                while(true) {
+                while (true) {
                     if (_outputEvents.size() > 0) {
                         BooleanToken lastMessage = _outputEvents.get(_outputEvents.size() - 1);
                         if (!lastMessage.booleanValue()) {
@@ -228,7 +228,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 }
             }
         }
-        
+
         // Produce all outputs that have been requested.
         synchronized (_outputEvents) {
             for (BooleanToken token : _outputEvents) {

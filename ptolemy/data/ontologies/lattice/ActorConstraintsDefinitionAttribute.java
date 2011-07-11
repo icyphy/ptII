@@ -55,7 +55,7 @@ import ptolemy.vergil.icon.EditorIcon;
 //// ActorConstraintsDefinitionAttribute
 
 /** Attribute that defines the lattice ontology solver constraints for an actor.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -152,7 +152,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *  class name changes, the attribute interface adds and removes
      *  fields for constraints for the actor's ports and attributes.
      *  @param attribute The attribute that has been changed.
-     *  @throws IllegalActionException If there is a problem changing the attribute.
+     *  @exception IllegalActionException If there is a problem changing the attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -170,7 +170,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             .add((StringParameter) constraintParameter);
                 }
             }
-            
+
             StringToken actorClassNameToken = (StringToken) actorClassName.getToken();
             String actorClassNameString = actorClassNameToken.stringValue();
             StringToken foundActorClassNameToken = (StringToken) foundActorClassName.getToken();
@@ -179,14 +179,14 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             if (!actorClassNameString.equals("")
                     && !actorClassNameString.equals(
                             foundActorClassNameString)) {
-                
-                Class<? extends Actor> actorClass = null;                
+
+                Class<? extends Actor> actorClass = null;
                 try {
                     // Verify that the actorClassName correctly
                     // specifies an existing actor class.
                     actorClass = Class.forName(actorClassNameString)
                             .asSubclass(Actor.class);
-                    
+
                     // Set the name of the actor constraints attribute to be
                     // "[name of class]ActorConstraints but make sure it
                     // doesn't conflict with any other attributes in the model.
@@ -201,7 +201,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             "Name duplication error when trying to set the " +
                             "name of the actor constraints attribute.");
                 }
-                
+
                 // Instantiate a temporary actor from this class in order
                 // to get all the port and attribute information.
                 ComponentEntity tempActorInstance = (ComponentEntity) _createTempActorInstance(actorClass);
@@ -233,7 +233,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             _constraintTermExpressions
                                     .add(constraintExpression);
                         }
-                    }                      
+                    }
                     tempActorInstance.setContainer(null);
                 } catch (NameDuplicationException ex) {
                     throw new IllegalActionException(
@@ -260,7 +260,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
 
         super.attributeChanged(attribute);
     }
-    
+
     /** Get the adapter defined by this attribute.
      *  @param component The model component for which the adapter will be created.
      *  @param solver The lattice ontology solver for which this adapter is being created.
@@ -278,14 +278,14 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     + " passed in for the adapter is not of class "
                     + actorClassName.getExpression() + ".");
         }
-    
+
         // If the solver is null, throw an exception.
         if (solver == null) {
             throw new IllegalActionException(this, "The OntologySolverModel "
                     + " does not have an associated OntologySolver so no "
                     + " OntologyAdapter can be created.");
         }
-        
+
         // Get the adapter for the actor.
         if (solver instanceof ProductLatticeOntologySolver) {
             return new ActorProductLatticeConstraintsDefinitionAdapter(
@@ -316,14 +316,14 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             return null;
         }
     }
-    
+
     /** Get the name of the element contained by the actor (either a
      *  port or an attribute) for which the specified parameter
      *  defines a constraint.
      *  @param expressionParameter The string parameter that defines
      *   the element's constraints.
      *  @return The string name of the element (either a port or an attribute).
-     *  @throws IllegalActionException If the expressionParameter passed in is null.
+     *  @exception IllegalActionException If the expressionParameter passed in is null.
      */
     public static String getActorElementName(StringParameter expressionParameter)
         throws IllegalActionException {
@@ -364,13 +364,13 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             return dirAndRHSStrings;
         }
     }
-    
+
     /** Return true if the actor element constraint expression is for an attribute,
      *  false otherwise.
      *  @param actorElementConstraintExpression The constraint expression for the actor element.
      *  @return true if the actor element constraint expression is for an attribute,
      *   false otherwise.
-     *  @throws IllegalActionException If the constrain expression parameter is null.
+     *  @exception IllegalActionException If the constrain expression parameter is null.
      */
     public static boolean isActorElementAnAttribute(StringParameter actorElementConstraintExpression)
         throws IllegalActionException {
@@ -386,7 +386,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *  @param actorElementConstraintExpression The constraint expression for the actor element.
      *  @return true if the actor element constraint expression is for a port,
      *   false otherwise.
-     *  @throws IllegalActionException If the constrain expression parameter is null.
+     *  @exception IllegalActionException If the constrain expression parameter is null.
      */
     public static boolean isActorElementAPort(StringParameter actorElementConstraintExpression)
         throws IllegalActionException {
@@ -403,7 +403,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *   for the actor element.
      *  @return true if the actor element is set to be ignored by
      *   the ontology analysis, false otherwise.
-     *  @throws IllegalActionException If the constrain expression parameter is null.
+     *  @exception IllegalActionException If the constrain expression parameter is null.
      */
     public static boolean isActorElementIgnored(StringParameter actorElementConstraintExpression)
         throws IllegalActionException {
@@ -420,7 +420,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *   for the actor element.
      *  @return true if the actor element is set to have no constraints for
      *   the ontology analysis, false otherwise.
-     *  @throws IllegalActionException If the constrain expression parameter is null.
+     *  @exception IllegalActionException If the constrain expression parameter is null.
      */
     public static boolean isActorElementUnconstrained(StringParameter actorElementConstraintExpression)
         throws IllegalActionException {
@@ -430,20 +430,20 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         }
         return actorElementConstraintExpression.getExpression().trim().equals(NO_CONSTRAINTS);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return a temporary instance of the actor class in the current container.  This
      *  instance will be used to find all the ports and attributes for the actor which
      *  we need to populate the fields of the ActorConstraintsDefinitionAttribute.
      *  @param actorClass The class of the actor to be instantiated.
      *  @return A new instance of the specified actor class.
-     *  @throws IllegalActionException If the actor class cannot be instantiated.
+     *  @exception IllegalActionException If the actor class cannot be instantiated.
      */
     private Actor _createTempActorInstance(Class<? extends Actor> actorClass)
         throws IllegalActionException {
-        
+
         Constructor<? extends Actor> actorConstructor = null;
         try {
             actorConstructor = actorClass
@@ -451,9 +451,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                         CompositeEntity.class, String.class });
         } catch (NoSuchMethodException ex) {
             throw new IllegalActionException(this, ex, "Could not find the constructor" +
-            		" method for the actor class " + actorClass + ".");
+                            " method for the actor class " + actorClass + ".");
         }
-        
+
         Actor actorInstance = null;
         try {
             actorInstance = actorConstructor
@@ -462,7 +462,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                         "tempActor" });
         } catch (InvocationTargetException ex) {
             throw new IllegalActionException(this, ex, "Exception thrown when trying to call" +
-            		" the constructor for the actor class " + actorClass + ".");
+                            " the constructor for the actor class " + actorClass + ".");
         } catch (IllegalArgumentException ex) {
             throw new IllegalActionException(this, ex, "Invalid argument passed to" +
                     " the constructor for the actor class " + actorClass + ".");
@@ -474,27 +474,27 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     " the constructor for the actor class " + actorClass +
                     " within this method.");
         }
-        
-        return actorInstance;        
+
+        return actorInstance;
     }
-    
+
     /** Set the ActorConstraintsDefinitionAttribute icon to be the same icon as that of
      *  the actor for which it is defining constraints.  The actor icon can be found either from
      *  an XML file that defines the actor icon, or its _iconDescription attribute.
      *  @param actorClassNameString The fully qualified name of the class with its package prefix.
      *  @param tempActorInstance A temporary instance of the actor from which its icon description attribute can
      *   be taken.
-     *  @throws IllegalActionException If a problem occurs when trying to set the actor icon.
+     *  @exception IllegalActionException If a problem occurs when trying to set the actor icon.
      */
     private void _setActorIcon(String actorClassNameString, ComponentEntity tempActorInstance)
         throws IllegalActionException {
         // FIXME: This code that sets the actor icon is duplicated from code in
         // ptolemy.vergil.gt.TransformationEditor in the _importActorLibrary
         // method on lines 1383-1392. Could it be factored out to somewhere else?
-        
+
         // get the editor icon from the tempActorInstance and export its xml.
-       
-        // First look for an icon file for the actor.        
+
+        // First look for an icon file for the actor.
         String iconFile = actorClassNameString.replace('.', '/') + "Icon.xml";
         URL xmlFile = tempActorInstance.getClass().getClassLoader().getResource(
                 iconFile);
@@ -509,14 +509,14 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                 // Extract the EditorIcon attribute from the tempActorInstance
                 // after it has been created by parsing the icon file.
                 List<EditorIcon> tempActorIconList = tempActorInstance.
-                        attributeList(EditorIcon.class);            
+                        attributeList(EditorIcon.class);
                 if (!tempActorIconList.isEmpty()) {
-                    
+
                     // There should only be one EditorIcon attribute
                     // in the list of attributes so just get the first one.
                     EditorIcon actorIcon = tempActorIconList.get(0);
                     String actorIconMoML = actorIcon.exportMoML();
-                    
+
                     // Use the MoMLVariableChecker to find any variables
                     // in the tempActorInstance that might be referenced by
                     // the icon and need to be copied when applying the
@@ -524,7 +524,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     MoMLVariableChecker momlChecker = new MoMLVariableChecker();
                     String prependMoML = momlChecker.checkCopy(actorIconMoML,
                             tempActorInstance, true);
-                    
+
                     StringBuffer iconMoML = new StringBuffer();
                     iconMoML.append("<group name=\"auto\">\n");
                     iconMoML.append(prependMoML + actorIconMoML);
@@ -540,7 +540,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         } else {
             // If no actor icon file was found, then use the _iconDescription
             // attribute.
-            
+
             ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) ((ComponentEntity) tempActorInstance)
                     .getAttribute("_iconDescription");
             if (actorIconAttribute != null) {
@@ -553,18 +553,18 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             iconDescription);
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex, "Failed to configure the _iconDescription" +
-                    		"attribute when trying to set the actor icon.");
+                                    "attribute when trying to set the actor icon.");
                 }
             }
         }
     }
-    
+
     /** Check to make sure the class of the component passed in matches the class
      *  of the actor constraints defintion attribute.
      *  @param component The specified model component for which we want to
      *   generate constraints.
      *  @return true if the class matches, false otherwise.
-     *  @throws IllegalActionException Thrown if the component class cannot be
+     *  @exception IllegalActionException Thrown if the component class cannot be
      *   found.
      */
     private boolean _validateComponentClass(ComponentEntity component) throws IllegalActionException {
@@ -580,7 +580,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     + actorClassNameString + " not found.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

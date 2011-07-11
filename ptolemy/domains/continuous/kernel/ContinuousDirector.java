@@ -516,7 +516,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     _resetAllReceivers();
 
                     // Set receivers connected to the inputs to "absent."
-                    // Note that this cannot be done by calling 
+                    // Note that this cannot be done by calling
                     // _transferInputsToInside() because if we are redoing
                     // the solver iteration then there are inputs available,
                     // but they should not be consumed yet.
@@ -771,7 +771,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
         // set current time and initialize actors.
         super.initialize();
-        
+
         // The above method sets the microstep to match the enclosing
         // director if this director is embedded. In the Continuous
         // domain, however, this is not the right thing to do. We
@@ -1448,7 +1448,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     protected boolean _isInitializing = false;
 
-    /** The current time at the start of the current integration step. 
+    /** The current time at the start of the current integration step.
      */
     protected Time _iterationBeginTime;
 
@@ -1879,7 +1879,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             _index++;
             */
         }
-        
+
         _iterationBeginTime = enclosingDirector._iterationBeginTime
                 .subtract(_accumulatedSuspendTime);
         _iterationBeginIndex = enclosingDirector._iterationBeginIndex;

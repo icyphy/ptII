@@ -64,7 +64,7 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////
 //// AutoAdapter
 
-/** 
+/**
  *  A code generator adapter that is auto generated and calls actor code.
  *
  *  <p>This class provides a way to generate code for actors that do
@@ -72,7 +72,7 @@ import ptolemy.util.StringUtilities;
  *  requires the Ptolemy kernel, actor, data and other packages.</p>
  *
  *  <p>This class wraps a Ptolemy actor in a TypedCompositeActor
- *  container, makes connections from the code generated actors to the 
+ *  container, makes connections from the code generated actors to the
  *  container and invokes the actor execution methods (preinitialize(),
  *  initialize(), prefire(), fire(), postfire() and wrapup()) of the
  *  inner Ptolemy actor.</p>
@@ -132,14 +132,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         String resolveToplevelTypes = "";
         if (_toplevelTypesResolved != getComponent().toplevel()) {
-	    // _toplevelTypesResolved is static, so we set it the the value
-	    // of the current toplevel in case we generate code for multiple
-	    // models.  The Tcl test suite replicates this by generating
-	    // code for the DotProduct model multiple times.  A short cut is the following:
-	    //
-	    // set args [java::new {String[]} 3 [list "-language" "java" "auto/DotProduct.xml"]]
-	    // java::call ptolemy.cg.kernel.generic.GenericCodeGenerator generateCode $args
-	    // java::call ptolemy.cg.kernel.generic.GenericCodeGenerator generateCode $args
+            // _toplevelTypesResolved is static, so we set it the the value
+            // of the current toplevel in case we generate code for multiple
+            // models.  The Tcl test suite replicates this by generating
+            // code for the DotProduct model multiple times.  A short cut is the following:
+            //
+            // set args [java::new {String[]} 3 [list "-language" "java" "auto/DotProduct.xml"]]
+            // java::call ptolemy.cg.kernel.generic.GenericCodeGenerator generateCode $args
+            // java::call ptolemy.cg.kernel.generic.GenericCodeGenerator generateCode $args
             _toplevelTypesResolved = getComponent().toplevel();
             resolveToplevelTypes = "try {" + _eol
                 //+ "    TypedCompositeActor.resolveTypes($containerSymbol());" + _eol
@@ -175,7 +175,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  @return The generated code
      *  @exception IllegalActionException If thrown while reading the parameters
      *  of the actor.
-     */   
+     */
     public String generateParameterCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         String actorClassName = getComponent().getClass().getName();
@@ -230,7 +230,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 //                             + parameterValue
 //                             + "\");" + _eol;
 //                     }
-//                 } 
+//                 }
 //                 code.append(//"try {" + _eol
 //                         "{ " + _eol
 //                         + setParameter
@@ -297,7 +297,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // of the multiport?  The problem I had was that the receivers are
                     // not created if I connect directly to the channels.
 
-                    // Use castPort.getName() and get the real name of the port. 
+                    // Use castPort.getName() and get the real name of the port.
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
                     IOPort actorPort = (IOPort)(((Entity)getComponent()).getPort(castPort.getName()));
 
@@ -317,7 +317,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate the preinitialization method body.
-     *        
+     *
      *  <p>Typically, the preinitialize code consists of variable
      *   declarations.  However, AutoAdapter generates method calls
      *   that instantiate wrapper TypedCompositeActors, so we need
@@ -351,7 +351,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "(_toplevel, \"" + getComponent().getName()
                     + "\");" +_eol);
         } else {
-            // This wacky.  What we do is move up the hierarchy and instantiate 
+            // This wacky.  What we do is move up the hierarchy and instantiate
             // TypedComposites as necessary and *insert* the appropriate code into
             // the StringBuffer.  When we get to the top, we *append* code that
             // inserts the hierarchy into the toplevel and that creates the container
@@ -362,7 +362,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             //            while (grandparentContainer != null && grandparentContainer.getContainer() != null && grandparentContainer.getContainer().getContainer() != null) {
             while (parentContainer != null && parentContainer.getContainer() != null /* && parentContainer.getContainer().getContainer() != null*/) {
-                containmentCode.insert(0, 
+                containmentCode.insert(0,
 //                         "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\"" + grandparentContainer.getName() + "\");" + _eol
 //                         + "if (temporaryContainer == null) { " + _eol
 //                         + "    cgContainer = new "
@@ -393,7 +393,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             //    container = parentContainer;
             //}
             containmentCode.insert(0, "{" + _eol
-                    + getCodeGenerator().comment(getComponent().getFullName()) + _eol 
+                    + getCodeGenerator().comment(getComponent().getFullName()) + _eol
                     + "TypedCompositeActor cgContainer = _toplevel;" + _eol
                     + "TypedCompositeActor temporaryContainer = null;" + _eol);
 //                     + "if ((cgContainer = (TypedCompositeActor)_toplevel.getEntity(\"" + container.getName() + "\")) == null) { " + _eol
@@ -401,7 +401,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 //                     + container.getClass().getName() + "(_toplevel, \""
 //                     + container.getName()  + "\");" + _eol
 //                     + "}" + _eol);
-        
+
             containmentCode.append(
                     "    if ((temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
                     + getComponent().getContainer().getName() + "_container"
@@ -416,7 +416,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     //+ "       $containerSymbol() = cgContainer;" + _eol
                     + "    }" + _eol
                     + "}" + _eol);
-            
+
             // Instantiate Variables for those actors that access parameters in their container.
             // $PTII/bin/ptcg -language java auto/ReadParametersInContainerTest.xml
             Iterator variables = getComponent().getContainer().attributeList(Variable.class).iterator();
@@ -430,7 +430,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 if (variableName.charAt(0) == '_') {
                     if (variableName.equals("_windowProperties")
                             || variableName.startsWith("_vergil")) {
-                        // No need to create _windowProperties,  _vergilSize, 
+                        // No need to create _windowProperties,  _vergilSize,
                         // _vergilZoomFactor, or _vergilCenter variables.
                         continue;
                     }
@@ -440,7 +440,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // have duplicate variables is because we have two custom actors
                 // in one container and the container has Parameters.
                 containmentCode.append(
-                        "if ($containerSymbol().getEntity(\"" 
+                        "if ($containerSymbol().getEntity(\""
                         + variable.getName() + "\") == null) {" + _eol
                         +"   new Variable($containerSymbol(), \""
                         + variable.getName() + "\").setExpression(\""
@@ -489,7 +489,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         //        "Could not find port " + castPort.getName());
                         actorPort = (TypedIOPort)((Entity)getComponent()).getPort(castPort.getName());
                         code.append("new TypedIOPort($containerSymbol(), \""
-                                //+ actorPort.getName().replace("\\", "\\\\") + "\", " 
+                                //+ actorPort.getName().replace("\\", "\\\\") + "\", "
                                 + AutoAdapter._externalPortName(actorPort.getContainer(), actorPort.getName()) + "\", "
                                 + actorPort.isInput() + ", "
                                 + actorPort.isOutput() + ").setMultiport(true);" + _eol);
@@ -524,24 +524,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // The port has a type attribute, which means the
                     // type was set via the UI.
                     // This is needed by:
-                    // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml
                     code.append("{" + _eol
                             + "TypeAttribute _type = "
                             + "new TypeAttribute("
 
                             //+ "$actorSymbol("
                             //+ TemplateParser.escapePortName(insidePort.getName()) + "), \"inputType\");" + _eol
-                            //+ "((" + actorClassName + ")$actorSymbol(actor))." 
+                            //+ "((" + actorClassName + ")$actorSymbol(actor))."
                             //+ TemplateParser.escapePortName(insidePort.getName()) + ", \"inputType\");" + _eol
 
                             // Certain actors may create ports on the
                             // fly, so query the actor for its port.
 
                             // Set the port of the actor, not the container.  See
-                            // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
+                            // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml
                             // However, if we don't set the port of the container, then this fails:
                             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
-                            + "(TypedIOPort)$containerSymbol().getPort(\"" 
+                            + "(TypedIOPort)$containerSymbol().getPort(\""
                             + insidePort.getName().replace("\\", "\\\\") + "\"), \"inputType\");" + _eol
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression()
@@ -663,7 +663,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         //files.add(getComponent().getClass().getName() + ";");
         ((ProceduralCodeGenerator)getCodeGenerator()).addLibraryIfNecessary("$(PTII)");
 
-	// Loop through the path elements in java.class.path and add
+        // Loop through the path elements in java.class.path and add
         // them as libraries.  We need this so that we can find the
         // JavaScope.zip code coverage file in the nightly build
         ((JavaCodeGenerator)getCodeGenerator())._addClassPathLibraries();
@@ -716,19 +716,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "System.arraycopy(fields, 0, allFields, declaredFields.length, fields.length);" + _eol
                     + "for (int i = 0; i < allFields.length; i++){" + _eol
                     + "    ptolemy.data.expr.Parameter parameter = null;" + _eol
-                    + "    allFields[i].setAccessible(true);" + _eol 
+                    + "    allFields[i].setAccessible(true);" + _eol
                     + "    if (allFields[i].getName().equals(parameterSanitizedName)) {" + _eol
                     + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
                     + "    // If the field is a StringParameter, then we want to to assign to it." + _eol
                     + "    } else if (ptolemy.data.expr.Parameter.class.isAssignableFrom(allFields[i].getType())) {" + _eol
                     + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);" + _eol
                     + "// Check for private parameters that have setName() different than the name of the field." + _eol
-                    + "// $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml" + _eol 
+                    + "// $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml" + _eol
                     + "// Uninitialized parameters may be null." + _eol
                     + "        if (parameter != null && !parameter.getName().equals(parameterName)) {" + _eol
                     + "            parameter = null;" + _eol
                     + "        }" + _eol
-                    + "    }" + _eol 
+                    + "    }" + _eol
                     + "    if (parameter != null) {" + _eol
                     + "        parameter.setExpression(parameterValue );" + _eol
                     + "       ((ptolemy.kernel.util.NamedObj)actor).attributeChanged(parameter);" + _eol
@@ -743,7 +743,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     ////                         protected methods                 ////
 
     /**
-     * Generate the fire code. 
+     * Generate the fire code.
      * <p>Generate code that creates tokens, sends them to the input(s) of inner
      * Ptolemy actor, calls fire() on the actor and reads the outputs.
      * @return The generated code.
@@ -795,7 +795,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
 
         // Fire the actor.
-        
+
         code.append("$actorSymbol(actor).fire();" + _eol);
 
 
@@ -824,7 +824,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     int sources = outputPort.numberOfSources();
                     for (int i = 0; i < sources; i++) {
                         code.append("{" + _eol
-                                + _generateGetInsideDeclarations(name, name + "Source" + i, type, i) 
+                                + _generateGetInsideDeclarations(name, name + "Source" + i, type, i)
                                 + _eol + "}" + _eol);
                     }
                     int sinks = outputPort.numberOfSinks();
@@ -834,13 +834,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + _eol + "}" + _eol);
                     }
                 }
-            }                
+            }
         }
 
         String [] splitFireCode = getCodeGenerator()._splitBody("_AutoAdapterF_", code.toString());
 
         return //"try {" + _eol
-            "{" + _eol 
+            "{" + _eol
             + splitFireCode[0] + _eol
             + splitFireCode[1] + _eol
             + "}" + _eol;
@@ -941,7 +941,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return processCode(code);
     }
 
-    /** 
+    /**
      * Return the code that gets data from the actor port and sends
      * it to the codegen port
      *  @param actorPortName The name of the Actor port from which
@@ -959,7 +959,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         //codegenPortName = TemplateParser.escapePortName(codegenPortName);
         if (type instanceof ArrayType) {
-            
+
             ArrayType array = (ArrayType)type;
 
             String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
@@ -1006,7 +1006,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
     }
 
-    /** 
+    /**
      *  Return the code that creates temporary variables that hold the
      *  values to be read.  We need to do this so as to avoid
      *  reading from the same Ptolemy receiver twice, which would happen
@@ -1117,7 +1117,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // ptolemy/cg/kernel/generic/program/procedural/java/test/ReadParametersAcrossLink.java
         // then that actor reads the value of the "remoteParameter"
         // parameter in CompositeA.
-        // 
+        //
         // To test this:
         // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/ReadParametersAcrossLinkTest.xml
 
@@ -1166,7 +1166,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "c0.connect(c0PortB, c0PortA);" + _eol);
         }
 
-        // If the remote port belongs to an actor that would 
+        // If the remote port belongs to an actor that would
         // use an AutoAdapter (that is, an actor for which there
         // is no template), then connect directly to the remote port.
         // This allows us to put multiple custom actors in one composite.
@@ -1207,7 +1207,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // instead.
                         + "        " + remoteActorSymbol + ".setDisplayName(\"" + remoteActor.getName() + "\");" + _eol
                         + "}" + _eol);
-            }                
+            }
         }
 
         if (!remoteIsAutoAdaptered) {
@@ -1231,11 +1231,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
 
             String portOrParameter = "((" + getComponent().getClass().getName()
-                + ")$actorSymbol(actor))." 
+                + ")$actorSymbol(actor))."
                 + foundPortField.getName()
                 + ( portParameter != null
                         ? ".getPort()" : "");
-            
+
             if (remoteIsAutoAdaptered) {
                 Field remoteFoundPortField = _findFieldByPortName(remoteActor, remotePort.getName());
 
@@ -1246,7 +1246,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     String relationAssignment = "";
                     String relationSetWidth = "";
                     if (port.isMultiport()) {
-                        // Needed for 
+                        // Needed for
                         // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
                         _headerFiles.add("ptolemy.actor.IORelation;");
                         relationAssignment = "IORelation relation = (IORelation)";
@@ -1262,7 +1262,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             relationAssignment + "$containerSymbol().connect("
                             + portOrParameter + ", "
                             + "((" + remoteActor.getClass().getName()
-                            + ")" + remoteActorSymbol + ")." 
+                            + ")" + remoteActorSymbol + ")."
                             + remoteFoundPortField.getName()
                             + ( portParameter != null
                                     ? ".getPort()" : "")
@@ -1279,7 +1279,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + portOrParameter
                             + ");" + _eol
                             + "    $containerSymbol().connect($actorSymbol(" + escapedCodegenPortName +"), c0PortB);" + _eol);
-                }                    
+                }
 
                 if (port.isOutput()) {
                     // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
@@ -1304,14 +1304,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     //+ unescapedActorPortName.replace("\\", "\\\\") + "\") == null) {" + _eol
                     + AutoAdapter._externalPortName(port.getContainer(), unescapedActorPortName) + "\") == null) {" + _eol
                     + "    new TypedIOPort($actorSymbol(actor), \""
-                    //+ unescapedActorPortName.replace("\\", "\\\\") + "\", " 
+                    //+ unescapedActorPortName.replace("\\", "\\\\") + "\", "
                     + AutoAdapter._externalPortName(port.getContainer(), unescapedActorPortName) + "\", "
                     + port.isInput() + ", "
                     + port.isOutput() + ");" + _eol
                     + "}" + _eol);
 
-            String portOrParameter = 
-                "(TypedIOPort)$actorSymbol(actor).getPort(\"" 
+            String portOrParameter =
+                "(TypedIOPort)$actorSymbol(actor).getPort(\""
                 + unescapedActorPortName.replace("\\", "\\\\") + "\")";
             if (!readingRemoteParameters) {
                 code.append("    $containerSymbol().connect($actorSymbol(" + escapedCodegenPortName +"), "
@@ -1335,7 +1335,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return code.toString();
     }
 
-    /** 
+    /**
      * Return the code that sends data from the codegen variable to
      * the actor port.
      *  @param actorPortName The name of the Actor port to which data
@@ -1353,7 +1353,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         codegenPortName = TemplateParser.escapePortName(codegenPortName);
         if (type instanceof ArrayType) {
-            
+
             ArrayType array = (ArrayType)type;
 
             String javaElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType());
@@ -1380,7 +1380,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + javaElementType
                 + ")(Array_get(codeGenData, i).getPayload()))." + targetElementType + "Value());" + _eol
                 + " }" + _eol
-                
+
 
                 // Set the type.
                 + "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
@@ -1434,7 +1434,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  @param actorClassName The name of the actor class.
      *  @param parameterValue The value of the parameter returned by
      *  _sanitizeParameterValue()
-     */   
+     */
     private String _generateSetParameter(Settable parameter, String parameterName, String actorClassName, String parameterValue) {
         String setParameter = "";
         if (parameter instanceof Parameter) {
@@ -1449,7 +1449,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + parameterValue
                     + "\");" + _eol;
             }
-        } 
+        }
         return "{ " + _eol
             + setParameter
             + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");" + _eol
@@ -1507,7 +1507,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         Relation relation = (Relation)linkedRelationList.get(0);
         TypedIOPort remotePort = (TypedIOPort)relation.linkedPortList(port).get(0);
         NamedObj remoteActor = remotePort.getContainer();
-        if (port.linkedRelationList().size() > 1 
+        if (port.linkedRelationList().size() > 1
                 || relation.linkedPortList(port).size() > 1) {
             StringBuffer message = new StringBuffer("Cannot handle two custom actors "
                     + " connected to more than one port the same level.\n");
@@ -1530,7 +1530,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
 
     /** Return a sanitized version of the value of the parameter.
-     *  @param parameter The parameter.   
+     *  @param parameter The parameter.
      *  @return If the parameter is a Variable, do substitution for
      *  variables like $PTII and handle double quotes specially.
      *  @exception IllegalActionException If thrown while reading the value
@@ -1546,14 +1546,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (((Variable)parameter).isStringMode()) {
                 if (parameterValue.startsWith("\"") && parameterValue.endsWith("\"")) {
                     // This is needed by
-                    // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml 
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml
                     parameterValue = parameterValue.substring(1, parameterValue.length() - 1);
                 }
             }
         } else {
             parameterValue = parameter.getExpression();
         }
-        // Don't escape strings here, otherwise StringMatch patterns fail because \\D gets converted 
+        // Don't escape strings here, otherwise StringMatch patterns fail because \\D gets converted
         // to \D.  We need a literal string parameter for use with patterns.  See
         // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml
         //parameterValue = StringUtilities.escapeString(parameterValue);
@@ -1565,8 +1565,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return parameterValue;
     }
 
-    /** 
-     * Given a type, generate the Java code that represents that type.   
+    /**
+     * Given a type, generate the Java code that represents that type.
      * Arrays of ints are converted into new ArrayType(BaseType.INT).
      * Convert a simple type (int) into the corresponding BaseType
      * static variable (INT)
@@ -1595,7 +1595,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     /** The set of containers that have been declared.
      *  The custom actors are put into a common container so that
      *  if the custom actors have connections, they are connected directly.
-     */    
+     */
     private static Set<NamedObj> _containersDeclared = new HashSet<NamedObj>();
 
     /** Set of imports, where each element is a dot separate string,
@@ -1612,7 +1612,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     private boolean _needAutoAdapterSetPrivateParameter = false;
 
     /** The toplevel for which we generated code to call resolveTypes().
-     *  This is static, but changes for each model.	
+     *  This is static, but changes for each model.
      */
     private static NamedObj _toplevelTypesResolved = null;
 

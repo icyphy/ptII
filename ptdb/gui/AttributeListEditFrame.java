@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -51,12 +51,12 @@ import javax.swing.event.ListSelectionListener;
 import ptdb.common.exception.IllegalNameException;
 import ptdb.common.util.Utilities;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AttributeListEditFrame
 
 /**
- * The frame for attribute list items editor window. 
- * 
+ * The frame for attribute list items editor window.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -68,11 +68,11 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
     /**
      * Creates new form AttributeListEditFrame.
-     * 
-     * @param parentFrame The parent frame from which creates this frame. 
+     *
+     * @param parentFrame The parent frame from which creates this frame.
      * @param listItems The list of items to be displayed and edited in this
      *  frame.
-     *  @param listName The name of the list being edited. 
+     *  @param listName The name of the list being edited.
      */
     public AttributeListEditFrame(ConfigureAttributesFrame parentFrame,
             List<String> listItems, String listName) {
@@ -86,23 +86,23 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
         _parentFrame.setEnabled(false);
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
-     * Close the window. 
+     * Close the window.
      */
-    
+
     public void closeFrame() {
         dispose();
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** 
+    /**
      * Called from within the constructor to initialize the form.
      */
     @SuppressWarnings("unchecked")
@@ -118,52 +118,52 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
         _saveButton = new JButton();
 
         //        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         setResizable(false);
 
         addWindowListener(new WindowListener() {
 
-          
+
             public void windowOpened(WindowEvent e) {
-                // Do nothing special. 
+                // Do nothing special.
 
             }
 
-           
+
             public void windowIconified(WindowEvent e) {
-                // Do nothing special. 
+                // Do nothing special.
 
             }
 
-          
+
             public void windowDeiconified(WindowEvent e) {
-                // Do nothing special. 
+                // Do nothing special.
 
             }
 
-         
+
             public void windowDeactivated(WindowEvent e) {
-                // Do nothing special. 
+                // Do nothing special.
 
             }
 
-            
+
             public void windowClosing(WindowEvent e) {
                 _parentFrame.setEnabled(true);
                 AttributeListEditFrame.this.dispose();
 
             }
 
-          
+
             public void windowClosed(WindowEvent e) {
                 _parentFrame.setEnabled(true);
                 AttributeListEditFrame.this.dispose();
 
             }
 
-           
+
             public void windowActivated(WindowEvent e) {
-                // Do nothing special. 
+                // Do nothing special.
 
             }
         });
@@ -172,7 +172,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _itemsJList.addListSelectionListener(new ListSelectionListener() {
 
-            
+
             public void valueChanged(ListSelectionEvent e) {
                 _deleteButton.setEnabled(true);
 
@@ -186,7 +186,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _addButton.addActionListener(new ActionListener() {
 
-           
+
             public void actionPerformed(ActionEvent e) {
 
                 try {
@@ -213,7 +213,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _deleteButton.addActionListener(new ActionListener() {
 
-          
+
             public void actionPerformed(ActionEvent e) {
                 ((ArrayModelList) _itemsJList.getModel())
                         .removeItem((String) _itemsJList.getSelectedValue());
@@ -225,7 +225,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _editListItemsLabel.setFont(new Font("Title", Font.BOLD, 12));
         _editListItemsLabel.setText("Edit List Items in " + _listName + " List");
-        
+
         _newItemLabel.setText("New Item ");
 
         _saveButton.setText("Add to Attribute");
@@ -299,12 +299,12 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _listItemTextField.addKeyListener(new KeyListener() {
 
-           
+
             public void keyTyped(KeyEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
 
-          
+
             public void keyReleased(KeyEvent e) {
                 if (_listItemTextField.getText().isEmpty()) {
                     _addButton.setEnabled(false);
@@ -315,13 +315,13 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
             }
 
             public void keyPressed(KeyEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
         });
 
         _saveButton.addActionListener(new ActionListener() {
 
-    
+
             public void actionPerformed(ActionEvent e) {
 
                 _parentFrame.setEnabled(true);
@@ -335,11 +335,11 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
     }
 
     /**
-     * Validate whether the added item is valid to add to the list. 
-     * 
+     * Validate whether the added item is valid to add to the list.
+     *
      * @return true - It is valid to add that item.<br>
      *          false - It is invalid to add that item.
-     * @exception IllegalNameException Thrown if the item value is legal. 
+     * @exception IllegalNameException Thrown if the item value is legal.
      */
     private boolean _validate() throws IllegalNameException {
 

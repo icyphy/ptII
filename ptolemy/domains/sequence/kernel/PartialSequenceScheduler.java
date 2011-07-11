@@ -1,4 +1,4 @@
-/* A sequential scheduler that enables guessing the schedule. 
+/* A sequential scheduler that enables guessing the schedule.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PartialSequenceScheduler
 
 /**
-* A sequential scheduler that enables guessing the schedule. 
+* A sequential scheduler that enables guessing the schedule.
 * @see SequenceScheduler for scheduling behavior.
 *
 * @author Bastian Ristau
@@ -70,16 +70,16 @@ public class PartialSequenceScheduler extends SequenceScheduler {
         _estimator = new ListSchedulingSequenceEstimator(container);
     }
 
-    /** Estimate a sequenced schedule. Currently only supports basic Dijkstra 
+    /** Estimate a sequenced schedule. Currently only supports basic Dijkstra
      * algorithm for getting the maximal distances. Thus, it cannot deal with
      * cyclic graphs.
-     * 
+     *
      * @param independentList The already present SequenceAttributes for the
      * Actors controlled by this scheduler.
-     * 
+     *
      * @return A vector with the ordered actors. Note that the sequence numbers
      * are not changed. This has to be done somewhere else.
-     * 
+     *
      * @exception NotSchedulableException If the schedule is acyclic.
      */
     public Vector<Actor> estimateSequencedSchedule(
@@ -88,7 +88,7 @@ public class PartialSequenceScheduler extends SequenceScheduler {
         // FIXME: It may occur that the _actorGraph is null.
         // If this is the case and the graph is not acyclic, this
         // method will hang in an infinite while loop.
-        
+
         if (_actorGraph == null) {
             return _estimator.estimateSequencedSchedule(independentList);
         } else if (_actorGraph.isAcyclic()) {

@@ -115,7 +115,7 @@ public class PthalesIOPort {
 
         return getArraySizes(port, repetitions);
     }
-    
+
     /** Compute array sizes (for each dimension).
      *  @param port associated port
      *  @return array sizes
@@ -196,9 +196,9 @@ public class PthalesIOPort {
         return sizes;
     }
 
-    /** Return the base of this port. 
+    /** Return the base of this port.
      *  @param port associated port
-     *  @return base 
+     *  @return base
      */
     public static LinkedHashMap<String, Integer[]> getBase(IOPort port) {
         return _parseSpec(port, BASE);
@@ -303,7 +303,7 @@ public class PthalesIOPort {
     /** Returns tiling of external loops iterations.
      * @param port associated port
      * @param nb the number of used tilings (external ones)
-     * @return tiling map 
+     * @return tiling map
      */
     public static LinkedHashMap<String, Integer[]> getExternalTiling(
             IOPort port, int nb) {
@@ -406,7 +406,7 @@ public class PthalesIOPort {
 
     /** Return the pattern of this port.
      *  @param port associated port
-     *  @return pattern 
+     *  @return pattern
      */
     public static LinkedHashMap<String, Integer[]> getPattern(IOPort port) {
         return _parseSpec(port, PATTERN);
@@ -482,9 +482,9 @@ public class PthalesIOPort {
         return result;
     }
 
-    /** Returns the tiling of this port. 
+    /** Returns the tiling of this port.
      *  @param port associated port
-     *  @return tiling 
+     *  @return tiling
      */
     public static LinkedHashMap<String, Integer[]> getTiling(IOPort port) {
         return _parseSpec(port, TILING);
@@ -586,7 +586,7 @@ public class PthalesIOPort {
     /** Propagate the header through application relations
      * to update information.
      * @param portIn port used in input for propages
-     * @param dims dimension names 
+     * @param dims dimension names
      * @param sizes dimension sizes
      * @param headersize added header size
      * @param arraySizes sizes used to compute iterations
@@ -732,7 +732,7 @@ public class PthalesIOPort {
         Parameter p = (Parameter) port.getAttribute("dataType");
         if (p != null && port instanceof TypedIOPort) {
             ((TypedIOPort) port).setTypeEquals(BaseType.GENERAL);
-       	}
+               }
     }
 
     ///////////////////////////////////////////////////////////////////

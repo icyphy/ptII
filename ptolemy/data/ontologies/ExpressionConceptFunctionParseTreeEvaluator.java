@@ -69,7 +69,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   represent the concept domain for each input concept argument.
      *  @param outputRangeOntology The ontology that represents the concept
      *   range for the concept function.
-     *  @throws IllegalActionException If there is a problem instantiating
+     *  @exception IllegalActionException If there is a problem instantiating
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(List<String> argumentNames,
@@ -95,7 +95,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @param domainOntologies Ontologies over which the parser is defined.
      *  @param outputRangeOntology The ontology that represents the concept
      *   range for the concept function.
-     *  @throws IllegalActionException If there is a problem instantiating
+     *  @exception IllegalActionException If there is a problem instantiating
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(
@@ -106,18 +106,18 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         _solverModel = solverModel;
         _scopeOntologies = new LinkedList<Ontology>(domainOntologies);
         _scopeOntologies.add(outputRangeOntology);
-        
+
         _argumentNames = new LinkedList<String>();
         _argumentConceptValues = new LinkedList<Concept>();
         for (Map.Entry<String, Concept> entry : arguments.entrySet()) {
             _argumentNames.add(entry.getKey());
             _argumentConceptValues.add(entry.getValue());
         }
-        
+
         _typeInference = new ExpressionConceptFunctionParseTreeTypeInference();
         //_addConceptConstants();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -131,7 +131,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             throws IllegalActionException {
         return evaluateParseTree(node, null);
     }
-    
+
     /** Evaluate the parse tree for the expression concept function with the
      *  specified root node using the specified scope to resolve the values of
      *  variables.
@@ -145,7 +145,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     public ConceptToken evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
         Token evaluatedToken = super.evaluateParseTree(node, scope);
-        
+
         if (evaluatedToken instanceof ConceptToken) {
             return (ConceptToken) evaluatedToken;
         } else if (evaluatedToken instanceof ObjectToken &&
@@ -155,11 +155,11 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                     ((ObjectToken) evaluatedToken).getValue());
         } else {
             throw new IllegalActionException("Evaluated expression concept " +
-            		"function result must either be a ConceptToken or an " +
-            		"ObjectToken containing a Concept");
+                            "function result must either be a ConceptToken or an " +
+                            "ObjectToken containing a Concept");
         }
     }
-    
+
     /** Evaluate a concept function contained in a concept function
      *  expression.  The concept function must be defined in an
      *  attribute contained in the ontology solver model.
@@ -232,16 +232,16 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  string. Either replace an argument label from the concept
      *  function with its concept value string name or assume it is a
      *  concept name if it is not a function argument label.
-     *  
+     *
      *  @param node The leaf node to be visited.
      *  @exception IllegalActionException If the node label cannot be
      *   resolved to a concept.
      */
-    public void visitLeafNode(ASTPtLeafNode node) 
+    public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
-        _evaluatedChildToken = null;        
+        _evaluatedChildToken = null;
         String nodeLabel = _getNodeLabel(node);
-        
+
         // If the leaf node's parent is a method call node, then
         // we are calling a Java method on an object, and we
         // reuse the normal expression parser to evaluate it.
@@ -278,7 +278,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  exception.
      *  @param conceptString The specified string the concept should have.
      *  @return The concept with the specified string if it is found.
-     *  @throws IllegalActionException If the concept cannot be found.
+     *  @exception IllegalActionException If the concept cannot be found.
      */
     protected Concept _getNamedConcept(String conceptString)
         throws IllegalActionException {
@@ -290,18 +290,18 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                 break;
             }
         }
-        
+
         if (outputConcept == null) {
             throw new IllegalActionException("Concept named " + conceptString +
                     " was not found in any of the domain ontologies.");
         }
-        
+
         return outputConcept;
     }
-    
+
     /**
      * Return the label for the leaf node.
-     * 
+     *
      * @param node The given leaf node
      * @return The string label for the node; If the node
      * is constant this is the token contained in the node
@@ -326,11 +326,11 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return a list of the attributes for all concept functions
      *  that are defined in the local solver model.
      *  If the local solver model is set to null, this returns the empty list.
-     *  @return A list of the local concept function definition attributes. 
+     *  @return A list of the local concept function definition attributes.
      */
     private List<ConceptFunctionDefinitionAttribute> _conceptFunctionDefinitions() {
         if (_solverModel == null) {
@@ -340,7 +340,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                     ConceptFunctionDefinitionAttribute.class);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

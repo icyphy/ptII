@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -38,7 +38,7 @@ import ptdb.common.exception.DBExecutionException;
 
 /**
  * The concrete searcher to handle the search by model name search criteria.
- * 
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -50,10 +50,10 @@ public class NameSearcher extends AbstractSearcher implements
         AbstractDBSearcher {
 
     /**
-     * Construct the NameSearcher object according to the passed search 
-     * criteria. 
-     * 
-     * @param searchCriteria The search criteria passed by the user. 
+     * Construct the NameSearcher object according to the passed search
+     * criteria.
+     *
+     * @param searchCriteria The search criteria passed by the user.
      */
     public NameSearcher(SearchCriteria searchCriteria) {
         _modelNameCriteria = searchCriteria.getModelName();
@@ -67,9 +67,9 @@ public class NameSearcher extends AbstractSearcher implements
      *  this graph searcher instance.
      *
      * @return true - if the search criteria has been set.<br>
-     *         false - if the search criteria has not been set. 
+     *         false - if the search criteria has not been set.
      */
-    
+
     protected boolean _isSearchCriteriaSet() {
         if (_modelNameCriteria == null || _modelNameCriteria.length() == 0) {
             return false;
@@ -80,12 +80,12 @@ public class NameSearcher extends AbstractSearcher implements
     }
 
     /**
-     * Perform the actual search according to the model name. 
-     * 
+     * Perform the actual search according to the model name.
+     *
      * @exception DBExecutionException Thrown by the DBConnection if
      * unexpected problem happens during the execution of DB query tasks.
      */
-    
+
     protected void _search() throws DBExecutionException {
 
         ModelNameSearchTask modelNameSearchTask = new ModelNameSearchTask(
@@ -99,11 +99,11 @@ public class NameSearcher extends AbstractSearcher implements
                 .executeModelNameSearchTask(modelNameSearchTask);
 
         if (_currentResults == null) {
-            // The db layer cannot perform the searching, so make the search 
-            // criteria not set. 
+            // The db layer cannot perform the searching, so make the search
+            // criteria not set.
             _modelNameCriteria = null;
         } else {
-            // Pass the intermediate results. 
+            // Pass the intermediate results.
             handleIntermediateResults(_currentResults, this);
         }
 

@@ -89,7 +89,7 @@ public abstract class Source extends TypedAtomicActor {
         // that can resolve to anything.  EAL 12/31/02
         // trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setMultiport(true);
-        
+
         // Parameter to get Vergil to label the trigger port.
         new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
     }

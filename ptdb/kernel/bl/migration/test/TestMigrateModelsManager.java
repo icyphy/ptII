@@ -48,19 +48,19 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.migration.MigrateModelsManager;
 import ptolemy.util.StringUtilities;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestMigrateModelsManager
 
 /**
  * JUnit test for MigrateModelManager class.
- * 
- * 
+ *
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 
 @RunWith(PowerMockRunner.class)
@@ -69,13 +69,13 @@ import ptolemy.util.StringUtilities;
 public class TestMigrateModelsManager {
 
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Test the migrateModels() method in the case when the given path is
      * correct and it contains only the models with no sub directories.
-     * 
+     *
      * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
@@ -90,19 +90,19 @@ public class TestMigrateModelsManager {
                     .migrateModels(directoryPath, true, true);
 
             assertTrue(csvFilePath.equals(directoryPath + System.getProperty("file.separator") + "migrationResults.csv"));
-            
-            
+
+
 
         } catch (IOException e) {
 
             fail("Failed to migrate models - " + e.getMessage());
 
         } finally {
-            
+
             deleteDirectory(directoryPath);
             File file = new File(directoryPath);
             file.delete();
-            
+
         }
     }
 
@@ -110,7 +110,7 @@ public class TestMigrateModelsManager {
      * Test the migrateModels() method in the case when the given path is
      * correct and it contains models at the first level and models inside a
      * directory which is inside the current directory.
-     * 
+     *
      * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
@@ -127,30 +127,30 @@ public class TestMigrateModelsManager {
 
             assertTrue(csvFilePath.equals(directoryPath
                    + System.getProperty("file.separator") + "migrationResults.csv"));
-            
+
 
 
 
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-            
+
             deleteDirectory(directoryPath);
             File file = new File(directoryPath);
             file.delete();
-            
+
         }
 
     }
-    
-    
-    
+
+
+
     /**
      * Test the migrateModels() method in the case when the given path is
      * correct and it contains models at the first level and models inside a
-     * directory which is inside the current directory but we want to only 
+     * directory which is inside the current directory but we want to only
      * migrate those in the first level.
-     * 
+     *
      * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
@@ -167,11 +167,11 @@ public class TestMigrateModelsManager {
 
             assertTrue(csvFilePath.equals(directoryPath
                    + System.getProperty("file.separator") + "migrationResults.csv"));
-            
+
 
 
             File csvFile = new File(csvFilePath);
-            
+
             BufferedReader input = new BufferedReader(new FileReader(csvFile));
 
             try {
@@ -183,14 +183,14 @@ public class TestMigrateModelsManager {
                     count++;
                 }
                 assertTrue(count == 3);
-                
+
             } finally {
                 input.close();
             }
-            PowerMock.verifyAll();    
+            PowerMock.verifyAll();
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
-        } finally { 
+        } finally {
             deleteDirectory(directoryPath);
             File file = new File(directoryPath);
             file.delete();
@@ -198,14 +198,14 @@ public class TestMigrateModelsManager {
 
     }
 
-    
-    
+
+
     /**
      * Test the migrateModels() method in the case when the given path is
      * correct and it contains models at the first level and models inside a
-     * directory which is inside the current directory but we want to only 
+     * directory which is inside the current directory but we want to only
      * migrate those in the first level.
-     * 
+     *
      * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
@@ -222,11 +222,11 @@ public class TestMigrateModelsManager {
 
             assertTrue(csvFilePath.equals(directoryPath
                    + System.getProperty("file.separator") + "migrationResults.csv"));
-            
+
 
 
             File csvFile = new File(csvFilePath);
-            
+
             BufferedReader input = new BufferedReader(new FileReader(csvFile));
 
             try {
@@ -237,30 +237,30 @@ public class TestMigrateModelsManager {
                     count++;
                 }
                 assertTrue(count == 3);
-               
+
             } finally {
                 input.close();
-            }     
+            }
             PowerMock.verifyAll();
-            
+
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-            
+
             deleteDirectory(directoryPath);
             File file = new File(directoryPath);
             file.delete();
         }
 
     }
-    
-    
+
+
     /**
      * Test the migrateModels() method in the case when the given path is
      * correct and it contains models at the first level and models inside a
-     * directory which is inside the current directory but we want to only 
+     * directory which is inside the current directory but we want to only
      * migrate those in the first level.
-     * 
+     *
      * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
@@ -277,11 +277,11 @@ public class TestMigrateModelsManager {
 
             assertTrue(csvFilePath.equals(directoryPath
                    + System.getProperty("file.separator") + "migrationResults.csv"));
-            
+
 
 
             File csvFile = new File(csvFilePath);
-            
+
             BufferedReader input = new BufferedReader(new FileReader(csvFile));
 
             try {
@@ -290,36 +290,36 @@ public class TestMigrateModelsManager {
                 // Findbugs warns about this, but it ok, we just
                 // want there to be three lines.
                 while (input.readLine() != null) {
-                    count++;      
+                    count++;
                 }
                 assertTrue(count == 3);
-                
+
             } finally {
 
                 input.close();
 
             }
-            
+
 
 
             PowerMock.verifyAll();
-            
+
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-            
+
             deleteDirectory(directoryPath);
             File file = new File(directoryPath);
             file.delete();
         }
 
     }
-    
-    
+
+
     /**
      * Test the migrateModels() method in the case when the given path is
      * correct but it does not contain any models in it.
-     * 
+     *
      * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
@@ -336,23 +336,23 @@ public class TestMigrateModelsManager {
 
             assertTrue(csvFilePath.equals(directoryPath
                     + System.getProperty("file.separator") + "migrationResults.csv"));
-            
+
 
         } catch (Exception e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-            
+
             deleteDirectory(directoryPath);
             File file = new File(directoryPath);
             file.delete();
-            
+
         }
     }
 
     /**
      * Test the migrateModels() method in the case when the given path is
      * incorrect.
-     * 
+     *
      * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
@@ -364,7 +364,7 @@ public class TestMigrateModelsManager {
 
         try {
 
-           
+
             migrateModelsManager
                     .migrateModels(directoryPath, true, true);
 
@@ -374,23 +374,23 @@ public class TestMigrateModelsManager {
             assertTrue(true);
         }
     }
-    
-    
-    
-    
 
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 				  ////
+
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Create a directory with levels of depth and models.
-     * 
+     *
      * @param levels The number of levels of depth required to be created.
      * @param models The number of models to be created in each folder created.
      * @return The parent directory path of the directories created.
      * @exception IOException Thrown if the operation failed to create the folders or the models inside them.
-     * 
+     *
      */
     private String createDirectory(int levels, int models) throws IOException {
         String fileContent = "<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -443,41 +443,41 @@ public class TestMigrateModelsManager {
         if (directory.mkdir()) {
 
             for (int i = 0; i < models; i++) {
-                FileWriter writer = new FileWriter(directoryPath 
+                FileWriter writer = new FileWriter(directoryPath
                         + System.getProperty("file.separator") + "testModel"
                         + i + ".xml");
-    
+
                 try {
-                
+
                     writer.write(fileContent);
                     writer.flush();
-                
+
                 } finally {
                     writer.close();
                 }
             }
-    
+
             for (int i = 0; i < levels; i++) {
-    
+
                 String subPath = directoryPath + System.getProperty("file.separator") + "sub" + i;
-    
+
                 File sub = new File(subPath);
-    
+
                 if (sub.mkdir()) {
-    
+
                     for (int j = 0; j < models; j++) {
-                        FileWriter writer = new FileWriter(sub 
+                        FileWriter writer = new FileWriter(sub
                                 + System.getProperty("file.separator") + "testModel" + i + j
                                 + ".xml");
                         try {
-                            
+
                             writer.write(fileContent);
                             writer.flush();
-                        
+
                         } finally {
                             writer.close();
                         }
-                        
+
                     }
                 }
             }

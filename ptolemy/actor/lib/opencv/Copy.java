@@ -74,7 +74,7 @@ public class Copy extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -85,20 +85,20 @@ public class Copy extends Transformer {
                         "Input is required to be an instance of OpenCV. Got "
                         + inputObject.getClass());
             }
-  
-            
+
+
             OpenCV openCV = (OpenCV)inputObject;
             OpenCV my_copy = new OpenCV();
-            
+
             my_copy.allocate(openCV.width, openCV.height);
             my_copy.copy(openCV.image());
             my_copy.width = openCV.width;
             my_copy.height = openCV.height;
             output.send(0, new ObjectToken(openCV));
-            output.send(1, new ObjectToken(my_copy)); 
- 
+            output.send(1, new ObjectToken(my_copy));
+
         }
     }
-   
-   
+
+
 }

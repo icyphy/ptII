@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** The interface for actors with multiple fire methods that can be separately scheduled
  *  in the Sequence and Process Directors.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @see SequencedModelDirector
@@ -50,47 +50,47 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface MultipleFireMethodsInterface {
 
     /** Return the name of the default fire method for this actor.
-     * 
+     *
      *  @return The string name of the default fire method for the actor.
      *   If the actor does not have multiple fire methods, return null.
      */
     public String getDefaultFireMethodName();
-    
+
     /** Return the list of strings that represent the names of
      *  all the fire methods the actor has.
-     * 
+     *
      *  @return The list of fire method names strings.
      */
     public List<String> getFireMethodNames();
-    
+
     /** Return the list of input ports associated with the given method name.
      *  If the method has no input ports, return an empty list. If the actor
      *  does not have multiple methods, return null.
-     * 
+     *
      *  @param methodName The specified method name.
      *  @return The list of input ports associated with the method name.
      */
     public List<IOPort> getMethodInputPortList(String methodName);
-    
+
     /** Return the output port associated with the given method name, if there is one.
      *  If the method does not have any outputs, or the actor does not have multiple
      *  fire methods, return null
-     * 
+     *
      *  @param methodName The specified name of the method.
      *  @return The output port associated with this method, or null is there is none.
      */
     public IOPort getMethodOutputPort(String methodName);
-    
+
     /** Return the number of fire methods the actor has.
      *  @return the number of fire methods the actor has, which should be
      *   at least one.
      */
     public int numFireMethods();
-    
+
     /** Set the fire method to the method that matches the specified
      *  string name.
      *  @param methodName The name of the method to be used.
-     *  @throws IllegalActionException If the specified fire method cannot be found
+     *  @exception IllegalActionException If the specified fire method cannot be found
      *   in the actor.
      */
     public void setFireMethod(String methodName) throws IllegalActionException;

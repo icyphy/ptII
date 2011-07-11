@@ -8,15 +8,15 @@ package ptolemy.domains.jogl.renderingActive;
    CubeCanvasGL. The canvas displays a rotating coloured cube
    using active rendering.
 
-   The application is paused when it is minimized or deactivated. 
+   The application is paused when it is minimized or deactivated.
    The window can be resized.
 
-   The code uses the JSR-231 1.0.0 release build of JOGL, 
+   The code uses the JSR-231 1.0.0 release build of JOGL,
    14th September 2006.
 
-   The canvas could be added directly to the JFrame, but this 
-   approach allows other components can be included in the JFrame. 
-   In this example, there's a textfield which reports the cube 
+   The canvas could be added directly to the JFrame, but this
+   approach allows other components can be included in the JFrame.
+   In this example, there's a textfield which reports the cube
    rotations in the x,y,z- axes.
 */
 
@@ -44,7 +44,7 @@ public class CubeGL extends JFrame implements WindowListener
   private static int DEFAULT_FPS = 80;
 
   private static final int PWIDTH = 512;   // size of panel
-  private static final int PHEIGHT = 512; 
+  private static final int PHEIGHT = 512;
 
   private CubeCanvasGL canvas;
 
@@ -52,7 +52,7 @@ public class CubeGL extends JFrame implements WindowListener
   private DecimalFormat df = new DecimalFormat("0.#");  // 1 dp
 
 
-  public CubeGL(long period) 
+  public CubeGL(long period)
   {
     super("CubeGL (Active)");
 
@@ -117,24 +117,24 @@ public class CubeGL extends JFrame implements WindowListener
 
   public void setRots(float rotX, float rotY, float rotZ)
   // called from CubeCanvasGL to show cube rotations
-  {  rotsTF.setText("Rotations: (" + df.format(rotX) + ", " + 
-                                     df.format(rotY) + ", " + 
+  {  rotsTF.setText("Rotations: (" + df.format(rotX) + ", " +
+                                     df.format(rotY) + ", " +
                                      df.format(rotZ) + ")");  }
 
 
 
   // ----------------- window listener methods -------------
 
-  public void windowActivated(WindowEvent e) 
+  public void windowActivated(WindowEvent e)
   { canvas.resumeGame();  }
 
-  public void windowDeactivated(WindowEvent e) 
+  public void windowDeactivated(WindowEvent e)
   {  canvas.pauseGame();  }
 
-  public void windowDeiconified(WindowEvent e) 
+  public void windowDeiconified(WindowEvent e)
   {  canvas.resumeGame();  }
 
-  public void windowIconified(WindowEvent e) 
+  public void windowIconified(WindowEvent e)
   {  canvas.pauseGame(); }
 
   public void windowClosing(WindowEvent e)
@@ -146,7 +146,7 @@ public class CubeGL extends JFrame implements WindowListener
 // -----------------------------------------
 
   public static void main(String[] args)
-  { 
+  {
     int fps = DEFAULT_FPS;
     if (args.length != 0)
       fps = Integer.parseInt(args[0]);
@@ -154,7 +154,7 @@ public class CubeGL extends JFrame implements WindowListener
     long period = (long) 1000.0/fps;
     System.out.println("fps: " + fps + "; period: " + period + " ms");
 
-    new CubeGL(period*1000000L);    // ms --> nanosecs 
+    new CubeGL(period*1000000L);    // ms --> nanosecs
   } // end of main()
 
 

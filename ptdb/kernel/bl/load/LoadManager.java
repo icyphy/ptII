@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -71,7 +71,7 @@ public class LoadManager {
     *          If no model with the given name is found, return null.
     * @param byReference
     *          Indication that the model should be included by reference.
-     * @param container 
+     * @param container
      *          The NamedObj that will contain this imported model.
      *          It is used here to obtain a unique name.
     * @return
@@ -79,122 +79,122 @@ public class LoadManager {
     * @exception DBConnectionException
     *          Thrown by DBModelFetcher if a problem occurs with the
     *          database connection.
-    * @exception DBExecutionException 
-    *          Thrown by DBModelFetcher if a problem while executing a 
+    * @exception DBExecutionException
+    *          Thrown by DBModelFetcher if a problem while executing a
     *          command.
     * @exception Exception
     *          Thrown if a problem occurs creating an effigy from the MoML.
-     * @throws CircularDependencyException 
+     * @exception CircularDependencyException
      *          Thrown if an import would result in a circular dependency.
     */
    public  static Entity importModel(String name, boolean byReference
            , NamedObj container)
-           throws DBConnectionException, DBExecutionException, Exception, 
+           throws DBConnectionException, DBExecutionException, Exception,
            CircularDependencyException {
 
        XMLDBModel dbModel = DBModelFetcher.load(name);
-       
-       if(dbModel == null) return null;
-       
-       
+
+       if (dbModel == null) return null;
+
+
        // Make sure that all references in the model are by value.
        if (!byReference) {
-           
+
            String modelContent = dbModel.getModel();
-           
-           String trueReference = "property name=\""  
-                   + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
-                   + "class=\"ptolemy.data.expr.StringConstantParameter\" " 
+
+           String trueReference = "property name=\""
+                   + XMLDBModel.DB_REFERENCE_ATTR + "\" "
+                   + "class=\"ptolemy.data.expr.StringConstantParameter\" "
                    + "value=\"TRUE\"";
-           
-           
-           String falseReference = "property name=\"" 
-                   + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
-                   + "class=\"ptolemy.data.expr.StringConstantParameter\" " 
+
+
+           String falseReference = "property name=\""
+                   + XMLDBModel.DB_REFERENCE_ATTR + "\" "
+                   + "class=\"ptolemy.data.expr.StringConstantParameter\" "
                    + "value=\"FALSE\"";
-           
+
            modelContent = modelContent.replaceAll(trueReference, falseReference);
-           
-           
+
+
            trueReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
-               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
+               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" "
                + "value=\"TRUE\"";
 
            falseReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
-               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
+               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" "
                + "value=\"FALSE\"";
-           
-           modelContent = modelContent.replaceAll(trueReference, falseReference);
-           
-           dbModel.setModel(modelContent);
-           
-       }
-       
-       
-       Entity returnEntity = _getEntity(dbModel);
-       
-       if(byReference){
 
-           if(_circularDepenencyExists(name, container.getName())){
-               
+           modelContent = modelContent.replaceAll(trueReference, falseReference);
+
+           dbModel.setModel(modelContent);
+
+       }
+
+
+       Entity returnEntity = _getEntity(dbModel);
+
+       if (byReference) {
+
+           if (_circularDepenencyExists(name, container.getName())) {
+
                throw new CircularDependencyException("This import would " +
                                            "result in a circular dependency.");
-               
-           }    
-           else{
-           
+
+           }
+           else {
+
                if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
-    
+
                    String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-                   		"class=\"ptolemy.data.expr.StringConstantParameter\" " +
-                   		"value=\"TRUE\"></property>";
-                   
+                                   "class=\"ptolemy.data.expr.StringConstantParameter\" " +
+                                   "value=\"TRUE\"></property>";
+
                    MoMLChangeRequest change = new MoMLChangeRequest(null,
                            returnEntity, referenceTag);
-                       
+
                    change.setUndoable(true);
                    returnEntity.requestChange(change);
-                   
+
                } else {
-               
+
                    ((StringConstantParameter) returnEntity
                        .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("TRUE");
-     
+
                }
-           
+
            }
-       
+
        } else {
-           
+
            if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
                         "class=\"ptolemy.data.expr.StringConstantParameter\" " +
                         "value=\"FALSE\"></property>";
-               
+
                MoMLChangeRequest change = new MoMLChangeRequest(null,
                        returnEntity, referenceTag);
-                   
+
                change.setUndoable(true);
                returnEntity.requestChange(change);
-                   
+
            } else {
-           
+
                ((StringConstantParameter) returnEntity
                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("FALSE");
- 
+
            }
-       
+
        }
-       
+
        // Make the entity name unique within container.
        returnEntity.setName(container.uniqueName(returnEntity.getName()));
-    
+
        return returnEntity;
 
    }
-    
-    
+
+
     /** Given a model name, return a PtolemyEffigy objects.
      *
      * @param name
@@ -209,8 +209,8 @@ public class LoadManager {
      * @exception DBConnectionException
      *          Thrown by DBModelFetcher if a problem occurs with the
      *          database connection.
-     * @exception DBExecutionException 
-     *          Thrown by DBModelFetcher if a problem while executing a 
+     * @exception DBExecutionException
+     *          Thrown by DBModelFetcher if a problem while executing a
      *          command.
      * @exception Exception
      *          Thrown if a problem occurs creating an effigy from the MoML.
@@ -219,11 +219,11 @@ public class LoadManager {
             throws DBConnectionException, DBExecutionException, Exception {
 
         XMLDBModel dbModel = DBModelFetcher.load(name);
-        
+
         return createEffigy(dbModel, configuration);
 
     }
-    
+
     /** Given a model id, return a PtolemyEffigy objects.
     *
     * @param id
@@ -238,8 +238,8 @@ public class LoadManager {
     * @exception DBConnectionException
     *          Thrown by DBModelFetcher if a problem occurs with the
     *          database connection.
-    * @exception DBExecutionException 
-    *          Thrown by DBModelFetcher if a problem while executing a 
+    * @exception DBExecutionException
+    *          Thrown by DBModelFetcher if a problem while executing a
     *          command.
     * @exception Exception
     *          Thrown if a problem occurs creating an effigy from the MoML.
@@ -248,14 +248,14 @@ public class LoadManager {
            throws DBConnectionException, DBExecutionException, Exception {
 
        XMLDBModel dbModel = DBModelFetcher.loadUsingId(id);
-       
+
        return createEffigy(dbModel, configuration);
 
    }
 
-    /** 
+    /**
      * Get the list of models for the given page number.
-     * 
+     *
      * @param pageNumber Page number of the page whose models need to be fetched.
      * @return List of models from the given page.
      * @exception DBConnectionException If thrown while connecting to the database.
@@ -284,12 +284,12 @@ public class LoadManager {
     }
 
     /** Fetch and store locally the list of all models in the database.
-     * 
-     * @exception DBConnectionException If thrown while connecting to the 
+     *
+     * @exception DBConnectionException If thrown while connecting to the
      * database.
-     * @exception DBExecutionException  If thrown while executing the 
+     * @exception DBExecutionException  If thrown while executing the
      * query in the database.
-     * 
+     *
      */
     public void getAllModelsFromDatabase() throws DBConnectionException,
             DBExecutionException {
@@ -303,11 +303,11 @@ public class LoadManager {
     }
 
     /** Get the total number of models in the database.
-     * 
+     *
      * @return Total number of models in the database.
-     * @exception DBConnectionException If thrown while connecting to the 
+     * @exception DBConnectionException If thrown while connecting to the
      * database.
-     * @exception DBExecutionException  If thrown while executing the 
+     * @exception DBExecutionException  If thrown while executing the
      * query in the database.
      */
     public int getTotalNumberOfModels() throws DBConnectionException,
@@ -318,13 +318,13 @@ public class LoadManager {
         return _allModelsList != null ? _allModelsList.size() : 0;
     }
 
-    /** Get the total number of pages required to display the 
+    /** Get the total number of pages required to display the
      * models list.
-     * 
+     *
      * @return Total number of pages in the models list.
-     * @exception DBConnectionException If thrown while connecting to the 
+     * @exception DBConnectionException If thrown while connecting to the
      * database.
-     * @exception DBExecutionException  If thrown while executing the 
+     * @exception DBExecutionException  If thrown while executing the
      * query in the database.
      */
     public int getNoOfPages() throws DBConnectionException,
@@ -337,30 +337,30 @@ public class LoadManager {
 
     /**
      * Create a Ptolemy Effigy from the given XMLDBModel.
-     * 
+     *
      * @param dbModel Model that needs to be converted into Ptolemy Effigy.
      * @param configuration The configuration used to create the effigy.
      * @return  A PtolemyEffigy object that the GUI can display.
-     * @throws Exception Thrown if a problem occurs creating an effigy from the 
-     * MoML. 
+     * @exception Exception Thrown if a problem occurs creating an effigy from the
+     * MoML.
      */
     private static PtolemyEffigy createEffigy(XMLDBModel dbModel,
             Configuration configuration) throws Exception {
-        
+
         if (dbModel == null)
             return null;
-     
+
         PtolemyEffigy returnEffigy = _getEffigy(dbModel, configuration);
         return returnEffigy;
     }
-    
-    /** Check if a circular dependency would result from importing a child 
+
+    /** Check if a circular dependency would result from importing a child
      * model.
      *
      * @param modelName
      *          The name of the model being imported.
      * @param containerName
-     *          The name of the container into which the model is being 
+     *          The name of the container into which the model is being
      *          imported.
      * @return
      *          Indication if the import results in a circular dependency.
@@ -372,35 +372,35 @@ public class LoadManager {
      *          modelName.
      */
     private static boolean _circularDepenencyExists(String modelName
-            , String containerName) throws DBConnectionException, 
+            , String containerName) throws DBConnectionException,
             DBExecutionException {
-        
+
         boolean returnValue = false;
-        
+
         DBConnection connection = DBConnectorFactory.getSyncConnection(false);
 
         try {
 
-            GetReferenceStringTask getReferenceStringTask = 
+            GetReferenceStringTask getReferenceStringTask =
                 new GetReferenceStringTask(modelName);
             String referenceString = connection.
                 executeGetReferenceStringTask(getReferenceStringTask);
-            
-            if(referenceString == null){
-                
+
+            if (referenceString == null) {
+
                 throw new DBExecutionException("Model References could not " +
-                        "be retrieved in the database.  " + 
+                        "be retrieved in the database.  " +
                         "Rebuild the Reference file.");
             }
-            
 
-            if(Utilities.modelReferenceExists(containerName, referenceString)){
-                
+
+            if (Utilities.modelReferenceExists(containerName, referenceString)) {
+
                 returnValue = true;
-                
+
             }
-            
-        } catch (DBExecutionException dbEx) {            
+
+        } catch (DBExecutionException dbEx) {
             throw dbEx;
         } finally {
             if (connection != null) {
@@ -408,10 +408,10 @@ public class LoadManager {
                 connection = null;
             }
         }
-        
-        
+
+
         return returnValue;
-        
+
     }
 
     /** Generate an effigy from an XMLDBModel object.
@@ -431,28 +431,28 @@ public class LoadManager {
         PtolemyEffigy returnEffigy = null;
 
         Entity entity = _getEntity(dbModel);
-        
+
         // If the model is already open, bring it to the front.
         // Otherwise, a new PtolemyEffigy is created.
-        if(configuration.getDirectory().getEntity(entity.getName()) != null){
+        if (configuration.getDirectory().getEntity(entity.getName()) != null) {
 
             return (PtolemyEffigy) configuration.getDirectory().getEffigy(entity.getName());
-     
+
         }
-        
+
         returnEffigy = new PtolemyEffigy(configuration.workspace());
         returnEffigy.setModel(entity);
-        
+
         returnEffigy.setName(configuration.getDirectory().uniqueName(
                 entity.getName()));
         returnEffigy.setContainer(configuration.getDirectory());
-        
+
         returnEffigy.identifier.setExpression(returnEffigy.getName());
 
         return returnEffigy;
 
     }
-    
+
     /** Generate an entity from an XMLDBModel object.
      *
      * @param dbModel
@@ -461,29 +461,29 @@ public class LoadManager {
      *         Entity.
      * @exception Exception
      *          Thrown if a problem occurs parsing MoML
-     * 
+     *
      */
     private static Entity _getEntity(XMLDBModel dbModel) throws Exception {
 
         MoMLParser parser = new MoMLParser();
-    
+
         Entity entity = new Entity();
         parser.resetAll();
-    
+
         entity = (Entity) parser.parse(dbModel.getModel());
-    
+
         return entity;
 
     }
     /** List of all the XMLDBModel names in the database. */
     private List<XMLDBModel> _allModelsList;
-    
+
     /** Number of results displayed per page on the models list page. */
     public static int NO_OF_ITEMS_PER_PAGE = 25;
-    
+
     /** Number of pages that can filled with the given number of results. */
     private int _numberOfPages;
-    
+
     /** Boolean that describes if the list of models has been fetched or not. */
     private boolean _isFetched;
 }

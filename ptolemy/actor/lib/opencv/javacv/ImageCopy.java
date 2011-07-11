@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Flip image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -68,13 +68,13 @@ public class ImageCopy extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
 
@@ -87,17 +87,17 @@ public class ImageCopy extends Transformer {
                         + inputObject.getClass());
             }
             _frame = (IplImage)inputObject;
-            
-            if(_copyFrame == null){
+
+            if (_copyFrame == null) {
                 _copyFrame = cvCloneImage(_frame);
-            }else{
+            }else {
                 cvCopy(_frame, _copyFrame, null);
-//                // FIXME : In Windows, the result of image may be flip. 
-//                if(_copyFrame.origin == 0){
+//                // FIXME : In Windows, the result of image may be flip.
+//                if (_copyFrame.origin == 0) {
 //                    cvFlip(_copyFrame, _copyFrame, 0);  // vertical
 //                }
             }
-    
+
             output.send(0, new ObjectToken(_copyFrame));
         }
     }
@@ -115,7 +115,7 @@ public class ImageCopy extends Transformer {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         // FIXME If releasing when the following actor using this frame, it causes fatal error.
-//        if(_copyFrame != null){
+//        if (_copyFrame != null) {
 //            _copyFrame.release();
 //        }
     }
@@ -123,5 +123,5 @@ public class ImageCopy extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _frame;
-    private IplImage _copyFrame; 
+    private IplImage _copyFrame;
 }

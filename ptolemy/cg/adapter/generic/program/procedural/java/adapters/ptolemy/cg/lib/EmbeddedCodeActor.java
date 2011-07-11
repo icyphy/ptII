@@ -85,7 +85,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         }
 
         /** Reset the template parser and set the code blocks to
-         *  the value of the embeddedCode parameter.   
+         *  the value of the embeddedCode parameter.
          *  @exception IllegalActionException If there is problem
          *  reading the embeddedCode parameter.
          */

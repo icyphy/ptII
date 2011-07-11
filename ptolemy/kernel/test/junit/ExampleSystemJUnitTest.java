@@ -33,23 +33,23 @@ import ptolemy.kernel.test.ExampleSystem;
 
 ///////////////////////////////////////////////////////////////////
 //// ExampleSystemJUnitTest
-/** 
+/**
  * Run the ExampleSystem as a JUnit Test.
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
- */ 
+ */
 public class ExampleSystemJUnitTest {
-    /** 
-     *  
-     */ 
-    @org.junit.Test 
+    /**
+     *
+     */
+    @org.junit.Test
     public void run() throws Exception {
         ExampleSystem example = new ExampleSystem();
 
-        String knownGood =                
+        String knownGood =
                 "----Methods of ComponentRelation----" + _eol
                 + "linkedPorts:" + _eol
                 + "R1: P1 P0 " + _eol
@@ -122,5 +122,5 @@ public class ExampleSystemJUnitTest {
 
 
     private static String _eol = System.getProperty("line.separator");
-            
+
 }

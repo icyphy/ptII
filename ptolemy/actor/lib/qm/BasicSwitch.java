@@ -61,22 +61,22 @@ import ptolemy.kernel.util.Workspace;
  *  input ports by setting a parameter with an ObjectToken that refers
  *  to this QuantityManager at the port. Note that the name of this
  *  parameter is irrelevant.
- *  
+ *
  *  <p>This quantity manager implements a simple switch. It has a parameter
  *  specifying the number of ports. On each port, an actor is connected.
- *  Note that these ports are not represented as ptolemy actor ports. 
+ *  Note that these ports are not represented as ptolemy actor ports.
  *  This actor can send tokens to the switch and receive tokens from the
  *  switch. The mapping of ports to actors is done via parameters of this
  *  quantity manager.
- *  
+ *
  *  <p>Internally, this switch has a buffer for every input, a buffer
  *  for the switch fabric and a buffer for every output. The delays
  *  introduced by the buffers are configured via parameters. Tokens are
  *  processed simultaneously on the buffers.
- *  
+ *
  *  <p> This switch implements a very basic switch fabric consisting
- *  of a FIFO queue. 
- *  
+ *  of a FIFO queue.
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -134,11 +134,11 @@ public class BasicSwitch extends MonitoredQuantityManager {
     ////                         public methods                    ////
 
     /** Create an intermediate receiver that wraps a given receiver.
-     *  For now, we only support wrapping input ports. 
+     *  For now, we only support wrapping input ports.
      *  @param receiver The receiver that is being wrapped.
-     *  @return A new intermediate receiver. 
-     *  @throws IllegalActionException Thrown if the receiver is an 
-     *  ouptut port. 
+     *  @return A new intermediate receiver.
+     *  @exception IllegalActionException Thrown if the receiver is an
+     *  ouptut port.
      */
     public IntermediateReceiver getReceiver(Receiver receiver)
             throws IllegalActionException {
@@ -153,10 +153,10 @@ public class BasicSwitch extends MonitoredQuantityManager {
         return intermediateReceiver;
     }
 
-    /** Make sure that this quantity manager is only used in the DE domain. 
-     *  FIXME: this actor should be used in other domains later as well. 
+    /** Make sure that this quantity manager is only used in the DE domain.
+     *  FIXME: this actor should be used in other domains later as well.
      *  @param container The container of this actor.
-     *  @exception IllegalActionException Thrown by the super class or if the 
+     *  @exception IllegalActionException Thrown by the super class or if the
      *  director of this actor is not a DEDirector.
      *  @exception NameDuplicationException Thrown by the super class.
      */
@@ -209,7 +209,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
         }
         super.attributeChanged(attribute);
     }
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -230,12 +230,12 @@ public class BasicSwitch extends MonitoredQuantityManager {
         newObject._nextFireTime = null;
         newObject._inputTokens = new HashMap();
         newObject._outputTokens = new HashMap();
-        newObject._switchFabricQueue = new TreeSet(); 
+        newObject._switchFabricQueue = new TreeSet();
         return newObject;
     }
 
     /** Initialize the actor variables.
-     *  @throws IllegalActionException If the superclass throws it or 
+     *  @exception IllegalActionException If the superclass throws it or
      *  the switch table could not be parsed from the actor parameters.
      */
     public void initialize() throws IllegalActionException {
@@ -273,16 +273,16 @@ public class BasicSwitch extends MonitoredQuantityManager {
     }
 
     /** Move tokens from the input queue to the switch fabric, move tokens
-     *  from the switch fabric queue to the output queues and send tokens from the 
-     *  output queues to the target receivers. When moving tokens between 
-     *  queues the appropriate delays are considered. 
+     *  from the switch fabric queue to the output queues and send tokens from the
+     *  output queues to the target receivers. When moving tokens between
+     *  queues the appropriate delays are considered.
      *  @exception IllegalActionException Thrown if token cannot be sent to
      *  target receiver.
      */
     public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
-        // been received; _nextTimeFree could be null. 
+        // been received; _nextTimeFree could be null.
         if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
 
             // move tokens from input queue to switch fabric
@@ -349,11 +349,11 @@ public class BasicSwitch extends MonitoredQuantityManager {
             }
         }
     }
-    
 
-    /** If there are still tokens in the queue and a token has been 
+
+    /** If there are still tokens in the queue and a token has been
      *  produced in the fire, schedule a refiring.
-     *  @exception IllegalActionExecption Thrown if refiring cannot be scheduled or 
+     *  @exception IllegalActionExecption Thrown if refiring cannot be scheduled or
      *  by super class.
      */
     public boolean postfire() throws IllegalActionException {
@@ -365,9 +365,9 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  receiver. This method will schedule a refiring of this actor
      *  if there is not one already scheduled.
      *  @param source Sender of the token.
-     *  @param receiver The sending receiver. 
+     *  @param receiver The sending receiver.
      *  @param token The token to send.
-     *  @throws IllegalActionException If the refiring request fails.
+     *  @exception IllegalActionException If the refiring request fails.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
@@ -419,24 +419,24 @@ public class BasicSwitch extends MonitoredQuantityManager {
     public Parameter numberOfPorts;
 
     /** Time it takes for a token to be put into the input queue.
-     *  This parameter must contain a DoubleToken. The value defaults 
+     *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
     public Parameter inputBufferDelay;
 
     /** Time it takes for a token to be put into the output queue.
-     *  This parameter must contain a DoubleToken. The value defaults 
+     *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
     public Parameter outputBufferDelay;
 
     /** Time it takes for a token to be processed by the switch fabric.
-     *  This parameter must contain a DoubleToken. The value defaults 
+     *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
     public Parameter switchFabricDelay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Get next fire time for a set of tokens which is either the minimum 
+    /** Get next fire time for a set of tokens which is either the minimum
      *  next fire time passed as an argument or the smallest timestamp of
      *  the tokens in the set.
      *  @param nextFireTime Minimum next fire time.
@@ -456,7 +456,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
     }
 
     /** Schedule a refiring of this actor based on the tokens in the queues.
-     *  @throws IllegalActionException Thrown if actor cannot be refired 
+     *  @exception IllegalActionException Thrown if actor cannot be refired
      *  at the computed time.
      */
     protected void _scheduleRefire() throws IllegalActionException {
@@ -471,7 +471,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////    
+    ////                         protected variables               ////
 
     /** Time it takes for a token to be put into the input queue. */
     protected double _inputBufferDelay;
@@ -499,14 +499,14 @@ public class BasicSwitch extends MonitoredQuantityManager {
 
     /** Number of switch ports. */
     protected int _numberOfPorts;
-    
-    
+
+
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////    
+    ////                         private variables                 ////
 
     /** Tokens processed by the switch fabric. */
     private TreeSet<TimedEvent> _switchFabricQueue;
-    
-    
+
+
 }

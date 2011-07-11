@@ -47,7 +47,7 @@ import diva.graph.GraphController;
 /** GUI element that provides context menus for an OntologySolver.
  *  This UI will be invoked when you right click on the
  *  OntologySolver.
- *  
+ *
  *  @author Man-Kit Leung
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -85,10 +85,10 @@ public class OntologyDisplayActions extends NodeControllerFactory {
         //return new ConfigureHighlightController(controller);
         return new HighlighterController(this, controller);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected inner classes               ////
-    
+
     /** The controller that adds commands to the context menu.
      */
     protected static class HighlighterController extends MoMLModelAttributeController {
@@ -99,45 +99,45 @@ public class OntologyDisplayActions extends NodeControllerFactory {
          */
         public HighlighterController(OntologyDisplayActions displayActions, GraphController controller) {
             super(controller);
-            
-            ClearResolution clearResolution = 
+
+            ClearResolution clearResolution =
                 displayActions.new ClearResolution();
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(clearResolution));
 
-            ResolveConcepts resolveConcepts = 
+            ResolveConcepts resolveConcepts =
                 displayActions.new ResolveConcepts();
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     resolveConcepts));
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-    
+
     /** The action for the clear concept resolution command to be added to the
      *  context menu.  This clears the list of resolved concepts (if any)
      *  and also clears the display.
      */
     private class ClearResolution extends FigureAction {
-        
+
         /** Create a new ClearResolution object to be added to the
          *  OntologySolver's context menu.
          */
         public ClearResolution() {
             super("Clear Concepts");
         }
-        
+
         /** Called when the gui "Clear Concepts" menu action is
          *  clicked. This method calls the OntologySolver's MoML
          *  handler to clear the concept display highlighting and
          *  annotations.
          *  @param e The action event that is passed in when the action
-         *   is triggered. 
+         *   is triggered.
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            
+
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
                 try {
@@ -155,7 +155,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      *  to the context menu.
      */
     private class ResolveConcepts extends FigureAction {
-        
+
         /** Create a new ResolveConcepts object to be added to the
          *  OntologySolver's context menu.
          */
@@ -168,7 +168,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
          *  handler to invoke the solver and perform the ontology solver
          *  concept resolution.
          *  @param e The action event that is passed in when the action
-         *   is triggered. 
+         *   is triggered.
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);

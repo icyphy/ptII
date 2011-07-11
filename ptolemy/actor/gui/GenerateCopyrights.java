@@ -164,12 +164,12 @@ public class GenerateCopyrights {
 
         // If actor.lib.database.DatabaseManager is present, then
         // we look for MySQL and Oracle JDBC packages.
-        _addIfPresent(copyrightsMap, 
+        _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.database.DatabaseManager",
                 "com.mysql.jdbc.Driver",
                 "ptolemy/actor/lib/database/mysql-copyright.htm");
 
-        _addIfPresent(copyrightsMap, 
+        _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.database.DatabaseManager",
                 "oracle.jdbc.OracleDriver",
                 "ptolemy/actor/lib/database/ojdbc-copyright.htm");

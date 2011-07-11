@@ -352,7 +352,7 @@ public class PortCriterion extends Criterion {
     }
 
     /** Enable or disable the input.
-     *  <p>Used as part of the test harness.   
+     *  <p>Used as part of the test harness.
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
      *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
@@ -362,7 +362,7 @@ public class PortCriterion extends Criterion {
     }
 
     /** Enable or disable the matcher name.
-     *  <p>Used as part of the test harness.   
+     *  <p>Used as part of the test harness.
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
      *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
@@ -372,7 +372,7 @@ public class PortCriterion extends Criterion {
     }
 
     /** Enable or disable the multiport.
-     *  <p>Used as part of the test harness.   
+     *  <p>Used as part of the test harness.
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
      *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
@@ -382,7 +382,7 @@ public class PortCriterion extends Criterion {
     }
 
     /** Enable or disable the output.
-     *  <p>Used as part of the test harness.   
+     *  <p>Used as part of the test harness.
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
      *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
@@ -392,7 +392,7 @@ public class PortCriterion extends Criterion {
     }
 
     /** Enable or disable the port name.
-     *  <p>Used as part of the test harness.   
+     *  <p>Used as part of the test harness.
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
      *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
@@ -402,7 +402,7 @@ public class PortCriterion extends Criterion {
     }
 
     /** Enable or disable the port type.
-     *  <p>Used as part of the test harness.   
+     *  <p>Used as part of the test harness.
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
      *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)

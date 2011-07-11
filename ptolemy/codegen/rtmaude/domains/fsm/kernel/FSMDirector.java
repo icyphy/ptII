@@ -43,7 +43,7 @@ import ptolemy.codegen.rtmaude.actor.Director;
  * @Pt.AcceptedRating red (kquine)
  */
 public class FSMDirector extends Director {
-    /** Construct the code generator adaptor associated 
+    /** Construct the code generator adaptor associated
      * with the given FSM director.
      *  @param director The associated FSM director.
      */

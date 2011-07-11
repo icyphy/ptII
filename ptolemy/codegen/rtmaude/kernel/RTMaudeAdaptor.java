@@ -52,7 +52,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RTMaudeAdaptor
 
 /**
@@ -78,7 +78,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     }
 
     /**
-     * Given a block name, generate a list of codes for that block. (For 
+     * Given a block name, generate a list of codes for that block. (For
      * Composite Actor and Director)
      * @param blockName The name of the block.
      * @param args      The arguments for the block.
@@ -121,9 +121,9 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
 
     /**
      * Generate a Real-time Maude term representation of given component.
-     * 
+     *
      * @return the term representation of a component
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     public String generateTermCode() throws IllegalActionException {
         try {
@@ -251,7 +251,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
                         check_inc_set).generateCode()), commands.toString());
     }
 
-    /** 
+    /**
      * Return a new parse tree code generator to use with expressions.
      * @return the parse tree code generator to use with expressions.
      */
@@ -267,7 +267,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     public Map<String, String> getRTMmodule() {
         return RTMmodule;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -346,10 +346,10 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     }
 
     /** Get the translanted expression.
-     *  @param expression The expression to be parsed and translated.   
+     *  @param expression The expression to be parsed and translated.
      *  @return the translated expression.
      *  @exception IllegalActionException If thrown by the parser.
-     */   
+     */
     protected String getTranslatedExpression(String expression) throws IllegalActionException {
         // FIXME: Rename to _getTranslatedExpression
         ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
@@ -360,14 +360,14 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             parseTree = parser.generateParseTree(expression);
         } catch (Throwable throwable) {
             throw new IllegalActionException(getComponent(), throwable,
-                    "Failed to generate parse tree for \"" + getName() + "\". in \"" 
+                    "Failed to generate parse tree for \"" + getName() + "\". in \""
                     + this.getContainer() + "\"");
         }
         try {
             parseTreeCodeGenerator.evaluateParseTree(parseTree, null);
         } catch (Exception ex) {
             throw new IllegalActionException(getComponent(), ex,
-                    "Failed to evaluate parse tree for\"" + getName() + "\". in \"" 
+                    "Failed to evaluate parse tree for\"" + getName() + "\". in \""
                     + this.getContainer() + "\"");
         }
         return parseTreeCodeGenerator.generateFireCode();

@@ -1,4 +1,4 @@
-/* InterruptInputDevice is a device that writes to performs actuation on the environment. 
+/* InterruptInputDevice is a device that writes to performs actuation on the environment.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -32,16 +32,16 @@ package ptolemy.domains.ptides.lib;
 //////////////////////////////////////////////////////////////////////////
 ////ActuationDevice
 
-/** 
+/**
  *  This interface defines device performs actuation on the environment.
  *  Even though there are no methods for this interface, we nonetheless
- *  use this interface to help identify if this actor is an actuator. 
- *   
+ *  use this interface to help identify if this actor is an actuator.
+ *
  *  @author Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jiazou)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 
 public interface ActuationDevice {

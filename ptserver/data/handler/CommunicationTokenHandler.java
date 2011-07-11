@@ -42,9 +42,9 @@ import ptserver.data.TokenParser;
 
 /** <p>Serialize a CommunicationToken to and from binary format.</p>
  *  <p>The stream has the following format:
- *  
+ *
  *  CommunicationToken = Type(2), CommunicationTokenValueField <br />
- *  CommunicationTokenValueField = TargetActorName, PortCount(2), PortData... 
+ *  CommunicationTokenValueField = TargetActorName, PortCount(2), PortData...
  *  (PortData is repeated PortCount times)<br />
  *  PortData = PortName, ChannelCount(2), ChannelData... (ChannelData is repeated ChannelCount times)<br />
  *  ChannelData = ChannelTokenCount(2), Token... (Token is repeated ChannelTokenCount times;

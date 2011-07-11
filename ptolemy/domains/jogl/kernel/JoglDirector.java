@@ -57,13 +57,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A director for the Jogl Domain.
- * 
+ *
  * <p>
  * The Jogl domain uses JOGL to display three-dimensional graphics in Ptolemy
- * II. JOGL has a working principle that starts a thread that repeatedly calls a 
- * display() method at your fps (frames per second) rate. Everytime this method 
- * is called, it clears and rebuilds the entire scene. JoglDirector uses the 
- * {@link ptolemy.domains.jogl.kernel.JoglScheduler}, which implements the 
+ * II. JOGL has a working principle that starts a thread that repeatedly calls a
+ * display() method at your fps (frames per second) rate. Everytime this method
+ * is called, it clears and rebuilds the entire scene. JoglDirector uses the
+ * {@link ptolemy.domains.jogl.kernel.JoglScheduler}, which implements the
  * GLEventListener interface that is needed for lifecycle callbacks.
  *
  * @author Yasemin Demir
@@ -79,9 +79,9 @@ public class JoglDirector extends StaticSchedulingDirector{
      * name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
      */
-    
+
     //FIXME: Container and a name
-    public JoglDirector() {        
+    public JoglDirector() {
         super();
         _init();
     }
@@ -90,7 +90,7 @@ public class JoglDirector extends StaticSchedulingDirector{
      * Construct a director in the workspace with an empty name. The director is
      * added to the list of objects in the workspace. Increment the version
      * number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace of this object.
      */
@@ -104,7 +104,7 @@ public class JoglDirector extends StaticSchedulingDirector{
      * container argument is null, a NullPointerException will be thrown. If the
      * name argument is null, then the name is set to the empty string.
      * Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -123,7 +123,7 @@ public class JoglDirector extends StaticSchedulingDirector{
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    public parameters                      ////  
+    ////                    public parameters                      ////
 
     /**
      * A parameter representing the number of times that postfire() may be
@@ -144,16 +144,16 @@ public class JoglDirector extends StaticSchedulingDirector{
      */
     public Parameter iterationTimeLowerBound;
     //FixME: Write comments here
-   
+
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods ////
+    ////                         public methods                    ////
 
     /**
      * Clone the director into the specified workspace. This calls the base
      * class and then copies the parameter of this director. The new actor will
      * have the same parameter values as the old.
-     * 
+     *
      * @param workspace
      *            The workspace for the new object.
      * @return A new object.
@@ -170,7 +170,7 @@ public class JoglDirector extends StaticSchedulingDirector{
 
     /** In this director, do nothing. Override the super class method. This method does nothing and
      *  everything is postponed to the postfire() method. This assures
-     *  that inputs are stable. 
+     *  that inputs are stable.
      */
     public void fire() throws IllegalActionException {
         // Do nothing, because the super.fire() calculates the current schedule.
@@ -185,7 +185,7 @@ public class JoglDirector extends StaticSchedulingDirector{
      * next time it wishes to be awakened, just prior to returning from fire().
      * DEDirector, for example, does that, as does the SDFDirector if the period
      * parameter is set.
-     * 
+     *
      * @param actor
      *            The actor scheduled to be fired.
      * @param time
@@ -213,12 +213,12 @@ public class JoglDirector extends StaticSchedulingDirector{
         setModelTime(time);
         return time;
 
-    }    
+    }
 
     /**
      * Initialize all the actors associated with this director. Perform some
      * internal initialization for this director.
-     * 
+     *
      * @exception IllegalActionException
      *                If the initialize() method of one of the associated actors
      *                throws it.
@@ -241,7 +241,7 @@ public class JoglDirector extends StaticSchedulingDirector{
      * Process the mutation that occurred. Reset this director to an
      * uninitialized state to prepare for rescheduling. Notify parent class
      * about invalidated schedule.
-     * 
+     *
      * @see ptolemy.kernel.util.NamedObj#attributeChanged
      * @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
@@ -260,7 +260,7 @@ public class JoglDirector extends StaticSchedulingDirector{
      * <i>iterations</i> parameter. If the <i>iterations</i> parameter is set to
      * zero, this method will always return true and the model will run
      * indefinitely.
-     * 
+     *
      * @return Return true if the iterations parameter is 0 or if the iteration
      *         limit has not been exceeded.
      * @exception IllegalActionException
@@ -302,7 +302,7 @@ public class JoglDirector extends StaticSchedulingDirector{
     /**
      * Always return true. A GR composite actor will always be iterated. Note
      * that this does not call prefire() on the contained actors.
-     * 
+     *
      * @return Always returns True.
      * @exception IllegalActionException
      *                Not thrown in this base class
@@ -317,7 +317,7 @@ public class JoglDirector extends StaticSchedulingDirector{
      * Preinitialize the actors associated with this director and initialize the
      * number of iterations to zero. The order in which the actors are
      * preinitialized is non-deterministic.
-     * 
+     *
      * @exception IllegalActionException
      *                If the preinitialize() method of one of the associated
      *                actors throws it.
@@ -346,11 +346,11 @@ public class JoglDirector extends StaticSchedulingDirector{
     }
 
 
-    
+
     /**
      * Reset this director to an uninitialized state to prepare for the end of
      * an execution.
-     * 
+     *
      * @exception IllegalActionException
      *                If the parent class throws it
      */
@@ -359,12 +359,12 @@ public class JoglDirector extends StaticSchedulingDirector{
         _reset();
     }
 
-   
+
 
     /**
      * Create an actor table that caches all the actors directed by this
      * director. This method is called once in initialize().
-     * 
+     *
      * @exception IllegalActionException
      *                If the scheduler is null.
      */
@@ -384,7 +384,7 @@ public class JoglDirector extends StaticSchedulingDirector{
     /**
      * For debugging purposes. Display the list of contained actors and other
      * pertinent information about them.
-     * 
+     *
      * @exception IllegalActionException
      *                If there is a problem in obtaining the number of initial
      *                token for delay actors
@@ -413,7 +413,7 @@ public class JoglDirector extends StaticSchedulingDirector{
      * since the last iteration. Go through the schedule and iterate every
      * actor. If an actor returns false in its prefire(), fire() and postfire()
      * will not be called on it.
-     * 
+     *
      * @exception IllegalActionException
      *                If an actor executed by this director returns false in its
      *                prefire().
@@ -515,7 +515,7 @@ public class JoglDirector extends StaticSchedulingDirector{
             //_pseudoTimeEnabled = false;
         }
     }
- 
+
     /**
      * Most of the constructor initialization is relegated to this method.
      * Initialization process includes : - create a new actor table to cache all
@@ -547,7 +547,7 @@ public class JoglDirector extends StaticSchedulingDirector{
                     "Cannot create default iterations parameter.");
         }
 
-        
+
 
         _reset();
     }
@@ -556,28 +556,28 @@ public class JoglDirector extends StaticSchedulingDirector{
         _lastIterationTime = 0;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * The set of actors that have returned false in their postfire() methods.
      * These actors will not be fired again.
      */
     private Set<Actor> _disabledActors;
-    
+
     private long _lastIterationTime;
 
     //private Director _insideDirector;
 
     private int _iteration = 0;
-    
+
     //private boolean _pseudoTimeEnabled = false;
-    
+
     //private int _startIteration = 0;
 
     private int _stopIteration = 0;
 
-    
+
 
 }
 

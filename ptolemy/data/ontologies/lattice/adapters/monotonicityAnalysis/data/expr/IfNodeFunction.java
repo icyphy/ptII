@@ -1,18 +1,18 @@
-/* 
- * 
+/*
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** A representation of the monotonic function used to infer the
  *  monotonicity of conditional nodes (if nodes) in the abstract
- *  syntax trees of Ptolemy expressions. 
+ *  syntax trees of Ptolemy expressions.
  *
  *  @author Ben Lickly
  *  @version $Id$
@@ -56,12 +56,12 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
 
     /** Create a new function from the given ifNode and
      *  over the given monotonicity ontology.
-     *  
-     *  @param ifNode The AST node being constrained by this function. 
+     *
+     *  @param ifNode The AST node being constrained by this function.
      *  @param monotonicityOntology The monotonicity ontology.
      *  @param domainOntologies The ontologies over which the expression
      *   should be interpreted.
-     *  @throws IllegalActionException If a function cannot be created.
+     *  @exception IllegalActionException If a function cannot be created.
      */
     public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
             Ontology monotonicityOntology,
@@ -76,7 +76,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  conditional statement.  Note that the analysis is sound but
      *  conservative, so it is possible for a monotonic function to be
      *  reported as nonmonotonic, but not the other way around.
-     *  
+     *
      *  @param inputConceptValues The list of concept inputs to the function.
      *    (i.e. The monotonicity of each of the conditional's branches)
      *  @return The monotonicity of this if node.
@@ -159,7 +159,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *    (v <= c) ? e1 : e2
      *  where e1 and e2 are monotonic, c is a constant, and v
      *  is a variable.
-     *  
+     *
      *  @param inputConceptValues The monotonicity of the conditional
      *    and branches.
      *  @return True, if the expression meets all checks. False, otherwise.
@@ -205,7 +205,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  and return that constant.
      *  @param condition The AST node for the conditional expression.
      *  @return The concept on the right hand side of the conditional.
-     *  @throws IllegalActionException If the right hand side of the
+     *  @exception IllegalActionException If the right hand side of the
      *   conditional is not properly formed.
      */
     private Concept _extractConstant(
@@ -247,11 +247,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     /** Evaluate the given node as a concept expression over the domain
      *  ontology, using the the given value variable mappings, and return
      *  the result.
-     *  
+     *
      *  @param node The Ptolemy AST node to evaluate.
      *  @param arguments The variable mappings to use during evaluation.
      *  @return The computed concept value.
-     *  @throws IllegalActionException If there is an error during evaluation.
+     *  @exception IllegalActionException If there is an error during evaluation.
      */
     private Concept _evaluateNode(ptolemy.data.expr.ASTPtRootNode node,
             Map<String, Concept> arguments) throws IllegalActionException {
@@ -270,13 +270,13 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  variable.
      *  If these assumptions are not met, this function may return an
      *  unsound analysis.
-     *  
+     *
      *  Note that this function performs an analysis that is approximately
      *  equivalent to the ifc analysis of "Static Monotonicity Analysis
      *  for lambda-definable Functions over Lattices" (Murawski and Yi,
      *  2002), except that that analysis is unsound.  This analysis
      *  is a corrected form of that one.
-     *  
+     *
      *  @param variable The name of the variable in the conditional.
      *  @param constant The constant c.
      *  @return Monotonic, if the function is monotonic.
@@ -327,7 +327,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     /** Perform the most general type of conditional analysis.
      *  This version does not make any assumptions about the structure
      *  of the conditional statement.
-     *  
+     *
      *  Note that the analysis is sound but conservative, so it is
      *  possible for a monotonic function to be reported as nonmonotonic,
      *  for example.

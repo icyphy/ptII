@@ -35,7 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SimulatedPlatformPhysicalTime
 
 /**
@@ -80,7 +80,7 @@ public class SimulatedPlatformPhysicalTime extends TimedSource {
         output.send(0, new DoubleToken((director.getPlatformPhysicalTag(
                 ((PtidesBasicDirector)getDirector()).platformTimeClock).timestamp
         .getDoubleValue())));
-        
+
         super.fire();
     }
 

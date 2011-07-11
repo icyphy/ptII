@@ -1,6 +1,6 @@
 /*
  The server's response to the request to open a model.
-  
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,7 +37,7 @@ import ptserver.control.Ticket;
 
 /** The server's response to the request to open a model.
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)

@@ -84,25 +84,25 @@ import diva.canvas.connector.ManhattanConnector;
  * The LayoutHint uses a Ptolemy Expression as its value in which the
  * {@link LayoutHintItem} objects are encoded. Therefore the Expression is
  * expected to contain an {@link ArrayToken} of {@link LayoutHintItem} objects.</p>
- * 
+ *
  * <p>
  * A complete LayoutHint with two {@link LayoutHintItem}s could look like this:</p>
- * 
+ *
  * <pre>
- * { 
- *   { 
- *     head={id="Discard.input",x=60.0,y=115.0,index=2}, 
- *     tail={id="CompositeActor.port3",x=300.0,y=380.0,index=3}, 
+ * {
+ *   {
+ *     head={id="Discard.input",x=60.0,y=115.0,index=2},
+ *     tail={id="CompositeActor.port3",x=300.0,y=380.0,index=3},
  *     points={105.0,235.0,105.0,190.0,265.0,190.0,265.0,135.0}
  *   },
- *   { 
- *     head={id="Ramp.output",x=320.0,y=225.0}, 
- *     tail={id="CompositeActor.port2",x=580.0,y=200.0,index=3}, 
+ *   {
+ *     head={id="Ramp.output",x=320.0,y=225.0},
+ *     tail={id="CompositeActor.port2",x=580.0,y=200.0,index=3},
  *     points={135.0,25.0,135.0,125.0}
  *   }
  * }
  * </pre>
- * 
+ *
  * <p>This storage works like a {@link Map} with always two keys. One
  * {@link LayoutHintItem} is unambiguously identified by its head and tail,
  * which are Ptolemy objects like {@link Port}s or {@link Relation}s. The
@@ -121,7 +121,7 @@ import diva.canvas.connector.ManhattanConnector;
  * <p>
  * Some of the standard code for example for value listeners is copied from
  * {@link Location}.</p>
- * 
+ *
  * @author Hauke Fuhrmann, <kieler@informatik.uni-kiel.de>
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (haf)
@@ -130,7 +130,7 @@ import diva.canvas.connector.ManhattanConnector;
 public class LayoutHint extends SingletonAttribute implements Settable {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Construct an attribute with the given container and name.
      *  @param container The container.
@@ -149,7 +149,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     }
 
     /** Construct a new attribute with
-     *  no container and an empty string as a name. 
+     *  no container and an empty string as a name.
      *  @param workspace The workspace that will list the attribute.
      *  @see SingletonAttribute#SingletonAttribute(Workspace)
      */
@@ -160,7 +160,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * Add a listener to be notified when the value of this attribute changes.
      * If the listener is already on the list of listeners, then do nothing.
-     * 
+     *
      * @param listener The listener to add.
      * @see #removeValueListener(ValueListener)
      */
@@ -185,7 +185,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * to the specified depth, with each line (including the last one)
      * terminated with a newline. If this object is non-persistent, then nothing
      * is written.
-     * 
+     *
      * @see Location#exportMoML(Writer, int, String)
      * @param output The output writer to write to.
      * @param depth The depth in the hierarchy, to determine indenting.
@@ -229,23 +229,23 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * Get the value that has been set by setExpression() or by
      * setLayoutHintItem(), whichever was most recently called, or return an
      * empty string if neither has been called.
-     * 
+     *
      * <p>
      * If setExpression(String value) was called, then the return value is
      * exactly what ever was passed in as the argument to setExpression. This
      * means that there is no guarantee that the return value of getExpression()
      * is a well formed Ptolemy array expression.</p>
-     * 
+     *
      * <p>
      * If setLayoutHintItem(NamedObj, NamedObj, double[]) was called, then the
      * return value is a well formed Ptolemy array expression that starts with
      * "{" and ends with "}", and contains the expressions of
      * {@link LayoutHintItem}s as array elements. Example:</p>
-     * 
+     *
      * <pre>
      * { item1, item2 }
      * </pre>
-     * 
+     *
      * @return The expression.
      * @see Location#getExpression()
      * @see #setExpression(String)
@@ -282,7 +282,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * available where head and tail are swapped, then this item will be
      * returned but the entries get swapped again to guarantee that head and
      * tail and the bendpoint order are correct.
-     * 
+     *
      * @param head The starting point of the link, e.g. a Ptolemy Port or
      *            Relation.
      * @param tail The ending point of the link, e.g. a Ptolemy Port or
@@ -327,7 +327,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
 
     /**
      * Does this LayoutHint contain any {@link LayoutHintItem} objects?
-     * 
+     *
      * @return true iff the list of LayoutHintItems is empty
      */
     public boolean isEmpty() {
@@ -338,7 +338,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * Remove a {@link LayoutHintItem} from this storage. It is identified by
      * its head and tail Ptolemy objects like {@link Port} or {@link Relation}.
      * If no item with the specified head and tail is found, nothing happens.
-     * 
+     *
      * @param head the head object of the corresponding link
      * @param tail the tail object of the corresponding link
      */
@@ -362,7 +362,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * update the GUI. All {@link LayoutHintItem}s contained in this LayoutHint
      * will be removed, so handle with care, e.g. by checking whether this
      * LaoutHint {@link #isEmpty()}.
-     * 
+     *
      * @param target the target NamedObj
      */
     public void removeLayoutHintProperty(NamedObj target) {
@@ -375,7 +375,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * Remove a listener from the list of listeners that is notified when the
      * value of this variable changes. If no such listener exists, do nothing.
-     * 
+     *
      * @param listener The listener to remove.
      * @see Location#removeValueListener(ValueListener)
      * @see #addValueListener(ValueListener)
@@ -391,7 +391,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * is not parsed until validate() is called, and the container and value
      * listeners are not notified until validate() is called. See the class
      * comment for a description of the format.
-     * 
+     *
      * @param expression The value of the attribute.
      * @see #getExpression()
      */
@@ -407,7 +407,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * a possibly existing item for the given head and tail will be reused and
      * updated with the bend points. If no such item yet exists, a new one is
      * added.
-     * 
+     *
      * @param head the head object of the corresponding link
      * @param tail the tail object of the corresponding link
      * @param bendPoints an array of double coordinates, where always two
@@ -443,7 +443,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * Set the visibility of this attribute. The argument should be one of the
      * public static instances in Settable.
-     * 
+     *
      * @param visibility The visibility of this attribute.
      * @see #getVisibility()
      */
@@ -457,7 +457,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * hints empty. Notify the container and any value listeners of the new
      * location, if it has changed. See the class comment for a description of
      * the format.
-     * 
+     *
      * @return Null, indicating that no other instances of Settable are
      *         validated.
      * @exception IllegalActionException If the expression is invalid.
@@ -493,13 +493,13 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /**
      * Propagate the value of this object to the specified object. The specified
      * object is required to be an instance of the same class as this one, or a
      * ClassCastException will be thrown.
-     * 
+     *
      * @param destination Object to which to propagate the value.
      * @exception IllegalActionException If the value cannot be propagated.
      * @see Location#_propagateValue(NamedObj)
@@ -510,16 +510,16 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /**
      * Create {@link LayoutHintItem}s from parsed Ptolemy Expression in form of
      * a {@link Token}. The token is expected to have exactly a specific format
      * as given in the class comment.
-     * 
+     *
      * @param hints a Token containing the required information about the
      *            LayoutHintItems
-     * @throws IllegalActionException thrown when the Token does not conform to
+     * @exception IllegalActionException thrown when the Token does not conform to
      *             the expected format.
      */
     private void _addLayoutHintItems(Token hints) throws IllegalActionException {
@@ -541,11 +541,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 headLocation[1] = ((DoubleToken) headToken
                         .get("y")).doubleValue();
                 int headMultiportWidth = 1;
-                if(headToken.get("index") != null){
+                if (headToken.get("index") != null) {
                     headMultiportWidth = ((IntToken) headToken.get("index"))
                                     .intValue();
                 }
-                
+
                 RecordToken tailToken = ((RecordToken) layoutItem.get("tail"));
                 NamedObj tail = _findNamedObj(this,
                         ((StringToken) tailToken.get("id")).stringValue());
@@ -555,7 +555,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 tailLocation[1] = ((DoubleToken) tailToken
                         .get("y")).doubleValue();
                 int tailMultiportWidth = 1;
-                if(tailToken.get("index") != null){
+                if (tailToken.get("index") != null) {
                     tailMultiportWidth = ((IntToken) tailToken.get("index"))
                                     .intValue();
                 }
@@ -600,7 +600,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * Find the first CompositeActor in the parent hierarchy of the given
      * NamedObj and find some other NamedObj with a given String name in there.
-     * 
+     *
      * @param start start object in the parent hierarchy
      * @param name name of the object to find in the first CompositeActor found
      * @return the object found or null if not found
@@ -626,7 +626,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * Reverse the order of an array of coordinates, i.e. every two entries are
      * assumed to belong together and will be kept in right order.
-     * 
+     *
      * @param bendPoints the array to reverse, will be changed
      * @return the changed array
      */
@@ -709,11 +709,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * <p>
      * An example for one LayoutHintItem's String representation is the
      * following
-     * 
+     *
      * <pre>
      * { head={"CompositeActor.port",20.0,200.0,2}, tail={"Discard.input",70.0,25.0}, points={135.0,25.0,135.0,125.0} }
      * </pre>
-     * 
+     *
      * The head contains the object's name, its coordiantes in x and y and the
      * width, because the port is a multiport. The width defaults to 1 as can be
      * seen at the tail where it is omitted.
@@ -727,7 +727,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * Simple constructor specifying only head and tail for this
          * LayoutHintItem. The current layout of head and tail that is required
          * for validity checking is obtained from these objects automatically.
-         * 
+         *
          * @param head the head object of the corresponding link
          * @param tail the tail object of the corresponding link
          */
@@ -741,7 +741,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * Constructor passing not only head and tail but also all required
          * layout information for the conditions under which this LayoutHintItem
          * is only valid.
-         * 
+         *
          * @param head the head object of the corresponding link
          * @param tail the tail object of the corresponding link
          * @param locationHead the location of the head, i.e. a double array
@@ -774,7 +774,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /**
          * Get the bend points stored in this hint as an array of doubles, where
          * each two entries correspond to x and y of one bend point.
-         * 
+         *
          * @return array containing bend point coordinates
          */
         public double[] getBendPoints() {
@@ -787,7 +787,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * {@link #setBendpoints(double[])} the list of bend point coordinates
          * is odd, the last coordinate is discarded, and a list of points
          * without the dangling coordinate is returned.
-         * 
+         *
          * @return list of bend points
          */
         public List<Point2D> getBendPointList() {
@@ -806,7 +806,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * Get the String representation of the Ptolemy Expression by which this
          * LayoutHint is persisted. See the class comment for the concrete
          * specification.
-         * 
+         *
          * @return String representation of this LayoutHint
          */
         public String getExpression() {
@@ -834,7 +834,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
 
         /**
          * Get the head of this LayoutHint which is used to identify this hint.
-         * 
+         *
          * @return head object of this LayoutHint
          */
         public NamedObj getHead() {
@@ -843,7 +843,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
 
         /**
          * Get the tail of this LayoutHint which is used to identify this hint.
-         * 
+         *
          * @return tail object of this LayoutHint
          */
         public NamedObj getTail() {
@@ -859,7 +859,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * different now, then return false. In that case the bend point list is
          * no longer feasible and should not be used anymore, however, no update
          * is done here.
-         * 
+         *
          * @return true if the relative positions of head and tail are the same
          *         as before, false otherwise
          */
@@ -928,7 +928,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * information such as the current location of head and tail and their
          * port widths. Hence, this LayoutHint will be valid until the head and
          * tail are moved again.
-         * 
+         *
          * @param bendPoints new bend points
          */
         public void setBendpoints(double[] bendPoints) {
@@ -939,7 +939,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /**
          * Get a String representation of a LayoutHint which will be the same as
          * {@link #getExpression()}.
-         * 
+         *
          * @see #getExpression()
          * @return String representation of this LayoutHint
          */
@@ -980,7 +980,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /**
          * Get the width of a channel corresponding to a port. If no
          * {@link IOPort} is passed, return 0.
-         * 
+         *
          * @param port port for which to determine the channel width
          * @return channel width if applicable, else 0
          */
@@ -997,7 +997,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * one level of hierarchy. The name will be the name of the object
          * relative to some parent. E.g. a port "input" of a "Discard" actor
          * will result in the name "Discard.input".
-         * 
+         *
          * @param obj The object for which the name should be obtained
          * @return a String representation that is sufficient to identify the
          *         object
@@ -1014,7 +1014,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /**
          * Translate all coordinates given in this hint item. Include the
          * memorized head and tail location as well as all bend points.
-         * 
+         *
          * @param x amount on the x-axis to translate
          * @param y amount on the x-axis to translate
          */
@@ -1055,7 +1055,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /**
          * Update the channel width of a given object. For an IOPort, the actual
          * channel width is obtained and otherwise set it to default 1.
-         * 
+         *
          * @param port The port for which the update is required, may also be
          *            some other type than port, e.g. a Relation
          * @param indexLocation array with at least 2 entries in where to store

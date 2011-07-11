@@ -43,8 +43,8 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  This is a marker that stores list of a sets of dependent ports. Each set
- implies a pure event produced in this actor is causally related to events 
- coming into the ports in this set. The reason to have a list of sets is 
+ implies a pure event produced in this actor is causally related to events
+ coming into the ports in this set. The reason to have a list of sets is
  that an actor may produce different pure events which are causally related
  to a subset of the input ports.
  <p>
@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  be in the same set.
  <p>
  From this summarization, it seems the causality marker is exactly the same as
- equivalence class. In the future, this class may be integrated as a part of 
+ equivalence class. In the future, this class may be integrated as a part of
  the CausalityInterface. This may require ports to be created for pure events.
 
  @author Jia Zou

@@ -37,7 +37,7 @@ import com.google.inject.Module;
  * PtolemyInjector contains a static reference to the Guice Injector.
  * The rationale for having a static reference is to avoid hurdle of passing
  * the injector to all needed parties.
- * 
+ *
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -59,7 +59,7 @@ public class PtolemyInjector {
     }
 
     /**
-     * Return the PtolemyInjector.  Note that {@link #createInjector(Module...)} 
+     * Return the PtolemyInjector.  Note that {@link #createInjector(Module...)}
      * must be called prior to using this method.
      * @return the PtolemyInjector that was created with the supplied modules.
      */

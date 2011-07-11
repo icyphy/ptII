@@ -4,7 +4,7 @@ package ptolemy.domains.jogl.objModel;
 // ModelLoaderGLListener.java
 // Andrew Davison, November 2006, ad@fivedots.coe.psu.ac.th
 
-/* Display a loaded OBJ model, scaled and centered, 
+/* Display a loaded OBJ model, scaled and centered,
    and possibly rotating.
 */
 
@@ -18,7 +18,7 @@ import javax.media.opengl.glu.GLU;
 import ptolemy.domains.jogl.objLoader.OBJModel;
 
 
-public class ModelLoaderGLListener implements GLEventListener 
+public class ModelLoaderGLListener implements GLEventListener
 {
   private static final float INCR_MAX = 0.45f;   // for rotation increments
   private static final double Z_DIST = 7.0;      // for the camera position
@@ -39,7 +39,7 @@ public class ModelLoaderGLListener implements GLEventListener
 
 
   public ModelLoaderGLListener(String nm, float sz, boolean r)
-  { 
+  {
     modelName = nm;
     maxSize = sz;
     doRotate = r;
@@ -47,23 +47,23 @@ public class ModelLoaderGLListener implements GLEventListener
 
 
 
-  public void init(GLAutoDrawable drawable) 
+  public void init(GLAutoDrawable drawable)
   // perform start-up tasks
   {
-    GL gl = drawable.getGL(); 
+    GL gl = drawable.getGL();
     glu = new GLU();
 
-    // gl.setSwapInterval(0);   
+    // gl.setSwapInterval(0);
        /* switches off vertical synchronization, for extra speed (maybe) */
 
     // initialize the rotation variables
     rotX = 0; rotY = 0; rotZ = 0;
     Random random = new Random();
     incrX = (0.5f +random.nextFloat()/2)*INCR_MAX;   // INCR_MAX/2 - INCR_MAX degrees
-    incrY = (0.5f +random.nextFloat()/2)*INCR_MAX; 
-    incrZ = (0.5f +random.nextFloat()/2)*INCR_MAX; 
+    incrY = (0.5f +random.nextFloat()/2)*INCR_MAX;
+    incrZ = (0.5f +random.nextFloat()/2)*INCR_MAX;
 
-    gl.glClearColor(0.17f, 0.65f, 0.92f, 1.0f);  
+    gl.glClearColor(0.17f, 0.65f, 0.92f, 1.0f);
                   // sky colour background for GLCanvas
 
     // z- (depth) buffer initialization for hidden surface removal
@@ -79,7 +79,7 @@ public class ModelLoaderGLListener implements GLEventListener
 
 
   private void addLight(GL gl)
-  // two white light sources 
+  // two white light sources
   {
     // enable light sources
     gl.glEnable(GL.GL_LIGHTING);
@@ -88,19 +88,19 @@ public class ModelLoaderGLListener implements GLEventListener
 
     float[] whiteLight = {1.0f, 1.0f, 1.0f, 1.0f};  // bright white
 
-    float lightPos[] = {10.0f, 10.0f, -10.0f, 1.0f}; 
-       // light located at the right, top, and back 
+    float lightPos[] = {10.0f, 10.0f, -10.0f, 1.0f};
+       // light located at the right, top, and back
        // light 0 has white ambient, diffuse, and specular components by default
     gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPos, 0);
-    
+
     float lightPos1[] = {-10.0f, -10.0f, 10.0f, 1.0f};
-       // light located at the left, bottom, and front 
+       // light located at the left, bottom, and front
     gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, whiteLight, 0);  // diffuse white
     gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos1, 0);
   }  // end of addLight()
 
 
-  public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) 
+  public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
   // called when the drawable component is moved or resized
   {
     GL gl = drawable.getGL();
@@ -108,11 +108,11 @@ public class ModelLoaderGLListener implements GLEventListener
     if (height == 0)
       height = 1;    // to avoid division by 0 in aspect ratio below
 
-    gl.glViewport(x, y, width, height);  // size of drawing area 
+    gl.glViewport(x, y, width, height);  // size of drawing area
 
     gl.glMatrixMode(GL.GL_PROJECTION);
     gl.glLoadIdentity();
-    glu.gluPerspective(45.0, (float)width/(float)height, 1, 100); // 5, 100); 
+    glu.gluPerspective(45.0, (float)width/(float)height, 1, 100); // 5, 100);
               // fov, aspect ratio, near & far clipping planes
 
     gl.glMatrixMode(GL.GL_MODELVIEW);
@@ -120,7 +120,7 @@ public class ModelLoaderGLListener implements GLEventListener
   } // end of reshape()
 
 
-  public void display(GLAutoDrawable drawable) 
+  public void display(GLAutoDrawable drawable)
   // the model is rotated and rendered
   {
     // update the rotations (if rotations were specified)
@@ -151,12 +151,12 @@ public class ModelLoaderGLListener implements GLEventListener
   } // end of display
 
 
-  public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, 
-                             boolean deviceChanged) 
+  public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+                             boolean deviceChanged)
   /* Called when the display mode or device has changed.
      Currently unimplemented in JOGL */
   {}
 
- 
+
  } // end of ModelLoaderGLListener class
 

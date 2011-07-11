@@ -1,23 +1,23 @@
 /* A base class representing a concept function for ontology constraints.
- * 
+ *
  * Copyright (c) 1998-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
  */
 package ptolemy.data.ontologies;
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  inputs and outputs need not necessarily be from the same ontology.
  *  Derived classes must implement the protected _evaluateFunction method
  *  to provide the output concept given an input array of concepts.
- * 
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -121,7 +121,7 @@ public abstract class ConceptFunction {
             throw new IllegalActionException(
                     "The input array to the ConceptFunction " + this
                             + " is null.");
-            
+
         // If the function has a fixed number of arguments, check to make sure
         // the input list has the right number of arguments and also check
         // that each argument is contained by its domain ontology.
@@ -202,7 +202,7 @@ public abstract class ConceptFunction {
 
     /** Return the ontology that represents the range of concepts that can be
      *  output by this concept function.
-     * 
+     *
      *  @return The ontology that represents the range of concepts that can be
      *   output by this concept function.
      */
@@ -223,11 +223,11 @@ public abstract class ConceptFunction {
         // to validate monotonicity for a concept function.
         return true;
     }
-    
+
     /** Return true if this concept function has a fixed number of
      *  arguments, false otherwise.
      *  @return True if the function has a fixed number of arguments,
-     *   false otherwise. 
+     *   false otherwise.
      */
     public boolean isNumberOfArgumentsFixed() {
         return _numArgsIsFixed;

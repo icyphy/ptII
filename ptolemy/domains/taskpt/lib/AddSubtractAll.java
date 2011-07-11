@@ -33,13 +33,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AddSubtractAll
 
-/** Add/subtract the values of all tokens present on the input channels 
+/** Add/subtract the values of all tokens present on the input channels
 * (in contrast to one token per channel in the AddSubtract class). For further
 * documentation see {@link ptolemy.actor.lib.AddSubtract}.
-* 
+*
 * @author Bastian Ristau
 * @version $Id$
 * @since Ptolemy II 8.1
@@ -75,7 +75,7 @@ public class AddSubtractAll extends AddSubtract {
      *  from a zero token of the same type as the first token encountered
      *  on the minus channels.
      *
-     *  @throws IllegalActionException Thrown if there is no director,
+     *  @exception IllegalActionException Thrown if there is no director,
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */

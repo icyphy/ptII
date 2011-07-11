@@ -66,12 +66,12 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
     public Triangle3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-              
+
         glOut = new TypedIOPort(this, "glOut");
         glOut.setOutput(true);
         glOut.setTypeEquals(GLToken.GL_TYPE);
         glOut.setMultiport(true);
-        
+
         width = new Parameter(this, "width");
         width.setExpression("2.0");
 
@@ -80,16 +80,16 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
 
         lineStart = new Parameter(this, "lineStart");
         lineStart.setExpression("{0.0, 0.0, 0.0}");
-        
+
         lineEnd= new Parameter(this, "lineEnd");
         lineEnd.setExpression("{1.0, 0.0, 0.0}");
     }
-    
-    /** 
+
+    /**
      * The width of the line.
      */
     public Parameter width;
-    
+
     /** The output port.  The type is a GLToken. */
     public TypedIOPort glOut;
 
@@ -104,7 +104,7 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
 
     /** The x,y,z coordinate of the end position of the Cube in the view screen. */
     public Parameter lineEnd;
-    
+
     /** Render a Jogl OpenGL 3D object.
      *  @param gl The GL object to be rendered.
      *  @exception IllegalActionException If the object cannot be rendered.
@@ -113,7 +113,7 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
         if (_debugging) {
             _debug("Called fire()");
         }
-        
+
         ArrayToken lineStartToken = ((ArrayToken) lineStart.getToken());
         ArrayToken lineEndToken = ((ArrayToken) lineEnd.getToken());
         ArrayToken rgbColorValue = ((ArrayToken) rgbColor.getToken());
@@ -123,21 +123,21 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
         gl.glBegin(GL.GL_LINES);
 
         gl.glColor3d(
-                ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(), 
-                ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(), 
-                ((DoubleToken) rgbColorValue.getElement(2)).doubleValue()); 
+                ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
+                ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(),
+                ((DoubleToken) rgbColorValue.getElement(2)).doubleValue());
 
         // origin of the line
         gl.glVertex3d(
-                ((DoubleToken) lineStartToken.getElement(0)).doubleValue(), 
-                ((DoubleToken) lineStartToken.getElement(1)).doubleValue(), 
-                ((DoubleToken) lineStartToken.getElement(2)).doubleValue()); 
-        
+                ((DoubleToken) lineStartToken.getElement(0)).doubleValue(),
+                ((DoubleToken) lineStartToken.getElement(1)).doubleValue(),
+                ((DoubleToken) lineStartToken.getElement(2)).doubleValue());
+
         // ending point of the line
         gl.glVertex3d(
-                ((DoubleToken) lineEndToken.getElement(0)).doubleValue(), 
-                ((DoubleToken) lineEndToken.getElement(1)).doubleValue(), 
-                ((DoubleToken) lineEndToken.getElement(2)).doubleValue()); 
+                ((DoubleToken) lineEndToken.getElement(0)).doubleValue(),
+                ((DoubleToken) lineEndToken.getElement(1)).doubleValue(),
+                ((DoubleToken) lineEndToken.getElement(2)).doubleValue());
 
         gl.glEnd( );
     }

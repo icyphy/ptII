@@ -36,7 +36,7 @@ import diva.graph.GraphController;
 
 /**
  * An interface for defining additional gui interaction for specific actor types.
- * Once the interface is implemented, it can be used by adding an 
+ * Once the interface is implemented, it can be used by adding an
  * _actorInteractionAddon parameter to the configuration and setting the value
  * to the name of the class that implements this interface.
  *
@@ -89,8 +89,8 @@ public interface ActorInteractionAddon {
             throws IllegalActionException, NameDuplicationException;
 
     /**
-     * Get an instance of the 
-     * {@link ptolemy.vergil.actor.ActorController ActorController} 
+     * Get an instance of the
+     * {@link ptolemy.vergil.actor.ActorController ActorController}
      * for a given actor.  This assumes
      * Full access.
      * @param controller The associated graph controller.
@@ -99,8 +99,8 @@ public interface ActorInteractionAddon {
     abstract ActorController getControllerInstance(GraphController controller);
 
     /**
-     * Get an instance of the 
-     * {@link ptolemy.vergil.actor.ActorController ActorController} 
+     * Get an instance of the
+     * {@link ptolemy.vergil.actor.ActorController ActorController}
      * for a given actor.
      * @param controller The associated graph controller.
      * @param fullAccess Indication if the controller should be instantiated

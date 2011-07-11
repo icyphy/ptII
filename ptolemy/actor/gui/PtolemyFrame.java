@@ -206,9 +206,9 @@ public abstract class PtolemyFrame extends TableauFrame {
         } else {
             _model = model;
             _model.setModelErrorHandler(new BasicModelErrorHandler());
-    
+
             List attrList = _model.attributeList(UndoStackAttribute.class);
-    
+
             if (attrList.size() == 0) {
                 // Create and attach a new instance
                 try {
@@ -271,10 +271,10 @@ public abstract class PtolemyFrame extends TableauFrame {
 
         return super._close();
     }
-    
+
     /** Dispose of this frame.
      *     Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
+     *  this model from getting garbage collected.  This method invokes the
      *  dispose() method of the superclass,
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */
@@ -371,7 +371,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     /** Create and return a file dialog for the "Save As" command.
      *  This overrides the base class to add options to the dialog.
      *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
-     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsFileDialogComponent()} is used.
 
      *  @return A file dialog for save as.
@@ -391,7 +391,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     /** Create and return a file dialog for the "Save As" command.
      *  This overrides the base class to add options to the dialog.
      *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true
-     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise, 
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsJFileChooserComponent()} is used.
 
      *  @return A file dialog for save as.
@@ -459,7 +459,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                 if (_model == null) {
                     effigy = effigy.topEffigy();
                 } else if ((_query == null)
-                        || ((_model.getContainer() != null) 
+                        || ((_model.getContainer() != null)
                         && (_query.hasEntry("submodel")
                                 && !_query.getBooleanValue("submodel")))) {
                     effigy = effigy.masterEffigy();
@@ -475,11 +475,11 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** The query used to specify save as options. */
     protected Query _query;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** A ChangeRequest for calling the _print() method. */
     class PrintChangeRequest extends ChangeRequest {
         public PrintChangeRequest(Object source, String description) {
@@ -489,7 +489,7 @@ public abstract class PtolemyFrame extends TableauFrame {
             PtolemyFrame.super._print();
         }
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

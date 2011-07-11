@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -55,14 +55,14 @@ import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.save.AttributesManager;
 import ptolemy.util.MessageHandler;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConfigureAttributesFrame
 
 /**
- * The window for the user to configure the user defined attributes for 
- * Ptolemy models.  The user can add, delete, edit the attributes in this 
- * window. 
- * 
+ * The window for the user to configure the user defined attributes for
+ * Ptolemy models.  The user can add, delete, edit the attributes in this
+ * window.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -72,9 +72,9 @@ import ptolemy.util.MessageHandler;
  */
 public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
-    /** 
+    /**
      * Creates new form ConfigureAttributesFrame.
-     * 
+     *
      */
     public ConfigureAttributesFrame() {
 
@@ -88,7 +88,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
     /**
      * Close this frame.
      */
-    
+
     public void closeFrame() {
         _containedFramesManager.closeContainedFrames();
 
@@ -101,7 +101,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
     private void _addButtonActionPerformed(ActionEvent evt) {
 
         if (_checkChanged()) {
-            // Ask to save the model or not. 
+            // Ask to save the model or not.
 
             if (JOptionPane.showConfirmDialog(this,
                     "Do you want to save the change of this attribute?",
@@ -110,7 +110,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                     _saveButtonActionPerformed(evt);
 
                 } catch (IllegalNameException e) {
-                    // Do nothing, the message has already been shown. 
+                    // Do nothing, the message has already been shown.
                     return;
                 }
             }
@@ -144,17 +144,17 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
     }
 
     /**
-     * Check whether the attribute under editing has been changed. 
-     * 
+     * Check whether the attribute under editing has been changed.
+     *
      * @return true - the attribute information has been changed.<br>
-     *          false - the attribute information hasn't been changed. 
+     *          false - the attribute information hasn't been changed.
      */
     private boolean _checkChanged() {
 
         if (_currentEditedAttribute == null
                 || _currentEditedAttribute.getAttributeId() == null
                 || _currentEditedAttribute.getAttributeId().isEmpty()) {
-            // New attribute. 
+            // New attribute.
             if (_attributeNameField.getText().isEmpty()
                     && _attributeTypeField.getSelectedIndex() == 0
                     && _listItems == null) {
@@ -165,7 +165,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         } else {
 
-            // Existing attribute. 
+            // Existing attribute.
             if (!_attributeNameField.getText().equals(
                     _currentEditedAttribute.getAttributeName())
                     || !_attributeTypeField.getSelectedItem().equals(
@@ -241,37 +241,37 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-            
+
             public void windowOpened(WindowEvent e) {
-                // Do Nothing.  
+                // Do Nothing.
             }
 
-            
+
             public void windowIconified(WindowEvent e) {
-                // Do Nothing. 
+                // Do Nothing.
             }
 
-            
+
             public void windowDeiconified(WindowEvent e) {
-                // Do Nothing. 
+                // Do Nothing.
             }
 
-            
+
             public void windowDeactivated(WindowEvent e) {
-                // Do Nothing. 
+                // Do Nothing.
             }
 
-            
+
             public void windowClosing(WindowEvent e) {
                 _containedFramesManager.closeContainedFrames();
             }
 
-            
+
             public void windowClosed(WindowEvent e) {
                 _containedFramesManager.closeContainedFrames();
             }
 
-            
+
             public void windowActivated(WindowEvent e) {
                 if (_canEnableSaveButton()) {
                     _saveButton.setEnabled(true);
@@ -340,7 +340,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _attributeTypeField.addItemListener(new ItemListener() {
 
-            
+
             public void itemStateChanged(ItemEvent e) {
                 if (_attributeTypeField.getSelectedItem().equals(
                         XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
@@ -362,7 +362,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _addButton.addActionListener(new ActionListener() {
 
-            
+
             public void actionPerformed(ActionEvent e) {
                 _addButtonActionPerformed(e);
 
@@ -502,21 +502,21 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _attributeNameField.addKeyListener(new KeyListener() {
 
-            
+
             public void keyTyped(KeyEvent e) {
-                // Do nothing here.                 
+                // Do nothing here.
             }
 
-            
+
             public void keyReleased(KeyEvent e) {
 
                 _saveButton.setEnabled(_canEnableSaveButton());
 
             }
 
-            
+
             public void keyPressed(KeyEvent e) {
-                // Do nothing here.  
+                // Do nothing here.
 
             }
         });
@@ -524,18 +524,18 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         _attributeTypeField.getAccessibleContext().setAccessibleName(
                 "_attributeTypeField");
 
-        // Set the save button. 
+        // Set the save button.
         _saveButton.getAccessibleContext().setAccessibleName("saveButton");
         _saveButton.setEnabled(false);
 
         _saveButton.addActionListener(new ActionListener() {
 
-            
+
             public void actionPerformed(ActionEvent e) {
                 try {
                     _saveButtonActionPerformed(e);
                 } catch (IllegalNameException e1) {
-                    // Do nothing here, since the error message has been shown. 
+                    // Do nothing here, since the error message has been shown.
                 }
 
             }
@@ -548,7 +548,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _listEditButton.addActionListener(new ActionListener() {
 
-            
+
             public void actionPerformed(ActionEvent e) {
 
                 if (_listItems == null) {
@@ -570,7 +570,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         _attributesPanel.setBorder(javax.swing.BorderFactory
                 .createEtchedBorder());
 
-        // Get the existing attributes to set in the List. 
+        // Get the existing attributes to set in the List.
 
         try {
             _attributes = _attributeManager.getDBAttributes();
@@ -597,31 +597,31 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _attributesList.addMouseListener(new MouseListener() {
 
-            
+
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            
+
             public void mousePressed(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            
+
             public void mouseExited(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            
+
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            
+
             public void mouseClicked(MouseEvent e) {
                 if (_currentEditedAttribute == null
                         || !_attributesList.getSelectedValue().equals(
@@ -686,8 +686,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         //        _attributesList.addListSelectionListener(new ListSelectionListener() {
         //
-        //            
-        //            
+        //
+        //
         //            public void valueChanged(ListSelectionEvent e) {
         //
         //                if (_currentEditedAttribute == null
@@ -960,12 +960,12 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                 "_statusMsgLabel");
         _statusLabel.getAccessibleContext().setAccessibleName("_statusLabel");
 
-        // Set the close button. 
+        // Set the close button.
         _closeButton.getAccessibleContext().setAccessibleName("_closeButton");
 
         _closeButton.addActionListener(new ActionListener() {
 
-            
+
             public void actionPerformed(ActionEvent e) {
 
                 if (_checkChanged()) {
@@ -1141,11 +1141,11 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
     }
 
     /**
-     * Validate whether the edited attribute is valid to save or update to the 
-     * database. 
-     * 
+     * Validate whether the edited attribute is valid to save or update to the
+     * database.
+     *
      * @return true - the edited attribute is valid to save.<br>
-     *          false - the edited attribute is invalid to save. 
+     *          false - the edited attribute is invalid to save.
      * @exception IllegalNameException Thrown if the attribute name is illegal.
      */
     private boolean _validate() throws IllegalNameException {
@@ -1164,7 +1164,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                     // New attribute
                     throw new IllegalNameException("Duplicated name!");
                 } else {
-                    // Existing attribute. 
+                    // Existing attribute.
                     if (existingAttribute.getAttributeId().equals(
                             _currentEditedAttribute.getAttributeId())) {
                         // Same attribute.
@@ -1203,7 +1203,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
     private javax.swing.JLabel _typeLabel;
 
     /**
-     * The attribute manager that will handle all the attributes related 
+     * The attribute manager that will handle all the attributes related
      * requests.
      */
     private AttributesManager _attributeManager;
@@ -1216,7 +1216,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
     private List<XMLDBAttribute> _attributes;
 
     /**
-     * The attribute that is currently being edited. 
+     * The attribute that is currently being edited.
      */
     private XMLDBAttribute _currentEditedAttribute;
 

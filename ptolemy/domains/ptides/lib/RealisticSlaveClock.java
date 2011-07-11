@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This actor assumes that it receives double values at its input
  *  port, where the values are the current times from a {@link MasterClock}.
  *  It then updates its own clock to track that of the master clock.
- *  
+ *
  *  @author Jia Zou, Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (jiazou)
  */
 public class RealisticSlaveClock extends TypedAtomicActor {
-    
+
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -92,7 +92,7 @@ public class RealisticSlaveClock extends TypedAtomicActor {
      *  output.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public  methods                   ////
 
@@ -130,7 +130,7 @@ public class RealisticSlaveClock extends TypedAtomicActor {
         Director director = getDirector();
         if (!(director instanceof PtidesBasicDirector)) {
             throw new IllegalActionException(this, "This actor can only " +
-            		"work under a Ptides director.");
+                            "work under a Ptides director.");
         }
     }
 

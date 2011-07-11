@@ -77,10 +77,10 @@ good as the Kieler layout mechanism, so use the @see KielerLayoutMechanism.</p>
 public class PtolemyLayoutAction extends Object implements IGuiAction {
 
     /**
-     * Layout the graph if the model is a CompositeActor. Otherwise throw an 
+     * Layout the graph if the model is a CompositeActor. Otherwise throw an
      * exception. The frame type must be ActorGraphFrame. The Ptolemy layouter.
      * is called with placing and routing.
-     * 
+     *
      * @param model the model
      */
     public void doAction(NamedObj model) {

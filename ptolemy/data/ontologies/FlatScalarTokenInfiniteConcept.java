@@ -1,18 +1,18 @@
 /* A concept that represents the concept values of entries in a record token.
- * 
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -26,7 +26,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept that represents the concept values of entries in a record token.
- *  
+ *
  *  A conceptable model element such as a port or node in a Ptolemy expression
  *  could contain a token value that is a record data type.  A record token
  *  is a token that is a collection of multiple token values of different
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  wanted to assign a concept to the token above from the constAbstractInterpretation
  *  ontology, it would be:
  *  {x = Positive, y = Positive, pixelOn = BooleanTrue}
- *  
+ *
  *  This code is adapted from the
  *  {@link ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept}
  *  implementation.
@@ -55,16 +55,16 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
-    
+
     /** Create a new flat token infinite concept, belonging to the given
      *  ontology, with an automatically generated name.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents where the infinite
      *   token concepts belong in the ontology lattice.
      *  @param value The token value for this FlatTokenInfiniteConcept.
      *  @return The newly created RecordConcept.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public static FlatScalarTokenInfiniteConcept createFlatScalarTokenInfiniteConcept(
             Ontology ontology, FlatScalarTokenRepresentativeConcept representative,
@@ -73,8 +73,8 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
         try {
             if (!representative.withinInterval(value)) {
                 throw new IllegalActionException("Token " + value + " is not " +
-                		"within the numerical interval defined in the " +
-                		"representative concept.");
+                                "within the numerical interval defined in the " +
+                                "representative concept.");
             }
             return new FlatScalarTokenInfiniteConcept(ontology, representative, value);
         } catch (NameDuplicationException e) {
@@ -84,10 +84,10 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
                   + "Original exception:" + e.toString());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
-    
+    ////                         public methods                    ////
+
     /** Get the concept that represents this set of infinite concepts in the
      *  ontology lattice.
      *  @return The representative concept.
@@ -102,19 +102,19 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
     public ScalarToken getTokenValue() {
         return (ScalarToken) _tokenValue;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 
     /** Create a new Record concept, belonging to the given
      *  ontology.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents where the infinite
      *   token concepts belong in the ontology lattice.
      *  @param value The token value for this FlatTokenInfiniteConcept.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected FlatScalarTokenInfiniteConcept(Ontology ontology,
             FlatScalarTokenRepresentativeConcept representative,

@@ -44,7 +44,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OntologySolverGraphModel
 
 /** A graph model for graphically manipulating ontology solver models.
@@ -66,7 +66,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
     public OntologySolverGraphModel(CompositeEntity composite) {
         super(composite);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -78,8 +78,8 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
      */
     public void disconnectEdge(Object eventSource, Object edge) {
     }
-    
-    /** Get the ontology model which maps all ontology nodes in the graph to the 
+
+    /** Get the ontology model which maps all ontology nodes in the graph to the
      *  {@link Ontology} elements in then ontology solver model.
      *  @return The concept model.
      */
@@ -110,7 +110,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
         NamedObjNodeModel model = (NamedObjNodeModel) getNodeModel(node);
         return model.getDeleteNodeMoML(node);
     }
-    
+
     /** Return the edge controller appropriate for the given edge. In the
      *  ontology solver editor, there are no edges in the model, so this
      *  method returns null.
@@ -141,7 +141,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
 
         return super.getNodeModel(node);
     }
-    
+
     /** Delete a node from its parent graph and notify
      *  graph listeners with a NODE_REMOVED event.
      *  @param eventSource The source of the event that will be dispatched,
@@ -156,21 +156,21 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
         NamedObjNodeModel model = (NamedObjNodeModel) getNodeModel(node);
         model.removeNode(eventSource, node);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The model of ontologies in the ontology solver model. */
     private OntologyModel _ontologyModel = new OntologyModel();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** The model for an icon that represents ontologies in the ontology solver
      *  model.
      */
     public class OntologyModel extends NamedObjNodeModel {
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -217,7 +217,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
         public Iterator outEdges(Object node) {
             return new NullIterator();
         }
-        
+
         /** Remove the given node from the model.  The node is assumed
          *  to be a Locatable belonging to an entity.
          *  @param eventSource The source of the event directing the removal of

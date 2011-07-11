@@ -65,13 +65,13 @@ public class BlendADD extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);  
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV Object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -85,21 +85,21 @@ public class BlendADD extends Transformer {
             OpenCV openCV = (OpenCV)inputObject;
             PImage my_image = openCV.image();
             PImage test_image = null;
-			try {
-				test_image = (PImage) my_image.clone();
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
-			if(test_image != null){
-				my_image.blend(test_image, 0, 0, 640, 480, 320, 240, 250, 250, 2);
-			} else{
-				throw new IllegalArgumentException("Error");
-			}
-			openCV.absDiff();
-			openCV.copy(my_image);
-			openCV.remember(OpenCV.BUFFER);
+                        try {
+                                test_image = (PImage) my_image.clone();
+                        } catch (CloneNotSupportedException e) {
+                                e.printStackTrace();
+                        }
+                        if (test_image != null) {
+                                my_image.blend(test_image, 0, 0, 640, 480, 320, 240, 250, 250, 2);
+                        } else {
+                                throw new IllegalArgumentException("Error");
+                        }
+                        openCV.absDiff();
+                        openCV.copy(my_image);
+                        openCV.remember(OpenCV.BUFFER);
           output.send(0, new ObjectToken(openCV));
         }
     }
-   
+
 }

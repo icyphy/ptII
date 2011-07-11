@@ -78,7 +78,7 @@ public class WallClockTime extends Source {
         passThrough.setTypeAtLeast(trigger);
         passThrough.setMultiport(true);
         passThrough.setWidthEquals(trigger, true);
-        
+
         // Override the clock to make it look a bit
         // different from the DiscreteClock and PoissonClock.
         _attachText("_iconDescription", "<svg>\n"

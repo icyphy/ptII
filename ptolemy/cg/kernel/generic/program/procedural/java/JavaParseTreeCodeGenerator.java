@@ -83,7 +83,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.math.Complex;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// JavaParseTreeCodeGenerator
 
 /**
@@ -627,7 +627,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // Handle functions like iterate()
         // FIXME: Needs to be finished.  iterate() takes a Ptolemy Token
         // as a third argument.
-        // $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/codegen/c/actor/lib/test/auto/knownFailedTests/ExpressionIterate.xml 
+        // $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/codegen/c/actor/lib/test/auto/knownFailedTests/ExpressionIterate.xml
 
         // FIXME: Generate function declaration in _preinitCode.
         //functionCode += type.getReturnType().toString();
@@ -639,14 +639,14 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // to add $PTII to the classpath some how.
         functionCode.append(" new ptolemy.data.expr.ExpressionFunction(\n"
                 + "java.util.Arrays.asList(new String[]\n{\n");
-        for (int i = 0; i < argumentNames.size(); i++) { 
+        for (int i = 0; i < argumentNames.size(); i++) {
             functionCode.append("\"" + argumentNames.get(i) + "\"");
             if (i < argumentNames.size() - 1) {
                 functionCode.append(", ");
             }
         }
         functionCode.append("\n}\n),\n new ptolemy.data.type.Type[] \n{\n");
-        for (int i = 0; i < argumentTypes.length; i++) { 
+        for (int i = 0; i < argumentTypes.length; i++) {
             functionCode.append("ptolemy.data.type.BaseType." + argumentTypes[i].toString().toUpperCase());
             if (i < argumentTypes.length - 1) {
                 functionCode.append(", ");
@@ -666,7 +666,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // See ExpressionFunction.apply() for how to create a temporary scope.
         //functionCode += evaluateParseTree(node.getExpressionTree(), _scope);
         //functionCode += ";\n}\n";
-        
+
         _childCode = functionCode.toString();
         return;
     }

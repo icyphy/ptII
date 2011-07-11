@@ -36,12 +36,12 @@ import ptolemy.moml.MoMLParser;
 ///////////////////////////////////////////////////////////////////
 //// RemoveNonPtinyClasses
 
-/** 
+/**
  Remove classes such as code generators that are not present in Ptiny.
 
  <p> When this class is registered with the MoMLParser.setMoMLFilter()
  method, it will cause MoMLParser to filter out classes that are
- not present in the Ptiny configuration. 
+ not present in the Ptiny configuration.
 
  @author  Christopher Hylands
  @version $Id$

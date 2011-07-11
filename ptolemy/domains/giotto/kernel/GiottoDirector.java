@@ -115,7 +115,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.
      *  @exception NameDuplicationException If the name collides with an
-     *   attribute in the container or if there is a name duplication during 
+     *   attribute in the container or if there is a name duplication during
      *   initialization.
      */
     public GiottoDirector(CompositeEntity container, String name)
@@ -128,7 +128,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
-     *  @exception IllegalActionException If there is an exception thrown by 
+     *  @exception IllegalActionException If there is an exception thrown by
      *  the super class or while initializing parameters.
      *  @exception NameDuplicationException If the container reports an entity
      *  that duplicates an existing name during initialization.
@@ -322,7 +322,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
             _expectedNextIterationTime = _expectedNextIterationTime
                     .add(_unitTimeIncrement);
-            //this compensates for rounding errors that may occur  
+            //this compensates for rounding errors that may occur
             if (_unitIndex == _lcm) {
                 _expectedNextIterationTime = new Time(this, _iterationCount
                         + (_periodValue * (_unitIndex)));
@@ -471,7 +471,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     //    public boolean handleModelError(NamedObj context,
     //         IllegalActionException exception) throws IllegalActionException {
-    //        
+    //
     //     if (_debugging) {
     //         _debug("Handle Model Error Called for GiottoDirector");
     //     }
@@ -868,7 +868,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /* Initialize the director by creating a scheduler and parameters.
     *  @exception NameDuplicationException If the container reports an entity
     *  that duplicates an existing name during initialization.
-    *  @exception IllegalActionException If any of the methods called by 
+    *  @exception IllegalActionException If any of the methods called by
     *  _init()throws an exception. For instance a call to setToken() may
     *  throw an IllegalActionException if the token type is not
     *  compatible with specified constraints, or if you are attempting
@@ -920,7 +920,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj. 
+     *  @return The decorated attributes for the target NamedObj.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with

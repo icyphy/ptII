@@ -1,5 +1,5 @@
 /*** createEvent($type, $convertedValue, $sinkFireName, $sinkPortName,
- $depth, $relativeDeadlineSecs, $relativeDeadlineNsecs, 
+ $depth, $relativeDeadlineSecs, $relativeDeadlineNsecs,
  $offsetTimeSecs, $offsetTimeNsecs) ***/
 {
 Time dummyTime;

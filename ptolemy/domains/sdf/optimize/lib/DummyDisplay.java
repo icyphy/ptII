@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 A DummyDisplay is a simple sink implementing the BufferingProfile interface.
 It is used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
@@ -58,7 +58,7 @@ public class DummyDisplay extends Sink implements BufferingProfile {
 
     /**
      * Create an instance of a testing actor to mimic a display sink actor.
-     * 
+     *
      * @param container The container.
      * @param name The name of this actor.
      * @exception IllegalActionException If the entity cannot be contained
@@ -72,7 +72,7 @@ public class DummyDisplay extends Sink implements BufferingProfile {
     }
 
     /**
-     *  Iterates the dummy display actor. 
+     *  Iterates the dummy display actor.
      *  @param iterationCount The number of iterations to perform.
      *  @param fireExclusive Indicates whether firing is exclusive.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.

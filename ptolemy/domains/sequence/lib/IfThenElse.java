@@ -39,16 +39,16 @@ import ptolemy.kernel.util.StringAttribute;
 //// IfThenElse
 
 /**
- <p>A type polymorphic If-Then-Else actor. 
+ <p>A type polymorphic If-Then-Else actor.
  In an iteration, if an input token is available at the <i>If</i> input,
  that token is read.
  The <i>Then</i> output is set to true, if then <i>If</i> input is true.
  The <i>Else</i> output is set to true, if then <i>If</i> input is false.
- The <i>If</i> port may only receive Tokens of type Boolean. The output 
+ The <i>If</i> port may only receive Tokens of type Boolean. The output
  ports are also of type boolean.</p>
- 
+
  IfThenElse is a ControlActor, meaning that it keeps a list of
- enabled output ports.  
+ enabled output ports.
  @author Elizabeth Latronico (Bosch)
  @version $Id$
  @since Ptolemy II 8.0
@@ -100,7 +100,7 @@ public class IfThenElse extends ControlActor {
                 "_cardinal");
         elseCardinal.setExpression("SOUTH");
 
-        // set type constraints for ports        
+        // set type constraints for ports
         ifInput.setTypeEquals(BaseType.BOOLEAN);
         thenOutput.setTypeEquals(BaseType.BOOLEAN);
         elseOutput.setTypeEquals(BaseType.BOOLEAN);
@@ -124,9 +124,9 @@ public class IfThenElse extends ControlActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read a token from the input port.  
-     *  If input = true: Then output = true, Else output = false 
-     *  If input = false: Then output = false, Else output = true 
+    /** Read a token from the input port.
+     *  If input = true: Then output = true, Else output = false
+     *  If input = false: Then output = false, Else output = true
      *
      *  @exception IllegalActionException If there is no director.
      */

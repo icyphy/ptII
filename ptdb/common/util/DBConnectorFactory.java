@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -94,7 +94,7 @@ public class DBConnectorFactory {
     /**
      * create a setup parameter object that contains the database setup parameters
      * and return that setup parameter object to the caller.
-     * 
+     *
      * @return The setup parameter object.
      */
     public static SetupParameters getSetupParameters() {
@@ -139,7 +139,7 @@ public class DBConnectorFactory {
      * the executeQuery is called on the connection. A synchronous connection
      * supports both execution of queries with transaction and without
      * transactions.
-     * 
+     *
      * @param dbConnectionParameters Connection parameters for creating the
      * connection.
      * @return DBConnection To execute queries as and when the execute query
@@ -462,7 +462,7 @@ public class DBConnectorFactory {
         try {
         loadDBProperties();
         } catch(ExceptionInInitializerError e) {
- 
+
         }
 
     }

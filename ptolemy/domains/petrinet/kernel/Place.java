@@ -24,7 +24,7 @@
 ***************************************************************
 
  PetriNet Director Modifications
- 
+
  Copyright (c) 2010 The University of Florida
 
  All rights reserved.
@@ -46,7 +46,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
  */
@@ -67,12 +67,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Place
 
 /**
- A Petri net place compatible with the PetriNetDirector. A Petri net 
+ A Petri net place compatible with the PetriNetDirector. A Petri net
  place is a basic component of the Petri Net model. Another basic
  component is the Transition. A place is connected to transitions. It
- contains an integer as the marking of the place, which represents 
- the number of tokens in the place. The operation of the Petri net is 
- controlled by the marking and the weights of arcs connecting places 
+ contains an integer as the marking of the place, which represents
+ the number of tokens in the place. The operation of the Petri net is
+ controlled by the marking and the weights of arcs connecting places
  and transitions.
 
  The methods here are used to manipulate the integer marking.
@@ -80,7 +80,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  is ready or not.
 
  @author  Yuke Wang and Edward A. Lee, modified by Zach Ezzell
- @version $Id$ 
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
@@ -116,18 +116,18 @@ public class Place extends Transformer implements Comparator {
     }
 
     /** The method compares two objects that should be Places.
-     * 
+     *
      * @param o1
      *          The first place.
-     *          
-     * @param o2 
+     *
+     * @param o2
      *          The second place.
-     *          
-     * @return 
-     *          A negative integer, zero, or a positive integer as 
-     *          the first argument is less than, equal to, or greater 
+     *
+     * @return
+     *          A negative integer, zero, or a positive integer as
+     *          the first argument is less than, equal to, or greater
      *          than the second.
-     * 
+     *
      * @exception ClassCastException If either object cannot be casted
      *   in to a Place.
      */
@@ -136,7 +136,7 @@ public class Place extends Transformer implements Comparator {
         Place p2 = (Place) o2;
         return p1.getName().compareToIgnoreCase(p2.getName());
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         ports and parameters              ////
 
@@ -152,7 +152,7 @@ public class Place extends Transformer implements Comparator {
     public void decreaseMarking(int i) {
         _currentMarking = _currentMarking - i;
     }
-    
+
     /** Decrease the _temporaryMarking by i.
      *  @param i the number to be decreased for the TemporaryMarking
      *   in the place.

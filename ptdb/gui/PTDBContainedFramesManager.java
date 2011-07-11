@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -31,12 +31,12 @@ package ptdb.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PTDBContainedFramesManager
 
 /**
- * The manager to manage the contained frames inside the PTDB window frames. 
- * 
+ * The manager to manage the contained frames inside the PTDB window frames.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -46,14 +46,14 @@ import java.util.List;
  */
 public class PTDBContainedFramesManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    public methods                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Add a new frame to the contained frame list in this manager. 
-     * 
-     * @param containedFrame The frame to be added into this frame as the 
-     * contained frame. 
+     * Add a new frame to the contained frame list in this manager.
+     *
+     * @param containedFrame The frame to be added into this frame as the
+     * contained frame.
      */
     public void addContainedFrame(PTDBBasicFrame containedFrame) {
 
@@ -65,7 +65,7 @@ public class PTDBContainedFramesManager {
     }
 
     /**
-     * Close all the contained frames in this manager. 
+     * Close all the contained frames in this manager.
      */
     public void closeContainedFrames() {
 
@@ -82,15 +82,15 @@ public class PTDBContainedFramesManager {
 
     /**
      * Get the list of frames contained in this frame.
-     * 
-     * @return The list of contained frames in this frame. 
+     *
+     * @return The list of contained frames in this frame.
      */
     public List<PTDBBasicFrame> getContainedFrames() {
         return _containedFrames;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private List<PTDBBasicFrame> _containedFrames;
 

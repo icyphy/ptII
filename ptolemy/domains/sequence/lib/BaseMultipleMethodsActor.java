@@ -22,7 +22,7 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY 
+ COPYRIGHTENDKEY
  */
 
 package ptolemy.domains.sequence.lib;
@@ -40,11 +40,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// BaseMultipleMethodsActor
 
 /** Base class for sequenced actors with multiple fire methods.
- * 
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -56,34 +56,34 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
 
     /** Create a new instance of an ASCETClassActor with the given
      *  name and container.
-     * 
+     *
      *  @param container The model in which the new actor will be contained.
      *  @param name The name of the new actor
-     *  @throws IllegalActionException If the new actor cannot be created.
-     *  @throws NameDuplicationException If there is already a NamedObj with
+     *  @exception IllegalActionException If the new actor cannot be created.
+     *  @exception NameDuplicationException If there is already a NamedObj with
      *   the same name in the container model.
      */
     public BaseMultipleMethodsActor(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Remove the inherited SetVariable input and output ports.
         // They are not used in the Srv_Debounce actor.
         input.setContainer(null);
         output.setContainer(null);
-        
+
         // set name to invisible
         //StringAttribute hideName = new StringAttribute(this, "_hideName");
         //hideName.setExpression("true");
-        
+
         _methodList = new LinkedList<String>();
         _fireMethodNameToInputPortList = new Hashtable<String, List<IOPort>>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
-    
+    ////                         public methods                    ////
+
     /** Return the name of the default fire method for this actor.
-     * 
+     *
      *  @return The string name of the default fire method for the actor.
      *   If the actor does not have multiple fire methods, return null.
      */
@@ -94,10 +94,10 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
             return null;
         }
     }
-    
+
     /** Return the list of strings that represent the names of
      *  all the fire methods the actor has.
-     * 
+     *
      *  @return The list of fire method names strings.
      */
     public List<String> getFireMethodNames() {
@@ -107,26 +107,26 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
     /** Return the list of input ports associated with the given method name.
      *  If the method has no input ports, return an empty list. If the actor
      *  does not have multiple methods, return null.
-     * 
+     *
      *  @param methodName The specified method name.
      *  @return The list of input ports associated with the method name.
      */
     public List<IOPort> getMethodInputPortList(String methodName) {
         List<IOPort> result = null;
-        
+
         if (numFireMethods() > 1) {
             result = _fireMethodNameToInputPortList.get(methodName);
             if (result == null) {
                 result = new LinkedList<IOPort>();
             }
-        }        
+        }
         return result;
     }
 
     /** Return the output port associated with the given method name, if there is one.
      *  If the method does not have any outputs, or the actor does not have multiple
      *  fire methods, return null
-     * 
+     *
      *  @param methodName The specified name of the method.
      *  @return The output port associated with this method, or null is there is none.
      */
@@ -140,13 +140,13 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
                         return (IOPort) outputPort;
                     }
                 }
-            }            
+            }
             return null;
         } else {
             return null;
         }
     }
-    
+
     /** Return the number of fire methods the actor has.
      *  @return the number of fire methods the actor has, which should be
      *   at least one.
@@ -154,11 +154,11 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
     public int numFireMethods() {
         return _methodList.size();
     }
-    
+
     /** Set the fire method to the method that matches the specified
      *  string name.
      *  @param methodName The name of the method to be used.
-     *  @throws IllegalActionException If the specified fire method cannot be found
+     *  @exception IllegalActionException If the specified fire method cannot be found
      *   in the actor.
      */
     public void setFireMethod(String methodName) throws IllegalActionException {
@@ -170,29 +170,29 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
             _fireMethodName = methodName;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
-    
+    ////                         protected methods                 ////
+
     /** Add a fire method for this actor with the specified name.
      *  A fire method can optionally be associated with one output port and
      *  a list of input ports.  No two methods can be associated with the same
      *  input port or output port. And no two methods can have the same name.
-     *  
+     *
      *  @param methodName The name of the fire method to be added.
      *  @param outputPort The output port associated with this method, or null if
      *   there is none.
      *  @param inputPorts The list of input ports associated with this method, or null
      *   if there are none.
-     *  @throws IllegalActionException If a the method specifies an output port or input
+     *  @exception IllegalActionException If a the method specifies an output port or input
      *   ports already associated with another fire method.
-     *  @throws NameDuplicationException If there is already another method with the same
+     *  @exception NameDuplicationException If there is already another method with the same
      *   name specified for this actor.
      */
     protected void _addFireMethod(String methodName,
             IOPort outputPort, List<IOPort> inputPorts)
                 throws IllegalActionException, NameDuplicationException {
-        
+
         if (methodName == null) {
             throw new IllegalActionException(this, "Cannot have a null method name.");
         } else if (_methodList.contains(methodName)) {
@@ -223,25 +223,25 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
                                     " is already used by another method in this actor.");
                         }
                     }
-                }                
+                }
                 _fireMethodNameToInputPortList.put(methodName, inputPorts);
-            }            
-            _methodList.add(methodName);            
-        }        
+            }
+            _methodList.add(methodName);
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The number for the default fire method. */
     protected String _defaultFireMethodName = null;
-    
+
     /** The list of method names for the actor. */
     protected List<String> _methodList = null;
-    
+
     /** The string name of the fire method currently being used. */
     protected String _fireMethodName = null;
-    
+
     /** The hashtable that maps fire method names to their list of input ports. */
     protected Hashtable<String, List<IOPort>> _fireMethodNameToInputPortList = null;
 }

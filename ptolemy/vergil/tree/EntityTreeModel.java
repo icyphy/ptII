@@ -85,7 +85,7 @@ public class EntityTreeModel implements TreeModel {
         // This attribute keeps holding some references, so that
         // instances of EntityTreeModel and its sub-classes can not be
         // GCed when a window is open and closed.
-        // 
+        //
         // When it and its sub-classes are used in Kepler,
         // addTreeModelListener() and removeTreeModelListener()
         // functions of EntityTreeModel class are called implicitly.
@@ -186,23 +186,23 @@ public class EntityTreeModel implements TreeModel {
      *  @see #addTreeModelListener(TreeModelListener)
      */
     public void removeTreeModelListener(TreeModelListener listener) {
-    	int i = 0;
-    	int size = _listenerList.size();
-    	while (i < size){
-    		Object _listener = ((WeakReference)_listenerList.get(i)).get();
-    		if (_listener == null)
-    		{
-    			_listenerList.remove(i);
-    			size--;
-    		}
-    		else {
-    			if (_listener == listener){
-    				_listenerList.remove(i);
-    				size--;
-    			}
-    			i++;
-    		}
-    	}
+            int i = 0;
+            int size = _listenerList.size();
+            while (i < size) {
+                    Object _listener = ((WeakReference)_listenerList.get(i)).get();
+                    if (_listener == null)
+                    {
+                            _listenerList.remove(i);
+                            size--;
+                    }
+                    else {
+                            if (_listener == listener) {
+                                    _listenerList.remove(i);
+                                    size--;
+                            }
+                            i++;
+                    }
+            }
     }
 
     /** Notify listeners that the object at the given path has changed.
@@ -214,10 +214,10 @@ public class EntityTreeModel implements TreeModel {
         TreeModelEvent event = new TreeModelEvent(this, path);
 
         while (listeners.hasNext()) {
-        	Object listener = ((WeakReference)listeners.next()).get();
-        	if (listener != null) {
-		    ((TreeModelListener)listener).treeStructureChanged(event);
-		}
+                Object listener = ((WeakReference)listeners.next()).get();
+                if (listener != null) {
+                    ((TreeModelListener)listener).treeStructureChanged(event);
+                }
         }
     }
 

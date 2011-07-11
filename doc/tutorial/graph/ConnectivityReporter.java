@@ -31,7 +31,7 @@ import ptolemy.util.MessageHandler;
  *  that Vergil shows an icon for the ConnectivityReporter attribute.
  *  It specifies the location on the canvas where that icon
  *  should be placed.
- *  
+ *
  * @author Edward A. Lee
  * @version $Id$
  */
@@ -45,7 +45,7 @@ public class ConnectivityReporter extends Attribute {
     public ConnectivityReporter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Create an EditorFactory to handle double clicks.
         new DoubleClickHandler(this, "Calculate");
     }
@@ -70,15 +70,15 @@ public class ConnectivityReporter extends Attribute {
          */
         public void createEditor(NamedObj object, Frame parent) {
             List<Entity> entities = ((CompositeEntity)ConnectivityReporter.this.getContainer()).entityList();
-            for(Entity entity : entities) {
+            for (Entity entity : entities) {
                 List<IOPort> ports = entity.portList();
                 for (IOPort port : ports) {
                     if (port.isOutput()) {
                         List<IOPort> remotePorts = port.connectedPortList();
                         for (IOPort remotePort : remotePorts) {
-                            MessageHandler.message(entity.getName() 
-                                    + " is connected to " 
-                                    + remotePort.getContainer().getName());                            
+                            MessageHandler.message(entity.getName()
+                                    + " is connected to "
+                                    + remotePort.getContainer().getName());
                         }
                     }
                 }

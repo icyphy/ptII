@@ -56,7 +56,7 @@ import ptolemy.util.StringUtilities;
 
 /**
  * Class for modular code generator.
- * 
+ *
  * @author Dai Bui, Bert Rodiers
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -68,7 +68,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Create a new instance of the Modular java code generator.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -93,7 +93,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Create the profile for the model (at this level).
-     * 
+     *
      * @exception IllegalActionException
      *                when the profile can't be generated.
      */
@@ -280,7 +280,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Generate code. This is the main entry point.
-     * 
+     *
      * @param code
      *            The code buffer into which to generate the code.
      * @return The return value of the last subprocess that was executed. or -1
@@ -339,7 +339,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Generate the main entry point.
-     * 
+     *
      * @return Return the definition of the main entry point for a program. In
      *         C, this would be defining main().
      * @exception IllegalActionException
@@ -361,12 +361,12 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             + "model.run();" + _eol + "}" + _eol
                             + "public void run() throws Exception {" + _eol);
         } else {
-            if((getContainer() instanceof ModularCodeGenTypedCompositeActor) &&
+            if ((getContainer() instanceof ModularCodeGenTypedCompositeActor) &&
                     ((Actor) getContainer()).outputPortList().size() > 0)
                 mainEntryCode.append(_eol + _eol + "public Object[] fire (boolean export, " + _eol);
             else
                 mainEntryCode.append(_eol + _eol + "public Object[] fire (" + _eol);
-            
+
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             boolean addComma = false;
@@ -402,13 +402,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             if (addComma) {
                                 mainEntryCode.append(", ");
                             }
-                            
+
                             String type = codeGenType(outputPort.getType());
-                            
+
                             if (!type.equals("Token") && !isPrimitive(type)) {
                                 type = "Token";
                             }
-                            
+
                             for (int i = 0; i < outputPort.getWidth(); i++) {
                                 if (DFUtilities.getTokenConsumptionRate(outputPort) > 1) {
                                     mainEntryCode.append(type + "[] " + outputPort.getName() + "_" + i);
@@ -429,7 +429,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Generate the main exit point.
-     * 
+     *
      * @return Return a string that declares the end of the main() function.
      * @exception IllegalActionException
      *                Not thrown in this base class.

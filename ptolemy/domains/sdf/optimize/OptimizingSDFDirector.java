@@ -1,4 +1,4 @@
-/* Director for the synchronous dataflow model of computation which 
+/* Director for the synchronous dataflow model of computation which
  finds an optimized schedule.
 
  Copyright (c) 1997-2010 The Regents of the University of California.
@@ -55,12 +55,12 @@ An OptimizingSDFDirector is the class that controls execution of actors under th
 SDF domain, while using an opimal schedule.  For this it uses the OptimizingSDFScheduler
 class.
 <p>
-See {@link ptolemy.domains.sdf.kernel.SDFDirector}, 
-{@link ptolemy.domains.sdf.kernel.SDFScheduler} and 
+See {@link ptolemy.domains.sdf.kernel.SDFDirector},
+{@link ptolemy.domains.sdf.kernel.SDFScheduler} and
 {@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} for more information.
 </p><p>
-The <i>optimizationCriterion</i> parameter of this director 
-selects the optimization criterion. 
+The <i>optimizationCriterion</i> parameter of this director
+selects the optimization criterion.
 </p>
 @see ptolemy.domains.sdf.kernel.SDFScheduler
 @see ptolemy.domains.sdf.kernel.SDFDirector
@@ -75,26 +75,26 @@ selects the optimization criterion.
 
 public class OptimizingSDFDirector extends SDFDirector {
 
-    /** 
+    /**
      * Enumeration type to define the supported optimization criteria.
      */
     public enum OptimizationCriteria {
         /**
          * Optimize for minimum number of frame buffers.
          */
-        BUFFERS, 
+        BUFFERS,
         /**
          * Optimize execution time (estimate).
          */
         EXECUTIONTIME
     }
-    
-    /** 
+
+    /**
      * Parameter defining the optimization criterion.
      */
     public Parameter optimizationCriterion;
-    
-    /** 
+
+    /**
      * Construct on OptimizingSDFDirector in the given container with the given name.
      * The container argument must not be null, or a
      * NullPointerException will be thrown.
@@ -114,11 +114,11 @@ public class OptimizingSDFDirector extends SDFDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // FIXME: super(container, name) above calls SDFDirector._init in which the scheduler is set to an
-        // SDFScheduler, but we need an OptimizingSDFScheduler (set in OptimizingSDFDirector._init) 
+        // SDFScheduler, but we need an OptimizingSDFScheduler (set in OptimizingSDFDirector._init)
         // before setting the value of the OptimizationCriterion parameter
-        // Perhaps getting the preferred Scheduler type could be factored out, but I don't want to 
-        // touch the SDFDirector code. 
-        
+        // Perhaps getting the preferred Scheduler type could be factored out, but I don't want to
+        // touch the SDFDirector code.
+
         // initialize the parameter
         optimizationCriterion = new Parameter(this, "OptimizationCriterion");
         optimizationCriterion.setTypeEquals(BaseType.STRING);
@@ -127,15 +127,15 @@ public class OptimizingSDFDirector extends SDFDirector {
 
         // initialize
         _init();
-        
+
     }
-    
+
     /** Calculate the current schedule, if necessary, and iterate the
      *  contained actors in the order given by the schedule.
      *  method copied from super class SDFDirector. Modifies only the firing
      *  by firing the BufferingProfile if the interface is defined.
      *  Factoring out difference might be a good idea.
-     *  
+     *
      *  @exception IllegalActionException If any actor executed by this
      *   actor return false in prefire.
      *  @exception InvalidStateException If this director does not have a
@@ -169,13 +169,13 @@ public class OptimizingSDFDirector extends SDFDirector {
 
             int returnValue;
             // check if the actor has the interface BufferingProfile
-            if(actor instanceof BufferingProfile){
+            if (actor instanceof BufferingProfile) {
                 BufferingProfile bp = (BufferingProfile) actor;
                 // Then the firing must be a BufferProfileFiring
                 BufferingProfileFiring f = (BufferingProfileFiring) firing;
                 returnValue = bp.iterate(iterationCount, f.fireExclusive);
             } else {
-                returnValue = actor.iterate(iterationCount);            
+                returnValue = actor.iterate(iterationCount);
             }
 
             if (returnValue == STOP_ITERATING) {
@@ -195,8 +195,8 @@ public class OptimizingSDFDirector extends SDFDirector {
                         iterationCount));
             }
         }
-    }    
-    
+    }
+
     /** React to a change in an attribute. If the changed attribute
      *  matches a parameter of the director, then the corresponding
      *  local copy of the parameter value will be updated.
@@ -211,12 +211,12 @@ public class OptimizingSDFDirector extends SDFDirector {
             _setOptimizationCriterionValue();
         }
         super.attributeChanged(attribute);
-    }    
-    
-    
+    }
+
+
 ///////////////////////////////////////////////////////////////////////////
-////                   private fields                                  ////    
-    
+////                   private fields                                  ////
+
     /** Initialize the object.   In this case, we give the OptimizingSDFDirector a
      *  default scheduler of the class OptimizingSDFScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
@@ -227,7 +227,7 @@ public class OptimizingSDFDirector extends SDFDirector {
         // set the schedule to an instance of OptimizingSDFScheduler
         OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this, uniqueName("OptimizingSDFScheduler"), _optimizationCriterionValue);
 
-        // set the default value of the parameter 
+        // set the default value of the parameter
         optimizationCriterion.setExpression("\"Buffers\"");
 
         // if necessary, copy the string parameter to the enumerated value
@@ -244,24 +244,24 @@ public class OptimizingSDFDirector extends SDFDirector {
     /**
      * Set the _optimizationCriterionValue to the proper value corresponding to the
      * OptimizationCriterion string parameter
-     * @exception IllegalActionException if the criterion used is unknown 
+     * @exception IllegalActionException if the criterion used is unknown
      */
     private void _setOptimizationCriterionValue() throws IllegalActionException {
         OptimizingSDFScheduler os = (OptimizingSDFScheduler) getScheduler();
-        if(optimizationCriterion.getValueAsString().equals("\"Buffers\"")){
+        if (optimizationCriterion.getValueAsString().equals("\"Buffers\"")) {
             _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
-        } else if (optimizationCriterion.getValueAsString().equals("\"Execution Time\"")){
+        } else if (optimizationCriterion.getValueAsString().equals("\"Execution Time\"")) {
             _optimizationCriterionValue = OptimizationCriteria.EXECUTIONTIME;
         } else {
             throw new IllegalActionException("Unknown optimization criterion");
         }
-        if(os != null){
+        if (os != null) {
             os.optimizationCriterion = _optimizationCriterionValue;
         }
         // invalidate the schedule, because the criterion has changed
         invalidateSchedule();
     }
-    
+
     private OptimizationCriteria _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
 
 }

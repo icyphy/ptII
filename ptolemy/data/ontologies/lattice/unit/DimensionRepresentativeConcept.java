@@ -65,7 +65,7 @@ public abstract class DimensionRepresentativeConcept extends
 
     /** Create a new DimensionRepresentativeConcept with the specified name and
      *  ontology.
-     *  
+     *
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
      *  @exception NameDuplicationException If the ontology already contains a
@@ -79,21 +79,21 @@ public abstract class DimensionRepresentativeConcept extends
         unitInfoRecords.setTypeEquals(new ArrayType(BaseType.RECORD));
         _unitList = new ArrayList<UnitConcept>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The array of information records for the units for this dimension. */
     public Parameter unitInfoRecords;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in the unitInfoRecords parameter. Update the array
      *  of user defined unit specification record tokens based on the value
-     *  of the unitInfoRecords parameter. 
+     *  of the unitInfoRecords parameter.
      *  @param attribute The attribute that has changed.
-     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *  @exception IllegalActionException Thrown if there is a problem getting the
      *   token from the unitInfoRecords parameter.
      */
     public void attributeChanged(Attribute attribute)
@@ -113,12 +113,12 @@ public abstract class DimensionRepresentativeConcept extends
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return a list of all the possible units contained in this
      *  dimension representative concept.
      *  @return The list of all UnitConcepts that have this
      *   DimensionRepresentativeConcept as a representative.
-     *  @throws IllegalActionException Thrown if there is a problem getting any
+     *  @exception IllegalActionException Thrown if there is a problem getting any
      *   unit concepts from the ontology.
      */
     public List<? extends UnitConcept> getAllUnits() throws IllegalActionException {
@@ -134,7 +134,7 @@ public abstract class DimensionRepresentativeConcept extends
                     if (unitConcept instanceof DerivedUnitConcept &&
                             this.equals(((DerivedUnitConcept) unitConcept).getDimension())) {
                         _unitList.add((DerivedUnitConcept) unitConcept);
-                    }                    
+                    }
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Error getting unit concepts.");
@@ -143,22 +143,22 @@ public abstract class DimensionRepresentativeConcept extends
         }
         return _unitList;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return a UnitConcept instance from the given concept string
      *  representation. The string must represent one of the units specified
      *  for this physical dimension.
      *  @param infiniteConceptString The string that represents the unit concept
      *   to be returned.
      *  @return The BaseUnitConcept represented by the given string.
-     *  @throws IllegalActionException Thrown if there is a problem creating
+     *  @exception IllegalActionException Thrown if there is a problem creating
      *   the unit concept.
      */
     protected abstract UnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException;
-    
+
     /** Return the unit info record token with the given Name field. First
      *  look in the array of user defined record tokens, and if it is not
      *  found there then look in the list of pre-specified unit
@@ -166,14 +166,14 @@ public abstract class DimensionRepresentativeConcept extends
      *  @param unitName The value of the Name field of the unit record token to
      *   be found.
      *  @return The unit info RecordToken with the given Name field.
-     *  @throws IllegalActionException Thrown if the unit cannot be found, or
+     *  @exception IllegalActionException Thrown if the unit cannot be found, or
      *   if the unit specification parameter is invalid.
      */
     protected RecordToken _findUnitRecordByName(String unitName)
             throws IllegalActionException {
         RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(unitName);
         if (userDefinedRecord == null) {
-            
+
             // Find the given unitName in the list of pre-specified parameters.
             List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
             for (UnitConversionInfo unitParameter : unitParameterList) {
@@ -198,12 +198,12 @@ public abstract class DimensionRepresentativeConcept extends
             return userDefinedRecord;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the user defined unit record with the given Name field that was
-     *  specified by the user in the unitInfoRecords parameter. 
+     *  specified by the user in the unitInfoRecords parameter.
      *  @param unitName The value of the Name field of the unit record token to
      *   be found.
      *  @return The unit info RecordToken with the given Name field, or null if
@@ -223,16 +223,16 @@ public abstract class DimensionRepresentativeConcept extends
             return null;
         }
     }
-    
+
     /** Return the list of user defined unit concepts within this
      *  DimensionRepresentativeConcept
      *  @return The list of user defined unit concepts.
-     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *  @exception IllegalActionException Thrown if there is a problem getting the
      *   list of units.
      */
     private List<UnitConcept> _getAllUserDefinedUnits() throws IllegalActionException {
         List<UnitConcept> result = new ArrayList<UnitConcept>();
-        
+
         // The array of user defined unit records is null, return an empty list.
         if (_userDefinedUnitRecords == null) {
             return result;
@@ -247,22 +247,22 @@ public abstract class DimensionRepresentativeConcept extends
                     }
                 }
             }
-            
+
             return result;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The array of record tokens specified by the user in the unitInfoRecords
      *  parameter.
      */
     protected RecordToken[] _userDefinedUnitRecords = null;
-    
+
     /** The list of valid units for this dimension representative concept. */
     private List<UnitConcept> _unitList;
-    
+
     /** The last workspace version at which the cached list of unit concepts
      *  was valid.
      */

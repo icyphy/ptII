@@ -1,5 +1,5 @@
 /* Stores location information for Android specific elements.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.Settable;
 //// AndroidLocation
 
 /** Stores location information for Android specific elements.
- * 
+ *
  *  @author Peter Foldes
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -54,7 +54,7 @@ public class AndroidLocation extends Parameter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Get the relative x position of the top-left corner. <br/>
      *  Special constants: <br/>
@@ -104,7 +104,7 @@ public class AndroidLocation extends Parameter {
 
     /** Validate the location. The location should have four parameters,
      *  the top left position (x and y), the width, and the height.
-     *  
+     *
      *  @exception IllegalActionException If the location is not valid.
      */
     public void validateLocation() throws IllegalActionException {

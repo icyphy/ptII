@@ -76,7 +76,7 @@ public class IntermediateReceiver extends AbstractReceiver {
         quantityManager.reset();
         _receiver.reset();
     }
-    
+
     /** Delegate to the internal receiver and return whatever it returns.
      *  @return A list of instances of Token.
      *  @exception IllegalActionException Always thrown in this base class.
@@ -86,7 +86,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
-     *  @throws NoTokenException If the delegated receiver throws it.
+     *  @exception NoTokenException If the delegated receiver throws it.
      */
     public Token get() throws NoTokenException {
         return _receiver.get();
@@ -136,7 +136,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     public void put(Token token) throws NoRoomException, IllegalActionException {
         quantityManager.sendToken(this, _receiver, token);
     }
-    
+
     /** Set the container of the internal receiver.
      *  @param port The container.
      *  @exception IllegalActionException If the container is not of
@@ -150,7 +150,7 @@ public class IntermediateReceiver extends AbstractReceiver {
 
     /** The source actor that sent a token to this receiver. */
     public Actor source;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -55,56 +55,56 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * JUnit test for integration testing of the Save feature.
- * 
- * 
- * 
+ *
+ *
+ *
  * @author Lyle Holsinger
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
- * 
+ *
  */
 
 public class TestSaveRequirementsIntegration {
 
     @Test
     public void testNullModel() throws Exception {
-        
+
         XMLDBModel dbModel = null;
-        
+
         boolean exceptionThrown = false;
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
-        try{
+        try {
 
             saveModelManager.save(dbModel);
-            
-        } catch (IllegalArgumentException e){
+
+        } catch (IllegalArgumentException e) {
 
             exceptionThrown = true;
-            
+
         }
-        
+
 
         assertTrue(exceptionThrown);
-        
+
     }
-    
+
     @Test
     public void testSavingNewModel() throws Exception {
-        
+
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
 
         PtolemyEffigy effigy = null;
-        
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -130,36 +130,36 @@ public class TestSaveRequirementsIntegration {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         String id = saveModelManager.save(dbModel);
         assertNotNull(id);
-        
+
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
-        
+
         boolean equal = effigy.getModel().getName().equals(dbModel.getModelName());
-        
+
         assertTrue(equal);
-        
+
         removeModel(new XMLDBModel(dbModel.getModelName()));
-        
+
     }
-    
-    
+
+
     @Test
     public void testUpdatingModel() throws Exception {
-        
+
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
 
         PtolemyEffigy effigy = null;
-        
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -185,42 +185,42 @@ public class TestSaveRequirementsIntegration {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         saveModelManager.save(dbModel);
 
-        // We know that the model is already in the DB, 
+        // We know that the model is already in the DB,
         // so test overwriting it.
         dbModel.setIsNew(false);
 
         String id = saveModelManager.save(dbModel);
         assertNotNull(id);
-        
+
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
-        
+
         boolean equal = effigy.getModel().getName().equals(dbModel.getModelName());
-        
+
         assertTrue(equal);
-        
+
 
         removeModel(new XMLDBModel(dbModel.getModelName()));
-        
+
     }
-    
+
     @Test
     public void testExceptions() throws Exception {
-        
+
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
 
         PtolemyEffigy effigy = null;
-        
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -246,61 +246,61 @@ public class TestSaveRequirementsIntegration {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         boolean exceptionThrown = false;
         String id = null;
-        
-        try{
-            
+
+        try {
+
             id = saveModelManager.save(dbModel);
-        
-        } catch(DBExecutionException e){
-            
+
+        } catch (DBExecutionException e) {
+
             exceptionThrown = true;
-            
+
         }
-        
+
         assertTrue(exceptionThrown);
         assertTrue(id == null);
-       
-        exceptionThrown = false; 
+
+        exceptionThrown = false;
         id = null;
-        
+
         dbModel.setIsNew(true);
         id = saveModelManager.save(dbModel);
         assertNotNull(id);
         id = null;
-        
-        try{
-            
+
+        try {
+
             id = saveModelManager.save(dbModel);
-        
-        } catch(ModelAlreadyExistException e){
-            
+
+        } catch (ModelAlreadyExistException e) {
+
             exceptionThrown = true;
-            
+
         }
-        
+
         assertTrue(exceptionThrown);
         assertTrue(id == null);
-        
+
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
-        
+
         boolean equal = (effigy != null);
-        
+
         assertTrue(equal);
-        
+
 
         removeModel(new XMLDBModel(dbModel.getModelName()));
-        
+
     }
-    
+
     private void removeModel(XMLDBModel dbModel) throws Exception{
-        
+
         DBConnection dbConnection = null;
-        
+
         try {
 
             ArrayList<XMLDBModel> modelList = new ArrayList();
@@ -309,7 +309,7 @@ public class TestSaveRequirementsIntegration {
             RemoveModelsTask removeModelsTask = new RemoveModelsTask(modelList);
             dbConnection.executeRemoveModelsTask(removeModelsTask);
             dbConnection.commitConnection();
-            
+
         } catch (DBExecutionException e) {
 
             if (dbConnection != null) {
@@ -318,7 +318,7 @@ public class TestSaveRequirementsIntegration {
             }
 
             throw e;
-            
+
         } finally {
 
             if (dbConnection != null) {
@@ -327,9 +327,9 @@ public class TestSaveRequirementsIntegration {
 
             }
         }
-        
+
     }
-    
+
     @Test
     public void testRenameModel() {
         SaveModelManager saveModelManager = new SaveModelManager();
@@ -370,16 +370,16 @@ public class TestSaveRequirementsIntegration {
         } catch (Exception e) {
             fail("Illegal argument exception not thrown - " + e.getMessage());
         }
-        
+
         try {
             saveModelManager.renameModel(originalModel, "TestRenameModel");
             try {
                 DBModelFetcher.load("Adder");
                 fail("Test failed. Model(Adder) still in the database");
             } catch (DBExecutionException e) {
-                
+
             }
-            
+
             try {
                 DBModelFetcher.load("TestRenameModel");
             } catch (DBExecutionException e) {
@@ -387,9 +387,9 @@ public class TestSaveRequirementsIntegration {
             }
         } catch (Exception e) {
             fail("Failed with exception - " + e.getMessage());
-        }  
+        }
     }
-    
+
     @Test
     public void testResetModels() {
         SaveModelManager saveModelManager = new SaveModelManager();

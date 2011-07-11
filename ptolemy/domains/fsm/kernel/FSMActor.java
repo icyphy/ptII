@@ -1899,7 +1899,7 @@ ExplicitChangeContext {
          "cannot create default tokenHistorySize parameter:\n" + e);
          }
          */
-      
+
         //mass.setTypeEquals(BaseType.STRING);
 
     }

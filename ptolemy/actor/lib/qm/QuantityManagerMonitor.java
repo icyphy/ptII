@@ -60,7 +60,7 @@ import ptolemy.plot.Plot;
 /** This monitor shows when quantity managers in the model receive messages
  *  and send messages in a 2D plot. The x-Axis is the time, the y-Axis shows how
  *  many messages are currently processed by the quantity manager.
- * 
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -70,7 +70,7 @@ import ptolemy.plot.Plot;
 public class QuantityManagerMonitor extends TypedAtomicActor implements
         QuantityManagerListener {
 
-    /** Construct a factory with the specified container and name. 
+    /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
      *  @exception IllegalActionException
@@ -110,14 +110,14 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
 
     /** The event is displayed.
      *  @param qm The quantity manager that sent the event.
-     *  @param source The source actor that caused the event in the 
-     *      quantity manager. 
-     *  @param messageId The ID of the message that caused the event in 
+     *  @param source The source actor that caused the event in the
+     *      quantity manager.
+     *  @param messageId The ID of the message that caused the event in
      *      the quantity manager.
      *  @param messageCnt The amount of messages currently being processed
      *      by the quantity manager.
      *  @param time The time when the event happened.
-     *  @param event The type of the event. e.g. message received, message sent, ... 
+     *  @param event The type of the event. e.g. message received, message sent, ...
      */
     public void event(final QuantityManager qm, Actor source, int messageId,
             int messageCnt, double time, EventType event) {
@@ -125,7 +125,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         if (plot == null) {
             return;
         }
-        
+
         double x = time;
         double y = (double) (((double) _quantityManagers.indexOf(qm)));
         int actorDataset = (_quantityManagers.indexOf(qm));
@@ -141,9 +141,9 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         plot.fillPlot();
         plot.repaint();
     }
-    
+
     Color[] colors;
-    
+
     /** Initialize the plot and the legend with the list of quantity managers used
      *  in this model.
      */
@@ -172,7 +172,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
                 plot.addPoint(idx, 0.0, idx, false);
                 colors[idx] = ((MonitoredQuantityManager)qm).color.asColor();
             }
-            
+
             plot.doLayout();
         }
         // FIXME: This affects all plots in the model:
@@ -181,7 +181,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     //                           private variables                   //
-    
+
     /** List of quantity managers used in the model. */
     private List<QuantityManager> _quantityManagers;
 
@@ -195,7 +195,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         // This class needs to be public for shallow code generation.
         /**
          * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
-         * 
+         *
          * @param container
          *                The container.
          * @param name
@@ -215,7 +215,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         /**
          * Create an editor for configuring the specified object with the
          * specified parent window.
-         * 
+         *
          * @param object
          *                The object to configure.
          * @param parent

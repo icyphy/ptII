@@ -44,15 +44,15 @@ import ptolemy.kernel.util.Workspace;
  *  ports can be represented referentially by this object. The
  *  semantic information about direction is not retained in the
  *  reference but represented by the context of the reference in
- *  an input or output list in a SyntacticTerm. Multiports are 
- *  split into series of SyntacticPorts. Bidirectional ports are 
+ *  an input or output list in a SyntacticTerm. Multiports are
+ *  split into series of SyntacticPorts. Bidirectional ports are
  *  split into pairs of SyntacticPorts.
  *  <p>
  *  @author Chris Shaver
  *  @version $Id$
  *  @since
  *  @Pt.ProposedRating red (shaver)
- *  @Pt.AcceptedRating red 
+ *  @Pt.AcceptedRating red
  *
  */
 public class SyntacticPort extends ComponentPort {
@@ -82,29 +82,29 @@ public class SyntacticPort extends ComponentPort {
 
     /** Construct SyntacticPort with given container and name.
      *  The caller can associate the syntactic port with an actual port.
-     *  The caller must determine if the port is input or output and 
-     *  the represented port, if one exist, will be treated inferentially 
+     *  The caller must determine if the port is input or output and
+     *  the represented port, if one exist, will be treated inferentially
      *  as such.
      *  @param container SyntacticNode in which this port is added.
      *  @param port Port referred to by this SyntacticPort.
      *  @param direction True if input, false if output.
      *  @param name Name of this port.
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      * */
     public SyntacticPort(SyntacticNode container, Port port, boolean direction, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _representedPort = port;
         _representedChannel = 0;
-        
+
         Integer width = portWidth(port);
         _representedWidth = width == null ? 0 : width;
         _isEmpty = _representedWidth == 0;
         _isInput = direction;
         _iotype = portType(port);
     }
-    
+
     /** Get the connected port from a given port.
      *  If the graph is not made bijective this gives the first.
      *  If there are no ports or no SyntacticPorts null is returned.
@@ -113,13 +113,13 @@ public class SyntacticPort extends ComponentPort {
     public SyntacticPort getConnectedPort() {
         List<Port> rports = connectedPortList();
         if (rports.size() == 0) return null;
-        
+
         Port rport = rports.get(0);
         if (!(rport instanceof SyntacticPort)) return null;
-        
+
         return (SyntacticPort)rport;
     }
-    
+
     /** Get node in which port is contained.
      *  @return node in which port is contained or null if none.
      */
@@ -128,9 +128,9 @@ public class SyntacticPort extends ComponentPort {
         if (obj == null || !(obj instanceof SyntacticNode)) return null;
         return (SyntacticNode)obj;
     }
-    
+
     /** Set the channel of the represented port.
-     *  Each SyntacticPort only represents a single channel of 
+     *  Each SyntacticPort only represents a single channel of
      *  the represented port.
      *  @param channel The channel of the represented port.
      *  @see #getChannel
@@ -138,14 +138,14 @@ public class SyntacticPort extends ComponentPort {
     public void setChannel(int channel) {
         _representedChannel = channel >= 0 ? channel : 0;
     }
-    
-    /** Get the port represented by the Syntactic Port. 
+
+    /** Get the port represented by the Syntactic Port.
      *  @return represented port.
      *  */
     public Port getRepresentedPort() {
         return _representedPort;
     }
-    
+
     /** Get the channel of the represented port.
      *  @return represented channel of the port.
      *  @see #setChannel
@@ -153,7 +153,7 @@ public class SyntacticPort extends ComponentPort {
     public int getChannel() {
         return _representedChannel;
     }
-    
+
     /** Decide whether the port represents an actual port.
      *  If false, the port is purely syntactic.
      *  @return whether the port is representative.
@@ -161,60 +161,60 @@ public class SyntacticPort extends ComponentPort {
     public boolean isRepresentative() {
         return _representedPort != null;
     }
-    
+
     /** Decide whether the port is representationally an input port.
      *  @return whether the port is an input port.
      *  */
     public boolean isInput() {
         return _isInput;
     }
-    
+
     /** Decide whether the port is representationally an output port.
      *  @return whether the port is an output port.
      *  */
     public boolean isOutput() {
         return !_isInput;
     }
-    
+
     /** Decide whether the port is disconnected.
      *  @return whether the port is disconnected.
      *  */
     public boolean isEmpty() {
         return _isEmpty;
     }
-    
+
     /** Gets the IOType of the port.
      *  For ports that represent input/output ports, each SyntacticPort
-     *  will be set to the appropriate type for the part of the 
+     *  will be set to the appropriate type for the part of the
      *  port it represents.
-     *  
+     *
      *  @return IOType of the port.
      */
     public IOType getType() {
         return _iotype;
     }
-    
+
     /** Gets the IOType of a given port.
-     * 
+     *
      *  @param port Port to find the type of.
      *  @return IOType of given port.
      */
     static public IOType portType(Port port) {
         if (!(port instanceof IOPort)) return IOType.none;
-        
+
         IOPort ioport = (IOPort)port;
         boolean isin  = ioport.isInput();
         boolean isout = ioport.isOutput();
-        
+
         if (isin && isout) return IOType.io;
         else if (isin)     return IOType.in;
         else if (isout)    return IOType.out;
         else               return IOType.none;
     }
-    
+
     /** Decide whether a port is exterior in the given entity.
      *  This should be passed the model during analysis.
-     * 
+     *
      *  @param port Port to check for exteriority.
      *  @param entity Entity to check inside of.
      *  @return whether port is exterior for the given entity.
@@ -222,11 +222,11 @@ public class SyntacticPort extends ComponentPort {
     static public boolean isPortExterior(Port port, CompositeEntity entity) {
         return port.getContainer() == (NamedObj)entity;
     }
-    
+
     /** Gets the IOType of a given port with reference to a composite entity.
      *  If a port is an exterior port of the entity, its IOType is reversed
      *  to reflect the role it plays on the inside of the composite.
-     * 
+     *
      *  @param port Port to find the type of.
      *  @param entity Entity to check inside of.
      *  @return IOType of the port.
@@ -235,62 +235,62 @@ public class SyntacticPort extends ComponentPort {
         IOType type = portType(port);
         return isPortExterior(port, entity) ? type.reverse() : type;
     }
-    
+
     /** Gets the width of a Port.
-     * 
+     *
      *  @param port Port to find the width of.
      *  @return the width of the port or null if not a port.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     static public Integer portWidth(Port port)
         throws IllegalActionException {
         if (!(port instanceof IOPort)) return null;
-        
+
         IOPort ioport = (IOPort)port;
         int width = ioport.getWidth();
         return width;
     }
-    
+
     /** Represent IO type for ports. */
-    public enum IOType { 
+    public enum IOType {
         /** Input port. */
-        in, 
-        
+        in,
+
         /** Output port. */
-        out, 
-        
+        out,
+
         /** Input/Output port. */
-        io, 
-        
+        io,
+
         /** Port with undefined or unclear directionality. */
-        none; 
-        
+        none;
+
         /** Get the reversed IO type.
          *  @return reversed IO type.
          */
         public IOType reverse() {
-            return this == in  ? out 
-                 : this == out ? in 
+            return this == in  ? out
+                 : this == out ? in
                  : this;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Port being represented or null if the port is purely Syntactic. */
     private Port _representedPort;
-    
+
     /** Channel represented of the represented port. */
     private int _representedChannel;
-    
+
     /** Total width of the represented port. */
     private int _representedWidth;
-    
+
     /** True if Syntactic Port is an input port. */
     private boolean _isInput;
     //private boolean _isOutput;
-    
+
     /** True if Syntactic Port is not pointing to a represented port. */
     private boolean _isEmpty;
 

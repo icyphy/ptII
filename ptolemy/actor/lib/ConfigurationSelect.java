@@ -207,7 +207,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Read a token from each input port.  If the 
+    /** Read a token from each input port.  If the
      *  <i>selector</i> parameter is true, then output the token consumed from the
      *  <i>trueInput</i> port, otherwise output the token from the
      *  <i>falseInput</i> port.

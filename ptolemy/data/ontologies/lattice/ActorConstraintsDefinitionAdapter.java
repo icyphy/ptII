@@ -1,6 +1,6 @@
 /* A class that creates a lattice-based ontology adapter from
  * a model-based actor constraints definition attribute.
- * 
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
  *
@@ -9,21 +9,21 @@
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
- * 
+ *
+ *
  */
 package ptolemy.data.ontologies.lattice;
 
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  * A class that creates a lattice-based ontology adapter from
  * a model-based actor constraints definition attribute.
- * 
+ *
  * @see ActorConstraintsDefinitionAttribute
  * @author Charles Shelton
  * @version $Id$
@@ -156,9 +156,9 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
 
         return list;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return the inequality term representing the concept function
      *  defined by the specified string.
@@ -180,7 +180,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
 
         // FIXME: This method needs to be modified if we want to support
         // wild cards for functions with variable argument list sizes in the future.
-        
+
         for (StringParameter constraintExpression : _constraintTermExpressions) {
             if (!isActorElementIgnored(constraintExpression)) {
                 String actorElementInExpressionName = getActorElementName(constraintExpression);
@@ -215,7 +215,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                                         + actorElementInExpressionName + " in the actor "
                                         + getComponent() + ".");
                     }
-                    
+
                     /* 10/5/10 Charles Shelton - I don't think it is wrong for a constraint function
                      * to refer to the element being constrained.  It could be used for recursion
                      * or promoting an element to a concept value higher in the lattice than its current
@@ -384,9 +384,9 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 if (RHSTerm instanceof ConceptFunctionInequalityTerm) {
                     throw new IllegalActionException(actorElement,
                                 "When the constraint is '<=' which" +
-                    		" indicates an acceptance criterion and not a consraint for the solver, the" +
-                    		" inequality cannot have a monotonic function inequality term" +
-                    		" on its RHS.");
+                                    " indicates an acceptance criterion and not a consraint for the solver, the" +
+                                    " inequality cannot have a monotonic function inequality term" +
+                                    " on its RHS.");
                 } else {
                     setAtMost(actorElement, RHSTerm);
                 }

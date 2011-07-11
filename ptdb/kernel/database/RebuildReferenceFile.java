@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.kernel.database;
 
@@ -29,12 +29,12 @@ import com.sleepycat.dbxml.XmlQueryContext;
 import com.sleepycat.dbxml.XmlResults;
 import com.sleepycat.dbxml.XmlValue;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RebuildReferenceFile
 
 /**
  * Rebuild the reference file by reading all the models in the database.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -46,23 +46,23 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
 
     /** Create an instance by instantiating the database connection.
      * @param dbConnParams Database parameters to create the connection.
-     * @throws DBConnectionException
+     * @exception DBConnectionException
      */
     public RebuildReferenceFile(DBConnectionParameters dbConnParams)
             throws DBConnectionException {
         super(dbConnParams);
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
      * Re-create the reference file in the database.
      * @param args Not used
-     * @throws IOException If thrown while reading from the console.
-     * @throws DBConnectionException If thrown while creating the database 
+     * @exception IOException If thrown while reading from the console.
+     * @exception DBConnectionException If thrown while creating the database
      * connection.
-     * @throws DBExecutionException If thrown while executing database queries.
-     * @throws XMLDBModelParsingException If thrown while parsing a model.
+     * @exception DBExecutionException If thrown while executing database queries.
+     * @exception XMLDBModelParsingException If thrown while parsing a model.
      */
     public static void main(String[] args) throws IOException,
             DBConnectionException, DBExecutionException,
@@ -94,16 +94,16 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Create the reference string for the given model.
-     * 
+     *
      * @param model Model for which the reference string needs to be made.
-     * @return Reference string for the given model. 
-     * @throws XMLDBModelParsingException If thrown while parsing the model.
-     * @throws XmlException If thrown while reading the model from the database.
+     * @return Reference string for the given model.
+     * @exception XMLDBModelParsingException If thrown while parsing the model.
+     * @exception XmlException If thrown while reading the model from the database.
      */
     private String _buildReferenceString(XMLDBModel model)
             throws XMLDBModelParsingException, XmlException {
@@ -218,9 +218,9 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         return referenceString;
     }
 
-    /** Retrieve and return the list of all models in the database. 
+    /** Retrieve and return the list of all models in the database.
      * @return List of models in the database.
-     * @throws XmlException If thrown while reading the model list from the 
+     * @exception XmlException If thrown while reading the model list from the
      * database.
      */
     private List<XMLDBModel> _getAllModelNames() throws XmlException {
@@ -247,8 +247,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
     /** Get the model Id for the given model name.
      * @param modelName Model name for which the model id is required.
      * @return Model Id for the given model name, null if not found.
-     * @throws XmlException If thrown while retrieving model id from the 
-     * database. 
+     * @exception XmlException If thrown while retrieving model id from the
+     * database.
      */
     private String _getModelIdFromModelName(String modelName)
             throws XmlException {
@@ -273,10 +273,10 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
 
     }
 
-    /** Get the model name for the given model id.  
-     * @param modelId Model If for which the model name is required. 
+    /** Get the model name for the given model id.
+     * @param modelId Model If for which the model name is required.
      * @return Model name for the given model id, null if not found.
-     * @throws XmlException
+     * @exception XmlException
      */
     private String _getModelNameFromModelId(String modelId) throws XmlException {
         String modelName = null;
@@ -300,15 +300,15 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         return modelName;
     }
 
-    /** Populate the model name and model id in the given model. 
+    /** Populate the model name and model id in the given model.
      * Either the model id or the model name should be set in the given model.
-     * @param xmlDBModel model for which model name or model id is to be 
+     * @param xmlDBModel model for which model name or model id is to be
      * fetched.
-     * @throws DBExecutionException If both model id and model name are null. 
-     * If model name fetched from the database is null. 
-     * If model id fetched from the database is null. 
-     * @throws XmlException If thrown while reading the model name or model id 
-     * from the database. 
+     * @exception DBExecutionException If both model id and model name are null.
+     * If model name fetched from the database is null.
+     * If model id fetched from the database is null.
+     * @exception XmlException If thrown while reading the model name or model id
+     * from the database.
      */
     private void _populateModelNameAndModelId(XMLDBModel xmlDBModel)
             throws DBExecutionException, XmlException {
@@ -338,12 +338,12 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         }
     }
 
-    /** 
+    /**
      * Rebuild the reference file by reading the models.
-     * @throws DBExecutionException If thrown while reading data from the 
-     * database. 
-     * @throws XMLDBModelParsingException If thrown while parsing the model. 
-     * @throws DBConnectionException If thrown while connecting to the database.
+     * @exception DBExecutionException If thrown while reading data from the
+     * database.
+     * @exception XMLDBModelParsingException If thrown while parsing the model.
+     * @exception DBConnectionException If thrown while connecting to the database.
      */
     private void _rebuildReferenceFile() throws DBExecutionException,
             XMLDBModelParsingException, DBConnectionException {
@@ -390,8 +390,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
     }
 
     /** Update the reference file with the recreated reference strings.
-     * @throws XmlException If thrown while updating the ReferenceFile in the 
-     * database. 
+     * @exception XmlException If thrown while updating the ReferenceFile in the
+     * database.
      */
     private void _updateReferenceFile() throws XmlException {
 
@@ -412,10 +412,10 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         }
     }
 
-    /** Read the user input to decide whether the rebuild references process 
+    /** Read the user input to decide whether the rebuild references process
      * should be started or not.
      * @return The user input.
-     * @throws IOException If thrown while reading input from the console. 
+     * @exception IOException If thrown while reading input from the console.
      */
     private static String _readInput() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -430,8 +430,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         return userInput;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     /* Map to store the built references. */
     private HashMap<String, String> _referencesMap = new HashMap<String, String>();
 }

@@ -43,7 +43,7 @@ public class HTTPTokener extends JSONTokener {
 
     /**
      * Get the next token or string. This is used in parsing HTTP headers.
-     * @throws JSONException
+     * @exception JSONException
      * @return A String.
      */
     public String nextToken() throws JSONException {
@@ -65,7 +65,7 @@ public class HTTPTokener extends JSONTokener {
                 }
                 sb.append(c);
             }
-        } 
+        }
         for (;;) {
             if (c == 0 || Character.isWhitespace(c)) {
                 return sb.toString();

@@ -1,18 +1,18 @@
 /* A concept that represents the concept values of entries in a record token.
- * 
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -32,7 +32,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// FlatTokenInfiniteConcept
 
 /** A concept that represents the concept values of entries in a record token.
- *  
+ *
  *  A conceptable model element such as a port or node in a Ptolemy expression
  *  could contain a token value that is a record data type.  A record token
  *  is a token that is a collection of multiple token values of different
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  wanted to assign a concept to the token above from the constAbstractInterpretation
  *  ontology, it would be:
  *  {x = Positive, y = Positive, pixelOn = BooleanTrue}
- *  
+ *
  *  This code is adapted from the
  *  {@link ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept}
  *  implementation.
@@ -61,16 +61,16 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
-    
+
     /** Create a new flat token infinite concept, belonging to the given
      *  ontology, with an automatically generated name.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents where the infinite
      *   token concepts belong in the ontology lattice.
      *  @param value The token value for this FlatTokenInfiniteConcept.
      *  @return The newly created RecordConcept.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public static FlatTokenInfiniteConcept createFlatTokenInfiniteConcept(
             Ontology ontology, FlatTokenRepresentativeConcept representative, Token value)
@@ -84,14 +84,14 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
                   + "Original exception:" + e.toString());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Compare this concept with the given concept.
      *  Returns an int value that corresponds to the ordering between
      *  the elements as given in the CPO interface.
-     * 
+     *
      *  @param concept The concept with which we are comparing.
      *  @return CPO.HIGHER if this concept is above the given concept,
      *          CPO.LOWER if this concept is below the given concept,
@@ -106,7 +106,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }
-        
+
         if (!(concept instanceof FlatTokenInfiniteConcept)) {
             return getOntology().getConceptGraph().compare(_representative,
                     concept);
@@ -125,19 +125,19 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             }
         }
     }
-    
+
     /** Return the color attribute associated with this FlatTokenInfiniteConcept.
      *  This will be the color to be the color of the
      *  FlatTokenRepresentativeConcept representative which is a finite concept
      *  with a color given by its model color attribute.
      *  @return The color attribute of the representative concept.
-     *  @throws IllegalActionException Thrown if there is an error getting the
+     *  @exception IllegalActionException Thrown if there is an error getting the
      *   color from the representative concept.
      */
     public ColorAttribute getColor() throws IllegalActionException {
         return _representative.getColor();
     }
-    
+
     /** Get the concept that represents this set of infinite concepts in the
      *  ontology lattice.
      *  @return The representative concept.
@@ -152,9 +152,9 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
     public Token getTokenValue() {
         return _tokenValue;
     }
-    
+
     /** Compute the greatest lower bound (GLB) of this and another concept.
-     *  
+     *
      *  @param concept The other concept
      *  @return The concept that is the GLB of this and the given concept.
      */
@@ -163,7 +163,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
     }
 
     /** Compute the least upper bound (LUB) of this and another concept.
-     *  
+     *
      *  @param concept The other concept
      *  @return The concept that is the LUB of this and the given concept.
      */
@@ -184,25 +184,25 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
     /** Return the string representation of this flat token infinite concept.
      *  It concatenates the name of the representative concept with the
      *  token value.
-     *  
+     *
      *  @return The string representation of this concept.
      */
     public String toString() {
         return _representative.getName() + "_" + _tokenValue.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 
     /** Create a new FlatTokenInfiniteConcept, belonging to the given
      *  ontology.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents where the infinite
      *   token concepts belong in the ontology lattice.
      *  @param value The token value for this FlatTokenInfiniteConcept.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected FlatTokenInfiniteConcept(Ontology ontology,
             FlatTokenRepresentativeConcept representative,
@@ -212,10 +212,10 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
         _representative = representative;
         _tokenValue = value;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the concept that is the correct bound for the given two
      *  concepts.
      *  @param concept1 The first concept.
@@ -239,10 +239,10 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
                                     "LEASTUPPER");
         }
     }
-    
+
     /** Compute either the least upper bound or the greatest lower bound of
      *  this and another concept.
-     *  
+     *
      *  @param concept The other concept.
      *  @param boundType Specifies the type of bound to be returned; either
      *   GREATESTLOWER or LEASTUPPER.
@@ -282,12 +282,12 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             }
         }
     }
-    
+
     /** Return the concept directly above or below the representative concept
      *  in the ontology lattice.  If there is more than one or zero concepts
      *  directly above or below, or the concept is an InfiniteConceptRepresentative,
      *  then return null.
-     * 
+     *
      *  @param boundType Specifies the type of bound; either
      *   GREATESTLOWER or LEASTUPPER.
      *  @return The concept directly above if boundType is LEASTUPPER or
@@ -295,7 +295,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      */
     private FiniteConcept _getConceptAboveOrBelowRepresentative(BoundType boundType) {
         FiniteConcept[] conceptsAboveOrBelow = new FiniteConcept[0];
-        
+
         switch(boundType) {
         case GREATESTLOWER:
             conceptsAboveOrBelow = _representative.getCoverSetBelow().
@@ -310,7 +310,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
                     + boundType + ". Expected either GREATESTLOWER or " +
                                     "LEASTUPPER");
         }
-        
+
         // If there is more than one concept above or below, or the one
         // concept is an InfiniteConceptRepresentative, then there is no
         // least upper bound and the ontology is not a lattice.
@@ -325,15 +325,15 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////    
+    ////                         private variables                 ////
 
     /** The finite concept that represents where the infinite token concepts belong
      *  in the ontology lattice.
      */
     protected FlatTokenRepresentativeConcept _representative;
-    
+
     /** The token value for this FlatTokenInfiniteConcept. */
     protected Token _tokenValue;
 }

@@ -41,8 +41,8 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.gui.TableauFrame; 
-import ptolemy.data.BooleanToken; 
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
@@ -56,13 +56,13 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
 /** This plotter monitors the execution of actors and displays the
- *  executions on a time line. 
- *   
+ *  executions on a time line.
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (derler)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 public class ExecutionTimeMonitor extends TypedAtomicActor implements
         ExecutionTimeListener {
@@ -104,7 +104,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
 
-    /** The event is displayed. 
+    /** The event is displayed.
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
      *  @param time The physical time when the event happened.
@@ -141,7 +141,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         plot.fillPlot();
         plot.repaint();
     }
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -177,14 +177,14 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
                     .entityList();
             for (Actor actor : list) {
                 if (actor instanceof CompositeActor) {
-                    if (actor.getDirector() instanceof PtidesBasicDirector) { 
+                    if (actor.getDirector() instanceof PtidesBasicDirector) {
                         ((PtidesBasicDirector) actor.getDirector())
                                 .registerExecutionTimeListener(this);
                     }
                     _addActors((CompositeActor) actor);
-                } 
+                }
             }
-        } 
+        }
         if (plot != null) {
             plot.clear(false);
             plot.clearLegends();
@@ -201,13 +201,13 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
     //                   private methods                             //
 
     /** Add actors contained by the composite actor passed as an argument.
-     *  @param compositeActor New actor to be added. 
+     *  @param compositeActor New actor to be added.
      */
     private void _addActors(CompositeActor compositeActor) {
         List<Actor> containedActors = compositeActor.entityList();
         for (Actor containedActor : containedActors) {
             if (containedActor instanceof CompositeActor) {
-                if (containedActor.getDirector() instanceof PtidesBasicDirector) { 
+                if (containedActor.getDirector() instanceof PtidesBasicDirector) {
                     ((PtidesBasicDirector) containedActor.getDirector())
                             .registerExecutionTimeListener(this);
                 }
@@ -216,7 +216,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
             boolean monitor = false;
             try {
                 Parameter parameter = (Parameter) ((NamedObj) containedActor)
-                        .getAttribute("monitor"); 
+                        .getAttribute("monitor");
                 if (parameter != null) {
                     BooleanToken token = (BooleanToken) parameter.getToken();
                     monitor = token.booleanValue();
@@ -247,7 +247,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         // This class needs to be public for shallow code generation.
         /**
          * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
-         * 
+         *
          * @param container
          *                The container.
          * @param name
@@ -267,7 +267,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         /**
          * Create an editor for configuring the specified object with the
          * specified parent window.
-         * 
+         *
          * @param object
          *                The object to configure.
          * @param parent

@@ -1,17 +1,17 @@
 /*
- * 
+ *
  */
 package ptdb.common.dto;
 
 import java.util.ArrayList;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// UpdateParentsToNewVersionTask
 
 /**
  * Task to update the selected parents to the new version of the model.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -22,18 +22,18 @@ import java.util.ArrayList;
 public class UpdateParentsToNewVersionTask extends Task {
 
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Return the new model that was created.
      * @return The new model that was created.
-     * @see #setNewModel 
+     * @see #setNewModel
      */
     public XMLDBModel getNewModel() {
         return _newModel;
     }
-    
+
     /**
      * Return the old model that was being updated.
      * @return The old model that was being updated.
@@ -42,7 +42,7 @@ public class UpdateParentsToNewVersionTask extends Task {
     public XMLDBModel getOldModel() {
         return _oldModel;
     }
-    
+
     /**
      * Return the list of selected first level parents' model names.
      * @return The list of selected first level parents' model names.
@@ -51,8 +51,8 @@ public class UpdateParentsToNewVersionTask extends Task {
     public ArrayList<String> getParentsList() {
         return _parentsList;
     }
-    
-    /** 
+
+    /**
      * Set the new model that was created.
      * @param newModel The new model that was created.
      * @see #getNewModel
@@ -60,9 +60,9 @@ public class UpdateParentsToNewVersionTask extends Task {
     public void setNewModel(XMLDBModel newModel) {
         _newModel = newModel;
     }
-    
+
     /**
-     * Set the old model that was being updated. 
+     * Set the old model that was being updated.
      * @param oldModel The old model that was being updated.
      * @see #getOldModel
      */
@@ -79,8 +79,8 @@ public class UpdateParentsToNewVersionTask extends Task {
         _parentsList = parentsList;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     /* The new model that was created. */
     XMLDBModel _newModel;
     /* The old model that was being updated. */

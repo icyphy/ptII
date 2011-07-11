@@ -205,7 +205,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  in a returned.  If this is not done, then the File that is
      *  created would have $CLASSPATH or xxxxxxCLASSPATHxxxxxx in
      *  the file pathname, which is unlikely to be useful.
-     *   
+     *
      *  @return A File, or null if no file name has been specified.
      *  @see #getBaseDirectory()
      *  @exception IllegalActionException If a parse error occurs

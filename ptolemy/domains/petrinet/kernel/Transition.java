@@ -1,5 +1,5 @@
 /* Petrinet Transition
- 
+
  Copyright (c) 2010 The University of Florida
 
  All rights reserved.
@@ -21,10 +21,10 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
-  
+
  */
 
 package ptolemy.domains.petrinet.kernel;
@@ -39,12 +39,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //Transition
 
 /**
- * A Transition to be used as part of a Petri Net and in 
- * conjunction with the PetriNetDirector.  The transition accepts 
- * multiple places as input and output.  A transition fires when 
- * one of its input places contains a token.  When a transition 
+ * A Transition to be used as part of a Petri Net and in
+ * conjunction with the PetriNetDirector.  The transition accepts
+ * multiple places as input and output.  A transition fires when
+ * one of its input places contains a token.  When a transition
  * fires, it places a token in each of its output places.
- * 
+ *
  * @author Zach Ezzell
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -52,20 +52,20 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class Transition extends TypedCompositeActor {
-   
+
     /**
      * Construct a new Transition.
-     * 
+     *
      * @param entity
      *           The CompositeEntity.
      * @param name
      *            The name of the transition.
-     *            
+     *
      * @exception IllegalActionException
      *                If the name has a period in it.
-     *                
+     *
      * @exception NameDuplicationException
-     *                If the container already contains an entity with 
+     *                If the container already contains an entity with
      *                the specified name.
      */
 
@@ -80,15 +80,15 @@ public class Transition extends TypedCompositeActor {
         outputPort.setTypeEquals(BaseType.GENERAL);
         outputPort.setMultiport(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                      ////
-    
+    ////                         public variables                  ////
+
     /**
      * The input port for the transition.
      */
     TypedIOPort inputPort;
-    
+
     /**
      * The output port for the transition.
      */

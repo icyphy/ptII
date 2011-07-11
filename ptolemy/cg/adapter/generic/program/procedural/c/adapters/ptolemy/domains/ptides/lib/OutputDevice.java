@@ -52,7 +52,7 @@ public abstract class OutputDevice extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Return the code for the actuator actuation function.
-     * @return the code for the sensing function, which in this case is 
+     * @return the code for the sensing function, which in this case is
      * the empty string.
      * @exception IllegalActionException Not thrown in this base class.
      */

@@ -14,14 +14,14 @@ package ptolemy.domains.jogl.renderingActive;
    http://www.javagaming.org/forums/index.php?topic=12094.15
 
    and other from the active rendering framework in chapter 2
-   from "Killing Game Programming in Java" (KGPJ). There's a 
+   from "Killing Game Programming in Java" (KGPJ). There's a
    version online at http://fivedots.coe.psu.ac.th/~ad/jg/ch1/.
 
    The animation can be paused and resumed. The window can be resized.
 
    The statistics code is lifted from chapter 3 of KGPJ (p.54-56), which
    is online at http://fivedots.coe.psu.ac.th/~ad/jg/ch02/.
-   The time calculations in this version use System.nanoTime() rather 
+   The time calculations in this version use System.nanoTime() rather
    than J3DTimer.getValue(), so require J2SE 5.0.
 */
 
@@ -49,7 +49,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
     // record stats every 1 second (roughly)
 
   private static final int NO_DELAYS_PER_YIELD = 16;
-  /* Number of iterations with a sleep delay of 0 ms before the animation 
+  /* Number of iterations with a sleep delay of 0 ms before the animation
      thread yields to other running threads. */
 
   private static int MAX_RENDER_SKIPS = 5;   // was 2;
@@ -62,7 +62,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
 
   // used for gathering statistics
   private long statsInterval = 0L;    // in ns
-  private long prevStatsTime;   
+  private long prevStatsTime;
   private long totalElapsedTime = 0L;
   private long gameStartTime;
   private int timeSpentInGame = 0;    // in seconds
@@ -84,7 +84,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
   private volatile boolean gameOver = false;
 
   // vertices for a cube of sides 2 units, centered on (0,0,0)
-  private float[][] verts = { 
+  private float[][] verts = {
      {-1.0f,-1.0f, 1.0f},  // vertex 0
      {-1.0f, 1.0f, 1.0f},  // 1
      { 1.0f, 1.0f, 1.0f},  // 2
@@ -124,7 +124,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
 
   public CubeCanvasGL(CubeGL top, long period, int width, int height,
                          GraphicsConfiguration config, GLCapabilities caps)
-  { 
+  {
     super(config);
 
     this.top = top;
@@ -140,8 +140,8 @@ public class CubeCanvasGL extends Canvas implements Runnable
     rotX = 0; rotY = 0; rotZ = 0;
     Random random = new Random();
     incrX = random.nextFloat()*INCR_MAX;   // 0 - INCR_MAX degrees
-    incrY = random.nextFloat()*INCR_MAX; 
-    incrZ = random.nextFloat()*INCR_MAX; 
+    incrY = random.nextFloat()*INCR_MAX;
+    incrZ = random.nextFloat()*INCR_MAX;
 
     // statistics initialization
     fpsStore = new double[NUM_FPS];
@@ -156,14 +156,14 @@ public class CubeCanvasGL extends Canvas implements Runnable
 
   public void addNotify()
   // wait for the canvas to be added to the JPanel before starting
-  { 
+  {
     super.addNotify();      // make the component displayable
     drawable.setRealized(true);   // the canvas can now be rendering into
 
-    // initialise and start the animation thread 
+    // initialise and start the animation thread
     if (animator == null || !isRunning) {
       animator = new Thread(this);
-	  animator.start();
+          animator.start();
     }
   } // end of addNotify()
 
@@ -173,13 +173,13 @@ public class CubeCanvasGL extends Canvas implements Runnable
 
   public void resumeGame()
   // called when the JFrame is activated / deiconified
-  {  isPaused = false;  } 
+  {  isPaused = false;  }
 
   public void pauseGame()
   // called when the JFrame is deactivated / iconified
-  { isPaused = true;   } 
+  { isPaused = true;   }
 
-  public void stopGame() 
+  public void stopGame()
   // called when the JFrame is closing
   {  isRunning = false;   }
 
@@ -244,7 +244,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
     gl.glClearColor(0.17f, 0.65f, 0.92f, 0.0f);  // sky colour background
 
     // z- (depth) buffer initialization for hidden surface removal
-    gl.glEnable(GL.GL_DEPTH_TEST); 
+    gl.glEnable(GL.GL_DEPTH_TEST);
     // gl.glClearDepth(1.0f);
     // gl.glDepthFunc(GL.GL_LEQUAL);   // type of depth testing
     // gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
@@ -263,11 +263,11 @@ public class CubeCanvasGL extends Canvas implements Runnable
 
   private void resizeView()
   {
-    gl.glViewport(0, 0, panelWidth, panelHeight);  // size of drawing area 
+    gl.glViewport(0, 0, panelWidth, panelHeight);  // size of drawing area
 
-    gl.glMatrixMode(GL.GL_PROJECTION);  
-    gl.glLoadIdentity(); 
-    glu.gluPerspective(45.0, (float)panelWidth/(float)panelHeight,  1, 100); // 5, 100); 
+    gl.glMatrixMode(GL.GL_PROJECTION);
+    gl.glLoadIdentity();
+    glu.gluPerspective(45.0, (float)panelWidth/(float)panelHeight,  1, 100); // 5, 100);
               // fov, aspect ratio, near & far clipping planes
   }  // end of resizeView()
 
@@ -292,7 +292,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
 
     isRunning = true;
 
-    while(isRunning) {
+    while (isRunning) {
       makeContentCurrent();
       gameUpdate();
 
@@ -300,15 +300,15 @@ public class CubeCanvasGL extends Canvas implements Runnable
       drawable.swapBuffers();  // put the scene onto the canvas
           // swap front and back buffers, making the new rendering visible
 
-      afterTime = System.nanoTime(); 
+      afterTime = System.nanoTime();
       timeDiff = afterTime - beforeTime;
-      sleepTime = (period - timeDiff) - overSleepTime;  
+      sleepTime = (period - timeDiff) - overSleepTime;
 
       if (sleepTime > 0) {   // some time left in this cycle
         try {
           Thread.sleep(sleepTime/1000000L);  // nano -> ms
         }
-        catch(InterruptedException ex){}
+        catch (InterruptedException ex){}
         overSleepTime = (System.nanoTime() - afterTime) - sleepTime;
       }
       else {    // sleepTime <= 0; this cycle took longer than the period
@@ -327,9 +327,9 @@ public class CubeCanvasGL extends Canvas implements Runnable
          without rendering it, to get the updates/sec nearer to
          the required FPS. */
       int skips = 0;
-      while((excess > period) && (skips < MAX_RENDER_SKIPS)) {
+      while ((excess > period) && (skips < MAX_RENDER_SKIPS)) {
         excess -= period;
-	    gameUpdate();    // update state but don't render
+            gameUpdate();    // update state but don't render
         skips++;
       }
       rendersSkipped += skips;
@@ -339,13 +339,13 @@ public class CubeCanvasGL extends Canvas implements Runnable
       context.release();
 
       storeStats();
-	}
+        }
 
     printStats();
   } // end of renderLoop()
 
 
-  private void gameUpdate() 
+  private void gameUpdate()
   { if (!isPaused && !gameOver) {
       // update the rotations
       rotX = (rotX + incrX) % 360.0f;
@@ -360,8 +360,8 @@ public class CubeCanvasGL extends Canvas implements Runnable
   // ------------------ rendering methods -----------------------------
 
 
-  private void renderScene() 
-  { 
+  private void renderScene()
+  {
     if (GLContext.getCurrent() == null) {
       System.out.println("Current context is null");
       System.exit(0);
@@ -375,8 +375,8 @@ public class CubeCanvasGL extends Canvas implements Runnable
     // clear colour and depth buffers
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-    gl.glMatrixMode(GL.GL_MODELVIEW);  
-    gl.glLoadIdentity(); 
+    gl.glMatrixMode(GL.GL_MODELVIEW);
+    gl.glLoadIdentity();
 
     glu.gluLookAt(0,0,Z_DIST, 0,0,0, 0,1,0);   // position camera
 
@@ -433,8 +433,8 @@ public class CubeCanvasGL extends Canvas implements Runnable
   private void storeStats()
   /* The statistics:
        - the summed periods for all the iterations in this interval
-         (period is the amount of time a single frame iteration should take), 
-         the actual elapsed time in this interval, 
+         (period is the amount of time a single frame iteration should take),
+         the actual elapsed time in this interval,
          the error between these two numbers;
 
        - the total frame count, which is the total number of calls to run();
@@ -442,14 +442,14 @@ public class CubeCanvasGL extends Canvas implements Runnable
        - the frames skipped in this interval, the total number of frames
          skipped. A frame skip is a game update without a corresponding render;
 
-       - the FPS (frames/sec) and UPS (updates/sec) for this interval, 
+       - the FPS (frames/sec) and UPS (updates/sec) for this interval,
          the average FPS & UPS over the last NUM_FPSs intervals.
 
      The data is collected every MAX_STATS_INTERVAL  (1 sec).
      ----- CHANGES ----
      Do not show any output; leave it to printStats().
   */
-  { 
+  {
     frameCount++;
     statsInterval += period;
 
@@ -460,7 +460,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
       long realElapsedTime = timeNow - prevStatsTime;   // time since last stats collection
       totalElapsedTime += realElapsedTime;
 
-      /*double timingError = 
+      /*double timingError =
          ((double)(realElapsedTime - statsInterval) / statsInterval) * 100.0;*/
 
       totalRendersSkipped += rendersSkipped;
@@ -469,7 +469,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
       double actualUPS = 0;
       if (totalElapsedTime > 0) {
         actualFPS = (((double)frameCount / totalElapsedTime) * 1000000000L);
-        actualUPS = (((double)(frameCount + totalRendersSkipped) / totalElapsedTime) 
+        actualUPS = (((double)(frameCount + totalRendersSkipped) / totalElapsedTime)
                                                              * 1000000000L);
       }
 
@@ -494,12 +494,12 @@ public class CubeCanvasGL extends Canvas implements Runnable
         averageUPS = totalUPS/NUM_FPS;
       }
 /*
-      System.out.println(timedf.format( (double) statsInterval/1000000000L) + " " + 
-                    timedf.format((double) realElapsedTime/1000000000L) + "s " + 
-			        df.format(timingError) + "% " + 
+      System.out.println(timedf.format( (double) statsInterval/1000000000L) + " " +
+                    timedf.format((double) realElapsedTime/1000000000L) + "s " +
+                                df.format(timingError) + "% " +
                     frameCount + "c " +
                     rendersSkipped + "/" + totalRendersSkipped + " skip; " +
-                    df.format(actualFPS) + " " + df.format(averageFPS) + " afps; " + 
+                    df.format(actualFPS) + " " + df.format(averageFPS) + " afps; " +
                     df.format(actualUPS) + " " + df.format(averageUPS) + " aups" );
 */
       rendersSkipped = 0;
@@ -512,8 +512,8 @@ public class CubeCanvasGL extends Canvas implements Runnable
   private void printStats()
   {
     // System.out.println("Frame Count/Loss: " + frameCount + " / " + totalRendersSkipped);
-	System.out.println("Average FPS: " + df.format(averageFPS));
-	System.out.println("Average UPS: " + df.format(averageUPS));
+        System.out.println("Average FPS: " + df.format(averageFPS));
+        System.out.println("Average UPS: " + df.format(averageUPS));
     System.out.println("Time Spent: " + timeSpentInGame + " secs");
   }  // end of printStats()
 

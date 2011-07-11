@@ -94,7 +94,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
    if (Math.abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
 
-	   /*- Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))*/
+           /*- Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))*/
                > $param(tolerance)) {
         throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
             $actorSymbol(numberOfTokensSeen),

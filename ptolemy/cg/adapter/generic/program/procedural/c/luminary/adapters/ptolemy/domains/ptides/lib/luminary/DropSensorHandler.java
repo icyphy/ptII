@@ -29,7 +29,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation adapter class for 
+ * A code generation adapter class for
  * ptolemy.domains.ptides.lib.targets.luminary.DropSensorHandler. This actor
  * is basically the same as GPInputHandler, only the C template includes more
  * calculations.
@@ -44,8 +44,8 @@ public class DropSensorHandler extends GPInputHandler {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.DropSensorHandler actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.DropSensorHandler actor.
-     *  @exception IllegalActionException 
-     *  @exception NameDuplicationException 
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public DropSensorHandler(
             ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor)
@@ -70,7 +70,7 @@ public class DropSensorHandler extends GPInputHandler {
 //        List args = new LinkedList();
 //        CodeStream _codeStream = _templateParser.getCodeStream();
 //
-//        ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor = 
+//        ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor =
 //            (ptolemy.domains.ptides.lib.luminary.DropSensorHandler) getComponent();
 //        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
 //                .getDirector());

@@ -45,7 +45,7 @@ import processing.core.PImage;
  */
 public class OpenCVImageObject  {
 
-    // FIXME: rename this to OpenCVPImage.  
+    // FIXME: rename this to OpenCVPImage.
     // 1) It should be PImage, not Image
     // 2) It is obviously an Object.
 
@@ -57,8 +57,8 @@ public class OpenCVImageObject  {
     public OpenCVImageObject(OpenCV openCVObject, PImage pImageObject) {
         openCV = openCVObject;
         img = pImageObject;
-    }  
-   
+    }
+
     /** The OpenCV object. */
     public OpenCV openCV;
 

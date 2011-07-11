@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * A server that has service time infinity until a new service time value is
  * received.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -65,7 +65,7 @@ public class PreemptableServer extends Server {
     /**
      * Update service time and request a firing if the new service
      * time is not infinity.
-     * 
+     *
      * @exception IllegalActionException Thrown by the port
      *                associated with servicetime or in the fireAt()
      *                method.

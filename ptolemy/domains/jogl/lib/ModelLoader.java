@@ -65,7 +65,7 @@ public class ModelLoader extends Sink {
     public ModelLoader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // FIXME: change to "modelName"
         modelName = new StringParameter(this, "3D Model");
         modelName.setExpression("pawn");
@@ -73,12 +73,12 @@ public class ModelLoader extends Sink {
         modelName.addChoice("barbell");
         modelName.addChoice("heli");
     }
-    
+
     /** The name of the model to be loaded.  The initial
      * default value is "pawn".
      */
     public StringParameter modelName;
-    
+
     /** Read in a model.
      *  @exception IllegalActionException If there is a problem
      *  reading the input token.

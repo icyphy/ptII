@@ -144,7 +144,7 @@ public class RemoteModel {
         SERVER;
     }
 
-    /** Maximum number of retry attempts if client becomes disconnected 
+    /** Maximum number of retry attempts if client becomes disconnected
      *  from the message broker.
      */
     public static final int MAX_RETRY = 10;

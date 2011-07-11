@@ -241,8 +241,8 @@ public class Transition extends ComponentRelation {
             if (_errorTransition == false) {
                 // should everything be cleared here?
                 // I want the boxed to be cleared if it was initially true and then set to false
-                // however this will be called when the model is opened and I don't want to clear 
-                // the parameters set by the user then.. What if they're not at all interested in 
+                // however this will be called when the model is opened and I don't want to clear
+                // the parameters set by the user then.. What if they're not at all interested in
                 // error stuff.. ie.. they're not using transitions for timed models
             }
         } else if (attribute == guardExpression) {
@@ -550,7 +550,7 @@ public class Transition extends ComponentRelation {
     /** Return true if this transition is an error transition. Whether this
      *  transition an errorTransition is specified by the <i>errorTransition</i> parameter.
      *  @return True if this transition is an errorTransition.
-     *  @exception IllegalActionException if unable to retrieve a token from the 
+     *  @exception IllegalActionException if unable to retrieve a token from the
      *  error transition
      */
     public boolean isErrorTransition() {

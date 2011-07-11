@@ -1,25 +1,25 @@
 /** A concept in a finite ontology.
- * 
+ *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
+ *
  */
 package ptolemy.data.ontologies;
 
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  The fact that this concept is part of a finite ontology allows
  *  us to do things like draw it in a GUI, do graph traversal algorithms
  *  with a (finite) adjacency matrix, and other similar useful conveniences.
- * 
+ *
  *  @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -51,7 +51,7 @@ public class FiniteConcept extends Concept implements Flowable {
 
     /** Create a new concept with the specified name and the specified
      *  ontology.
-     *  
+     *
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
      *  @exception NameDuplicationException If the ontology already contains a
@@ -76,7 +76,7 @@ public class FiniteConcept extends Concept implements Flowable {
     public ComponentPort belowPort;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return the finite concepts that cover this one.
      *  If this concept is x, then we mean here the set of concepts y such
@@ -111,7 +111,7 @@ public class FiniteConcept extends Concept implements Flowable {
     }
 
     /** Return the string representation of this concept, its name.
-     * 
+     *
      * @return The name of this concept.
      */
     public String toString() {
@@ -119,7 +119,7 @@ public class FiniteConcept extends Concept implements Flowable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Return the set of deeply connected concepts connected through
      *  the given port.

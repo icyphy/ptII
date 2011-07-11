@@ -37,7 +37,7 @@ import ptolemy.actor.sched.Firing;
  *  to a specific fire method for an actor.
  */
 public class SequenceFiring extends Firing {
-    
+
     /** Construct a firing with a default iteration count equal to one
      *  and with no parent schedule.
      */
@@ -45,26 +45,26 @@ public class SequenceFiring extends Firing {
         super();
         _methodName = null;
     }
-    
+
     /** Get the method name to be executed when
      *  the actor fires, or null if there is none.
-     * 
+     *
      *  @return The method name, or null.
      *  @see #setMethodName(String)
      */
     public String getMethodName() {
         return _methodName;
     }
-    
+
     /** Set the method name to be executed when the actor fires.
-     * 
+     *
      *  @param methodName The specified methodName.
      *  @see #getMethodName()
      */
     public void setMethodName(String methodName) {
         _methodName = methodName;
     }
-        
+
     /** The method name to be executed when the actor fires.
      *  This is used for actors that have multiple fire methods.
      */

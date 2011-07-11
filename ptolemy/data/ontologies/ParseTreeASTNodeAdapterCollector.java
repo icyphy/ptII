@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  FIXME: What is this??? Copy and pasted comment below.
- 
+
  This class visits parse trees and infers a property for each node in the
  parse tree.  This property is stored in the parse tree.
 
@@ -77,7 +77,7 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
-     *  
+     *
      *  @param node The root node whose children will be visited
      *  @exception IllegalActionException If an exception is thrown while
      *  visiting child nodes
@@ -95,7 +95,7 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
 
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
-     *  
+     *
      *  @param node The root node whose child will be visited
      *  @param i The index (starting from 0) of the child node to be visited
      *  @exception IllegalActionException If an exception is thrown while

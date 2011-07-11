@@ -220,7 +220,7 @@ public class Solution {
             } else if (_varState[j] == _INCONSISTENT) {
                 colorValue = Color.RED;
             }
-            
+
             colorString = _getColorString(colorValue);
             moml.append("<port name=\"" + _variables[j] + "\">"
                     + " <property name=\"_color\" "
@@ -241,7 +241,7 @@ public class Solution {
             } else if (_constraintState[constraintNum] == _INCONSISTENT) {
                 colorValue = Color.RED;
             }
-            
+
             colorString = _getColorString(colorValue);
             if (source instanceof IOPort) {
                 IOPort port = (IOPort) source;
@@ -833,7 +833,7 @@ public class Solution {
 
         return (new Index(k, l));
     }
-    
+
     /** Return the string representation of the color value.
      *  @param colorValue The input color value.
      *  @return The string representation of the color as a Ptolemy expression

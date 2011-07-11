@@ -63,7 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
  in charge of executing it. The presumption is that that director
  has a code generation adapter that knows how to transport data
  from the simulation world in Java to the generated code world
- within. 
+ within.
 
 
  @author Bert Rodiers, Gang Zhou, Edward A. Lee, Jia Zou
@@ -135,7 +135,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         // For embeddedJavaActor, there is only embedded Java code specifying its
         // functionality.
         executeEmbeddedCode.setExpression("true");
-        
+
         // In preinitialize(), this actor will create a director that matches
         // the class of its enclosing director. However, we need it to have
         // a director at all times, so we set a generic director here.
@@ -153,11 +153,11 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Create the embedded actor and add ports to it.
      */
     public void preinitialize() throws IllegalActionException {
-        
+
         Director executiveDirector = getExecutiveDirector();
         Director localDirector = getDirector();
         if (localDirector == null || !localDirector.getClass().equals(executiveDirector.getClass())) {

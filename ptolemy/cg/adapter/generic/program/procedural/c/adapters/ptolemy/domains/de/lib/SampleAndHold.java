@@ -37,7 +37,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 @version $Id$
 @since Ptolemy II 8.0
  */
-public class SampleAndHold 
+public class SampleAndHold
         extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.SampleAndHold{
     /**
      *  Construct a Sampler adapter.

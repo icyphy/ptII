@@ -42,7 +42,7 @@ SharedBufferTrasnformer is an abstract ancestor class to be used for filters
 using references to shared data frames.
 It implements a default version of the BufferingProfile interface.
 <p>
-See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
@@ -72,7 +72,7 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-    
+
     /**
      * initialize. Set the default firing to non exclusive.
      */
@@ -83,11 +83,11 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
     }
 
     /**
-     * Fire according to the value _nextIterationExclusive in shared or exclusive 
+     * Fire according to the value _nextIterationExclusive in shared or exclusive
      * firing mode.
      */
     public void fire() throws IllegalActionException {
-        if(_nextIterationExclusive){
+        if (_nextIterationExclusive) {
             _fireExclusive();
         } else {
             _fireCopying();
@@ -129,19 +129,19 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
     /**
      * Fire the actor in exclusive firing mode.
      * Exclusive firing method to be implemented in subclasses.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract void _fireExclusive() throws IllegalActionException;
 
     /**
      * Fire the actor in shared firing mode.
      * Shared firing method to be implemented in subclasses.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract void _fireCopying() throws IllegalActionException;
- 
-    /** 
-     * Invoke a specified number of iterations of the actor in either shared or 
+
+    /**
+     * Invoke a specified number of iterations of the actor in either shared or
      * exclusive mode as indicated by the fireExclusive argument.
      * @param iterationCount The number of iterations to perform.
      * @param fireExclusive whether to fire exclusive or not.
@@ -157,11 +157,11 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
         _nextIterationExclusive = false;
         return result;
     }
-    
+
     //// private fields
     /**
      * determines whether the next firing will be exclusive or shared
      */
     private boolean _nextIterationExclusive;
-    
+
 }

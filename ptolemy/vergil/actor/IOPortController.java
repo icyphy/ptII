@@ -305,7 +305,7 @@ public class IOPortController extends AttributeController {
     ////                         inner classes                     ////
 
     List<MonitoredQuantityManager> _qmList;
-    
+
     /**
      * Render the ports of components as triangles. Multiports are rendered
      * hollow, while single ports are rendered filled.
@@ -318,7 +318,7 @@ public class IOPortController extends AttributeController {
          * set then use it to set the tooltip.
          * @see diva.graph.NodeRenderer#render(java.lang.Object)
          */
-        public Figure render(Object n) { 
+        public Figure render(Object n) {
             final Port port = (Port) n;
 
             // If the port has an attribute called "_hide", then
@@ -388,32 +388,32 @@ public class IOPortController extends AttributeController {
             } else {
                 fill = Color.black;
             }
-            
+
             try {
                 if (port instanceof IOPort) {
-   
-                    List<MonitoredQuantityManager> qmList; 
+
+                    List<MonitoredQuantityManager> qmList;
                     //port.workspace().getReadAccess();
                     List list = ((IOPort)port).getQuantityManagers();
                     if (list != null) {
                     qmList = new ArrayList(list);
                     //port.workspace().doneReading();
-                    
+
                     if (qmList != _qmList && qmList.size() > 0) {
-                        
+
                         _qmList = qmList;
                         if (((IOPort)port).isOutput()) {
                             fill = qmList.get(0).color.asColor();
                         } else {
-                            fill = qmList.get(qmList.size() - 1).color.asColor(); 
+                            fill = qmList.get(qmList.size() - 1).color.asColor();
                         }
-    
+
                         StringAttribute info = (StringAttribute) port.getAttribute("_showInfo");
                         if (info == null) {
                             info = new StringAttribute(port,
                                     "_showInfo");
                         }
-    
+
                         StringBuffer qmStringBuffer = new StringBuffer();
                         for (int j = 0; j < qmList.size(); j++) {
                             if (qmStringBuffer.length() > 0) {
@@ -424,7 +424,7 @@ public class IOPortController extends AttributeController {
                         info.setExpression("QM: " + qmStringBuffer.toString());
                     }
                     }
-                } 
+                }
             } catch (IllegalActionException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -447,10 +447,10 @@ public class IOPortController extends AttributeController {
                 e1.printStackTrace();
             }
 
-            
-            
-            
-           
+
+
+
+
 //            StringAttribute _colorAttr = (StringAttribute) (port
 //                    .getAttribute("_color"));
 //

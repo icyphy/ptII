@@ -54,17 +54,17 @@ import ptolemy.kernel.util.Workspace;
  * FIXME: What if the upstream actors do contain a SequenceAttribute?
  * FIXME: If an actor is upstream of two actors with SequenceAttribute,
  * does it fire twice in an iteration? Are it's output valued queued?
- * 
+ *
  * <p>
- * 
- * The SequenceDirector computes the sequenced actors and passes these in two lists to the 
+ *
+ * The SequenceDirector computes the sequenced actors and passes these in two lists to the
  * SequenceScheduler (one list for independent sequenced actors, and one list
  * for sequenced actors that are dependent on other actors e.g. control actors)
- * 
- * Please see SequencedModelDirector for more details on how the schedule
- * is computed. 
  *
- * @author Elizabeth Latronico (Bosch), rrs1pal 
+ * Please see SequencedModelDirector for more details on how the schedule
+ * is computed.
+ *
+ * @author Elizabeth Latronico (Bosch), rrs1pal
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (beth)
@@ -125,7 +125,7 @@ public class SequenceDirector extends SequencedModelDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      *  Iterating an actor involves calling the actor's iterate() method,
      *  which is equivalent to calling the actor's prefire(), fire() and
      *  postfire() methods in succession.  If iterate() returns NOT_READY,
@@ -145,20 +145,20 @@ public class SequenceDirector extends SequencedModelDirector {
 
         // Must call preinitialize() before fire(), since otherwise the
         // schedule will not be set
-        // Call superclass function with _schedule as argument to handle firing 
+        // Call superclass function with _schedule as argument to handle firing
         fireSchedule(_schedule);
-        
+
         // If the fireUnexectedActors parameter is true,
         // fire all the unexecuted actors on branches that are not taken
         // after the full schedule is completed.
         if (((BooleanToken) fireUnexecutedActors.getToken()).booleanValue()) {
-            
+
             List<SequenceAttribute> unexecutedList = _schedule.getUnexecutedList();
             SequenceSchedule unexecutedSchedule = null;
-            
+
             while (!unexecutedList.isEmpty()) {
                 unexecutedSchedule = _scheduler.getSchedule(unexecutedList, false);
-                
+
                 fireSchedule(unexecutedSchedule);
                 unexecutedList = unexecutedSchedule.getUnexecutedList();
             }
@@ -168,7 +168,7 @@ public class SequenceDirector extends SequencedModelDirector {
     /** Preinitialize the actors associated with this director and
      *  compute the schedule.  The schedule is computed during
      *  preinitialization so that hierarchical opaque composite actors
-     *  can be scheduled properly.  In addition, performing scheduling 
+     *  can be scheduled properly.  In addition, performing scheduling
      *  during preinitialization enables it to be present during code generation.
      *  The order in which the actors are preinitialized is arbitrary.
      *  @exception IllegalActionException If the preinitialize() method of
@@ -179,7 +179,7 @@ public class SequenceDirector extends SequencedModelDirector {
         super.preinitialize();
 
         // Sort the list of sequenced actors
-        // The scheduler will check for duplicates 
+        // The scheduler will check for duplicates
         // The ProcessDirector is different from the SequenceDirector
         // in that we don't want everything to be in one list.  However,
         // .sort() knows how to handle sequence attributes vs. process attributes

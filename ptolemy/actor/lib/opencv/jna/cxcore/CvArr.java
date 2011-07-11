@@ -6,9 +6,9 @@ import com.sun.jna.Structure;
 
 public class CvArr extends Structure {
     public CvArr() {
-        super(); 
+        super();
     };
     public CvArr(Pointer p) {
-        super(p); 
+        super(p);
     };
 }

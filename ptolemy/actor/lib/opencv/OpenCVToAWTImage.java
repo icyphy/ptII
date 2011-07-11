@@ -84,7 +84,7 @@ public class OpenCVToAWTImage extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -96,16 +96,16 @@ public class OpenCVToAWTImage extends Transformer {
                         + inputObject.getClass());
             }
             OpenCVImageObject oio = (OpenCVImageObject) inputObject;
-            
-            PImage my_image = oio.img;     
+
+            PImage my_image = oio.img;
             Image output_image;
             MemoryImageSource mis = new MemoryImageSource(
-					my_image.width, my_image.height, my_image.pixels, 0, my_image.width);
-			output_image = _dummyFrame.createImage(mis);
-			output.send(0, new AWTImageToken(output_image));
+                                        my_image.width, my_image.height, my_image.pixels, 0, my_image.width);
+                        output_image = _dummyFrame.createImage(mis);
+                        output.send(0, new AWTImageToken(output_image));
         }
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

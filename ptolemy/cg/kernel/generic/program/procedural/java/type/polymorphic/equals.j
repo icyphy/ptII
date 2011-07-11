@@ -142,9 +142,9 @@ static boolean equals_Long_Token(long long a1, Token a2) {
 
 /*** equals_String_Boolean() ***/
 static boolean equals_String_Boolean(String a1, boolean a2) {
-    if (a2 && a1.equals("true") 
+    if (a2 && a1.equals("true")
             || !a2 && a2.equals("false")) {
-        return true;	    
+        return true;
     }
     return false;
 }
@@ -152,14 +152,14 @@ static boolean equals_String_Boolean(String a1, boolean a2) {
 
 /*** equals_String_Double() ***/
 static boolean equals_String_Double(String a1, double a2) {
-    // FIXME: What about epsilon?       
-    return Double.valueOf(a1) == a2;       
+    // FIXME: What about epsilon?
+    return Double.valueOf(a1) == a2;
 }
 /**/
 
 /*** equals_String_Integer() ***/
 static boolean equals_String_Integer(String a1, int a2) {
-    return Integer.valueOf(a1) == a1;       
+    return Integer.valueOf(a1) == a1;
 }
 /**/
 

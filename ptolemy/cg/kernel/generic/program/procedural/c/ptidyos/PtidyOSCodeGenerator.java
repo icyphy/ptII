@@ -94,7 +94,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
     /** Generate code for the assembly file.
      *  @exception IllegalActionException If getAdaptor() throws it, or if the
      *  PtidyOSCodeGenerator is not used in a Ptides environment.
-     * 
+     *
      */
     protected void _generateAssemblyFile() throws IllegalActionException {
         PtidesPreemptiveEDFDirector directorAdapter = null;
@@ -115,7 +115,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
             }
         } else {
             throw new IllegalActionException(director, "This PtidyOS code generator should be used " +
-            		"with a Ptides director.");
+                            "with a Ptides director.");
         }
     }
 
@@ -140,7 +140,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  to determine whether this is top level. Test if the containing actor
      *  is in the top level.
      *  @return true if the containing actor is in the top level.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     protected boolean _isTopLevel() throws IllegalActionException {
         Director director = ((Actor) getContainer()).getDirector();

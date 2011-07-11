@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -67,13 +67,13 @@ public class XQueryGraphSearcher extends GraphSearcher implements
     ////                         protected methods                 ////
 
     /**
-     * Perform the actual search in the database according the graph search 
-     * criteria. 
-     * 
+     * Perform the actual search in the database according the graph search
+     * criteria.
+     *
      * @exception DBExecutionException Thrown from the database if the error
-     * occurs in the database execution. 
+     * occurs in the database execution.
      */
-    
+
     protected void _search() throws DBExecutionException {
 
         GraphSearchTask graphSearchTask = new GraphSearchTask();
@@ -84,20 +84,20 @@ public class XQueryGraphSearcher extends GraphSearcher implements
         ArrayList<XMLDBModel> models = _dbConnection
                 .executeGraphSearchTask(graphSearchTask);
 
-        // Set the returned results to the _currentResults field. 
+        // Set the returned results to the _currentResults field.
         _currentResults = models;
 
         if (_currentResults == null) {
-            // The db layer cannot perform the searching, so make the search 
-            // criteria not set. 
-            
+            // The db layer cannot perform the searching, so make the search
+            // criteria not set.
+
             _dbGraphSearchCriteria = null;
         } else {
-            // Pass the intermediate results found in this searcher. 
+            // Pass the intermediate results found in this searcher.
             handleIntermediateResults(_currentResults, this);
         }
 
-        // The search is done in this searcher, so mark this searcher passed. 
+        // The search is done in this searcher, so mark this searcher passed.
         _pass();
 
     }

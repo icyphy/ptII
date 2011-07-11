@@ -250,7 +250,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
             }
         }
     }
-    
+
     /** Create a sample plot.
      */
     public void samplePlot() {
@@ -270,15 +270,15 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
         _fileMenu.setBackground(_menubar.getBackground());
         _specialMenu.setBackground(_menubar.getBackground());
     }
-    
+
     /** Write an image to the specified output stream in the specified
      *  format.  Supported formats include at least "gif" and "png",
      *  standard image file formats.  The image is a rendition of the
      *  current view of the model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
-     *  @throws IOException If writing to the stream fails.
-     *  @throws PrinterException  If the specified format is not supported.
+     *  @exception IOException If writing to the stream fails.
+     *  @exception PrinterException  If the specified format is not supported.
      */
     public void writeImage(OutputStream stream, String format)
             throws PrinterException, IOException {
@@ -376,9 +376,9 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
                 "plot.gif"));
 
         fileDialog.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, this);
-        
+
         int returnVal = fileDialog.showDialog(this, "Export");
-        
+
         fileDialog.removePropertyChangeListener(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -832,7 +832,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
             return "Latex Export to a Folder";
         }
     }
-    
+
     /** Display only .gif files */
     static class FilterForGIF extends FileFilter {
         /** Accept only .gif files.

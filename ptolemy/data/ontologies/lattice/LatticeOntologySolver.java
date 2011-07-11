@@ -1,18 +1,18 @@
 /* A solver for lattice-based ontologies.
- * 
+ *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Settable;
  * <p>
  * This class is based on the PropertyConstraintSolver in the properties package
  * by Man-Kit Leung.
- * 
+ *
  * @author Man-Kit Leung, Edward A. Lee, Charles Shelton, Ben Lickly, Dai Bui, Beth Latronico
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -97,20 +97,20 @@ public class LatticeOntologySolver extends OntologySolver {
 
         // Provide a single parameter to set the others, plus a "custom" option
         // However, for the other parameters, still call setExpression here
-        // in case the solverStrategy was set to custom (for example in 
+        // in case the solverStrategy was set to custom (for example in
         // a saved model) and in case no parameter values were specified.
         // The "custom" option makes no changes to the other parameters.
         solverStrategy = new StringParameter(this, "solverStrategy");
         solverStrategy.setExpression("forward");
-        
+
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
-        
+
         _trainedConceptRecordArray = new Parameter(this, "_trainedConceptRecordArray");
         _trainedConceptRecordArray.setVisibility(Settable.NONE);
         _trainedConceptRecordArray.setPersistent(true);
-        _setTrainedConceptsParameterType();        
-        
+        _setTrainedConceptsParameterType();
+
         _addChoices();
 
         _attachText("_iconDescription", "<svg>\n"
@@ -133,13 +133,13 @@ public class LatticeOntologySolver extends OntologySolver {
      * </ul>
      */
     public StringParameter solvingFixedPoint;
-    
+
     /**
-     * A single parameter for quickly selecting common solving strategies, 
+     * A single parameter for quickly selecting common solving strategies,
      * plus a "custom" option to allow a user-defined strategy.
      */
     public StringParameter solverStrategy;
-    
+
     /** The string name of the attribute that defines the arithmetic add
      *  concept function for this ontology solver.
      */
@@ -149,7 +149,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  concept function for this ontology solver.
      */
     public static final String SUBTRACT_FUNCTION_NAME = "subtractFunction";
-    
+
     /** The string name of the attribute that defines the arithmetic multiply
      *  concept function for this ontology solver.
      */
@@ -159,27 +159,27 @@ public class LatticeOntologySolver extends OntologySolver {
      *  concept function for this ontology solver.
      */
     public static final String DIVIDE_FUNCTION_NAME = "divideFunction";
-    
+
     /** The string name of the attribute that defines the arithmetic negation
      *  concept function for this ontology solver.
      */
     public static final String NEGATE_FUNCTION_NAME = "negateFunction";
-    
+
     /** The string name of the attribute that defines the arithmetic negation
      *  concept function for this ontology solver.
      */
     public static final String RECIPROCAL_FUNCTION_NAME = "reciprocalFunction";
-    
+
     /** The string name of the attribute that defines the logical not
      *  concept function for this ontology solver.
      */
     public static final String NOT_FUNCTION_NAME = "notFunction";
-    
+
     /** The string name of the attribute that defines the logical and
      *  concept function for this ontology solver.
      */
     public static final String AND_FUNCTION_NAME = "andFunction";
-    
+
     /** The string name of the attribute that defines the logical or
      *  concept function for this ontology solver.
      */
@@ -187,14 +187,14 @@ public class LatticeOntologySolver extends OntologySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Get the list of affected InequalityTerms from the OntologySolver's
      * ConceptTermManager.
      * FIXME: 01/28/10 Charles Shelton - Not really sure what this method is used for. The call to
      * _conceptTermManager.getAffectedTerms() appears to always return
      * an empty ArrayList.
-     * 
+     *
      * @param updateTerm This parameter doesn't appear to be used
      * @return The list of inequality terms that are affected by the OntologySolver
      * @exception IllegalActionException If an exception is thrown
@@ -208,7 +208,7 @@ public class LatticeOntologySolver extends OntologySolver {
     /**
      * Get the ConstraintManager that collects and maintains all the inequality
      * constraints for the OntologySolver.
-     * 
+     *
      * @return the constraintManager
      */
     public ConstraintManager getConstraintManager() {
@@ -219,7 +219,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  Lattice OntologySolver.  This will return information about
      *  the number of constraints and concept terms generated before
      *  the solver executes its algorithm.
-     * 
+     *
      *  @return A hash table containing string representations of the
      *   solver statistics and constraints information, separated by
      *   tabs.
@@ -230,7 +230,7 @@ public class LatticeOntologySolver extends OntologySolver {
             throws IllegalActionException {
         initialize();
 
-        String initialSolverConstraints = 
+        String initialSolverConstraints =
             _getConstraintsAsString(_initialConstraintList);
 
         Hashtable<String, String> initialSolverInfo = new Hashtable<String, String>();
@@ -244,7 +244,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  model has been resolved.  This will return information about
      *  the number of constraints and concept terms generated after
      *  the solver executes its algorithm.
-     * 
+     *
      *  @return A hash table containing string representations of the
      *   solver statistics and constraints information, separated by
      *   tabs.
@@ -310,7 +310,7 @@ public class LatticeOntologySolver extends OntologySolver {
         return _getAdapter(object);
     }
 
-    
+
     /**
      * Return the concept value associated with the specified object.
      * @param object The specified object.
@@ -338,7 +338,7 @@ public class LatticeOntologySolver extends OntologySolver {
     /**
      * Return the concept term manager that collects and maintains a hash map
      * that maps all model objects to their the inequality terms for the OntologySolver.
-     * 
+     *
      * @return The concept term manager for the OntologySolver
      */
     public ConceptTermFactory getConceptTermManager() {
@@ -347,34 +347,34 @@ public class LatticeOntologySolver extends OntologySolver {
         }
         return _conceptTermManager;
     }
-    
-    /** Returns true if one or more terms resolved to unacceptable concepts, 
-     *  false otherwise (if the solver has not run, or if all terms have 
-     *  acceptable resolved concepts.   
-     * 
+
+    /** Returns true if one or more terms resolved to unacceptable concepts,
+     *  false otherwise (if the solver has not run, or if all terms have
+     *  acceptable resolved concepts.
+     *
      * @return  True if one or more terms resolved to unacceptable concepts,
      *          false otherwise.
      */
     public boolean hasUnacceptableTerms()
     {
-        if (_resolvedUnacceptableList != null 
+        if (_resolvedUnacceptableList != null
                 && !_resolvedUnacceptableList.isEmpty()) {
             return true;
         }
         return false;
     }
-    
+
     /**
-     * Initialize the solver:  Reset the solver (superclass) and then collect 
+     * Initialize the solver:  Reset the solver (superclass) and then collect
      * all of the initial constraints from the model.
      *  @exception IllegalActionException If an exception occurs when
      *  collecting the constraints.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter = 
+        LatticeOntologyAdapter toplevelAdapter =
             (LatticeOntologyAdapter) getAdapter(toplevel);
 
         // FIXME: The code from here to constraintList() doesn't really
@@ -389,21 +389,21 @@ public class LatticeOntologySolver extends OntologySolver {
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelAdapter._setConnectionConstraintType(_getConstraintType());
-        
+
         _initialConstraintList = toplevelAdapter.constraintList();
     }
 
     /**
      * Return true if the given model object has been annotated with a
      * manual annotation constraint.
-     * 
+     *
      * @param object The model object to be checked to see if it is annotated
      * @return true if the model object is annotated, false otherwise
      */
     public boolean isAnnotatedTerm(Object object) {
         return _annotatedObjects.contains(object);
     }
-    
+
     /**
      * Reset the solver. This removes the internal states of the
      * solver (e.g.  previously recorded properties, statistics,
@@ -415,24 +415,24 @@ public class LatticeOntologySolver extends OntologySolver {
         _clearLists();
         _conceptTermManager = null;
     }
-    
+
     /** Resolve the concept values for the toplevel entity that contains this
      *  solver, given the model analyzer that invokes this.
      *  @exception KernelException If there is an exception thrown during the OntologySolver
      *   resolution.
      */
-    public void resolveConcepts() throws KernelException {        
+    public void resolveConcepts() throws KernelException {
         NamedObj toplevel = _toplevel();
 
         _resolveConcepts(toplevel, _initialConstraintList);
     }
 
     /** Run concept inference and check the values match those trained.
-     * 
+     *
      *  This simply looks through the conceptable objects and
      *  checks that their resolved concepts match the values
      *  contained in the <i>__trainedConceptRecordArray</i> attribute.
-     * 
+     *
      *  @exception IllegalActionException If inference fails or the test
      *   resolves to the wrong values.
      */
@@ -443,21 +443,21 @@ public class LatticeOntologySolver extends OntologySolver {
         } finally {
             workspace().doneWriting();
         }
-        
+
         ArrayToken trainedConceptsArrayToken = (ArrayToken) _trainedConceptRecordArray.getToken();
         if (trainedConceptsArrayToken == null) {
             throw new IllegalActionException("The " + getName() +
                         " ontology solver has not been trained for ontology " +
                         "concept resolution, so its analysis cannot be tested.");
         } else {
-            Token[] trainedConceptRecordsArray = trainedConceptsArrayToken.arrayValue();              
+            Token[] trainedConceptRecordsArray = trainedConceptsArrayToken.arrayValue();
             Set<NamedObj> allNamedObjs = getAllConceptableNamedObjs();
-            
+
             for (Token trainedConceptToken : trainedConceptRecordsArray) {
                 RecordToken conceptRecord = (RecordToken) trainedConceptToken;
-                
+
                 String conceptableFullName = ((StringToken)
-                        conceptRecord.get(_namedObjLabel)).stringValue();                
+                        conceptRecord.get(_namedObjLabel)).stringValue();
                 NamedObj conceptable = _getConceptableFromFullName(
                         conceptableFullName, allNamedObjs);
                 if (conceptable == null) {
@@ -485,23 +485,23 @@ public class LatticeOntologySolver extends OntologySolver {
                             "' instead.");
                 }
             }
-            
+
             if (!allNamedObjs.isEmpty()) {
                 throw new IllegalActionException(this, "Some of the " +
-                		"conceptable model elements do not have " +
-                		"trained concept values. They are: " +
-                		allNamedObjs);
+                                "conceptable model elements do not have " +
+                                "trained concept values. They are: " +
+                                allNamedObjs);
             }
         }
     }
 
     /** Run concept inference and save the inferred concept values.
-     * 
+     *
      *  For all conceptable model elements, an array of records that maps the
      *  full name of the Ptolemy element to the name of the concept to which it
      *  was resolved is generated and stored as a parameter of the ontology
      *  solver.
-     *  
+     *
      *  @exception IllegalActionException If inference fails..
      */
     public void train() throws IllegalActionException {
@@ -509,33 +509,33 @@ public class LatticeOntologySolver extends OntologySolver {
             workspace().getWriteAccess();
             invokeSolver();
             Set<NamedObj> allNamedObjs = getAllConceptableNamedObjs();
-            
+
             RecordToken[] trainedConcepts = new RecordToken[allNamedObjs.size()];
             int index = 0;
             for (NamedObj conceptable : allNamedObjs) {
                 Concept inferredConcept = getConcept(conceptable);
-                
+
                 Token[] recordArray = new Token[2];
                 recordArray[0] = new StringToken(conceptable.getFullName());
-                if (inferredConcept == null) {                    
+                if (inferredConcept == null) {
                     recordArray[1] = new StringToken(null);
                 } else {
                     recordArray[1] = new StringToken(inferredConcept.toString());
                 }
                 RecordToken conceptRecord = new RecordToken(
                         _trainedConceptRecordLabels, recordArray);
-                
+
                 trainedConcepts[index++] = conceptRecord;
-            }            
+            }
             _trainedConceptRecordArray.setToken(new ArrayToken(trainedConcepts));
         } finally {
             workspace().doneWriting();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
-    
+
     /**
      * An enumeration type to represent the types of constraints for
      * default constraint settings for actor inputs and outputs, connections
@@ -553,28 +553,28 @@ public class LatticeOntologySolver extends OntologySolver {
 
         /** Represents that the source must be >= the sink. */
         SOURCE_GE_SINK
-    }  
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return a string representing the list of terms that resolved to
      *  unacceptable concepts.  Returns an empty string if the solver has not
-     *  been run, or if all terms were acceptable. 
-     *  
-     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager} 
+     *  been run, or if all terms were acceptable.
+     *
+     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager}
      *  for a definition of acceptable.
-     * 
-     *  @return A string representing the list of terms that resolved to 
+     *
+     *  @return A string representing the list of terms that resolved to
      *          unacceptable concepts.  Can be the empty string.
-     *  @throws IllegalActionException If the string cannot be formed from the 
+     *  @exception IllegalActionException If the string cannot be formed from the
      *          list of inequality terms
      */
     protected String getUnacceptableTermsAsString() throws IllegalActionException {
 
         StringBuffer output = new StringBuffer();
-        
-        if (_resolvedUnacceptableList != null 
+
+        if (_resolvedUnacceptableList != null
                 && !_resolvedUnacceptableList.isEmpty()) {
             for (InequalityTerm term : _resolvedUnacceptableList) {
             output.append(term.toString() + _eol);
@@ -583,72 +583,72 @@ public class LatticeOntologySolver extends OntologySolver {
 
         return output.toString();
     }
-    
+
     /** Return the list of inequality terms that resolved to unacceptable
-     *  concepts.  Returns null if the solver has not been run first, or if all 
-     *  terms were acceptable.  
-     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager} 
+     *  concepts.  Returns null if the solver has not been run first, or if all
+     *  terms were acceptable.
+     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager}
      *  for a definition of acceptable.
-     *  
-     *  @return  The list of inequality terms that resolved to unacceptable 
+     *
+     *  @return  The list of inequality terms that resolved to unacceptable
      *           concepts.  Can be null.
      */
     protected List<InequalityTerm> getUnacceptableTerms() {
         return _resolvedUnacceptableList;
     }
-    
-    /** 
-     * Set the resolved constraint list and the list of unacceptable 
-     * inequality terms to null.  Implemented as a protected method so that 
-     * subclasses may call it.  
+
+    /**
+     * Set the resolved constraint list and the list of unacceptable
+     * inequality terms to null.  Implemented as a protected method so that
+     * subclasses may call it.
      */
     protected void _clearLists() {
         _initialConstraintList = null;
         _resolvedConstraintList = null;
         _resolvedUnacceptableList = new ArrayList<InequalityTerm>();
     }
-    
-    // Illegal action exception thrown from getOntology() 
-    
+
+    // Illegal action exception thrown from getOntology()
+
     // Collect all information related to whether or not terms are unacceptable
-    
+
     // For each term, check if its concept is acceptable for that term
     // The notion of acceptable can currently be defined at three levels:
     // Per-lattice:  The concept is not acceptable for any term that uses that lattice
-    // Per-container:  The concept is not acceptable for any term in the specified 
+    // Per-container:  The concept is not acceptable for any term in the specified
     //  container.  The container can be a whole model.
     // Per-term:  The concept is not acceptable for the specified term
     //  (acceptance criteria translate to one or more of these)
-    
+
     // Return a list/table of terms, true/false?
     // Allow checking of an individual term?
-    
+
     // Per-lattice
-    
-    
+
+
     // Per-container.  Not implemented currently.
-    
+
     // Per-term
-    
-    
+
+
     // collectUnacceptableConcepts(Ontology?)
     // A concept is deemed acceptable unless explicitly specified otherwise
     // DO this way, or should ontology provide a list?  Perhaps ontology should provide a list?
-    
-    
+
+
     // collectUnacceptableConcepts(Container?)
     // collectUnacceptableConcepts(Term?)
     // call lattice - getUnacceptableConcepts() - for per-lattice - save list
     // make it a sorted set for easy access
     // nothing implemented per-container yet
     // collect all acceptance criteria constraints and determine list for these
-    
+
     /**
      * Return the LatticeOntologyAdapter for the specified
      * component. This instantiates a new OntologyAdapter if it does
      * not already exist for the specified component.  This returns
      * specific LatticeOntologyAdapters for the LatticeOntologySolver.
-     * 
+     *
      * @param component The specified component.
      * @return The LatticeOntologyAdapter for the specified component.
      * @exception IllegalActionException Thrown if the LatticeOntologyAdapter
@@ -727,10 +727,10 @@ public class LatticeOntologySolver extends OntologySolver {
      * @exception OntologyResolutionException If constraints are unsatisfiable
      */
     protected void _resolveConcepts(NamedObj toplevel,
-            List<Inequality> constraintList) 
+            List<Inequality> constraintList)
         throws OntologyResolutionException {
 
-        List<Inequality> conflicts = new ArrayList<Inequality>();        
+        List<Inequality> conflicts = new ArrayList<Inequality>();
 
         try {
             // Check declared properties across all connections.
@@ -743,7 +743,7 @@ public class LatticeOntologySolver extends OntologySolver {
              * _adapterStore.values().iterator(); while (adapters.hasNext()) {
              * PropertyConstraintHelper adapter = (PropertyConstraintHelper)
              * adapters.next();
-             * 
+             *
              * constraintList.addAll(adapter.constraintList()); } //
              */
 
@@ -759,7 +759,7 @@ public class LatticeOntologySolver extends OntologySolver {
 
                 // Added by Charles Shelton 12/17/09
                 // Check to see if the ontology is a lattice
-                // and throw an exception if it isn't.                
+                // and throw an exception if it isn't.
                 if (getOntology().isLattice()) {
                     lattice = getOntology().getConceptGraph();
                 } else {
@@ -857,7 +857,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @return The enumeration from ConstraintType corresponding to the
      *      given solver strategy.
      *  @exception IllegalActionException If solver strategy or fixed point
-     *      type cannot be understood. 
+     *      type cannot be understood.
      */
     protected ConstraintType _getConstraintType()
             throws IllegalActionException {
@@ -883,21 +883,21 @@ public class LatticeOntologySolver extends OntologySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The list of constraints collected from the model, before resolution.  */
     protected List<Inequality> _initialConstraintList;
-    
+
     /** The list of constraints after the ontology resolution algorithm has executed. */
     protected List<Inequality> _resolvedConstraintList;
-    
-    /** The list of InequalityTerms that have resolved to an unacceptable concept value. 
+
+    /** The list of InequalityTerms that have resolved to an unacceptable concept value.
      *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager}
      *  for a definition of unacceptable.  */
     protected List<InequalityTerm> _resolvedUnacceptableList;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * Add choices to the parameters.
      * @exception IllegalActionException If there is a problem accessing files
@@ -908,11 +908,11 @@ public class LatticeOntologySolver extends OntologySolver {
         solverStrategy.addChoice("backward");
         solverStrategy.addChoice("bidirectional");
         solverStrategy.addChoice("none");
-        
+
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
     }
-    
+
     /** Return the conceptable model element NamedObj that has the given
      *  full name string. Also remove that NamedObj from the given set of
      *  all conceptable NamedObj elements.
@@ -929,16 +929,16 @@ public class LatticeOntologySolver extends OntologySolver {
                 allConceptableNamedObjs.remove(modelElement);
                 return modelElement;
             }
-        }        
+        }
         return null;
     }
 
     /** Return a string representing the list of inequality constraints specified
      *  that can be written to a log file.
-     * 
+     *
      *  @param constraintList The list of inequality constraints to be parsed into a string.
      *  @return A string representing the list of inequality constraints that can be written to a log file.
-     *  @throws IllegalActionException If the string cannot be formed from the list of inequality constraints.
+     *  @exception IllegalActionException If the string cannot be formed from the list of inequality constraints.
      */
     private String _getConstraintsAsString(
             List<Inequality> constraintList) throws IllegalActionException {
@@ -950,9 +950,9 @@ public class LatticeOntologySolver extends OntologySolver {
 
         return output.toString();
     }
-    
+
     /** Set the type constraint for the _trainedConceptRecordArray parameter.
-     *  @throws IllegalActionException Thrown if there is a problem setting
+     *  @exception IllegalActionException Thrown if there is a problem setting
      *   the type constraint.
      */
     private void _setTrainedConceptsParameterType() throws IllegalActionException {
@@ -963,7 +963,7 @@ public class LatticeOntologySolver extends OntologySolver {
         ArrayType conceptRecordArrayType = new ArrayType(conceptRecordType);
         _trainedConceptRecordArray.setTypeEquals(conceptRecordArrayType);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -976,18 +976,18 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** The concept term manager that keeps track of all the concept terms in the model for the LatticeOntologySolver. */
     private ConceptTermManager _conceptTermManager;
-    
+
     /** The parameter that contains the array of trained concept values for
      *  the model that contains this solver.
      */
     private Parameter _trainedConceptRecordArray;
-    
+
     /** Label for the NamedObj field of the trained concept record tokens. */
     private static final String _namedObjLabel = "NamedObj";
-    
+
     /** Label for the Concept field of the trained concept record tokens. */
     private static final String _conceptLabel = "Concept";
-    
+
     /** The array of labels for the trained concept records. */
     private static final String[] _trainedConceptRecordLabels =
         new String[]{_namedObjLabel, _conceptLabel};

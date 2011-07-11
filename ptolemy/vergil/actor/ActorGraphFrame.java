@@ -79,7 +79,7 @@ import diva.gui.GUIUtilities;
  * an instance of ActorGraphTableau, it creates an editor and populates the
  * menus and toolbar. This overrides the base class to associate with the editor
  * an instance of ActorEditorGraphController.
- * 
+ *
  * @see ActorEditorGraphController
  * @author Steve Neuendorffer, Contributor: Edward A. Lee, KIELER Layout: Christian Motika <cmot@informatik.uni-kiel.de>
  * @version $Id$
@@ -96,7 +96,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      * tableau. This constructor results in a graph frame that obtains its
      * library either from the model (if it has one) or the default library
      * defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -113,7 +113,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      * library either from the model (if it has one), or the
      * <i>defaultLibrary</i> argument (if it is non-null), or the default
      * library defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -128,7 +128,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     /**
      * React to the actions specific to this actor graph frame.
-     * 
+     *
      * @param e The action event.
      */
     public void actionPerformed(ActionEvent e) {
@@ -140,10 +140,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
             exportDesignPattern();
         }
     }
-    
+
     /** Dispose of this frame.
      *     Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
+     *  this model from getting garbage collected.  This method invokes the
      *  dispose() method of the superclass,
      *  {@link ptolemy.vergil.basic.ExtendedGraphFrame}.
      */
@@ -166,7 +166,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _advancedLayoutDialogAction = null;
         _createHierarchyAction = null;
         _debugMenuListener = null;
-        
+
         super.dispose();
     }
 
@@ -265,7 +265,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      * actor, use its manager to stop it. Remove the listeners that this frame
      * registered with the ptolemy model. Also remove the listeners our graph
      * model has created.
-     * 
+     *
      * @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {
@@ -291,7 +291,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     /**
      * Create the items in the File menu. A null element in the array represents
      * a separator in the menu.
-     * 
+     *
      * @return The items in the File menu.
      */
     protected JMenuItem[] _createFileMenuItems() {
@@ -328,7 +328,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      * Create a new graph pane. Note that this method is called in constructor
      * of the base class, so it must be careful to not reference local variables
      * that may not have yet been created.
-     * 
+     *
      * @param entity The object to be displayed in the pane.
      * @return The pane that is created.
      */
@@ -375,7 +375,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
-    
+
     /** Listener for debug menu commands. */
     protected DebugMenuListener _debugMenuListener;
 

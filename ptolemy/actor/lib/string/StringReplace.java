@@ -170,7 +170,7 @@ public class StringReplace extends StringSimpleReplace {
 
         // Unfortunately, the String class throws runtime exceptions
         // if something goes wrong, so we have to catch them.
-        try{
+        try {
             if (replaceAllTokens) {
                 outputString = match.replaceAll(replacementValue);
             } else {

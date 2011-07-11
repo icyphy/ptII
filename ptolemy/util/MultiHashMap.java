@@ -58,7 +58,7 @@ O1, O1, and O2 in order.
  @author Man-Kit Leung, Ben Lickly
  @version $Id$
  @param <K> The type of the keys of the multimap.
- @param <V> The type of the values of the multimap. 
+ @param <V> The type of the values of the multimap.
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
@@ -76,21 +76,21 @@ public class MultiHashMap<K,V> {
     public Collection<V> get(K key) {
         return _map.get(key);
     }
-    
+
     /** Return a set of all key values represented by this multimap.
      *  @return A set of values that are keys of this multimap.
      */
     public Set<K> keySet() {
         return _map.keySet();
     }
-    
+
     /** Return whether or not this multimap is empty.
      *  @return True, if the map is empty. False, otherwise.
      */
     public boolean isEmpty() {
         return _map.isEmpty();
     }
- 
+
     /** Add the value to the collection associated with the specified key.
      *  @param key The specified key.
      *  @param value The specified value to add to the collection.
@@ -156,10 +156,10 @@ public class MultiHashMap<K,V> {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** The HashMap that stores the mappings of this MultiMap.  The multimap
      *  is constructed by having the values of the HashMap be collections.
      */
-    private HashMap<K,Collection<V>> _map = new HashMap<K,Collection<V>>(); 
+    private HashMap<K,Collection<V>> _map = new HashMap<K,Collection<V>>();
 }

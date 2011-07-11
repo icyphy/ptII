@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -38,8 +38,8 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  * Exception when there is parent model opening and unsaved, while the user
- * wants to save the sub model. 
- * 
+ * wants to save the sub model.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -50,11 +50,11 @@ import ptolemy.kernel.util.NamedObj;
 public class UnSavedParentModelsException extends KernelException {
 
     /**
-     * Create a new UnSavedParentModelsException with the caused NamedObjs and 
+     * Create a new UnSavedParentModelsException with the caused NamedObjs and
      * given message.
-     * 
+     *
      * @param namedObjects The instances of NamedObj that cause this exception.
-     * @param message The given message for the exception. 
+     * @param message The given message for the exception.
      */
     public UnSavedParentModelsException(Collection<NamedObj> namedObjects,
             String message) {

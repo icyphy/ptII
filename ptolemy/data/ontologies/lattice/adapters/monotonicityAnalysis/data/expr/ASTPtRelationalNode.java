@@ -73,7 +73,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -94,7 +94,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                    private inner class                    ////
 
-    
+
     /** A representation of the monotonic function used to infer the
      *  monotonicity of conditional nodes (if nodes) in the abstract
      *  syntax trees of Ptolemy expressions.
@@ -109,7 +109,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *  @param monotonicityOntology The monotonicity ontology.
          *  @param domainOntologies The ontologies over which the
          *   expression containing this relational node is defined.
-         *  @throws IllegalActionException If a function cannot be created.
+         *  @exception IllegalActionException If a function cannot be created.
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
                 Ontology monotonicityOntology,
@@ -130,7 +130,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *  is monotonic with respect to x, and
          *  x >= Constant
          *  is antimonotonic with respect to x.
-         *  
+         *
          *  @param inputConceptValues The list of concept inputs to the function.
          *    (i.e. The monotonicity of each of the conditional's branches)
          *  @return The monotonicity of the overall relational statement.
@@ -139,7 +139,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
-            
+
             Concept c1 = inputConceptValues.get(0);
             Concept c2 = inputConceptValues.get(1);
             if (c1.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())
@@ -198,13 +198,13 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
                     return _antimonotonicConcept;
                 } else if (antimonotonicMonotonic) {
                     return _monotonicConcept;
-                }               
-            } 
+                }
+            }
             return _generalConcept;
         }
-        
+
         /** String representation of the operator for the relational node
-         *  that this function is defined over. 
+         *  that this function is defined over.
          */
         private String _operator;
 

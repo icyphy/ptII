@@ -381,7 +381,7 @@ public class Tableau extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     class WindowClosedAdapter extends WindowAdapter {
         // This is invoked if the window
         // is disposed by the _close() method of Top.
@@ -410,7 +410,7 @@ public class Tableau extends CompositeEntity {
         // because this will override saving if modified as implemented
         // in Top.
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -428,7 +428,7 @@ public class Tableau extends CompositeEntity {
     /** The frame that the tableau is shown in.
      */
     private JFrame _frame;
-    
+
     /** The adapter responsible for the windowClosed event.
      */
     private WindowClosedAdapter _windowClosedAdapter;

@@ -137,7 +137,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         _context = context;
         _base = base;
     }
-    
+
     /** Construct a mutation request to be executed in the specified context.
      *  The context is typically a Ptolemy II container, such as an entity,
      *  within which the objects specified by the MoML code will be placed.

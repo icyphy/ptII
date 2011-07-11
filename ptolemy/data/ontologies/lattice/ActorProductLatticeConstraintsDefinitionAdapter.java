@@ -1,6 +1,6 @@
 /* A class that creates a product lattice-based ontology adapter from
  * a model-based actor constraints definition attribute.
- * 
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
  *
@@ -9,21 +9,21 @@
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
- * 
+ *
+ *
  */
 package ptolemy.data.ontologies.lattice;
 
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /** A class that creates a product lattice-based ontology adapter from
  *   a model-based actor constraints definition attribute.
- * 
+ *
  *  @see ActorConstraintsDefinitionAttribute
  *  @author Charles Shelton
  *  @version $Id$
@@ -73,13 +73,13 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
             throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, constraintExpressions);
-        
+
         _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver, component);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                  public variables                         ////
-    
+    ////                         public variables                  ////
+
     /** String representing that the actor port or attribute should inherit
      *  its constraints from the tuple ontology solvers for the product
      *  lattice ontology solver.
@@ -88,7 +88,7 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return true if the actor element is set to inherit its constraints from
      *  the tuple ontologies that comprise the product lattice ontology,
      *  false otherwise.
@@ -97,7 +97,7 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
      *  @return true if the actor element is set to inherit its constraints from
      *   the tuple ontologies that comprise the product lattice ontology,
      *   false otherwise.
-     *  @throws IllegalActionException If the constrain expression parameter is null.
+     *  @exception IllegalActionException If the constrain expression parameter is null.
      */
     public static boolean areActorElementConstraintsInherited(StringParameter actorElementConstraintExpression)
         throws IllegalActionException {
@@ -128,7 +128,7 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
                 actorElement = ((ComponentEntity) getComponent())
                         .getAttribute(objName);
             }
-            
+
             // if the actor element's constraints are inherited, get them from
             // the tuple adapters.
             if (areActorElementConstraintsInherited(constraintExpression)) {
@@ -147,15 +147,15 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
                         .getToken())).stringValue());
             }
         }
-        
-        _constraintAttributes();       
+
+        _constraintAttributes();
         _addSubHelperConstraints();
         return _union(_ownConstraints, _subHelperConstraints);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
-    
+    ////                         private methods                   ////
+
     /** Return the list of constraints that apply only to the given actor
      *  element. These are the inequality constraints in which the greater
      *  term refers to the given actor element.
@@ -168,19 +168,19 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
     private List<Inequality> _getActorElementConstraints(NamedObj actorElement,
                 List<Inequality> adapterConstraintsList) {
         List<Inequality> elementConstraints = new ArrayList<Inequality>(adapterConstraintsList);
-        
+
         for (Inequality constraint : adapterConstraintsList) {
             if (!actorElement.equals(constraint.getGreaterTerm().getAssociatedObject())) {
                 elementConstraints.remove(constraint);
             }
         }
-        
+
         return elementConstraints;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The list of adapters for the model component for each ontology that
      *  comprises the product lattice ontology.
      */

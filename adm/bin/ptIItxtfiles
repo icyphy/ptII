@@ -11,6 +11,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.dll.a$' \
         | egrep -v '\.doc$' \
         | egrep -v '\.dmg$' \
+        | egrep -v '\.dSYM/' \
 	| egrep -v '\.dsp$' |egrep -v '\.dsw$' \
         | egrep -v '\.dylib$' \
 	| egrep -v '\.fm$'  |egrep -v '\.fig$' \

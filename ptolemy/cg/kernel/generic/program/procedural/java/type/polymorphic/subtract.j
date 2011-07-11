@@ -198,7 +198,7 @@ static Token subtract_Token_Token(Token a1, Token a2) {
 #ifdef PTCG_TYPE_Integer
             case TYPE_Integer:
                     result = Double_new((Double)a1.payload - (Integer)a2.payload);
-	        break;
+                break;
 #endif
             default:
                 System.out.println("subtract_Token_Token(): a1 is a Double, "
@@ -247,7 +247,7 @@ static Token subtract_Token_Token(Token a1, Token a2) {
 #ifdef PTCG_TYPE_Integer
             case TYPE_Integer:
                     result = $subtract_Array_Integer(a1, (Integer)a2.payload);
-	        break;
+                break;
 #endif
             default:
                 result = null;

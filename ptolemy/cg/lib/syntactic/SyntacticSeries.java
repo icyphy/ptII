@@ -35,23 +35,23 @@ import java.util.LinkedList;
 
 /**
  This class represents a series composition over a sequence of SyntacticTerms.
- Each term in the sequence is composed with the previous to form a chain 
- of operations. Each output is connected in order with each input of the 
+ Each term in the sequence is composed with the previous to form a chain
+ of operations. Each output is connected in order with each input of the
  subsequent term. The term produced by this composition has a number of inputs
  equal to that of the first term in the sequence, and a number of outputs
- equal to that of the last term. 
- 
- The chain is initialized as empty, and terms can be added to it either 
+ equal to that of the last term.
+
+ The chain is initialized as empty, and terms can be added to it either
  pushing to the end, or by insertion. In these operations, checking is done
  to enforce the constraint that the number of inputs and outputs are equal
- at a composition. Removal is possible, although only when a term is has the 
+ at a composition. Removal is possible, although only when a term is has the
  same number of inputs as outputs.
- 
+
 @author Chris Shaver
 @version $Id$
 @since Ptolemy II 8.0
 @Pt.ProposedRating Red (shaver)
-@Pt.AcceptedRating Red 
+@Pt.AcceptedRating Red
 */
 public class SyntacticSeries extends SyntacticTermList {
 
@@ -64,16 +64,16 @@ public class SyntacticSeries extends SyntacticTermList {
      *  This is only allowed if the added term has as
      *  many inputs as the currently last term has outputs.
      *  Otherwise, false is returned and nothing is done.
-     *  
+     *
      *  @param term Term to be added to series.
      *  @return true if added, false if invalid.
      */
     public boolean add(SyntacticTerm term) {
         if (contains(term)) return false;
-        
+
         SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank.compose(this, term);
         if (rank == null) return false;
-        
+
         if (!super.add(term)) return false;
 
         if (size() == 1) {
@@ -83,24 +83,24 @@ public class SyntacticSeries extends SyntacticTermList {
 
         _outputs.clear();
         _outputs.addAll(term.getOutputs());
-        
+
         _rank = rank.copy();
         return true;
     }
-    
+
     /** Pushes a term to the end of the series.
      *  This is only allowed if the added term has as
      *  many inputs as the currently last term has outputs.
      *  Otherwise, false is returned and nothing is done.
-     *  
+     *
      *  @param term Term to be added to series.
      */
     public void push(SyntacticTerm term) {
         if (contains(term)) return;
-        
+
         SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank.compose(term, this);
         if (rank == null) return;
-        
+
         // Java 1.5 does not have push(), but
         // http://download.oracle.com/javase/6/docs/api/java/util/LinkedList.html#push%28E%29
         // says "This method is equivalent to addFirst(E)."
@@ -111,35 +111,35 @@ public class SyntacticSeries extends SyntacticTermList {
             _outputs.clear();
             _outputs.addAll(term.getOutputs());
         }
-        
+
         _inputs.clear();
         _inputs.addAll(term.getInputs());
-        
+
         _rank = rank.copy();
     }
 
     /** Adds a term to an arbitrary position of the series.
-     *  This is allowed only if the added term is compatible 
+     *  This is allowed only if the added term is compatible
      *  with neighboring terms. If not at the beginning or end,
-     *  this essentially means it must have the same number of 
+     *  this essentially means it must have the same number of
      *  inputs and outputs.
-     * 
+     *
      *  @param index Index at which to add the term.
      *  @param term Term to add to series.
      */
     public void add(int index, SyntacticTerm term) {
         if (contains(term) || index < 0 || index > size()) return;
-        
+
         if (index == size()) { // append case
             add(term);
             return;
         }
-        
+
         else if (index == 0) { // prepend case
             push(term);
             return;
         }
-        
+
         else { // middle case
             SyntacticTerm tF = get(index), tP = get(index-1);
             if (SyntacticRank.compose(tP, term) == null || SyntacticRank.compose(term, tF) == null) {
@@ -154,7 +154,7 @@ public class SyntacticSeries extends SyntacticTermList {
      *  can be connected with each other. In the case that
      *  this is an interior term, it must have the same number
      *  of inputs and outputs to complete this operation.
-     *  
+     *
      *  @param term Term to remove from series.
      *  @return whether term has been removed.
      */
@@ -182,7 +182,7 @@ public class SyntacticSeries extends SyntacticTermList {
         return true;
     }
 
-    // TODO: Implement this method as a replacement 
+    // TODO: Implement this method as a replacement
     // for SyntacticGraph::insertPermutations
     /** Intercolate permutations between series terms. */
     public void intercolatePermutations() {
@@ -192,11 +192,11 @@ public class SyntacticSeries extends SyntacticTermList {
     /** Generate code for the series.
      *  The code for each term are joined by series composition
      *  operators.
-     *  
+     *
      *  @return code for term.
      */
     public String generateCode() {
-        LinkedList<String> termStrs = new LinkedList(); 
+        LinkedList<String> termStrs = new LinkedList();
         for (SyntacticTerm node : this) {
             if (node.hasCode()) termStrs.add(node.generateCode());
         }

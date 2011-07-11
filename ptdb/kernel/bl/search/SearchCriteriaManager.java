@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -54,13 +54,13 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SearchCriteriaManager
 
 /**
- * The business layer class to handle the operations for saving and 
- * loading search criteria from the stored file system. 
- * 
+ * The business layer class to handle the operations for saving and
+ * loading search criteria from the stored file system.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -70,22 +70,22 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class SearchCriteriaManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    public methods                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Open the file from the file system, and load the search criteria 
-     * stored in it.  Return the loaded search criteria back to the caller. 
-     * 
+     * Open the file from the file system, and load the search criteria
+     * stored in it.  Return the loaded search criteria back to the caller.
+     *
      * @param searchCriteriaFileName The location and file name of the search
      *  criteria to be loaded.
      * @param configuration The configuration of the opening search criteria.
      * @return The search criteria that contains the information stored in the
-     *  file to be loaded. 
+     *  file to be loaded.
      * @exception SearchCriteriaParseException Thrown if there is any error
-     *  during parsing the search criteria file. 
+     *  during parsing the search criteria file.
      * @exception IOException Thrown if IO errors happened during reading of
-     * the search criteria file. 
+     * the search criteria file.
      */
     public static SearchCriteria open(String searchCriteriaFileName,
             Configuration configuration) throws SearchCriteriaParseException,
@@ -148,7 +148,7 @@ public class SearchCriteriaManager {
 
                 } else if (nodeName.equals("attributes")) {
 
-                    // attributes node exists. 
+                    // attributes node exists.
                     ArrayList<Attribute> attributesList = new ArrayList();
 
                     Node attributesNode = childNodeList.item(j);
@@ -181,7 +181,7 @@ public class SearchCriteriaManager {
 
                 } else if (nodeName.equals("modelname")) {
 
-                    // Model name tag exists. 
+                    // Model name tag exists.
                     Node modelNameNode = childNodeList.item(j);
 
                     NamedNodeMap modelNameAttributes = modelNameNode
@@ -210,18 +210,18 @@ public class SearchCriteriaManager {
     }
 
     /**
-     * Save the search criteria to a file in the XML format. 
-     * 
-     * @param searchCriteria The DTO containing the search criteria to be 
-     *  saved. 
+     * Save the search criteria to a file in the XML format.
+     *
+     * @param searchCriteria The DTO containing the search criteria to be
+     *  saved.
      * @param searchCriteriaFile The file path and name where the criteria
      *  should be saved.
      * @return true - if the search criteria is saved successful.<br>
      *  False - if the search criteria is not saved successful.
-     * @exception IllegalActionException Thrown if the passed attributes' 
-     * values cannot be obtained. 
-     * @exception IOException Thrown if error happens during writing the 
-     *  search criteria information to the file. 
+     * @exception IllegalActionException Thrown if the passed attributes'
+     * values cannot be obtained.
+     * @exception IOException Thrown if error happens during writing the
+     *  search criteria information to the file.
      */
     public static boolean save(SearchCriteria searchCriteria,
             String searchCriteriaFile) throws IllegalActionException,
@@ -231,7 +231,7 @@ public class SearchCriteriaManager {
 
         searchCriteriaStringBuffer.append("<criteria>");
 
-        // Fetch the effigy for the pattern. 
+        // Fetch the effigy for the pattern.
         if (searchCriteria.getPatternMoML() != null) {
 
             String patternMoMl = searchCriteria.getPatternMoML();

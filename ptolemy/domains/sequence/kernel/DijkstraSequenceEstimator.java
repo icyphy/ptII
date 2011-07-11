@@ -1,4 +1,4 @@
-/* A class that estimates a sequential schedule. 
+/* A class that estimates a sequential schedule.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// DijkstraSequenceEstimator
 
-/** A class that estimates a sequential schedule based on a modified version 
+/** A class that estimates a sequential schedule based on a modified version
 * of Dijkstra's algorithm to compute longest paths.
 *
 * @author Bastian Ristau
@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
 public class DijkstraSequenceEstimator extends SequenceEstimator {
 
     /** Construct an estimator for the given director.
-     * 
+     *
      *  @param director The director that needs to guess a schedule.
      */
     public DijkstraSequenceEstimator(Director director) {
@@ -72,17 +72,17 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
 
     /** Estimate a sequenced schedule. Do not care much about ordering
      * constraints given by sequence numbers.
-     * 
+     *
      * FIXME: If the graph is cyclic, this method runs forever! Currently this
      * has to (or at least should) be checked before.
-     * 
+     *
      * @param independentList The already present SequenceAttributes for the
      * Actors controlled by this scheduler.
-     * 
+     *
      * @return A vector with the ordered actors. Note that the sequence numbers
      * are not changed. This has to be done somewhere else.
-     * 
-     * @exception NotSchedulableException If the underlying graph of the actors 
+     *
+     * @exception NotSchedulableException If the underlying graph of the actors
      * is not acyclic.
      */
     public Vector<Actor> estimateSequencedSchedule(
@@ -142,7 +142,7 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                 SequenceAttribute attribute = (SequenceAttribute) sequenceAttributes
                         .next();
                 try {
-                    int sequenceNumber = attribute.getSequenceNumber();                
+                    int sequenceNumber = attribute.getSequenceNumber();
                     _SequenceInfo info = new _SequenceInfo(sequenceNumber, true,
                             false);
                     //info.original = sequenceNumber;
@@ -154,8 +154,8 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                     unschedulableActorList.add(attribute.getContainer());
                     throw new NotSchedulableException(unschedulableActorList, e,
                             "The actor " + attribute.getContainer().getName() + " cannot be scheduled because " +
-                            		"its SequenceAttribute " + attribute +
-                            		" does not contain a valid sequence number.");
+                                            "its SequenceAttribute " + attribute +
+                                            " does not contain a valid sequence number.");
                 }
             }
         }
@@ -197,7 +197,7 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
         Iterator it = _unsettled.iterator();
         int max = -1;
         Actor result = null;
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Actor actor = (Actor) it.next();
             _SequenceInfo info = _sequenceInfos.get(actor);
             int dist = info.distance;
@@ -233,10 +233,10 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                             .next();
                     Actor connectedActor = (Actor) deepConnectedPort
                             .getContainer();
-                    
+
                     // do nothing, if container of actor is reached
                     // --> actor is sink
-                    if(actor.getContainer() == connectedActor) {
+                    if (actor.getContainer() == connectedActor) {
                         continue;
                     }
                     _SequenceInfo _SequenceInfo = _sequenceInfos

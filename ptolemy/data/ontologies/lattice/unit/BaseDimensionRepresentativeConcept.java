@@ -39,10 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A representative concept in the unitSystem ontology for a set of units for
  *  a specific physical dimension that is one of the 7 base dimensions.
- *  
+ *
  *  There are 7 base dimensions from which all other unit dimensions are
  *  derived. These can be specified in a units system ontology by 7
- *  BaseUnitRepresentativeConcepts: 
+ *  BaseUnitRepresentativeConcepts:
  *  <ul>
  *  <li>Mass - SI unit kilograms (kg)
  *  <li>Position - SI unit meters (m)
@@ -63,7 +63,7 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
 
     /** Create a new BaseUnitRepresentativeConcept with the specified name and
      *  ontology.
-     *  
+     *
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
      *  @exception NameDuplicationException If the ontology already contains a
@@ -74,40 +74,40 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return a list of all the possible units contained in this base
      *  dimension.
      *  @return The list of all BaseUnitConcepts that have this
      *   BaseDimensionRepresentativeConcept as a representative.
-     *  @throws IllegalActionException Thrown if there is a problem getting any
+     *  @exception IllegalActionException Thrown if there is a problem getting any
      *   unit concepts from the ontology.
      */
     public List<BaseUnitConcept> getAllUnits() throws IllegalActionException {
         return (List<BaseUnitConcept>) super.getAllUnits();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return a BaseUnitConcept instance from the given concept string
      *  representation. The string must represent one of the units specified
      *  for this physical dimension.
      *  @param infiniteConceptString The string that represents the unit concept
      *   to be returned.
      *  @return The BaseUnitConcept represented by the given string.
-     *  @throws IllegalActionException Thrown if there is a problem creating
+     *  @exception IllegalActionException Thrown if there is a problem creating
      *   the unit concept.
      */
     protected BaseUnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
-        
+
         if (containsThisInfiniteConceptString(infiniteConceptString)) {
             String unitName = infiniteConceptString.substring(getName()
                     .length() + 1);
-            
+
             return BaseUnitConcept.createBaseUnitConcept(getOntology(), this,
                     _findUnitRecordByName(unitName));
         } else {

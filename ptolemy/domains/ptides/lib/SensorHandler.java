@@ -125,7 +125,7 @@ public class SensorHandler extends InputDevice {
     public void preinitialize() throws IllegalActionException {
 
         super.preinitialize();
-        
+
         // Perform port consistency check if the schedulerExecutionTime
         // parameter of the director is 0.0.
         Parameter parameter = (Parameter) getDirector().getAttribute("schedulerExecutionTime");

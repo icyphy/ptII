@@ -21,20 +21,20 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptdb.common.dto;
 
 /**
- * 
+ *
  * A task request to fetch a model from the database.
- * 
- * <p>It is used as a data transfer object and hold the model name 
+ *
+ * <p>It is used as a data transfer object and hold the model name
  * with its getter and setter method.</p>
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -49,17 +49,17 @@ public class GetModelTask extends Task {
     /**
      * Construct an instance of the object and set the model name to be fetched
      * from the database.
-     * 
-     * @param modelName the model name to be fetched from the database. 
+     *
+     * @param modelName the model name to be fetched from the database.
      */
     public GetModelTask(String modelName) {
         _modelName = modelName;
     }
-    
+
     /**
      * Construct an instance of the object and set the model id to be fetched
      * from the database.
-     * 
+     *
      * @param modelId the model id to be fetched from the database.
      * @param modelName the model name to be fetched from the database.
      */
@@ -67,10 +67,10 @@ public class GetModelTask extends Task {
         _modelId = modelId;
         _modelName = modelName;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-        
+
 
     /**
      * Return the model Id.
@@ -80,12 +80,12 @@ public class GetModelTask extends Task {
     public String getModelId() {
         return _modelId;
     }
-    
+
     /**
      * Return the model name that is needed to be fetched from the database.
      *
      * @return The model name.
-     * 
+     *
      * @see #setModelName
      */
     public String getModelName() {
@@ -109,22 +109,22 @@ public class GetModelTask extends Task {
     public void setModelId(String modelId) {
         _modelId = modelId;
     }
-    
-    
+
+
     /**
      * Set the model name to be fetched from the database.
      *
      * @param modelName the name of the model to be fetched from the database.
-     * 
+     *
      * @see #getModelName
      */
     public void setModelName(String modelName) {
         _modelName = modelName;
     }
-    
+
     /**
      * Set if the model is being retrieved from cache.
-     * @param isModelFromCache Boolean to indicate whether the model is being 
+     * @param isModelFromCache Boolean to indicate whether the model is being
      * retrieved from cache.
      */
     public void setModelFromCache(boolean isModelFromCache) {
@@ -137,7 +137,7 @@ public class GetModelTask extends Task {
     private String _modelName;
     /** Flag for cache */
     private boolean isModelFromCache = false;
-    
+
     /** The model Id. */
     private String _modelId;
 

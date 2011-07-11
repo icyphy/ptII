@@ -72,7 +72,7 @@ public class ActorCellRenderer extends DefaultListCellRenderer {
             String name = actor.getDisplayName();
             List<SequenceAttribute> seqAttributes = ((Entity) actor)
                     .attributeList(SequenceAttribute.class);
-            if(seqAttributes.size() > 0) {
+            if (seqAttributes.size() > 0) {
                 try {
                     name += " (" + seqAttributes.get(0).getSequenceNumber() + ")";
                 } catch (IllegalActionException e) {

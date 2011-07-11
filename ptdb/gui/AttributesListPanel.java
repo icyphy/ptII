@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -69,25 +69,25 @@ import ptolemy.util.MessageHandler;
 /**
  * A reusable panel that accepts the model name and allows adding, removing,
  * and changing of database attributes.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
- * 
+ *
  */
 
 public class AttributesListPanel extends JPanel {
 
     /**
      * Construct a AttributesListPanel. Add swing Components to the panel. Add a
-     * listener for the "Add Attribute" button, which adds a ModelAttributePanel 
-     * to the tabbed pane and delete buttons that are mapped to each 
+     * listener for the "Add Attribute" button, which adds a ModelAttributePanel
+     * to the tabbed pane and delete buttons that are mapped to each
      * ModelAttributePanel.
-     * 
+     *
      * @param model The model that is being saved to the database.
-     * 
+     *
      */
     public AttributesListPanel(NamedObj model) {
 
@@ -96,7 +96,7 @@ public class AttributesListPanel extends JPanel {
         _AttDelete = new HashMap();
         _modified = false;
         _currentText = "";
-        
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _nameText = new JTextField(model.getName());
@@ -181,23 +181,23 @@ public class AttributesListPanel extends JPanel {
 
             }
         });
-        
+
         _nameText.addFocusListener(new FocusListener() {
 
-            
+
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
-                
+
             }
 
-            
+
             public void focusLost(FocusEvent arg0) {
-                
-                if(!_nameText.getText().equals(_currentText)){
+
+                if (!_nameText.getText().equals(_currentText)) {
                         setModified(true);
                         _currentText = _nameText.getText();
                 }
-                
+
             }
 
         });
@@ -208,14 +208,14 @@ public class AttributesListPanel extends JPanel {
         add(_bottomPanel);
         validate();
         repaint();
-        
-        
+
+
 
     }
 
     /** Add a database attribute to the panel for display.  An associated
      *  delete button is also created.
-     *  
+     *
      * @param stringParameter
      *          The parameter to add to the panel for display.
      */
@@ -264,7 +264,7 @@ public class AttributesListPanel extends JPanel {
 
                 validate();
                 repaint();
-                
+
                 setModified(true);
 
             }
@@ -277,7 +277,7 @@ public class AttributesListPanel extends JPanel {
     }
 
     /** Get an ArrayList of all displayed attributes as Attribute objects.
-     * 
+     *
      * @return An ArrayList of Attributes that are present in the display.
      *          Thrown if more than one attribute added to the display, has the
      *          same name.
@@ -332,7 +332,7 @@ public class AttributesListPanel extends JPanel {
 
 
     /** Get the model name.
-     * 
+     *
      * @return The model name.
      * @see #setModelName(String name)
      */
@@ -341,7 +341,7 @@ public class AttributesListPanel extends JPanel {
         return _nameText.getText();
 
     }
-    
+
     /** Set the model name.
      * @param name The name to be set
      * @see #getModelName()
@@ -351,7 +351,7 @@ public class AttributesListPanel extends JPanel {
         _nameText.setText(name);
         _currentText=_nameText.getText();
     }
-    
+
     /**
      * Set the focus on the model name text field.
      */
@@ -361,11 +361,11 @@ public class AttributesListPanel extends JPanel {
 
     /** Get an indication if the specified attribute name is in the set of
      *  database attributes.
-     *  
+     *
      * @param attributeName
      *          The name of the attribute to check.
      * @return
-     *          An indication if the specified name is in the set of 
+     *          An indication if the specified name is in the set of
      *          database attributes (true if is. false if it is not).
      */
     public boolean isDBAttribute(String attributeName) {
@@ -378,7 +378,7 @@ public class AttributesListPanel extends JPanel {
      * @return
      *          An indication if the panel contains duplicate attributes
      *           (true if does. false if it does not).
-     * 
+     *
      */
     public boolean containsDuplicates() {
 
@@ -430,7 +430,7 @@ public class AttributesListPanel extends JPanel {
      * @return
      *          An indication if all attributes in the panel have names.
      *           (true they do. false if they do not).
-     * 
+     *
      */
     protected boolean allAttributeNamesSet() {
 
@@ -469,7 +469,7 @@ public class AttributesListPanel extends JPanel {
      * @return
      *          An indication if all attributes in the panel have values.
      *           (true they do. false if they do not).
-     * 
+     *
      */
     protected boolean allAttributeValuesSet() {
 
@@ -507,7 +507,7 @@ public class AttributesListPanel extends JPanel {
     /** Get the number of attributes displayed in the panel.
      * @return
      *          The number of attributes displayed in the panel.
-     * 
+     *
      */
     public int getAttributeCount() {
 
@@ -518,27 +518,27 @@ public class AttributesListPanel extends JPanel {
     /**
      * Get the component of the text field to let the user input the model
      *  name.
-     *  
-     * @return The JTextField instance for the model name. 
+     *
+     * @return The JTextField instance for the model name.
      */
     public JTextField getNameTextField() {
-        
+
         return _nameText;
     }
-    
+
     /** Get an indication if the panel has been modified.
      *  True if it has, false if it hasn't.
      *
      * @return
      *         An indication if the panel has been modified.
-     * 
+     *
      * @see #setModified(boolean)
-     * 
+     *
      */
     public boolean isModified() {
-        
+
         boolean panelsModified = false;
-        
+
         Component[] componentArray1 = _attListPanel.getComponents();
 
         for (int i = 0; i < componentArray1.length; i++) {
@@ -552,35 +552,35 @@ public class AttributesListPanel extends JPanel {
 
                     if (componentArray2[j] instanceof ModelAttributePanel) {
 
-                        if(panelsModified || ((ModelAttributePanel)componentArray2[j]).isModified()){
+                        if (panelsModified || ((ModelAttributePanel)componentArray2[j]).isModified()) {
                             panelsModified = true;
                         }
-                        
+
                     }
                 }
             }
         }
-        
+
         // Note:  AttributeListPanel may already be modified if the
         // user has added or deleted ModelAttributePanels.  This is independent
-        // of the modified variables contained in each individual 
+        // of the modified variables contained in each individual
         // ModelAttributePanel.  However, if they have been modified, we
         // consider their container (this AttributeListPanel) to be modified
         // as well.
-        if(panelsModified){
-            
+        if (panelsModified) {
+
             _modified = true;
-            
+
         }
-    
+
         return _modified;
-       
+
     }
-    
-    
-    
+
+
+
     /** Regroup the attributes displayed alphabetically.
-     * 
+     *
      */
     public void regroup() {
 
@@ -592,26 +592,26 @@ public class AttributesListPanel extends JPanel {
 
         for (int i = 0; i < componentArray1.length; i++) {
 
-            
+
             if (componentArray1[i] instanceof JPanel) {
 
-                
+
                 Component[] componentArray2 = ((JPanel) componentArray1[i])
                     .getComponents();
 
                 for (int j = 0; j < componentArray2.length; j++) {
 
-                    
+
                     if (componentArray2[j] instanceof ModelAttributePanel) {
-                       
+
                         orderedList.add((ModelAttributePanel) componentArray2[j]);
- 
+
                     } else if (componentArray2[j] instanceof GenericAttributePanel) {
 
                         orderedListGeneric.add((GenericAttributePanel) componentArray2[j]);
-                        
+
                     }
-                   
+
                 }
 
             }
@@ -625,52 +625,52 @@ public class AttributesListPanel extends JPanel {
         for (int pass=1; pass < n; pass++) {
 
             for (int i=0; i < n-pass; i++) {
-                
+
                 if (orderedList.get(i).getAttributeName()
                         .compareToIgnoreCase(orderedList.get(i+1).
                                 getAttributeName()) > 0) {
-                    
+
                     changeRequired = true;
-                    ModelAttributePanel temp = orderedList.get(i);  
-                    orderedList.set(i, orderedList.get(i+1));  
+                    ModelAttributePanel temp = orderedList.get(i);
+                    orderedList.set(i, orderedList.get(i+1));
                     orderedList.set(i+1, temp);
-                    
+
                 }
             }
         }
-        
+
         //Sort the Generic panels.
         boolean changeRequiredGeneric =false;
         int m = orderedListGeneric.size();
         for (int pass=1; pass < m; pass++) {
 
             for (int i=0; i < m-pass; i++) {
-                
+
                 if (orderedListGeneric.get(i).getAttributeName()
                         .compareToIgnoreCase(orderedListGeneric.get(i+1).
                                 getAttributeName()) > 0) {
-                    
+
                     changeRequiredGeneric = true;
-                    GenericAttributePanel temp = orderedListGeneric.get(i);  
-                    orderedListGeneric.set(i, orderedListGeneric.get(i+1));  
+                    GenericAttributePanel temp = orderedListGeneric.get(i);
+                    orderedListGeneric.set(i, orderedListGeneric.get(i+1));
                     orderedListGeneric.set(i+1, temp);
-                    
+
                 }
             }
         }
-        
+
         //If a change was required, remove all panels and re-add the
         //ordered panels
-        if(changeRequired || changeRequiredGeneric){
-            
+        if (changeRequired || changeRequiredGeneric) {
+
             _attListPanel.removeAll();
             _AttDelete.clear();
-            
+
             JPanel modelDeletePanel;
             JButton deleteButton;
-            
-            for(int i = 0; i < orderedList.size(); i++){
-                
+
+            for (int i = 0; i < orderedList.size(); i++) {
+
                 modelDeletePanel = new JPanel();
                 modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
                         BoxLayout.X_AXIS));
@@ -681,7 +681,7 @@ public class AttributesListPanel extends JPanel {
                 deleteButton.setAlignmentY(TOP_ALIGNMENT);
                 deleteButton.setActionCommand("Delete");
                 deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
-                
+
 
                 modelDeletePanel.add(orderedList.get(i));
                 modelDeletePanel.add(deleteButton);
@@ -690,7 +690,7 @@ public class AttributesListPanel extends JPanel {
 
                 _attListPanel.add(modelDeletePanel);
                 _attListPanel.setMaximumSize(getMinimumSize());
-                
+
                 deleteButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
 
@@ -702,7 +702,7 @@ public class AttributesListPanel extends JPanel {
 
                         validate();
                         repaint();
-                        
+
                         setModified(true);
 
                     }
@@ -711,12 +711,12 @@ public class AttributesListPanel extends JPanel {
 
                 validate();
                 repaint();
-                
+
             }
-            
-            
-            for(int i = 0; i < orderedListGeneric.size(); i++){
-                
+
+
+            for (int i = 0; i < orderedListGeneric.size(); i++) {
+
                 modelDeletePanel = new JPanel();
                 modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
                         BoxLayout.X_AXIS));
@@ -727,7 +727,7 @@ public class AttributesListPanel extends JPanel {
                 deleteButton.setAlignmentY(TOP_ALIGNMENT);
                 deleteButton.setActionCommand("Delete");
                 deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
-                
+
 
                 modelDeletePanel.add(orderedListGeneric.get(i));
                 modelDeletePanel.add(deleteButton);
@@ -736,7 +736,7 @@ public class AttributesListPanel extends JPanel {
 
                 _attListPanel.add(modelDeletePanel);
                 _attListPanel.setMaximumSize(getMinimumSize());
-                
+
                 deleteButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
 
@@ -748,7 +748,7 @@ public class AttributesListPanel extends JPanel {
 
                         validate();
                         repaint();
-                        
+
                         setModified(true);
 
                     }
@@ -757,25 +757,25 @@ public class AttributesListPanel extends JPanel {
 
                 validate();
                 repaint();
-                
+
             }
-        
+
         }
-        
+
     }
 
-    
+
     /** Set the panel to modified or unmodified.
-     * 
+     *
      * @param modified True to set to modified.  False to set to unmodified.
-     * 
+     *
      * @see #isModified()
-     * 
+     *
      */
     public void setModified(boolean modified) {
-    
+
         _modified = modified;
-    
+
         // Propagate _modified to all contained ModelAttributePanels.
         Component[] componentArray1 = _attListPanel.getComponents();
 
@@ -792,7 +792,7 @@ public class AttributesListPanel extends JPanel {
 
                         ((ModelAttributePanel)componentArray2[j])
                             .setModified(_modified);
-                        
+
                     }
                 }
             }
@@ -801,7 +801,7 @@ public class AttributesListPanel extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     //                    protected variables                        ////
-    
+
     /**
      * Top display panel.
      */
@@ -834,7 +834,7 @@ public class AttributesListPanel extends JPanel {
      * Map between attribute names and their display panel.
      */
     protected HashMap _aList;
-    
+
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 

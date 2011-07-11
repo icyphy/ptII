@@ -483,7 +483,7 @@ public class Time implements Comparable {
     public final boolean isNegativeInfinite() {
         return _isNegativeInfinite;
     }
-    
+
     /** Return true if the current time value is a positive value
      *  (including positive infinity).
      *  @return true if the current time value is a positive value

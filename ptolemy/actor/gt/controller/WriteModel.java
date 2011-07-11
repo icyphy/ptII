@@ -94,7 +94,7 @@ public class WriteModel extends GTEvent {
         Writer writer = modelFile.openForWriting();
         try {
             if (modelFile == null) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "You must set the modelFile parameter before running");
             }
             String fileName = modelFile.asFile().getName();

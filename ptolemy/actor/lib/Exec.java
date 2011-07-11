@@ -405,7 +405,7 @@ public class Exec extends LimitedFiringSource {
         }
 
         // if we sent output when the return value was non-zero, do not send
-        // additional output. 
+        // additional output.
         // see http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4326
         if (!alreadySentOutput) {
             String outputString = _outputGobbler.getAndReset();

@@ -1,4 +1,4 @@
-/* A TypedCompositeActor with Lazy evaluation for Modular code generation. 
+/* A TypedCompositeActor with Lazy evaluation for Modular code generation.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -162,7 +162,7 @@ you could do that anyway.  An attempt to make such references
 will simply result in the expression failing to evaluate.
 
 
- @author Dai Bui 
+ @author Dai Bui
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (rodiers)
@@ -212,12 +212,12 @@ public class ModularCompiledSDFTypedCompositeActor extends
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor 
+    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor
      *  and all contained ModularCodeGenTypedCompositeActors.
      */
     public Parameter recompileHierarchy;
 
-    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor. 
+    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor.
      */
     public Parameter recompileThisLevel;
 
@@ -236,7 +236,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
         return new Profile.Port(port.getName(), publisher, subscriber, port
                 .getWidth(), DFUtilities.getTokenConsumptionRate(port),
                 JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
-                        .getType()), port.isInput(), port.isOutput(), port.isMultiport(), 
+                        .getType()), port.isInput(), port.isOutput(), port.isMultiport(),
                 _pubSubChannelName(port, publisher, subscriber));
     }
 
@@ -647,9 +647,9 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(String name, IOPort subscriberPort)
@@ -885,7 +885,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param port The published port. 
+     *  @param port The published port.
      *  @exception NameDuplicationException If the published port
      *          is already registered.
      *  @exception IllegalActionException If the published port can't
@@ -968,9 +968,9 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort)
@@ -1036,7 +1036,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @param publisherPort The publisher port.
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort)
-	throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             ++_creatingPubSub;
             NamedObj container = getContainer();

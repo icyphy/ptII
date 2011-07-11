@@ -52,9 +52,9 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * The scheduler for the Pthales model of computation.
- *  
+ *
  * @author R&eacute;mi Barr&egrave;re
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -137,7 +137,7 @@ public class PthalesScheduler extends SDFScheduler {
     ////                         protected methods                 ////
 
     /**
-     * @exception IllegalActionException   
+     * @exception IllegalActionException
      * @exception NotSchedulableException
      */
     protected Schedule _getSchedule() throws IllegalActionException,

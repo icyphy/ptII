@@ -70,7 +70,7 @@ public class Read extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -87,5 +87,5 @@ public class Read extends Transformer {
             output.send(0, new ObjectToken(openCV));
         }
     }
-   
+
 }

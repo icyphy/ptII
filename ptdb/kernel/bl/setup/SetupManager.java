@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -41,32 +41,32 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.DBConnection;
 import ptolemy.util.FileUtilities;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////SetupManager
 
 /**
  * Manage the setup parameters that is being passed to it from the GUI layer and
  * communicate that to the database layer as needed.
- * 
- * 
+ *
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 
 public class SetupManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 				      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the existing database setup parameters. <p>Delegate this task to
      * DBConnectionFactory to perform it and return the value without any
      * modifications.</p>
-     * 
+     *
      * @return The existing database setup parameters.
      */
     public SetupParameters getSetupParameters() {
@@ -96,34 +96,34 @@ public class SetupManager {
 
         DBConnectionParameters dbCacheConnParams = new DBConnectionParameters(
                 url, cacheContainerName, false);
-        
+
         DBConnection mainConnection = null;
         DBConnection cacheConnection = null;
-        
+
 
         try {
-            
+
             mainConnection = DBConnectorFactory.getSyncConnection(
                     dbMainConnParams);
-            
+
             if (mainConnection == null) {
                 throw new DBConnectionException(
-                        "Failed to create connection with the following parameters: " 
+                        "Failed to create connection with the following parameters: "
                         + "\nURL: " + url
                         + "\nContainer Name: " + containerName);
             }
-           
+
             cacheConnection = DBConnectorFactory.getSyncConnection(
                     dbCacheConnParams);
-            
+
 
             if (cacheConnection == null) {
                 throw new DBConnectionException(
-                        "Failed to create connection with the following parameters: " 
+                        "Failed to create connection with the following parameters: "
                         + "\nURL: " + url
                         + "\nCache Container Name: " + cacheContainerName);
             }
-           
+
         } catch (DBConnectionException e) {
             throw new DBConnectionException(
                     "Unable to create connection with the given parameters."
@@ -132,7 +132,7 @@ public class SetupManager {
             if (mainConnection != null) {
                 mainConnection.closeConnection();
             }
-            
+
             if (cacheConnection != null) {
                 cacheConnection.closeConnection();
             }
@@ -142,7 +142,7 @@ public class SetupManager {
     /**
      * Update the existing database connection parameters with the given
      * parameters.
-     * 
+     *
      * @param params The new database connection parameters.
      * @exception DBConnectionException Thrown if the connection fails.
      * @exception IOException Thrown if an error occurs while writing the new
@@ -160,23 +160,23 @@ public class SetupManager {
         String ptdbParams = DBConnectorFactory._PROPERTIES_FILE_PATH;
         Properties props = new Properties();
 
-        
+
         File tempFile = FileUtilities.nameToFile(ptdbParams, null);
         File file = new File(tempFile.getPath().replaceAll("%20", " "));
         // if the file does not exist, then create it.
-        if(file.exists() == false) {
-            
+        if (file.exists() == false) {
+
             if (file.createNewFile() == false) {
-                
+
                 throw new IOException(
                         "Could not create the properties file "
                                 + ptdbParams);
             }
-        } 
+        }
 
 
         URL url = FileUtilities.nameToURL(ptdbParams, null, null);
-        
+
         if (url == null) {
             throw new IOException(
                     "Could not find the properties file "
@@ -186,7 +186,7 @@ public class SetupManager {
         String defaultDBClassName = "";
 
         props.load(url.openStream());
-        
+
         String dbClassName = (String) props
                 .getProperty(DBConnectorFactory._DB_CLASS_NAME);
 

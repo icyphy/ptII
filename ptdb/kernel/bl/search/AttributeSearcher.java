@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -76,11 +76,11 @@ public class AttributeSearcher extends AbstractSearcher implements
 
                     PTDBGenericAttribute newAttribute = new PTDBGenericAttribute(originalAttribute.getName());
 
-                    // Set the values and class name to newAttribute from 
+                    // Set the values and class name to newAttribute from
                     // originalAttribute.
 //                    newAttribute.setAttributeName(originalAttribute.getName());
-                    
-                    
+
+
                     //newAttribute.addValue(((Variable) originalAttribute)
                     //        .getValueAsString());
                     newAttribute.addValue(((Variable) originalAttribute)
@@ -89,16 +89,16 @@ public class AttributeSearcher extends AbstractSearcher implements
                     if (originalAttribute instanceof PTDBSearchAttribute) {
                         if (!((PTDBSearchAttribute) originalAttribute)
                                 .isGenericAttribute()) {
-                            
+
                             newAttribute.setClassName(originalAttribute
                                     .getClassName());
                         }
                         else {
-                                
+
                             newAttribute.setClassName(
                                     ((PTDBSearchAttribute) originalAttribute)
                                     .getGenericClassName());
-                        
+
                         }
                     } else {
                         newAttribute.setClassName(originalAttribute
@@ -135,9 +135,9 @@ public class AttributeSearcher extends AbstractSearcher implements
      *  this attribute searcher instance.
      *
      * @return true - if the search criteria has been set.<br>
-     *         false - if the search criteria has not been set. 
+     *         false - if the search criteria has not been set.
      */
-    
+
     protected boolean _isSearchCriteriaSet() {
 
         if (_attributesCriteria == null || _attributesCriteria.size() == 0) {
@@ -149,12 +149,12 @@ public class AttributeSearcher extends AbstractSearcher implements
     }
 
     /**
-     * Perform the actual search for the attributes search criteria. 
+     * Perform the actual search for the attributes search criteria.
      *
      * @exception DBExecutionException Thrown by the DBConnection if
      * unexpected problem happens during the execution of DB query tasks.
      */
-    
+
     protected void _search() throws DBExecutionException {
 
         AttributeSearchTask attributeSearchTask = new AttributeSearchTask();
@@ -167,15 +167,15 @@ public class AttributeSearcher extends AbstractSearcher implements
                 .executeAttributeSearchTask(attributeSearchTask);
 
         if (_currentResults == null) {
-            // The db layer cannot perform the searching, so make the search 
-            // criteria not set. 
+            // The db layer cannot perform the searching, so make the search
+            // criteria not set.
             _attributesCriteria = null;
         } else {
-            // Pass the intermediate results. 
+            // Pass the intermediate results.
             handleIntermediateResults(_currentResults, this);
         }
 
-        // Mark this searcher as passed in the chain. 
+        // Mark this searcher as passed in the chain.
         _pass();
     }
 

@@ -49,51 +49,51 @@ import ptolemy.kernel.util.NamedObj;
 @Pt.AcceptedRating Red (cshelton)
 */
 public class UnitConversionInfo extends Parameter {
-    
+
     /** Create a new UnitConversionInfo parameter with the given name and
      *  container.
      *  @param container The DimensionRepresentativeConcept that contains this
      *   parameter.
      *  @param name The name of the parameter.
-     *  @throws IllegalActionException Thrown if there is a problem creating
+     *  @exception IllegalActionException Thrown if there is a problem creating
      *   the parameter.
-     *  @throws NameDuplicationException Thrown if there is already a NamedObj
+     *  @exception NameDuplicationException Thrown if there is already a NamedObj
      *   in the DimensionRepresentativeConcept container with the same name.
      */
     public UnitConversionInfo(DimensionRepresentativeConcept container,
             String name) throws IllegalActionException, NameDuplicationException {
-        super(container, name);        
+        super(container, name);
         setTypeAtMost(BaseType.RECORD);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** The name label for the unit record token information when constructing
      *  a new UnitConcept.
      */
     public static final String unitNameLabel = "Name";
-    
+
     /** The factor label for the unit record token information when constructing
      *  a new UnitConcept.
      */
     public static final String unitFactorLabel = "Factor";
-    
+
     /** The offset label for the unit record token information when constructing
      *  a new UnitConcept.
      */
     public static final String unitOffsetLabel = "Offset";
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the setContainer method to only allow a UnitConversionInfo
      *  parameter to be contained by DimensionRepresentativeConcepts.
      *  @param container The new container for this parameter, which must either
      *   be a DimensionRepresentativeConcept or null.
-     *  @throws IllegalActionException Thrown if the new container is not
+     *  @exception IllegalActionException Thrown if the new container is not
      *   a DimensionRepresentativeConcept.
-     *  @throws NameDuplicationException Thrown if there is already a NamedObj
+     *  @exception NameDuplicationException Thrown if there is already a NamedObj
      *   in the DimensionRepresentativeConcept container with the same name.
      */
     public void setContainer(NamedObj container)
@@ -103,8 +103,8 @@ public class UnitConversionInfo extends Parameter {
             super.setContainer(container);
         } else {
             throw new IllegalActionException(this, "A UnitConversionInfo " +
-            		"parameter must be contained by a " +
-            		"DimensionRepresentativeConcept.");
+                            "parameter must be contained by a " +
+                            "DimensionRepresentativeConcept.");
         }
     }
 }

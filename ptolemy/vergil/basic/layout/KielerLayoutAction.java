@@ -64,11 +64,11 @@ model needs to be an input in the doAction() method.
 public class KielerLayoutAction extends Object implements IGuiAction {
 
     /**
-     * Layout the graph if the model is a CompositeActor. Otherwise throw an 
+     * Layout the graph if the model is a CompositeActor. Otherwise throw an
      * exception. The frame type must be ActorGraphFrame. The KIELER layouter
-     * is called with placing and routing. The routing uses bend point 
+     * is called with placing and routing. The routing uses bend point
      * annotations.
-     * 
+     *
      * @param model the model
      */
     public void doAction(NamedObj model) {
@@ -93,7 +93,7 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                             frame = tableau.getFrame();
                         }
                     }
-                    // Check for supported type of editor 
+                    // Check for supported type of editor
                     if (!(frame instanceof ActorGraphFrame)) {
                         String message = "";
                         if (tableauxCount == 0) {
@@ -111,7 +111,7 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                                 message = "The first frame of "
                                         + tableauxCount
                                         + " found by findEffigy() is "
-                                        + (firstFrame == null ? "null" 
+                                        + (firstFrame == null ? "null"
                                                 : "a \"" + firstFrame.getClass().getName() + "\"")
                                         + ", which is not an instance of ActorGraphFrame."
                                         + " None of the other frames were ActorGraphFrames either.";

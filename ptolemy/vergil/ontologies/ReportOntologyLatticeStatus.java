@@ -58,7 +58,7 @@ public class ReportOntologyLatticeStatus {
      *  @param modelGraphController The graph controller for the ontology model.
      */
     public static void showStatusAndHighlightCounterExample(Ontology ontologyModel, OntologyGraphController modelGraphController) {
-        boolean isLattice = ontologyModel.isLattice();        
+        boolean isLattice = ontologyModel.isLattice();
         modelGraphController.clearAllErrorHighlights();
 
         if (isLattice) {

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -178,12 +178,12 @@ public class ExecutorThread implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * Delegate the call to the abortConnection() API of DBConnection.
      * Set the error message in the task queue if the error message is not null.
-     * @param errorMessage Error message due to which the transaction needs to 
-     * be aborted. 
+     * @param errorMessage Error message due to which the transaction needs to
+     * be aborted.
      */
     private void _abortConnection(String errorMessage) {
         try {
@@ -192,16 +192,16 @@ public class ExecutorThread implements Runnable {
         } catch (DBConnectionException e) {
             e.printStackTrace();
         }
-        if(errorMessage != null) {
+        if (errorMessage != null) {
             _taskQueue.setExecutionError(errorMessage);
         }
     }
-    
+
     /**
-     * Commit and close the connection. 
+     * Commit and close the connection.
      * Mark execution completed in the task queue.
-     * 
-     * @throws DBConnectionException If thrown while closing or committing the
+     *
+     * @exception DBConnectionException If thrown while closing or committing the
      * database connection.
      */
     private void _closeConnection() throws DBConnectionException {
@@ -214,9 +214,9 @@ public class ExecutorThread implements Runnable {
      * Delegate the call to the appropriate API of DBConnection
      * depending on the type of the task it is executing
      * @exception DBExecutionException If thrown while executing the tasks.
-     * @exception ModelAlreadyExistException Thrown when the model being created 
+     * @exception ModelAlreadyExistException Thrown when the model being created
      * is already in the database.
-     * @throws CircularDependencyException If thrown while creating the model 
+     * @exception CircularDependencyException If thrown while creating the model
      * reference.
      */
     private void _executeTask() throws DBExecutionException,
@@ -232,8 +232,8 @@ public class ExecutorThread implements Runnable {
         else if (task instanceof CreateModelTask) {
             _dbConn.executeCreateModelTask((CreateModelTask) task);
         }
-        
-        else if( task instanceof UpdateParentsToNewVersionTask) {
+
+        else if (task instanceof UpdateParentsToNewVersionTask) {
             _dbConn.executeUpdateParentsToNewVersion((UpdateParentsToNewVersionTask) task);
         }
     }
@@ -254,13 +254,13 @@ public class ExecutorThread implements Runnable {
     /**
      * This is the taskQueue into which an Asynchronous
      * connection adds the tasks for execution.
-     * 
+     *
      * The Executor thread reads tasks one by one from this
      * queue and executes them on the database.
-     * 
+     *
      * The taskQueue is also used as a communication mechanism
      * between the Executor thread and the Asynchronous connection.
-     * 
+     *
      * Each informs the other of an error by setting it
      * the error flag in the taskQueue.
      */

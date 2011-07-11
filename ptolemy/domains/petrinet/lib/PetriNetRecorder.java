@@ -65,7 +65,7 @@ public class PetriNetRecorder extends TypedAtomicActor implements PetriNetDispla
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////   
+    ////                         public methods                    ////
 
     /** Return the messages recorded since initialize() was called.
      *  @return The messages recorded since initialize() was called.
@@ -84,15 +84,15 @@ public class PetriNetRecorder extends TypedAtomicActor implements PetriNetDispla
 
 
     /** In this class, do nothing.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this class.
      */
     public void openDisplay() throws IllegalActionException {
     }
 
-    /** Set the text for the display.  This method is called by the 
+    /** Set the text for the display.  This method is called by the
      * PetriNetDirector.
-     * 
+     *
      * @param text
      *          The text to be shown in the display.
      */
@@ -101,8 +101,8 @@ public class PetriNetRecorder extends TypedAtomicActor implements PetriNetDispla
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////   
-    
+    ////                         private variables                 ////
+
     /** This string represents the evolution of the Petri Net and should
      * be set by the PetriNetDirector.
      */

@@ -164,7 +164,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         // While there are trials remaining...
         // Loop through the array multiple times.  Formerly, if we passed
         // in trials of 10, 10, 10, the selection would only occur 3 times.
-        // The selection code is not guaranteed to select the correct number 
+        // The selection code is not guaranteed to select the correct number
         // of trial in only one pass.  If the number of trials was 29, then the
         // only acceptable results from 10, 10, 10 would be combinations of
         // one 9 and two 10.  Formerly, the old code exceeded the possible

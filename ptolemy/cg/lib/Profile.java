@@ -1,4 +1,4 @@
-/* A interface with meta information for modular generated code. 
+/* A interface with meta information for modular generated code.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Profile
 
 /**
- * Meta information about 
+ * Meta information about
  * modularly generated code such as port information.
  * In this way we have a way to interface with the
  * generated code.
@@ -82,11 +82,11 @@ abstract public class Profile {
     /**
      * A profiled Junction.
      * @author dai
-     *  
+     *
      */
     static public class Junction {
         /** Construct a Junction.
-         *  @param putActor The 
+         *  @param putActor The
          */
         public Junction(String putActor, String putActorPort, String getActor,
                 String getActorPort, int numTokens) {
@@ -145,7 +145,7 @@ abstract public class Profile {
         }
 
         /** Return the name of this ProfileActor.
-         *  @return the name of this ProfileActor 
+         *  @return the name of this ProfileActor
          */
         public String getName() {
             return _name;
@@ -206,7 +206,7 @@ abstract public class Profile {
          * @param name The name of the port.
          * @param publisher A flag that specifies whether it is a subscriber.
          * @param subscriber A flag that specifies whether it is a publisher.
-         * @param width The width of the port. 
+         * @param width The width of the port.
          * @param rate The rate of the port
          * @param type The code type of the port that can be mapped back to ptolemy type
          * @param input A flag that specifies whether the port is an input port.
@@ -242,7 +242,7 @@ abstract public class Profile {
         public boolean input() {
             return _input;
         }
-        
+
         /**
          * Return whether the port is a multiport.
          * @return True if the port is a multiport.
@@ -302,7 +302,7 @@ abstract public class Profile {
 
         /** A flag that specifies whether the port in an input port.*/
         private boolean _input;
-        
+
         /** A flag that specifies whether the port in an input port */
         private boolean _multiport;
 

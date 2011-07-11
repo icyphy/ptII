@@ -103,7 +103,7 @@ public class PTreeMenuCreator extends MouseAdapter {
     public void removeMenuItemFactory(MenuItemFactory factory) {
         _factoryList.remove(factory);
     }
-    
+
     /** Remove all MenuItemFactories from the factory list.
      */
     public void clear() {
@@ -132,28 +132,28 @@ public class PTreeMenuCreator extends MouseAdapter {
 
             // An exception appears:
             // Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
-            // 	at ptolemy.vergil.tree.PTreeMenuCreator._doEvent(PTreeMenuCreator.java:119)
-            // 	at ptolemy.vergil.tree.PTreeMenuCreator.mousePressed(PTreeMenuCreator.java:82)
-            // 	at java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:222)
-            // 	at java.awt.Component.processMouseEvent(Component.java:5599)
-            // 	at javax.swing.JComponent.processMouseEvent(JComponent.java:3129)
-            // 	at java.awt.Component.processEvent(Component.java:5367)
-            // 	at java.awt.Container.processEvent(Container.java:2010)
-            // 	at java.awt.Component.dispatchEventImpl(Component.java:4068)
-            // 	at java.awt.Container.dispatchEventImpl(Container.java:2068)
-            // 	at java.awt.Component.dispatchEvent(Component.java:3903)
-            // 	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4256)
-            // 	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3933)
-            // 	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3866)
-            // 	at java.awt.Container.dispatchEventImpl(Container.java:2054)
-            // 	at java.awt.Window.dispatchEventImpl(Window.java:1801)
-            // 	at java.awt.Component.dispatchEvent(Component.java:3903)
-            // 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:463)
-            // 	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:269)
-            // 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
-            // 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:184)
-            // 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:176)
-            // 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:110)
+            //         at ptolemy.vergil.tree.PTreeMenuCreator._doEvent(PTreeMenuCreator.java:119)
+            //         at ptolemy.vergil.tree.PTreeMenuCreator.mousePressed(PTreeMenuCreator.java:82)
+            //         at java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:222)
+            //         at java.awt.Component.processMouseEvent(Component.java:5599)
+            //         at javax.swing.JComponent.processMouseEvent(JComponent.java:3129)
+            //         at java.awt.Component.processEvent(Component.java:5367)
+            //         at java.awt.Container.processEvent(Container.java:2010)
+            //         at java.awt.Component.dispatchEventImpl(Component.java:4068)
+            //         at java.awt.Container.dispatchEventImpl(Container.java:2068)
+            //         at java.awt.Component.dispatchEvent(Component.java:3903)
+            //         at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4256)
+            //         at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3933)
+            //         at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3866)
+            //         at java.awt.Container.dispatchEventImpl(Container.java:2054)
+            //         at java.awt.Window.dispatchEventImpl(Window.java:1801)
+            //         at java.awt.Component.dispatchEvent(Component.java:3903)
+            //         at java.awt.EventQueue.dispatchEvent(EventQueue.java:463)
+            //         at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:269)
+            //         at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+            //         at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:184)
+            //         at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:176)
+            //         at java.awt.EventDispatchThread.run(EventDispatchThread.java:110)
 
             // I think the problem here is that the actor pane has the focus when
             // the mouse click occurs.

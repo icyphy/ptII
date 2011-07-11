@@ -40,7 +40,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Scale
 
 /** The default adapter class for ptolemy.actor.lib.Scale.
@@ -61,24 +61,24 @@ public class Scale extends LatticeOntologyAdapter {
     public Scale(LatticeOntologySolver solver, ptolemy.actor.lib.Scale actor)
             throws IllegalActionException {
         super(solver, actor, false);
-        
+
         _multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
-        
+
         // If a definition for a multiplication concept function cannot be
         // found, just use the default constraints.
         if (_multiplyDefinition == null) {
             _useDefaultConstraints = true;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return the list of constraints for the Scale actor.
      *  @return The list of constraints for this adapter.
-     *  @throws IllegalActionException If there is an error creating
+     *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -100,7 +100,7 @@ public class Scale extends LatticeOntologyAdapter {
                                 getPropertyTerm(actor.factor) }));
             }
         }
-        
+
         // Add back in default constraints for the output to input relationship.
         if (!_useDefaultConstraints && (interconnectConstraintType == ConstraintType.EQUALS ||
                 interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
@@ -110,9 +110,9 @@ public class Scale extends LatticeOntologyAdapter {
 
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Return the list of propertyable attributes for the actor referred to
      *  by this adapter.
@@ -127,10 +127,10 @@ public class Scale extends LatticeOntologyAdapter {
 
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
-    
+    ////                         private variables                 ////
+
     /** The multiplication concept function definition found in the solver model. */
     private MultiplyConceptFunctionDefinition _multiplyDefinition;
 }

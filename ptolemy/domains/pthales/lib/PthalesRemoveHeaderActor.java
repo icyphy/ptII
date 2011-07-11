@@ -119,7 +119,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         }
     }
 
-    /** Read the contents of the array, and extract the header containing 
+    /** Read the contents of the array, and extract the header containing
      * the number of dimensions and the size of each dimension
      * at the beginning of the array then send only the useful informations.
      */
@@ -137,7 +137,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         int nbTokens = ((IntToken) portIn.get(0)).intValue();
         Token[] headerIn = portIn.get(0, nDims * 2);
 
-        // Input ports created and filled before elementary task called 
+        // Input ports created and filled before elementary task called
         int dataSize = nbTokens;
         String[] dims = new String[nDims];
         int[] sizes = new int[dims.length];

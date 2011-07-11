@@ -86,7 +86,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
         long seedValue = ((LongToken) (actor.seed.getToken())).longValue();
 
         ArrayList<String> args = new ArrayList<String>();
-        CodeStream codeStream = _templateParser.getCodeStream(); 
+        CodeStream codeStream = _templateParser.getCodeStream();
         if (seedValue == 0) {
             args.add(Long.toString(actor.hashCode()));
             codeStream.appendCodeBlock("setSeedBlock0", args);

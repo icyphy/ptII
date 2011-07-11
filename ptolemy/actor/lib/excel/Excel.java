@@ -125,11 +125,11 @@ public class Excel extends TypedAtomicActor {
         // Variables
         //IOPort portIn = null;
 
-        // Input ports 
+        // Input ports
         //portIn = (IOPort) getPort("in");
 
         // BEFORE CALLING TASK //
-        // Input ports created and filled before elementary task called 
+        // Input ports created and filled before elementary task called
 //        int dataSize = PthalesIOPort.getDataProducedSize(portIn)
 //                * PthalesIOPort.getNbTokenPerData(portIn);
         // Token Arrays from simulation
@@ -212,15 +212,15 @@ public class Excel extends TypedAtomicActor {
             // Excel output
             workbook.write();
 
-            // Call to macro 
+            // Call to macro
             Runtime.getRuntime().exec(
                     "cmd /c start " + macro + " " + destFileName);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
+
+
         try {
             // Close Excel file
             workbook.close();
@@ -275,7 +275,7 @@ public class Excel extends TypedAtomicActor {
             macro.setExpression("");
         }
     }
-    
+
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
      *  an execution, but after type resolution.  Derived classes can
@@ -285,7 +285,7 @@ public class Excel extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-    
+
         // Reset iteration number (used for excel file name)
         _iterationCount = 0;
 

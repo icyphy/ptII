@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -87,24 +87,24 @@ import ptolemy.util.MessageHandler;
  * An extended JFrame used for saving a model to the database. Additionally, the
  * user can manage model attributes prior to saving. This associates saved
  * attributes to those that the user selects for model searches.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
- * 
+ *
  */
 public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
     /**
      * Construct a SaveModelToDBFrame. Add swing Components to the frame. Add
      * listeners for the "Save" and "Cancel" buttons.
-     * 
+     *
      * @param model The model that is being saved to the database.
      * @param source The source frame.  Used to set modified to false upon
      *          successful save.
-     * 
+     *
      */
     public SaveModelToDBFrame(NamedObj model, ActorGraphDBFrame source) {
 
@@ -247,16 +247,16 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             }
         });
 
-        // Add the action listener to model name text field. 
+        // Add the action listener to model name text field.
         _attributesListPanel.getNameTextField().addKeyListener(
                 new KeyListener() {
 
-                    
+
                     public void keyTyped(KeyEvent e) {
-                        // Do nothing. 
+                        // Do nothing.
                     }
 
-                    
+
                     public void keyReleased(KeyEvent e) {
 
                         if (!_attributesListPanel.getNameTextField().getText()
@@ -271,10 +271,10 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                         }
                     }
 
-                    
+
                     public void keyPressed(KeyEvent e) {
 
-                        /* 
+                        /*
                          * If the enter button is pressed, perform the action
                          *  based on the enabled button.
                          */
@@ -303,7 +303,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         validate();
         repaint();
 
-        // The next button should be disabled if there is no parent of 
+        // The next button should be disabled if there is no parent of
         // the saving model.
         // The save button should be disabled if there are parents of the
         // saving model.
@@ -316,12 +316,12 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    public methods                         ////
+    ////                         public methods                    ////
 
     /**
      * Close this window.
      */
-    
+
     public void closeFrame() {
         if (_parentValidateFrame != null) {
             _parentValidateFrame.dispose();
@@ -334,16 +334,16 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     //                    private methods                          ////
 
     /**
-     * Save the model to the database, together with the references changes 
-     * to its parent models. 
-     * 
-     * @param isNew Whether this is a new model. 
-     * @param id The id of this model. 
-     * @param parentsMaintainOldVersion The list of parents names that do not want 
-     * to reflect the changes to the submodel they have.  
-     * @param newVersionName The new name of this saving model, to have those 
+     * Save the model to the database, together with the references changes
+     * to its parent models.
+     *
+     * @param isNew Whether this is a new model.
+     * @param id The id of this model.
+     * @param parentsMaintainOldVersion The list of parents names that do not want
+     * to reflect the changes to the submodel they have.
+     * @param newVersionName The new name of this saving model, to have those
      * parent models maintaining the old reference.
-     * @throws Exception Thrown if errors occur during the saving. 
+     * @exception Exception Thrown if errors occur during the saving.
      */
     private void _commitSave(boolean isNew, String id,
             ArrayList<String> parentsMaintainOldVersion, String newVersionName)
@@ -438,8 +438,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                     throw e;
                 }
 
-                //                // Update the parent models that are opened already. 
-                //                // Update those parents with unchanged sub model first. 
+                //                // Update the parent models that are opened already.
+                //                // Update those parents with unchanged sub model first.
                 //                if (parentsMaintainOldVersion != null
                 //                        && parentsMaintainOldVersion.size() > 0) {
                 //
@@ -450,7 +450,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 //
                 //                        if (_source.getConfiguration().getDirectory()
                 //                                .getEntity(parentName) != null) {
-                //                            // This parent model is opened. 
+                //                            // This parent model is opened.
                 //
                 //                            PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
                 //                                    .getConfiguration().getDirectory()
@@ -468,7 +468,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 //                                        && Utilities.getIdFromModel(
                 //                                                componentEntity)
                 //                                                .equals(modelId)) {
-                //                                    // Update the original model id to the new 
+                //                                    // Update the original model id to the new
                 //                                    // version model id.
                 //                                    StringParameter modelIdAttribute = (StringParameter) componentEntity
                 //                                            .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR);
@@ -502,7 +502,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 //                            }
                 //
                 //                            // If that model hasn't changed, set the changed
-                //                            // to false. 
+                //                            // to false.
                 //                            if (!modifiedFlag) {
                 //                                parentModelEffigy.setModified(false);
                 //                            }
@@ -519,8 +519,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 //                    if (parentsModelsMaintainReferences != null
                 //                            && parentsModelsMaintainReferences.size() > 0) {
                 //
-                //                        // fetch the saved sub model from the database, to 
-                //                        // update the information in the parent model. 
+                //                        // fetch the saved sub model from the database, to
+                //                        // update the information in the parent model.
                 //                        XMLDBModel savedModel = DBModelFetcher
                 //                                .loadUsingId(modelId);
                 //
@@ -549,7 +549,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 //                        for (String parentName : parentsModelsMaintainReferences) {
                 //                            if (_source.getConfiguration().getDirectory()
                 //                                    .getEntity(parentName) != null) {
-                //                                // This parent model is opened. 
+                //                                // This parent model is opened.
                 //
                 //                                PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
                 //                                        .getConfiguration().getDirectory()
@@ -605,7 +605,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 //                                }
                 //
                 //                                // If that model hasn't changed, set the changed
-                //                                // to false. 
+                //                                // to false.
                 //                                if (!modifiedFlag) {
                 //                                    parentModelEffigy.setModified(false);
                 //                                }
@@ -633,7 +633,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 }
                 dispose();
 
-                // Reload the opened parent models. 
+                // Reload the opened parent models.
                 if (openedParents != null) {
 
                     for (String openedParentModelName : openedParents) {
@@ -660,7 +660,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
                 }
 
-                // Display the saved sub model to the front. 
+                // Display the saved sub model to the front.
                 if (_source.getConfiguration().getDirectory().getEffigy(
                         _xmlModel.getModelName()) != null) {
                     _source.getConfiguration().getDirectory().getEffigy(
@@ -699,14 +699,14 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     }
 
     /**
-     * Check whether the given model has parents. 
-     * 
-     * @return true - if there are parents of the given model.<br>  
-     *  False - if there is no parent for the given model. 
+     * Check whether the given model has parents.
+     *
+     * @return true - if there are parents of the given model.<br>
+     *  False - if there is no parent for the given model.
      * @exception DBExecutionException Thrown if error happens during the
-     *   execution of this operation in the db layer. 
-     * @exception DBConnectionException Thrown if db connection cannot be 
-     * obtained. 
+     *   execution of this operation in the db layer.
+     * @exception DBConnectionException Thrown if db connection cannot be
+     * obtained.
      */
     private boolean _hasParents() throws DBConnectionException,
             DBExecutionException {
@@ -716,12 +716,12 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         }
 
         if (_hasParentFlag == true && _parentModels == null) {
-            // Has not verified whether the saving model has parents yet. 
+            // Has not verified whether the saving model has parents yet.
             if (Utilities.getIdFromModel(_modelToSave) != null) {
                 _parentModels = _saveModelManager
                         .getFirstLevelParents(_xmlModel);
 
-                // In the case of no parents, set the has parent flag to false. 
+                // In the case of no parents, set the has parent flag to false.
                 if (_parentModels == null || _parentModels.size() == 0) {
                     _hasParentFlag = false;
                     _parentModels = null;
@@ -745,7 +745,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
         boolean isNew = true;
 
-        // It is not new if the model has the DBModel tag 
+        // It is not new if the model has the DBModel tag
         // and the model name is still the same.
         String newName = _attributesListPanel.getModelName();
         if (_modelToSave.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null
@@ -1105,7 +1105,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //                    private variables                        ////    
+    //                    private variables                        ////
 
     private AttributesListPanel _attributesListPanel;
 
@@ -1141,9 +1141,9 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     private class ParentValidateFrame extends JFrame {
 
         /**
-         * Construct the parent validate frame. 
-         * 
-         * @param firstFrameOfSave The first frame of the saving wizard. 
+         * Construct the parent validate frame.
+         *
+         * @param firstFrameOfSave The first frame of the saving wizard.
          */
         public ParentValidateFrame(SaveModelToDBFrame firstFrameOfSave) {
 
@@ -1246,9 +1246,9 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             // set the visibility to false at the beginning
             _showModelNameField(false);
 
-            // Get the list of parent models from _parentModels of the parent 
+            // Get the list of parent models from _parentModels of the parent
             // frame SaveModelToDBFrame, paint the models one by one in the
-            // frame, order by name. 
+            // frame, order by name.
             _parentModelsPanels = new ArrayList<ParentModelItemPanel>();
 
             Collections.sort(_firstFrameOfSave._parentModels);
@@ -1267,7 +1267,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             _previousButton = new JButton("<< Previous");
             _previousButton.addActionListener(new ActionListener() {
 
-                
+
                 public void actionPerformed(ActionEvent e) {
                     setVisible(false);
                     _firstFrameOfSave.setVisible(true);
@@ -1282,7 +1282,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _saveButton.addActionListener(new ActionListener() {
 
-                
+
                 public void actionPerformed(ActionEvent e) {
 
                     // Add the action listener to call the save button in the
@@ -1299,7 +1299,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _cancelButton.addActionListener(new ActionListener() {
 
-                
+
                 public void actionPerformed(ActionEvent e) {
                     // Add the action listener to call the cancel button in the
                     // previous frame, when this button is clicked.
@@ -1354,7 +1354,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             for (ParentModelItemPanel parentModelPanel : _parentModelsPanels) {
                 String parentModelName = parentModelPanel.getParentModelName();
 
-                // If the parent model is opened. 
+                // If the parent model is opened.
                 if (_source.getConfiguration().getDirectory().getEntity(
                         parentModelName) != null) {
 
@@ -1384,12 +1384,12 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         //        }
 
         /**
-         * Check whether there is any parent being chosen to have a new 
+         * Check whether there is any parent being chosen to have a new
          * version model name for the saving model, which means that parent
-         *  model has its check box unchecked. 
-         * 
+         *  model has its check box unchecked.
+         *
          * @return True - when there are some parent models chosen.<br>
-         *   False if there is no model chosen. 
+         *   False if there is no model chosen.
          */
         private boolean _hasParentsWithNewVersion() {
 
@@ -1405,14 +1405,14 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         }
 
         /**
-         * Validate whether the information in this frame is valid. 
-         * 
+         * Validate whether the information in this frame is valid.
+         *
          * @return True - if the data is valid.<br>
          *       False - if some data is invalid.
-         * @exception IllegalNameException Thrown if the new version name is 
-         * illegal. 
-         * @exception UnSavedParentModelsException Thrown if this model has 
-         * some unsaved parents opening there. 
+         * @exception IllegalNameException Thrown if the new version name is
+         * illegal.
+         * @exception UnSavedParentModelsException Thrown if this model has
+         * some unsaved parents opening there.
          */
         private boolean _isValid() throws IllegalNameException,
                 UnSavedParentModelsException {
@@ -1420,14 +1420,14 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             Collection<NamedObj> unSavedModels = new ArrayList<NamedObj>();
             boolean hasUnsavedParent = false;
 
-            // Verify whether there is any unsaved parent model opening there. 
+            // Verify whether there is any unsaved parent model opening there.
             for (String parentModelName : _getOpenedParents()) {
 
                 PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
                         .getConfiguration().getDirectory().getEffigy(
                                 parentModelName);
 
-                // If the parent model is unsaved. 
+                // If the parent model is unsaved.
                 if (parentModelEffigy.isModified()) {
                     unSavedModels.add(parentModelEffigy.getModel());
                     hasUnsavedParent = true;
@@ -1509,11 +1509,11 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     private class ParentModelItemPanel extends JPanel {
 
         /**
-         * Construct the ParentModelItemPanel. 
-         * 
+         * Construct the ParentModelItemPanel.
+         *
          * @param parentModelName The name of the parent model.
          * @param configuration The configuration.
-         * @param parentValidateFrame The frame contains this panel. 
+         * @param parentValidateFrame The frame contains this panel.
          */
         public ParentModelItemPanel(String parentModelName,
                 Configuration configuration,
@@ -1574,7 +1574,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             });
 
-            // For each model, paint one checkbox along with it, checked by 
+            // For each model, paint one checkbox along with it, checked by
             // default.
             _checkBox = new JCheckBox();
             _checkBox.setSelected(true);
@@ -1583,7 +1583,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _checkBox.addActionListener(new ActionListener() {
 
-                
+
                 public void actionPerformed(ActionEvent e) {
                     _parentFrame._unCheckParentModel();
 

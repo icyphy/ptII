@@ -32,9 +32,9 @@ import ptolemy.data.Token;
 ///////////////////////////////////////////////////////////////////
 //// PtrToken
 
-/** A Token that represents a pointer to an address in memory. In addition 
+/** A Token that represents a pointer to an address in memory. In addition
  * the token has a size that specifies the size of the array in memory.
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -50,7 +50,7 @@ public class PtrToken extends Token {
     }
 
     /** Create a Token with an initial address and an initial size.
-     * 
+     *
      * @param addr The address in the memory that this token is pointing to.
      * @param size The size of the array in the memory that this token
      * is pointing to.
@@ -64,22 +64,22 @@ public class PtrToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the address in memory this token is pointing to. Do 
+    /** Get the address in memory this token is pointing to. Do
      * not check, if there actually is something at that memory address.
-     * 
+     *
      * @see #setAddress(int)
-     * 
+     *
      * @return The address in memory this token is pointing to.
      */
     public int getAddress() {
         return _addr;
     }
 
-    /** Get the size of the array in memory this token is pointing to. Do 
+    /** Get the size of the array in memory this token is pointing to. Do
      * not check, if the array in the memory is of that size.
-     * 
+     *
      * @see #setSize(int)
-     * 
+     *
      * @return The size of the array in memory this token is pointing to.
      */
     public int getSize() {
@@ -88,21 +88,21 @@ public class PtrToken extends Token {
 
     /** Set the address in memory this token should point to. Do not
      * change the position of the array in the memory.
-     * 
+     *
      * @see #getAddress()
-     * 
+     *
      * @param addr The address in memory this token should point to.
      */
     public void setAddress(int addr) {
         this._addr = addr;
     }
 
-    /** Set the size of the array in memory this token is pointing to. Do not 
+    /** Set the size of the array in memory this token is pointing to. Do not
      * change the actual content or size of the memory nor the array
      * in the memory.
-     * 
+     *
      * @see #getSize()
-     * 
+     *
      * @param size The size of the array in memory this token is pointing to.
      */
     public void setSize(int size) {

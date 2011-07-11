@@ -163,7 +163,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // idle (and the previous one was something else), since we want
             // to update visual effects that might have changed by running the
             // model.
-            if (newState == Manager.IDLE || _areThereActiveErrorHighlights()) {                
+            if (newState == Manager.IDLE || _areThereActiveErrorHighlights()) {
                 ChangeRequest request = _getClearAllErrorHighlightsChangeRequest();
                 manager.requestChange(request);
             }

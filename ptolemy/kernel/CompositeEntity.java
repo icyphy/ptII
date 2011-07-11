@@ -221,9 +221,9 @@ public class CompositeEntity extends ComponentEntity {
      *  contain a director.
      */
     public List allCompositeEntityList() {
-	// FIXME: This should be allCompositeTransparentEntityList()
-	// FIXME: There should also be allCompositeOpaqueEntityList()
-	// FIXME: this method should return all transparent and opaque composites
+        // FIXME: This should be allCompositeTransparentEntityList()
+        // FIXME: There should also be allCompositeOpaqueEntityList()
+        // FIXME: this method should return all transparent and opaque composites
         try {
             _workspace.getReadAccess();
 
@@ -1122,7 +1122,7 @@ public class CompositeEntity extends ComponentEntity {
                                 continue;
                             }
                         }
-                        
+
                         // Escape any < character that occurs in name.
                         // setName(String).
                         String escapedName = StringUtilities.escapeForXML(entity.getName());
@@ -1523,10 +1523,10 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition()&& */!entity.isOpaque() /*entity instanceof CompositeEntity*/) {
                         result.add(entity);
-			result.addAll(((CompositeEntity) entity)
-				      .lazyAllCompositeEntityList());
+                        result.addAll(((CompositeEntity) entity)
+                                      .lazyAllCompositeEntityList());
 
-		    }
+                    }
                 }
             }
 
@@ -1558,12 +1558,12 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition()&& !entity.isOpaque()*/
-			entity instanceof CompositeEntity) {
+                        entity instanceof CompositeEntity) {
                         result.add(entity);
-			result.addAll(((CompositeEntity) entity)
-				      .lazyAllCompositeTransparentAndOpaqueEntityList());
+                        result.addAll(((CompositeEntity) entity)
+                                      .lazyAllCompositeTransparentAndOpaqueEntityList());
 
-		    }
+                    }
                 }
             }
 
@@ -1943,9 +1943,9 @@ public class CompositeEntity extends ComponentEntity {
             }
 
             int compositeEntityCount = 0;
-	    int opaqueCompositeEntityCount = 0;
+            int opaqueCompositeEntityCount = 0;
             List relationList = lazyRelationList();
-	    int relationCount = relationList.size();
+            int relationCount = relationList.size();
             if (clazz != null) {
                 // Search the relations
                 Iterator relations = relationList.iterator();
@@ -1964,9 +1964,9 @@ public class CompositeEntity extends ComponentEntity {
                 Entity entity = (Entity) entities.next();
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
-		    if (((CompositeEntity)entity).isOpaque()) {
-			opaqueCompositeEntityCount++;
-		    }
+                    if (((CompositeEntity)entity).isOpaque()) {
+                        opaqueCompositeEntityCount++;
+                    }
                     // Find the depth and add it to the list
                     Integer depth = Integer.valueOf(entity.depthInHierarchy());
                     if (!compositeEntityDepthMap.containsKey(depth)) {
@@ -2373,8 +2373,8 @@ public class CompositeEntity extends ComponentEntity {
                     if (!_commonImplier(record.relation1, depth
                             + _depthInside(record.relation1), record.port,
                             depth + _depthInside(record.port))) {
-                    	
-                        // Escape any < character in name. unescapeForXML occurs in 
+
+                        // Escape any < character in name. unescapeForXML occurs in
                         // setName(String).
                         String escapedRecordPortName = StringUtilities.escapeForXML(record.port.getName(this));
                         String escapedRecordRelation1Name = StringUtilities.escapeForXML(record.relation1.getName(this));
@@ -2390,7 +2390,7 @@ public class CompositeEntity extends ComponentEntity {
                     if (!_commonImplier(record.relation1, depth
                             + _depthInside(record.relation1), record.relation2,
                             depth + _depthInside(record.relation2))) {
-                    	
+
                         String escapedRecordRelation1Name = StringUtilities.escapeForXML(record.relation1.getName(this));
                         String escapedRecordRelation2Name = StringUtilities.escapeForXML(record.relation2.getName(this));
 

@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  consumed from the input port. If the width of the <i>output</i> is
  greater than that of the <i>input</i>, then the last few channels of
  the <i>output</i> will never emit tokens.
- 
+
  <p> The <i>trigger</i> port is a multiport. Whenever a trigger is received
  on any channel the actor fires and produces an output. Multiple triggers
  with the same timestamp are considered as one trigger.
@@ -296,9 +296,9 @@ public class SampleAndHold extends Transformer {
     protected Token[] _lastInputs;
 
     /** Consume inputs and save them. Discard inputs on input channels
-     *  that do not have corresponding output channels. 
+     *  that do not have corresponding output channels.
      *  @param commonWidth The minimum of the input and the output width.
-     *  @param inputWidth The width of the input port. 
+     *  @param inputWidth The width of the input port.
      *  @exception IllegalActionException Thrown if port tokens cannot be accessed.
      */
     protected void readInputs(int commonWidth, int inputWidth)
@@ -318,12 +318,12 @@ public class SampleAndHold extends Transformer {
         }
     }
 
-    /** Send output tokens if any input on the trigger port has a token. 
-     *  All trigger tokens are consumed. 
-     *  @param commonWidth The minimum of the input and the output port width. 
-     *  @exception IllegalActionException Thrown if the width or the token of 
-     *      the trigger port cannot be accessed or if tokens cannot be sent on 
-     *      the output port. 
+    /** Send output tokens if any input on the trigger port has a token.
+     *  All trigger tokens are consumed.
+     *  @param commonWidth The minimum of the input and the output port width.
+     *  @exception IllegalActionException Thrown if the width or the token of
+     *      the trigger port cannot be accessed or if tokens cannot be sent on
+     *      the output port.
      */
     protected void sendOutputIfTriggered(int commonWidth)
         throws IllegalActionException {

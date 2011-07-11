@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Derivative
 
 /**
@@ -63,7 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
  requires seeing the future. Although in principle it might be
  possible for this actor to collaborate with the solver to
  speculatively execute into the future to get the derivative,
- we have not done that here. 
+ we have not done that here.
  <p>
  Upon firing, this actor produces an output on the <i>derivative</i>
  port, and may also produce an output on the <i>impulse</i> port.
@@ -103,7 +103,7 @@ import ptolemy.kernel.util.StringAttribute;
  where its input comes from an Integrator or its outputs go
  to an Integrator. The Integrator actor will exercise control
  over step sizes.
- 
+
  @author Edward A. Lee and Janette Cardoso
  @version $Id$
  @since Ptolemy II 8.2
@@ -124,18 +124,18 @@ public class Derivative extends TypedAtomicActor {
     public Derivative(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
 
         derivative = new TypedIOPort(this, "derivative", false, true);
         derivative.setTypeEquals(BaseType.DOUBLE);
-        
+
         impulse = new TypedIOPort(this, "impulse", false, true);
         impulse.setTypeEquals(BaseType.DOUBLE);
         StringAttribute cardinality = new StringAttribute(impulse, "_cardinal");
         cardinality.setExpression("SOUTH");
-        
+
         // icon
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
@@ -143,7 +143,7 @@ public class Derivative extends TypedAtomicActor {
                 + "style=\"font-size:14\">\n" + "d/dt \n" + "</text>\n"
                 + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -158,29 +158,29 @@ public class Derivative extends TypedAtomicActor {
     /** The input port. This port has type double.
      */
     public TypedIOPort input;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Produce outputs as specified in the class comment.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (!(input.hasToken(0))) {
             initialize();
             return;
         }
         DoubleToken currentInput = (DoubleToken)input.get(0);
-        
+
         Time currentTime = getDirector().getModelTime();
         if (_previousTime == null) {
             // First firing.
             _previousTime = currentTime;
             derivative.send(0, DoubleToken.ZERO);
             _previousOutput = DoubleToken.ZERO;
-            
+
             _previousValue = currentInput.doubleValue();
             if (_previousValue != 0.0) {
                 impulse.send(0, currentInput);
@@ -206,7 +206,7 @@ public class Derivative extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Ensure that the next invocation of the fire() method is treated
      *  as a first firing.
      *  @exception IllegalActionException If the superclass throws it.
@@ -223,7 +223,7 @@ public class Derivative extends TypedAtomicActor {
 
     /** The time of the previous input, or null on the first firing. */
     private Time _previousTime;
-    
+
     /** The value of the previous output, or null on the first firing. */
     private DoubleToken _previousOutput;
 

@@ -52,28 +52,28 @@ import ptolemy.kernel.util.Workspace;
  *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
  *  according to a service rule.
- *  
+ *
  *  The actor differentiates between two kinds of tokens: time-triggered
- *  and event-triggered, which is defined by the parameter <i>type</i> in 
- *  the port which is associated with this quantity manager. 
- *  
- *  When tokens are received they are delivered with a delay given by the 
- *  <i>serviceTime</i> parameter. If the actor is currently servicing a previous 
+ *  and event-triggered, which is defined by the parameter <i>type</i> in
+ *  the port which is associated with this quantity manager.
+ *
+ *  When tokens are received they are delivered with a delay given by the
+ *  <i>serviceTime</i> parameter. If the actor is currently servicing a previous
  *  event-triggered token when it receives a time-triggered token, the event-triggered
- *  token is queued again and the time-triggered token is serviced. After the 
+ *  token is queued again and the time-triggered token is serviced. After the
  *  time-triggered token is sent, the event-triggered token in the queue is selected
  *  and delivered after the full <i>serviceTime</i>. If an event-triggered token arrives
  *  while another event-triggered token arrives, the new event-triggered token is queued.
  *  If a time-triggered token is received while another time-triggered token is serviced
- *  an exception is thrown. Time-triggered messages should have a fixed delay. In a 
+ *  an exception is thrown. Time-triggered messages should have a fixed delay. In a
  *  time-triggered ethernet implementation an offline calculated schedule ensures that only
- *  one time-triggered message is received by the TTESwitch at a time.  
+ *  one time-triggered message is received by the TTESwitch at a time.
  *  Event-triggered tokens are processed in FIFO order.
  *  <p>
  *  This actor will be used on any communication where the receiving
  *  port has a parameter named "QuantityManager" that refers by name
  *  to the instance of this actor.
- *  
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -110,7 +110,7 @@ public class TTESwitch extends MonitoredQuantityManager {
         serviceTime.setExpression("0.1");
         serviceTime.setTypeEquals(BaseType.DOUBLE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -119,7 +119,7 @@ public class TTESwitch extends MonitoredQuantityManager {
      *  (time-triggered or event-triggered).
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
-     *  @throws IllegalActionException If parameter
+     *  @exception IllegalActionException If parameter
      */
     public IntermediateReceiver getReceiver(Receiver receiver)
             throws IllegalActionException {
@@ -150,7 +150,7 @@ public class TTESwitch extends MonitoredQuantityManager {
         }
         return intermediateReceiver;
     }
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -210,7 +210,7 @@ public class TTESwitch extends MonitoredQuantityManager {
         }
     }
 
-    /** If a token has been sent in the fire method then schedule the next firing. 
+    /** If a token has been sent in the fire method then schedule the next firing.
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -255,7 +255,7 @@ public class TTESwitch extends MonitoredQuantityManager {
         _etTokens.clear();
         _ttTokens.clear();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -263,7 +263,7 @@ public class TTESwitch extends MonitoredQuantityManager {
      *  It is required to be positive.
      */
     public Parameter serviceTime;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

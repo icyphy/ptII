@@ -42,13 +42,13 @@ void DoubleArray_resize(Token array, int size) {
     } else {
         array.payload.DoubleArray->elements = (double*) realloc(
                      array.payload.DoubleArray->elements, size * sizeof(double));
-    } 
+    }
     array.payload.DoubleArray->size = size;
 }
 
 // DoubleArray_insert: Append the specified element to the end of an array.
 void DoubleArray_insert(Token array, double token) {
-    // FIXME: call this append(), not insert().  
+    // FIXME: call this append(), not insert().
     int oldSize = array.payload.DoubleArray->size;
     DoubleArray_resize(array, oldSize + 1 );
     ((double *) array.payload.DoubleArray->elements)[oldSize] = token;

@@ -30,36 +30,36 @@ package ptdb.common.dto;
 
 import java.util.ArrayList;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// XMLDBModelWithReferenceChanges
 
 /**
- * 
+ *
  * Encapsulate the information needed by the business layer to perform a save
  * operation with parent references being affected by the change done on the
  * model to be saved.
- * 
+ *
  * <p>The Data Transfer Object pattern is used here.</p>
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 
 public class XMLDBModelWithReferenceChanges {
 
     /**
      * Construct a new instance of this class and set the member variables.
-     * 
+     *
      * @param modelToBeSaved The model to be saved in the database with no
      * changes.
-     * 
+     *
      * @param parentsList List of parents that should have the new model name as
      * the reference inside them with the old content.
-     * 
+     *
      * @param versionName A new name of the model which will be converted into a
      * model that contains the content of the modelToBeSaved before saving it.
      */
@@ -72,14 +72,14 @@ public class XMLDBModelWithReferenceChanges {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the model to be saved in the database.
-     * 
+     *
      * @return The model to be saved in the database.
-     * 
+     *
      * @see #setModelToBeSaved
      */
     public XMLDBModel getModelToBeSaved() {
@@ -89,10 +89,10 @@ public class XMLDBModelWithReferenceChanges {
     /**
      * Return The list of parents being affected by the changes made on the
      * model.
-     * 
+     *
      * @return The list of parents being affected by the changes made on the
      * model.
-     * 
+     *
      * @see #setParentsList
      */
     public ArrayList<String> getParentsList() {
@@ -101,9 +101,9 @@ public class XMLDBModelWithReferenceChanges {
 
     /**
      * Return The new model name that will be stored in the database.
-     * 
+     *
      * @return The new model name that will be stored in the database.
-     * 
+     *
      * @see #setVersionName
      */
     public String getVersionName() {
@@ -112,9 +112,9 @@ public class XMLDBModelWithReferenceChanges {
 
     /**
      * Set The model to be saved in the database.
-     * 
+     *
      * @param modelToBeSaved The model to be saved in the database.
-     * 
+     *
      * @see #getModelToBeSaved
      */
     public void setModelToBeSaved(XMLDBModel modelToBeSaved) {
@@ -123,10 +123,10 @@ public class XMLDBModelWithReferenceChanges {
 
     /**
      * Set The list of parents being affected by the changes made on the model.
-     * 
+     *
      * @param parentsList The list of parents being affected by the changes made
      * on the model.
-     * 
+     *
      * @see #getParentsList
      */
     public void setParentsList(ArrayList<String> parentsList) {
@@ -135,18 +135,18 @@ public class XMLDBModelWithReferenceChanges {
 
     /**
      * Set The new model name that will be stored in the database.
-     * 
+     *
      * @param versionName The new model name that will be stored in the
      * database.
-     * 
+     *
      * @see #getVersionName
      */
     public void setVersionName(String versionName) {
         _versionName = versionName;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The model to be saved in the database. */
     XMLDBModel _modelToBeSaved = null;

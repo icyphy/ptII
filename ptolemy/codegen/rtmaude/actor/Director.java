@@ -59,7 +59,7 @@ public class Director extends ptolemy.codegen.actor.Director {
 
     /** Generate the code specified by the given block with given arguments
      * for each actor associated to the director.
-     * 
+     *
      * @param blockName The name of the block.
      * @param args The arguments for the block.
      * @return The code described by the given block.

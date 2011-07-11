@@ -1,26 +1,26 @@
 /* A finite concept in an ontology that represents a flat set of infinite
  * concepts that map to a set of arbitrary Ptolemy tokens.
- * 
+ *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
+ *
  */
 package ptolemy.data.ontologies;
 
@@ -46,7 +46,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
 
     /** Create a new FlatTokenRepresentativeConcept with the specified name and
      *  ontology.
-     *  
+     *
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
      *  @exception NameDuplicationException If the ontology already contains a
@@ -59,7 +59,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return true if the string can represent a FlatTokenInfiniteConcept for
      *  this representative, false otherwise.
@@ -76,7 +76,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
             return false;
         }
     }
-    
+
     /** Return the FlatTokenInfiniteConcept with the given token that is
      *  contained by this representative.
      *  If the FlatTokenInfiniteConcept has already been instantiated, return it.
@@ -86,25 +86,25 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
      *   FlatTokenInfiniteConcept.
      *  @return The FlatTokenInfiniteConcept that has the given token and this
      *   representative.
-     *  @throws IllegalActionException Thrown if there is an error finding or
+     *  @exception IllegalActionException Thrown if there is an error finding or
      *   creating the FlatTokenInfiniteConcept from the given token.
      */
     public FlatTokenInfiniteConcept getFlatTokenInfiniteConceptByToken(
             Token tokenValue)
         throws IllegalActionException {
-        
-        String conceptString = getName() + "_" + tokenValue.toString();        
+
+        String conceptString = getName() + "_" + tokenValue.toString();
         return (FlatTokenInfiniteConcept) getInfiniteConceptByString(conceptString);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
-    
+    ////                         protected methods                 ////
+
     /** Create a new FlatTokenInfiniteConcept for the given concept string.
      *  @param infiniteConceptString The specified concept string that
      *   represents the FlatTokenInfiniteConcept to be created.
      *  @return The newly created FlatTokenInfiniteConcept object.
-     *  @throws IllegalActionException Thrown if a valid
+     *  @exception IllegalActionException Thrown if a valid
      *   FlatTokenInfiniteConcept cannot be created.
      */
     protected FlatTokenInfiniteConcept _createInfiniteConceptInstance(
@@ -114,7 +114,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
                     .length() + 1);
             Variable tempTokenVariable = null;
             try {
-                // Use a temporary Variable object to parse the 
+                // Use a temporary Variable object to parse the
                 // expression string that represents the token.
                 tempTokenVariable = new Variable(this, "_tempTokenVariable");
                 tempTokenVariable.setExpression(expression);
@@ -133,24 +133,24 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
                 } catch (NameDuplicationException nameDupExAfterSetContainerToNull) {
                     throw new IllegalActionException(this,
                             nameDupExAfterSetContainerToNull, "Could " +
-                    		"not remove tempTokenVariable object from this " +
-                    		"concept after it is no longer needed.");
+                                    "not remove tempTokenVariable object from this " +
+                                    "concept after it is no longer needed.");
                 }
             }
         } else {
             throw new IllegalActionException(this, "The given string cannot " +
-            		"be used to derive a valid infinite concept contained " +
-            		"by this representative.");
+                            "be used to derive a valid infinite concept contained " +
+                            "by this representative.");
         }
     }
-    
+
     /** Return a new FlatTokenInfiniteConcept for this representative with
      *  the given token value.
-     * 
+     *
      *  @param tokenValue The token value for the FlatTokenInfiniteConcept
      *          to be instantiated.
      *  @return A new FlatTokenInfiniteConcept
-     *  @throws IllegalActionException Thrown if the FlatTokenInfiniteConcept
+     *  @exception IllegalActionException Thrown if the FlatTokenInfiniteConcept
      *   cannot be created.
      */
     protected FlatTokenInfiniteConcept _instantiateFlatTokenInfiniteConcept(

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
 ////SyntacticCodeGenerator
 
 /** Generate a syntactic representation of a ptolemy model.
- *  <p>To generate a syntactic representation, use:  
+ *  <p>To generate a syntactic representation, use:
  *  <pre>
      java -classpath $PTII ptolemy.cg.kernel.generic.syntactic.SyntacticCodeGenerator
  *  </pre>
@@ -51,14 +51,14 @@ import ptolemy.kernel.util.NamedObj;
  *  @version $Id$
  *  @since
  *  @Pt.ProposedRating red (shaver)
- *  @Pt.AcceptedRating red 
+ *  @Pt.AcceptedRating red
 */
 public class SyntacticCodeGenerator extends GenericCodeGenerator {
 
     /** Create a new instance of the SyntacticCodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
      *  base class is set to <code>generic.syntactic</code>
-     *  
+     *
      *  @param container The container.
      *  @param name The name of the SyntacticCodeGenerator.
      *  @exception IllegalActionException If the super class throws the
@@ -69,21 +69,21 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
     public SyntacticCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         generatorPackageList.setExpression("");
-        
+
         _graphCount = 0;
         _syntaxGraph = null;//new SyntacticGraph();
         //_syntaxGraph.setName("syntaxGraph");
     }
 
-    /** Format a string as a code comment. 
+    /** Format a string as a code comment.
      *  This format is specific to the grammar of the generated
      *  syntax.
-     *  
+     *
      *  Inheriting classes should override this function for the
      *  appropriate conventions of the syntax.
-     *   
+     *
      *  @param comment The string to format as a comment.
      *  @return A formatted comment.
      */
@@ -113,29 +113,29 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
      */
     protected int _generateCode(StringBuffer code) throws KernelException {
         code.append("{--- Syntactic Representation of graph ---}" + _eol);
-        
+
         _syntaxGraph = new SyntacticGraph();
         _syntaxGraph.setName("syntaxGraph" + (++_graphCount));
-        
+
         // Get top level actor
         CompositeEntity container = ((CompositeEntity) getContainer());
         _syntaxGraph.build(container);
         _showGraph();
-        
+
         code.append(_syntaxGraph.generateCode());
-        
+
         // Generate file in generic super
         return super._generateCode(code);
     }
 
     /** Return the filter class to find adapters. All
      *  adapters have to extend this class.
-     *  @return The base class for the adapters.  
+     *  @return The base class for the adapters.
      */
     protected Class<?> _getAdapterClassFilter() {
         return SyntacticCodeGeneratorAdapter.class;
     }
-    
+
     /** Show the SyntacticGraph in a Tableau.
      *  @exception IllegalActionException Thrown if there is a problem
      *  getting the configuration, opening the instance of the
@@ -153,12 +153,12 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
 
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private SyntacticGraph _syntaxGraph;
     private Tableau _syntaxTableau;
     private int _graphCount;
-    
+
 }

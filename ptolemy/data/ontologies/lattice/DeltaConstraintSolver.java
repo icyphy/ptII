@@ -59,8 +59,8 @@ import ptolemy.kernel.util.NamedObj;
 public class DeltaConstraintSolver extends LatticeOntologySolver {
 
     /** Constructs a DeltaConstraintSolver with the given name
-     *  contained by the specified entity. 
-     * 
+     *  contained by the specified entity.
+     *
      *  @param container  The container.
      *  @param name       The name of this DeltaConstraintSolver
      *  @exception IllegalActionException If the superclass throws it.
@@ -68,7 +68,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      */
     public DeltaConstraintSolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);       
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,28 +76,28 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
 
     /** Resolve the concept values for the toplevel entity that contains this
      *  solver, given the model analyzer that invokes this.  Then, if some
-     *  concepts resolved to unacceptable values, calculate the set of 
+     *  concepts resolved to unacceptable values, calculate the set of
      *  inequality terms that cause the unacceptable values.
-     *  Note:  This has different behavior from resolveConcepts() in the 
+     *  Note:  This has different behavior from resolveConcepts() in the
      *  superclass.  Call the superclass resolveConcepts() to calculate concepts
-     *  for all applicable elements in the model. 
+     *  for all applicable elements in the model.
      *  @exception KernelException If the _resolveProperties method throws it.
      */
-   // public void resolveConcepts() throws KernelException { 
+   // public void resolveConcepts() throws KernelException {
     public void resolveConflicts() throws KernelException {
-        
-        // Reset the list of resolved constraints before executing the ontology solver resolution. 
+
+        // Reset the list of resolved constraints before executing the ontology solver resolution.
         super.reset();
         super.initialize();
-        NamedObj toplevel = _toplevel();           
-        
+        NamedObj toplevel = _toplevel();
+
         boolean errorOccurred = false;
         try {
             super.resolveConcepts();
         } catch(KernelException ex) {
             errorOccurred = true;
         }
-        
+
         if (errorOccurred || hasUnacceptableTerms())
         {
             _doDeltaIteration(toplevel, _resolvedConstraintList);
@@ -132,9 +132,9 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  executing the delta iteration.
      */
     private void _doDeltaIteration(NamedObj toplevel,
-            List<Inequality> constraintList) 
+            List<Inequality> constraintList)
             throws TypeConflictException, IllegalActionException {
-        
+
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;
 
@@ -163,26 +163,26 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
 
         System.out.println(errorList);
         _resolvedProperties.clear();
-        
-        // This will store the objects with unacceptable concepts in 
-        // _resolvedProperties.  
+
+        // This will store the objects with unacceptable concepts in
+        // _resolvedProperties.
         _resolveConcepts(toplevel, errorList);
-        
+
     }
 
     /** Resolve the properties of the given top-level container,
      *  subject to the given constraint list, and then check if
      *  the resulting solution has errors.
-     * 
+     *
      * @param toplevel The top-level container
      * @param constraintList The constraint list that we are solving
      * @return True If the found solution has errors.
      * @exception IllegalActionException  If the superclass method getAllPropertyables() throws it
      * @exception OntologyResolutionException  If the superclass method _resolveProperties() throws it
      */
-    
+
     protected boolean _resolvePropertiesHasErrors(NamedObj toplevel,
-            List<Inequality> constraintList) throws IllegalActionException 
+            List<Inequality> constraintList) throws IllegalActionException
     {
         boolean errorOccured = false;
         try {
@@ -191,13 +191,13 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
             // Thrown when there is a conflict with the concept resolution.
             errorOccured = true;
         } catch (OntologyResolutionException ex) {
-            // Beth - is this still the case?  
+            // Beth - is this still the case?
             // Thrown when there is a conflict .  FIXME:  Should these exceptions be the other way around??
             // An ontology resolution exception here really means that the function is not monotonic or there
             // is some other problem with the way the constraints are specified
             errorOccured = true;
         }
-        
+
         // Check for unacceptable solution properties.
         if (hasUnacceptableTerms())
         {

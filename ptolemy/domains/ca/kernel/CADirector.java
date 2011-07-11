@@ -61,8 +61,8 @@ import ptolemy.kernel.util.Nameable;
  * this director, it is highly recommended to start with one of the examples.
  * The director contains a matrix. At each iteration, every entry in the matrix
  * is updated according to the CA2DConvolution actor. This functionality can be useful when
- * simulating cellular automata or other grid-based phenomena. 
- * </p> 
+ * simulating cellular automata or other grid-based phenomena.
+ * </p>
  * <p>
  * This director assumes the following parameters are added to the canvas:
  * </p>
@@ -116,21 +116,21 @@ import ptolemy.kernel.util.Nameable;
  * </p>
  * <p>
  * The director sets the variables for each entry in the matrix every iteration.
- * The number of high-level <i>iterations</i> (that scan the entire matrix once) 
- * can be set as a parameter in the director. Other parameters include: 
+ * The number of high-level <i>iterations</i> (that scan the entire matrix once)
+ * can be set as a parameter in the director. Other parameters include:
  * <i>delay</i>, the time delay between iterations; <i>randomize matrix</i>,
- * which determines if the matrix will be populated randomly; <i>matrix size</i>, 
- * the dimension of the square matrix; and <i>initial values</i>, the initial 
- * values of the matrix with all values not explicitly defined set to 0.0.  
+ * which determines if the matrix will be populated randomly; <i>matrix size</i>,
+ * the dimension of the square matrix; and <i>initial values</i>, the initial
+ * values of the matrix with all values not explicitly defined set to 0.0.
  * </p>
- * 
+ *
  * <p>
  * See also the documentation on the {@link ptolemy.domains.ca.lib.CA2DConvolution} actor
  * and the {@link ptolemy.domains.ca.lib.gui.CAViewer} actor.
  * </p>
  *
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
@@ -139,7 +139,7 @@ public class CADirector extends Director {
 
     /**
      * Construct a new CADirector.
-     * 
+     *
      * @param container The container.
      * @param name The name of the director.
      * @exception IllegalActionException If the name has a period in
@@ -153,9 +153,9 @@ public class CADirector extends Director {
         super(container, name);
         _initParameters();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                   protected variables                     ////
+    ////                         protected variables               ////
 
     /**
      *  The delay time between iterations in seconds.  The initial default
@@ -163,24 +163,24 @@ public class CADirector extends Director {
      *  between iterations.
      */
     protected Parameter delay;
-    
+
     /**
      * The initial matrix parameter.
      */
     protected Parameter initialMatrix;
-    
+
     /**
      * The iterations parameter.
      */
     protected Parameter iterations;
-    
+
     /**
      *  True if the matrix will be populated with random data.  The default
      *  value is false, indicating that all values in the matrix will be
      *  initially set to 0.0.
      */
     protected Parameter random;
-    
+
     /**
      * An integer representing the size of the square matrix.  The initial
      * value is 10, indicating a 10 x 10 matrix.
@@ -188,18 +188,18 @@ public class CADirector extends Director {
     protected Parameter size;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /**
      * Iterate the relevant actors on the canvas for a single grid location.
-     * 
+     *
      * <p>This method is invoked once per location in the matrix per
      * iteration (i.e., Matrix size x iteration count).</p>
-     * 
-     * <p>This method sets the appropriate values on the canvas and 
-     * iterates the appropriate actors (e.g., the CA2DConvolution actor) and 
-     * updates grid values accordingly.</p> 
-     * 
+     *
+     * <p>This method sets the appropriate values on the canvas and
+     * iterates the appropriate actors (e.g., the CA2DConvolution actor) and
+     * updates grid values accordingly.</p>
+     *
      * @exception IllegalActionException If an actor is unable to iterate().
      */
     public void fire() throws IllegalActionException {
@@ -276,14 +276,14 @@ public class CADirector extends Director {
             actorSetVariable.iterate(1);
         }
     }
-    
+
     /**
      * This method performs the initialization step.  This includes
      * creating the matrix according to the user-defined parameters.
-     * 
+     *
      * @exception IllegalActionException
      *              If exception occurs in base class.
-     * 
+     *
      */
     public void preinitialize() throws IllegalActionException {
 
@@ -347,10 +347,10 @@ public class CADirector extends Director {
     }
 
     /**
-     * Update the current x and yLocations of the grid.  It 
-     * also updates the iteration count when necessary.  If all matrix _cells 
+     * Update the current x and yLocations of the grid.  It
+     * also updates the iteration count when necessary.  If all matrix _cells
      * have been updated for this iteration, then _iterate() is called.
-     * 
+     *
      * @exception IllegalActionException If an exception occurs in the
      * base class.
      */
@@ -373,13 +373,13 @@ public class CADirector extends Director {
         }
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                      ////
-    
+    ////                         protected methods                 ////
+
     /**
      * Initialize the parameters.
-     * 
+     *
      * @exception IllegalActionException If the parameters names are
      * invalid.
      * @exception NameDuplicationException If parameters already exist
@@ -421,13 +421,13 @@ public class CADirector extends Director {
                 "initialMatrix",
                 new DoubleMatrixToken(doubleArray));
     }
-    
+
     /**
      * Enforce the user-defined delay, call _showMatrix(), and check
      * if the iteration limit has been reached.
      * This method is called every time the entire matrix has been updated.
-     * 
-     * @return boolean false is the iteration limit has been reached and 
+     *
+     * @return boolean false is the iteration limit has been reached and
      * execution should stop, true otherwise.
      * @exception IllegalActionException If the matrix cannot be shown.
      */
@@ -519,7 +519,7 @@ public class CADirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private variables                     ////
+    ////                         private variables                 ////
 
     /**
      * The current matrix.
@@ -535,17 +535,17 @@ public class CADirector extends Director {
      * The xLocation of the current matrix cell being updated.
      */
     private int _currentX;
-    
+
     /**
      * The yLocation of the current matrix cell being updated.
      */
     private int _currentY;
-    
+
     /**
      *  The size of one dimension of the square matrix.
      */
     private int _matrixSize;
-    
+
     /**
      *  A temporary matrix to hold the updated values.
      */

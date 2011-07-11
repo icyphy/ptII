@@ -52,8 +52,8 @@ public class GPOutputSetup extends ActuatorSetup {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
-     *  @exception IllegalActionException 
-     *  @exception NameDuplicationException 
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public GPOutputSetup(
             ptolemy.domains.ptides.lib.luminary.GPOutputSetup actor)
@@ -86,7 +86,7 @@ public class GPOutputSetup extends ActuatorSetup {
     /**
      * Return the code for the actuator actuation function.
      * @return the code for the sensing function, which is read from the
-     * "actuationBlock". 
+     * "actuationBlock".
      * @exception IllegalActionException If thrown while appending the code
      * block or processing the code stream.
      */

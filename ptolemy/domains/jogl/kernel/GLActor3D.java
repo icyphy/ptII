@@ -31,7 +31,7 @@ import javax.media.opengl.GL;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-/** 
+/**
  * An interface that draws 3D objects using Jogl, the
  * Java interface to OpenGL.
  *
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (cxh)
  */
  public abstract interface GLActor3D {
-    
+
     /** Render a Jogl OpenGL 3D object.
      *  @param object The GL object to be rendered.
      *  @exception IllegalActionException If the object cannot be rendered.

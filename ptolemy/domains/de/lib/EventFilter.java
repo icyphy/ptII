@@ -67,7 +67,7 @@ public class EventFilter extends DETransformer {
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
         output.setWidthEquals(input, true);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
                 + "style=\"fill:yellow\"/>\n"

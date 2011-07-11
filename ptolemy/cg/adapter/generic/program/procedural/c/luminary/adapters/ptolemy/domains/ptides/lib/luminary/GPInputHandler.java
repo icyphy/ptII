@@ -53,8 +53,8 @@ public class GPInputHandler extends InputDevice {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPInputHandler actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPInputHandler actor.
-     *  @exception IllegalActionException 
-     * @exception NameDuplicationException 
+     *  @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public GPInputHandler(ptolemy.domains.ptides.lib.luminary.GPInputHandler actor)
             throws IllegalActionException, NameDuplicationException {
@@ -86,7 +86,7 @@ public class GPInputHandler extends InputDevice {
     /**
      * Return the code for the sensing function.
      * @return the code for the sensing function, which is read from the
-     * "sensingBlock" 
+     * "sensingBlock"
      * @exception IllegalActionException If thrown while appending the code
      * block or processing the code stream.
      */
@@ -111,7 +111,7 @@ public class GPInputHandler extends InputDevice {
         _codeStream.append("currentMicrostep = 0;" +_eol);
 
         _codeStream.appendCodeBlock("sensingBlock", args);
-        
+
         _codeStream.append("GPIOPinIntClear(GPIO_PORT" + _padID + "_BASE, GPIO_PIN_" + _pinID + ");" +_eol);
 
         _codeStream.append("temp = FREE_EVENT_LIST;" +_eol);

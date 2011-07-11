@@ -45,7 +45,7 @@ import ptolemy.moml.MoMLParser;
 
 /**
  A validating XML parser.
- <p>Note that MoML files are not always valid XML because of the 
+ <p>Note that MoML files are not always valid XML because of the
  &lt;configure&gt; tag, so that tag should be removed.</p>
 
  @author Christopher Brooks
@@ -64,7 +64,7 @@ public class ValidatingXMLParser extends DefaultHandler {
      */
     public static void main(String[] args) {
         try {
-            parse(args[0]); 
+            parse(args[0]);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             System.exit(1);
@@ -87,16 +87,16 @@ public class ValidatingXMLParser extends DefaultHandler {
         factory.setValidating(true);
         try {
             SAXParser saxParser = factory.newSAXParser();
-	    // Instead of using saxParser.parser, we create our own
-	    // entity resolver so that we do not beat up the ptolemy
-	    // web server.
+            // Instead of using saxParser.parser, we create our own
+            // entity resolver so that we do not beat up the ptolemy
+            // web server.
             //saxParser.parse(new File(fileName), handler);
 
-	    XMLReader xmlReader = saxParser.getXMLReader();
-	    MoMLEntityResolver resolver = new MoMLEntityResolver();
-	    xmlReader.setEntityResolver(resolver);
-	    xmlReader.setContentHandler(handler);
-	    xmlReader.parse(new InputSource(fileName));
+            XMLReader xmlReader = saxParser.getXMLReader();
+            MoMLEntityResolver resolver = new MoMLEntityResolver();
+            xmlReader.setEntityResolver(resolver);
+            xmlReader.setContentHandler(handler);
+            xmlReader.parse(new InputSource(fileName));
         } catch (SAXParseException ex) {
             System.out.println("\n Error parsing line " +
                 ex.getLineNumber() + ", uri " + ex.getSystemId());
@@ -109,20 +109,20 @@ public class ValidatingXMLParser extends DefaultHandler {
      *  and, if found, return the value of MoMLParser.MoML_1.dtd.
      */
     public static class MoMLEntityResolver implements EntityResolver {
-	/** Resolve the entity.
+        /** Resolve the entity.
          *  @param publicID Ignored.
-	 *  @param systemID The systemID.
-	 *  @return If systemID equals http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
-	 *  then return an InputSource based on the value of MoMLParser.MoML_DTD_1,
-	 *  otherwise return null.
-	 */
-	public InputSource resolveEntity(String publicID, String systemID)
-	    throws SAXException {
-	    if (systemID.equals("http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd")) {
-		    return new InputSource(new StringReader(MoMLParser.MoML_DTD_1));
-	    }
-	    return null;
-	}
+         *  @param systemID The systemID.
+         *  @return If systemID equals http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
+         *  then return an InputSource based on the value of MoMLParser.MoML_DTD_1,
+         *  otherwise return null.
+         */
+        public InputSource resolveEntity(String publicID, String systemID)
+            throws SAXException {
+            if (systemID.equals("http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd")) {
+                    return new InputSource(new StringReader(MoMLParser.MoML_DTD_1));
+            }
+            return null;
+        }
     }
 
     //===========================================================
@@ -147,7 +147,7 @@ public class ValidatingXMLParser extends DefaultHandler {
     ) throws SAXException {
     }
 
-    public void characters(char[] buf, int offset, int len) 
+    public void characters(char[] buf, int offset, int len)
         throws SAXException {
     }
 

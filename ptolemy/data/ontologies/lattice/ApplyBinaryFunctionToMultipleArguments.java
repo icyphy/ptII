@@ -37,7 +37,7 @@ import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ApplyBinaryFunctionToMultipleArguments
 
 /** A concept function that applies a binary concept function to multiple
@@ -58,26 +58,26 @@ public class ApplyBinaryFunctionToMultipleArguments extends ConceptFunction {
      *   defined.
      *  @param binaryFunction The binary concept function to be applied to the
      *   input arguments
-     *  @throws IllegalActionException Thrown if the given binary concept function
+     *  @exception IllegalActionException Thrown if the given binary concept function
      *   is not specified to have exactly 2 arguments.
      */
     public ApplyBinaryFunctionToMultipleArguments(String name,
             Ontology inputOutputOntology, ConceptFunction binaryFunction)
         throws IllegalActionException {
         super(name, false, new LinkedList<Ontology>(), inputOutputOntology);
-        
+
         if (!binaryFunction.isNumberOfArgumentsFixed() ||
                 binaryFunction.getNumberOfArguments() != 2) {
             throw new IllegalActionException("The specified binary concept " +
-            		"function " + binaryFunction.getName() + "must require " +
-            				"exactly 2 arguments.");
+                            "function " + binaryFunction.getName() + "must require " +
+                                            "exactly 2 arguments.");
         }
         _binaryFunction = binaryFunction;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
-    
+    ////                         protected methods                 ////
+
     /** Evaluate the concept function for the given list of arguments. If the
      *  list of arguments is empty, return null.  If there is only one concept
      *  in the argument list, return that concept.  If there are 2 or more
@@ -86,16 +86,16 @@ public class ApplyBinaryFunctionToMultipleArguments extends ConceptFunction {
      *  @param argValues The list of concept arguments for which the function
      *   will be evaluated.
      *  @return The output concept value;
-     *  @throws IllegalActionException Thrown if there is an error calculating
+     *  @exception IllegalActionException Thrown if there is an error calculating
      *   the output concept result.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
             throws IllegalActionException {
-        
+
         if (argValues.isEmpty()) {
             return null;
         } else {
-            Concept result = argValues.get(0);            
+            Concept result = argValues.get(0);
             if (argValues.size() == 1) {
                 return result;
             } else {
@@ -105,14 +105,14 @@ public class ApplyBinaryFunctionToMultipleArguments extends ConceptFunction {
                     binaryArgs.add(argValues.get(i));
                     result = _binaryFunction.evaluateFunction(binaryArgs);
                 }
-                
+
                 return result;
-            }        
+            }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** The binary concept function to be applied to the given arguments for
      *  this concept function.

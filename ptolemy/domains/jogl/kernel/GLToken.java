@@ -81,7 +81,7 @@ public class GLToken extends Token {
     *  the value of the algorithm, format and encoding.
     */
    public String toString() {
- 
+
        return _value.toString();
    }
 

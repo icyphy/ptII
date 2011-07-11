@@ -35,17 +35,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * Name: LoopTest.java Purpose: The purpose of this actor is 
- *   prove that output from another actor can be input to this actor. 
- * 
+ * Name: LoopTest.java Purpose: The purpose of this actor is
+ *   prove that output from another actor can be input to this actor.
+ *
  * input : counter : start of the loop, will loop until it's stopped (# 75)
- xmlResults :  
+ xmlResults :
  * output : .
- * 
+ *
  *@author Jim Amrhein/Mark Ruebens Giovannii/GSFC Greenbelt
 @version $Id$
 @since Ptolemy II 8.0
- * 
+ *
  */
 
 public class LoopTest2 extends TypedAtomicActor {
@@ -126,7 +126,7 @@ public class LoopTest2 extends TypedAtomicActor {
     /**
      * Post fire the actor. Return false to indicate that the process has
      * finished. If it returns true, the process will continue indefinitely.
-     * 
+     *
      *@return
      */
     public boolean postfire() throws IllegalActionException {

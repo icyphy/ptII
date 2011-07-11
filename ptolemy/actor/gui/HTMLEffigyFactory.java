@@ -126,7 +126,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
                             null /*URL*/,
                             path.substring(slashIndex + 1));
                     URL url = HTMLAbout.hyperlinkUpdate(event, configuration);
-                    
+
                     EffigyFactory factory = (EffigyFactory)((Configuration)toplevel()).getEntity("effigyFactory");
                     return factory.createEffigy(container, base, url);
 

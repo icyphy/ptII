@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  Code generator helper for FSMActor.
 
- @author Shanna-Shaye Forbes, Based on codegen FSMActor by Gang Zhou 
+ @author Shanna-Shaye Forbes, Based on codegen FSMActor by Gang Zhou
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (zgang)
@@ -66,9 +66,9 @@ import ptolemy.kernel.util.NamedObj;
 public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     /** Construct the code generator helper associated with the given FSMActor.
      *  @param component The associated component.
-     *  @exception NameDuplicationException If the container already contains a 
+     *  @exception NameDuplicationException If the container already contains a
      *  a code generator adapter for this particular FSMActor.
-     *  @exception IllegalActionException If the NamedProgramCodeGeneratorAdapter throws 
+     *  @exception IllegalActionException If the NamedProgramCodeGeneratorAdapter throws
      *  an IllegalActionException.
      */
     public FSMActor(ptolemy.domains.modal.kernel.FSMActor component)
@@ -684,7 +684,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                     }
                 }
                 if (found) {
-                    //FIXME: Figure out how to do this 
+                    //FIXME: Figure out how to do this
                     int bufferSize = getBufferSize(inputPort);
                     if (bufferSize > 1) {
                         int bufferSizeOfChannel = getBufferSize(inputPort,

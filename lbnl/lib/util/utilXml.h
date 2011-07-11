@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -78,7 +78,7 @@ derivative works thereof, in binary and source code form.
 
 ///////////////////////////////////////////////////////////
 /// \file    utilXml.h
-/// \brief   Methods for getting xml values 
+/// \brief   Methods for getting xml values
 ///          using the expat libray
 ///
 /// \author  Rui Zhang
@@ -87,13 +87,13 @@ derivative works thereof, in binary and source code form.
 /// \date    2009-08-11
 ///
 /// \version $Id$
-/// 
+///
 /// This file provides methods to get general xml values \c getxmlvalue
 /// using simple xpath expressions
 /// values will be in the same order as they are in the xml file
 ///
 /// This file also provides methods to get the EnergyPlus \c getepvariables.
-/// The variables returned will be in the same order as they are in the 
+/// The variables returned will be in the same order as they are in the
 /// configuration file.
 /// \sa getxmlvalue()
 /// \sa getxmlvaluesf()
@@ -128,7 +128,7 @@ char Buff[BUFFSIZE]; ///< Local buffer for reading in the xml file
 
 ////////////////////////////////////////////////////////////////
 ///\struct A simple stack structure to keep track of the parent elements
-////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////
 typedef struct Stack{
   char** head;
   int top;
@@ -147,7 +147,7 @@ int ERROR_STATUS; ///< flag for xml element handler error status settings
 ////////////////////////////////////////////////////////////////
 /// local global variables for function \c getepvariables
 ////////////////////////////////////////////////////////////////
-char *  outputVarsName; ///< the string pointer to the parsed output variable names  
+char *  outputVarsName; ///< the string pointer to the parsed output variable names
 char *  outputVarsType; ///< the string pointer to the parsed output variable types
 int  *  numOutputVars;  ///< the integer pointer to the number of output variables
 char *  inputVars;      ///< the string pointer to the input variables
@@ -182,7 +182,7 @@ EPend(void *data, const char *el);
 
 ////////////////////////////////////////////////////////////////
 ///  This method frees the local memory allocated
-///   
+///
 ///\param strArr 1D string array to be freed
 ///\param n the size of the 1D string array
 ////////////////////////////////////////////////////////////////
@@ -206,13 +206,13 @@ void freeResource(char** strArr, int n);
 ///
 ////////////////////////////////////////////////////////////////
 
-int getepvariables( char*  const fileName, 
-                    char*  const myOutputVarsName, 
-                    char*  const myOutputVarsType, 
-                    int*   const myNumOutputVars, 
-                    char*  const myInputKeys, 
-                    int*   const myNumInputKeys, 
-                    char*  const myInputVars, 
+int getepvariables( char*  const fileName,
+                    char*  const myOutputVarsName,
+                    char*  const myOutputVarsType,
+                    int*   const myNumOutputVars,
+                    char*  const myInputKeys,
+                    int*   const myNumInputKeys,
+                    char*  const myInputVars,
                     int*   const myNumInputVars,
                     int*   const myInputVarsType,
                     int*   const myStrLen);
@@ -234,22 +234,22 @@ int stackPush(char* str);
 ///
 /// \c exp mimics the xPath expression.
 /// Its format is //el1/../eln[@attr]
-/// which will return the \c attr value of \c eln, 
+/// which will return the \c attr value of \c eln,
 /// where \c eln is the n-th child of \c el1
 ///
 /// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
 /// which is equivalent to //EnergyPlus[@name]
 ///
-///\param fileName the xml file name.  
+///\param fileName the xml file name.
 ///\param exp the xPath expression.
 ///\param myVals string to store the found values, semicolon separated.
 ///\param mynumVals number of values found.
 ///\param myStrLen length of the string that is passed.
 ////////////////////////////////////////////////////////////////
-int 
-getxmlvalues(char* const fileName, 
-             char* const exp, 
-             char* const myVals, 
+int
+getxmlvalues(char* const fileName,
+             char* const exp,
+             char* const myVals,
              int*  const myNumVals,
              int   const myStrLen);
 
@@ -275,7 +275,7 @@ end(void *data, const char *el);
 ///
 /// \c exp mimics the xPath expression.
 /// Its format is //el1/../eln[@attr]
-/// which will return the \c attr value of \c eln, 
+/// which will return the \c attr value of \c eln,
 /// where \c eln is the n-th child of \c el1
 ///
 /// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
@@ -290,23 +290,23 @@ int getnumberofxmlvalues( char* const fileName,
 ////////////////////////////////////////////////////////////////
 /// This method returns the xmlvalues parsed given xPath expressions.
 /// This method will first perform a validation check with DTDValidator
-/// For compatibility with BCVTB 0.2 this function is mainly for E+ 
-/// to get the input and output variables in variables.cfg. Thus the 
+/// For compatibility with BCVTB 0.2 this function is mainly for E+
+/// to get the input and output variables in variables.cfg. Thus the
 /// dtd file for the validity checking is the variables.dtd.
 /// Then the function calls \c getxmlvalues to get the variables
 /// and appends ";" at the end of the parsed string.
 ///
-/// Return value: 0 normal; -1 error 
+/// Return value: 0 normal; -1 error
 ///
 /// \c exp mimics the xPath expression.
 /// Its format is //el1/../eln[@attr]
-/// which will return the \c attr value of \c eln, 
+/// which will return the \c attr value of \c eln,
 /// where \c eln is the n-th child of \c el1
 ///
 /// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
 /// which is equivalent to //EnergyPlus[@name]
 ///
-///\param fileName the xml file name;  
+///\param fileName the xml file name;
 ///\param exp the xPath expression.
 ///\param atrName the attribute name.
 ///\param nAtt number of attribute values found.
@@ -325,17 +325,17 @@ int getxmlvaluesf(char* const fileName,
 /// The function will call the function \c getxmlvalues to get the variables
 /// without ";" at the end of the parsed string
 ///
-/// Return values: 0 normal; -1 error 
+/// Return values: 0 normal; -1 error
 ///
 /// \c exp mimics the xPath expression.
 /// Its format is //el1/../eln[@attr]
-/// which will return the \c attr value of \c eln, 
+/// which will return the \c attr value of \c eln,
 /// where \c eln is the n-th child of \c el1
 ///
 /// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
 /// which is equivalent to //EnergyPlus[@name]
 ///
-///\param fileName the xml file name.  
+///\param fileName the xml file name.
 ///\param exp the xPath expression.
 ///\param str string to store the found values, semicolon separated.
 ///\param nVals number of values found.
@@ -348,10 +348,10 @@ int getxmlvalue(char* const fileName,
                 int   const strLen);
 
 ////////////////////////////////////////////////////////////////
-/// This method checks the validity of the variables 
+/// This method checks the validity of the variables
 /// configuration xml file for a given dtd file that is
 /// specified in the variables configuration file
-/// 
+///
 /// Return values: -1 Error in the file
 ///                 0 File is validate
 ///

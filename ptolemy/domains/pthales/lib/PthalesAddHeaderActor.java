@@ -123,7 +123,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         // Token Arrays from simulation
         Token[] tokensIn = null;
 
-        // Input ports created and filled before elementary task called 
+        // Input ports created and filled before elementary task called
         int dataSize = PthalesIOPort.getDataProducedSize(portIn)
                 * PthalesIOPort.getNbTokenPerData(portIn);
 //        tokensIn = new Token[dataSize];
@@ -137,7 +137,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
 
         header.add(new IntToken(nbDims));
         header.add(new IntToken(PthalesIOPort.getNbTokenPerData(portIn)));
-        
+
         for (String dim : PthalesIOPort.getDimensions(portIn)) {
             header.add(new StringToken(dim));
             header.add(new IntToken(sizes.get(dim)));
@@ -151,7 +151,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
             portOut.send(i, tokensIn, dataSize);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

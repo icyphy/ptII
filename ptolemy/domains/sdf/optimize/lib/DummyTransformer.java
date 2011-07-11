@@ -1,4 +1,4 @@
-/* DummyTransformer is a simple transformer actor implementing the 
+/* DummyTransformer is a simple transformer actor implementing the
    BufferingProfile interface.
    It is used for testing the OptimizingSDFDirector.
 
@@ -41,9 +41,9 @@ A DummyTransformer is a simple actor with one input port and one output port
 imitation a filter type of actor
 It is used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.SharedBufferTransformer}, 
-{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
+{@link ptolemy.domains.sdf.optimize.SharedBufferTransformer},
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
@@ -65,7 +65,7 @@ public class DummyTransformer extends SharedBufferTransformer {
      * It mimics a typical image processing operation on a shared frame buffer,
      * where it can perform the operation in-place, modifying the frame buffer,
      * or operate in a copying mode where it produces a new frame buffer, leaving
-     * the original intact for other operations. 
+     * the original intact for other operations.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -77,20 +77,20 @@ public class DummyTransformer extends SharedBufferTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-    
+
 /////////////////////////////////////////////////////////////////////
-////                    protected fields                         ////    
+////                    protected fields                         ////
 
     /**
      * Fire the actor in shared firing mode.
      * It makes a copy of the frame buffer referred to by the reference token.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _fireCopying() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token t = input.get(0);
-            if(!(t instanceof DummyReferenceToken)){
-                throw new IllegalActionException("Token is of wrong type. Expected DummyReferenceToken"); 
+            if (!(t instanceof DummyReferenceToken)) {
+                throw new IllegalActionException("Token is of wrong type. Expected DummyReferenceToken");
             }
             DummyReferenceToken rt = (DummyReferenceToken)t;
             // Get and duplicate the frame
@@ -104,7 +104,7 @@ public class DummyTransformer extends SharedBufferTransformer {
     /**
      * Fire the actor in exclusive firing mode.
      * It directly modifies the frame buffer referred to by the reference token.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _fireExclusive() throws IllegalActionException {
         if (input.hasToken(0)) {

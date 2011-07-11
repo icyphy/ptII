@@ -250,7 +250,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         super(container, name);
         _initParameters();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -426,7 +426,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             // after actor firing, the subclass may wish to perform some book keeping
             // procedures. However in this class the following method does nothing.
             _actorFired();
-            
+
             if (!_checkForNextEvent()) {
                 break;
             } // else keep executing in the current iteration
@@ -477,7 +477,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         return fireAt(actor, time, 1);
     }
-    
+
     /** Request a firing of the given actor at the given model
      *  time with the given microstep. Most actors will not want to use
      *  this method, but if you need for a firing to occur at microstep 0,
@@ -570,7 +570,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             if (result.compareTo(getModelTime()) == 0 && index <= _microstep && !_isInitializing) {
                 // NOTE: Incrementing the microstep here is wrong if we are in initialize().
                 index = _microstep + 1;
-                
+
                 if (index == Integer.MAX_VALUE) {
                     throw new IllegalActionException(this, actor,
                             "Microstep has hit the maximum while scheduling a firing of "
@@ -647,7 +647,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         if (_eventQueue.size() > 0) {
             aFutureTime = _eventQueue.get().timeStamp();
         }
-        
+
         // Iterate the event queue to find the earliest event with a bigger tag
         // ((either timestamp or microstop). If such an event exists,
         // use its time as the model next iteration time. If no such event
@@ -861,7 +861,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
-        
+
         // Reset the microstep to zero if the next event is
         // in the future.
         synchronized (_eventQueue) {
@@ -1122,21 +1122,21 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // Call the preinitialize method of the super class.
         super.preinitialize();
 
-	if (getContainer() instanceof CompositeActor) {
-	    // Tests in ptolemy/configs/test expand the configuration which
-	    // results in the ModelDirectory getting expanded.  In the
-	    // ModelDirectory, the container might be an EntityLibrary.
-	    // The Ptides director is calling preinitialize() in
-	    // attributeChanged(), which means that this code gets called.
+        if (getContainer() instanceof CompositeActor) {
+            // Tests in ptolemy/configs/test expand the configuration which
+            // results in the ModelDirectory getting expanded.  In the
+            // ModelDirectory, the container might be an EntityLibrary.
+            // The Ptides director is calling preinitialize() in
+            // attributeChanged(), which means that this code gets called.
 
-	    // Do this here so that performance measurements
-	    // clearly indicate that the cost is in static analysis
-	    // done in preinitialize.
-	    CompositeActor container = (CompositeActor) getContainer();
-	    CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+            // Do this here so that performance measurements
+            // clearly indicate that the cost is in static analysis
+            // done in preinitialize.
+            CompositeActor container = (CompositeActor) getContainer();
+            CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
                 .getCausalityInterface();
-	    causality.checkForCycles();
-	}
+            causality.checkForCycles();
+        }
 
         if (_debugging && _verbose) {
             _debug("## Depths assigned to actors and ports:");
@@ -1274,8 +1274,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
-    /** Perform book keeping procedures after an actor firing. 
+
+    /** Perform book keeping procedures after an actor firing.
      *  In this base class, do nothing.
      *  @exception IllegalActionException Not thrown in this base class.
      *  Derived classes may throw it if book keeping procedures are not
@@ -1283,7 +1283,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     protected void _actorFired() throws IllegalActionException {
     }
-    
+
     /** Enforces a firing of a DE director only handles events with the
      *  same tag. Checks what is the model time of the earliest event
      *  in the event queue.
@@ -1331,7 +1331,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
       }
       return true;
     }
-    
+
     /** Disable the specified actor.  All events destined to this actor
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
@@ -1390,7 +1390,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             // only the first request will be granted.
             if (!_isInitializing) {
                 microstep = _microstep + 1;
-                
+
                 if (microstep == Integer.MAX_VALUE) {
                     throw new IllegalActionException(this, actor,
                             "Microstep has hit the maximum while scheduling a firing of "
@@ -1443,7 +1443,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                         .contains(actor))) {
             return;
         }
-        
+
         /* NOTE: We would like to throw an exception if the microstep is
          * zero, but this breaks models with CT inside DE.
          * The CTDirector does not have a notion of superdense time.
@@ -1469,7 +1469,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
          */
 
         int depth = _getDepthOfIOPort(ioPort);
-        
+
         int microstep = _microstep;
         if (microstep < 1) {
             microstep = 1;
@@ -1507,7 +1507,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  false, then this thread will stall until events become
      *  available in the event queue. Otherwise, time will advance to
      *  the stop time and the execution will halt.</p>
-     * 
+     *
      *  @return 0 if firing was successful, and the next event in event
      *   queue should be checked for processing;
      *   -1 if there's no actor to fire, and we should not keep firing;
@@ -2127,7 +2127,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     protected void _noActorToFire() throws IllegalActionException {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

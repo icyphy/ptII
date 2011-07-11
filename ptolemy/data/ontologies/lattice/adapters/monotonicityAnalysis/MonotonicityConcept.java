@@ -1,18 +1,18 @@
 /* A concept that represents the monotoncity of an expression.
- * 
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept that represents the monotoncity of an expression.
- *  
+ *
  *  Note that for an arbitrary expression, it will not have a
  *  monotonicity concept of simply Monotonic, Constant, etc.
  *  Rather, the expression will have a monotonicity that depends
@@ -48,14 +48,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  may have a monotonicity that is monotonic with respect to the
  *  variable x, but antimonotonic with respect to y (and constant
  *  with respect to all other variables).
- *  
+ *
  *  This class represents exactly such concepts, representing them as
  *  {x = Monotonic, y = Animonotonic}, in a manner and syntax
  *  similar to records of the Ptolemy II type system.  In records,
  *  however, accessing an undefined tag is an error, whereas in
  *  expressions, they are simply constant with respect to any
  *  variables that are not free.
- *  
+ *
  *  @author Ben Lickly
  *  @version $Id$
  *  @since Ptolemy II 9.0
@@ -67,10 +67,10 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
-    
+
     /** Create a new monotonicity concept, belonging to the given
      *  ontology, with an automatically generated name.
-     * 
+     *
      *  @param ontology The finite ontology to which this belongs.
      *    This should be the 4 element monotonicity lattice if we
      *    are really going to be doing inference on monotonicity
@@ -93,14 +93,14 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
                   + "Original exception:" + e.toString());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Compare this concept with the given concept.
      *  Returns an int value that corresponds to the ordering between
      *  the elements as given in the CPO interface.
-     * 
+     *
      *  @param concept The concept with which we are comparing.
      *  @return CPO.HIGHER if this concept is above the given concept,
      *          CPO.LOWER if this concept is below the given concept,
@@ -151,7 +151,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
             } else if (seenLower && !seenHigher && !seenIncomparable) {
                 return CPO.LOWER;
             } else {
-                return CPO.INCOMPARABLE;            
+                return CPO.INCOMPARABLE;
             }
         } else {
             return CPO.INCOMPARABLE;
@@ -163,7 +163,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      *
      *  @return A ColorAttribute corresponding to the highlight color of
      *   this monotonicity concept.
-     *  @throws IllegalActionException Thrown if there is an error getting
+     *  @exception IllegalActionException Thrown if there is an error getting
      *   the color for the finite monotonicity concept.
      */
     public ColorAttribute getColor() throws IllegalActionException {
@@ -189,20 +189,20 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
     public FiniteConcept getMonotonicity(String variableName) {
         return getConcept(variableName);
     }
-    
+
     /** Compute the greatest lower bound (GLB) of this and another concept.
-     *  
+     *
      *  @param concept The other concept.
      *  @return The concept that is the GLB of this and the given concept.
      */
     // FIXME: GLB method needs to be implemented.
     public Concept greatestLowerBound(Concept concept) {
         throw new IllegalArgumentException("greatestLowerBound method not " +
-        		"implemented.");
+                        "implemented.");
     }
 
     /** Compute the least upper bound (LUB) of this and another concept.
-     *  
+     *
      *  @param concept The other concept.
      *  @return The concept that is the LUB of this and the given concept.
      */
@@ -237,13 +237,13 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
 
     /** Create a new Monotonicity concept, belonging to the given
      *  ontology.
-     * 
+     *
      *  @param ontology The finite ontology to which this belongs.
      *    This should be the 4 element monotonicity lattice if we
      *    are really going to be doing inference on monotonicity
      *    of expressions.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected MonotonicityConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
@@ -254,7 +254,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
     ////                         private methods                   ////
 
     /** Compute the least upper bound (LUB) of this and another monotonicity concept.
-     *  
+     *
      *  @param concept The other monotonicity concept
      *  @return The concept that is the LUB of this and the given concept.
      */
@@ -271,13 +271,13 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
         }
         return result;
     }
-    
+
     /** Return the finite monotonicity concept that best represents the
      *  overall monotonicity of this infinite concept.  Currently, this
      *  simply takes the least upper bound of the monotonicity of all the
      *  free variables referenced in this monotonicity concept, with the
      *  empty monotonicity concept evaluating to constant.
-     *  
+     *
      *  So, for example the finite monotonicity of
      *   {x = Monotonic, y = Monotonic}
      *  is Monotonic, of

@@ -325,7 +325,7 @@ public class TransitionController extends BasicEdgeController {
      *   should not be thrown).
      *  @see ptolemy.actor.gui.Configuration#openInstance(NamedObj)
      *  @see ptolemy.actor.gui.Configuration#openModel(NamedObj)
-     */  
+     */
     protected void _openInstanceOrModel(Configuration configuration,
             NamedObj refinement) throws IllegalActionException, NameDuplicationException {
         configuration.openModel(refinement);

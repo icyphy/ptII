@@ -59,7 +59,7 @@ public class TokenListener implements MqttSimpleCallback {
     ////                         constructor                       ////
 
     /** Initialize the instance by reading needed fields from the remoteModel.
-     *  @param remoteModel The remoteModel that created this publisher and 
+     *  @param remoteModel The remoteModel that created this publisher and
      *  controls the state of the simulation.
      */
     public TokenListener(RemoteModel remoteModel) {
@@ -150,7 +150,7 @@ public class TokenListener implements MqttSimpleCallback {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** The task that sends the pong back. 
+    /** The task that sends the pong back.
      */
     private class PongTask implements Runnable {
 

@@ -84,7 +84,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
         /** Perform any setup or initialization of the adapter.
          *  Note that this is not the Ptolemy initialize() method,
-         *  this method merely sets up any codegen-time variables 
+         *  this method merely sets up any codegen-time variables
          *  in the adapters.  In this class, reset the gode stream and
          *  set the code blocks to the value of the embeddedCode parameter.
          *

@@ -1,18 +1,18 @@
 /* A concept that represents a type mapping tokens to concepts.
- * 
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -59,7 +59,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
         super(ontology);
         _defaultConcept = defaultConcept;
     }
-    
+
     /** Create a new MapTypeInfiniteConcept contained in the given ontology.
      *  @param ontology The containing ontology.
      *  @exception NameDuplicationException Not thrown.
@@ -72,7 +72,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Get the concept contained by at the given key in this map concept,
      *  or the default value if the key is not contained in this map concept.
@@ -116,12 +116,12 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
             _keyToConcept.put(key, concept);
         }
     }
-    
+
     /** Return the string representation of this map concept.
      *  Note that the syntax here is the same as that used for the string
      *  representation of record tokens
      *  (e.g. {x = Const, y = NonConst}).
-     *  
+     *
      *  @return The string representation of this concept.
      */
     public String toString() {
@@ -139,10 +139,10 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
         result.append("}");
         return result.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                   protected methods                       ////
-    
+    ////                         protected methods                 ////
+
     /** Return the string keys common to this and the given map concept.
      *  @param otherConcept The other map concept.
      *  @return The common keys, as a set of Strings.
@@ -159,17 +159,17 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
         }
         return commonKeys;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Mapping of string keys to concept values.
      *  The map must be sorted to ensure that the toString method
      *  returns a unique representation of the concept.
      */
     private SortedMap<String, C> _keyToConcept =
         new TreeMap<String, C>();
-    
+
     /** The value of the map concept to be returned when there is no explicit
      *  concept mapped.  Defaults to null.
      */

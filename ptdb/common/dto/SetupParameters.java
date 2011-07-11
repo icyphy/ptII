@@ -21,23 +21,23 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptdb.common.dto;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////SetupParameters
 
 /**
  * Encapsulate the parameters required for creating an XML DB connection.
  *
  * <p>The Data Transfer Object pattern is used here.</p>
- * 
- * 
+ *
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -67,18 +67,18 @@ public class SetupParameters {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    
+
+
     /**
      * Return the cache container name.
-     * @return The cache container name. 
+     * @return The cache container name.
      * @see #setCacheContainerName
      */
     public String getCacheContainerName() {
         return _cacheContainerName;
     }
 
-    
+
     /**
      * Return the container name.
      * for the given XML database.
@@ -99,8 +99,8 @@ public class SetupParameters {
         return _url;
     }
 
-    
-    
+
+
 
     /**
      * Set the cache container name parameter to the given name.
@@ -111,8 +111,8 @@ public class SetupParameters {
         _cacheContainerName = cacheContainerName;
     }
 
-    
-    
+
+
     /**
      * Set the container name parameter to the given value.
      * @param containerName Name of the container
@@ -134,13 +134,13 @@ public class SetupParameters {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The main container name.*/
     private String _containerName;
-    
+
     /** The cache container name.*/
     private String _cacheContainerName;
-    
+
     /** The url to the xml db location.*/
     private String _url;
 }

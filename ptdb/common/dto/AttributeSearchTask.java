@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -59,7 +59,7 @@ public class AttributeSearchTask extends Task {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                                    ////
+    ////                         public methods                    ////
 
     /**
      * Add the given attribute to the search attribute list.
@@ -94,7 +94,7 @@ public class AttributeSearchTask extends Task {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                           ////
+    ////                         private variables                 ////
     /**
      * The search attribute list.
      */

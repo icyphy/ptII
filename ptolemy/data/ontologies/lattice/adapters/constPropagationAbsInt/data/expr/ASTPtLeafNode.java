@@ -69,12 +69,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode(); 
+        ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode();
         Token nodeToken = node.getToken();
 
         if (node.isConstant()) {
@@ -104,7 +104,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                 setAtLeast(node, getSolver().getOntology().getConceptByString("Undefined"));
             }
         }
-        
+
         return super.constraintList();
     }
 }

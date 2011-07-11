@@ -491,7 +491,7 @@ public class DatabaseManager extends TypedAtomicActor {
                         }
                     }
                 }
-            } 
+            }
             if (_password == null) {
                 // Open a dialog to get the password.
                 // First find a frame to "own" the dialog.

@@ -227,10 +227,10 @@ public class PeriodicSampler extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The next sampling time. */
     private Time _nextSamplingTime;
-        
+
     /** Record of pending output tokens (those that have been
      *  delayed because they appeared at the input when the
      *  the microstep was zero).

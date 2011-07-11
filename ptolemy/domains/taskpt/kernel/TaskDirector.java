@@ -1,4 +1,4 @@
-/* A director for controlling tasks in the taskpt domain. 
+/* A director for controlling tasks in the taskpt domain.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -45,21 +45,21 @@ import ptolemy.kernel.util.NameDuplicationException;
  * only accepts tokens of type <i>PtrToken</i> on its ports connected to upstream
  * actors in the higher level composite. Pure output ports are ignored by this
  * director.
- * 
+ *
  * <p>When transferring data from higher level composites, the director does not pass
- * the incoming tokens directly. If the port is a pure input port, 
+ * the incoming tokens directly. If the port is a pure input port,
  * tokens are read from the address specified in the <i>PtrToken</i>
  * from the shared memory controlled by the higher level director and are passed
  * to the downstream actors inside. If the port is an input/output port, the data
  * send from the actors inside are stored in the shared memory of the higher level
  * director after all the actors controlled by this director have finished execution.</p>
- *  
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (ristau)
  * @Pt.AcceptedRating red (ristau)
- * 
+ *
  * @see ptolemy.domains.taskpt.lib.Task
  */
 public class TaskDirector extends TaskPtDirector {
@@ -90,14 +90,14 @@ public class TaskDirector extends TaskPtDirector {
 
     /** Read data from the shared memory from the location specified by the
      * incoming token and broadcast the data to the actors inside.
-     * 
+     *
      * @param port The port to be inspected.
      * @return True, if input is transferred or it is also an output port that
-     * specifies the address, where the output of the actors inside has to be 
+     * specifies the address, where the output of the actors inside has to be
      * written.
-     * 
-     * @throws IllegalActionException Thrown if the width of the port is not exactly one,
-     * the input is not of type PtrToken, no memory is found where to write the data, 
+     *
+     * @exception IllegalActionException Thrown if the width of the port is not exactly one,
+     * the input is not of type PtrToken, no memory is found where to write the data,
      * it is not an output port or the port is not opaque.
      */
     protected boolean _transferInputs(IOPort port)
@@ -180,11 +180,11 @@ public class TaskDirector extends TaskPtDirector {
 
     /** Write the outputs from the inside to the address specified by the PtrToken
      * present outside.
-     * 
+     *
      * @param port The port to be inspected.
      * @return True, if an output is transferred.
-     * 
-     * @throws IllegalActionException Thrown if the port is not an input/output port,
+     *
+     * @exception IllegalActionException Thrown if the port is not an input/output port,
      * there is no PtrToken present specifying the address where to write data,
      * no memory is found where to write the data, it is not an output port or
      * the port is not opaque.

@@ -13,13 +13,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * An actor that is used for translating 3D objects. 
+ * An actor that is used for translating 3D objects.
  *
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
 public class Translate3D extends Transformer{
-    
+
     /**
      *  Construct a Translate3D object in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -43,7 +43,7 @@ public class Translate3D extends Transformer{
         translation.setExpression("{0.0, 0.0, 0.0}");
 
     }
-    
+
     /** Specify the axis of translation. */
 
     public PortParameter translation;
@@ -66,12 +66,12 @@ public class Translate3D extends Transformer{
             GL gl = ((GLAutoDrawable)inputObject).getGL();
 
             ArrayToken translationValue = ((ArrayToken) translation.getToken());
-            
+
             gl.glTranslated(
-                    ((DoubleToken) translationValue.getElement(0)).doubleValue(), 
-                    ((DoubleToken) translationValue.getElement(1)).doubleValue(), 
-                    ((DoubleToken) translationValue.getElement(2)).doubleValue() 
-            ); 
+                    ((DoubleToken) translationValue.getElement(0)).doubleValue(),
+                    ((DoubleToken) translationValue.getElement(1)).doubleValue(),
+                    ((DoubleToken) translationValue.getElement(2)).doubleValue()
+            );
             output.send(0, new ObjectToken(gl));
         }
 

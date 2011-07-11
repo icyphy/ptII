@@ -21,13 +21,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.save.test;
 
@@ -55,12 +55,12 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.save.AttributesManager;
 import ptdb.kernel.database.DBConnection;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestAttributesManager
 
 /**
- * JUnit test case for AttributesManager class. 
- * 
+ * JUnit test case for AttributesManager class.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -73,14 +73,14 @@ import ptdb.kernel.database.DBConnection;
 @SuppressStaticInitializationFor( { "ptdb.common.util.DBConnectorFactory" })
 public class TestAttributesManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    public methods                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Test the createAttribute() method in the case when the given attribute
-     * is created in the database correctly. 
-     * 
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     * is created in the database correctly.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testCreateAttribute() throws Exception {
@@ -125,8 +125,8 @@ public class TestAttributesManager {
 
     /**
      * Test the createAttribute() method in the case when DBConnectionException
-     *  is thrown. 
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     *  is thrown.
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testCreateAttributeWithDBConnectionException() throws Exception {
@@ -156,9 +156,9 @@ public class TestAttributesManager {
 
     /**
      * Test the createAttribute() method in the case when DBExecutionException
-     *  is thrown. 
-     *  
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     *  is thrown.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testCreateAttributeWithDBExecutionException() throws Exception {
@@ -203,9 +203,9 @@ public class TestAttributesManager {
 
     /**
      * Test the deleteAttribute() method in the case when the given attribute
-     *  is deleted from the database successfully. 
-     *  
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     *  is deleted from the database successfully.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testDeleteAttribute() throws Exception {
@@ -242,9 +242,9 @@ public class TestAttributesManager {
 
     /**
      * Test the deleteAttribute() method in the case when DBExecutionException
-     *  is thrown. 
-     *  
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     *  is thrown.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testDeleteAttributeWithDBExecutionException() throws Exception {
@@ -286,10 +286,10 @@ public class TestAttributesManager {
     }
 
     /**
-     * Test the getDBAttributes() method in the case when the attributes 
-     * are returned successfully. 
-     * 
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     * Test the getDBAttributes() method in the case when the attributes
+     * are returned successfully.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testGetDBAttributes() throws Exception {
@@ -329,10 +329,10 @@ public class TestAttributesManager {
     }
 
     /**
-     * Test the getDBAttributes() method in the case when the 
-     * DBExecutionException is thrown. 
-     * 
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     * Test the getDBAttributes() method in the case when the
+     * DBExecutionException is thrown.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testGetDBAttributesWithDBExecutionException() throws Exception {
@@ -372,10 +372,10 @@ public class TestAttributesManager {
     }
 
     /**
-     * Test the method updateAttribute() method in the case when the given 
-     * attribute is updated in the database successfully. 
-     * 
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     * Test the method updateAttribute() method in the case when the given
+     * attribute is updated in the database successfully.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testUpdateAttribute() throws Exception {
@@ -413,9 +413,9 @@ public class TestAttributesManager {
 
     /**
      * Test the updateAttribute() method in the case when the
-     *  DBExecutionException is thrown. 
-     *  
-     * @exception Exception Thrown by PowerMock if error occurs in the testing. 
+     *  DBExecutionException is thrown.
+     *
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
      */
     @Test
     public void testUpdateAttributeWithDBExecutionException() throws Exception {

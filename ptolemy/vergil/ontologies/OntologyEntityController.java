@@ -54,7 +54,7 @@ import diva.gui.GUIUtilities;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class OntologyEntityController extends AttributeInOntologyController {
-    
+
     /** Create an ontology controller associated with the specified graph
      *  controller with full access.
      *  @param controller The associated graph controller.
@@ -91,7 +91,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
-    
+
     /** Set the configuration for OntologyEntityController. This includes
      *  setting the configuration for its _lookinsideAction menu object.
      *  @param configuration The given configuration object to be used to
@@ -132,7 +132,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
      *  instance.
      */
     private class OpenInstanceAction extends FigureAction {
-        
+
         /** Create a new OpenInstanceAction object. */
         public OpenInstanceAction() {
             super("Open Ontology Instance");
@@ -150,7 +150,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
 
             // Determine which entity was selected for the open actor action.
             super.actionPerformed(event);
-            Ontology ontologyModel = (Ontology) getTarget();            
+            Ontology ontologyModel = (Ontology) getTarget();
             try {
                 _configuration.openInstance(ontologyModel);
             } catch (Exception ex) {

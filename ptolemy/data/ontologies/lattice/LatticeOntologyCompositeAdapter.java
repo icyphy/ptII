@@ -70,7 +70,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      * LatticeOntologyCompositeAdapter based on the given ConstraintType.
      * This method iteratively adds all the default constraints for all model components
      * contained by the composite component referred to by this adapter.
-     * 
+     *
      * @see ConstraintType
      * @param actorConstraintType The given ConstraintType for the default constraints
      * for the composite actor referred to by this LatticeOntologyCompositeAdapter
@@ -120,10 +120,10 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
                     .getAdapter(entity);
 
             boolean constraintSource = adapter.isConstraintSource();
-            
+
             for (TypedIOPort port : (List<TypedIOPort>) adapter
                     ._getConstraintedPorts(constraintSource)) {
-                
+
                 // If the port is a multiport with more than one channel,
                 // don't add any constraints.  These will be added
                 // by the actor's adapter.

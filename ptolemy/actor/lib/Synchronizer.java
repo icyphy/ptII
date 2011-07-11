@@ -67,9 +67,9 @@ public class Synchronizer extends Transformer {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
-        
+
         input.setWidthEquals(output, true);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:yellow\"/>\n" + "</svg>\n");

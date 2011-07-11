@@ -45,13 +45,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModalController
 
 /**
  Code generator helper for modal controller.
 
- @author Shanna-Shaye Forbes, based on the code generator helper for modal controllers 
+ @author Shanna-Shaye Forbes, based on the code generator helper for modal controllers
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating red (sssf)
@@ -163,7 +163,7 @@ public class ModalController
                 //      .getAdapter(actor);
                 //code.append(actorHelper.generateFireFunctionCode());
             //}
- 
+
         }
         return code.toString();
     }
@@ -382,8 +382,8 @@ public class ModalController
     ////                         private methods                   ////
 
     /**
-     * @throws IllegalActionException 
-     * 
+     * @exception IllegalActionException
+     *
      */
     private void _createControllerVariables(StringBuffer code)
             throws IllegalActionException {

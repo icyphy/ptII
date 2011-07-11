@@ -34,7 +34,7 @@ import tcl.lang.Interp;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
-/** 
+/**
  * Run the Tcl tests under JUnit.
  * <p>Derived classes should have a method that calls super.run().
  *
@@ -56,13 +56,13 @@ import tcl.lang.Interp;
  * cd $PTII
  * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
  * </pre></p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
- */ 
+ */
 public class JUnitTclTestBase {
     /** Run a test.
      *  <p>If the fileName JVM property is set, then the file named by
@@ -71,7 +71,7 @@ public class JUnitTclTestBase {
      *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
      *  any models in the auto/ directory are invoked.
      *  @exception Throwable If thrown by the code under test.
-     */ 
+     */
     public void run() throws Throwable {
         String fileName = System.getProperty("fileName");
         Interp interp = new Interp();
@@ -85,12 +85,12 @@ public class JUnitTclTestBase {
                     // This is the code that is run by Eclipse
                     interp.eval("cd " + directory);
                 } else {
-		    directory = "..";
-		    if (new File(directory + "/testDefs.tcl").exists()) {
+                    directory = "..";
+                    if (new File(directory + "/testDefs.tcl").exists()) {
                         // This is run if we run make in the junit directory.
-			interp.eval("cd " + directory);
-		    }
-		}
+                        interp.eval("cd " + directory);
+                    }
+                }
             }
             interp.evalFile("testDefs.tcl");
             interp.eval("doAllTests");

@@ -64,13 +64,13 @@ public class Flip extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);  
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV Object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -81,11 +81,11 @@ public class Flip extends Transformer {
                         "Input is required to be an instance of OpenCV. Got "
                         + inputObject.getClass());
             }
-            
+
 
             OpenCV openCV = (OpenCV) inputObject;
             openCV.copy(openCV.image(0));
-            openCV.flip(OpenCV.FLIP_BOTH); 
+            openCV.flip(OpenCV.FLIP_BOTH);
             output.send(0, new ObjectToken(openCV));
         }
     }

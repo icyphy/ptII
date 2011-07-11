@@ -1,4 +1,4 @@
-/* A composite actor for the taskpt domain that performs some computation. 
+/* A composite actor for the taskpt domain that performs some computation.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -36,20 +36,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// Task
 
-/** A task in the taskpt domain. It consumes all input tokens at the 
- * beginning and produces all output tokens at the end. 
- * 
+/** A task in the taskpt domain. It consumes all input tokens at the
+ * beginning and produces all output tokens at the end.
+ *
  * <p>Input and output tokens are not passed directly, but via pointers that point to
  * an address (range) in a shared memory that is controlled by the director
  * of the container of a task. That's why a task has input/output ports for
- * specifying the outputs. The token on the outside of this port specifies 
- * the address, where the tokens have to be stored in the shared memory. The 
+ * specifying the outputs. The token on the outside of this port specifies
+ * the address, where the tokens have to be stored in the shared memory. The
  * inside of this port receives the tokens to be stored. A task
- * works on copies of the data read from memory. A 
+ * works on copies of the data read from memory. A
  * TaskDirector takes care of transferring the outputs and inputs. The TaskDirector
  * also provides a shared memory that is exclusive to all actors within this task.
  * This ensures that a task is free of side effects.</p>
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1

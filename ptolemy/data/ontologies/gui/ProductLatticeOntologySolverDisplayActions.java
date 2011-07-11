@@ -48,7 +48,7 @@ import diva.graph.GraphController;
 /** GUI element that provides context menus for a ProductLatticeOntologySolver.
  *  This UI will be invoked when you right click on the
  *  ProductLatticeOntologySolver.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -87,24 +87,24 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                 controller);
         return _highlighterController;
     }
-    
+
     /** Update the highlight colors menu for the ProductLatticeOntologySolver
      *  based on its ProductLatticeOntology.
      *  @param solverOntology The ProductLatticeOntology for the solver.
-     *  @throws IllegalActionException Thrown if there is a problem creating
+     *  @exception IllegalActionException Thrown if there is a problem creating
      *   the new highlight colors menu.
      */
     public void updateHighlightColorsMenu(ProductLatticeOntology solverOntology)
         throws IllegalActionException{
         _highlighterController.setHighlightColorsMenu(solverOntology);
     }
-    
+
     /** The HighlighterController menu for the ProductLatticeOntologySolver. */
     private ProductLatticeHighlighterController _highlighterController;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected inner classes               ////
-    
+
     /** The controller that adds commands to the context menu. This extends
      *  the HighlighterController in {@link OntologyDisplayActions} by adding
      *  a submenu to select which of the component ontologies in the product
@@ -120,9 +120,9 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
         public ProductLatticeHighlighterController(
                 ProductLatticeOntologySolverDisplayActions displayActions,
                 GraphController controller) {
-            super(displayActions, controller);            
+            super(displayActions, controller);
             _displayActions = displayActions;
-            
+
             try {
                 ProductLatticeOntology ontology =
                     ((ProductLatticeOntologySolver) _displayActions.
@@ -130,16 +130,16 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                 setHighlightColorsMenu(ontology);
             } catch (IllegalActionException ex) {
                 throw new IllegalStateException("Could not create the highlight " +
-                		"colors menu actions for the " +
-                		"ProductLatticeOntologySolver" + displayActions.
+                                "colors menu actions for the " +
+                                "ProductLatticeOntologySolver" + displayActions.
                                 getContainer().getName(), ex);
             }
         }
-        
+
         /** Set the highlight colors menu for the ProductLatticeOntologySolver
          *  based on its ProductLatticeOntology.
          *  @param solverOntology The ProductLatticeOntology for the solver.
-         *  @throws IllegalActionException Thrown if there is a problem creating
+         *  @exception IllegalActionException Thrown if there is a problem creating
          *   the new highlight colors menu.
          */
         public void setHighlightColorsMenu(ProductLatticeOntology solverOntology)
@@ -150,7 +150,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
             }
 
             int numSubOntologies = 0;
-            List<Ontology> subOntologies = null;                
+            List<Ontology> subOntologies = null;
             if (solverOntology != null) {
                 subOntologies = solverOntology.getLatticeOntologies();
                 if (subOntologies != null) {
@@ -175,24 +175,24 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
             // Create the set highlight colors sub menu and add it to the
             // context menu.
             _highlightColorsMenu = new SetHighlightColorsMenu(
-                    highlightColorsActions, "Set Highlight Colors");           
+                    highlightColorsActions, "Set Highlight Colors");
             _menuFactory.addMenuItemFactory(_highlightColorsMenu);
-        }        
-        
+        }
+
         /** The ProductLatticeOntologySolverDisplayActions associated with this
          *  HighlighterController.
          */
         private ProductLatticeOntologySolverDisplayActions _displayActions;
-        
+
         /** The submenu for the highlight colors for the ProductLatticeOntologySolver
          *  for this HighlighterController.
          */
         private SetHighlightColorsMenu _highlightColorsMenu;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-    
+
     /** A highlight action command to be added to the "Set Highlight Colors"
      *  sub menu in the ProductLatticeOntologySolver's context menu. When
      *  clicked, the ProductLatticeOntologySolver will highlight
@@ -206,7 +206,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
          *   being created.
          */
         public SetHighlightColorsAction(Ontology highlightOntology) {
-            super(highlightOntology == null ? "None" : highlightOntology.getName());            
+            super(highlightOntology == null ? "None" : highlightOntology.getName());
             _highlightOntology = highlightOntology;
         }
 
@@ -215,17 +215,17 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
          *  handler to set the highlight ontology and highlight the concepts based
          *  on the colors from that ontology.
          *  @param e The action event that is passed in when the action
-         *   is triggered. 
+         *   is triggered.
          */
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
-            
+
             ProductLatticeOntologySolver solver =
                 ((ProductLatticeOntologySolver) ProductLatticeOntologySolverDisplayActions.this
                         .getContainer());
             OntologyMoMLHandler handler = solver.getMoMLHandler();
-            
+
             try {
                 ProductLatticeOntology ontology = (ProductLatticeOntology) solver.getOntology();
                 ontology.setColorOntology(_highlightOntology);
@@ -237,22 +237,22 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                 }
             } catch (IllegalActionException ex) {
                 throw new IllegalStateException("Could not highlight " +
-                		"the concept colors for the ontology " +
-                		_highlightOntology.getName() + ".", ex);
+                                "the concept colors for the ontology " +
+                                _highlightOntology.getName() + ".", ex);
             }
         }
-        
+
         /** The ontology from which to get highlight colors for this menu action. */
         Ontology _highlightOntology;
     }
-    
+
     /** The class that represents the submenu for the "Set Highlight Colors"
      *  option in the ProductLatticeOntologySolver's context menu. It contains
      *  all the actions that allow the user to specify which of the product
      *  lattice ontology's component ontologies to use for highlighy colors.
-     */    
+     */
     private static class SetHighlightColorsMenu extends MenuActionFactory {
-        
+
         /** Create a new SetHighlightColorsMenu object with the given name
          *  and SetHighlightColors actions.
          *  @param actions The array of menu actions for the "Set Highlight Colors"
@@ -260,7 +260,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
          *   product lattice ontology for which the user can specify which
          *   colors to use.
          *  @param name The name of the SetHighlightColorsMenu object.
-         */        
+         */
         public SetHighlightColorsMenu(SetHighlightColorsAction[] actions, String name) {
             super(actions, name);
         }

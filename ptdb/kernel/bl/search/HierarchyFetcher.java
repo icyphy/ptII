@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -37,15 +37,15 @@ import ptdb.common.exception.DBExecutionException;
 
 /**
  * Fetch the referencing hierarchy for the models.
- * 
+ *
  * <p>This searcher does not perform any search in the database according
  * to the search criteria, but it fetches all the parents models of the results
  * found in the other searchers.</p>
- * 
- * <p>This searcher does not actually perform the search according to any 
+ *
+ * <p>This searcher does not actually perform the search according to any
  *  search criteria, but just fetch the reference hierarchy for the passed
- *  models.  So this searcher does not exist without other searchers.  Also, 
- *  the results get from this searcher does not need to intersect with the 
+ *  models.  So this searcher does not exist without other searchers.  Also,
+ *  the results get from this searcher does not need to intersect with the
  *  results from the other searchers.</p>
  *
  * @author Alek Wang
@@ -65,7 +65,7 @@ public class HierarchyFetcher extends AbstractSearcher implements
         super();
 
         noIntersect();
-        
+
         _isIndependent = false;
     }
 
@@ -75,13 +75,13 @@ public class HierarchyFetcher extends AbstractSearcher implements
     /**
      * Checks whether the search criteria has been set in
      *  this searcher instance.  This searcher does not need any search
-     *  criteria, since it just fetch the hierarchy, so the search criteria 
-     *  is always marked set for this searcher. 
+     *  criteria, since it just fetch the hierarchy, so the search criteria
+     *  is always marked set for this searcher.
      *
      * @return true - if the search criteria has been set.<br>
-     *         false - if the search criteria has not been set. 
+     *         false - if the search criteria has not been set.
      */
-    
+
     protected boolean _isSearchCriteriaSet() {
 
         // There is no criteria need to be set in this searcher, so always
@@ -97,14 +97,14 @@ public class HierarchyFetcher extends AbstractSearcher implements
      * @exception DBExecutionException Thrown by the DBConnection when
      * unexpected problem happens during the execution of DB query tasks.
      */
-    
+
     protected void _search() throws DBExecutionException {
 
         FetchHierarchyTask fetchHierarchyTask = new FetchHierarchyTask();
 
         fetchHierarchyTask.setModelsList(_previousResults);
 
-        // Call the executeFetchHierarchyTask() method from the 
+        // Call the executeFetchHierarchyTask() method from the
         // DBConnection class, and get the results returned by the
         // executeFetchHierarchyTask() method.
         _currentResults = _dbConnection

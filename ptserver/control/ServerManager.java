@@ -39,7 +39,7 @@ import com.caucho.hessian.server.HessianServlet;
 
 /** Acts as a facade to the Ptolemy server application and administers control
  *  commands coming through the servlet.
- * 
+ *
  *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -102,7 +102,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  user to request the execution of the simulation.
      *  @param modelUrl The path to the model file
      *  @param layoutUrl The path to a model's layout file
-     *  @return The user's reference to the simulation task along with 
+     *  @return The user's reference to the simulation task along with
      *  specifically formatted for the client model XML and its inferred types
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.

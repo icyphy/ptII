@@ -246,10 +246,10 @@ public class TextEditor extends TableauFrame implements DocumentListener,
             text.setBackground(background);
         }
     }
-    
+
     /** Dispose of this frame.
      *     Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
+     *  this model from getting garbage collected.  This method invokes the
      *  dispose() method of the superclass,
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */

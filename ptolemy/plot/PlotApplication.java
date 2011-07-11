@@ -167,7 +167,7 @@ public class PlotApplication extends PlotFrame {
         super("PlotApplication", plot);
 
         // Handle window closing by exiting the application.
-        addWindowListener(new WindowClosingAdapter()); 
+        addWindowListener(new WindowClosingAdapter());
 
         setVisible(true);
     }

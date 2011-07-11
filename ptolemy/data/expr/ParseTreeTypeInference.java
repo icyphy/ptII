@@ -171,7 +171,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     _setType(node, ((ArrayType) baseType).getElementType());
                     return;
                 } else {
-                    // Child node is not an array, but it can be 
+                    // Child node is not an array, but it can be
                     // losslessly converted to an array (anything can be).
                     // Note: parse tree evaluator also support
                     // constructs like (1)(0), where the constant 1
@@ -185,7 +185,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     _setType(node, ((MatrixType) baseType).getElementType());
                     return;
                 } else {
-                    // Child node is not a matrix, but it might be 
+                    // Child node is not a matrix, but it might be
                     // losslessly convertible to a matrix.  Attempt to do that.
                     // Note: parse tree evaluator also support
                     // constructs like (1)(0,0), where the constant 1

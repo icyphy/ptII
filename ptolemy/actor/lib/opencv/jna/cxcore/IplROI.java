@@ -8,7 +8,7 @@ public class IplROI extends Structure {
     public int  yOffset;
     public int  width;
     public int  height;
-    
+
     public IplROI() {
         super();
     }

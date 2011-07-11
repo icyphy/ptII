@@ -1,5 +1,5 @@
 /* Cellular Automata Viewer
- 
+
  Copyright (c) 2010 The University of Florida
 
  All rights reserved.
@@ -21,10 +21,10 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
-  
+
  */
 
 package ptolemy.domains.ca.lib.gui;
@@ -45,16 +45,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * Cellular Automata Viewer.
- * 
+ *
  * <p>The CAViewer is a display actor to be used in conjunction with
  * the CADirector.  The CAViewer can be placed on the canvas and will
  * render the grid as defined by the Director's parameters and
  * possibly the output of the CA2DConvolution actor.  This actor is
  * the currently the only way to visualize cellular automata or other
  * 2D grid based phenomena employing the CADirectory.</p>
- * 
+ *
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
@@ -63,7 +63,7 @@ public class CAViewer extends AbstractPlaceableActor {
 
     /**
      * Construct a new CAViewer.
-     * 
+     *
      * @param entity The container
      * @param name The name of the CAViewer.
      * @exception IllegalActionException If the name has a period in it.
@@ -77,11 +77,11 @@ public class CAViewer extends AbstractPlaceableActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /**
      *   Initialize the viewer.
-     *   
+     *
      *   @exception IllegalActionException If the superclass throws
      *   the exception.
      */
@@ -90,9 +90,9 @@ public class CAViewer extends AbstractPlaceableActor {
         _initialized = false;
     }
 
-    /** 
+    /**
      * Specify the container in which the data should be displayed.
-     *  
+     *
      *  @param container The container in which to place the pane that
      *  will contain the CATableau or null to specify no container.
      */
@@ -124,13 +124,13 @@ public class CAViewer extends AbstractPlaceableActor {
 
     /**
      * Show the tableau containing the visualization of the matrix.
-     * 
+     *
      * @exception IllegalActionException If the base class throws an
      * exception.
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();
-        
+
         if (!_initialized) {
             _initialized = true;
             _openWindow();
@@ -142,7 +142,7 @@ public class CAViewer extends AbstractPlaceableActor {
 
         return false;
     }
-    
+
     /**
      *  Set the matrix to be rendered as a grid.
      *
@@ -156,14 +156,14 @@ public class CAViewer extends AbstractPlaceableActor {
             _frame.repaint();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                      ////
+    ////                         protected methods                 ////
 
     /**
      * Open the window, first initializing it if necessary.  It is
      * modeled after _openWindow() is the Display actor.
-     * 
+     *
      * @exception IllegalActionException If the top level effigy
      * cannot be found or the token effigy cannot be created.
      */
@@ -199,35 +199,35 @@ public class CAViewer extends AbstractPlaceableActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
+    ////                         protected variables               ////
     /**
      * True if the actor has been initialized.
      */
     protected boolean _initialized;
-    
+
     /**
      * The matrix to be rendered as a grid.
      */
     protected double[][] matrix;
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
-    
+    ////                         private variables                 ////
+
     /**
      * The Java Container that contains the visualization.
      */
     private Container _container = null;
-    
+
     /**
      * The generic effigy to be used for the window.
      */
     private TokenEffigy _effigy = null;
-    
+
     /**
      *  The JPanel to be used in the Container.
      */
     private JPanel _pane = null;
-    
+
     /**
      * The custom tableau for the window.
      */

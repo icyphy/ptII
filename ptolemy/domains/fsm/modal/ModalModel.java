@@ -362,7 +362,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     /*
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
-        if(_debugging){
+        if (_debugging) {
             _debug("handleModelError called for the ModalModelDirector "
                     + this.getDisplayName());
         }

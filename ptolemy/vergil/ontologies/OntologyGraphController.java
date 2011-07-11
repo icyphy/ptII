@@ -1,20 +1,20 @@
 /* A Graph Controller for ontology models.
  *
  * Below is the copyright agreement for the Ptolemy II system.
- * 
+ *
  * Copyright (c) 2009-2011 The Regents of the University of California. All rights
  * reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -68,13 +68,13 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeController;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OntologyGraphController
 
 /** A Graph Controller for ontology models. This controller allows lattice
  *  elements to be dragged and dropped onto its graph. Arcs can be created by
  *  control-clicking and dragging from one element to another.
- * 
+ *
  *  @author Charles Shelton, Man-Kit Leung
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -82,17 +82,17 @@ import diva.graph.NodeController;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class OntologyGraphController extends WithIconGraphController {
-    
+
     /** Create a new ontology graph controller object.
      */
     public OntologyGraphController() {
         super();
         _createControllers();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Add commands to the specified menu and toolbar, as appropriate
      *  for this controller.  For the ontology editor, a command is added to
      *  the graph menu to create a new ontology concept.
@@ -101,11 +101,11 @@ public class OntologyGraphController extends WithIconGraphController {
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
-        
+
         // Add an item that adds new concepts.
         diva.gui.GUIUtilities.addMenuItem(menu, _newConceptAction);
     }
-    
+
     /** Return the edge controller appropriate for the given edge. In the
      *  ontology editor, all edges are ontology relations, so the controller
      *  is always a RelationController object.
@@ -116,7 +116,7 @@ public class OntologyGraphController extends WithIconGraphController {
     public EdgeController getEdgeController(Object object) {
         return _relationController;
     }
-    
+
     /** Return the node controller appropriate for the given node object. In the
      *  ontology editor, all nodes are ontology concepts, so the controller
      *  is always a ConceptController object or an AttributeController object
@@ -158,7 +158,7 @@ public class OntologyGraphController extends WithIconGraphController {
         _attributeController.setConfiguration(configuration);
         _conceptController.setConfiguration(configuration);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -182,16 +182,16 @@ public class OntologyGraphController extends WithIconGraphController {
      *  model editor has no visible ports.
      */
     protected void _createControllers() {
-        _attributeController = new AttributeInOntologyController(this);        
+        _attributeController = new AttributeInOntologyController(this);
         _conceptController = new ConceptController(this);
         _relationController = new ConceptRelationController(this);
-        
+
         // The port controller is not used in the ontology model editor,
         // but it must be initialized since it is referenced in the parent
         // class.
         _portController = new ExternalIOPortController(this);
     }
-    
+
     /** Initialize interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass
      *  AbstractGraphController. This initialization cannot be done in the
@@ -204,7 +204,7 @@ public class OntologyGraphController extends WithIconGraphController {
         super.initializeInteraction();
 
         GraphPane pane = getGraphPane();
-        
+
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
         _selectionDragger.addSelectionModel(getSelectionModel());
@@ -241,28 +241,28 @@ public class OntologyGraphController extends WithIconGraphController {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The controller for attribute objects in the model. */
     protected AttributeInOntologyController _attributeController;
-    
+
     /** The controller for concepts in the ontology model. */
     protected ConceptController _conceptController;
 
     /** The controller for relations in the ontology model. */
     protected ConceptRelationController _relationController;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The action for creating concepts in the ontology. */
     private NewConceptAction _newConceptAction = new NewConceptAction();
-    
+
     /** The interactor that interactively creates edges. */
     private RelationCreator _relationCreator; // For control-click
-    
+
     /** The selection interactor for drag-selecting nodes */
     private SelectionDragger _selectionDragger;
 
@@ -277,7 +277,7 @@ public class OntologyGraphController extends WithIconGraphController {
     private MouseFilter _shortcutFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
                     .getMenuShortcutKeyMask());
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private inner classes             ////
 
@@ -286,7 +286,7 @@ public class OntologyGraphController extends WithIconGraphController {
 
     /** An action to create a new concept in the ontology model. */
     private class NewConceptAction extends FigureAction {
-        
+
         /** Construct a new concept. */
         public NewConceptAction() {
             super("New Concept");
@@ -350,7 +350,7 @@ public class OntologyGraphController extends WithIconGraphController {
                             newConceptLocation = new Location(prototype, locationName);
                             newConceptLocation.setLocation(new double[]{x, y});
                         }
-                        newConceptLocation.setLocation(new double[]{x, y});                        
+                        newConceptLocation.setLocation(new double[]{x, y});
                         moml = prototype.exportMoML(conceptName);
                     }
                 }
@@ -360,7 +360,7 @@ public class OntologyGraphController extends WithIconGraphController {
 
             if (moml == null) {
                 moml = "<entity name=\"" + conceptName
-                        + "\" class=\"ptolemy.data.ontologies.FiniteConcept\">\n"                        
+                        + "\" class=\"ptolemy.data.ontologies.FiniteConcept\">\n"
                         + "<property name=\"solutionColor\" "
                         + "class=\"ptolemy.actor.gui.ColorAttribute\" "
                         + "value=\"{0.2,1.0,0.4,1.0}\"/>\n"
@@ -382,7 +382,7 @@ public class OntologyGraphController extends WithIconGraphController {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// RelationCreator
 
@@ -390,7 +390,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  to another.
      */
     private class RelationCreator extends AbstractInteractor {
-        
+
         /** Initiate creation of an arc.
          *  @param event The mouse event to be reacted to by the relation
          *   creator.

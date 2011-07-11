@@ -21,13 +21,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.search.test;
 
@@ -54,9 +54,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TestSearchByAttributeIntegration
 
 /**
- * Integration test case for integrating the business layer and DB layer for 
- * requirement search by attributes. 
- * 
+ * Integration test case for integrating the business layer and DB layer for
+ * requirement search by attributes.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -70,18 +70,18 @@ public class TestSearchByAttributeIntegration {
     ////                         public methods                    ////
 
     /**
-     * Test searching the models by empty search criteria. 
-     * 
+     * Test searching the models by empty search criteria.
+     *
      * @exception DBExecutionException Thrown by the db layer when errors
-     *  occurs when executing the db task. 
-     * @exception DBConnectionException Thrown by the db layer when the db 
-     * connection cannot be created.  
-     * 
+     *  occurs when executing the db task.
+     * @exception DBConnectionException Thrown by the db layer when the db
+     * connection cannot be created.
+     *
      */
     @Test
     public void testSearchByAttributeNoCriteria() throws DBConnectionException,
             DBExecutionException {
-        
+
         SearchManager searchManager = new SearchManager();
         SearchCriteria searchCriteria = new SearchCriteria();
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
@@ -93,17 +93,17 @@ public class TestSearchByAttributeIntegration {
     }
 
     /**
-     * Test searching the models by attributes search criteria with found 
-     * results returned. 
-     * 
-     * @exception NameDuplicationException Thrown when setting name to the 
-     *  attribute criteria.  
-     * @exception IllegalActionException Thrown when setting name to the 
+     * Test searching the models by attributes search criteria with found
+     * results returned.
+     *
+     * @exception NameDuplicationException Thrown when setting name to the
+     *  attribute criteria.
+     * @exception IllegalActionException Thrown when setting name to the
      *  attribute criteria.
      * @exception DBExecutionException Thrown by the db layer when errors
-     *  occurs when executing the db task. 
-     * @exception DBConnectionException Thrown by the db layer when the db 
-     * connection cannot be created.  
+     *  occurs when executing the db task.
+     * @exception DBConnectionException Thrown by the db layer when the db
+     * connection cannot be created.
      */
     @Test
     public void testSearchByAttributeWithResults()
@@ -128,8 +128,8 @@ public class TestSearchByAttributeIntegration {
         ArrayList<XMLDBModel> resultModels = searchResultBuffer.getResults();
 
         boolean doesExist = false;
-        
-        for(XMLDBModel model :resultModels) {
+
+        for (XMLDBModel model :resultModels) {
             if (model.getModelName().equals("ModelB")) {
                 doesExist = true;
                 break;
@@ -140,17 +140,17 @@ public class TestSearchByAttributeIntegration {
     }
 
     /**
-     * Test searching the models by attributes search criteria without found 
-     * result returned. 
-     * 
-     * @exception NameDuplicationException Thrown when setting name to the 
-     *  attribute criteria.  
-     * @exception IllegalActionException Thrown when setting name to the 
+     * Test searching the models by attributes search criteria without found
+     * result returned.
+     *
+     * @exception NameDuplicationException Thrown when setting name to the
      *  attribute criteria.
-     * @exception DBExecutionException Thrown by the db layer when errors 
-     * occurs when executing the db task. 
-     * @exception DBConnectionException Thrown by the db layer when the db 
-     * connection cannot be created. 
+     * @exception IllegalActionException Thrown when setting name to the
+     *  attribute criteria.
+     * @exception DBExecutionException Thrown by the db layer when errors
+     * occurs when executing the db task.
+     * @exception DBConnectionException Thrown by the db layer when the db
+     * connection cannot be created.
      */
     @Test
     public void testSearhcByAttributeWithoutResult()

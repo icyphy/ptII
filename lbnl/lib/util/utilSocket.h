@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -83,7 +83,7 @@ derivative works thereof, in binary and source code form.
 ///         using BSD sockets.
 ///
 /// \author Michael Wetter,
-///         Simulation Research Group, 
+///         Simulation Research Group,
 ///         LBNL,
 ///         MWetter@lbl.gov
 ///
@@ -94,7 +94,7 @@ derivative works thereof, in binary and source code form.
 /// This file provides methods that allow clients to
 /// establish a socket connection. Clients typically call
 /// the method \c establishclientsocket()
-/// once, and then call the method 
+/// once, and then call the method
 /// \c exchangedoubleswithsocket() in each time step.
 /// At the end of the simulation, a client should call
 /// \c closeipc() to close the socket connection.
@@ -120,7 +120,7 @@ derivative works thereof, in binary and source code form.
 #include <arpa/inet.h>
 #include <sys/socket.h>
 //#include <netinet/in.h>
-#include <netdb.h> 
+#include <netdb.h>
 #endif
 
 #include <stdio.h>
@@ -133,14 +133,14 @@ derivative works thereof, in binary and source code form.
 
 #include "defines.h"
 
-FILE *f1 = NULL; 
+FILE *f1 = NULL;
 #define HEADER_LENGTH 54 // =10 + 4*(10+1);
 int REQUIRED_READ_LENGTH  = 0;
 int REQUIRED_WRITE_LENGTH = 0;
 
 /// This will be overwritten to contain the
 /// version number of the server
-int SERVER_VERSION = 0; 
+int SERVER_VERSION = 0;
 
 ////////////////////////////////////////////////////////////////
 /// Appends a character array to another character array.
@@ -171,33 +171,33 @@ int save_append(char* *buffer, const char *toAdd, int *bufLen);
 ///\param bufLen The buffer length prior and after the call.
 ///\return 0 if no error occurred.
 int assembleBuffer(int flag,
-		   int nDbl, int nInt, int nBoo,
-		   double curSimTim,
-		   double dblVal[], int intVal[], int booVal[],
-		   char* *buffer, int *bufLen);
+                   int nDbl, int nInt, int nBoo,
+                   double curSimTim,
+                   double dblVal[], int intVal[], int booVal[],
+                   char* *buffer, int *bufLen);
 
 /////////////////////////////////////////////////////////////////
 /// Gets an integer and does the required error checking.
 ///
 ///\param nptr Pointer to character buffer that contains the number.
-///\param endptr After return, this variable contains a pointer to the 
+///\param endptr After return, this variable contains a pointer to the
 ///            character after the last character of the number.
 ///\param base Base for the integer.
 ///\param The value contained in the character buffer.
 ///\return 0 if no error occurred.
 int getIntCheckError(const char *nptr, char **endptr, const int base,
-		     int* val);
+                     int* val);
 
 /////////////////////////////////////////////////////////////////
 /// Gets a double and does the required error checking.
 ///
 ///\param nptr Pointer to character buffer that contains the number.
-///\param endptr After return, this variable contains a pointer to the 
+///\param endptr After return, this variable contains a pointer to the
 ///            character after the last character of the number.
 ///\param The value contained in the character buffer.
 ///\return 0 if no error occurred.
-int getDoubleCheckError(const char *nptr, char **endptr, 
-			double* val);
+int getDoubleCheckError(const char *nptr, char **endptr,
+                        double* val);
 
 
 /////////////////////////////////////////////////////////////////
@@ -214,8 +214,8 @@ int getDoubleCheckError(const char *nptr, char **endptr,
 ///\param nBoo The number of boolean values received.
 ///\return 0 if no error occurred.
 int disassembleHeaderBuffer(const char* buffer,
-			    char **endptr, const int base,
-			    int *fla, int *nDbl, int *nInt, int *nBoo);
+                            char **endptr, const int base,
+                            int *fla, int *nDbl, int *nInt, int *nBoo);
 
 /////////////////////////////////////////////////////////////////
 /// Disassembles the buffer that has been received through the IPC.
@@ -230,10 +230,10 @@ int disassembleHeaderBuffer(const char* buffer,
 ///\param booVal The array that stores the boolean values.
 ///\return 0 if no error occurred.
 int disassembleBuffer(const char* buffer,
-		      int *fla,
-		      int *nDbl, int *nInt, int *nBoo,
-		      double *curSimTim,
-		      double dblVal[], int intVal[], int booVal[]);
+                      int *fla,
+                      int *nDbl, int *nInt, int *nBoo,
+                      double *curSimTim,
+                      double dblVal[], int intVal[], int booVal[]);
 
 /////////////////////////////////////////////////////////////////////
 /// Gets the port number for the BSD socket communication.
@@ -286,11 +286,11 @@ int establishclientsocket(const char *const docname);
 ///\param boolValWri Boolean values to write.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send, or a negative value if an error occured.
-int writetosocket(const int *sockfd, 
-		  const int *flaWri,
-		  const int *nDblWri, const int *nIntWri, const int *nBooWri,
-		  double *curSimTim,
-		  double dblValWri[], int intValWri[], int booValWri[]);
+int writetosocket(const int *sockfd,
+                  const int *flaWri,
+                  const int *nDblWri, const int *nIntWri, const int *nBooWri,
+                  double *curSimTim,
+                  double dblValWri[], int intValWri[], int booValWri[]);
 
 
 /////////////////////////////////////////////////////////////////
@@ -303,7 +303,7 @@ int writetosocket(const int *sockfd,
 /// +1: simulation reached end time.
 /// -1: simulation terminates due to an (unspecified) error.
 /// -10: simulation terminates due to error during initialization.
-/// -20: simulation terminates due to error during time integration. 
+/// -20: simulation terminates due to error during time integration.
 ///
 ///\param sockfd Socket file descripter
 ///\param flaWri Flag to be sent to the BCVTB
@@ -355,10 +355,10 @@ int getrequiredbufferlength(const int nDbl, const int nInt, const int nBoo);
 ///\param intValRea Integer values read from socket.
 ///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
-int readfromsocket(const int *sockfd, int *flaRea, 
-		   int *nDblRea, int *nIntRea, int *nBooRea,
-		   double *curSimTim,
-		   double dblValRea[], int intValRea[], int booValRea[]);
+int readfromsocket(const int *sockfd, int *flaRea,
+                   int *nDblRea, int *nIntRea, int *nBooRea,
+                   double *curSimTim,
+                   double dblValRea[], int intValRea[], int booValRea[]);
 
 /////////////////////////////////////////////////////////////////
 /// Reads a character buffer from the socket.
@@ -370,7 +370,7 @@ int readfromsocket(const int *sockfd, int *flaRea,
 ///\param bufLen The buffer length prior to the call.
 ///\return The exit value of the \c read command.
 int readbufferfromsocket(const int *sockfd,
-			 char *buffer, int *bufLen);
+                         char *buffer, int *bufLen);
 
 /////////////////////////////////////////////////////////////////
 /// Exchanges data with the socket.
@@ -395,14 +395,14 @@ int readbufferfromsocket(const int *sockfd,
 ///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
-int exchangewithsocket(const int *sockfd, 
-		       const int *flaWri, int *flaRea,
-		       const int *nDblWri, const int *nIntWri, const int *nBooWri,
-		       int *nDblRea, int *nIntRea, int *nBooRea,
-		       double *simTimWri,
-		       double dblValWri[], int intValWri[], int booValWri[],
-		       double *simTimRea,
-		       double dblValRea[], int intValRea[], int booValRea[]);
+int exchangewithsocket(const int *sockfd,
+                       const int *flaWri, int *flaRea,
+                       const int *nDblWri, const int *nIntWri, const int *nBooWri,
+                       int *nDblRea, int *nIntRea, int *nBooRea,
+                       double *simTimWri,
+                       double dblValWri[], int intValWri[], int booValWri[],
+                       double *simTimRea,
+                       double dblValRea[], int intValRea[], int booValRea[]);
 
 /////////////////////////////////////////////////////////////////
 /// Exchanges data with the socket.
@@ -419,14 +419,14 @@ int exchangewithsocket(const int *sockfd,
 ///\param dblValRea Double values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
-int exchangedoubleswithsocket(const int *sockfd, 
-			      const int *flaWri, int *flaRea,
-			      const int *nDblWri,
-			      int *nDblRea,
-			      double *simTimWri,
-			      double dblValWri[],
-			      double *simTimRea,
-			      double dblValRea[]);
+int exchangedoubleswithsocket(const int *sockfd,
+                              const int *flaWri, int *flaRea,
+                              const int *nDblWri,
+                              int *nDblRea,
+                              double *simTimWri,
+                              double dblValWri[],
+                              double *simTimRea,
+                              double dblValRea[]);
 
 ///////////////////////////////////////////////////////////
 /// Closes the inter process communication socket.

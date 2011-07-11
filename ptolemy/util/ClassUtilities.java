@@ -123,7 +123,7 @@ public class ClassUtilities {
      *  need to strip off the jar:<i>url</i>!/ part so that we can
      *  search for the {entry} as a resource.
      *
-     *  @param jarURLString The string containing the jar URL. 
+     *  @param jarURLString The string containing the jar URL.
      *  If no resource is found and the string contains a "#" then the text
      *  consisting of the # and the remaining text is removed and the shorter
      *  string is used as a search pattern.
@@ -162,7 +162,7 @@ public class ClassUtilities {
             // .getResource(entry) probably will not work.
             Class refClass = Class.forName("ptolemy.util.ClassUtilities");
             URL entryURL = refClass.getClassLoader().getResource(entry);
-            if (entryURL == null && entry.indexOf("#") != -1) { 
+            if (entryURL == null && entry.indexOf("#") != -1) {
                 // If entry contains a #, then strip it off and try again.
                 entryURL = refClass.getClassLoader().getResource(
                         entry.substring(0, entry.indexOf("#")));

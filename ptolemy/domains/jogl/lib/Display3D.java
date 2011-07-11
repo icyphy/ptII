@@ -28,13 +28,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**
- * An actor that is used for displaying 3D animation. 
+ * An actor that is used for displaying 3D animation.
  *
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
-public class Display3D extends TypedAtomicActor  implements Placeable {   
-    
+public class Display3D extends TypedAtomicActor  implements Placeable {
+
     /**
      *  Construct a Display3D object in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -49,21 +49,21 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
      *  CompositeActor and the name collides with an entity in the container.
      */
 
-    
+
     public Display3D(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        
+
+
         glIn = new TypedIOPort(this, "glIn");
         glIn.setInput(true);
         glIn.setTypeEquals(GLToken.GL_TYPE);
         glIn.setMultiport(true);
-        
-        
-        
+
+
+
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
@@ -73,27 +73,27 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
      *  The type of this port is sceneGraph.
      */
     public TypedIOPort glIn;
-    
-   
 
- 
-    
+
+
+
+
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called fire()");
         }
-        
-        if (isResized) {    
+
+        if (isResized) {
             _resize(_canvas);
             isResized = false;
           }
 
-         
+
           _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
           _gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 
-          _gl.glMatrixMode(GL.GL_MODELVIEW);  
-          _gl.glLoadIdentity(); 
+          _gl.glMatrixMode(GL.GL_MODELVIEW);
+          _gl.glLoadIdentity();
 
 
           for (int i = 0; i < _width; i++) {
@@ -102,8 +102,8 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
                   ((GLActor3D) object).render(_gl);
           }
           }
-          
-       
+
+
     }
 
 
@@ -119,8 +119,8 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
         while (c.getParent() != null) {
             c = c.getParent();
         }
-        
-       
+
+
 
         // If we had created a frame before, then blow it away.
         if (_frame != null) {
@@ -137,20 +137,20 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
                 }
             });
         }
-        
-       
+
+
 
      }
-    
+
     /**
      * Initializes rendering frame, canvas, gl object.
-     * 
-     */  
-    
-    
+     *
+     */
+
+
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _capabilities = new GLCapabilities();
         _canvas = new GLCanvas(_capabilities);
         _context = GLDrawableFactory.getFactory().createExternalGLContext();
@@ -161,17 +161,17 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
         _gl.glClearDepth(1.0f);
         _gl.glEnable(GL.GL_DEPTH_TEST);
         _gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-          
-     } 
-   
-        
+
+     }
+
+
     /**
      * Resizes the screen.
-     * 
-     */     
-       
+     *
+     */
+
     void _resize(GLCanvas canvas) {
-      
+
         _gl.glViewport(0, 0, _width, _height);
         _gl.glMatrixMode(GL.GL_PROJECTION);
         _gl.glLoadIdentity();
@@ -180,36 +180,36 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
         _gl.glMatrixMode(GL.GL_MODELVIEW);
         _gl.glLoadIdentity();
     }
-    
-    
-    /** This is added to the frame and drawable part of the frame. */  
-    protected GLCanvas _canvas;  
-    
+
+
+    /** This is added to the frame and drawable part of the frame. */
+    protected GLCanvas _canvas;
+
     /**
-     * Specify a set of OpenGL capabilities that a rendering 
-     * context must support,such as color depth and whether stereo 
-     * is enabled. 
+     * Specify a set of OpenGL capabilities that a rendering
+     * context must support,such as color depth and whether stereo
+     * is enabled.
      */
     protected GLCapabilities _capabilities;
-    
+
     /**
      * Specify the frame associated with the container.
      */
-    protected Frame _frame; 
-    
+    protected Frame _frame;
+
     GLContext _context;
-    
+
 
     /** Specify height of the frame. */
     protected int _height = 480;
-    
+
 
     /** Specify width of the frame. */
     protected int _width = 640;
     int i =0;
 
-    private Container _container; 
-   
+    private Container _container;
+
     // OpenGL
     private GL _gl;
     private GLU _glu;
@@ -220,5 +220,5 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
     GraphicsConfiguration config;
 
 }
-   
-    
+
+

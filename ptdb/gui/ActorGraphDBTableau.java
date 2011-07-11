@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -118,9 +118,9 @@ public class ActorGraphDBTableau extends Tableau {
     ////                         public methods                    ////
 
     /**
-     * Get the library for DB pattern search window. 
-     * 
-     * @return The library instance for DB pattern search window. 
+     * Get the library for DB pattern search window.
+     *
+     * @return The library instance for DB pattern search window.
      * @see #setGtLibrary
      */
     public LibraryAttribute getGtLibrary() {
@@ -128,10 +128,10 @@ public class ActorGraphDBTableau extends Tableau {
     }
 
     /**
-     * Set the library for DB pattern search window. 
-     * 
-     * @param libraryAttribute The library instance for DB pattern search 
-     * window to be set in this tableau. 
+     * Set the library for DB pattern search window.
+     *
+     * @param libraryAttribute The library instance for DB pattern search
+     * window to be set in this tableau.
      * @see #getGtLibrary
      */
     public void setGtLibrary(LibraryAttribute libraryAttribute) {
@@ -143,9 +143,9 @@ public class ActorGraphDBTableau extends Tableau {
     ////                         private members                   ////
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
-    
+
     /**
-     * The library for pattern search window. 
+     * The library for pattern search window.
      */
     private LibraryAttribute _gtLibrary;
 
@@ -198,7 +198,7 @@ public class ActorGraphDBTableau extends Tableau {
                     tableau = new ActorGraphDBTableau((PtolemyEffigy) effigy,
                             "graphTableau", library);
 
-                    // Fetch the gt library, and set it in the tableau. 
+                    // Fetch the gt library, and set it in the tableau.
                     tableau.setGtLibrary((LibraryAttribute) getAttribute(
                             "gtlibrary", LibraryAttribute.class));
 

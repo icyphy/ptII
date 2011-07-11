@@ -33,15 +33,15 @@ import java.util.Comparator;
 import java.util.LinkedList;
 
 /** Represent parallel composition in the context of Syntax terms.
- *  SyntacticTerm implementing objects can be put in parallel 
- *  composition in this object which combines input and output 
+ *  SyntacticTerm implementing objects can be put in parallel
+ *  composition in this object which combines input and output
  *  ports of the constituent terms.
  *  <p>
  *  @author Chris Shaver
  *  @version $Id$
  *  @since
  *  @Pt.ProposedRating red (shaver)
- *  @Pt.AcceptedRating red 
+ *  @Pt.AcceptedRating red
  *
  */
 public class SyntacticColumn extends SyntacticTermList {
@@ -52,7 +52,7 @@ public class SyntacticColumn extends SyntacticTermList {
     }
 
     /** Decide if given node follows completely from this column.
-     *  To be true there must be at least one connection from the column to 
+     *  To be true there must be at least one connection from the column to
      *  the node and all incoming connections must follow from this column.
      *  @param node The node possibly following the column.
      *  @return Whether the given node follows completely from given column.
@@ -75,7 +75,7 @@ public class SyntacticColumn extends SyntacticTermList {
         return isAny && doesFollow;
     }
 
-    /** Sort constituent terms in column by type order. 
+    /** Sort constituent terms in column by type order.
      *  Sorting a column will change its neighboring permutations. */
     public void sort() {
         final Comparator<SyntacticTerm> compareNodes = new Comparator<SyntacticTerm>() {
@@ -89,17 +89,17 @@ public class SyntacticColumn extends SyntacticTermList {
     }
 
     public String generateCode() {
-        LinkedList<String> termStrs = new LinkedList(); 
+        LinkedList<String> termStrs = new LinkedList();
         for (SyntacticTerm node : this) {
             if (node.hasCode()) termStrs.add(node.generateCode());
         }
 
         return SyntacticGraph.stringJoin(termStrs, " | ");
     }
-    
+
     public boolean hasCode() {
         return !isEmpty();
     }
-    
+
 
 }

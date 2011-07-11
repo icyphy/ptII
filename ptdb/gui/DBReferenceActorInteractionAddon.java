@@ -93,9 +93,9 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
         handleActorOpenRequest("Changes to this actor will not "
                             + "be saved to the database.  "
                             + "To make changes to the "
-                            + "referenced model, open " 
+                            + "referenced model, open "
                             + "it from the database.", actor);
-        
+
     }
 
     /**
@@ -155,10 +155,10 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      */
     public void openInstanceAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException {
-        
+
         handleActorOpenRequest("Changes to this instance will not "
                 + "be saved to the database.  "
-                + "To make changes to the " 
+                + "To make changes to the "
                 + "referenced model, open "
                 + "it from the database.", actor);
     }
@@ -179,9 +179,9 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
         }
         return false;
     }
-    
-    private void handleActorOpenRequest(String message, NamedObj actor){
-        
+
+    private void handleActorOpenRequest(String message, NamedObj actor) {
+
         MessageHandler.message(message);
 
         String referenceTag = "<property name=\""
@@ -194,6 +194,6 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
 
         change.setUndoable(true);
         actor.requestChange(change);
-        
+
     }
 }

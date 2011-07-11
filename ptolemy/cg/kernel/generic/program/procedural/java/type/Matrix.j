@@ -295,14 +295,14 @@ static Token Matrix_multiply(Token thisToken, Token... tokens) {
     }
     switch (otherToken.type) {
         case TYPE_Matrix:
-	for (i = 0, index = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+        for (i = 0, index = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
             for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++, index++) {
                 element = Matrix_get(thisToken, j, i);
 
                 if (((Matrix)(otherToken.payload)).row == 1
-		     && ((Matrix)(otherToken.payload)).column == 1) {
+                     && ((Matrix)(otherToken.payload)).column == 1) {
                     //Matrix_set(result, j, i, functionTable[(int)element.type][FUNC_multiply](element, Matrix_get(otherToken, 0, 0)));
-		    ((Matrix)(result.payload)).elements[index] = multiply_Token_Token(element, Matrix_get(otherToken, 0, 0));
+                    ((Matrix)(result.payload)).elements[index] = multiply_Token_Token(element, Matrix_get(otherToken, 0, 0));
                 } else {
                     //result.payload.Matrix.elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
                     throw new RuntimeException("Matrix_multiply(): Matrix multiplication not yet supported on otherTokens that are not 1x1");

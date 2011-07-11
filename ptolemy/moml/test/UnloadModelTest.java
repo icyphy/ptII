@@ -38,7 +38,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 /**
  Test unloading a model.
- 
+
  <p>This class is used to test loading and unlooading a model.
  When used with a memory profiler like JProfiler, we can
  look for leaks.  To run the test, use:
@@ -109,8 +109,8 @@ public class UnloadModelTest extends MoMLSimpleApplication {
     }
 
     /** Load a model and then unload it.
-     *  <p>Typically, this class is invoked with something like:  
-     *  <pre>   
+     *  <p>Typically, this class is invoked with something like:
+     *  <pre>
      *  java -classpath $PTII ptolemy.moml.test.UnloadModelTest ../demo/test.xml
      *  </pre>
      *  @param args The first argument is the name of the file to be loaded.
@@ -152,7 +152,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
     }
 
     /** Wait for the run to finish and the unload the model.
-     */   
+     */
     public class UnloadThread extends Thread {
         public void run() {
             waitForFinish();
@@ -194,7 +194,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
 
                     // The next line will remove the static MoMLParser
                     // used by the filters.  If we add filters, then the static
-                    // MoMLParser is recreated. 
+                    // MoMLParser is recreated.
                     MoMLParser.setMoMLFilters(null);
                 }
 

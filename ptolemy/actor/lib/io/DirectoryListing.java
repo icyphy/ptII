@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DirectoryListing
 
 /**
@@ -86,7 +86,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  since some servers truncate the file names.
  </p><p>
  If <i>allowEmptyDirectory</i> controls whether reading an empty directory
- will throw an exception. 
+ will throw an exception.
  </p><p>Note that DirectoryListing returns the contents of the directory
  in a different order depending on whether one is using the Sun JVM
  or the IBM JVM.  Thus, you may want to connect the output to an
@@ -115,7 +115,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         directoryOrURL = new FilePortParameter(this, "directoryOrURL");
         new Parameter(directoryOrURL, "allowFiles", BooleanToken.FALSE);
         new Parameter(directoryOrURL, "allowDirectories", BooleanToken.TRUE);
-       
+
 
         output.setTypeEquals(new ArrayType(BaseType.STRING));
 
@@ -129,7 +129,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         listOnlyFiles = new Parameter(this, "listOnlyFiles");
         listOnlyFiles.setTypeEquals(BaseType.BOOLEAN);
         listOnlyFiles.setExpression("false");
-        
+
 
         allowEmptyDirectory = new Parameter(this, "allowEmptyDirectory");
         allowEmptyDirectory.setTypeEquals(BaseType.BOOLEAN);
@@ -161,7 +161,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  This is a boolean that defaults to false.
      */
     public Parameter listOnlyFiles;
-    
+
     /** If true, and <i>directoryOrURL</i> refers to a local directory
      *  (not a URL), that is empty, then the output will be empty
      *  string array and no exception is reported. If
@@ -170,7 +170,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  refers to a directory or file).  This is a boolean that
      *  defaults to false.
      */
-    public Parameter allowEmptyDirectory;    
+    public Parameter allowEmptyDirectory;
 
     /** If non-empty, then only output file and directory names that
      *  match the specified (regular expression) pattern.
@@ -245,7 +245,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 .getToken()).booleanValue();
         boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
                 .booleanValue();
-        
+
         boolean emptyDirectoryAllow = ((BooleanToken) allowEmptyDirectory.getToken())
         .booleanValue();
 
@@ -280,11 +280,11 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                     }
                 }
 
-                if (!emptyDirectoryAllow){
-	                if (result.size() == 0) {
-	                    throw new IllegalActionException(this,
-	                            "No files or directories that match the pattern.");
-	                }
+                if (!emptyDirectoryAllow) {
+                        if (result.size() == 0) {
+                            throw new IllegalActionException(this,
+                                    "No files or directories that match the pattern.");
+                        }
                 }
 
                 StringToken[] resultArray = new StringToken[result.size()];

@@ -80,18 +80,18 @@ if (bufferTail == MAX_SPEAKER_DEVICE_BUFFER) {
 }
 
 getRealTime(&currentPhysicalTime);
- 
+
 // Compare time with tagged time, if not safe to actuate, then add events
 // and wait until time to actuate. If safe to actuate, actuate now.
 if (timeCompare(currentModelTime, currentPhysicalTime) == MORE) {
-        /* This can be used for debugging to determine when events are received 
+        /* This can be used for debugging to determine when events are received
                 by an actuator
         if (thisActuator == ACTUATORS[0]) {
                 GPIOPinWrite(GPIO_PORTC_BASE, GPIO_PIN_7, GPIO_PIN_7);
         } else if (thisActuator == ACTUATORS[1]) {
                  GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_PIN_7);
         }*/
-        
+
         setActuationInterrupt($actuator);
 
         /*        This clears the GPIO pins after debugging information has been set
@@ -101,7 +101,7 @@ if (timeCompare(currentModelTime, currentPhysicalTime) == MORE) {
         } else if (thisActuator == ACTUATORS[1]) {
                  GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, 0);
         }*/
-                        
+
 } else {
         // FIXME: do something!
         /*        Debug - write to GPIO on deadline miss
@@ -117,7 +117,7 @@ if (timeCompare(currentModelTime, currentPhysicalTime) == MORE) {
         #endif
 }
 /**/
- 
+
 /*** actuationBlock ***/
 //
 // Set the PWM frequency to the next frequency in the sound effect.

@@ -40,12 +40,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class MotorSetup extends ActuatorSetup {
-    
+
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.MotorOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.MotorOutputDevice actor.
-     *  @exception IllegalActionException 
-     *  @exception NameDuplicationException 
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public MotorSetup(
             ptolemy.domains.ptides.lib.luminary.MotorSetup actor)

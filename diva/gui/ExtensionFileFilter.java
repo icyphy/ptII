@@ -55,14 +55,14 @@ import javax.swing.filechooser.FileFilter;
  *     chooser.addChoosableFileFilter(filter);
  *     chooser.showOpenDialog(this);
  * </pre>
- 
+
  * <p>Note that as of Java 1.6, there is a FileNameExtensionFilter which
- * replaces this class.  See 
+ * replaces this class.  See
  * http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
  * However, this class can be used with both java.awt.FileDialog
  * and javax.swing.JFileChooser because it implements java.io.FilenameFilter
  * and extends javax.swing.FilenameFilter.</p>
- *  
+ *
  * @version $Id$
  * @author Jeff Dinkins
  */

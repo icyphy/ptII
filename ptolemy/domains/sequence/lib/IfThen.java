@@ -38,14 +38,14 @@ import ptolemy.kernel.util.StringAttribute;
 //// IfThenElse
 
 /**
- A type polymorphic If-Then-Else actor. 
+ A type polymorphic If-Then-Else actor.
  <p>In an iteration, if an input token is available at the <i>If</i> input,
  that token is read.
  The <i>Then</i> output is set to true, if then <i>If</i> input is true.
  The <i>Else</i> output is set to true, if then <i>If</i> input is false.
- The <i>If</i> port may only receive Tokens of type Boolean. The output 
+ The <i>If</i> port may only receive Tokens of type Boolean. The output
  ports are also of type boolean.</p>
- 
+
  <p>IfThen is a ControlActor, meaning that it keeps a list of
  enabled output ports.</p>
 
@@ -93,7 +93,7 @@ public class IfThen extends ControlActor {
                 "_cardinal");
         thenCardinal.setExpression("EAST");
 
-        // set type constraints for ports        
+        // set type constraints for ports
         ifInput.setTypeEquals(BaseType.BOOLEAN);
         thenOutput.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -112,7 +112,7 @@ public class IfThen extends ControlActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read a token from the input port.  
+    /** Read a token from the input port.
      *  This actor is used for control flow by only sending true token
      *  to the output when the input receives a true token.
      *

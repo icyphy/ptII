@@ -6,14 +6,14 @@
  *         using BSD sockets.
  *
  * \author Michael Wetter,
- *         Simulation Research Group, 
+ *         Simulation Research Group,
  *         LBNL,
  *         MWetter@lbl.gov
  *
  * \date   2007-12-01
  *
  * This file provides methods that allows Simulink to
- * establish a socket connection. 
+ * establish a socket connection.
  * The file \c compile.m calls this file.
  *
  */
@@ -28,11 +28,11 @@
 int16_T establishBSDSocket(int16_T* flag);
 
 int16_T exchangeDoublesWithBSDSocket(int16_T* sockfd,
-                              int16_T* flaWri, 
+                              int16_T* flaWri,
                               int16_T* flaRea,
                                int16_T* nDblWri,
                               double* simTimWri,
-                              double dblValWri[], 
+                              double dblValWri[],
                               double* simTimRea,
                               double dblValRea[]);
 
@@ -88,7 +88,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED

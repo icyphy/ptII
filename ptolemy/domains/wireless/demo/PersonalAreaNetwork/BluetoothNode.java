@@ -181,7 +181,7 @@ public class BluetoothNode extends TypedAtomicActor {
      *  does not depend on the <i>input</i> or <i>signal</i>
      *  ports in a firing.
      *  @exception IllegalActionException If the causality interface
-     *  cannot be computed. 
+     *  cannot be computed.
      */
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
@@ -189,7 +189,7 @@ public class BluetoothNode extends TypedAtomicActor {
         _declareDelayDependency(input, output, 0.0);
         _declareDelayDependency(signal, output, 0.0);
     }
-    
+
     /** When it receives token from the signal port, which is
      *  used to receive signal from the pursuer or the evader.
      *  it tells what the signal is from by checking the signal header.

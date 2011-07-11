@@ -53,14 +53,14 @@ import ptolemy.moml.MoMLFilter;
  @Pt.AcceptedRating Red (cxh)
  */
 public class BackwardCompatibility {
-    
+
     /** Add a MoMLFilter to the list of filters.
      *  @param filter The filter to be added.
      */
     public static void addFilter(MoMLFilter filter) {
         _filterList.add(filter);
     }
-    
+
     /** Return a list where each element of the list is a
      *  MoMLFilter to be applied to handle backward compatibility.
      *

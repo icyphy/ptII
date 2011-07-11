@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -43,8 +43,8 @@ import ptdb.common.exception.DBExecutionException;
  * Business layer interface class that mainly handles the search models
  * function. It constructs and configures the actual searcher classes according
  * to the search criteria, and triggers the searching.
- * 
- * <p>For different requirement for search configuration, this class can be 
+ *
+ * <p>For different requirement for search configuration, this class can be
  * modified to add more searchers chain configuration.</p>
  *
  * @author Alek Wang
@@ -107,7 +107,7 @@ public class SearchManager {
         // configure the searchers to set the next result handlers
         // also configure the searchers to set the previous searcher
         attributeSearcher.setFirstSearcher();
-        
+
         attributeSearcher.setNextResultHandler(nameSearcher);
         nameSearcher.setPreviousSeacher(attributeSearcher);
 

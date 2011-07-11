@@ -206,7 +206,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixedPointDirector newObject = (FixedPointDirector) super.clone(workspace);
         newObject._receivers = new LinkedList();
-        
+
         newObject._actorsAllowedToFire = new HashSet();
         newObject._actorsFinishedFiring = new HashSet();
         newObject._actorsFired = new HashSet();
@@ -261,7 +261,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                     + iterationCount + " iterations.");
         }
     }
-    
+
     /** Return the current index of the director.
      *  The current index is a portion of the superdense time.
      *  Superdense time means that time is a real value and an index,

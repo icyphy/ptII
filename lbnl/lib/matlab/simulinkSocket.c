@@ -6,7 +6,7 @@
  *         using BSD sockets.
  *
  * \author Michael Wetter,
- *         Simulation Research Group, 
+ *         Simulation Research Group,
  *         LBNL,
  *         MWetter@lbl.gov
  *
@@ -31,11 +31,11 @@ int16_T establishBSDSocket(int16_T* flag){
 }
 
 int16_T exchangeDoublesWithBSDSocket(int16_T* sockfd,
-                              int16_T* flaWri, 
+                              int16_T* flaWri,
                               int16_T* flaRea,
                                int16_T* nDblWri,
                               double* simTimWri,
-                              double dblValWri[], 
+                              double dblValWri[],
                               double* simTimRea,
                               double dblValRea[]){
   int mySockfd = *sockfd;
@@ -43,7 +43,7 @@ int16_T exchangeDoublesWithBSDSocket(int16_T* sockfd,
   int myFlaRea = 0;
   int myNDblWri = *nDblWri;
   int nDblRea;
-  int retVal = exchangedoubleswithsocket(&mySockfd, 
+  int retVal = exchangedoubleswithsocket(&mySockfd,
                                          &myFlaWri, &myFlaRea,
                                          &myNDblWri,
                                          &nDblRea,

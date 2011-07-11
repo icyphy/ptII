@@ -4,6 +4,6 @@ $put(output, $actorSymbol(result));
 /**/
 
 /***scaleOnRight***/
-$targetType(output) $actorSymbol(result) = $multiply_$cgType(factor)_$cgType(input)($val(factor), $get(input)); 
+$targetType(output) $actorSymbol(result) = $multiply_$cgType(factor)_$cgType(input)($val(factor), $get(input));
 $put(output, $actorSymbol(result));
 /**/

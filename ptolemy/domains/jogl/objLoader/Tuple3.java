@@ -9,12 +9,12 @@
 package ptolemy.domains.jogl.objLoader;
 
 
-public class Tuple3 
+public class Tuple3
 {
   private float x, y, z;
-	
 
-  public Tuple3(float xc, float yc, float zc) 
+
+  public Tuple3(float xc, float yc, float zc)
   {
     x = xc;
     y = yc;
@@ -29,21 +29,21 @@ public class Tuple3
   public void setX(float xc)
   {  x = xc;  }
 
-  public float getX() 
+  public float getX()
   { return x; }
 
 
   public void setY(float yc)
   {  y = yc;  }
 
-  public float getY() 
+  public float getY()
   { return y; }
 
 
   public void setZ(float zc)
   {  z = zc;  }
 
-  public float getZ() 
+  public float getZ()
   { return z; }
 
 }  // end of Tuple3 class

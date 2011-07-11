@@ -115,7 +115,7 @@ public class Register extends SampleAndHold {
         // immediately depend on the trigger). However, in this case the
         // output could immediately depend on the trigger port.
     }
-    
+
     /** If there is a token in the <i>trigger</i> port, emit the previously
      *  seen inputs from the <i>input</i> port. If there has been no
      *  previous input tokens, but the <i>initialValue</i> parameter

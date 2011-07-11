@@ -107,15 +107,15 @@ public class SequenceAttribute extends Parameter implements Comparable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Implement compareTo method to compare sequence numbers 
+    /** Implement compareTo method to compare sequence numbers
      *  Only the sequence numbers are compared (independent of any process name).
-     * 
+     *
      *  Object may be a SequenceAttribute or a ProcessAttribute
      *   @param obj The SequenceAttribute object.
      *  @return 0 if the sequence numbers are the same.
      */
     public int compareTo(Object obj) {
-        
+
         try {
             int seq1 = this.getSequenceNumber();
             int seq2 = 0;
@@ -124,7 +124,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
             if (obj instanceof SequenceAttribute) {
                 // If the second object is a ProcessAttribute, use the correct getSequenceNumber()
                 // FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
-                // FIXME:  This is bad coding style, because SequenceAtribute should not know about 
+                // FIXME:  This is bad coding style, because SequenceAtribute should not know about
                 // its subclass ProcessAttribute - refactor?
                 if (obj instanceof ProcessAttribute) {
                     seq2 = ((ProcessAttribute) obj).getSequenceNumber();
@@ -144,12 +144,12 @@ public class SequenceAttribute extends Parameter implements Comparable {
             throw new IllegalArgumentException(
                     "Invalid SequenceAttribute passed to compareTo method.", e);
         }
-        
+
         throw new IllegalArgumentException(
                 "SequenceAttribute can only be compared to other"
                         + " instances of SequenceAttribute.");
     }
-    
+
     /*
     public boolean equals(Object rightArg) {
         if (rightArg != null && rightArg instanceof SequenceAttribute &&
@@ -162,17 +162,17 @@ public class SequenceAttribute extends Parameter implements Comparable {
     */
 
     /** Returns the sequence number as an int, or 0 if there is none.
-     * 
+     *
      * @return int sequence number
-     * @throws IllegalActionException If there is a problem getting the token value.
+     * @exception IllegalActionException If there is a problem getting the token value.
      */
     public int getSequenceNumber() throws IllegalActionException{
         // FIXME:  0 is actually a valid sequence number - want different default return?
         int seqNumber = 0;
 
-        // Return the attribute token value as an integer        
+        // Return the attribute token value as an integer
         seqNumber = ((IntToken) getToken()).intValue();
-        
+
         // Check to make sure sequence number is positive or zero.
         if (seqNumber < 0) {
             throw new IllegalActionException(this, "In SequenceAttribute " +
@@ -185,7 +185,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
 
     /** Implement validate method to validate the SequenceAttribute and ProcessAttributes .
      *  @return The current list of value listeners, which are evaluated
-     *   as a consequence of this call to validate(). 
+     *   as a consequence of this call to validate().
      *  @exception IllegalActionException If thrown by the parent class.
      */
     public Collection validate() throws IllegalActionException {
@@ -241,7 +241,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
                         }
 
                         // Beth changed 01/19/09
-                        // The sequence number must be a non-blank number 
+                        // The sequence number must be a non-blank number
                         // (we want [\\d]+, not [\\d]*, because [\\d]* would match a zero-length
                         // expression, i.e. an empty string)
                         if (i == 1 && !Pattern.matches("[\\d]+", token)) {

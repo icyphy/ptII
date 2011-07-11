@@ -1,4 +1,4 @@
-/* A TypedCompositeActor with Lazy evaluation for Modular code generation. 
+/* A TypedCompositeActor with Lazy evaluation for Modular code generation.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
 ////ModularCodeGenTypedCompositeActor
 
 /**
-A TypedCompositeActor with Lazy evaluation for Modular code generation. 
+A TypedCompositeActor with Lazy evaluation for Modular code generation.
 
  @author Bert Rodiers, Dai Bui
  @version $Id$
@@ -155,7 +155,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     /** Convert this Ptolemy port to a port that will be saved in the profile.
      *  @param port The Ptolemy port.
      *  @exception IllegalActionException When the width can't be retrieved.
-     *  @return information of a port in profile. 
+     *  @return information of a port in profile.
      */
     public Profile.Port convertProfilePort(IOPort port)
             throws IllegalActionException {
@@ -251,8 +251,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                             newPort.setOutput(port.output());
                             newPort.setMultiport(port.multiport());
                         }
-                        
-                        
+
+
                         NamedObj container = getContainer();
                         if (container instanceof CompositeActor) {
                             ((CompositeActor) container).registerPublisherPort(
@@ -317,8 +317,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
 
             List<Object> argList = new LinkedList<Object>();
-            
-            if(outputPortList().size() > 0)
+
+            if (outputPortList().size() > 0)
                 argList.add(true);
 
             Iterator<?> inputPorts = inputPortList().iterator();
@@ -677,7 +677,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param port The published port. 
+     *  @param port The published port.
      *  @exception NameDuplicationException If the published port
      *          is already registered.
      *  @exception IllegalActionException If the published port can't
@@ -873,7 +873,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the actor already has a
      *   parameter with this name.
-     */  
+     */
     private void _init() throws IllegalActionException, NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
@@ -894,18 +894,18 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     }
 
     /** Return true if the port is a is connected to a subscriber.
-     *  @param port The port to look up.   
+     *  @param port The port to look up.
      *  @return Return true if the port is a is connected to a subscriber.
-     */   
+     */
     private boolean _isSubscribedPort(IOPort port) {
         // FIXME: this method might be slow.
         return _subscriberPorts != null && _subscriberPorts.containsValue(port);
     }
 
     /** Return true if the port is a is connected to a publisher.
-     *  @param port The port to look up.   
+     *  @param port The port to look up.
      *  @return Return true if the port is a is connected to a publisher.
-     */   
+     */
     private boolean _isPublishedPort(IOPort port) {
         // FIXME: this method might be slow.
         boolean isPublishPort = false;
@@ -1031,7 +1031,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             while ((container instanceof CompositeActor)
                     && !((CompositeActor) container).isOpaque())
                 container = ((CompositeActor) container).getContainer();
-            
+
             return ((CompositeActor) container).getPublishedPortChannel(port);
         }
         return "";
@@ -1041,7 +1041,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *  code is not being generated and Pub/Subs are not being
      *  created, then set the <i>recompileThisLevel</i> parameter
      *  to true.  Otherwise, do nothing.
-     */    
+     */
     private void _setRecompileFlag() throws IllegalActionException {
         if (_configureDone && !_populating && !_generatingCode
                 && _creatingPubSub == 0) {
@@ -1053,7 +1053,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     /** Transfer outputs.
      *  @param port The port to which to transfer tokens.
      *  @param outputTokens The tokens to be transferred.
-     */  
+     */
     private void _transferOutputs(IOPort port, Object outputTokens)
             throws IllegalActionException {
 
@@ -1193,7 +1193,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
     private Map<String, IOPort> _subscriberPorts;
 
-    /** If true, then use the 
+    /** If true, then use the
      *  {@link ptolemy.cg.lib.Profile}, which contains
      *  meta information such as information about
      *  the ports. The default value of this

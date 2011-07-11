@@ -14,7 +14,7 @@ public class Token {
     public Object payload;
         public Token() {};
         public Short getType() {
-                return type; 
+                return type;
         }
         public Object getPayload() {
                 return payload;
@@ -35,10 +35,10 @@ static Long StringtoLong(String string) {
 // static String ComplextoString(Token thisToken) {
 //     if (((ComplexCG)thisToken.payload).imag >= 0) {
 //         return Double.toString(((ComplexCG)thisToken.payload).real)
-// 	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i";
+//                + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i";
 //     } else {
 //         return Double.toString(((ComplexCG)thisToken.payload).real)
-// 	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i";
+//                + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i";
 //     }
 // }
 

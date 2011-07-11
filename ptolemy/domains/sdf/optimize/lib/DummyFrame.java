@@ -27,7 +27,7 @@
  */
 
 /**
- * 
+ *
  */
 package ptolemy.domains.sdf.optimize.lib;
 
@@ -35,7 +35,7 @@ package ptolemy.domains.sdf.optimize.lib;
 <h1>Class comments</h1>
 A DummyFrame mimics a shared data object.
 It is used for testing the OptimizingSDFDirector. The shared data object holds an
-integer value. 
+integer value.
 <p>
 See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more information.
 </p>
@@ -61,7 +61,7 @@ public class DummyFrame implements Cloneable {
     public String toString() {
         return "Frame(" + Integer.toString(value) + ")";
     }
-    
+
     /**
      * Clone the DummyFrame.
      * @return the cloned frame

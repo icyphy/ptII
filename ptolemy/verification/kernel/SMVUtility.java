@@ -115,7 +115,7 @@ public class SMVUtility {
     /**
      * Return a StringBuffer that contains the converted .smv format of the
      * system. Current algorithm uses a modular approach for construction, enabling us to deal with
-     * hierarchical systems. Also recognition of Boolean tokens is supported. 
+     * hierarchical systems. Also recognition of Boolean tokens is supported.
      *
      * <p>For previous implementation, no matter what token is sent through the
      * channel, the receiver only senses the existence of the token by the
@@ -2357,7 +2357,7 @@ public class SMVUtility {
     /** This function is used to generate detailed pre-conditions and
      * post-conditions in .smv format. It is used by the function
      * _generateAllVariableTransitions()
-     * 
+     *
      * @param statePrecondition
      * @param valueDomain
      * @param lValue
@@ -3965,8 +3965,8 @@ public class SMVUtility {
     }
 
     /**
-     * This function generates the Kripke structure acceptable by NuSMV from 
-     * a ModalModel in Ptolemy II. Here modular approach is applied to 
+     * This function generates the Kripke structure acceptable by NuSMV from
+     * a ModalModel in Ptolemy II. Here modular approach is applied to
      * eliminate complexity of the conversion process.
      *
      * @param modalmodel ModalModel under analysis

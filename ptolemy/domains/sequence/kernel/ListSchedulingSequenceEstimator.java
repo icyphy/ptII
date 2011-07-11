@@ -1,4 +1,4 @@
-/* A class that estimates a sequential schedule. 
+/* A class that estimates a sequential schedule.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -59,7 +59,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ListSchedulingSequenceEstimator extends SequenceEstimator {
 
     /** Construct an estimator for the given director.
-     * 
+     *
      *  @param director The director that needs to guess a schedule.
      */
     public ListSchedulingSequenceEstimator(Director director) {
@@ -71,13 +71,13 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
 
     /** Estimate a sequenced schedule. Take into account ordering constraints
      * given by sequence numbers and data flow.
-     * 
+     *
      * @param independentList The already present SequenceAttributes for the
      * Actors controlled by this scheduler.
-     * 
+     *
      * @return A vector with the ordered actors. Note that the sequence numbers
      * are not changed. This has to be done somewhere else.
-     * 
+     *
      * @exception NotSchedulableException If the underlying graph of the
      * actors is not acyclic.
      */
@@ -102,8 +102,8 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
 
     /** Create a graph with dependencies caused by sequence numbers and data
      * flow constraints.
-     * 
-     * @param independentList All sequence attributes to be considered when 
+     *
+     * @param independentList All sequence attributes to be considered when
      * building the graph.
      */
     private void _createGraph(List<SequenceAttribute> independentList) {
@@ -143,7 +143,7 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
     }
 
     /** Get all predecessors of an actor based on dataflow and sequence numbers.
-     * 
+     *
      * @param independentList The list of sequence attributes present in the graph.
      * @param actor The actor for which the predecessors are determined.
      * @return All predecessors of the actor based on dataflow and sequence numbers.
@@ -184,7 +184,7 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
     }
 
     /** Get the sequence number of an actor.
-     * 
+     *
      * @param actor The actor that has a sequence number.
      * @return The sequence number of <i>actor</i>, if there is one. If not, -1
      * is returned.
@@ -221,9 +221,9 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
 
     }
 
-    /** Produce a static order schedule for the graph based on sequence 
+    /** Produce a static order schedule for the graph based on sequence
      * and data flow constraints.
-     * 
+     *
      *  @return A static order schedule.
      */
     private Vector<Actor> _schedule() {

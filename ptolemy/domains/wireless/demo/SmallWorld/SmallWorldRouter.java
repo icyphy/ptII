@@ -288,7 +288,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
         // though there is no lower bound on the time delay.
         _declareDelayDependency(input, output, 0.0);
     }
-    
+
     /** Check whether it is the destination of the massage, if so,
      *  change the color of the icon to red and schedule
      *  another firing after 1.0 time unit to change it back to white.

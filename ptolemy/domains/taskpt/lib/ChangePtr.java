@@ -1,4 +1,4 @@
-/* An actor that changes address and/or size of a PtrToken. 
+/* An actor that changes address and/or size of a PtrToken.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ChangePtr
 
 /** An actor that changes address and size of a PtrToken.
-* 
+*
 * @author Bastian Ristau
 * @version $Id$
 * @since Ptolemy II 8.1
@@ -55,7 +55,7 @@ public class ChangePtr extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors,
      *  define the ports and port parameters.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -67,7 +67,7 @@ public class ChangePtr extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // FIXME: Types of input and output should be set to PtrToken 
+        // FIXME: Types of input and output should be set to PtrToken
         // once this type exists.
 
         input = new TypedIOPort(this, "input", true, false);
@@ -106,12 +106,12 @@ public class ChangePtr extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Read the PtrToken present on <i>input</i> and produce a new PtrToken
-     * on <i>output</i> with address = address of the token present <i>input</i> 
+     * on <i>output</i> with address = address of the token present <i>input</i>
      * plus addressOffset and size = size of the token present at <i>input</i>
      * plus sizeOffset.
-     * 
-     * @throws NoTokenException Thrown if there is no token.
-     * @throws IllegalActionException Thrown if there is no director, and hence
+     *
+     * @exception NoTokenException Thrown if there is no token.
+     * @exception IllegalActionException Thrown if there is no director, and hence
      * no receivers have been created, if the port is not an input port, or
      * if the channel index is out of range.
       */

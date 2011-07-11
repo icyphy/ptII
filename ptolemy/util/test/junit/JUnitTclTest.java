@@ -35,7 +35,7 @@ import tcl.lang.TclException;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
-/** 
+/**
  * Run the Tcl tests under JUnit.
  * <p>If the fileName JVM property is set, then the file named by
  * that property is sourced.  Otherwise, the testDefs.tcl file
@@ -54,18 +54,18 @@ import tcl.lang.TclException;
  * cd $PTII
  * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
  * </pre></p>
- * 
+ *
  * <p> A copy of this file appears in each test/ subdirectory
  * so that it is easy for developers to run tests.  The master
  * file is in $PTII/util/testsuite/JUnitTclTest.java.in.
  * To update all the files, run
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
- */ 
+ */
 public class JUnitTclTest {
     /** Run a test.
      *  <p>If the fileName JVM property is set, then the file named by
@@ -74,8 +74,8 @@ public class JUnitTclTest {
      *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
      *  any models in the auto/ directory are invoked.
      *  @exception TclException If thrown while evaluating the Tcl test code.
-     */ 
-    @org.junit.Test 
+     */
+    @org.junit.Test
     public void run() throws TclException {
         String fileName = System.getProperty("fileName");
         Interp interp = new Interp();

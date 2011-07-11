@@ -40,12 +40,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SequencedVariable
 
 /** A variable that can share state across multiple instances and
- *  is used in the sequence domain. 
- * 
+ *  is used in the sequence domain.
+ *
  *  @author Elizabeth Latronico
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -56,123 +56,123 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
 
     /** Create a new SequencedVariable actor with the given name and
      *  container.
-     * 
+     *
      * @param container The container that will contain the actor.
      * @param name The name of the actor.
-     * @throws NameDuplicationException Thrown if there is already an actor
+     * @exception NameDuplicationException Thrown if there is already an actor
      *  in the container with the same name.
-     * @throws IllegalActionException Thrown if the actor cannot be
+     * @exception IllegalActionException Thrown if the actor cannot be
      *  instantiated.
      */
     public SequencedVariable(CompositeEntity container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
-           
+
         // Messages have global scope.  (This is the default, but wanted to make this point explicit.)
         _scope = Scope.GLOBAL;
 
-	// A parameter used by the Message icon to be able to 
-	// The icon cannot use the variable expression directly because
+        // A parameter used by the Message icon to be able to
+        // The icon cannot use the variable expression directly because
         // the variable is declared as a StringAttribute which icons do not support
         // Ideally the icon functionality should be expanded and this can be removed
         copyVariableName = new Parameter(this, "Copy_of_VariableName");
         copyVariableName.setVisibility(Settable.NONE);
-        
+
         // Set the icon only if the parameter has a value.  (An exception is thrown for parameters
         // without values.)  Otherwise, display "UNDEFINED"
         setIconValue();
-        
+
         // The initial value for the output.  Must be named output_InitialValue.
         // Set in preinitialize.
         outputInitialValue = new Parameter(this, "output_InitialValue");
         outputInitialValue.setVisibility(Settable.NOT_EDITABLE);
-    }   
-     
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-       
+
     /** Inherits the modified variable name and initial variable name.
-     * 
+     *
      *  An additional parameter is used for the icon ( FIXME remove later!)
-     */ 
-     
-     /** A parameter to hold the output initial value.  This parameter just copies 
+     */
+
+     /** A parameter to hold the output initial value.  This parameter just copies
       *  the value in the initial value parameter.  It is needed because its name depends
       *  on the output port.
       *  FIXME:  In the future, upgrade to an interface with a function to do this.
       */
      public Parameter outputInitialValue;
-    
+
      /** Delete this later when icon is figured out!! **/
      public Parameter copyVariableName;
-     
+
      ///////////////////////////////////////////////////////////////////
      ////                         public methods                    ////
-     
+
      /** Fire the actor.  If the input is not connected, do not try to read a
       *  value from it.  It is OK not to read any value, since messages always
-      *  have an initial value. 
-      *  
-      *  @throws IllegalActionException If the actor cannot be fired.
-      */     
+      *  have an initial value.
+      *
+      *  @exception IllegalActionException If the actor cannot be fired.
+      */
      public void fire() throws IllegalActionException {
          if (!input.connectedPortList().isEmpty())
          {
-             // If input is connected, use the function from 
+             // If input is connected, use the function from
              // the superclass to read a value from the input,
              // store it to the variable, and send to the output
              // (if the output is connected)
              super.fire();
          }
-         
+
          else
          {
              // Otherwise, just send the stored value
-             // to the output.  
+             // to the output.
              // Beth 09/14/09 Changed this to !output.isOutsideConnected() to be consistent
              // with superclass
              // if (output.getWidth() > 0) {
-             if (output.isOutsideConnected()) { 
+             if (output.isOutsideConnected()) {
                  output.send(0, getVariable().getToken());
              }
-         }         
+         }
      }
 
      /** In addition to the superclass preinitialize(), set the actor icon and
       *  its outputInitialValue.
-      *  
-      *  @throws IllegalActionException If the actor cannot be preinitialized.
-      */     
+      *
+      *  @exception IllegalActionException If the actor cannot be preinitialized.
+      */
      public void preinitialize() throws IllegalActionException
      {
          super.preinitialize();
-         
+
          // Set the expression in the copyVariableName for display in the icon
          setIconValue();
-         
+
          Variable initialVar = getInitialVariable();
          if (initialVar != null && initialVar.getToken() != null)
          {
              // Set the token equal to the initial variable's token
              outputInitialValue.setToken(initialVar.getToken());
              outputInitialValue.validate();
-             
+
          }
          else
          {
              throw new IllegalActionException(this, "Message actor " + getName() + " does not have a proper initial value.  Please set the initial value parameter.");
-         }         
+         }
      }
-     
+
      /** When the actor name is changed, update the referenced variables
       *  to point to the new parameters and check to see if these parameters
       *  exist.  This is also called when the actor is created, BEFORE the variables have
       *  been created in the constructor.  So, we need to check for null variables here.
-      *  
+      *
       *  @param name The new name for the actor.
-      *  @throws IllegalActionException Thrown if there is a problem setting
-      *   the actor name. 
-      *  @throws NameDuplicationException Thrown if the new name conflicts with
+      *  @exception IllegalActionException Thrown if there is a problem setting
+      *   the actor name.
+      *  @exception NameDuplicationException Thrown if the new name conflicts with
       *   the name of an existing actor in the container.
       */
      public void setName(String name) throws IllegalActionException,
@@ -185,7 +185,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
              {
                  setIconValue();
              }
-         
+
          // Set output initial value so that user can see it
          Variable initialVar = getInitialVariable();
          if (initialVar != null && initialVar.getToken() != null)
@@ -195,16 +195,16 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
              outputInitialValue.validate();
          }
      }
-     
+
      ///////////////////////////////////////////////////////////////////
      ////                         protected methods                 ////
-     
+
      /** Supplies a default value for the variable, in the case that there
-      *  is no initial value.  
-      *  
+      *  is no initial value.
+      *
       *  @return  A token containing the default value
-      *  @throws IllegalActionException  Subclasses should throw an exception if
-      *   an explicit initial value is required.   
+      *  @exception IllegalActionException  Subclasses should throw an exception if
+      *   an explicit initial value is required.
       */
      protected Token _getDefaultValue() throws IllegalActionException
      {
@@ -214,7 +214,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
          // As long as the type on any input from any sharing message is set, it's fine
          // since there is a type constraint between the input and the variable
          Variable var = getVariable();
-         
+
          if (var != null && var.getToken() != null)
          {
             if (var.getType().equals(BaseType.INT))
@@ -238,22 +238,22 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
              throw new IllegalActionException(this, "Actor " + getName() + " does not have a variable to store its state and/or initial value in.");
          }
      }
-     
+
      ///////////////////////////////////////////////////////////////////
      ////                         private methods                   ////
-     
+
      /** Determine the text to display in the icon (copyVariableName).
-      *  If the variable is present and defined, return the variableName 
+      *  If the variable is present and defined, return the variableName
       *  expression.  This will display the value of the variable in the icon.
       *  Otherwise, display the string "UNDEFINED".
-      *  
-      *  @throws IllegalActionException Thrown if the icon cannot be set.
-      */     
+      *
+      *  @exception IllegalActionException Thrown if the icon cannot be set.
+      */
      private void setIconValue() throws IllegalActionException
      {
          // Default to "UNDEFINED"
          copyVariableName.setExpression("\"UNDEFINED\"");
-         
+
          if (variableName.getExpression() != null && !variableName.getExpression().equals(""))
          {
              try
@@ -261,7 +261,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
                  Variable var = getVariable();
                  if (var != null && var.getToken() != null)
                  {
-                     copyVariableName.setExpression(variableName.getExpression()); 
+                     copyVariableName.setExpression(variableName.getExpression());
                  }
              }
              // OK if this throws an exception.  Want default of UNDEFINED which was already set.
@@ -269,7 +269,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
              {
              }
          }
-         
+
          // Propagate any changes.  Catch any exception since this code only deals with the icon display
          // and not the functionality.  If it doesn't work
          copyVariableName.validate();

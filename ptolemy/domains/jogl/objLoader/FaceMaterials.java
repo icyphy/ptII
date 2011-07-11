@@ -21,7 +21,7 @@ public class FaceMaterials
     // the face index (integer) where a material is first used
 
   // for reporting
-  private HashMap<String, Integer>matCount; 
+  private HashMap<String, Integer>matCount;
      // how many times a material (string) is used
 
 
@@ -37,7 +37,7 @@ public class FaceMaterials
   {
     // store the face index and the material it uses
     if (faceMats.containsKey(faceIdx))  // face index already present
-      System.out.println("Face index " + faceIdx + 
+      System.out.println("Face index " + faceIdx +
                      " changed to use material " + matName);
     faceMats.put(faceIdx, matName);
 
@@ -52,7 +52,7 @@ public class FaceMaterials
 
 
   public String findMaterial(int faceIdx)
-  {  return (String) faceMats.get(faceIdx);  } 
+  {  return (String) faceMats.get(faceIdx);  }
 
 
   public void showUsedMaterials()
@@ -62,15 +62,15 @@ public class FaceMaterials
     System.out.println("No. of materials used: " + matCount.size());
 
     // build an iterator of material names
-    Set<String> keys = matCount.keySet(); 
-    Iterator<String> iter = keys.iterator(); 
+    Set<String> keys = matCount.keySet();
+    Iterator<String> iter = keys.iterator();
 
     // cycle through the hashmap showing the count for each material
     String matName;
     int count;
-    while(iter.hasNext()){ 
+    while (iter.hasNext()) {
       matName = iter.next();
-      count = (Integer) matCount.get( matName ); 
+      count = (Integer) matCount.get( matName );
 
       System.out.print( matName + ": " + count);
       System.out.println();

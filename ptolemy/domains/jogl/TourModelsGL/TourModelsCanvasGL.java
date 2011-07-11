@@ -12,12 +12,12 @@ package ptolemy.domains.jogl.TourModelsGL;
    a fixed period.
 
    The active rendering framework comes from chapter 2
-   of "Killing Game Programming in Java" (KGPJ). There's a 
+   of "Killing Game Programming in Java" (KGPJ). There's a
    version online at http://fivedots.coe.psu.ac.th/~ad/jg/ch1/.
 
    The statistics code is lifted from chapter 3 of KGPJ (p.54-56), which
    is online at http://fivedots.coe.psu.ac.th/~ad/jg/ch02/.
-   The time calculations in this version use System.nanoTime() rather 
+   The time calculations in this version use System.nanoTime() rather
    than J3DTimer.getValue(), so require J2SE 5.0.
 
    The canvas displays a 3D world consisting of:
@@ -28,7 +28,7 @@ package ptolemy.domains.jogl.TourModelsGL;
      * user navigation using keys to move forward, backwards, left,
        right, and turn left and right. The user cannot move
        off the checkboard. Unlike in TourGL (the example from the last
-       chapter), the user cannot move up or down. 
+       chapter), the user cannot move up or down.
 
      * the user can quit the game by pressing 'q', ctrl-c, the 'esc' key,
        or by clicking the close box
@@ -38,7 +38,7 @@ package ptolemy.domains.jogl.TourModelsGL;
 
      * the loading, positioning and drawing of 4 OBJ models:
          - a racing car, a rose in a vase, a penguin, and a couch
-         - the loading is done inside initRender(), and the 
+         - the loading is done inside initRender(), and the
            drawing in drawModels();
 
      * the ability to select (pick) the penguin or the couch
@@ -48,7 +48,7 @@ package ptolemy.domains.jogl.TourModelsGL;
        make the penguin chirp. The sound is loaded, positioned, and
        started inside initRender().
        The listener angle is initialized in initViewerPosn() and
-       updated in processKey(). The listener is positioned and 
+       updated in processKey(). The listener is positioned and
        orientated in renderScene().
 
 
@@ -86,7 +86,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
   private final static int BLUE_TILE = 0;   // floor tile colour types
   private final static int GREEN_TILE = 1;
 
-  // camera related 
+  // camera related
   private final static double SPEED = 0.4;   // for camera movement
   private final static double LOOK_AT_DIST = 100.0;
   private final static double Z_POS = 9.0;
@@ -104,7 +104,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
     // record stats every 1 second (roughly)
 
   private static final int NO_DELAYS_PER_YIELD = 16;
-  /* Number of renders with a sleep delay of 0 ms before the 
+  /* Number of renders with a sleep delay of 0 ms before the
      animation thread yields to other running threads. */
 
   private static final int MAX_RENDER_SKIPS = 5;   // was 2;
@@ -117,7 +117,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   // used for gathering statistics
   private long statsInterval = 0L;    // in ns
-  private long prevStatsTime;   
+  private long prevStatsTime;
   private long totalElapsedTime = 0L;
   private long gameStartTime;
   private int timeSpentInGame = 0;    // in seconds
@@ -178,7 +178,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   public TourModelsCanvasGL(long period, int width, int height,
                          GraphicsConfiguration config, GLCapabilities caps)
-  { 
+  {
     super(config);
 
     this.period = period;
@@ -195,7 +195,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
     initViewerPosn();
 
-	addKeyListener( new KeyAdapter() {
+        addKeyListener( new KeyAdapter() {
        public void keyPressed(KeyEvent e)
        { processKey(e);  }
      });
@@ -237,14 +237,14 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   public void addNotify()
   // wait for the canvas to be added to the JPanel before starting
-  { 
+  {
     super.addNotify();      // creates the peer
     drawable.setRealized(true);  // the canvas can now be rendering into
 
-    // initialise and start the animation thread 
+    // initialise and start the animation thread
     if (animator == null || !isRunning) {
       animator = new Thread(this);
-	  animator.start();
+          animator.start();
     }
   } // end of addNotify()
 
@@ -254,13 +254,13 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   public void resumeGame()
   // called when the JFrame is activated / deiconified
-  {  isPaused = false;  } 
+  {  isPaused = false;  }
 
   public void pauseGame()
   // called when the JFrame is deactivated / iconified
-  { isPaused = true;   } 
+  { isPaused = true;   }
 
-  public void stopGame() 
+  public void stopGame()
   // called when the JFrame is closing
   {  isRunning = false;   }
 
@@ -286,7 +286,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
     int keyCode = e.getKeyCode();
 
     // termination keys
-	// listen for esc, q, end, ctrl-c on the canvas
+        // listen for esc, q, end, ctrl-c on the canvas
     if ((keyCode == KeyEvent.VK_ESCAPE) || (keyCode == KeyEvent.VK_Q) ||
         (keyCode == KeyEvent.VK_END) ||
         ((keyCode == KeyEvent.VK_C) && e.isControlDown()) )
@@ -318,7 +318,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
           zStep = Math.sin( Math.toRadians(viewAngle));
           listenerAngle -= ANGLE_INCR;
         }
-      } 
+      }
       else if (keyCode == KeyEvent.VK_UP) {   // move forward
         xPlayer += xStep * SPEED;
         zPlayer += zStep * SPEED;
@@ -395,7 +395,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
     gl.glClearColor(0.7f, 0.6f, 0.6f, 1.0f);        // same colour as the fog
 
     // z- (depth) selectBuffer initialization for hidden surface removal
-    gl.glEnable(GL.GL_DEPTH_TEST); 
+    gl.glEnable(GL.GL_DEPTH_TEST);
 
     gl.glShadeModel(GL.GL_SMOOTH);    // use smooth shading
 
@@ -420,23 +420,23 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
     context.release();
   }  // end of initRender()
 
-      
+
   private void resizeView()
   {
-    gl.glViewport(0, 0, panelWidth, panelHeight);    // size of drawing area 
+    gl.glViewport(0, 0, panelWidth, panelHeight);    // size of drawing area
 
-    gl.glMatrixMode(GL.GL_PROJECTION);  
-    gl.glLoadIdentity(); 
+    gl.glMatrixMode(GL.GL_PROJECTION);
+    gl.glLoadIdentity();
     glu.gluPerspective(45.0, (float)panelWidth/(float)panelHeight, 1, 100);
               // fov, aspect ratio, near & far clipping planes
        /* if you change the arguments of gluPerspective() here, then make
-          sure to do the same to its call in startPicking() */ 
+          sure to do the same to its call in startPicking() */
   }  // end of resizeView()
 
 
 
   private void addLight()
-  /* set up a point source with ambient, diffuse, and specular 
+  /* set up a point source with ambient, diffuse, and specular
      colour components */
   {
     // enable a single light source
@@ -465,12 +465,12 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 //    float[] fogColor = {0.7f, 0.6f, 0.6f, 1.0f};  // same colour as background
 //    gl.glFogfv(GL.GL_FOG_COLOR, fogColor, 0);
 //
-//    gl.glFogf(GL.GL_FOG_DENSITY, 0.35f); 
+//    gl.glFogf(GL.GL_FOG_DENSITY, 0.35f);
 //
 //    gl.glFogf(GL.GL_FOG_START, 1.0f);  // start depth
-//    gl.glFogf(GL.GL_FOG_END, 5.0f);	   // end depth
+//    gl.glFogf(GL.GL_FOG_END, 5.0f);           // end depth
 //
-//    gl.glHint(GL.GL_FOG_HINT, GL.GL_DONT_CARE);	
+//    gl.glHint(GL.GL_FOG_HINT, GL.GL_DONT_CARE);
 //      // possible hints are: GL.GL_DONT_CARE, GL.GL_NICEST or GL.GL_FASTEST
 //  }  // end of addFog()
 
@@ -495,23 +495,23 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
     isRunning = true;
 
-    while(isRunning) {
+    while (isRunning) {
       makeContentCurrent();
       gameUpdate();
 
       renderScene();          // rendering
-      // drawable.swapBuffers(); 
+      // drawable.swapBuffers();
              // this call has been moved into renderScene()
 
       afterTime = System.nanoTime();
       timeDiff = afterTime - beforeTime;
-      sleepTime = (period - timeDiff) - overSleepTime;  
+      sleepTime = (period - timeDiff) - overSleepTime;
 
       if (sleepTime > 0) {   // some time left in this cycle
         try {
           Thread.sleep(sleepTime/1000000L);  // nano -> ms
         }
-        catch(InterruptedException ex){}
+        catch (InterruptedException ex){}
         overSleepTime = (System.nanoTime() - afterTime) - sleepTime;
       }
       else {    // sleepTime <= 0; this cycle took longer than the period
@@ -530,9 +530,9 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
          without rendering it, to get the updates/sec nearer to
          the required FPS. */
       int skips = 0;
-      while((excess > period) && (skips < MAX_RENDER_SKIPS)) {
+      while ((excess > period) && (skips < MAX_RENDER_SKIPS)) {
         excess -= period;
-	    gameUpdate();    // update state but don't render
+            gameUpdate();    // update state but don't render
         skips++;
       }
       rendersSkipped += skips;
@@ -542,13 +542,13 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
       context.release();
 
       storeStats();
-	}
+        }
 
     printStats();
   } // end of renderLoop()
 
 
-  private void gameUpdate() 
+  private void gameUpdate()
   { if (!isPaused && !gameOver) {
       // do nothing;
     }
@@ -559,8 +559,8 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
   // ------------------ rendering methods -----------------------------
 
 
-  private void renderScene() 
-  { 
+  private void renderScene()
+  {
     if (GLContext.getCurrent() == null) {
       System.out.println("Current context is null");
       System.exit(0);
@@ -574,10 +574,10 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
     // clear colour and depth buffers
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-    gl.glMatrixMode(GL.GL_MODELVIEW);  
-    gl.glLoadIdentity(); 
+    gl.glMatrixMode(GL.GL_MODELVIEW);
+    gl.glLoadIdentity();
 
-    glu.gluLookAt(xPlayer, yPlayer, zPlayer, 
+    glu.gluLookAt(xPlayer, yPlayer, zPlayer,
                   xLookAt, yLookAt, zLookAt, 0,1,0);    // position camera
 
     // position and orientate the audio listener
@@ -587,13 +587,13 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
     if (inSelectionMode)
       pickModels();
-    else {   // normal rendering 
+    else {   // normal rendering
       drawFloor();
       drawModels();
       drawable.swapBuffers(); // put the scene onto the canvas
           // swap front and back buffers, making the new rendering visible
        /* This call was moved here from renderLoop() so it's only called
-          when the 'real' scene needs to be shown; the 'pick' scene is 
+          when the 'real' scene needs to be shown; the 'pick' scene is
           never swapped. If it is then there's a very distinct flicker as
           rendering switches between the two scenes.
       */
@@ -606,7 +606,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   private void drawModels()
   /* Draw four OBJ models (a couch, a racing car, a penguin,
-     and a rose in a vase). The couch and penguin code is in 
+     and a rose in a vase). The couch and penguin code is in
      separate methods so it can also be employed in pickModels().
   */
   {
@@ -652,7 +652,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   // ------------------ the checkboard floor --------------------
   /* This code is almost a direct translation of the CheckerFloor class
-     in the Java 3D Checkers3D example in chapter 15 of KGPJ; 
+     in the Java 3D Checkers3D example in chapter 15 of KGPJ;
      online at http://fivedots.coe.psu.ac.th/~ad/jg/ch8/).
   */
 
@@ -686,9 +686,9 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
     gl.glBegin(GL.GL_QUADS);
     boolean aBlueTile;
-    for(int z=-FLOOR_LEN/2; z <= (FLOOR_LEN/2)-1; z++) {
+    for (int z=-FLOOR_LEN/2; z <= (FLOOR_LEN/2)-1; z++) {
       aBlueTile = (z%2 == 0)? true : false;    // set colour type for new row
-      for(int x=-FLOOR_LEN/2; x <= (FLOOR_LEN/2)-1; x++) {
+      for (int x=-FLOOR_LEN/2; x <= (FLOOR_LEN/2)-1; x++) {
         if (aBlueTile && (drawType == BLUE_TILE))  // blue tile and drawing blue
           drawTile(x, z);
         else if (!aBlueTile && (drawType == GREEN_TILE))   // green
@@ -701,7 +701,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
 
   private void drawTile(int x, int z)
-  /* Coords for a single blue or green square; 
+  /* Coords for a single blue or green square;
     its top left hand corner at (x,0,z). */
   {
     // points created in counter-clockwise order
@@ -715,14 +715,14 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
   private void addOriginMarker()
   /* A red square centered at (0,0.01,0), of length 0.5, lieing
      flat on the XZ plane. */
-  {  
+  {
     gl.glColor3f(0.8f, 0.4f, 0.3f);   // medium red
     gl.glBegin(GL.GL_QUADS);
 
     // points created counter-clockwise, a bit above the floor
     gl.glVertex3f(-0.25f, 0.01f, 0.25f);  // bottom left point
     gl.glVertex3f(0.25f, 0.01f, 0.25f);
-    gl.glVertex3f(0.25f, 0.01f, -0.25f);    
+    gl.glVertex3f(0.25f, 0.01f, -0.25f);
     gl.glVertex3f(-0.25f, 0.01f, -0.25f);
 
     gl.glEnd();
@@ -750,7 +750,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
 
 
-  private void drawAxisText(String txt, float x, float y, float z) 
+  private void drawAxisText(String txt, float x, float y, float z)
   /* Draw txt at (x,y,z), with the text centered in the x-direction,
      facing along the +z axis.
   */
@@ -819,7 +819,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
     gl.glInitNames();   // make an empty name stack
     // gl.glPushName(-1);  // not needed
 
-    /* redefine the viewing volume so it only renders a 
+    /* redefine the viewing volume so it only renders a
        small area around the place where the mouse was clicked */
 
     // save the original projection matrix
@@ -833,12 +833,12 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
     // create a 5x5 pixel picking area near the cursor location
     glu.gluPickMatrix((double) xCursor,
-                      (double) (viewport[3] - yCursor), 
+                      (double) (viewport[3] - yCursor),
                       5.0, 5.0, viewport, 0);
       /* The y-value uses an 'inverted' yCursor to transform the y-coordinates
          origin from the upper left corner into the bottom left corner. */
 
-    /* set projection (perspective or orthogonal) exactly as it is in 
+    /* set projection (perspective or orthogonal) exactly as it is in
        normal rendering (i.e. duplicate the gluPerspective() call
        in resizeView()) */
     glu.gluPerspective(45.0, (float)panelWidth/(float)panelHeight, 1, 100);
@@ -869,9 +869,9 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   public void processHits(int numHits)
   /* Display all the hit records, and report the name of
-     the 'thing' that was picked closest to the viewport. 
+     the 'thing' that was picked closest to the viewport.
 
-     Each hit record contains: 
+     Each hit record contains:
        - the number of different names for the thing hit (usually only 1)
        - minimum and maximum depths of the hit
        - the names for the thing hit (stored on the name stack)
@@ -882,7 +882,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
     System.out.println("No. of hits: " + numHits);
 
-    // storage for the name ID closest to the viewport 
+    // storage for the name ID closest to the viewport
     int selectedNameID = -1;    // dummy initial values
     float smallestZ = -1.0f;
 
@@ -894,7 +894,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
     for (int i=0; i < numHits; i++) {
       System.out.println("Hit: " + (i + 1));
 
-      int numNames = selectBuffer.get(offset); 
+      int numNames = selectBuffer.get(offset);
       offset++;
       // System.out.println(" No. of names: " + numNames);
 
@@ -915,15 +915,15 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
       float maxZ = getDepth(offset);
       offset++;
 
-      System.out.println(" minZ: " + df4.format(minZ) + 
+      System.out.println(" minZ: " + df4.format(minZ) +
                         "; maxZ: " + df4.format(maxZ));
 
       // print name IDs stored on the name stack
       System.out.print(" Name(s): ");
       int nameID;
-      for (int j=0; j < numNames; j++){
+      for (int j=0; j < numNames; j++) {
         nameID = selectBuffer.get(offset);
-        System.out.print( idToString(nameID) ); 
+        System.out.print( idToString(nameID) );
         if (j == (numNames-1)) {  // if the last one (the top element on the stack)
           if (smallestZ == minZ)    // is this the smallest min z?
             selectedNameID = nameID;  // then store it's name ID
@@ -941,13 +941,13 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   private float getDepth(int offset)
   /* A depth is in the range 0 to 1, but is stored
-     after being multiplied by 2^32 -1 and rounded to 
-     the nearest integer. The number will be negative due to 
+     after being multiplied by 2^32 -1 and rounded to
+     the nearest integer. The number will be negative due to
      the multiplication and being stored as an integer.
   */
   {
     long depth = (long) selectBuffer.get(offset);  // large -ve number
-    return  (1.0f + ((float) depth / 0x7fffffff));  
+    return  (1.0f + ((float) depth / 0x7fffffff));
                             // return as a float between 0 and 1
   }  // end of getDepth()
 
@@ -971,8 +971,8 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
   private void storeStats()
   /* The statistics:
        - the summed periods for all the iterations in this interval
-         (period is the amount of time a single frame iteration should take), 
-         the actual elapsed time in this interval, 
+         (period is the amount of time a single frame iteration should take),
+         the actual elapsed time in this interval,
          the error between these two numbers;
 
        - the total frame count, which is the total number of calls to run();
@@ -980,12 +980,12 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
        - the frames skipped in this interval, the total number of frames
          skipped. A frame skip is a game update without a corresponding render;
 
-       - the FPS (frames/sec) and UPS (updates/sec) for this interval, 
+       - the FPS (frames/sec) and UPS (updates/sec) for this interval,
          the average FPS & UPS over the last NUM_FPSs intervals.
 
      The data is collected every MAX_STATS_INTERVAL  (1 sec).
   */
-  { 
+  {
     frameCount++;
     statsInterval += period;
 
@@ -996,7 +996,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
       long realElapsedTime = timeNow - prevStatsTime;   // time since last stats collection
       totalElapsedTime += realElapsedTime;
 
-      //double timingError = 
+      //double timingError =
       //   ((double)(realElapsedTime - statsInterval) / statsInterval) * 100.0;
 
       totalRendersSkipped += rendersSkipped;
@@ -1005,7 +1005,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
       double actualUPS = 0;
       if (totalElapsedTime > 0) {
         actualFPS = (((double)frameCount / totalElapsedTime) * 1000000000L);
-        actualUPS = (((double)(frameCount + totalRendersSkipped) / totalElapsedTime) 
+        actualUPS = (((double)(frameCount + totalRendersSkipped) / totalElapsedTime)
                                                              * 1000000000L);
       }
 
@@ -1030,12 +1030,12 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
         averageUPS = totalUPS/NUM_FPS;
       }
 /*
-      System.out.println(df4.format( (double) statsInterval/1000000000L) + " " + 
-                    df4.format((double) realElapsedTime/1000000000L) + "s " + 
-			        df.format(timingError) + "% " + 
+      System.out.println(df4.format( (double) statsInterval/1000000000L) + " " +
+                    df4.format((double) realElapsedTime/1000000000L) + "s " +
+                                df.format(timingError) + "% " +
                     frameCount + "c " +
                     rendersSkipped + "/" + totalRendersSkipped + " skip; " +
-                    df.format(actualFPS) + " " + df.format(averageFPS) + " afps; " + 
+                    df.format(actualFPS) + " " + df.format(averageFPS) + " afps; " +
                     df.format(actualUPS) + " " + df.format(averageUPS) + " aups" );
 */
       rendersSkipped = 0;
@@ -1048,8 +1048,8 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
   private void printStats()
   {
     // System.out.println("Frame Count/Loss: " + frameCount + " / " + totalRendersSkipped);
-	System.out.println("Average FPS: " + df.format(averageFPS));
-	System.out.println("Average UPS: " + df.format(averageUPS));
+        System.out.println("Average FPS: " + df.format(averageFPS));
+        System.out.println("Average UPS: " + df.format(averageUPS));
     System.out.println("Time Spent: " + timeSpentInGame + " secs");
   }  // end of printStats()
 

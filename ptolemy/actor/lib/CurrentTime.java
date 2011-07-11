@@ -68,7 +68,7 @@ public class CurrentTime extends TimedSource {
         useLocalTime = new Parameter(this, "useLocalTime");
         useLocalTime.setTypeEquals(BaseType.BOOLEAN);
         useLocalTime.setExpression("false");
-        
+
         // Override the clock to make it look a bit
         // different from the DiscreteClock and PoissonClock.
         _attachText("_iconDescription", "<svg>\n"
@@ -93,7 +93,7 @@ public class CurrentTime extends TimedSource {
      *  If false (the default), use the model time reported by
      *  the top-level director. Local time may differ
      *  from global time inside modal models and certain domains
-     *  that manipulate time. 
+     *  that manipulate time.
      */
     public Parameter useLocalTime;
 

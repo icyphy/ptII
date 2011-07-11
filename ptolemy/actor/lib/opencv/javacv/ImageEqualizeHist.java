@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Equalize histogram of image (only for 8-bit single channel image)
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -67,13 +67,13 @@ public class ImageEqualizeHist extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
 
@@ -86,14 +86,14 @@ public class ImageEqualizeHist extends Transformer {
                         + inputObject.getClass());
             }
             _srcFrame = (IplImage)inputObject;
-            
-            if((_srcFrame.depth != IPL_DEPTH_8U) ||  (_srcFrame.nChannels != 1)){
+
+            if ((_srcFrame.depth != IPL_DEPTH_8U) ||  (_srcFrame.nChannels != 1)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an 8-bit single channel image. Got depth"
-                        + _srcFrame.depth + ", channel " + _srcFrame.nChannels);               
+                        + _srcFrame.depth + ", channel " + _srcFrame.nChannels);
             }
             cvEqualizeHist (_srcFrame, _srcFrame);
-    
+
             output.send(0, new ObjectToken(_srcFrame));
         }
     }
@@ -110,7 +110,7 @@ public class ImageEqualizeHist extends Transformer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-//        if(_dstFrame != null){
+//        if (_dstFrame != null) {
 //            _dstFrame.release();
 //        }
     }
@@ -118,5 +118,5 @@ public class ImageEqualizeHist extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _srcFrame;
-//    private IplImage _dstFrame; 
+//    private IplImage _dstFrame;
 }

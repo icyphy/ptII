@@ -113,8 +113,8 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *  @exception NameDuplicationException If thrown by the superclass.
      */
     public void setContainer(NamedObj container)
-	throws IllegalActionException,
-	       NameDuplicationException {
+        throws IllegalActionException,
+               NameDuplicationException {
         NamedObj oldContainer = getContainer();
         try {
             if (oldContainer != null && _lastUndoStack != null) {

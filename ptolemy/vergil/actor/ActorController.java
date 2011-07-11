@@ -242,7 +242,7 @@ public abstract class ActorController extends AttributeController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
-        
+
         _lookInsideAction.setConfiguration(configuration);
 
         if (_portDialogAction != null) {
@@ -517,7 +517,7 @@ public abstract class ActorController extends AttributeController {
             // an actor."
             // This is used by Kepler.
             int count = 0;
-            for (Object p : portList){
+            for (Object p : portList) {
                 Port port = (Port)p;
                 Attribute portHide = port.getAttribute("_hide");
                 try {
@@ -559,7 +559,7 @@ public abstract class ActorController extends AttributeController {
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(ex);
                 }
- 
+
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
                 PortSite site = new PortSite(background, port, number, count,
                         direction);
@@ -830,27 +830,27 @@ public abstract class ActorController extends AttributeController {
                     .getAttribute("_actorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
-                    String actorInteractionAddonClassName 
+                    String actorInteractionAddonClassName
                         = actorInteractionAddonParameter
                             .stringValue();
 
                         Class actorInteractionAddonClass = Class
                             .forName(actorInteractionAddonClassName);
-                        
+
                         ActorInteractionAddon actorInteractionAddon =
                             (ActorInteractionAddon) actorInteractionAddonClass
                             .newInstance();
 
-                        if(actorInteractionAddon.isActorOfInterestForAddonController(object)){
+                        if (actorInteractionAddon.isActorOfInterestForAddonController(object)) {
                             actorInteractionAddon.openInstanceAction(this, object);
-                        }                   
-                            
+                        }
+
                     }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             if (object instanceof CompositeEntity) {
                 try {
                     _configuration.openInstance(object);

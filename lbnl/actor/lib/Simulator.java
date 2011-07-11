@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -107,7 +107,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
 /**
- * Actor that calls a simulation program of a dynamic system 
+ * Actor that calls a simulation program of a dynamic system
  * that is coupled to Ptolemy II. At the start of the simulation,
  * this actor fires a system command that is defined by the parameter
  * <code>programName</code> with arguments <code>programArguments</code>.
@@ -225,7 +225,7 @@ public class Simulator extends SDFTransformer {
     /** Send the input token to the client program and send the
      * output from the client program to the output port.
      *
-     *  @exception IllegalActionException If the simulation time between Ptolemy 
+     *  @exception IllegalActionException If the simulation time between Ptolemy
      *    and the client program is not synchronized.
      */
     public void fire() throws IllegalActionException {
@@ -299,31 +299,31 @@ public class Simulator extends SDFTransformer {
         // send output token
         output.send(0, outTok);
     }
-    
+
     /** Output the first token during initialize.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException
      */
     protected void _outputInitToken() throws IllegalActionException {
         double[] dblRea = server.getDoubleArray();
-        if ( server.getClientFlag() == 1){
+        if ( server.getClientFlag() == 1) {
             final String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, at time "
-                + getDirector().getModelTime().getDoubleValue() + "," 
-                + "client sent flag " + server.getClientFlag() + "," + LS 
+                + getDirector().getModelTime().getDoubleValue() + ","
+                + "client sent flag " + server.getClientFlag() + "," + LS
                 + "which indicates that it reached the end of its simulation." + LS
                 + "This should not happen during the initialization of this actor.";
             throw new IllegalActionException(em);
         }
         else
-            if ( server.getClientFlag() != 0){
+            if ( server.getClientFlag() != 0) {
             final String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, at time "
-                + getDirector().getModelTime().getDoubleValue() + "," 
-                + "client sent flag " + server.getClientFlag() + "," + LS 
+                + getDirector().getModelTime().getDoubleValue() + ","
+                + "client sent flag " + server.getClientFlag() + "," + LS
                 + "which indicates a problem in the client.";
             throw new IllegalActionException(em);
         }
-        if ( dblRea == null ){
+        if ( dblRea == null ) {
             final String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, obtained 'null' at time "
                 + getDirector().getModelTime().getDoubleValue();
@@ -351,7 +351,7 @@ public class Simulator extends SDFTransformer {
             String em = "Error while writing to client: " + LS + e.getMessage();
             throw new IllegalActionException(this, em);
         }
-        // get tokens' time stamp. This time will be written to the 
+        // get tokens' time stamp. This time will be written to the
         // client in the next time step, this time step read from the client
         // the output which will be sent to clients in the next time step
         // as inputs
@@ -472,10 +472,10 @@ public class Simulator extends SDFTransformer {
             ; // do nothing here
             // If the client sent a termination flag, then clientTerminated=true
             // In this case, the client may have closed the socket connection, and
-            // hence we don't throw an IOException, but rather issue a warning 
+            // hence we don't throw an IOException, but rather issue a warning
             // in case that Ptolemy proceeds with its iterations.
             // Without the check (!clientTerminated), an IOException is thrown
-            // on Windows (but not on Mac or Linux) from the actor that connects 
+            // on Windows (but not on Mac or Linux) from the actor that connects
             // to EnergyPlus.
             if (!clientTerminated) {
                 throw new IllegalActionException(this, e, em);
@@ -518,7 +518,7 @@ public class Simulator extends SDFTransformer {
         final String simCon = socketConfigurationFile.stringValue();
         // Assign BSD port number
         porNo = Integer.valueOf(socketPortNumber.getExpression());
-        //////////////////////////////////////////////////////////////        
+        //////////////////////////////////////////////////////////////
         // Instantiate server for IPC
         try {
             // time out in milliseconds
@@ -547,7 +547,7 @@ public class Simulator extends SDFTransformer {
             // throw original exception
             throw new IllegalActionException(this, e, e.getMessage());
         }
-        ////////////////////////////////////////////////////////////// 
+        //////////////////////////////////////////////////////////////
         // Write xml file for client
         XMLWriter xmlWri = new XMLWriter(worDir, simCon, porNo);
         try {
@@ -559,7 +559,7 @@ public class Simulator extends SDFTransformer {
         } catch (IOException e) {
             throw new IllegalActionException(this, e, e.toString());
         }
-        //////////////////////////////////////////////////////////////         
+        //////////////////////////////////////////////////////////////
         // Start the simulation
         _startSimulation();
     }
@@ -588,7 +588,7 @@ public class Simulator extends SDFTransformer {
 
         // Remove the path if the argument points to a directory.
         // This fixes the problem if the argument is matlab, and the
-        // user runs vergil from a directory that has a subdirectory 
+        // user runs vergil from a directory that has a subdirectory
         // called matlab.
         if (commandFile.isDirectory()) {
             return commandFile.getName();
@@ -621,7 +621,7 @@ public class Simulator extends SDFTransformer {
      *  @param namedObj A named object, typically the container of the model
      *  @param dir The directory to be resolved.
      *  @return The resolved working string.
-     *  @exception IllegalActionException If an attribute is found with the name "_uri" 
+     *  @exception IllegalActionException If an attribute is found with the name "_uri"
      *           that is not an instance of the URIAttribute class
      */
     public static String resolveDirectory(final NamedObj namedObj,
@@ -633,10 +633,10 @@ public class Simulator extends SDFTransformer {
         if (chi.length() == 0) {
             chi = ".";
         }
-	final URI modelURI = URIAttribute.getModelURI(namedObj);
-	final String par = modelURI != null ?
-	    new File(modelURI.getPath()).getParent()
-	    : null;
+        final URI modelURI = URIAttribute.getModelURI(namedObj);
+        final String par = modelURI != null ?
+            new File(modelURI.getPath()).getParent()
+            : null;
         final File fil = new File(par, chi);
         chi = fil.getPath();
         return chi;
@@ -648,7 +648,7 @@ public class Simulator extends SDFTransformer {
      *                           are invalid.
      */
     protected void _startSimulation() throws IllegalActionException {
-        //////////////////////////////////////////////////////////////        
+        //////////////////////////////////////////////////////////////
         // Construct the argument list for the process builder
         List<String> com = new ArrayList<String>();
 
@@ -681,7 +681,7 @@ public class Simulator extends SDFTransformer {
 
         // Set simulation log file.
         // The call to System.gc() is required on Windows: If this actor is called multiple times
-        // on Windows using vmware fusion and vmware workstation, then the simulation log file 
+        // on Windows using vmware fusion and vmware workstation, then the simulation log file
         // exists but cannot be deleted. Calling System.gc() releases the resources which allows
         // Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
         // This error does not happen on Linux and on Mac OS X.
@@ -731,16 +731,16 @@ public class Simulator extends SDFTransformer {
         tokTim = getDirector().getModelTime().getDoubleValue();
         firstFire = true;
 
-        //////////////////////////////////////////////////////////////        
+        //////////////////////////////////////////////////////////////
         // New code since 2008-01-05
         // Send initial output token. See also domains/sdf/lib/SampleDelay.java
         _readFromServer();
-        
+
         _outputInitToken();
     }
 
     /** Closes sockets and shuts down the simulator.
-     * 
+     *
      *  @exception IllegalActionException if the base class throws it or
      *        if an I/O error occurs when closing the socket.
      */
@@ -826,7 +826,7 @@ public class Simulator extends SDFTransformer {
     /** Working directory of the simulation. */
     public FileParameter workingDirectory;
 
-    /** If <i>true</i> (the default), a window will be created that 
+    /** If <i>true</i> (the default), a window will be created that
         shows the console output. */
     public Parameter showConsoleWindow;
 
@@ -873,7 +873,7 @@ public class Simulator extends SDFTransformer {
     /** Flag, set the <code>true</code> if Ptolemy is run without any graphical
      *  interface.
      *
-     * If <code>isHeadless=true</code>, this actor will not open any windows for 
+     * If <code>isHeadless=true</code>, this actor will not open any windows for
      * reporting outputs or warnings.
      */
     protected boolean isHeadless;
@@ -883,7 +883,7 @@ public class Simulator extends SDFTransformer {
 
     /** System dependent line separator. */
     protected final static String LS = System.getProperty("line.separator");
-    
+
     /** Time of token that will be written to the client.
 
         This is equal to the Ptolemy time minus one time step, because at time t_k,

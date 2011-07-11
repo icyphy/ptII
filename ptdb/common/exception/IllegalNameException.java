@@ -21,20 +21,20 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptdb.common.exception;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// IllegalNameException
 
 /**
- * Exception for illegal names for attributes, model or other values. 
- * 
+ * Exception for illegal names for attributes, model or other values.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -44,9 +44,9 @@ package ptdb.common.exception;
  */
 public class IllegalNameException extends Exception {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    public methods                            ////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Construct an instance of IllegalNameException
      * with the given message.

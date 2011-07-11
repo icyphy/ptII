@@ -90,7 +90,7 @@ public class DEMessageSource extends RandomSource {
         _declareDelayDependency(next, output, 0.0);
         _declareDelayDependency(next, request, 0.0);
     }
-    
+
     /** Schedule the first fire after a random delay between zero and MaxDelay.
      *  @exception IllegalActionException If there is no director.
      */

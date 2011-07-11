@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.kernel.database.test;
 
@@ -32,7 +32,7 @@ import ptdb.kernel.database.RebuildReferenceFile;
 
 /**
  * Test class RebuildReferenceFile.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -45,28 +45,28 @@ import ptdb.kernel.database.RebuildReferenceFile;
 public class TestRebuildReferenceFile {
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
     }
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
     }
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @After
     public void tearDown() throws Exception {
@@ -90,25 +90,25 @@ public class TestRebuildReferenceFile {
 
     /**
      * Test method for {@link ptdb.kernel.database.RebuildReferenceFile#main(java.lang.String[])}.
-     * @throws Exception 
+     * @exception Exception
      */
     @Test
     public void testMain() throws Exception {
         try {
-            
+
             BufferedReader mockBufferedReader = PowerMock.createMock(BufferedReader.class);
             InputStreamReader mockInputStreamReader = PowerMock.createMock(InputStreamReader.class);
-            
+
             PowerMock.expectNew(InputStreamReader.class, System.in).andReturn(mockInputStreamReader);
             PowerMock.expectNew(BufferedReader.class, mockInputStreamReader).andReturn(mockBufferedReader);
-            
+
             EasyMock.expect(mockBufferedReader.readLine()).andReturn("Y");
             mockBufferedReader.close();
             PowerMock.replay(InputStreamReader.class, BufferedReader.class, mockBufferedReader, mockInputStreamReader);
-            
+
             RebuildReferenceFile.main(new String[1]);
             PowerMock.verify();
-            
+
         } catch (IOException e) {
             fail("Failed with IO Exception - " + e.getMessage());
         } catch (DBConnectionException e) {

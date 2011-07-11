@@ -1,6 +1,6 @@
-/* 
+/*
  CATableau
- 
+
  Copyright (c) 2010 The University of Florida
 
  All rights reserved.
@@ -22,7 +22,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
  */
@@ -47,20 +47,20 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * This class is used by the CAViewer to render a 
- * two-dimensional grid of cells that are either on or off.  
- * 
+ * This class is used by the CAViewer to render a
+ * two-dimensional grid of cells that are either on or off.
+ *
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
 public class CATableau extends Tableau {
-    
+
     /**
      * Construct a new tableau for the model represented by the given effigy.
-     * 
+     *
      * @param container The container.
      * @param name The name of the tableau.
      * @exception IllegalActionException If the container does not
@@ -75,12 +75,12 @@ public class CATableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /**
-     * In this class, do nothing because the CADirector communicates 
+     * In this class, do nothing because the CADirector communicates
      * with the CAViewer directly.
-     * 
+     *
      * @param token The token to append.
      * @exception IllegalActionException If the token is not
      * acceptable (not thrown in this base class).
@@ -89,7 +89,7 @@ public class CATableau extends Tableau {
     }
 
     /**
-     * In this class, do nothing because the CADirector communicates 
+     * In this class, do nothing because the CADirector communicates
      * with the CAViewer directly.
      *
      * @param list A list of tokens.
@@ -103,7 +103,7 @@ public class CATableau extends Tableau {
     }
 
     /** This functions sets the matrix for the CAMatrixViewer to display.
-     * 
+     *
      * @param matrix The matrix to display.
      */
     public void setMatrix(double[][] matrix) {
@@ -113,10 +113,10 @@ public class CATableau extends Tableau {
     }
 
     /**
-     * Create a frame to hold the CAMatrixViewer.  
-     *  
+     * Create a frame to hold the CAMatrixViewer.
+     *
      * @param frame The frame to use, or null if none is specified.
-     *            
+     *
      * @exception IllegalActionException If the frame cannot be created.
      */
     public void createFrame(TableauFrame frame) throws IllegalActionException {
@@ -134,15 +134,15 @@ public class CATableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    public variables                       ////
+    ////                         public variables                  ////
 
-    /** 
+    /**
      * The TableauFrame to hold the CAMatrixViewer.
      */
     public TableauFrame mainFrame;
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
 
     /**
      *  The CAMatrixViewer that renders the two-dimensional grid.
@@ -151,33 +151,33 @@ public class CATableau extends Tableau {
 }
 
 /**
- * The CAMatrixViewer is a type of Java Component that renders a grid of 
+ * The CAMatrixViewer is a type of Java Component that renders a grid of
  * cells within a matrix (a two-dimensional array of doubles).  A grid
  * cell is rendered as 'on' if the value of the cell is greater than zero
- * and 'off' otherwise. This class is not public and currently only used 
+ * and 'off' otherwise. This class is not public and currently only used
  * as part of a CATableau which, in turn, is used as part of a CADisplay.
- * 
+ *
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
- */  
+ */
 class CAMatrixViewer extends Component {
 
     /**
-     * Construct a new CAMatrixViewer and initialize the matrix to 
-     * size [1][1] and set the only value to 1.0;      
+     * Construct a new CAMatrixViewer and initialize the matrix to
+     * size [1][1] and set the only value to 1.0;
      */
     public CAMatrixViewer() {
         super();
         matrix = new double[1][1];
         matrix[0][0] = 1.0;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
-    
+    ////                         public methods                    ////
+
     /**
      * Return the minimum size of this commponent.
      * @return The minimum size.
@@ -200,34 +200,34 @@ class CAMatrixViewer extends Component {
 
     /**
      * Return the preferred size.
-     * The preferred size of this component is the minimum 
+     * The preferred size of this component is the minimum
      * size.
      * @return the preferred size.
      */
     public Dimension getPreferredSize() {
         return getMinimumSize();
     }
-    
+
     /**
-     * Paint the current matrix as a grid.  If the 
-     * value in a cell is greater than 0.0, then the cell is 
-     * "filled-in."     
-     * 
+     * Paint the current matrix as a grid.  If the
+     * value in a cell is greater than 0.0, then the cell is
+     * "filled-in."
+     *
      * @param graphics The java Graphics object that is required to
      * paint the Component.
-     * 
+     *
      */
     public void paint(Graphics graphics) {
-        
+
         super.paint(graphics);
-        
+
         Color gray = new Color(100, 100, 100);
         Color darkGray = new Color(40, 40, 40);
         Color shadow = new Color(120, 120, 120);
         Color cellColor = new Color(225, 225, 225);
         graphics.setColor(gray);
         graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
-       
+
         if (matrix != null) {
 
             int rowCount = this.matrix.length;
@@ -280,10 +280,10 @@ class CAMatrixViewer extends Component {
             }
         }
     }
-    
+
     /**
      * Set the matrix to display.
-     * 
+     *
      * @param matrix The matrix to display.
      *
      */
@@ -291,11 +291,11 @@ class CAMatrixViewer extends Component {
         this.matrix = matrix;
     }
 
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                   private variables                       ////
 
-    /** 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /**
      * The matrix to display.
      */
     private double[][] matrix;

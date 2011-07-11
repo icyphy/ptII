@@ -130,7 +130,7 @@ public class Ticket implements java.io.Serializable {
         return result;
     }
 
-    /** 
+    /**
      * Return the ticket id.
      * @return the ticket id.
      * @see java.lang.Object#toString()

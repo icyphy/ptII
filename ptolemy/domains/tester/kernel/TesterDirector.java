@@ -1,5 +1,5 @@
 /** Director that invokes the test() method on objects implementing Testable.
- 
+
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without

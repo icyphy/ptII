@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
 */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DBModelFetcher.class, LoadManager.class, 
+@PrepareForTest({DBModelFetcher.class, LoadManager.class,
     DBConnectorFactory.class, Utilities.class})
 @SuppressStaticInitializationFor("ptdb.kernel.bl.load.DBModelFetcher")
 public class TestLoadManager {
@@ -98,13 +98,13 @@ public class TestLoadManager {
 
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
-        
+
         PtolemyEffigy effigy = null;
-        
-        // Use a different model name to 
+
+        // Use a different model name to
         // demonstrate that the name is taken from the MoML.
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
@@ -131,7 +131,7 @@ public class TestLoadManager {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
         PowerMock.mockStatic(DBModelFetcher.class);
@@ -144,8 +144,8 @@ public class TestLoadManager {
         PowerMock.verifyAll();
 
     }
-    
-    
+
+
     /**
      * Mock the LoadModelManager.  Create a fake XMLDBModel object and specify
      * it as the return from load().  Then verify that, given an XMLDBModelObject,
@@ -167,13 +167,13 @@ public class TestLoadManager {
 
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
-        
+
         PtolemyEffigy effigy = null;
-        
-        // Use a different model name to 
+
+        // Use a different model name to
         // demonstrate that the name is taken from the MoML.
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
@@ -200,7 +200,7 @@ public class TestLoadManager {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
         PowerMock.mockStatic(DBModelFetcher.class);
@@ -221,12 +221,12 @@ public class TestLoadManager {
     public void testImportModelByRefNoTag() throws Exception {
 
         Entity container = new Entity("container");
-        
+
         String inputString="model1";
 
         Entity entity = null;
-        
-        // Use a different model name to 
+
+        // Use a different model name to
         // demonstrate that the name is taken from the MoML.
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
@@ -253,12 +253,12 @@ public class TestLoadManager {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
             //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
-    
+
             PowerMock.mockStatic(DBModelFetcher.class);
             EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
-    
+
             //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
             PowerMock.replayAll();
             entity = LoadManager.importModel(inputString, true, container);
@@ -266,12 +266,12 @@ public class TestLoadManager {
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "TRUE");
             PowerMock.verifyAll();
-            
+
         }
-    
+
     /**
      * Test importing a model by value.  No DBReference tag is present.
      * @exception Exception
@@ -280,12 +280,12 @@ public class TestLoadManager {
     public void testImportModelByRefWithTag() throws Exception {
 
         Entity container = new Entity("container");
-        
+
         String inputString="model1";
 
         Entity entity = null;
-        
-        // Use a different model name to 
+
+        // Use a different model name to
         // demonstrate that the name is taken from the MoML.
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
@@ -313,12 +313,12 @@ public class TestLoadManager {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
             //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
-    
+
             PowerMock.mockStatic(DBModelFetcher.class);
             EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
-    
+
             //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
             PowerMock.replayAll();
             entity = LoadManager.importModel(inputString, true, container);
@@ -326,12 +326,12 @@ public class TestLoadManager {
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "TRUE");
             PowerMock.verifyAll();
-            
+
         }
-    
+
     /**
      * Test importing a model by reference.  No DBReference tag is present.
      * @exception Exception
@@ -340,12 +340,12 @@ public class TestLoadManager {
     public void testImportModelByValueNoTag() throws Exception {
 
         Entity container = new Entity("container");
-        
+
         String inputString="model1";
 
         Entity entity = null;
-        
-        // Use a different model name to 
+
+        // Use a different model name to
         // demonstrate that the name is taken from the MoML.
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
@@ -372,12 +372,12 @@ public class TestLoadManager {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
             //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
-    
+
             PowerMock.mockStatic(DBModelFetcher.class);
             EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
-    
+
             //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
             PowerMock.replayAll();
             entity = LoadManager.importModel(inputString, false, container);
@@ -385,12 +385,12 @@ public class TestLoadManager {
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "FALSE");
             PowerMock.verifyAll();
-            
+
         }
-    
+
     /**
      * Test importing a model by reference.  No DBReference tag is present.
      * @exception Exception
@@ -399,12 +399,12 @@ public class TestLoadManager {
     public void testImportModelByValueWithTag() throws Exception {
 
         Entity container = new Entity("container");
-        
+
         String inputString = "model1";
 
         Entity entity = null;
-        
-        // Use a different model name to 
+
+        // Use a different model name to
         // demonstrate that the name is taken from the MoML.
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
@@ -432,12 +432,12 @@ public class TestLoadManager {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
             //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
-    
+
             PowerMock.mockStatic(DBModelFetcher.class);
             EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
-    
+
             //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
             PowerMock.replayAll();
             entity = LoadManager.importModel(inputString, false, container);
@@ -445,12 +445,12 @@ public class TestLoadManager {
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "FALSE");
             PowerMock.verifyAll();
-            
+
         }
-    
+
     /**
      * Test attempting to import a model with a null model name.
      * @exception Exception
@@ -459,7 +459,7 @@ public class TestLoadManager {
     public void testNull() throws Exception {
 
         Entity container = new Entity("container");
-        
+
         String inputString=null;
 
         //Entity entity = null;
@@ -467,36 +467,36 @@ public class TestLoadManager {
         PowerMock.replayAll();
 
         boolean isSuccess = false;
-        
-        try{
-        
+
+        try {
+
             /*entity =*/ LoadManager.importModel(inputString, false, container);
-            
-        } catch(Exception e){
-            
+
+        } catch (Exception e) {
+
             isSuccess = true;
-            
+
         }
-        
+
         assertTrue(isSuccess);
 
         PowerMock.verifyAll();
-            
+
         }
-    
-    
+
+
         /**
          * Test importing a model with a circular dependency present.
          * @exception Exception
          */
         @Test
         public void testCircularDepencency() throws Exception {
-        
+
             String containerModel = "container";
             String importModel="model1";
             Entity container = new Entity(containerModel);
             String referenceString = "<reference string>";
-            
+
             XMLDBModel dbModel = new XMLDBModel(importModel);
             dbModel.setIsNew(false);
             dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -523,73 +523,73 @@ public class TestLoadManager {
                             + "</property>"
                             + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                             + "</property>" + "</entity>" + "</entity>");
-            
-            
+
+
             PowerMock.mockStatic(DBConnectorFactory.class);
             PowerMock.mockStatic(DBModelFetcher.class);
             PowerMock.mockStatic(Utilities.class);
-            
-            DBConnection dBConnectionMock = 
+
+            DBConnection dBConnectionMock =
                 PowerMock.createMock(DBConnection.class);
-            GetReferenceStringTask getReferenceStringTask = 
+            GetReferenceStringTask getReferenceStringTask =
                 PowerMock.createMock(GetReferenceStringTask.class);
 
             EasyMock.
                 expect(DBModelFetcher.load(importModel)).andReturn(dbModel);
-              
+
             EasyMock.expect(DBConnectorFactory.getSyncConnection(false))
                 .andReturn(dBConnectionMock);
-            
+
             PowerMock.expectNew
                 (GetReferenceStringTask.class, importModel)
                 .andReturn(getReferenceStringTask);
-            
+
             EasyMock.expect
                 (dBConnectionMock
                         .executeGetReferenceStringTask
                         (getReferenceStringTask))
                         .andReturn(referenceString);
-            
+
             EasyMock.expect
                 (Utilities.modelReferenceExists
                         (containerModel, referenceString)).andReturn(true);
 
             dBConnectionMock.closeConnection();
-            
+
             PowerMock.replayAll();
-            
+
             boolean exceptionThrown = false;
-            
-            try{
-                
+
+            try {
+
                 /*Entity modelWithImport = */
                     LoadManager.importModel(importModel, true, container);
-            
-            } catch (CircularDependencyException e){
-                
+
+            } catch (CircularDependencyException e) {
+
                 exceptionThrown = true;
-                
+
             }
-    
+
             assertTrue(exceptionThrown);
 
 
             PowerMock.verifyAll();
         }
-        
-        
+
+
         /**
          * Test importing a model with no circular dependency present.
          * @exception Exception
          */
         @Test
         public void testNoCircularDepencency() throws Exception {
-        
+
             String containerModel = "container";
             String importModel="model1";
             Entity container = new Entity(containerModel);
             String referenceString = "<reference string>";
-            
+
             XMLDBModel dbModel = new XMLDBModel(importModel);
             dbModel.setIsNew(false);
             dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -616,64 +616,64 @@ public class TestLoadManager {
                             + "</property>"
                             + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                             + "</property>" + "</entity>" + "</entity>");
-            
-            
+
+
             PowerMock.mockStatic(DBConnectorFactory.class);
             PowerMock.mockStatic(DBModelFetcher.class);
             PowerMock.mockStatic(Utilities.class);
-            
-            DBConnection dBConnectionMock = 
+
+            DBConnection dBConnectionMock =
                 PowerMock.createMock(DBConnection.class);
-            GetReferenceStringTask getReferenceStringTask = 
+            GetReferenceStringTask getReferenceStringTask =
                 PowerMock.createMock(GetReferenceStringTask.class);
 
             EasyMock.
                 expect(DBModelFetcher.load(importModel)).andReturn(dbModel);
-              
+
             EasyMock.expect(DBConnectorFactory.getSyncConnection(false))
                 .andReturn(dBConnectionMock);
-            
+
             PowerMock.expectNew
                 (GetReferenceStringTask.class, importModel)
                 .andReturn(getReferenceStringTask);
-            
+
             EasyMock.expect
                 (dBConnectionMock
                         .executeGetReferenceStringTask
                         (getReferenceStringTask))
                         .andReturn(referenceString);
-            
+
             EasyMock.expect
                 (Utilities.modelReferenceExists
                         (containerModel, referenceString)).andReturn(false);
 
             dBConnectionMock.closeConnection();
-            
+
             PowerMock.replayAll();
-            
+
             boolean exceptionThrown = false;
             Entity modelWithImport = new Entity();
-            
-            try{
-                
-                modelWithImport = 
+
+            try {
+
+                modelWithImport =
                     LoadManager.importModel(importModel, true, container);
-            
-            } catch (CircularDependencyException e){
-                
+
+            } catch (CircularDependencyException e) {
+
                 exceptionThrown = true;
-                
+
             }
-    
+
             assertFalse(exceptionThrown);
 
             assertEquals(
                     ((StringConstantParameter) modelWithImport.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "TRUE");
-            
+
             PowerMock.verifyAll();
         }
     }
-    
-    
+
+

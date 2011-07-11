@@ -298,15 +298,15 @@ public class Configuration extends CompositeEntity implements
             // Directors as well
             if (containedObject instanceof TypedAtomicActor
                     || containedObject instanceof Attribute) {
-		try {
-		    results.append(_checkCloneFields(containedObject));
-		} catch (Throwable throwable) {
-		    throw new InternalErrorException((TypedAtomicActor)containedObject,
-						     null, throwable,
-						     "The check for " 
-						     + "clone methods properly setting "
-						     + "the fields failed.");
-		}
+                try {
+                    results.append(_checkCloneFields(containedObject));
+                } catch (Throwable throwable) {
+                    throw new InternalErrorException((TypedAtomicActor)containedObject,
+                                                     null, throwable,
+                                                     "The check for "
+                                                     + "clone methods properly setting "
+                                                     + "the fields failed.");
+                }
             }
         }
 
@@ -317,14 +317,14 @@ public class Configuration extends CompositeEntity implements
             Object entity = entities.next();
             if (entity instanceof TypedAtomicActor) {
                 // Check atomic actors for clone problems
-		try {
-		    results.append(_checkCloneFields((TypedAtomicActor) entity));
-		} catch (Throwable throwable) {
-		    throw new InternalErrorException((TypedAtomicActor)entity, null, throwable,
-						     "The check for " 
-						     + "clone methods properly setting "
-						     + "the fields failed.");
-		}
+                try {
+                    results.append(_checkCloneFields((TypedAtomicActor) entity));
+                } catch (Throwable throwable) {
+                    throw new InternalErrorException((TypedAtomicActor)entity, null, throwable,
+                                                     "The check for "
+                                                     + "clone methods properly setting "
+                                                     + "the fields failed.");
+                }
                 TypedAtomicActor actor = (TypedAtomicActor) entity;
                 String fullName = actor.getName(this);
                 TypedAtomicActor clone = (TypedAtomicActor) cloneConfiguration
@@ -636,7 +636,7 @@ public class Configuration extends CompositeEntity implements
                             // if a .htm file is not found because the
                             // MessageHandler pops up before we return
                             // from the exception.
-			    // In addition, we cannot catch HeadlessExceptions.
+                            // In addition, we cannot catch HeadlessExceptions.
 
                             MessageHandler.error("Failed to open "
                                     + effigy.identifier.getExpression(), ex);
@@ -644,8 +644,8 @@ public class Configuration extends CompositeEntity implements
                         }
                     }
 
-		    // This eventually calls Configuration._removeEntity()
-		    // which calls System.exit();
+                    // This eventually calls Configuration._removeEntity()
+                    // which calls System.exit();
                     effigy.setContainer(null);
                 } catch (Throwable throwable) {
                     calledMessageHandler = false;
@@ -1016,7 +1016,7 @@ public class Configuration extends CompositeEntity implements
             // If the ptolemy.ptII.doNotExit property or the
             // ptolemy.ptII.exitAfterWrapup property is set
             // then we don't actually call System.exit().
-            // 
+            //
             StringUtilities.exit(0);
         }
     }

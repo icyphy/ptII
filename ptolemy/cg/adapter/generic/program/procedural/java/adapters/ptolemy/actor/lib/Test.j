@@ -29,7 +29,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $ComplextoString($actorSymbol(inputToken)),
             $param(tolerance),
-	    $ComplextoString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)))));
+            $ComplextoString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)))));
 
 }
 /**/
@@ -167,7 +167,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a token of value: %s. Should have been a token of value: %s\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
-	    Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).getPayload()));
+            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).getPayload()));
 }
 /**/
 

@@ -71,7 +71,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -92,7 +92,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                    private inner class                    ////
 
-    
+
     /** A representation of the monotonic function used to infer the
      *  monotonicity of leaf nodes in the abstract
      *  syntax trees of Ptolemy expressions.
@@ -107,7 +107,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *  @param monotonicityOntology The monotonicity ontology.
          *  @param domainOntologies The ontologies over which the expression
          *    is defined.
-         *  @throws IllegalActionException If a function cannot be created.
+         *  @exception IllegalActionException If a function cannot be created.
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
                 Ontology monotonicityOntology,
@@ -122,7 +122,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param inputConceptValues Ignored in this leaf node (should be an empty list).
          *  @return The monotonicity concept that this leaf node evaluates to.
-         *  @throws IllegalActionException Thrown if there is an error getting
+         *  @exception IllegalActionException Thrown if there is an error getting
          *   the concept value from the original domain ontology with the
          *   leaf node's name string.
          */
@@ -132,25 +132,25 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             MonotonicityConcept result =
                 MonotonicityConcept.createMonotonicityConcept(
                         _monotonicityAnalysisOntology);
-            
+
             // Check if the leaf is a constant.
             if (_leafNode.isConstant()) {
                 return result;
             }
-            
+
             String conceptString = _leafNode.getName();
             for (Ontology domainOntology : _domainOntologies) {
                 if (domainOntology.getConceptByString(conceptString) != null) {
                     return result;
                 }
             }
-            
+
             // Otherwise, it is a free variable.
             result.putMonotonicity(conceptString, _monotonicConcept);
             return result;
         }
-        
-        /** The leaf node that this function is defined over. 
+
+        /** The leaf node that this function is defined over.
          */
         private ptolemy.data.expr.ASTPtLeafNode _leafNode;
     }

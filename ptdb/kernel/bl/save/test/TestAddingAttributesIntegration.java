@@ -21,13 +21,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.save.test;
 
@@ -43,12 +43,12 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.bl.save.AttributesManager;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestAddingAttributesIntegration
 
 /**
- * Integration test case for adding attributes BL and DB layers. 
- * 
+ * Integration test case for adding attributes BL and DB layers.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -58,17 +58,17 @@ import ptdb.kernel.bl.save.AttributesManager;
  */
 public class TestAddingAttributesIntegration {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    public methods                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Test the integration of fetching user defined attributes from the 
-     * database. 
-     * 
+     * Test the integration of fetching user defined attributes from the
+     * database.
+     *
      * @exception DBExecutionException Thrown if there is error occurs during
-     * the execution of fetching attributes. 
-     * @exception DBConnectionException Thrown if meeting problem to get the 
-     * db connection. 
+     * the execution of fetching attributes.
+     * @exception DBConnectionException Thrown if meeting problem to get the
+     * db connection.
      */
     @Test
     public void testGetDBAttributes() throws DBExecutionException,
@@ -85,11 +85,11 @@ public class TestAddingAttributesIntegration {
     }
 
     /**
-     * Test the work flow of creating, updating and deleting an attribute. 
-     * 
+     * Test the work flow of creating, updating and deleting an attribute.
+     *
      * @exception DBConnectionException Thrown if there is error occurs during
-     * the execution for attributes. 
-     * @exception DBExecutionException Thrown if meeting problem to get the 
+     * the execution for attributes.
+     * @exception DBExecutionException Thrown if meeting problem to get the
      * db connection.
      */
     @Test
@@ -98,7 +98,7 @@ public class TestAddingAttributesIntegration {
 
         AttributesManager attributesManager = new AttributesManager();
 
-        // Test creating the attributes. 
+        // Test creating the attributes.
         XMLDBAttribute newAttribute = new XMLDBAttribute(
                 "New Attribute Name 2", XMLDBAttribute.ATTRIBUTE_TYPE_STRING);
 
@@ -144,7 +144,7 @@ public class TestAddingAttributesIntegration {
 
         Assert.assertTrue(containsFlag);
 
-        // Test deleting. 
+        // Test deleting.
         attributesManager.deleteAttribute(newAttribute);
 
         attributes = attributesManager.getDBAttributes();

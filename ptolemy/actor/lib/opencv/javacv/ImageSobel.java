@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Apply sovel filter to image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -68,15 +68,15 @@ public class ImageSobel extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
-        xorderParam = new Parameter(this, "xorder", new IntToken(1)); 
-        yorderParam = new Parameter(this, "yorder", new IntToken(1)); 
-        apertureSizeParam = new Parameter(this, "aperture size (must be 1, 3, 5 or 7)", new IntToken(3)); 
+
+        xorderParam = new Parameter(this, "xorder", new IntToken(1));
+        yorderParam = new Parameter(this, "yorder", new IntToken(1));
+        apertureSizeParam = new Parameter(this, "aperture size (must be 1, 3, 5 or 7)", new IntToken(3));
         xorderParam.setTypeEquals(BaseType.INT);
         yorderParam.setTypeEquals(BaseType.INT);
         apertureSizeParam.setTypeEquals(BaseType.INT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -89,7 +89,7 @@ public class ImageSobel extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         int xorder = ((IntToken) (xorderParam.getToken())).intValue();
@@ -98,7 +98,7 @@ public class ImageSobel extends Transformer {
         if (!(apertureSize == 1 || apertureSize==3 || apertureSize==5 || apertureSize==7)) {
             throw new IllegalActionException(this, "apertureSize must be 1, 3, 5, or 7.");
         }
-        
+
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken)input.get(0);
             Object inputObject = inputToken.getValue();
@@ -113,7 +113,7 @@ public class ImageSobel extends Transformer {
             output.send(0, new ObjectToken(_frame));
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _frame;

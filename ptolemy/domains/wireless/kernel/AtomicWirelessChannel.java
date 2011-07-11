@@ -228,7 +228,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         // though there is no lower bound on the time delay.
         _declareDelayDependency(_channelPort, _channelPort, 0.0);
     }
-    
+
     /** Return a channel port that can be used to set type constraints
      *  between senders and receivers. An channel contains a single port,
      *  which is an instance of ChannelPort. The port is merely used to

@@ -1,4 +1,4 @@
-/* A director for controlling threads in the taskpt domain. 
+/* A director for controlling threads in the taskpt domain.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -35,13 +35,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ThreadDirector
 
 /** A director for controlling a thread in the taskpt domain.
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (ristau)
  * @Pt.AcceptedRating red (ristau)
- * @see ptolemy.domains.taskpt.kernel.TaskPtDirector 
+ * @see ptolemy.domains.taskpt.kernel.TaskPtDirector
  */
 public class ThreadDirector extends TaskPtDirector {
 
@@ -71,7 +71,7 @@ public class ThreadDirector extends TaskPtDirector {
 
     /** Fire the actors in sequence.
 
-     *  @throws IllegalActionException Thrown if any actor executed by this
+     *  @exception IllegalActionException Thrown if any actor executed by this
      *  actor return false in prefire().
      */
     public void fire() throws IllegalActionException {
@@ -82,7 +82,7 @@ public class ThreadDirector extends TaskPtDirector {
         //binds the tasks to different processors. Once a task is deferred, the
         //next actors in sequence should be fired until some actor is in the sequence
         //that is dependent upon the output of deferred and not already finished
-        //tasks.        
+        //tasks.
         super.fire();
     }
 }

@@ -21,21 +21,21 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptdb.common.exception;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SearchCriteriaParseException
 
 /**
- * The exception for any parsing error happens during the parsing of the 
- * stored search criteria. 
- * 
+ * The exception for any parsing error happens during the parsing of the
+ * stored search criteria.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -44,13 +44,13 @@ package ptdb.common.exception;
  *
  */
 public class SearchCriteriaParseException extends Exception {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
      * Construct an instance of SearchCriteriaParseException
      * with the given message.
-     * 
+     *
      * @param errorMessage Exception message.
      */
     public SearchCriteriaParseException(String errorMessage) {
@@ -59,7 +59,7 @@ public class SearchCriteriaParseException extends Exception {
 
     /**
      * Construct an instance to wrap other exceptions.
-     * 
+     *
      * @param errorMessage The exception message.
      * @param cause The underlying cause for the exception.
      */

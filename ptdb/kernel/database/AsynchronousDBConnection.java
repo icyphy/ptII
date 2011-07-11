@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -148,7 +148,7 @@ public class AsynchronousDBConnection implements DBConnection {
         _taskQueue.setAllTasksAdded();
     }
 
-    
+
     /**
      * Search models that contain the given attributes in the database.
      * Not supported by this type of connection.
@@ -166,21 +166,21 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeAttributeSearchTask is "
                         + "not supported by this type of DBConnection");
     }
-    
+
     /**
-     * Execute the necessary commands to create a new attribute in the database 
+     * Execute the necessary commands to create a new attribute in the database
      * according to the attribute specification given in the task parameter.
      *
      * @param task
      *          The task to be completed.  In this case, CreateAttributeTask.
      *          This will tell the DB layer to create a new attribute in the database.
      * @return The XMLDBAttribute object that was stored in the Database.
-     * 
+     *
      * @exception DBExecutionException Thrown if the operation fails.
      */
     public XMLDBAttribute executeCreateAttributeTask(CreateAttributeTask task)
             throws DBExecutionException {
-        
+
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeCreateAttributeTask is "
                         + "not supported by this type of DBConnection");
@@ -194,7 +194,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @param task
      *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
-     * 
+     *
      * @return The Id of the newly created model.
      * @exception DBExecutionException If thrown while creating a model.
      * @exception ModelAlreadyExistException Thrown if the model being created already exists.
@@ -204,13 +204,13 @@ public class AsynchronousDBConnection implements DBConnection {
 
         //call the execueTask method to execute the given task
         _executeTask(task);
-        
+
         return null;
 
     }
-    
+
     /**
-     * Execute the necessary commands to delete an attribute from the database 
+     * Execute the necessary commands to delete an attribute from the database
      * according to the attribute specification given in the task parameter.
      *
      * @param task
@@ -220,7 +220,7 @@ public class AsynchronousDBConnection implements DBConnection {
      */
     public void executeDeleteAttributeTask(DeleteAttributeTask task)
             throws DBExecutionException {
-        
+
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeDeleteAttributeTask is "
                         + "not supported by this type of DBConnection");
@@ -260,19 +260,19 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeGetAttributes is "
                         + "not supported by this type of DBConnection");
     }
-    
+
     /**
-     * Fetch the first level parents for the given model is not supported by 
-     * this connection. 
+     * Fetch the first level parents for the given model is not supported by
+     * this connection.
      * Use a synchronous connection for that.
-     * 
-     * @param task Task that contains the model for which the first level 
+     *
+     * @param task Task that contains the model for which the first level
      * parents list needs to be fetched.
-     * 
-     * @return List of models that are the first-level parents of the given 
+     *
+     * @return List of models that are the first-level parents of the given
      * model.
-     * 
-     * @throws DBExecutionException If thrown while fetching the parents list 
+     *
+     * @exception DBExecutionException If thrown while fetching the parents list
      * from the database.
      */
     public List<XMLDBModel> executeGetFirstLevelParents(GetFirstLevelParentsTask task)
@@ -281,15 +281,15 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeGetFirstLevelParents is "
                         + "not supported by this type of DBConnection");
     }
-    
+
     /**
-     * Get the model reference string is not supported by the asynchronous 
+     * Get the model reference string is not supported by the asynchronous
      * connection.
      * Use a synchronous connection for that.
-     * 
+     *
      * @param task Task that contains the model name.
-     * @return The reference string for the given model name. 
-     * @throws DBExecutionException If thrown while fetching the reference 
+     * @return The reference string for the given model name.
+     * @exception DBExecutionException If thrown while fetching the reference
      * string.
      */
     public String executeGetReferenceStringTask(GetReferenceStringTask task)
@@ -298,7 +298,7 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeGetReferenceStringTask is "
                         + "not supported by this type of DBConnection");
     }
-    
+
     /**
      * Execute the necessary commands to retrieve a model from the database.
      *
@@ -314,12 +314,12 @@ public class AsynchronousDBConnection implements DBConnection {
                 throw new DBExecutionException(
                         "Asynchronous DB Execution error - executeGetModelTask "
                                 + "is not supported by this type of DBConnection");
-            
+
     }
-    
-    
+
+
     /**
-     * Execute the necessary commands to retrieve a model from the database 
+     * Execute the necessary commands to retrieve a model from the database
      * and resolve all the references in it if any.
      *
      * @param task
@@ -334,22 +334,22 @@ public class AsynchronousDBConnection implements DBConnection {
                 throw new DBExecutionException(
                         "Asynchronous DB Execution error - executeGetCompleteModelTask "
                                 + "is not supported by this type of DBConnection");
-            
+
     }
-    
-    /** 
-     * Retrieve and return the list of all models in the database. 
+
+    /**
+     * Retrieve and return the list of all models in the database.
      * @return List of models in the database.
-     * @throws DBExecutionException thrown if there is an error while reading 
+     * @exception DBExecutionException thrown if there is an error while reading
      * the model list from the database.
      */
-    public List<XMLDBModel> executeGetListOfAllModels() 
+    public List<XMLDBModel> executeGetListOfAllModels()
             throws DBExecutionException {
-        
+
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeGetListOfAllModels "
                         + "is not supported by this type of DBConnection");
-        
+
     }
 
     /**
@@ -368,15 +368,15 @@ public class AsynchronousDBConnection implements DBConnection {
                         + "is not supported by this type of DBConnection");
     }
 
-    /** 
-     * Execute the model name search task is not supported by the asynchronous 
+    /**
+     * Execute the model name search task is not supported by the asynchronous
      * connection.
      * Use a synchronous connection for that.
-     * 
-     * @param modelNameSearchTask Task that contains the model name to be 
+     *
+     * @param modelNameSearchTask Task that contains the model name to be
      * searched for.
      * @return List of matching models.
-     * @throws DBExecutionException If thrown while searching the database.
+     * @exception DBExecutionException If thrown while searching the database.
      */
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
@@ -386,7 +386,7 @@ public class AsynchronousDBConnection implements DBConnection {
                         + "is not supported by this type of DBConnection");
     }
     /**
-     * Execute the necessary commands to save/update a model in the 
+     * Execute the necessary commands to save/update a model in the
      * database according
      * to the model specification given in the task parameter.
      *
@@ -394,9 +394,9 @@ public class AsynchronousDBConnection implements DBConnection {
      *          The task to be completed.  In this case, SaveModelTask.
      *          This will tell the DB layer to save/update a model
      *          already existing in the database.
-     * 
+     *
      * @return The Id of the model being saved.
-     * 
+     *
      * @exception DBExecutionException If thrown while saving model
      * in the database.
      */
@@ -405,48 +405,48 @@ public class AsynchronousDBConnection implements DBConnection {
 
         //call the execueTask method to execute the given task
         _executeTask(task);
-        
+
         return null;
     }
-    
-    
+
+
     /**
      * Execute remove models task to delete a list of models from the database.
      * @param task Contains a list of models to be deleted from the database.
-     * @throws DBExecutionException Thrown if the operation fails.
+     * @exception DBExecutionException Thrown if the operation fails.
      */
-    public void executeRemoveModelsTask (RemoveModelsTask task) 
+    public void executeRemoveModelsTask (RemoveModelsTask task)
             throws DBExecutionException {
-        
+
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeRemoveModelsTask "
                         + "is not supported by this type of DBConnection");
     }
-    
-    
+
+
     /**
-     * Execute rename model task which will change the name of the model in 
+     * Execute rename model task which will change the name of the model in
      * the database and reflect the change in the reference file.
-     * @param task RenameModelTask object that contains the XMLDBModel 
+     * @param task RenameModelTask object that contains the XMLDBModel
      * object and the new name.
      * @exception DBConnectionException Thrown if there was a problem with the connection.
      * @exception DBExecutionException Thrown if there is a problem in executing the task.
      * @exception DBModelNotFoundException Thrown if the model with the name to be changed does not exist.
      * @exception ModelAlreadyExistException Thrown if the new name is a name of a model that is already in the database.
      */
-    public void executeRenameModelTask(RenameModelTask task) 
+    public void executeRenameModelTask(RenameModelTask task)
             throws DBConnectionException, DBExecutionException,
             ModelAlreadyExistException, DBModelNotFoundException {
-        
+
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeRenameModelTask "
                         + "is not supported by this type of DBConnection");
-        
+
     }
-    
-    
+
+
     /**
-     * Execute the necessary commands to update an attribute in the database 
+     * Execute the necessary commands to update an attribute in the database
      * according to the attribute specification given in the task parameter.
      *
      * @param task
@@ -456,39 +456,39 @@ public class AsynchronousDBConnection implements DBConnection {
      */
     public void executeUpdateAttributeTask(UpdateAttributeTask task)
             throws DBExecutionException {
-        
+
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeUpdateAttributeTask "
                         + "is not supported by this type of DBConnection");
-        
+
     }
-    
+
     /**
      * Execute the necessary commands to update the cache with the given model.
-     * 
-     * <p>If the model exists, replace it with the new model. 
+     *
+     * <p>If the model exists, replace it with the new model.
      * <br> If the model does not exist, save it in the cache.</p>
-     * 
+     *
      * @param xmlDBModel The model object that needs to be added to the cache.
      * @exception DBExecutionException Thrown if the operation fails.
      * already exists.
      */
     public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
             throws DBExecutionException{
-        
+
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeUpdateModelInCache "
                         + "is not supported by this type of DBConnection");
-        
-        
+
+
     }
-    
+
     /**
-     * Execute the given task to update the referenced version for the given 
-     * parents from the old model to the new model. 
-     * @param task Task that contains the list of parents, the old model and the 
+     * Execute the given task to update the referenced version for the given
+     * parents from the old model to the new model.
+     * @param task Task that contains the list of parents, the old model and the
      * new model.
-     * @throws DBExecutionException If thrown while updating the parents in the 
+     * @exception DBExecutionException If thrown while updating the parents in the
      * database.
      */
     public void executeUpdateParentsToNewVersion(

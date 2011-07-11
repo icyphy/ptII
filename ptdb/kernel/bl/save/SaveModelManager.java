@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -61,37 +61,37 @@ import ptdb.kernel.database.DBConnection;
 
 /**
  * The business layer of the save to database function.
- * 
+ *
  * <p> It is responsible for:
- * 
+ *
  * <br>- Get the XMLDBModel which is the Ptolemy model wrapped in a special Data
  * Transfer Object (dto).
- * 
+ *
  * <br>- Wrap the model object in another dto (SaveModelTask or CreateModelTask)
  * to either create it in the database or save the modification made on it.
- * 
+ *
  * <br>- Get a database connection and run the execute method on the database
  * connection object to perform the saving or creation of the model. </p>
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (Yousef)
  * @Pt.AcceptedRating Red (Yousef)
- * 
+ *
  */
 public class SaveModelManager {
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                            ////
+    ////                         public methods                    ////
 
     /**
      * Return the first level parents that reference a give model.
-     * 
+     *
      * @param baseModel An XMLDBModel object that represents the model for which
      * the first level parents are retrieved.
      * @return A list of first level parent models for the given model.
-     * 
+     *
      * @exception DBConnectionException Thrown if there is a problem creating a
      * connection to the database.
      * @exception DBExecutionException Thrown if the operation fails to execute.
@@ -144,12 +144,12 @@ public class SaveModelManager {
      * Save the changes of an existing model in the database or create a new
      * model in the database. Remove all prior entries to the saved model from
      * the cache, including any other models that reference it.
-     * 
+     *
      * @param xmlDBModel The model object that is required to be saved or
      * created in the database.
-     * 
+     *
      * @return A string representing the model id that was saved.
-     * 
+     *
      * @exception DBConnectionException Thrown if there is a database connection
      * error.
      * @exception DBExecutionException Thrown if the execution failed.
@@ -161,7 +161,7 @@ public class SaveModelManager {
      * incorrectly.
      * @exception CircularDependencyException Thrown if there is a circular
      * dependency.
-     * 
+     *
      */
     public String save(XMLDBModel xmlDBModel) throws DBConnectionException,
             DBExecutionException, IllegalArgumentException,
@@ -216,7 +216,7 @@ public class SaveModelManager {
     /**
      * Save a model but keep a list of models that reference it point to the old
      * model and update the rest of the models.
-     * 
+     *
      * @param xmlDBModelWithReferenceChanges An object that contains the model
      * to be saved, the list of parents that should have the old reference, and
      * the new version name that will be placed as a reference in the parents'
@@ -265,72 +265,72 @@ public class SaveModelManager {
                         "Unable to get synchronous connection from the database");
             }
 
-            
+
             if (!xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()
                     && xmlDBModelWithReferenceChanges.getVersionName() != null
                     && xmlDBModelWithReferenceChanges.getVersionName().length() > 0
                     && xmlDBModelWithReferenceChanges.getParentsList() != null
                     && xmlDBModelWithReferenceChanges.getParentsList().size() > 0) {
-                
-                
+
+
                 GetModelTask getModelTask = new GetModelTask(
                         xmlDBModelWithReferenceChanges.getModelToBeSaved()
                                 .getModelName());
-    
+
                 // Get the content of the model to be saved from the database.
                 XMLDBModel dbModelToBeSaved = dbConnection
                         .executeGetModelTask(getModelTask);
-    
+
                 XMLDBModel newXMLDBModel = new XMLDBModel(
                         xmlDBModelWithReferenceChanges.getVersionName());
-    
+
                 newXMLDBModel.setIsNew(true);
                 String modelContent = dbModelToBeSaved.getModel();
                 modelContent = modelContent.replaceFirst("name=\""
                         + dbModelToBeSaved.getModelName() +"\"", "name=\""
                         + xmlDBModelWithReferenceChanges.getVersionName() + "\"");
                 newXMLDBModel.setModel(modelContent);
-    
+
                 String newModelId = save(newXMLDBModel, dbConnection);
-    
+
                 newXMLDBModel.setModelId(newModelId);
-    
-                UpdateParentsToNewVersionTask updateParentsToNewVersionTask = 
+
+                UpdateParentsToNewVersionTask updateParentsToNewVersionTask =
                     new UpdateParentsToNewVersionTask();
-    
+
                 updateParentsToNewVersionTask.setNewModel(newXMLDBModel);
-    
+
                 updateParentsToNewVersionTask
                         .setOldModel(xmlDBModelWithReferenceChanges
                                 .getModelToBeSaved());
-    
+
                 updateParentsToNewVersionTask
                         .setParentsList(xmlDBModelWithReferenceChanges
                                 .getParentsList());
-    
+
                 dbConnection
                         .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
-                
+
                 ArrayList<String> parentsList = xmlDBModelWithReferenceChanges
                         .getParentsList();
-                
+
                 ArrayList<XMLDBModel> modelsToRemove = new ArrayList<XMLDBModel>();
-                
-                for(String modelName : parentsList) {
+
+                for (String modelName : parentsList) {
                     XMLDBModel xmlDBModel = new XMLDBModel(modelName);
                     modelsToRemove.add(xmlDBModel);
                 }
-                
+
                 CacheManager.removeFromCache(modelsToRemove);
 
             }
-            
+
             //String oldModelId = "";
-            
+
             modelId = save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
                     dbConnection);
-            
-            
+
+
             dbConnection.commitConnection();
 
         } catch (DBConnectionException e) {
@@ -386,7 +386,7 @@ public class SaveModelManager {
             }
 
             throw e;
-            
+
         } finally {
 
             if (dbConnection != null) {
@@ -402,12 +402,12 @@ public class SaveModelManager {
     /**
      * Populate the referenced child models list and update the model XML by
      * replacing the referenced models with place holder.
-     * 
+     *
      * @param model Model with references to be resolved.
-     * 
+     *
      * @return The updates model containing the list of child models and updated
      * content.
-     * 
+     *
      * @exception XMLDBModelParsingException If thrown while parsing the XML.
      */
     public XMLDBModel populateChildModelsList(XMLDBModel model)
@@ -424,87 +424,87 @@ public class SaveModelManager {
          */
         Node topEntityNode = modelDocument.getElementsByTagName("entity").item(
                 0);
-        
+
 //        if (topEntityNode != null) {
-            
+
             NodeList entityList = topEntityNode.getChildNodes();
-    
+
             boolean isChanged = false;
-    
+
             if (entityList != null) {
-    
+
                 for (int i = 0; i < entityList.getLength(); i++) {
-    
+
                     Node entity = entityList.item(i);
-    
+
                     if (!"entity".equals(entity.getNodeName())) {
                         continue;
                     }
-    
+
                     /* Get all first-level nodes inside the given entity. */
                     NodeList parameterList = entity.getChildNodes();
-    
+
                     String referencedModelId = null;
                     boolean isReferenced = false;
                     boolean isReferencedFound = false;
                     boolean dbModelIdFound = false;
-    
+
                     /* Get value for the DBReference and DBModelName properties.*/
                     for (int j = 0; j < parameterList.getLength(); j++) {
-    
+
                         Node parameter = parameterList.item(j);
-    
+
                         if ("property".equals(parameter.getNodeName())) {
-    
+
                             String name = Utilities.getValueForAttribute(parameter,
                                     "name");
-    
+
                             if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
                                     && !dbModelIdFound) {
-    
+
                                 referencedModelId = Utilities.getValueForAttribute(
                                         parameter, "value");
-    
+
                                 dbModelIdFound = true;
-    
+
                             } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
                                     && !isReferencedFound) {
-    
+
                                 String value = Utilities.getValueForAttribute(
                                         parameter, "value");
                                 isReferenced = "TRUE".equals(value);
-    
+
                                 isReferencedFound = true;
                             }
-    
+
                             if (isReferencedFound && dbModelIdFound) {
                                 break;
                             }
                         }
                     }
-    
+
                     if (isReferenced && referencedModelId != null) {
-    
+
                         /*
-                         * As we are considering only "entity" nodes, we can be 
+                         * As we are considering only "entity" nodes, we can be
                          * sure that the type conversion will not fail.
                          */
                         Element entityElement = (Element) entity.cloneNode(false);
                         NodeList childNodesList = entity.getChildNodes();
-    
+
                         /*
-                         * Create an entity node with the required properties and 
+                         * Create an entity node with the required properties and
                          * replace the current referenced entity.
                          */
                         int k = 0;
                         while (k < childNodesList.getLength()) {
                             Node childNode = childNodesList.item(k);
-    
+
                             if ("property".equals(childNode.getNodeName())) {
-    
+
                                 String name = Utilities.getValueForAttribute(
                                         childNode, "name");
-    
+
                                 if (name != null
                                         && (name.startsWith("_")
                                                 || XMLDBModel.DB_REFERENCE_ATTR
@@ -518,26 +518,26 @@ public class SaveModelManager {
                             else {
                                 k++;
                             }
-                            
+
                         }
-    
+
                         entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
                                 referencedModelId);
                         topEntityNode.replaceChild(entityElement, entity);
-    
+
                         model.addReferencedChild(referencedModelId);
                         isChanged = true;
                     }
                 }
             }
-    
+
             /* Update model content only if the model has changed. */
             if (isChanged) {
-    
+
                 String newModelContent = Utilities
                         .getDocumentXMLString(modelDocument);
                 model.setModel(newModelContent);
-    
+
 //            }
         }
 
@@ -546,7 +546,7 @@ public class SaveModelManager {
 
     /**
      * Rename an existing model in the database.
-     * 
+     *
      * @param originalModel XMLDBModel object that represent the model that its
      * name needs to be changed.
      * @param newName A string that contains the new model name.
@@ -567,11 +567,11 @@ public class SaveModelManager {
             DBModelNotFoundException {
 
         if (originalModel == null) {
-            
+
             throw new IllegalArgumentException(
                     "The original model cannot be null.");
         }
-        
+
         if (originalModel.getModelId() == null
                 && (originalModel.getModelName() == null || originalModel
                         .getModelName().length() == 0)) {
@@ -620,32 +620,32 @@ public class SaveModelManager {
                 dbConnection.closeConnection();
             }
         }
-        
+
         // Remove the original model from the cache.
         ArrayList<XMLDBModel> removeFromCacheList = new ArrayList<XMLDBModel>();
-        
+
         removeFromCacheList.add(originalModel);
         CacheManager.removeFromCache(removeFromCacheList);
-        
+
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                private methods                               ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Save the changes of an existing model in the database or create a new
      * model in the database. Remove all prior entries to the saved model from
      * the cache, including any other models that reference it.
-     * 
+     *
      * @param xmlDBModel The model object that is required to be saved or
      * created in the database.
-     * 
+     *
      * @param dbConnection The connection to the database that will be used to
      * execute the task.
-     * 
+     *
      * @return A string representing the model id that was saved.
-     * 
+     *
      * @exception DBConnectionException Thrown if there is a database connection
      * error.
      * @exception DBExecutionException Thrown if the execution failed.
@@ -653,10 +653,10 @@ public class SaveModelManager {
      * right.
      * @exception ModelAlreadyExistException Thrown if the model being created
      * already exists.
-     * @throws XMLDBModelParsingException Thrown if the model is parsed
+     * @exception XMLDBModelParsingException Thrown if the model is parsed
      * incorrectly.
-     * @throws CircularDependencyException
-     * 
+     * @exception CircularDependencyException
+     *
      */
     private String save(XMLDBModel xmlDBModel, DBConnection dbConnection)
             throws DBConnectionException, DBExecutionException,
@@ -673,20 +673,20 @@ public class SaveModelManager {
 
 
             String modelBody = xmlDBModel.getModel();
-            
+
             modelBody = removeDTD(modelBody);
-            
+
 //            System.out.println(modelBody);
-            
+
 //            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
-//                
+//
 //                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
 //                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
 //            }
-            
+
             xmlDBModel.setModel(modelBody);
-            
-            
+
+
 
             xmlDBModel = populateChildModelsList(xmlDBModel);
 
@@ -694,8 +694,8 @@ public class SaveModelManager {
                 throw new DBConnectionException(
                         "Unable to get synchronous connection from the database");
             }
-            
-            
+
+
 
             if (xmlDBModel.getIsNew()) {
 
@@ -727,11 +727,11 @@ public class SaveModelManager {
 
     /**
      * Update the cache with the model provided.
-     * 
+     *
      * @param xmlDBModel The model to be updated in the cache.
-     * @throws DBConnectionException Thrown if the connection to the cache
+     * @exception DBConnectionException Thrown if the connection to the cache
      * fails.
-     * @throws DBExecutionException Thrown if the execution of the task fails.
+     * @exception DBExecutionException Thrown if the execution of the task fails.
      */
     private void updateCache(XMLDBModel xmlDBModel)
             throws DBConnectionException, DBExecutionException {
@@ -792,42 +792,42 @@ public class SaveModelManager {
         CacheManager.removeFromCache(modelsToRemoveList);
 
     }
-    
-    
+
+
     /**
      * Remove the DTD from the model content.
      * @param modelConetnet The model content.
      * @return The model content after the DTD part is removed.
      */
     private String removeDTD(String modelConetnet) {
-        
-        
+
+
         String newModelContent = "";
-        
+
         newModelContent = modelConetnet;
-        
+
         if (newModelContent.indexOf("<?xml") == 0)
         {
-            
+
             newModelContent = newModelContent.substring(newModelContent.indexOf("<?xml"));
-            
+
             newModelContent = newModelContent.substring(newModelContent.indexOf(">") + 1);
-            
+
             newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
-            
+
             newModelContent = newModelContent.trim();
 
         }
-        
+
         if (newModelContent.indexOf("<!DOCTYPE") == 0)
         {
-            
+
             newModelContent = newModelContent.substring(newModelContent.indexOf("<!DOCTYPE"));
-            
+
             newModelContent = newModelContent.substring(newModelContent.indexOf(">") + 1);
-            
+
             newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
-            
+
             newModelContent = newModelContent.trim();
         }
         return newModelContent;

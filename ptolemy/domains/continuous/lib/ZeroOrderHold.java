@@ -186,7 +186,7 @@ public class ZeroOrderHold extends Transformer {
 
     /** Saved token. */
     private Token _lastToken;
-    
+
     /** Indicator that this is the first firing after initialize(). */
     private boolean _firstFiring;
 }

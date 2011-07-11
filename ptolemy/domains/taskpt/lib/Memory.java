@@ -1,4 +1,4 @@
-/* An object that is a buffer for Tokens. 
+/* An object that is a buffer for Tokens.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /** An object that is a buffer for Tokens. This is used in the
  * taskpt domain to model a shared memory.
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -57,7 +57,7 @@ public class Memory extends NamedObj {
     ////                         public methods                    ////
 
     /** Allocate a slot in the memory (currently at the end).
-     * 
+     *
      * @param size The size of the slot to be allocated.
      * @return A pointer to the address allocated in the memory.
      */
@@ -74,9 +74,9 @@ public class Memory extends NamedObj {
     }
 
     /** Read a token from the given address in this memory.
-     * 
+     *
      * @param index The address to be read.
-     * @return The token, if there is one located at that address. 
+     * @return The token, if there is one located at that address.
      * If not or index is exceeding the memory capacity, then null is returned.
      */
     public Token read(int index) {
@@ -87,9 +87,9 @@ public class Memory extends NamedObj {
     }
 
     /** Write a token into the specified memory address given by index. If memory
-     * capacity is smaller than the given address, the memory is extended 
+     * capacity is smaller than the given address, the memory is extended
      * automatically.
-     * 
+     *
      * @param index The address to be written.
      * @param token The token to be written.
      */

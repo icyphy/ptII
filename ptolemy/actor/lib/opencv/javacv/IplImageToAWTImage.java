@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Convert an IplImage into an Awt image.
  * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -73,7 +73,7 @@ public class IplImageToAWTImage extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an Awt image.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -87,8 +87,8 @@ public class IplImageToAWTImage extends Transformer {
             _frame = (IplImage)inputObject;
             output.send(0, new AWTImageToken((Image)_frame.getBufferedImage()));
         }
-    }    
- 
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

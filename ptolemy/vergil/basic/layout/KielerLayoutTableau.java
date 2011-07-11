@@ -88,7 +88,7 @@ public class KielerLayoutTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         NamedObj model = container.getModel();
-        
+
         _frame = new KielerLayoutFrame((CompositeEntity) model, this);
         setFrame(_frame);
     }
@@ -113,7 +113,7 @@ public class KielerLayoutTableau extends Tableau {
         public KielerLayoutFrame(final CompositeEntity model, Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
             super(model, tableau);
-            
+
             setTitle("Layout of " + model.getName());
 
             // Caveats panel.
@@ -253,7 +253,7 @@ public class KielerLayoutTableau extends Tableau {
                                         .getFullName())) + "\"", ex);
             }
         }
-        
+
         public void actionPerformed(ActionEvent e, NamedObj model) {
             try {
                 if (!(model instanceof CompositeActor)) {
@@ -276,7 +276,7 @@ public class KielerLayoutTableau extends Tableau {
                         frame = tableau.getFrame();
                     }
                 }
-                // Check for supported type of editor 
+                // Check for supported type of editor
                 if (!(frame instanceof ActorGraphFrame)) {
                     String message = "";
                     if (tableauxCount == 0) {
@@ -368,8 +368,8 @@ public class KielerLayoutTableau extends Tableau {
             graphFrame.layoutGraphWithPtolemyLayout();
         }
     }
-    
-    /** New automatic layout option placing all connected nodes and annotating 
+
+    /** New automatic layout option placing all connected nodes and annotating
      * relations with bend point positions of connected links.
      */
 //    private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
@@ -378,7 +378,7 @@ public class KielerLayoutTableau extends Tableau {
 //        public PlaceAndRouteAnnotationAction() {
 //            super(true, true, false, false, false);
 //        }
-//    }    
+//    }
 
     /** Toggle between showing and hiding of unnecessary relation vertices.
      */
@@ -392,7 +392,7 @@ public class KielerLayoutTableau extends Tableau {
 
     /** Action to place all items, including attributes.  No routing is done. */
     private class PlaceAllAction extends BaseLayoutAction {
-        /** Construct a PlaceAllAction that has 
+        /** Construct a PlaceAllAction that has
          *  applyEdgeLayout set to false and
          *  boxLayout set to true.
          */
@@ -406,7 +406,7 @@ public class KielerLayoutTableau extends Tableau {
      * routing is done.
      */
     private class PlaceAction extends BaseLayoutAction {
-        /** Construct a PlaceAction that has 
+        /** Construct a PlaceAction that has
          *  applyEdgeLayout set to false and
          *  boxLayout set to false.
          */
@@ -418,7 +418,7 @@ public class KielerLayoutTableau extends Tableau {
     /** Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL).
      */
     private class PlaceAndRouteAction extends BaseLayoutAction {
-        /** Construct a PlaceAndRouteAction that has 
+        /** Construct a PlaceAndRouteAction that has
          *  applyEdgeLayout set to true and
          *  boxLayout set to false.
          */
@@ -433,7 +433,7 @@ public class KielerLayoutTableau extends Tableau {
      * edges and have only 0, 1 or 2 adjacent links.
      */
     private class RemoveVerticesAction extends BaseLayoutAction {
-        /** Construct a PlaceAndRouteAction that has 
+        /** Construct a PlaceAndRouteAction that has
          *  applyEdgeLayout set to true and
          *  boxLayout set to false.
          */

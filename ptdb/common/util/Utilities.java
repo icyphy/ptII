@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -55,12 +55,12 @@ import ptdb.common.exception.XMLDBModelParsingException;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.NamedObj;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Utilities
 
 /**
  * Provide utility functions for document parsing etc.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -70,16 +70,16 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class Utilities {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Check if the given name meet the model name convention. 
-     * 
-     * @param name The name to be verified. 
+     * Check if the given name meet the model name convention.
+     *
+     * @param name The name to be verified.
      * @return true - if the name is valid.<br>
-     *          false - if the name is invalid. 
-     * @exception IllegalNameException Thrown if the verifying name is invalid. 
+     *          false - if the name is invalid.
+     * @exception IllegalNameException Thrown if the verifying name is invalid.
      */
     public static boolean checkModelName(String name)
             throws IllegalNameException {
@@ -95,15 +95,15 @@ public class Utilities {
                     + "contain numbers and letters.");
         }
     }
-    
-    
+
+
     /**
-     * Check if the given name meet the attribute name convention. 
-     * 
-     * @param name The name to be verified. 
+     * Check if the given name meet the attribute name convention.
+     *
+     * @param name The name to be verified.
      * @return true - if the name is valid.<br>
-     *          false - if the name is invalid. 
-     * @exception IllegalNameException Thrown if the verifying name is invalid. 
+     *          false - if the name is invalid.
+     * @exception IllegalNameException Thrown if the verifying name is invalid.
      */
     public static boolean checkAttributeName(String name)
             throws IllegalNameException {
@@ -120,7 +120,7 @@ public class Utilities {
     }
 
     /** Check whether the given file exists.
-     * 
+     *
      * @param filePath Path for the file.
      * @return True, if file exists, false otherwise.
      */
@@ -148,7 +148,7 @@ public class Utilities {
 
     /**
      * Convert the document node to string.
-     * 
+     *
      * @param document Document which needs to be converted to String.
      * @return String for the given document.
      */
@@ -168,9 +168,9 @@ public class Utilities {
     }
 
     /**
-     * Extra the PTDB model id from a given Ptolemy model. 
-     * 
-     * @param model The model to be extracted the id. 
+     * Extra the PTDB model id from a given Ptolemy model.
+     *
+     * @param model The model to be extracted the id.
      * @return The id of the model in the database.  If that model hasn't been
      * stored in the database yet, return null.
      */
@@ -189,7 +189,7 @@ public class Utilities {
     }
 
     /**
-     * Create the property node string to add to a MOML with 
+     * Create the property node string to add to a MOML with
      * the class as StringConstantParameter.
      * @param propertyName Name for the property.
      * @param propertyValue Value for the property.
@@ -205,7 +205,7 @@ public class Utilities {
 
     /**
      * Get the value for the given attribute.
-     * 
+     *
      * @param currentNode Node for which attribute value needs to be determined.
      * @param attributeName Name of the attribute.
      * @return Return the value for the given attribute. Return null if
@@ -254,11 +254,11 @@ public class Utilities {
 
     /**
      * Intersect the XMLDBModels results from two list, and take the common
-     * ones and return them in a new list. 
-     * 
-     * @param previousResults The list of the first batch of models. 
-     * @param currentResults The list of the second batch of models. 
-     * @return The list of common models from both lists. 
+     * ones and return them in a new list.
+     *
+     * @param previousResults The list of the first batch of models.
+     * @param currentResults The list of the second batch of models.
+     * @return The list of common models from both lists.
      */
     public static ArrayList<XMLDBModel> intersectResults(
             ArrayList<XMLDBModel> previousResults,
@@ -298,7 +298,7 @@ public class Utilities {
      * Check if the model name exists in the given reference string.
      * @param modelName Model name to check.
      * @param referenceString Reference string to check within.
-     * @return True if the model name is present within the given reference 
+     * @return True if the model name is present within the given reference
      * string, false otherwise.
      */
     public static boolean modelReferenceExists(String modelName,
@@ -316,7 +316,7 @@ public class Utilities {
     /**
      * Parse the xml string that is passed to it and return the upper node of
      * that xml.
-     * 
+     *
      * @param xmlString The xml string that needs to be parsed
      * @return The upper node for the xml string after parsing it.
      * @exception XMLDBModelParsingException Thrown if a parser exceptions was thrown

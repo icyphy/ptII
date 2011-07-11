@@ -63,9 +63,9 @@ public class LeftRightDirector extends StaticSchedulingDirector {
     /** Constructor. A director is an Attribute.
      *  @param container The container for the director.
      *  @param name The name of the director.
-     *  @throws IllegalActionException If the container cannot contain 
+     *  @exception IllegalActionException If the container cannot contain
      *   this director.
-     *  @throws NameDuplicationException If the container already contains an
+     *  @exception NameDuplicationException If the container already contains an
      *   Attribute with this name.
      */
     public LeftRightDirector(CompositeEntity container, String name)
@@ -73,24 +73,24 @@ public class LeftRightDirector extends StaticSchedulingDirector {
         super(container, name);
         // Set the scheduler.
         setScheduler(new LeftRightScheduler(this, "LeftRightScheduler"));
-        
+
         iterations = new Parameter(this, "iterations");
         iterations.setExpression("1");
     }
-    
+
     /** Parameter specifying the number of iterations.
      *  If the value is 0 or less, then the model does not stop
      *  executing on its own.
      *  This is an int that defaults to 1.
      */
     public Parameter iterations;
-        
+
     /** Override to initialize the iteration count. */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
     }
-    
+
     /** Override to check the number of iterations. */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
@@ -101,7 +101,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
         }
         return result;
     }
-    
+
     /** Count of the number of iterations. */
     private int _iterationCount;
 
@@ -113,9 +113,9 @@ public class LeftRightDirector extends StaticSchedulingDirector {
          *  normally contained by a director.
          *  @param director The director that will use this scheduler.
          *  @param name The name of the scheduler.
-         *  @throws IllegalActionException If the director cannot use
+         *  @exception IllegalActionException If the director cannot use
          *   this scheduler.
-         *  @throws NameDuplicationException If the director already
+         *  @exception NameDuplicationException If the director already
          *   contains an Attribute with this name.
          */
         public LeftRightScheduler(LeftRightDirector director, String name)
@@ -163,7 +163,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                 // Attribute that implements the Locatable interface.
                 // Get a list of all such attributes, and use the first one
                 // (normally there will be only one).
-                List locations 
+                List locations
                         = ((Entity) o1).attributeList(Locatable.class);
                 if (locations.size() > 0) {
                     location1

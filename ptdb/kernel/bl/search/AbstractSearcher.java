@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -45,13 +45,13 @@ import ptdb.kernel.database.DBConnection;
 
 /**
  * The abstract parent class for all the concrete searcher classes.
- * 
- * <p>The entire search module is implemented in a pipe and filter chain. 
- * Each concrete searcher in the chain is a concrete class of this 
+ *
+ * <p>The entire search module is implemented in a pipe and filter chain.
+ * Each concrete searcher in the chain is a concrete class of this
  * AbstractSearcher class, and they are configured to search on different set
  * of search criteria that input by the user. </p>
- * 
- * <p>The actual combination of searchers chain is configured in 
+ *
+ * <p>The actual combination of searchers chain is configured in
  * SearchManager.</p>
  *
  * @author Alek Wang
@@ -67,17 +67,17 @@ public abstract class AbstractSearcher implements ResultHandler {
     ////                         public methods                    ////
 
     /**
-     * Handle the intermediate results that found and passed by the other 
-     * searcher. 
-     * 
+     * Handle the intermediate results that found and passed by the other
+     * searcher.
+     *
      * <p>The searcher normally passes the intermediate results to the next
      *  result handler.</p>
-     * 
-     * @param intermediateResults The intermediate results to be handled. 
+     *
+     * @param intermediateResults The intermediate results to be handled.
      * @param resultHandler The result handler that found and pass these
-     * results. 
+     * results.
      */
-    
+
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
             ResultHandler resultHandler) {
 
@@ -90,9 +90,9 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * Handle the model results passed to this class, and handle the results
-     *  according to the certain search criteria. The 
-     * search criteria is passed to the concrete searchers when they are 
-     * constructed. 
+     *  according to the certain search criteria. The
+     * search criteria is passed to the concrete searchers when they are
+     * constructed.
      *
      * @param modelResults The results to be handled in this searcher.
      * @exception DBConnectionException Thrown by the DBConnectorFactory
@@ -106,39 +106,39 @@ public abstract class AbstractSearcher implements ResultHandler {
             throws DBConnectionException, DBExecutionException {
 
 
-        // Check whether searching is canceled, and stop the search is it is 
-        // canceled. 
+        // Check whether searching is canceled, and stop the search is it is
+        // canceled.
         if (isSearchCancelled()) {
             return;
         }
-        
-        
+
+
         // Store the passed results in the previous found results field.
         _previousResults = modelResults;
-        
+
         // Sort the previous fetched results.
         if (_previousResults != null && _previousResults.size() > 0) {
             Collections.sort(_previousResults);
         }
-        
+
 
         // Check whether there is no match in the previous searchers
         // to decide to stop here or not.
         if (_noMatch()) {
             // There is no matched result found in the previous searcher,
-            // so the searching is done. 
+            // so the searching is done.
 
             wholeSearchDone();
 
         } else {
-            // Check whether the search criteria has been set, 
+            // Check whether the search criteria has been set,
             // skip the current searcher if it is not set with the
-            // search criteria. 
+            // search criteria.
             if (_isSearchCriteriaSet()) {
 
                 if (this instanceof AbstractDBSearcher) {
                     try {
-                        // Get the DB connection. 
+                        // Get the DB connection.
                         if (_dbConnection == null) {
                             _dbConnection = DBConnectorFactory
                                     .getSyncConnection(false);
@@ -146,7 +146,7 @@ public abstract class AbstractSearcher implements ResultHandler {
                             setConnection(_dbConnection);
                         }
 
-                        // Perform the actual searcher. 
+                        // Perform the actual searcher.
                         _search();
 
                     } catch (DBExecutionException e) {
@@ -156,15 +156,15 @@ public abstract class AbstractSearcher implements ResultHandler {
                         throw e;
                     }
 
-                    // Only when the searcher is not the first searcher and it 
+                    // Only when the searcher is not the first searcher and it
                     // needs intersect the results that it gets with the passed
                     // results from the previous searchers, the results found
-                    // from the current searcher needs to intersect with the 
+                    // from the current searcher needs to intersect with the
                     // results passed by the previous searchers.
 
                     if ((!_isFirstSearcher()) && _isIntersectNeeded()) {
 
-                        // FIXME to delete later 
+                        // FIXME to delete later
                         //                    if (!(this instanceof HierarchyFetcher)
                         //                            && !(this instanceof AttributeSearcher)) {
                         if (_isSearchCriteriaSet()) {
@@ -185,14 +185,14 @@ public abstract class AbstractSearcher implements ResultHandler {
 
                 } else {
                     // For the searcher that does not require the DB
-                    // connection, just execute the _search method. 
+                    // connection, just execute the _search method.
                     _search();
 
                 }
 
             } else {
-                // Since the search criteria is not set for this searcher, just 
-                // pass this searcher and mark it passed. 
+                // Since the search criteria is not set for this searcher, just
+                // pass this searcher and mark it passed.
                 _pass();
 
                 // Just pass the results to the next result handler.
@@ -201,7 +201,7 @@ public abstract class AbstractSearcher implements ResultHandler {
             }
 
             // If there is no following searcher, just finish the searching.
-            // FIXME to delete later 
+            // FIXME to delete later
             //            if ((_nextResultHandler instanceof SearchResultBuffer)
             //                    && _previousSearcher.isPassed()) {
 
@@ -230,12 +230,12 @@ public abstract class AbstractSearcher implements ResultHandler {
     }
 
     /**
-     * Check with this searcher has been passed the searching. Some of the 
-     * searcher may require multiple rounds of searching in a loop, and the 
-     * partial results will be passed to the next result handler during the 
+     * Check with this searcher has been passed the searching. Some of the
+     * searcher may require multiple rounds of searching in a loop, and the
+     * partial results will be passed to the next result handler during the
      * execution loop.  This method indicates whether the current searcher has
-     * finished the entire searching that it wants to do. 
-     * 
+     * finished the entire searching that it wants to do.
+     *
      * @return true - if the searching has passed in this searcher.<br>
      *          false - if the searching has not passed in this searcher.
      */
@@ -245,20 +245,20 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * Mark this searcher as it does not need to intersect the results it find
-     * with the results passed by other searchers. 
+     * with the results passed by other searchers.
      */
     public void noIntersect() {
         _needIntersect = false;
     }
 
     /**
-     * In the case of getting some models that cannot be parsed or contains 
-     * some error, use this method to pass these error models to store for 
-     * error handling. 
-     * 
-     * @param errorModels The error models. 
+     * In the case of getting some models that cannot be parsed or contains
+     * some error, use this method to pass these error models to store for
+     * error handling.
+     *
+     * @param errorModels The error models.
      */
-    
+
     public void passErrorModels(List<XMLDBModel> errorModels) {
         if (_nextResultHandler != null) {
             _nextResultHandler.passErrorModels(errorModels);
@@ -267,28 +267,28 @@ public abstract class AbstractSearcher implements ResultHandler {
     }
 
     /**
-     * Set the DB connection for this searcher.  
-     * 
-     * @param connection The DBConnection instance to be set in this searcher. 
+     * Set the DB connection for this searcher.
+     *
+     * @param connection The DBConnection instance to be set in this searcher.
      */
     public void setConnection(DBConnection connection) {
         _dbConnection = connection;
 
-        // Pass the DB connection to the following searchers. 
+        // Pass the DB connection to the following searchers.
         if (_nextResultHandler != null) {
             _nextResultHandler.setConnection(connection);
         }
     }
 
     /**
-     * Mark this searcher as the first searcher in the chain. 
+     * Mark this searcher as the first searcher in the chain.
      */
     public void setFirstSearcher() {
         _isFirstSearcher = true;
     }
 
     /**
-     * Mark this searcher as the last searcher in the chain. 
+     * Mark this searcher as the last searcher in the chain.
      */
     public void setLastSearcher() {
         _isLastSearcher = true;
@@ -316,12 +316,12 @@ public abstract class AbstractSearcher implements ResultHandler {
     }
 
     /**
-     * Notify the search result buffer that the searching is done. The whole 
+     * Notify the search result buffer that the searching is done. The whole
      * search means all the system's entire search process for a given complete
-     * search criteria. 
-     * 
-     * @exception DBConnectionException Thrown from the database layer if the 
-     *  database connection cannot be obtained. 
+     * search criteria.
+     *
+     * @exception DBConnectionException Thrown from the database layer if the
+     *  database connection cannot be obtained.
      */
     public void wholeSearchDone() throws DBConnectionException {
 
@@ -337,9 +337,9 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * In case of getting model result with error or cannot be parsed, use this
-     * method to add the error model to the stored error models list. 
-     * 
-     * @param errorModel The error model to be added to the list. 
+     * method to add the error model to the stored error models list.
+     *
+     * @param errorModel The error model to be added to the list.
      */
     protected void _addErrorModel(XMLDBModel errorModel) {
         if (_errorModels == null) {
@@ -350,44 +350,44 @@ public abstract class AbstractSearcher implements ResultHandler {
     }
 
     /**
-     * Check whether this searcher is the first searcher in the chain. 
-     * 
+     * Check whether this searcher is the first searcher in the chain.
+     *
      * @return true - this searcher is the first searcher in the chain.<br>
-     *          false - this searcher is not the first searcher in the chain. 
+     *          false - this searcher is not the first searcher in the chain.
      */
     protected boolean _isFirstSearcher() {
         return _isFirstSearcher;
     }
-    
+
     /**
      * Check whether this searcher is independent to exist without other
      *   searchers.
-     *   
+     *
      * @return true - this searcher is independent.<br>
-     *          false - this searcher is not independent. 
+     *          false - this searcher is not independent.
      */
     protected boolean _isIndependent() {
         return _isIndependent;
     }
 
     /**
-     * Check with this searcher needs to intersect the results that it finds 
-     * with the passed results from the other searchers. 
-     * 
+     * Check with this searcher needs to intersect the results that it finds
+     * with the passed results from the other searchers.
+     *
      * @return true - this searcher needs to intersect the results with other
      * searchers.<br>
-     *          false - this searcher does not need to intersect the results 
-     *          with other searchers. 
+     *          false - this searcher does not need to intersect the results
+     *          with other searchers.
      */
     protected boolean _isIntersectNeeded() {
         return _needIntersect;
     }
 
     /**
-     * Check whether this searcher is the last searcher in the chain. 
-     * 
+     * Check whether this searcher is the last searcher in the chain.
+     *
      * @return true - this searcher is the last searcher in the chain.<br>
-     *          false - this searcher is not the last searcher in the chain. 
+     *          false - this searcher is not the last searcher in the chain.
      */
     protected boolean _isLastSeacher() {
         return _isLastSearcher;
@@ -404,7 +404,7 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * Mark the search is done in this searcher.
-     * 
+     *
      * @see #isPassed()
      */
     protected void _pass() {
@@ -414,8 +414,8 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * Perform the actual search.
-     * 
-     * @exception DBExecutionException Thrown from the database layer if 
+     *
+     * @exception DBExecutionException Thrown from the database layer if
      * there is error occurring during the search.
      * @exception DBConnectionException Thrown by the DBConnectorFactory
      *           if getting the DBConnection from it, which
@@ -433,19 +433,19 @@ public abstract class AbstractSearcher implements ResultHandler {
     protected ArrayList<XMLDBModel> _currentResults;
 
     /**
-     * Connection to the xml database. 
+     * Connection to the xml database.
      */
     protected DBConnection _dbConnection;
 
     /**
-     * The models contains error or cannot be parsed. 
+     * The models contains error or cannot be parsed.
      */
     protected List<XMLDBModel> _errorModels;
-    
+
     /**
      * Indicate whether the searcher existing depends on the existing of other
-     * searchers. For example, the HierarchyFecther needs to be configured with 
-     * other dependent searcher, otherwise it is useless.  
+     * searchers. For example, the HierarchyFecther needs to be configured with
+     * other dependent searcher, otherwise it is useless.
      */
     protected boolean _isIndependent = true;
 
@@ -470,7 +470,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      *          false - this searcher is not done.
      */
     private boolean _noMatch() {
-        
+
         if (_previousSearcher == null) {
             // This is the first searcher.
             return false;
@@ -488,7 +488,7 @@ public abstract class AbstractSearcher implements ResultHandler {
 
             } else {
                 // If this is the last searcher and not an independent searcher,
-                // the search is done. 
+                // the search is done.
                 if (_isLastSeacher() && !_isIndependent()) {
                     return true;
                 }
@@ -507,34 +507,34 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * Whether searcher is the first searcher in the chain, and it default to
-     * be not the first searcher. 
+     * be not the first searcher.
      */
     private boolean _isFirstSearcher = false;
 
     /**
-     * Indicate whether this searcher is the last searcher in the chain, and it 
-     * default is the not the last searcher in the chain. 
+     * Indicate whether this searcher is the last searcher in the chain, and it
+     * default is the not the last searcher in the chain.
      */
     private boolean _isLastSearcher = false;
 
     /**
      * Indicate whether this searcher needs to intersect its results set with
-     * results found in other searchers. The default value is that every 
-     * searcher will need to intersect results with other searchers. 
-     * 
+     * results found in other searchers. The default value is that every
+     * searcher will need to intersect results with other searchers.
+     *
      * @see #_isIntersectNeeded()
      */
     private boolean _needIntersect = true;
 
     /**
-     * Indicate whether the search in this searcher has been passed. 
-     * 
+     * Indicate whether the search in this searcher has been passed.
+     *
      * @see #isPassed()
      */
     private boolean _passed = false;
 
     /**
-     * The previous searcher that is configured in the chain of this searcher. 
+     * The previous searcher that is configured in the chain of this searcher.
      */
     private AbstractSearcher _previousSearcher;
 

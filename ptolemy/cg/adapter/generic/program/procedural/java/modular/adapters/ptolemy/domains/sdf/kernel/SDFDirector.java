@@ -222,7 +222,7 @@ public class SDFDirector
                         }
                     }
 
-                    if(actor.inputPortList().size() > 0)
+                    if (actor.inputPortList().size() > 0)
                         code.append(actorName + ".fire(false, ");
                     else
                         code.append(actorName + ".fire(");
@@ -606,7 +606,7 @@ public class SDFDirector
 
     /**
      * Return an unique label for the given port channel referenced
-     * by the given adapter. By default, this delegates to the adapter to 
+     * by the given adapter. By default, this delegates to the adapter to
      * generate the reference. Subclass may override this method
      * to generate the desire label according to the given parameters.
      * @param port The given port.
@@ -614,11 +614,11 @@ public class SDFDirector
      * @param forComposite Whether the given adapter is associated with
      *  a CompositeActor
      * @param isWrite The type of the reference. True if this is
-     *  a write reference; otherwise, this is a read reference.  
+     *  a write reference; otherwise, this is a read reference.
      * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      * @return an unique reference label for the given port channel.
      * @exception IllegalActionException If the adapter throws it while
-     *  generating the label.     
+     *  generating the label.
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,

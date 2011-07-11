@@ -1042,7 +1042,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         }
 
         /** Set the value at a particular row and column.
-         * @param value The value to be set.    
+         * @param value The value to be set.
          * @param row The row.
          * @param col The column.
          * @see javax.swing.table.TableModel#setValueAt(Object, int, int)

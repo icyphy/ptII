@@ -296,7 +296,7 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.SOUTH_EAST:
                 return piOver4 * 1;
             case SwingConstants.EAST:
-            default:    
+            default:
                 return 0.0;
             }
 

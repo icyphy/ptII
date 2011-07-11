@@ -68,14 +68,14 @@ public class GrayScale extends SharedBufferTransformer{
            throws IllegalActionException, NameDuplicationException {
        super(container, name);
        input.setTypeEquals(BaseType.OBJECT);
-       output.setTypeEquals(BaseType.OBJECT);  
+       output.setTypeEquals(BaseType.OBJECT);
    }
 
    ///////////////////////////////////////////////////////////////////
    ////                         protected methods                 ////
 
    /** Output an OpenCV Object.
-    *  @exception IllegalActionException If thrown while writing to the port.   
+    *  @exception IllegalActionException If thrown while writing to the port.
     */
    protected void _fireCopying() throws IllegalActionException {
        if (input.hasToken(0)) {
@@ -95,7 +95,7 @@ public class GrayScale extends SharedBufferTransformer{
            newImg.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);
            // restore mode to RGB
            openCV.convert(OpenCV.RGB);
-           OpenCVImageObject noio = new OpenCVImageObject(openCV, newImg); 
+           OpenCVImageObject noio = new OpenCVImageObject(openCV, newImg);
            output.send(0, new ObjectToken(noio));
        }
    }
@@ -115,7 +115,7 @@ public class GrayScale extends SharedBufferTransformer{
            openCV.copy(oio.img, 0, 0, oio.img.width, oio.img.height, 0,0, oio.img.width, oio.img.height);
            openCV.convert(OpenCV.GRAY);
            PImage buf = openCV.image(OpenCV.BUFFER);
-           oio.img.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);           
+           oio.img.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);
            // restore mode to RGB
            openCV.convert(OpenCV.RGB);
            output.send(0, new ObjectToken(oio));

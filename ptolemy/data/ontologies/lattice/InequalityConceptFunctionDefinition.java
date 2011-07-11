@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Settable;
 //// MultiplyConceptFunctionDefinition
 
 /** Concept function definition attribute specifically for inequality or equality comparisons.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1

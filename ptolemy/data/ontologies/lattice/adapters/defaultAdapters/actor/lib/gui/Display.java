@@ -34,7 +34,7 @@ import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Display
 
 /** The default adapter class for ptolemy.actor.lib.gui.Display. This adapter
@@ -63,20 +63,20 @@ public class Display extends LatticeOntologyAdapter {
             throws IllegalActionException {
         super(solver, actor, false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
-    
+    ////                         protected methods                 ////
+
     /** Return the list of property-able Attributes by calling the super
      *  class method. For the Display actor, remove the title attribute since
-     *  by default they should not be evaluated by the ontology solver. 
+     *  by default they should not be evaluated by the ontology solver.
      *  @return The list of property-able Attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         ptolemy.actor.lib.gui.Display displayActor =
             (ptolemy.actor.lib.gui.Display) getComponent();
-        result.remove(displayActor.title);        
-        return result;        
+        result.remove(displayActor.title);
+        return result;
     }
 }

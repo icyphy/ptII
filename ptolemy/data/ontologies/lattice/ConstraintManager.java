@@ -39,7 +39,7 @@ import ptolemy.util.MultiHashMap;
 /**
  * A class that collects and manages all the inequality constraints for
  * an OntologySolver.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 8.0

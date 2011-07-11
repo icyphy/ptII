@@ -99,7 +99,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
@@ -156,7 +156,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
-        
+
         code.append(_generateActorFireCode());
 
         CodeStream codestream = _templateParser.getCodeStream();
@@ -181,7 +181,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  this method. Note, since the inside EmbeddedCodeActor could _ONLY_ have a
      *  PTIDES director if the outside director is also a PTIDES director, we are
      *  sure the outside receiver much also have a PTIDES receiver.
-     *   
+     *
      *  @param inputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
@@ -190,16 +190,16 @@ public class PtidesPreemptiveEDFDirector extends Director {
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
                 "Transfer tokens to the inside")));
-        
+
         // FIXME: Transfer token to inside actually only needs to run once...
         code.append(CodeStream.indent(getCodeGenerator().comment(
         "FIXME: Transfer tokens to the inside actually only needs to run once, because" +
         "we are only setting one pointer to equal another.")));
         for (int i = 0; i < inputPort.getWidth(); i++) {
-            String sourcePortString = "Event_Head_" + getAdapter(inputPort).getName() + "[" + 
+            String sourcePortString = "Event_Head_" + getAdapter(inputPort).getName() + "[" +
                     Integer.toString(i) + "]";
             for (IOPort sinkPort : (List<IOPort>)inputPort.deepInsidePortList()) {
-                String sinkPortString = "Event_Head_" + getAdapter(sinkPort).getName() + "[" + 
+                String sinkPortString = "Event_Head_" + getAdapter(sinkPort).getName() + "[" +
                 Integer.toString(i) + "]";
                 code.append(sinkPortString + " = " + sourcePortString + ";" + _eol);
             }
@@ -219,7 +219,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  that is connected to another output port, then the PtidesBasicReceiver would
      *  ensure a new event is created destined to the next actor on the outside, thus
      *  this method does not need to generate any code.
-     *  
+     *
      *  @param outputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
@@ -241,15 +241,15 @@ public class PtidesPreemptiveEDFDirector extends Director {
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
-     *  Since we are using Events as holders for data values, we want to overwrite 
+     *  Since we are using Events as holders for data values, we want to overwrite
      *  the method in Director to generate nothing. However, in case any of the actors
      *  are composite actors, we actually want to generate variable declaration for those
      *  actors. This is because the inside composite actors do not know data is stored
      *  within Events. Instead, it only has a reference to the input port. Thus, we need
      *  to generate a memory address for the input port to allow transfer of data first
      *  from the Events to these memory locations, and then from these memory locations
-     *  to inside of the composite actors.  
-     *  
+     *  to inside of the composite actors.
+     *
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
@@ -289,7 +289,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return sharedCode;
         }
-        
+
         _modelStaticAnalysis();
 
         _templateParser.getCodeStream().clear();
@@ -378,7 +378,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
     }
 
     /** Generate actor function prototypes.
-     *  @return actor function prototype methos for each entity.   
+     *  @return actor function prototype methos for each entity.
      */
     protected String _generateActorFuncProtoCode() {
         StringBuffer code = new StringBuffer();
@@ -563,7 +563,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
     /** This code reset the Event_Head pointer for each channel to null.
      * @param actor The actor which the input channels reside, whose pointers are pointed to null
      * @return The code that clears the event head.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     private String _generateClearEventHeadCode(Actor actor)
             throws IllegalActionException {

@@ -68,7 +68,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  are set for this adapter.
      *  @param solver The given solver.
      *  @param actor The given ActomicActor.
-     *  @throws IllegalActionException Thrown if super class throws it.
+     *  @exception IllegalActionException Thrown if super class throws it.
      */
     public LatticeOntologyModalFSMAdapter(LatticeOntologySolver solver,
             FSMActor actor) throws IllegalActionException {
@@ -78,13 +78,13 @@ public class LatticeOntologyModalFSMAdapter extends
     /** Return the list of constraints for this FSM.  They are a list of
      *  inequalities on the transition actions for each state in the FSM.
      *  @return A list of Inequality.
-     *  @throws IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         // FIMXE: cannot call super here, because LatticeOntologyCompositeAdapter
         // recursively calls constraintList() of its contained components.
         // super.constraintList();
-        
+
         HashMap<NamedObj, List<ASTPtRootNode>> outputActionMap = new HashMap<NamedObj, List<ASTPtRootNode>>();
         HashMap<NamedObj, List<ASTPtRootNode>> setActionMap = new HashMap<NamedObj, List<ASTPtRootNode>>();
         FSMActor actor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
@@ -211,7 +211,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  attributes contained in the outgoing transitions from the states
      *  in the FSM.
      *  @return The list of parse trees.
-     *  @throws IllegalActionException Thrown if there is a problem getting
+     *  @exception IllegalActionException Thrown if there is a problem getting
      *   the parse tree root nodes.
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees()
@@ -239,7 +239,7 @@ public class LatticeOntologyModalFSMAdapter extends
         Iterator states = actor.entityList(State.class).iterator();
         while (states.hasNext()) {
             State state = (State) states.next();
-            
+
             Iterator transitions = state.outgoingPort.linkedRelationList()
                     .iterator();
             while (transitions.hasNext()) {
@@ -255,7 +255,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  returns the list of ASTNode adapters that are associated
      *  with the expressions of the propertyable attributes.
      *  @return The list of sub-adapters.
-     *  @throws IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {

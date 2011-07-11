@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -43,34 +43,34 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * JUnit test for integration testing of the Load feature.
- * 
+ *
  * <p> This test starts at the interface between the GUI layer and the business
  * layer. In this case the interface is LoadManagerInterface class. This should
  * be a pure full test with no mocked methods or classes. </p>
- * 
- * 
+ *
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestLoadRequirementsIntegration
 
 public class TestLoadRequirementsIntegration {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 
     /**
-     * Test the loadModel() method in LoadManagerInterface class. 
-     * <p> Conditions for this test: 
+     * Test the loadModel() method in LoadManagerInterface class.
+     * <p> Conditions for this test:
      * <br>- The model is in the database and does not have
      * references in it. </p>
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
      */
@@ -81,10 +81,10 @@ public class TestLoadRequirementsIntegration {
 
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
-        
+
         PtolemyEffigy effigy = null;
 
         effigy = LoadManager.loadModel(inputString, configuration);
@@ -102,11 +102,11 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel() method in LoadManagerInterface class. 
-     * <p> Conditions for this test: 
+     * Test the loadModel() method in LoadManagerInterface class.
+     * <p> Conditions for this test:
      * <br>- The model is in the database and has references in
      * it. </p>
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
      */
@@ -117,10 +117,10 @@ public class TestLoadRequirementsIntegration {
 
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
-        
+
         PtolemyEffigy effigy = null;
 
         effigy = LoadManager.loadModel(inputString, configuration);
@@ -136,10 +136,10 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel() method in LoadManagerInterface class. 
-     * <p> Conditions for this test: 
+     * Test the loadModel() method in LoadManagerInterface class.
+     * <p> Conditions for this test:
      * <br>- The model is not in the database. </p>
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
      */
@@ -148,7 +148,7 @@ public class TestLoadRequirementsIntegration {
         String inputString = "not in database";
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
         try {
@@ -160,10 +160,10 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel() method in LoadManagerInterface class. 
-     * <p> Conditions for this test: 
+     * Test the loadModel() method in LoadManagerInterface class.
+     * <p> Conditions for this test:
      * <br>- The name of the model is null. </p>
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
      */
@@ -172,7 +172,7 @@ public class TestLoadRequirementsIntegration {
         String inputString = null;
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
         try {
@@ -185,10 +185,10 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel() method in LoadManagerInterface class. 
-     * <p> Conditions for this test: 
+     * Test the loadModel() method in LoadManagerInterface class.
+     * <p> Conditions for this test:
      * <br>- The name of the model is empty. </p>
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
      */
@@ -197,7 +197,7 @@ public class TestLoadRequirementsIntegration {
         String inputString = "";
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
-        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+        ModelDirectory modelDirectory = new ModelDirectory(configuration,
                 "directory");
         modelDirectory.setContainer(configuration);
         try {

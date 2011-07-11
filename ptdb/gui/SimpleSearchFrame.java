@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -83,14 +83,14 @@ import diva.gui.GUIUtilities;
 
 /**
  * An extended JFrame used for performing a simple database search based on
- * the model name and attributes. 
- * 
+ * the model name and attributes.
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
- * 
+ *
  */
 
 public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
@@ -98,17 +98,17 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     /**
      * Construct a SimpleSearchFrame. Add swing Components to the frame. Add
      * listeners for the "Search" and "Cancel" buttons.
-     * 
-     * @param model 
+     *
+     * @param model
      *      The model into which search results would be imported.
-     * @param frame 
+     * @param frame
      *      The editing frame from which the simple search window will
      *      open.
      * @param configuration
      *      The configuration under which models from the database will
-     *      be loaded. 
-     * @param tableau The tableau of the window that opens this frame. 
-     *      
+     *      be loaded.
+     * @param tableau The tableau of the window that opens this frame.
+     *
      */
     public SimpleSearchFrame(NamedObj model, JFrame frame,
             Configuration configuration, Tableau tableau) {
@@ -224,31 +224,31 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-            
+
             public void windowOpened(WindowEvent e) {
-                // Do nothing.    
+                // Do nothing.
             }
 
-            
+
             public void windowIconified(WindowEvent e) {
-                // Do nothing.    
+                // Do nothing.
             }
 
-            
+
             public void windowDeiconified(WindowEvent e) {
-                // Do nothing.    
+                // Do nothing.
             }
 
-            
+
             public void windowDeactivated(WindowEvent e) {
-                // Do nothing.    
+                // Do nothing.
             }
 
-            
+
             public void windowClosing(WindowEvent e) {
-                
+
                 closeFrame();
-                
+
 //                if (_patternMatchframe != null) {
 //                    _patternMatchframe.dispose();
 //                }
@@ -256,11 +256,11 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 //                dispose();
             }
 
-            
+
             public void windowClosed(WindowEvent e) {
-                
+
                 closeFrame();
-//                
+//
 //                if (_patternMatchframe != null) {
 //                    _patternMatchframe.dispose();
 //                }
@@ -268,30 +268,30 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 //                dispose();
             }
 
-            
+
             public void windowActivated(WindowEvent e) {
-                // Do nothing.    
+                // Do nothing.
             }
         });
 
-        // Add the action listener to model name text field. 
+        // Add the action listener to model name text field.
         _attributesListPanel.getNameTextField().addKeyListener(
                 new KeyListener() {
 
-                    
+
                     public void keyTyped(KeyEvent e) {
-                        // Do nothing. 
+                        // Do nothing.
                     }
 
-                    
+
                     public void keyReleased(KeyEvent e) {
                         // Do nothing.
                     }
 
-                    
+
                     public void keyPressed(KeyEvent e) {
 
-                        /* 
+                        /*
                          * If the enter button is pressed, perform the search
                          *  action.
                          */
@@ -316,21 +316,21 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  public methods                           ////
+    ////                         public methods                    ////
 
     /**
-     * Perform the action of clicking the search button on this frame. 
-     * 
-     * @param event The ActionEvent for this click. 
+     * Perform the action of clicking the search button on this frame.
+     *
+     * @param event The ActionEvent for this click.
      */
     public void clickSearchButton(ActionEvent event) {
         _searchButton.doClick();
     }
 
     /**
-     * Close this frame. 
+     * Close this frame.
      */
-    
+
     public void closeFrame() {
 
         _ptdbContainedFramesManager.closeContainedFrames();
@@ -343,9 +343,9 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
      *
      * @return
      *         An indication if the panel has been modified.
-     * 
+     *
      * @see #setModified(boolean)
-     * 
+     *
      */
     public boolean isModified() {
 
@@ -359,11 +359,11 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     }
 
     /** Set the panel to modified or unmodified.
-     * 
+     *
      * @param modified True to set to modified.  False to set to unmodified.
-     * 
+     *
      * @see #isModified
-     * 
+     *
      */
     public void setModified(boolean modified) {
 
@@ -375,9 +375,9 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected methods                        //// 
+    ////                         protected methods                 ////
 
-    /** 
+    /**
      * Add menus to the menu bar.
      */
     protected void _addMenus() {
@@ -405,7 +405,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    /** 
+    /**
      * Exit the window.  If the search criteria was changed, give the user
      * an opportunity to save it.
      */
@@ -434,7 +434,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    /** 
+    /**
      * Establish all event listeners.
      */
     protected void _initSimpleSearchFrame() {
@@ -447,7 +447,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    /** 
+    /**
      * Create new search criteria.  If the currently opened search criteria is
      * changed, give the user an opportunity to save it.
      */
@@ -490,7 +490,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    /** 
+    /**
      * Open a previously saved search criteria file.  If the currently opened
      * search criteria was changed, give the user an opportunity to save it.
      */
@@ -567,7 +567,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                     // Open the pattern model in the advanced search frame.
 
                     if (_patternMatchframe != null) {
-                        // Close the previous opened pattern search frame. 
+                        // Close the previous opened pattern search frame.
                         _patternMatchframe.dispose();
                         _patternMatchframe = null;
                     }
@@ -631,7 +631,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    /** 
+    /**
      * Save the currently opened search criteria.
      */
     protected void _save() {
@@ -687,7 +687,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    /** 
+    /**
      * Save the currently opened search criteria to a new location.
      */
     protected void _saveAs() {
@@ -821,7 +821,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected variables                      ////    
+    ////                         protected variables               ////
 
     /** The file menu for this frame. */
     protected JMenu _fileMenu;
@@ -848,17 +848,17 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     protected Action _newSearchCriteriaAction;
 
     ///////////////////////////////////////////////////////////////////
-    ////                  private methods                          ////
+    ////                         private methods                   ////
 
     /**
-     * Validate whether the entire search criteria is enough. In order to 
-     * narrow down the search, at least one of the attribute, model name, 
-     * port, or component entity search criteria needs to be set in the 
+     * Validate whether the entire search criteria is enough. In order to
+     * narrow down the search, at least one of the attribute, model name,
+     * port, or component entity search criteria needs to be set in the
      * search criteria.
-     *  
-     * @param searchCriteria The search criteria to be check. 
+     *
+     * @param searchCriteria The search criteria to be check.
      * @return true - the search criteria input by the user is enough.<br>
-     *          false - the search criteria input by the user is not enough. 
+     *          false - the search criteria input by the user is not enough.
      */
     private boolean _isSearchCriteriaEnough(SearchCriteria searchCriteria) {
 
@@ -883,10 +883,10 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     }
 
     /**
-     * Validate whether the search criteria put in this simple search frame 
-     * is valid or not. These search criteria includes the model name and 
-     * attributes.  
-     * 
+     * Validate whether the search criteria put in this simple search frame
+     * is valid or not. These search criteria includes the model name and
+     * attributes.
+     *
      * @return true - if the search criteria are valid.<br>
      *          false - if the search criteria are invalid.
      */
@@ -903,7 +903,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
             //            return false;
 
             // As long as there is the pattern matching criteria, this situation
-            // can also be possible. 
+            // can also be possible.
             return true;
 
         }
@@ -964,7 +964,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
             IllegalActionException, MalformedStringException {
 
         _attributesListPanel.regroup();
-        
+
         final SearchCriteria searchCriteria = new SearchCriteria();
 
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
@@ -984,23 +984,23 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
             _patternMatchframe.fetchSearchCriteria(searchCriteria);
         }
 
-        // Validate whether the search criteria is enough. 
+        // Validate whether the search criteria is enough.
         if (_isSearchCriteriaEnough(searchCriteria)) {
 
             final SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
                     _containerModel, _sourceFrame, _configuration);
 
             final SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
-            
+
             _ptdbContainedFramesManager.addContainedFrame(searchResultsFrame);
 
             // Register the search result frame as the observer of the search
-            // result buffer. Once there is any update in the buffer, the 
-            // search result frame will be notified. 
+            // result buffer. Once there is any update in the buffer, the
+            // search result frame will be notified.
             searchResultBuffer.addObserver(searchResultsFrame);
 
             // Register the search result buffer as the observer of the search
-            // result frame. Once the user invokes the canceling search in the 
+            // result frame. Once the user invokes the canceling search in the
             // search result frame, the buffer will be notified and stop.
             searchResultsFrame.registerCancelObserver(searchResultBuffer);
 
@@ -1011,7 +1011,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
             new Thread(new Runnable() {
 
-                
+
                 public void run() {
                     // Call the Search Manager to trigger the search.
                     SearchManager searchManager = new SearchManager();
@@ -1048,7 +1048,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  private variables                        ////
+    ////                         private variables                 ////
 
     private AttributesListPanel _attributesListPanel;
     private Configuration _configuration;
@@ -1103,7 +1103,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                             ((ActorGraphDBTableau) _tableau).getGtLibrary(),
                             _containerModel, _sourceFrame,
                             SimpleSearchFrame.this);
-                    
+
                     _ptdbContainedFramesManager.addContainedFrame(_patternMatchframe);
 
                 } catch (Exception e2) {

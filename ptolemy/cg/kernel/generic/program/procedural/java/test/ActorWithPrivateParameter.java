@@ -60,11 +60,11 @@ public class ActorWithPrivateParameter extends Source {
     public ActorWithPrivateParameter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _myPrivateParameter = new Parameter(this, "_myPrivateParameter");        
+        _myPrivateParameter = new Parameter(this, "_myPrivateParameter");
         _myPrivateParameter.setExpression("2.0");
 
         // This is wrong, use displayName().
-        _myPrivateParameterWithADifferentName = new Parameter(this, "my Private Parameter spaces in the name");        
+        _myPrivateParameterWithADifferentName = new Parameter(this, "my Private Parameter spaces in the name");
         _myPrivateParameterWithADifferentName.setExpression("3.0");
 
         // It is wrong to set the name to be different this way, but
@@ -93,7 +93,7 @@ public class ActorWithPrivateParameter extends Source {
     }
 
     public TypedIOPort disconnectedPort;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

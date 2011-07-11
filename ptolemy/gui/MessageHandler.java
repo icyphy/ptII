@@ -62,7 +62,7 @@ public class MessageHandler {
     ////                         public methods                    ////
 
     /** Defer to the set message handler to show the specified error
-     *  message.  
+     *  message.
      *
      *  <p>Note that within Ptolemy, most user code should not call
      *  this method directly.  Instead, throw an exception, which will

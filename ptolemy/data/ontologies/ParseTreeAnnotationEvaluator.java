@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -75,7 +75,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      * Visit the assignment node when parsing a user-defined ontology annotation.
      * This is for a manual annotation that assigns a Concept to a specified
      * model component.
-     * 
+     *
      * @param node The assignment node to be visited.
      * @exception IllegalActionException If the assignment is not possible.
      */
@@ -98,20 +98,20 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  visitLeafNode method is called when parsing an Annotation for a manual constraint.
      *  Uncommented to get ontology solver to work.
      *  12/16/09 Charles Shelton
-     *  
+     *
      *  This visitLeafNode method assumes the node will refer to a component
      *  in the model and _evaluatedObject will be set to that component.
      *  If it is not, then an exception is thrown.
-     *  
+     *
      *  In the derived class ParseTreeConstraintAnnotationEvaluator for constraint
      *  annotations, the node could also refer to a Concept in the Ontology.
-     *  
+     *
      *  The derived class will override this method and catch its exception, then
      *  check to see if the node refers to a Concept rather than a model Component.
-     *  
+     *
      *  @param node The leaf node to be visited
      *  @exception IllegalActionException If the node label cannot be resolved to a
-     *  component in the model 
+     *  component in the model
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter
@@ -126,7 +126,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
 
     /**
      * Visit the method node when parsing a user-defined ontology annotation.
-     * 
+     *
      * @param node The method call node to be visited
      * @exception IllegalActionException If the method label cannot be resolved.
      */
@@ -199,7 +199,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
 
     /**
      * Return the label for the leaf node.
-     * 
+     *
      * @param node The given leaf node
      * @return The string label for the node; If the node
      * is constant this is the token contained in the node
@@ -212,10 +212,10 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
             return node.getName();
         }
     }
-    
+
     /**
      * Return an exception that describes an unsupported node type.
-     * 
+     *
      * @param name The name of the node type.
      * @return An exception that describes an unsupported node type.
      */
@@ -223,7 +223,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         return new IllegalActionException("Nodes of type " + name
                 + " cannot be visited by a " + getClass().getName() + ".");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
 
@@ -238,7 +238,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Use the specified name to find an object contained in the container.
      *  @param name The specified name.
      *  @param container The specified NamedObj container.

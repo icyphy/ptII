@@ -81,7 +81,7 @@ public class DETimer extends TypedAtomicActor {
         // though there is no lower bound on the time delay.
         _declareDelayDependency(set, expired, 0.0);
     }
-    
+
     /** Reset the timer if there is a token in port set. Otherwise send
      *  a token to port expire if the current time agrees with the time
      *  the timer is set to expire.

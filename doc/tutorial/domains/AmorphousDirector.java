@@ -56,9 +56,9 @@ public class AmorphousDirector extends Director {
     /** Constructor. A director is an Attribute.
      *  @param container The container for the director.
      *  @param name The name of the director.
-     *  @throws IllegalActionException If the container cannot
+     *  @exception IllegalActionException If the container cannot
      *   contain this director.
-     *  @throws NameDuplicationException If the container already
+     *  @exception NameDuplicationException If the container already
      *   contains an Attribute with the same name.
      */
     public AmorphousDirector(CompositeEntity container, String name)

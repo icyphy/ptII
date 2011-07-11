@@ -241,7 +241,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
         // It is time to produce an output if the current time equals
         // or exceeds the next firing time (it should never exceed).
         boolean timeForOutput = (currentTime.compareTo(_nextFiringTime) >= 0);
-        
+
         if (!timeForOutput && !triggerInputPresent) {
             // It is too early.
             return;
@@ -456,7 +456,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
 
     // The index of the next output.
     private transient int _nextOutputIndex;
-    
+
     // Indicator that an output was produced in this iteration.
     private boolean _outputProduced;
 

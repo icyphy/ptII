@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -33,7 +33,7 @@ package ptdb.kernel.bl.search;
 
 /**
  * Indicate whether a searcher is performing the searching through the XML DB
- * XQuery, or through Ptolemy existing functionality.  The classes that 
+ * XQuery, or through Ptolemy existing functionality.  The classes that
  * implement this interface will be querying the database.
  *
  * @author Alek Wang

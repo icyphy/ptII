@@ -25,7 +25,7 @@
 ***************************************************************
 
  PetriNet Director Modifications
- 
+
  Copyright (c) 2010 The University of Florida
 
  All rights reserved.
@@ -47,7 +47,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
  */
@@ -81,18 +81,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PetriNetDirector
 
 /**
- * This implementation of a PetriNet Director is an extension of the PetriNet 
- * Director created by Wang and Lee located in the experimental domain.  This 
- * director supports an iteration count that can be used to stop execution, 
- * even if transitions are ready to fire.  The director also supports a 
- * PetriNetDisplay actor that prints token counts of all the Places (at each 
- * iteration) after execution is finished.  The documentation for the original 
+ * This implementation of a PetriNet Director is an extension of the PetriNet
+ * Director created by Wang and Lee located in the experimental domain.  This
+ * director supports an iteration count that can be used to stop execution,
+ * even if transitions are ready to fire.  The director also supports a
+ * PetriNetDisplay actor that prints token counts of all the Places (at each
+ * iteration) after execution is finished.  The documentation for the original
  * Wang and Lee director is provided below and includes a definition of PetriNet.
- * 
+ *
  * <p>
  * This domain implements the basic Petri Net model where Places and Transitions
  * form a bipartite graph and enabled Transitions can fire randomly. It also
@@ -106,7 +106,7 @@ import ptolemy.kernel.util.Workspace;
  * Places and Transitions are visible to the director of the container of the
  * PetriNetActor. The users can choose which form of models to use, and/or mix
  * them together.
- * 
+ *
  * <p>
  * The basic Petri net is a directed, weighted, bipartite graph consisting of
  * two kinds of nodes, called <i>Places</i> and <i>Transitions</i>, where arcs
@@ -117,17 +117,17 @@ import ptolemy.kernel.util.Workspace;
  * Place and a Transition. A <i>marking</i> assigns to each Place <i>p</i> an
  * nonnegative integer <i>k</i>, we say that <i>p</i> is <i>marked with k
  * tokens</i>.
- * 
+ *
  * <p>
  * Please note here the term <i>token</i> is used differently from the general
  * Ptolemy term <i>token</i>. Here a <i>token</i> is really the integer 1.
  * <i>k tokens</i> is represented by the integer <i>k</i>.
- * 
+ *
  * <p>
  * A Transition <i>t</i> is said to be <i>enabled</i> if each input Place <i>p</i>
  * of <i>t</i> is marked with at least the sum of <i>w(p, t)</i> tokens, where
  * <i>w(p, t)</i> are the weights of the arcs from <i>p</i> to <i>t</i>.
- * 
+ *
  * <p>
  * An enabled Transition may or may not fire. When there are multiple enabled
  * Transitions, any of them can fire randomly. A firing of an enabled Transition
@@ -135,19 +135,19 @@ import ptolemy.kernel.util.Workspace;
  * <i>t</i>, and adds <i>w(t, p)</i> tokens to each output Place <i>p</i> of
  * <i>t</i>, where <i>w(t, p) and w(p, t) </i> are the weights of the arcs from
  * and to the Transition respectively.
- * 
+ *
  * <p>
  * A Transition without any input Place is called a <i>source Transition</i>,
  * and one without any output Place is called a <i>sink Transition</i>. Note
  * that a source Transition is unconditionally enabled, and that the firing of a
  * sink Transition consumes tokens, but does not produce any.
- * 
+ *
  * <p>
  * Many variations of Petri net exist in the literature including: hierarchical
  * Petri nets, colored Petri nets, timed Petri nets, fuzzy Petri nets,
  * stochastic Petri nets, compositional Petri nets, and many of the
  * combinations.
- * 
+ *
  * <p>
  * As pointed out earlier, in Ptolemy we implement the basic Petri net model
  * plus two kinds of hierarchical and compositional Petri nets. This is made
@@ -160,7 +160,7 @@ import ptolemy.kernel.util.Workspace;
  * markings. The default marking is 0. A Place is implemented by the atomic
  * actor Place. A PetriNetActor is a TypedCompositeActor contains Places,
  * Transitions and/or PetriNetActors.
- * 
+ *
  * <p>
  * Each node of <i>V</i> is called a <i>component</i> of the PetriNetActor
  * <i>G</i>. Therefore the vertex set <i>V</i> of <i>G</i> is also called the
@@ -173,7 +173,7 @@ import ptolemy.kernel.util.Workspace;
  * Transition or it is a PetriNetActor component that contains other
  * Transitions. When the firing method _fireHierarchicalPetriNetOnce() fires, it
  * chooses one component to fire.
- * 
+ *
  * <p>
  * The definition of PetriNetActor defines one form of hierarchical and
  * compositional Petri nets. It defines a hierarchical Petri net since the
@@ -181,7 +181,7 @@ import ptolemy.kernel.util.Workspace;
  * components. It defines a compositional Petri net since two PetriNetActors
  * <i>PA_1 and PA_2 </i> of <i>V</i> can be connected through their ports to
  * form a bigger Petri net <i>G</i>.
- * 
+ *
  * <p>
  * The second form of Hierarchical and compositional Petri net comes from the
  * fact that a Transition can be any TypedCompositeActor in Ptolemy domains,
@@ -189,7 +189,7 @@ import ptolemy.kernel.util.Workspace;
  * invisible to the director of the container of the Transition. Therefore it is
  * possible to have a Transition contains other Places and Transitions and has a
  * PetriNetDirector as the local director for the Transition.
- * 
+ *
  * <p>
  * The <i>set of Transitions</i> of the PetriNetActor <i>G</i>, or the
  * Transition set of <i>G</i>, is defined to be the union of the Transitions
@@ -200,7 +200,7 @@ import ptolemy.kernel.util.Workspace;
  * <i>PA_i</i>. Therefore a Transition is a different concept from a Component
  * in PetriNetActor graph. The method findTransitions() returns the Transition
  * set of <i>G</i>.
- * 
+ *
  * <p>
  * A component has ports through which connections to other components are made.
  * A Place or a Transition each has one input port and one output port, where
@@ -211,7 +211,7 @@ import ptolemy.kernel.util.Workspace;
  * to Transitions <i>t_i</i>, or to ports of PetriNetActor components <i>PA_i</i>.
  * A Transition <i>t_i</i> can be connected to Places <i>p_i</i> or to ports
  * of PetriNetActor components <i>PA_i</i>.
- * 
+ *
  * <p>
  * One restriction is that a port of a PetriNetActor component <i>PA_i</i> is
  * either connected to Places or to Transitions, but not both. Another
@@ -219,13 +219,13 @@ import ptolemy.kernel.util.Workspace;
  * another Place (Transition) through ports. Though no verification of these two
  * conditions is checked, any violation of these two conditions will be reported
  * by appropriate methods during the execution.
- * 
+ *
  * <p>
  * Multiple arcs can exist between any two components. The arcs can be marked by
  * an nonnegative integer as their weights. Weight 1 can be omitted. The method
  * _getWeightNumber(arc) obtains the weight assigned to the arc. If no weight is
  * assigned, the default weight is 1.
- * 
+ *
  * <p>
  * For a Transition <i>t</i>, all Places <i>p</i> that can reach <i>t</i>
  * through ports or without ports are the input Places of <i>t</i>. All Places
@@ -233,14 +233,14 @@ import ptolemy.kernel.util.Workspace;
  * output Places of <i>t</i>. Given a Transition <i>t</i>, the methods
  * _findBackwardConnectedPlaces() and _findForwardConnectedPlaces() find the
  * input and output Places of the Transition respectively.
- * 
+ *
  * <p>
  * A Transition <i>t</i> is enabled or ready in the PetriNetActor if for each
  * input Place <i>p</i> of <i>t</i>, the marking of <i>p</i> is bigger than
  * the sum of the weights of all arcs connecting <i>p</i> to <i>t</i>. The
  * method isTransitionReady(transition) tests whether the given Transition is
  * enabled/ready or not.
- * 
+ *
  * <p>
  * If a Transition <i>t</i> is enabled and <i>t</i> is contained in a
  * PetriNetActor component <i>PA_i</i>, then the PetriNetActor component
@@ -249,7 +249,7 @@ import ptolemy.kernel.util.Workspace;
  * then the PetriNetActor component <i>PA_i</i> is enabled. The method
  * PetriNetActor.prefire() tests whether there is any enabled Transitions
  * contained in the PetriNetActor component.
- * 
+ *
  * <p>
  * An enabled Transition may or may not fire. For the given PetriNetActor <i>G</i>,
  * all its enabled components including Transitions <i>t_i</i> and
@@ -258,7 +258,7 @@ import ptolemy.kernel.util.Workspace;
  * of <i>t_i</i> and <i>PA_i</i>, each component has <i>1/n</i> probability
  * to be chosen to fire. The method _fireHierarchicalPetriNetOnce() chooses one
  * component from the list to fire.
- * 
+ *
  * <p>
  * If an enabled Transition is chosen to fire, the method fireTransition() is
  * called to fire the Transition and update the input and output Places of the
@@ -268,38 +268,38 @@ import ptolemy.kernel.util.Workspace;
  * connecting the Place to the Transition. For each output Place, the marking
  * will be increased by the weight of each arc connecting the Transition to the
  * Place.
- * 
+ *
  * <p>
  * If a PetriNetActor component <i>PA_i</i> is chosen to fire, the director
  * then recursively repeats the same procedure for <i>PA_i</i> as for the top
  * level PetriNetActor <i>G</i>.
- * 
+ *
  * <p>
  * Finally, the firing of the hierarchical Petri net is continued until there is
  * no more Transitions and components to fire, or it goes to infinite loop.
  * Currently no action is taken for infinite loops.
- * 
+ *
  * <p>
  * Other form of firing sequence can be defined as well. We could randomly fire
  * all the deeply contained Transitions. We could randomly fire the components
  * in each hierarchy.
- * 
+ *
  * [1] T. Murata, "Petri nets: properties, analysis and applications",
  * Proceedings of the IEEE, VOl. 77, NO. 4, April 1989, pp. 541-579. [2] J. L.
  * Peterson, "Petri Net Theory and the modeling of systems", Prentice Hall,
  * 1981.
- * 
+ *
  * @author Yuke Wang, Edward A. Lee and modified by Zach Ezzell
  * @version $Id$
  * @since Ptolemy II 8.1
- *  
+ *
  */
 
 public class PetriNetDirector extends Director {
 
     /**
      * Construct a new Petri net director.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -318,13 +318,13 @@ public class PetriNetDirector extends Director {
         _initParameters();
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                      ////
+    ////                         public variables                  ////
 
     /**
-     * This parameter represents the maximum number of times the PetriNet 
-     * should fire.  
+     * This parameter represents the maximum number of times the PetriNet
+     * should fire.
      */
     Parameter iterations;
 
@@ -338,8 +338,8 @@ public class PetriNetDirector extends Director {
     public SharedParameter resetOnEachRun;
 
     /** The seed that controls the random number generator that
-     *  determines which component is fired.    
-     * 
+     *  determines which component is fired.
+     *
      *  <p>This is a shared parameter, meaning that all instances of
      *  PetriNetDirector or derived classes in the same model share the
      *  same value.  This parameter is used for testing so that a
@@ -365,8 +365,8 @@ public class PetriNetDirector extends Director {
     public SharedParameter seed;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                     ////
-    
+    ////                         public methods                    ////
+
     /** If the attribute is <i>seed</i>
      *  then create the base random number generator.
      *  @param attribute The attribute that changed.
@@ -415,7 +415,7 @@ public class PetriNetDirector extends Director {
      * PetriNetActor, or its PetriNetActor components. This method
      * searches for Transitions recursively for each PetriNetActor
      * component.
-     * 
+     *
      * @param container
      *            The container where the Transitions are contained.
      * @return the list of Transitions contained by the container.
@@ -447,7 +447,7 @@ public class PetriNetDirector extends Director {
      * _fireHierarchicalPetriNetOnce() to find all enabled components
      * if there is any, to choose which enabled component to fire, and
      * to update markings of related Places when a component fires.
-     * 
+     *
      * <p>A description of the firing is sent to any actors that implement
      * the {@link PetriNetDisplayer} interface.  If this director has a debug
      * listener, then the description is also sent to those listeners.</p>
@@ -547,7 +547,7 @@ public class PetriNetDirector extends Director {
             }
         }
     }
-    
+
     /**
      * Fire an enabled Transition.
 
@@ -560,7 +560,7 @@ public class PetriNetDirector extends Director {
      * output Places are found by the methods
      * _findForwardConnectedPlaces() and
      * _findBackwardConnectedPlaces() respectively.</p>
-     * 
+     *
      * @param transition
      *            The transition to be fired.
      * @exception IllegalActionException
@@ -602,7 +602,7 @@ public class PetriNetDirector extends Director {
                             }
                         } else if (weightPlace instanceof Place) {
                             // Don't do anything for Place
-                        } 
+                        }
                     }
                 }
                 int weightNumber = _getWeightNumber(weights);
@@ -677,7 +677,7 @@ public class PetriNetDirector extends Director {
         }
     }
 
-    
+
     /**
      * Test whether a given Transition is enabled or not.
 
@@ -687,7 +687,7 @@ public class PetriNetDirector extends Director {
      * is any TypedCompositeActor. The Transition can be a component
      * of a PetriNetActor, or it is contained in some PetriNetActor
      * component.</p>
-     * 
+     *
      * <p>This is one of the key methods for hierarchical Petri Nets. It
      * is equivalent to the prefire() method for a Transition. The
      * method first finds all the input Places of the Transition by
@@ -701,7 +701,7 @@ public class PetriNetDirector extends Director {
      * fire. The reason that we use a temporaryMarking here is to keep
      * the initialMarking of the places unchanged when we test a
      * Transition is ready or not.</p>
-     * 
+     *
      * @param transition
      *            Transition to be tested to be enabled or not.
      * @return true or false The tested transition is ready to fire or not.
@@ -768,8 +768,8 @@ public class PetriNetDirector extends Director {
         return readyToFire;
     }
 
-    
-    /**This method preinitializes the actors associated with this 
+
+    /**This method preinitializes the actors associated with this
      * director.
      *
      * @exception IllegalActionException
@@ -810,7 +810,7 @@ public class PetriNetDirector extends Director {
      * for another iteration. FIXME: This is provisional since there is
      * currently no way to stop the execution of a Petri net model, so we just
      * run once.
-     * 
+     *
      * @return False.
      * @exception IllegalActionException
      *                Not thrown in this base class.
@@ -820,21 +820,21 @@ public class PetriNetDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
-    
+    ////                         private methods                   ////
+
     /**
-     * This method is a helper method that adds a marking count to the 
+     * This method is a helper method that adds a marking count to the
      * output StringBuffer.
-     * 
+     *
      * @param original
-     *         The StringBuffer to add the marking count to.    
-     * @param marking 
+     *         The StringBuffer to add the marking count to.
+     * @param marking
      *          The marking count to add to the String.
      * @param index
      *          The index into the placeNames array of the place corresponding
      *          to the marker count;
      * @param placeNames
-     *          The array of place names.     
+     *          The array of place names.
      */
     private void _addMarkingToDescription(StringBuffer original, int marking,
             int index, String[] placeNames) {
@@ -850,13 +850,13 @@ public class PetriNetDirector extends Director {
             original.append(" ");
         }
     }
-    
+
 //    /**
 //     * This method is a helper method that adds white space to a string
-//     * 
+//     *
 //     * @param amount
 //     *            The amount of white space to add to the output string.
-//     *            
+//     *
 //     * @return Return the new output string with white space added.
 //     */
 //    private String _createWhiteSpace(int amount) {
@@ -866,7 +866,7 @@ public class PetriNetDirector extends Director {
 //        }
 //        return output;
 //    }
-//    
+//
     /** Create the random number generator using current parameter values.
      *  @exception IllegalActionException If thrown while reading the
      *  seed Token.
@@ -891,7 +891,7 @@ public class PetriNetDirector extends Director {
      * transitions, and ports. Each arc can have an attribute "weight", or
      * without such attribute. The default is assumed to be weight 1. This
      * default weight can be changed into other weight if necessary.
-     * 
+     *
      * @param weights
      *            An arc in the PetriNetActor.
      * @return The weight associated with the relation, default is 1.
@@ -917,14 +917,14 @@ public class PetriNetDirector extends Director {
             return 0;
         }
     }
-    
+
     /**
      * For each relation, this method finds all the affected Places in the
      * backward direction, i.e., the input Places. Those Places determine
      * whether a Transition is ready to fire or not. If ready, the firing
      * Transition has to update the tokens in all these Places. The algorithm
      * used in this method is the breadth first search of the graph.
-     * 
+     *
      * @param weight
      *            The arc connecting transition input to ports or Places.
      * @return List The Places control the transition at the end of the weight
@@ -970,7 +970,7 @@ public class PetriNetDirector extends Director {
      * and finds each of the Place connected to the relation. This allows
      * duplicated copies of the same Place.It unites all the connected Places to
      * each relation.
-     * 
+     *
      * @param transition
      *            A Transition of concern.
      * @return List Returns all the backward connected Places to the transition.
@@ -991,16 +991,16 @@ public class PetriNetDirector extends Director {
         }
         return temporaryPlaceList;
     }
-    
+
     /**
      * This method finds the forward connected Places or output Places for a
      * given relation. This is equivalent to find all Places reachable for this
      * relation. This method is needed when we update the tokens in Places
      * connected to a firing Transition.
-     * 
+     *
      * We can not use the method deeplyConnectedPortList() due to the
      * duplication of ports in the list.
-     * 
+     *
      * @param weight
      *            The arc connecting transition output to ports or Places.
      * @return List The output Places needed to be updated if the transition
@@ -1040,7 +1040,7 @@ public class PetriNetDirector extends Director {
         }
         return temporaryPlaceList;
     }
-    
+
     /**
      * Test whether a PetriNetActor can be fired or not, and
      * fires the PetriNetActor once if it can be fired. The method
@@ -1051,7 +1051,7 @@ public class PetriNetDirector extends Director {
      * component; otherwise the chosen component must be a Transition
      * represented by any TypedCompositeActor, and this method calls
      * the method fireTransition() to fire the Transition.
-     * 
+     *
      * @param container
      *            The container of the hierarchical Petri net.
      * @return true or false The PetriNetActor container can be fired or not.
@@ -1086,14 +1086,14 @@ public class PetriNetDirector extends Director {
             return false;
         }
     }
-    
+
     /**
      * Initialize the Director parameters.
-     * 
+     *
      * @exception IllegalActionException
      *              If setting the type or expression of the iterations
      *              parameter throws an exception.
-     *       
+     *
      * @exception NameDuplicationException
      *              If the parameter name for iterations already exists.
      */
@@ -1111,7 +1111,7 @@ public class PetriNetDirector extends Director {
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
 
     }
-    
+
     /**
      * Return all the enabled components in a container.
      *
@@ -1121,7 +1121,7 @@ public class PetriNetDirector extends Director {
      * PetriNetActor is an enabled component if it contains an enabled
      * Transition, which is tested by the method
      * petriNetActor.prefire().</p>
-     * 
+     *
      * @param container
      *            Test how many components are ready to fire in the container.
      * @return Return all the ready to fire components in the container.

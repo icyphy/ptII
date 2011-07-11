@@ -52,10 +52,10 @@ import ptolemy.kernel.util.Workspace;
  * An abstract base class for SequenceDirector and ProcessDirector.
  *
  * <p>The SequencedModelDirector
- * <br>- Computes the sequenced actors and passes these in two lists to the 
+ * <br>- Computes the sequenced actors and passes these in two lists to the
  * SequenceScheduler (one list for independent sequenced actors, and one list
  * for sequenced actors that are dependent on other actors e.g. control actors)
- * 
+ *
  * @author Elizabeth Latronico (Bosch), rrs1pal
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -145,7 +145,7 @@ public abstract class SequencedModelDirector extends Director {
      *  is a boolean true.
      */
     public Parameter defaultOutputInitialValue;
-    
+
     /** If true, fire any unexecuted actors that were not fired during
      *  the sequence schedule.
      */
@@ -172,9 +172,9 @@ public abstract class SequencedModelDirector extends Director {
      *  StaticSchedulingDirector?  But, the complete schedule is not statically computable
      *  if control actors are present
      *  FIXME:  I am not sure if this works correctly in all situations...
-     *  
+     *
      *  Clone is needed in the director to clone the scheduler
-     * 
+     *
      *  Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -199,7 +199,7 @@ public abstract class SequencedModelDirector extends Director {
         return newObject;
     }
 
-    /** 
+    /**
      *  Return the scheduler that is responsible for scheduling the
      *  directed actors.  This method is read-synchronized on the
      *  workspace.
@@ -249,7 +249,7 @@ public abstract class SequencedModelDirector extends Director {
      *  connected directly to output ports have initial production,
      *  then copy that initial production to the outside of the
      *  composite actor.
-     *  
+     *
      *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
@@ -259,7 +259,7 @@ public abstract class SequencedModelDirector extends Director {
         _iterationCount = 0;
 
         // Note:  Dependent actors with sequence numbers are also initialized
-        // This is since, even though they are dependent, perhaps they are part of 
+        // This is since, even though they are dependent, perhaps they are part of
         // a loop or something
 
         for (SequenceAttribute attribute : _sequencedList) {
@@ -273,20 +273,20 @@ public abstract class SequencedModelDirector extends Director {
         }
     }
 
-    /** Set the initial values for output ports. 
-     * 
+    /** Set the initial values for output ports.
+     *
      * FIXME:  There are problems with the current way some of these settings are defined in the
      * director.  We discussed a solution but did not have time to implement it yet.
      * Check the open item list for comments about this.
-     * 
-     * Actors with SequenceAttributes/ProcessAttributes are required to have initial values 
+     *
+     * Actors with SequenceAttributes/ProcessAttributes are required to have initial values
      * defined for the output ports.  This is to ensure that if another actor is executed
-     * first which consumes data from a sequenced actor that is fired later in the schedule, 
+     * first which consumes data from a sequenced actor that is fired later in the schedule,
      * then a value will be available for the first actor to use.
-     * 
+     *
      * @param actorEntity The entity
      * @exception IllegalActionException If thrown while getting the width of a port or
-     * getting the value of a parameter. 
+     * getting the value of a parameter.
      */
     public void setOutputInitialValues(Entity actorEntity)
             throws IllegalActionException {
@@ -386,7 +386,7 @@ public abstract class SequencedModelDirector extends Director {
 
     /** Fire is overridden in subclasses
      *  This class does not call super.fire()
-     *  
+     *
      *  Iterating an actor involves calling the actor's iterate() method,
      *  which is equivalent to calling the actor's prefire(), fire() and
      *  postfire() methods in succession.  If iterate() returns NOT_READY,
@@ -404,11 +404,11 @@ public abstract class SequencedModelDirector extends Director {
      */
 
     /** Preinitialize will be added to in subclasses
-     * 
+     *
      *  Preinitialize the actors associated with this director and
      *  compute the schedule.  The schedule is computed during
      *  preinitialization so that hierarchical opaque composite actors
-     *  can be scheduled properly.  In addition, performing scheduling 
+     *  can be scheduled properly.  In addition, performing scheduling
      *  during preinitialization enables it to be present during code generation.
      *  The order in which the actors are preinitialized is arbitrary.
      *  @exception IllegalActionException If the preinitialize() method of
@@ -416,7 +416,7 @@ public abstract class SequencedModelDirector extends Director {
      */
 
     // FIXME: Also support this??
-    //     public void preinitialize(List<SequenceAttribute> _independentList) throws IllegalActionException { 
+    //     public void preinitialize(List<SequenceAttribute> _independentList) throws IllegalActionException {
 
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -447,14 +447,14 @@ public abstract class SequencedModelDirector extends Director {
         // Check for unreachable actors in each list
     }
 
-    /** The SequencedModelDirector adds all actors with sequence numbers to the 
-     *  _sequencedList, regardless of whether or not the actors have a 
+    /** The SequencedModelDirector adds all actors with sequence numbers to the
+     *  _sequencedList, regardless of whether or not the actors have a
      *  process attribute.
      *  In some models, actors with sequence numbers, but without process
-     *  attributes, are in fact dependent actors.  
+     *  attributes, are in fact dependent actors.
      *  The scheduler will later need to ascertain which actors are dependent
-     *  on control actors, and remove them from the _independentList. 
-     * 
+     *  on control actors, and remove them from the _independentList.
+     *
      * @param compositeActor The composite actor to be searched for entities.
      * @exception IllegalActionException If thrown while checking the attribute type.
      */
@@ -473,7 +473,7 @@ public abstract class SequencedModelDirector extends Director {
         List<Entity> compositeActorList = (List<Entity>)compositeActor.allCompositeEntityList();
         boolean isTransparentCompositeActor = false;
         //Check for attribute types of transparent composite Actor
-        for (Entity actorEntity : compositeActorList) { 
+        for (Entity actorEntity : compositeActorList) {
             if ( !((CompositeEntity)actorEntity).isOpaque() ) {
                 sequenceAttributes = actorEntity.attributeList(SequenceAttribute.class);
                 processAttributes = actorEntity.attributeList(ProcessAttribute.class);
@@ -481,7 +481,7 @@ public abstract class SequencedModelDirector extends Director {
                 checkAttributeType(actorEntity, sequenceAttributes, processAttributes,isTransparentCompositeActor);
             }
 
-        } 
+        }
         */
 
         //Check for attribute types of Opaque composite Actor and non-composite Actors and create a list of all the actors in model
@@ -511,7 +511,7 @@ public abstract class SequencedModelDirector extends Director {
                     // Beth - added check for no director in current entity
                     // FIXME:  Throw an exception if there is no director in opaque
                     // composite entity
-                    // FIXME:  Treat process attributes and sequence attributes separately in 
+                    // FIXME:  Treat process attributes and sequence attributes separately in
                     // the future?  How to sort models where only some things have a
                     // process attribute and some just have sequence attributes?
                     // FIXME:  Sequence director should not know about process attributes?
@@ -533,7 +533,7 @@ public abstract class SequencedModelDirector extends Director {
                     }
 
                     // FIXME: Now in checkAttributeType, BUT, ProcessDirector should require
-                    // ProcessAttributes on actors.  This should go in the ProcessDirector. 
+                    // ProcessAttributes on actors.  This should go in the ProcessDirector.
                     // Possibly, refactor all checking code into a separate function
 
                     /*
@@ -575,7 +575,7 @@ public abstract class SequencedModelDirector extends Director {
      * @param sequenceAttributes The list of sequence attributes to be checked.
      * @param processAttributes The list of process attributes to be checked
      * @exception IllegalActionException If sequenceAttributes has a length greater than one
-     * or if actor is not an instance of ControlActor. 
+     * or if actor is not an instance of ControlActor.
      */
     public void checkAttributeType(Actor actor, List sequenceAttributes,
             List processAttributes) throws IllegalActionException {
@@ -585,8 +585,8 @@ public abstract class SequencedModelDirector extends Director {
          *  with sequence numbers.  If there are, these sequence numbers are ignored.
         // FIXME:  Need to check for these though, since the upstream actor calculations
         // will not process something with a sequence attribute
-        
-        
+
+
         if ( isTransparentCompositeActor ) {
 
             if ( !sequenceAttributes.isEmpty() ) {
@@ -598,10 +598,10 @@ public abstract class SequencedModelDirector extends Director {
                     System.out.println("Warning: " + actorEntity.getName() +"'s Sequence Attribute will be ignored");
                 }
 
-            }                
+            }
 
-        } 
-        
+        }
+
             */
         // Note that a ProcessAttribute is also a SequenceAttribute
 
@@ -620,7 +620,7 @@ public abstract class SequencedModelDirector extends Director {
         }
 
         // Check for control actors that do not have sequence/process attributes
-        else // else, if the sequence attribute list is empty 
+        else // else, if the sequence attribute list is empty
         {
             if (actor instanceof ControlActor) {
                 throw new IllegalActionException(
@@ -632,11 +632,11 @@ public abstract class SequencedModelDirector extends Director {
 
             // Check for opaque composite actors that do not have sequence attributes
             // These must have sequence attributes in order to be handled correctly by
-            // the scheduler (since we must 'fire' the opaque composite to call the 
+            // the scheduler (since we must 'fire' the opaque composite to call the
             // director inside)
             // Beth commented out 02/04/09 - An opaque composite actor is not required to have a process
             // attribute or sequence attribute.  In many models, they do not and are scheduled
-            // as upstream.  However we still want a director inside, since the entities inside the 
+            // as upstream.  However we still want a director inside, since the entities inside the
             // composite actors should be fired locally and not scheduled globally.
 
             /*
@@ -758,26 +758,26 @@ public abstract class SequencedModelDirector extends Director {
     /** Fire the given SequenceSchedule.
      *  This is the same for the ProcessDirector and SequenceDirector
      *  (although how the schedule is determined is different)
-     *  
+     *
      *  @param seqSchedule   The SequenceSchedule to fire
      *  @exception IllegalActionException  From actor.iterate()
      */
 
     protected void fireSchedule(SequenceSchedule seqSchedule)
             throws IllegalActionException {
-        
+
         if (seqSchedule == null) {
             throw new IllegalActionException(this,
                     "Null schedule in ProcessDirector or SequenceDirector");
         }
-        
+
         // Get a firing iterator for this schedule
         Iterator firings = seqSchedule.firingIterator();
 
         while (firings.hasNext() && !_stopRequested) {
             SequenceFiring firing = (SequenceFiring) firings.next();
             Actor actor = firing.getActor();
-            
+
             // If the actor is a MultipleFireMethodsInterface, set
             // its fire method before firing it.
             if (actor instanceof MultipleFireMethodsInterface &&
@@ -815,10 +815,10 @@ public abstract class SequencedModelDirector extends Director {
     /** Initialize the object.   In this case, we give the SequencedModelDirector a
      *  default scheduler of the class SequenceScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
-     *  
-     *  @throws IllegalActionException If there is a problem instantiating
+     *
+     *  @exception IllegalActionException If there is a problem instantiating
      *   the director's parameters.
-     *  @throws NameDuplicationException If there is a problem instantiating
+     *  @exception NameDuplicationException If there is a problem instantiating
      *   the director's parameters.
      */
     protected void _init() throws IllegalActionException,
@@ -844,14 +844,14 @@ public abstract class SequencedModelDirector extends Director {
         defaultOutputInitialValue = new Parameter(this,
                 "Enable Default Output Initial Value", BooleanToken.TRUE);
         defaultOutputInitialValue.setTypeEquals(BaseType.BOOLEAN);
-        
+
         fireUnexecutedActors = new Parameter(this,
                 "fireUnexecutedActors", BooleanToken.FALSE);
         fireUnexecutedActors.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////protected methods                 ////
+    ////                         protected methods                 ////
 
     /**
      * Return the initialValueParameter Name for each of the port.
@@ -873,7 +873,7 @@ public abstract class SequencedModelDirector extends Director {
     ////package friendly variables                 ////
 
     // FIXME:  Currently disconnected graphs (or, connected graphs with unschedulable
-    // upstream actors) are not allowed.  
+    // upstream actors) are not allowed.
     // In the future they should be
     /** Cache of the value of allowDisconnectedGraphs. */
     // boolean _allowDisconnectedGraphs = false;

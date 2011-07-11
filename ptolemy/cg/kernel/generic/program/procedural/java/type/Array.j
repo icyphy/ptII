@@ -236,7 +236,7 @@ static Token Array_toString(Token thisToken, Token... ignored) {
             }
             // Arrays elements could have different types?
             if (thisToken.payload instanceof Array
-	        && ((Array)(thisToken.payload)).elements == null) {
+                && ((Array)(thisToken.payload)).elements == null) {
                     result.append("elements == null");
             } else if (thisToken.payload instanceof Array
                 && ((Array)(thisToken.payload)).elements[i] == null) {
@@ -451,7 +451,7 @@ static Token Array_zero(Token thisToken, Token... tokens) {
 
     for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
         element = Array_get(thisToken, i);
-	Array_set(result, i, $tokenFunc(element::zero()));
+        Array_set(result, i, $tokenFunc(element::zero()));
     }
     return result;
 }

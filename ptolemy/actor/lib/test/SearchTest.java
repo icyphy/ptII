@@ -35,12 +35,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * Name: SearchTest.java Purpose: The purpose of this actor is 
+ * Name: SearchTest.java Purpose: The purpose of this actor is
  * to prove that we can use it's output as input for the Loop Actor
- * 
+ *
  * input :  String "Search #Loop Number"
  * output : "No Data" or "Results Found"
- * 
+ *
  * @author Jim Amrhein/Mark Ruebens Giovannii/GSFC Greenbelt
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -54,7 +54,7 @@ public class SearchTest extends TypedAtomicActor {
      */
     public TypedIOPort search = new TypedIOPort(this, "search", true, false);
 
-    /* // Once we get this working, allow the user to change the 
+    /* // Once we get this working, allow the user to change the
     // match value.
     public TypedIOPort searchMatch = new TypedIOPort(this,
     "search Match", true, false);
@@ -108,7 +108,7 @@ public class SearchTest extends TypedAtomicActor {
     /**
      * Post fire the actor. Return false to indicate that the process has
      * finished. If it returns true, the process will continue indefinitely.
-     * 
+     *
      *@return
      */
     public boolean postfire() throws IllegalActionException {

@@ -1,4 +1,4 @@
-/* Record an initial token and then output that initial token during initialize(), then pass through.  
+/* Record an initial token and then output that initial token during initialize(), then pass through.
 
  @Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * 
+ *
  * Record an initial token and then output that initial token during
  * initialize(), then pass through.
  *
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * sample delay actor, but with the added feature that it records the
  * initial value passed into it and will send that value out as the
  * initial value on the next run.</p>
- * 
+ *
  * <p>Frequently, sample delays are placed as dependency loop-breakers
  * so that a model can run, but their default value of {0} is
  * undesirable. This is commonly fixed by examining the first value
@@ -50,11 +50,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  * starting value to this value; or recording that value in a
  * parameter within the same container as the sample delay and setting
  * the sample delay's starting value to reference the parameter.</p>
- * 
+ *
  * <p>The Bootstrap sample delay internalizes the above solutions and
  * furthermore needs no additional manual upkeep should starting
  * values change.
- * 
+ *
  * @author Jason Smith, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -75,7 +75,7 @@ public class BootstrapSampleDelay extends SampleDelay{
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-	
+
 
     /** During the first iteration, read exactly one input token, update
      *  the initialOutputs for a future run and send the token to the output.
@@ -93,7 +93,7 @@ public class BootstrapSampleDelay extends SampleDelay{
             super.fire();
         }
     }
-	
+
     /**
      * Reset the state for the next run.
      * @exception IllegalActionException If thrown by a base class.
@@ -104,7 +104,7 @@ public class BootstrapSampleDelay extends SampleDelay{
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////    
+    ////                         private variables                 ////
 
     private boolean once = true;
 }

@@ -29,14 +29,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.common.exception;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DBModelNotFoundException
 
 
 /**
- * 
+ *
  * Exception class that is thrown if the model is not found in the database.
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -65,7 +65,7 @@ public class DBModelNotFoundException extends Exception {
         super(errorMessage, cause);
         this._cause = cause;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

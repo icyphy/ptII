@@ -691,12 +691,12 @@ public class TableauFrame extends Top {
         }
         return result;
     }
-    
-    
+
+
     /** Dispose of this frame.
-     *	
+     *
      *  <p>Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
+     *  this model from getting garbage collected.  This method invokes the
      *  dispose() method of the superclass,
      *  {@link ptolemy.gui.Top}.
      */
@@ -708,14 +708,14 @@ public class TableauFrame extends Top {
         // Deal with view menu action listeners
         /*int c =*/ MemoryCleaner.removeActionListeners(_viewMenu);
         //System.out.println("_viewMenu: "+c);
-        
+
         // Deal with new menu action listeners
         //int i = 0;
         for (AbstractButton newMenuButton : _newMenuItems) {
             /*c =*/ MemoryCleaner.removeActionListeners(newMenuButton);
             //System.out.println("newMenuButton["+(i++)+"]: "+c);
         }
-        
+
         // The size attribute is holding a reference to this frame
         // with an attached listener.  Free the reference so this
         // frame can be garbage collected.  Also, null the reference
@@ -724,11 +724,11 @@ public class TableauFrame extends Top {
             _tableau.size.setSize(null);
             setTableau(null);
         }
-        
+
         if (_placeable != null) {
             _placeable = null;
         }
-        
+
         super.dispose();
     }
 
@@ -1083,20 +1083,20 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs(String extension) {
-    	URL result = _saveAsHelper(extension);
-    	if (result == null){
-    		return false;
-    	}
-    	return true;
+            URL result = _saveAsHelper(extension);
+            if (result == null) {
+                    return false;
+            }
+            return true;
     }
-    
+
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.
      *
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
      *
-     *  @return URL of the saved file if the save succeeds, null 
+     *  @return URL of the saved file if the save succeeds, null
      *  if save fails.
      */
     protected URL _saveAsHelper(String extension) {
@@ -1214,7 +1214,7 @@ public class TableauFrame extends Top {
 
         return true;
     }
-        
+
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.  This method
      *  uses java.awt.FileDialog and is usually used under Mac OS X.
@@ -1222,7 +1222,7 @@ public class TableauFrame extends Top {
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
      *
-     *  @return URL of the saved file if the save succeeds, null 
+     *  @return URL of the saved file if the save succeeds, null
      *  if save fails.
      */
     private URL _saveAsHelperFileDialog(String extension) {
@@ -1262,7 +1262,7 @@ public class TableauFrame extends Top {
                 // To get selectedFile to contain colons, try Save As, then, in the
                 // "Save As" entry widget, replace just the filename (the text after
                 // the last slash) with new text.  For example, If I do Save As and
-                // the entry widget says "/Users/cxh/ptII/foo", then change it 
+                // the entry widget says "/Users/cxh/ptII/foo", then change it
                 // to say "/Users/cxh/ptII/bar".
                 file = new File(selectedFile.replace(':','/'));
             } else {
@@ -1311,7 +1311,7 @@ public class TableauFrame extends Top {
                         effigy.setContainer(null);
                     }
                 }
-                    
+
                 dispose();
                 return newURL;
             } catch (Exception ex) {
@@ -1332,7 +1332,7 @@ public class TableauFrame extends Top {
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
      *
-     *  @return URL of the saved file if the save succeeds, null 
+     *  @return URL of the saved file if the save succeeds, null
      *  if save fails.
      */
     private URL _saveAsHelperJFileChooser(String extension) {
@@ -1394,7 +1394,7 @@ public class TableauFrame extends Top {
                             effigy.setContainer(null);
                         }
                     }
-                    
+
                     dispose();
 
                     return newURL;
@@ -1431,7 +1431,7 @@ public class TableauFrame extends Top {
 
     /** Set in pack() if an alternate topPack is used. */
     protected TopPack _topPack = null;
-    
+
     /** A vector to keep track of ActionListeners on menu items. */
     private Vector<AbstractButton> _newMenuItems;
 
@@ -1456,21 +1456,21 @@ public class TableauFrame extends Top {
         }
         public void actionPerformed(ActionEvent event) {
             Effigy effigy = null;
-    
+
             try {
                 effigy = _factory.createEffigy(_directory);
             } catch (Exception ex) {
                 MessageHandler.error(
                         "Could not create new effigy", ex);
             }
-    
+
             _configuration.createPrimaryTableau(effigy);
         }
         private EffigyFactory _factory;
         private ModelDirectory _directory;
         private Configuration _configuration;
     }
-    
+
     /** File filter that filters out files that do not have one of a
      *  pre-specified list of extensions.
      *  Note that as of Java 1.6, there is a FileNameExtensionFilter which

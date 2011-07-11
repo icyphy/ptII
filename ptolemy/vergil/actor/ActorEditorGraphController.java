@@ -379,7 +379,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         _classDefinitionController.addHotKeys(getFrame().getJGraph());
 
         try {
-            
+
             StringParameter actorInteractionAddon;
             actorInteractionAddon = (StringParameter) this.getConfiguration()
                 .getAttribute("_actorInteractionAddon", Parameter.class);
@@ -412,24 +412,24 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         if (_config != null) {
 
             try {
-                
+
                 StringParameter actorInteractionAddonParameter;
                 actorInteractionAddonParameter = (StringParameter) _config
                     .getAttribute("_actorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
-                    String actorInteractionAddonClassName = 
+                    String actorInteractionAddonClassName =
                         actorInteractionAddonParameter.stringValue();
                     Class actorInteractionAddonClass = Class
                         .forName(actorInteractionAddonClassName);
-                    
+
                     ActorInteractionAddon actorInteractionAddon =
                         (ActorInteractionAddon) actorInteractionAddonClass
                         .newInstance();
 
-                    _addonActorController = 
+                    _addonActorController =
                         actorInteractionAddon.getControllerInstance(this);
-                    
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -758,7 +758,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
- 
+
     ///////////////////////////////////////////////////////////////////
     //// ListenToActorFactory
     private class ListenToActorFactory implements MenuItemFactory {

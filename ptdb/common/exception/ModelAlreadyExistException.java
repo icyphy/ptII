@@ -21,17 +21,17 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptdb.common.exception;
 
 /**
- * Exception class for thrown when creating a model that already exist in the 
+ * Exception class for thrown when creating a model that already exist in the
  * database.
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -40,7 +40,7 @@ package ptdb.common.exception;
  *
  */
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelAlreadyExistException
 
 
@@ -64,7 +64,7 @@ public class ModelAlreadyExistException extends Exception {
         super(errorMessage, cause);
         this._cause = cause;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

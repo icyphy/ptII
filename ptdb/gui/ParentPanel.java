@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -192,19 +192,19 @@ public class ParentPanel extends JPanel {
             PtolemyEffigy effigy = LoadManager.loadModel(
                     _parentModelName, _configuration);
 
-            if(effigy != null){
-                
+            if (effigy != null) {
+
                 effigy.showTableaux();
-                
+
             } else {
-                
+
                 JOptionPane
                 .showMessageDialog((Component) this,
                         "The specified model could " +
                         "not be found in the database.",
                         "Load Error",
                         JOptionPane.INFORMATION_MESSAGE, null);
-                
+
             }
 
         } catch (Exception e) {

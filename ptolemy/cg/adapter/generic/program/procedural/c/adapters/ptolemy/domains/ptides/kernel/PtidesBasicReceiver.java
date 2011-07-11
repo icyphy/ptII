@@ -100,7 +100,7 @@ public class PtidesBasicReceiver
                 + "] != NULL";
     }
 
-    /** 
+    /**
      * Generate code for putting tokens into the receiver.
      * @param sourcePort The port for which to generate the send code.
      * @param offset The offset in the array representation of the port.
@@ -113,7 +113,7 @@ public class PtidesBasicReceiver
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
-        
+
         if (sinkPort.isOutput()) {
             StringBuffer code = new StringBuffer();
             // This should only occur if the we have an actor governed

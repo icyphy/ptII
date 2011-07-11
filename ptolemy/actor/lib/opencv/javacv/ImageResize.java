@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Resize image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -73,11 +73,11 @@ public class ImageResize extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
-        widthParam = new Parameter(this, "Width", new IntToken(160)); 
-        heightParam = new Parameter(this, "Height", new IntToken(120)); 
+
+        widthParam = new Parameter(this, "Width", new IntToken(160));
+        heightParam = new Parameter(this, "Height", new IntToken(120));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -90,7 +90,7 @@ public class ImageResize extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         int width = ((IntToken) (widthParam.getToken())).intValue();
@@ -106,15 +106,15 @@ public class ImageResize extends Transformer {
                         + inputObject.getClass());
             }
             _frame = (IplImage)inputObject;
-            
-            if(_resizedFrame == null){
+
+            if (_resizedFrame == null) {
                 _resizedFrame = cvCreateImage(size.byValue(), _frame.depth, _frame.nChannels);
-            }else if( _resizedFrame.width != width || _resizedFrame.height != height){
+            }else if (_resizedFrame.width != width || _resizedFrame.height != height) {
                 cvReleaseImage(_resizedFrame.pointerByReference());
-                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth, _frame.nChannels);                
+                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth, _frame.nChannels);
             }
             cvResize(_frame, _resizedFrame, CV_INTER_CUBIC);
-    
+
             output.send(0, new ObjectToken(_resizedFrame));
         }
     }
@@ -132,7 +132,7 @@ public class ImageResize extends Transformer {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         // FIXME If releasing when the following actor using this frame, it causes fatal error.
-//        if(_copyFrame != null){
+//        if (_copyFrame != null) {
 //            _copyFrame.release();
 //        }
     }
@@ -140,5 +140,5 @@ public class ImageResize extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _frame;
-    private IplImage _resizedFrame; 
+    private IplImage _resizedFrame;
 }

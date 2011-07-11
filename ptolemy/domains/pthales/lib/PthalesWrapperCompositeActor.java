@@ -1,4 +1,4 @@
-/* A wrapper for dynamic Pthales domain to interface to be used inside 
+/* A wrapper for dynamic Pthales domain to interface to be used inside
  other domains like PN.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 /**
 A composite actor that wraps Pthales domain to interface to external domains like PN.
 A PthalesCompositeActor can contain actors from different model (as SDF),
-but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
+but the port must be a PthalesIOPort, because of the ArrayOL parameters.
 
 @author Dai Bui
 @see ptolemy.actor.TypedIOPort
@@ -58,7 +58,7 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
      *  executive director before attempting to send data to the actor or
      *  to execute it. Increment the version number of the workspace.
      */
-    
+
     public PthalesWrapperCompositeActor() {
         super();
         setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
@@ -73,7 +73,7 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
      */
-    
+
     public PthalesWrapperCompositeActor(Workspace workspace) {
         super(workspace);
         setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
@@ -95,7 +95,7 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    
+
     public PthalesWrapperCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

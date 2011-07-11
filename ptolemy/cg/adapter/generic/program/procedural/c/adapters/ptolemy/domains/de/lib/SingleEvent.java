@@ -56,7 +56,7 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
     public SingleEvent(ptolemy.domains.de.lib.SingleEvent actor) {
         super(actor);
     }
-    
+
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -78,9 +78,9 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
             value = ((DoubleToken) valueToken).doubleValue();
         } else {
             throw new IllegalActionException("Token type at single " +
-            		"event not supported yet.");
+                            "event not supported yet.");
         }
-        
+
         int intPart = (int) doubleTime;
         int fracPart = (int) ((doubleTime - intPart) * 1000000000.0);
         args.add(Integer.toString(intPart));

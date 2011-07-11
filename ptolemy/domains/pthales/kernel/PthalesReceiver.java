@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A receiver for the Pthales model of computation.
- * 
+ *
  * @author R&eacute;mi Barr&egrave;re
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -228,7 +228,7 @@ public class PthalesReceiver extends SDFReceiver {
     }
 
     /**
-     * 
+     *
      */
     public boolean isDynamic() {
         return _dynamic;
@@ -550,7 +550,7 @@ public class PthalesReceiver extends SDFReceiver {
 
     LinkedHashMap<String, Integer[]> _tilingOut;
 
-    // Variables for all cases 
+    // Variables for all cases
     LinkedHashMap<String, Integer> _jumpAddr = new LinkedHashMap<String, Integer>();
 
     int _nbTokens;
@@ -578,7 +578,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  previously read array value. If the second argument is false, then
      *  we want the index for the next place to write a new token into the
      *  array.
-     * 
+     *
      *  Here, "position" means the following. After this receiver is reset(),
      *  there will be a sequence of calls to get() to obtain tokens and/or
      *  to put() to insert tokens into the array. Position <i>n</i> means
@@ -614,7 +614,7 @@ public class PthalesReceiver extends SDFReceiver {
         String[] patternOrder = null;
         patternOrder = new String[pattern.size()];
         pattern.keySet().toArray(patternOrder);
-        // tiling order 
+        // tiling order
         String[] tilingOrder = new String[tiling.size()];
         tiling.keySet().toArray(tilingOrder);
 

@@ -26,7 +26,7 @@ typedef struct {
 
 typedef struct event {
     union {
-        int int_Value; 
+        int int_Value;
         double double_Value;
         long long_Value;
         char char_Value;
@@ -112,9 +112,9 @@ static Time ZERO_TIME = {0, 0};
 // deadline, timestamp, microstep, and depth.
 int compareEvents(Event* event1, Event* event2) {
     int compare;
-	if (event1 == NULL || event2 == NULL) {
-		die("compare NULL events");
-	}
+        if (event1 == NULL || event2 == NULL) {
+                die("compare NULL events");
+        }
     compare = timeCompare(event1->deadline, event2->deadline);
     if (compare != 0) {
         return compare;
@@ -143,26 +143,26 @@ int compareEvents(Event* event1, Event* event2) {
 // Insert an event into the event queue.
 void addEvent(Event* newEvent) {
     Event* compareDeadline;
-	disableInterrupts();
-	compareDeadline = DEADLINE_QUEUE_HEAD;
-	if (compareDeadline == NULL) {
-		DEADLINE_QUEUE_HEAD = newEvent;
-		DEADLINE_QUEUE_TAIL = newEvent;
-		newEvent->prevEvent = NULL;
-		newEvent->nextEvent = NULL;
-	} else {
+        disableInterrupts();
+        compareDeadline = DEADLINE_QUEUE_HEAD;
+        if (compareDeadline == NULL) {
+                DEADLINE_QUEUE_HEAD = newEvent;
+                DEADLINE_QUEUE_TAIL = newEvent;
+                newEvent->prevEvent = NULL;
+                newEvent->nextEvent = NULL;
+        } else {
         if (compareEvents(newEvent, DEADLINE_QUEUE_HEAD) <= 0) {
             newEvent->nextEvent = DEADLINE_QUEUE_HEAD;
             DEADLINE_QUEUE_HEAD->prevEvent = newEvent;
             newEvent->prevEvent = NULL;
             DEADLINE_QUEUE_HEAD = newEvent;
         } else {
-			compareDeadline = DEADLINE_QUEUE_TAIL;
+                        compareDeadline = DEADLINE_QUEUE_TAIL;
             while (compareEvents(newEvent, compareDeadline) < 0) {
-				compareDeadline = compareDeadline->prevEvent;
+                                compareDeadline = compareDeadline->prevEvent;
                 if (compareDeadline == NULL) {
                     die("FAIL!!!!");
-				}
+                                }
             }
             newEvent->prevEvent = compareDeadline;
             newEvent->nextEvent = compareDeadline->nextEvent;
@@ -173,23 +173,23 @@ void addEvent(Event* newEvent) {
                 DEADLINE_QUEUE_TAIL = newEvent;
             }
         }
-	}
+        }
     enableInterrupts();
 }
 
 // Peek the next event pointed to by thisEvent. If thisEvent is NULL,
 // return the head of the event queue.
 Event* peekNextEvent(Event* thisEvent) {
-	if (thisEvent == NULL) {
-		return DEADLINE_QUEUE_HEAD;
-	} else {
-		return thisEvent->nextEvent;
-	}
+        if (thisEvent == NULL) {
+                return DEADLINE_QUEUE_HEAD;
+        } else {
+                return thisEvent->nextEvent;
+        }
 }
 
 int sameTag(const Event* event1, const Event* event2) {
     if (timeCompare(event1->tag.timestamp, event2->tag.timestamp) == EQUAL
-    		&& event1->tag.microstep == event2->tag.microstep) {
+                    && event1->tag.microstep == event2->tag.microstep) {
         return true;
     } else {
         return false;
@@ -206,20 +206,20 @@ int sameDestination(const Event* event1, const Event* event2) {
 
 // Remove this event from event queue.
 void removeEventFromQueue(Event* event) {
-	if (event->prevEvent != NULL) {
-		event->prevEvent->nextEvent = event->nextEvent;
-	} else {
-		// Event is the head.
-		DEADLINE_QUEUE_HEAD = event->nextEvent;
-		DEADLINE_QUEUE_HEAD->prevEvent = NULL;
-	}
-	if (event->nextEvent != NULL) {
-		event->nextEvent->prevEvent = event->prevEvent;
-	} else {
-		DEADLINE_QUEUE_TAIL = event->prevEvent;
-		DEADLINE_QUEUE_TAIL->nextEvent = NULL;
-	}
-	event->nextEvent = NULL;
+        if (event->prevEvent != NULL) {
+                event->prevEvent->nextEvent = event->nextEvent;
+        } else {
+                // Event is the head.
+                DEADLINE_QUEUE_HEAD = event->nextEvent;
+                DEADLINE_QUEUE_HEAD->prevEvent = NULL;
+        }
+        if (event->nextEvent != NULL) {
+                event->nextEvent->prevEvent = event->prevEvent;
+        } else {
+                DEADLINE_QUEUE_TAIL = event->prevEvent;
+                DEADLINE_QUEUE_TAIL->nextEvent = NULL;
+        }
+        event->nextEvent = NULL;
 }
 
 // Remove this event from the event queue, as well as all other
@@ -227,21 +227,21 @@ void removeEventFromQueue(Event* event) {
 void removeAndPropagateSameTagEvents(Event* thisEvent) {
     Event* nextEvent = thisEvent->nextEvent;
     Event* lastEvent = thisEvent;
-	int count = 0;
+        int count = 0;
     propagateDataToken(thisEvent);
     removeEventFromQueue(thisEvent);
     // Now find the next event see we should process it at the same time.
     while (true) {
         if (nextEvent && sameTag(nextEvent, thisEvent) &&
-				sameDestination(nextEvent, thisEvent)) {
+                                sameDestination(nextEvent, thisEvent)) {
             propagateDataToken(nextEvent);
             removeEventFromQueue(nextEvent);
             lastEvent = nextEvent;
-		    nextEvent = nextEvent->nextEvent;
-			count++;
+                    nextEvent = nextEvent->nextEvent;
+                        count++;
         } else {
             break;
-		}
+                }
     }
     // Make this linked list semi-circular by pointing
     // the prevEvent of thisEvent to the end of the list.
@@ -251,27 +251,27 @@ void removeAndPropagateSameTagEvents(Event* thisEvent) {
 
 // Allocate a new event from the free list of events.
 Event* newEvent(void) {
-	Event* result;
-	disableInterrupts();
-	if (FREE_EVENT_LIST == NULL) {
-		die("ran out of memory");
-	}
-	result = FREE_EVENT_LIST;
-	FREE_EVENT_LIST = FREE_EVENT_LIST->nextEvent;
-	enableInterrupts();
-	return result;
+        Event* result;
+        disableInterrupts();
+        if (FREE_EVENT_LIST == NULL) {
+                die("ran out of memory");
+        }
+        result = FREE_EVENT_LIST;
+        FREE_EVENT_LIST = FREE_EVENT_LIST->nextEvent;
+        enableInterrupts();
+        return result;
 }
 
 // Deallocate this event, as well as all next events linked together using
 // the nextEvent construct to the free list of events.
 void freeEvent(Event* thisEvent) {
-	// This line of code is confusing. To understand it, refer to the last
-	// line of removeAndPropagateSameTagEvents() method. There, the prevEvent
-	// pointer of thisEvent is set to the end of the list of events removed
-	// from the event queue. We simply append this list to the head of
-	// FREE_EVENT_LIST.
-	thisEvent->prevEvent->nextEvent = FREE_EVENT_LIST;
-	FREE_EVENT_LIST = thisEvent;
+        // This line of code is confusing. To understand it, refer to the last
+        // line of removeAndPropagateSameTagEvents() method. There, the prevEvent
+        // pointer of thisEvent is set to the end of the list of events removed
+        // from the event queue. We simply append this list to the head of
+        // FREE_EVENT_LIST.
+        thisEvent->prevEvent->nextEvent = FREE_EVENT_LIST;
+        FREE_EVENT_LIST = thisEvent;
 }
 
 /* time manipulation */
@@ -293,11 +293,11 @@ int timeCompare(const Time time1, const Time time2) {
     } else if (time1.secs == time2.secs && time1.nsecs == time2.nsecs) {
         return EQUAL;
     }
-    return MORE;       
+    return MORE;
 }
 
 /* subtract two time values
- * 
+ *
  */
 int timeSub(const Time time1, const Time time2, Time* timeSub) {
     if (timeCompare(time1, time2) == -1) {
@@ -318,11 +318,11 @@ void processEvents() {
     Event* event = NULL;
     Time processTime;
     Time platformTime;
-	// Increment the process version.
-	processVersion++;
-	// Get the current platform time. This time is later used to
-	// perform safe-to-process. This function must be called
-	// before interrupts are disabled to ensure DE semantics.
+        // Increment the process version.
+        processVersion++;
+        // Get the current platform time. This time is later used to
+        // perform safe-to-process. This function must be called
+        // before interrupts are disabled to ensure DE semantics.
     getRealTime(&platformTime);
     disableInterrupts();
     while (true) {
@@ -334,7 +334,7 @@ void processEvents() {
         event = peekNextEvent(event);
         // If there are no more events in the event queue, break
         // out of the while loop.
-		if (!event) {
+                if (!event) {
             break;
         }
         // If this event's priority is higher than the last priority
@@ -361,22 +361,22 @@ void processEvents() {
                 // actor. During this process more events may
                 // be posted onto the queue
                 fireActor(event);
-				// Get the current platform time. This time is later used to
-				// perform safe-to-process. This function must be called
-				// before interrupts are disabled to ensure DE semantics.
-			    getRealTime(&platformTime);
+                                // Get the current platform time. This time is later used to
+                                // perform safe-to-process. This function must be called
+                                // before interrupts are disabled to ensure DE semantics.
+                            getRealTime(&platformTime);
                 // We are ready to look at the next event in the
                 // event queue. Before doing that interrupts need
                 // to be disabled
                 disableInterrupts();
                 // The executed event can now be freed into the
                 // pool of available events
-				freeEvent(event);
-				// This event has finished execution. The priority of
-				// this event can be forgotten. We forget by decrementing
-				// the stackedDeadlineIndex.
-				stackedDeadlineIndex--;
-				// Reset event to null so the next peekNextEvent()
+                                freeEvent(event);
+                                // This event has finished execution. The priority of
+                                // this event can be forgotten. We forget by decrementing
+                                // the stackedDeadlineIndex.
+                                stackedDeadlineIndex--;
+                                // Reset event to null so the next peekNextEvent()
                 // looks at the top event.
                 event = NULL;
             } else {
@@ -389,23 +389,23 @@ void processEvents() {
                     lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
-				// Enables higher priority events to preempt this processEvents().
-				// This is especially useful if the size of the event queue is
-				// very large, and takes a long time to traverse through.
-				enableInterrupts();
-				disableInterrupts();
-				if (localProcessVersion != processVersion) {
-					// If processEvents ran during the last interrupt enable,
-					// then we should traverse the event queue anymore.
-					// Instead we simply return.
-					break;
-				}
+                                // Enables higher priority events to preempt this processEvents().
+                                // This is especially useful if the size of the event queue is
+                                // very large, and takes a long time to traverse through.
+                                enableInterrupts();
+                                disableInterrupts();
+                                if (localProcessVersion != processVersion) {
+                                        // If processEvents ran during the last interrupt enable,
+                                        // then we should traverse the event queue anymore.
+                                        // Instead we simply return.
+                                        break;
+                                }
                 // If processEvents did not run during the last interrupt enable,
                 // then we keep analyze events in the event queue by going back
                 // to the beginning of the loop.
-	        }
+                }
         } else {
-            // This event is of lower priority than the one 
+            // This event is of lower priority than the one
             // currently executing, break out of the while loop.
             break;
         }//end while().
@@ -418,7 +418,7 @@ void processEvents() {
     } else {
         die("cannot restore model tag");
     }
-	// End of processEvents(), enable interrupts.
+        // End of processEvents(), enable interrupts.
     enableInterrupts();
     // we do not need to disable interrupts for this routine, because it
     // is triggered through a SVC call, which has higher priority than
@@ -440,7 +440,7 @@ void fireActor(Event* thisEvent) {
 
 /* Determines whether the event to fire this current actor is of higher priority than
 *  whatever even that's currently being executed.
-*/                                                                    
+*/
 unsigned int higherPriority(const Event* const event) {
     int i;
     if (stackedDeadlineIndex < 0) {
@@ -451,7 +451,7 @@ unsigned int higherPriority(const Event* const event) {
         debugMessageNumber("exDe sec=",
                 executingDeadlines[stackedDeadlineIndex].secs);
         debugMessageNumber("exDe nsec=",
-                executingDeadlines[stackedDeadlineIndex].nsecs); 
+                executingDeadlines[stackedDeadlineIndex].nsecs);
 #endif
         return false;
     } else {
@@ -501,20 +501,20 @@ void propagateDataToken(Event* currentEvent){
 void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
     Time tempTime;
 
-	if (thisEvent->offsetTime.secs < 0 || (thisEvent->offsetTime.secs == 0
-			&& thisEvent->offsetTime.nsecs < 0)) {
-		tempTime.secs = (uint32) (-thisEvent->offsetTime.secs);
-		tempTime.nsecs = (uint32) (-thisEvent->offsetTime.nsecs);
-		timeAdd(thisEvent->tag.timestamp, tempTime, safeTimestamp);
-	} else {
-		int out;
-		tempTime.secs = (uint32) (thisEvent->offsetTime.secs);
-		tempTime.nsecs = (uint32) (thisEvent->offsetTime.nsecs);
-		out = timeSub(thisEvent->tag.timestamp, tempTime, safeTimestamp);
-		if (out == -1) {
-			safeTimestamp->secs = 0;
-			safeTimestamp->nsecs = 0;
-		}
+        if (thisEvent->offsetTime.secs < 0 || (thisEvent->offsetTime.secs == 0
+                        && thisEvent->offsetTime.nsecs < 0)) {
+                tempTime.secs = (uint32) (-thisEvent->offsetTime.secs);
+                tempTime.nsecs = (uint32) (-thisEvent->offsetTime.nsecs);
+                timeAdd(thisEvent->tag.timestamp, tempTime, safeTimestamp);
+        } else {
+                int out;
+                tempTime.secs = (uint32) (thisEvent->offsetTime.secs);
+                tempTime.nsecs = (uint32) (thisEvent->offsetTime.nsecs);
+                out = timeSub(thisEvent->tag.timestamp, tempTime, safeTimestamp);
+                if (out == -1) {
+                        safeTimestamp->secs = 0;
+                        safeTimestamp->nsecs = 0;
+                }
     }
     #ifdef LCD_DEBUG
     sprintf(str, "STP=%d", safeTimestamp->secs);
@@ -546,7 +546,7 @@ void initializeMemory() {
         // event is "freed and can be returned by newEvent"
         eventMemory[i-1].nextEvent = &eventMemory[i];
     }
-	FREE_EVENT_LIST = &eventMemory[0];
+        FREE_EVENT_LIST = &eventMemory[0];
 }
 
 void initializePISystem() {
@@ -563,9 +563,9 @@ void execute() {
     Event* event = NULL;
     Time processTime;
     Time platformTime;
-	// Get the current platform time. This time is later used to
-	// perform safe-to-process. This function must be called
-	// before interrupts are disabled to ensure DE semantics.
+        // Get the current platform time. This time is later used to
+        // perform safe-to-process. This function must be called
+        // before interrupts are disabled to ensure DE semantics.
     getRealTime(&platformTime);
     disableInterrupts();
     while (true) {
@@ -577,7 +577,7 @@ void execute() {
         event = peekNextEvent(event);
         // If there are no more events in the event queue, break
         // out of the while loop.
-		if (!event) {
+                if (!event) {
             break;
         }
         // If this event's priority is higher than the last priority
@@ -604,22 +604,22 @@ void execute() {
                 // actor. During this process more events may
                 // be posted onto the queue
                 fireActor(event);
-				// Get the current platform time. This time is later used to
-				// perform safe-to-process. This function must be called
-				// before interrupts are disabled to ensure DE semantics.
-			    getRealTime(&platformTime);
+                                // Get the current platform time. This time is later used to
+                                // perform safe-to-process. This function must be called
+                                // before interrupts are disabled to ensure DE semantics.
+                            getRealTime(&platformTime);
                 // We are ready to look at the next event in the
                 // event queue. Before doing that interrupts need
                 // to be disabled
                 disableInterrupts();
                 // The executed event can now be freed into the
                 // pool of available events
-				freeEvent(event);
-				// This event has finished execution. The priority of
-				// this event can be forgotten. We forget by decrementing
-				// the stackedDeadlineIndex.
-				stackedDeadlineIndex--;
-				// Reset event to null so the next peekNextEvent()
+                                freeEvent(event);
+                                // This event has finished execution. The priority of
+                                // this event can be forgotten. We forget by decrementing
+                                // the stackedDeadlineIndex.
+                                stackedDeadlineIndex--;
+                                // Reset event to null so the next peekNextEvent()
                 // looks at the top event.
                 event = NULL;
             } else {
@@ -632,30 +632,30 @@ void execute() {
                     lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
-				// Enables higher priority events to preempt this processEvents().
-				// This is especially useful if the size of the event queue is
-				// very large, and takes a long time to traverse through.
-				enableInterrupts();
-				disableInterrupts();
-				if (localProcessVersion != processVersion) {
-					// If processEvents ran during the last interrupt enable,
-					// then we should traverse the event queue anymore.
-					// Instead we simply return.
-					break;
-				}
+                                // Enables higher priority events to preempt this processEvents().
+                                // This is especially useful if the size of the event queue is
+                                // very large, and takes a long time to traverse through.
+                                enableInterrupts();
+                                disableInterrupts();
+                                if (localProcessVersion != processVersion) {
+                                        // If processEvents ran during the last interrupt enable,
+                                        // then we should traverse the event queue anymore.
+                                        // Instead we simply return.
+                                        break;
+                                }
                 // If processEvents did not run during the last interrupt enable,
                 // then we keep analyze events in the event queue by going back
                 // to the beginning of the loop.
-	        }
+                }
         } else {
-            // This event is of lower priority than the one 
+            // This event is of lower priority than the one
             // currently executing, break out of the while loop.
             break;
         }//end while().
     }
-	// End of processEvents(), enable interrupts.
+        // End of processEvents(), enable interrupts.
     enableInterrupts();
-	// Go into an infinite loop to wait for a wakeup signal.
+        // Go into an infinite loop to wait for a wakeup signal.
     while (1);
 }
 /**/

@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -109,7 +109,7 @@ public class ClientProcess extends Thread {
 
     private final static String LS = System.getProperty("line.separator");
 
-    /** Create a ClientProcess. 
+    /** Create a ClientProcess.
      *  @param modelName name of the model, used for display only
      **/
     public ClientProcess(final String modelName) {
@@ -163,7 +163,7 @@ public class ClientProcess extends Thread {
             proSta = false;
             pb.directory(worDir);
             pb.redirectErrorStream(redErrStr);
-            // FIXME: should we call simPro.exitValue() and destroy() 
+            // FIXME: should we call simPro.exitValue() and destroy()
             simPro = pb.start();
             proSta = true;
             priStdOut = new PrintOutput(cmdArr.get(0));
@@ -201,13 +201,13 @@ public class ClientProcess extends Thread {
         return errMes;
     }
 
-    /** Causes the current thread to wait, if necessary, until the process represented 
-     * by this Process object has terminated. This method returns immediately if the 
-     * subprocess has already terminated. If the subprocess has not yet terminated, 
+    /** Causes the current thread to wait, if necessary, until the process represented
+     * by this Process object has terminated. This method returns immediately if the
+     * subprocess has already terminated. If the subprocess has not yet terminated,
      * the calling thread will be blocked until the subprocess exits.
      *
-     * @return the exit value of the process. By convention, 0 indicates normal termination. 
-     * @exception InterruptedException if the current thread is interrupted by another thread 
+     * @return the exit value of the process. By convention, 0 indicates normal termination.
+     * @exception InterruptedException if the current thread is interrupted by another thread
      *           while it is waiting, then the wait is ended and an InterruptedException is thrown.
      */
     public int waitFor() throws InterruptedException {
@@ -280,7 +280,7 @@ public class ClientProcess extends Thread {
 
     /** Y location of window that displays the console output.
      *
-     * This data member is static so that windows can be placed above each 
+     * This data member is static so that windows can be placed above each
      * other if multiple simulations are used
      */
     public static int locY = -1;
@@ -293,7 +293,7 @@ public class ClientProcess extends Thread {
     private class PrintOutput extends Thread {
 
         /** Construct an object that starts a simulation
-         *  @param programName Name of the program, used for output display only. 
+         *  @param programName Name of the program, used for output display only.
          *
          */
         public PrintOutput(final String programName) {

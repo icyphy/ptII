@@ -172,13 +172,13 @@ import ptolemy.kernel.util.Workspace;
  * latest firing is committed. The commit actions contained by the
  * transition are executed and the current state of the mode
  * controller is set to the destination state of the transition.</p>
- * 
+ *
  * <p>FIXME: If a state has multiple refinements, they are fired in the order defined.
  * If they write to the same output, then the "last one wins." It will be its value
  * produced. It might make more sense to require them to be consistent, giving something
  * closer to SR semantics. The same argument could apply when both a refinement and
  * a transition produce outputs.</p>
- * 
+ *
  * @author Xiaojun Liu, Haiyang Zheng, Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -203,7 +203,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Construct a director in the workspace with an empty name. The
      * director is added to the list of objects in the
      * workspace. Increment the version number of the workspace.
-     * 
+     *
      * @param workspace The workspace of this director.
      */
     public FSMDirector(Workspace workspace) {
@@ -217,7 +217,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * NullPointerException will be thrown. If the name argument is
      * null, then the name is set to the empty string. Increment the
      * version number of the workspace.
-     * 
+     *
      * @param container Container of this director.
      * @param name Name of this director.
      * @exception IllegalActionException If the name has a period in it, or the director
@@ -231,8 +231,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _createAttribute();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /**
      * Attribute specifying the name of the mode controller in the
@@ -243,8 +243,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      */
     public StringAttribute controllerName = null;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * React to a change in an attribute. If the changed attribute is
@@ -266,7 +266,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Clone the director into the specified workspace. This calls the
      * base class and then sets the attribute public members to refer
      * to the attributes of the new director.
-     * 
+     *
      * @param workspace The workspace for the new director.
      * @return A new director.
      * @exception CloneNotSupportedException If a derived class contains an attribute that
@@ -299,7 +299,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * and output ports. This overrides the base class so that if
      * there is an executive director, then we get the default
      * dependency from it.
-     * 
+     *
      * @see Dependency
      * @see CausalityInterface
      * @see Actor#getCausalityInterface()
@@ -321,7 +321,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * execute its choice actions. If any tokens are produced during
      * this iteration, they are sent to both the output ports of the
      * model model but also the input ports of the mode controller.
-     * 
+     *
      * @exception IllegalActionException If there is more than one
      *                transition enabled and nondeterminism is not
      *                permitted, or there is no controller, or it is
@@ -402,7 +402,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             controller.readOutputsFromRefinement();
             return;
         }
-        
+
         // ASSERT: At this point, there are no enabled preemptive transitions.
         // It may be that some preemptive transition guards cannot be evaluated yet.
         // If some preemptive transition guards could not be evaluated due to unknown
@@ -488,7 +488,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * time value it expects to next see. Such directors can thus be
      * used inside top-level FSM models. For example, the DEDirector
      * and SDFDirector behave exactly this way.</p>
-     * 
+     *
      * @param actor The actor scheduled to be fired.
      * @param time The scheduled time.
      * @param microstep The microstep.
@@ -525,7 +525,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * attribute. The mode controller must have the same container as
      * this director. This method is read-synchronized on the
      * workspace.
-     * 
+     *
      * @return The mode controller of this director.
      * @exception IllegalActionException If no controller is found.
      */
@@ -572,7 +572,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /**
      * Return the explicit change context. In this case, the change context returned is the
      * composite actor controlled by this director.
-     * 
+     *
      * @return The explicit change context.
      */
     public Entity getContext() {
@@ -609,7 +609,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * model. The variables are assumed to have a change context of
      * the container of this director. This class returns all
      * variables that are assigned in the actions of transitions.
-     * 
+     *
      * @return A list of variables.
      * @exception IllegalActionException If no controller can be
      *                found, or the variables to be assigned by the
@@ -665,7 +665,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * ParseTreeEvaluator} is returned. The derived classes may need
      * to override this method to return different parse tree
      * evaluators.
-     * 
+     *
      * @return ParseTreeEvaluator used to evaluate guard expressions.
      */
     public ParseTreeEvaluator getParseTreeEvaluator() {
@@ -677,7 +677,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * method delegates to the executive director, if there is one
      * that implements SuperdenseTimeDirector, and returns current
      * time with index 0 otherwise.
-     * 
+     *
      * @return A superdense time index.
      * @see #setIndex(int)
      * @see ptolemy.actor.SuperdenseTimeDirector
@@ -709,7 +709,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * is one, the model error is ignored and this director will
      * handle the enabled transition later. Otherwise, an exception
      * will be thrown.</p>
-     * 
+     *
      * @param context The context where the model error happens.
      * @param exception An exception that represents the model error.
      * @return True if the error has been handled, false if the model error is passed
@@ -802,7 +802,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * calling the initialize() method in the super class. Build the
      * local maps for receivers. Suspend all the refinements of states
      * that are not the current state.
-     * 
+     *
      * @exception IllegalActionException If thrown by the initialize()
      *                method of the super class, or can not find mode
      *                controller, or can not find refinement of the
@@ -851,7 +851,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Return false. This director checks inputs to see whether they
      * are known before evaluating guards, so it can fired even if it
      * has unknown inputs.
-     * 
+     *
      * @return False.
      * @exception IllegalActionException
      *                Not thrown in this base class.
@@ -878,7 +878,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /**
      * Return a receiver that is a one-place buffer. A token put into
      * the receiver will override any token already in the receiver.
-     * 
+     *
      * @return A receiver that is a one-place buffer.
      */
     public Receiver newReceiver() {
@@ -899,7 +899,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * occurs indirectly in the FSMActor controller). If there is an
      * enabled transition, then the current state is transient, and we
      * will want to spend zero time in it.
-     * 
+     *
      * @return True if the mode controller wishes to be scheduled for another iteration.
      * @exception IllegalActionException
      *                If thrown by any commit action or there is no controller.
@@ -987,7 +987,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * current time to that of the executive director. Record whether
      * the refinements of the current state of the mode controller are
      * ready to fire.
-     * 
+     *
      * @exception IllegalActionException
      *                If there is no controller.
      */
@@ -1002,7 +1002,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /**
      * If the container is not null, register this director as the model error handler.
-     * 
+     *
      * @param container The proposed container.
      * @exception IllegalActionException If the action would result in
      *                a recursive containment structure, or if this
@@ -1027,7 +1027,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Set the superdense time index by delegating to the directors of
      * the refinements of the current state, if any. This should only
      * be called by an enclosing director.
-     * 
+     *
      * @exception IllegalActionException
      *                Not thrown in this base class.
      * @see #getIndex()
@@ -1055,7 +1055,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * time can be earlier than the current time. It allows the set
      * time to be earlier than the current time. This feature is
      * needed when switching between timed and untimed models.
-     * 
+     *
      * @param newTime
      *            The new current simulation time.
      * @exception IllegalActionException
@@ -1077,7 +1077,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * opaque input port. If any channel of the input port has no
      * data, then that channel is ignored. Any token left not consumed
      * in the ports to which data are transferred is discarded.
-     * 
+     *
      * @param port
      *            The input port to transfer tokens from.
      * @return True if at least one data token is transferred.
@@ -1147,14 +1147,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return transferredToken;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Build for each state of the mode controller the map from input ports of the modal model to
      * the local receivers when the mode controller is in that state. This method is
      * read-synchronized on the workspace.
-     * 
+     *
      * @exception IllegalActionException
      *                If there is no mode controller, or can not find refinements for states.
      */
@@ -1258,7 +1258,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * transitions. Throw an exception if there is more than one
      * transition enabled. This method is called by subclasses of
      * FSMDirector in other packages.
-     * 
+     *
      * @param transitionList
      *            A list of transitions.
      * @return An enabled transition, or null if none is enabled.
@@ -1280,7 +1280,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Return the receivers contained by ports connected to the inside
      * of the given input port and on the mode controller or the
      * refinement of its current state.
-     * 
+     *
      * @param port
      *            An input port of the container of this director.
      * @return The receivers that currently get inputs from the given port.
@@ -1299,7 +1299,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * If the specified actor is currently enabled (because it
      * previously returned false from postfire), then re-enable
      * it. This is called by FSMActor upon taking a reset transition.
-     * 
+     *
      * @param actor
      *            The actor to re-enable.
      */
@@ -1309,7 +1309,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /**
      * Return the last chosen transition.
-     * 
+     *
      * @return The last chosen transition, or null if there has been none.
      * @exception IllegalActionException
      *                If there is no controller.
@@ -1326,7 +1326,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /**
      * Set the value of the shadow variables for input ports of the controller actor.
-     * 
+     *
      * @exception IllegalActionException
      *                If a shadow variable cannot take the token read from its corresponding channel
      *                (should not occur).
@@ -1343,7 +1343,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Set the value of the shadow variables for input ports of the
      * controller actor that are defined by output ports of the
      * refinement.
-     * 
+     *
      * @exception IllegalActionException
      *                If a shadow variable cannot take the token read from its corresponding channel
      *                (should not occur).
@@ -1361,7 +1361,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * whether a channel is connected to an output port of the
      * refinement of the current state. This method is called by
      * HDFFSMDirector.
-     * 
+     *
      * @exception IllegalActionException If the refinement specified
      *                for one of the states is not valid, or if there
      *                is no controller.
@@ -1378,7 +1378,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /**
      * Set the current state of this actor.
-     * 
+     *
      * @param state
      *            The state to set.
      * @exception IllegalActionException
@@ -1399,14 +1399,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * the container to the ports it is connected to on the
      * outside. If the receiver is known to be empty, then send a
      * clear. If the receiver status is not known, do nothing.
-     * 
+     *
      * @param port The port to transfer tokens from.
      * @return True if the port has an inside token that was
      *         successfully transferred. Otherwise return false (or
      *         throw an exception).
      * @exception IllegalActionException
      *                If the port is not an opaque output port.
-     * 
+     *
      */
     protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
         boolean result = false;
@@ -1467,7 +1467,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   protected variables                     ////
+    ////                         protected variables               ////
 
     /**
      * Map from input ports of the modal model to the local receivers
@@ -1508,8 +1508,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     protected List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
-    
+    ////                         private methods                   ////
+
     /**
      * For the given controller FSM, set all outputs that are
      * currently unknown to absent if it
@@ -1526,15 +1526,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * For each output port, this method calls
      * {@link #_isSafeToClear(IOPort, int, FSMActor)} to determine whether
      * this FSM can assert that an output port is absent.
-     * 
+     *
      * @param controller The controller FSM.
      * @param checkRefinement True to recursively descend through refinements of states.
      * @return True if after this method is called, any output port is absent.
-     * @throws IllegalActionException If something goes wrong.
+     * @exception IllegalActionException If something goes wrong.
      */
     private boolean _assertAbsentOutputs(FSMActor controller, boolean checkRefinement)
             throws IllegalActionException {
-        
+
         // First, check the refinements.
         if (checkRefinement) {
             TypedActor[] refinements = controller._currentState.getRefinement();
@@ -1546,7 +1546,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     // able to simply fire() an SR model, which will result in asserting
                     // any outputs that can be asserted. For now, however, we deal
                     // only with refinements that are state machines.
-                    
+
                     // The second check below guards against a refinement with no director.
                     if (refinementDirector instanceof FSMDirector
                             && refinementDirector != this) {
@@ -1567,7 +1567,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // are FSMs, those refinements have asserted outputs
         // to be absent if they have been able to conclude
         // that they must be absent.
-        
+
         // We now iterate over all output ports of the container
         // of this director, and for each such output port p,
         // on each channel c,
@@ -1678,7 +1678,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /**
      * Return the environment time.
-     * 
+     *
      * @return The current environment time, or the local modal time if there is no executive
      *         director.
      */
@@ -1710,7 +1710,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * This method ignores any state refinements, and consequently
      * its analysis is valid only if all state refinements also assert
      * that the output is absent.
-     * 
+     *
      * @param port The IOPort in question.
      * @param channel The channel in question.
      * @param controller The controller for considering the current state.
@@ -1733,7 +1733,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             String outputActionsExpression = transition.outputActions.getExpression();
             String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
             boolean transitionWritesToThePort = outputActionsExpression.trim().matches(regexp);
-            
+
             if (transitionWritesToThePort) {
                 // Next check to see whether the guard evaluates to false.
                 try {
@@ -1762,7 +1762,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /**
      * Reset the output receivers, which are the inside receivers of the output ports of the
      * container.
-     * 
+     *
      * @exception IllegalActionException
      *                If getting the receivers fails.
      */
@@ -1793,7 +1793,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * the refinement's total accumulated suspension time. Otherwise,
      * set current time to match that of the environment. If there is
      * no environment, do nothing.
-     * 
+     *
      * @param refinement
      *            The refinement.
      * @exception IllegalActionException
@@ -1818,8 +1818,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Cached reference to mode controller. */
     private FSMActor _controller = null;

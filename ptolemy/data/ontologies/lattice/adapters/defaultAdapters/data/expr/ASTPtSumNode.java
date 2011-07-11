@@ -75,13 +75,13 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
         // Find the add and subtract concept functions that
-        // are needed for the PtSumNode monotonic function.        
+        // are needed for the PtSumNode monotonic function.
         ConceptFunction addFunction = null;
         ConceptFunctionDefinitionAttribute addDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
@@ -96,14 +96,14 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
                 .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
         if (subtractDefinition != null) {
             subtractFunction = subtractDefinition.createConceptFunction();
-        }        
+        }
 
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
         List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(childNodeTerms.length);
         for (int i = 0; i < childNodeTerms.length; i++) {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
-        
+
         List<Token> operatorTokenList = ((ptolemy.data.expr.ASTPtSumNode) _getNode())
                 .getLexicalTokenList();
 
@@ -150,7 +150,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
          *  operands.
          * @param operatorTokenList The list of operator tokens for the sum node
          *  expression.
-         * @throws IllegalActionException If the class cannot be initialized.
+         * @exception IllegalActionException If the class cannot be initialized.
          */
         public ASTPtSumNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction addFunction,
@@ -169,12 +169,12 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
 
         /** Return the function result.
          *  @param inputConceptValues The array of input arguments for the function.
-         *  @return The concept value that is output from this function. 
-         *  @throws IllegalActionException If there is a problem evaluating the function
+         *  @return The concept value that is output from this function.
+         *  @exception IllegalActionException If there is a problem evaluating the function
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
-            
+
             // Loop through all the child node concepts in the sum node
             // and get the correct result property by calling the add concept function
             // or subtract concept function depending on the operator used.

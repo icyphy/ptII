@@ -74,7 +74,7 @@ public class ReadParametersInContainer extends TypedAtomicActor {
 
     /** The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
-     *  output.  
+     *  output.
      */
     public TypedIOPort input;
 

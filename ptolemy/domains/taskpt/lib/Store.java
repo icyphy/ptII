@@ -1,4 +1,4 @@
-/* An actor that stores tokens into a memory. 
+/* An actor that stores tokens into a memory.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Store
 
 /** An actor that stores tokens into a memory.
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -49,14 +49,14 @@ public class Store extends LoadStore {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, define the <i>data</i>
      *  and the <i>ptr</i> ports as input ports.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException Thrown if the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Thrown if the container already has an
      *   actor with this name.
-     */    
+     */
     public Store(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -69,8 +69,8 @@ public class Store extends LoadStore {
 
     /** Store tokens present in <i>data</i> to memory. Address and number
      * of tokens to be stored is given by the Token in the <i>ptr</i> port.
-     * 
-     * @throws IllegalActionException Thrown if no memory is found, an exception is 
+     *
+     * @exception IllegalActionException Thrown if no memory is found, an exception is
      * thrown.
      */
      public void fire() throws IllegalActionException {

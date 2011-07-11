@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Settable;
 //// BinaryOperationMonotonicFunctionDefinition
 
 /** Concept function definition attribute for any binary operation.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -68,7 +68,7 @@ public class BinaryOperationMonotonicFunctionDefinition extends
             CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Since a binary function always has 2 arguments, its
         // number of arguments is fixed.
         numberOfArgumentsIsFixed.setToken(BooleanToken.TRUE);
@@ -80,7 +80,7 @@ public class BinaryOperationMonotonicFunctionDefinition extends
 
         functionOntologyName = new StringParameter(this, "functionOntologyName");
         functionOntologyName.setExpression("");
-        
+
         // Constrain argument list to have only 2 arguments.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 2));
         argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING, 2));
@@ -107,16 +107,16 @@ public class BinaryOperationMonotonicFunctionDefinition extends
     ////                         public methods                    ////
 
     /** Override the attributeChanged method so that the output range and all
-     *  argument domain ontology names are set to the functionOntologyName. 
+     *  argument domain ontology names are set to the functionOntologyName.
      *  @param attribute The attribute that has been changed.
-     *  @throws IllegalActionException If there is a problem changing the attribute.
+     *  @exception IllegalActionException If there is a problem changing the attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == functionOntologyName) {
             StringToken ontologyNameToken = (StringToken) functionOntologyName.getToken();
             outputRangeOntologyName.setToken(ontologyNameToken);
-            
+
             ArrayToken domainOntologiesToken =
                 new ArrayToken(new Token[]{(Token) ontologyNameToken, (Token) ontologyNameToken});
             argumentDomainOntologies.setToken(domainOntologiesToken);

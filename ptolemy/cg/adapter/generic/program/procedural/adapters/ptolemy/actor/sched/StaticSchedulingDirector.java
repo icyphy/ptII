@@ -158,7 +158,7 @@ public class StaticSchedulingDirector extends Director {
         Schedule schedule = director.getScheduler().getSchedule();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
-        
+
         Iterator<?> actorsToFire = schedule.firingIterator();
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
@@ -465,7 +465,7 @@ public class StaticSchedulingDirector extends Director {
 
     /**
      * Return an unique label for the given port channel referenced
-     * by the given adapter. By default, this delegates to the adapter to 
+     * by the given adapter. By default, this delegates to the adapter to
      * generate the reference. Subclass may override this method
      * to generate the desire label according to the given parameters.
      * @param port The given port.
@@ -473,12 +473,12 @@ public class StaticSchedulingDirector extends Director {
      * @param forComposite Whether the given adapter is associated with
      *  a CompositeActor
      * @param isWrite The type of the reference. True if this is
-     *  a write reference; otherwise, this is a read reference.  
+     *  a write reference; otherwise, this is a read reference.
      * @param target The ProgramCodeGeneratorAdapter for which code
      * needs to be generated.
      * @return an unique reference label for the given port channel.
      * @exception IllegalActionException If the adapter throws it while
-     *  generating the label.     
+     *  generating the label.
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
@@ -771,7 +771,7 @@ public class StaticSchedulingDirector extends Director {
         code.append(_ports.updateConnectedPortsOffset(port, rate));
     }
 
-    /** 
+    /**
      *  Update the read offsets of the buffer associated with the given port.
      *  @param port The port whose read offset is to be updated.
      *  @param code The string buffer that the generated code is appended to.
@@ -947,7 +947,7 @@ public class StaticSchedulingDirector extends Director {
         return null;
     }
 
-    /** A class that keeps track of information necessary to 
+    /** A class that keeps track of information necessary to
      *  generate communication code at ports inside a StaticScheduled model.
      */
     protected class PortInfo {
@@ -1005,7 +1005,7 @@ public class StaticSchedulingDirector extends Director {
                     channelBufferSize = getBufferSize(i);
                 } catch (ptolemy.actor.sched.NotSchedulableException ex) {
                     // Ignore.  Probably a modal model.
-                    // $PTII/bin/ptcg -inline true -language java /Users/cxh/ptII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml 
+                    // $PTII/bin/ptcg -inline true -language java /Users/cxh/ptII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
                 }
                 if (channelBufferSize > bufferSize) {
                     bufferSize = channelBufferSize;
@@ -1075,7 +1075,7 @@ public class StaticSchedulingDirector extends Director {
         public Object getReadOffset(int channelNumber)
                 throws IllegalActionException {
             ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
-            if(_readOffsets.get(channel) == null) {
+            if (_readOffsets.get(channel) == null) {
                 throw new IllegalActionException("Could not find the specified channel in this director");
             }
             return _readOffsets.get(channel);
@@ -1584,7 +1584,7 @@ public class StaticSchedulingDirector extends Director {
         }
 
         /** Set the buffer size of channel of the port.
-         *  @param port The given port. 
+         *  @param port The given port.
          *  @param channelNumber The number of the channel that is being set.
          *  @param bufferSize The size of the buffer.
          *  @see #getBufferSize(IOPort, int)
@@ -1670,7 +1670,7 @@ public class StaticSchedulingDirector extends Director {
                             List entities = ((CompositeEntity)container).attributeList(ptolemy.actor.Director.class);
                             if (entities.size() > 0) {
                                 Director entity = (Director)getCodeGenerator().getAdapter(entities.get(entities.size() - 1));
-                                if (entity instanceof StaticSchedulingDirector) { 
+                                if (entity instanceof StaticSchedulingDirector) {
                                     StaticSchedulingDirector parent = (StaticSchedulingDirector)entity;
                                     if (parent._ports._portInfo.containsKey(port)) {
                                         info = parent._ports._portInfo.get(port);

@@ -220,7 +220,7 @@ public class Transition extends ComponentRelation {
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
             .booleanValue();
-        } 
+        }
         else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
             // time, because the input variables it can reference are created

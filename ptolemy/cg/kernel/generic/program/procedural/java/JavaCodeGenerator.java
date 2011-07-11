@@ -340,7 +340,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  to a Composite Actor.  This method is called when the firing
      *  code of each actor is not inlined.
      *
-     *  @param className The name of the class to include in the 
+     *  @param className The name of the class to include in the
      *  initial code.
      *  @return A string that defines an inner class.
      */
@@ -349,7 +349,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     }
 
     /** Generate the fire function method invocation. This method is called
-     *  when the firing code of each actor is not inlined.  
+     *  when the firing code of each actor is not inlined.
      *
      *  <p>So as to reduce the size of classes to be compiled, this
      *  code generator generates the fire function methods for the top
@@ -364,13 +364,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateFireFunctionMethodInvocation(NamedObj namedObj) throws IllegalActionException {
         String [] results = generateFireFunctionVariableAndMethodName(namedObj);
-        String result = "_inner" + results[0] + "." + results[1]; 
+        String result = "_inner" + results[0] + "." + results[1];
         //System.out.println("JCG.generateFireFunctionMethodInvocation(): " + namedObj.getFullName() + " " + result);
         return result;
     }
 
     /** Generate the fire function method name. This method is called
-     *  when the firing code of each actor is not inlined.  
+     *  when the firing code of each actor is not inlined.
      *
      *  <p>So as to reduce the size of classes to be compiled, this
      *  code generator generates the fire function methods for the top
@@ -404,7 +404,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String [] generateFireFunctionVariableAndMethodName(NamedObj namedObj)
             throws IllegalActionException {
         // Get the toplevel name and the name of the composite under the
-        // top level.  
+        // top level.
         // If we have Foo.Ramp, return _inner_Foo.Ramp
         // If we have Foo.Bar.Ramp, return _inner_Foo_Bar.Ramp
         // If we have Foo.Bar.Biz.Ramp, return _inner_Foo_Bar.Biz_Ramp
@@ -498,7 +498,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return "";
     }
 
-    /** Generate the function table. 
+    /** Generate the function table.
      *
      *  @param types An array of types.
      *  @param functions An array of functions.
@@ -708,7 +708,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String generatePackageStatement() throws IllegalActionException {
         if (_generateInSubdirectory) {
             return "package " + _sanitizedModelName + ";" + _eol;
-        } 
+        }
         return "";
     }
 
@@ -1003,7 +1003,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             code.append("// }" + _eol);
         }
 
-        
+
         if (!((BooleanToken) inline.getToken()).booleanValue()) {
             // Variable declarations that refer to instances of inner classes.
             // Used only if inline == false.
@@ -1035,8 +1035,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             // Generate the declarations for the arrays that contain variables.
             // See also generateInitializeCode() in
-            // $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector.java 
-            
+            // $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector.java
+
             code.append(comment(1, "Arrays that contain variables."));
             if (_variableTypeMaxIndex != null) {
                 for (Map.Entry<String, Integer> entry : _variableTypeMaxIndex.entrySet()) {
@@ -1139,7 +1139,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment(1, "Generate variable initialization for "
                             + "modified parameters"));
-        
+
             Iterator<?> modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
@@ -1191,7 +1191,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // generating code, so we have a separate HashMap that
         // that is used at code generation time to map from
         // names to the index in the corresponding type array.
-        
+
         if (_variableTypeMap == null) {
             // A map from String type name to a HashMap of variable name to Array Index.
             _variableTypeMap = new HashMap<String, HashMap<String, Integer>>();
@@ -1399,7 +1399,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     openBracketCount--;
                     // Don't break up try catch blocks
                     if (trimmedLine.startsWith("} catch")
-                            || trimmedLine.startsWith("}catch")) {
+                            || trimmedLine.startsWith("} catch")) {
                         tryCount--;
                     }
                 } else if (trimmedLine.startsWith("try")) {
@@ -1428,7 +1428,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 + " openBracketCount: " + openBracketCount
                                 + " commentCount: " + commentCount
                                 + " tryCount: " + tryCount
-			        + " line:\n" + line
+                                + " line:\n" + line
                                 + " code:\n" + code);
                     }
                     if (line != null) {
@@ -1460,7 +1460,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 openBracketCount--;
                                 // Don't break up try catch blocks
                                 if (trimmedLine.startsWith("} catch")
-                                        || trimmedLine.startsWith("}catch")) {
+                                        || trimmedLine.startsWith("} catch")) {
                                     tryCount--;
                                 }
                             } else if (trimmedLine.startsWith("try")) {
@@ -1475,12 +1475,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 //callAllBody.append(prefix + "." + methodName + "();" + _eol);
                 callAllBody.append("new " + methodName + "();" + _eol);
 //                 bodies.append("void " + methodName + "() {" + _eol
-//                         + body.toString() 
+//                         + body.toString()
 //                         + "}" + _eol);
 
                 bodies.append("class " + methodName + " {" + _eol
                         + methodName + "() throws Exception {" + _eol
-                        + body.toString() 
+                        + body.toString()
                         + "}" + _eol
                         + "}" + _eol);
             }
@@ -1521,7 +1521,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  consists of more than <i>linesPerMethod</i> then the first
      *  element will consist of one or more "import static" statements
      *  and the second and possibly successive element will consist of
-     *  Java classes that should be written out by 
+     *  Java classes that should be written out by
      *  {@link #_writeVariableDeclarations(List)}.
      *
      *  @param linesPerMethod The number of lines that should go into
@@ -1676,13 +1676,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // Iterator includeIterator = actorIncludeDirectories.iterator();
         // while (includeIterator.hasNext()) {
         //     String includeDirectory = (String) includeIterator.next();
-        //     System.out.println("JCG._addActorIncludeDirectories(): " + includeDirectory); 
+        //     System.out.println("JCG._addActorIncludeDirectories(): " + includeDirectory);
         //     addInclude(includeDirectory);
         // }
     }
 
     /** Add libraries specified by the actors in this model.
-     *  Libraries are specified in the "libraryDirectories" block of the template.    
+     *  Libraries are specified in the "libraryDirectories" block of the template.
      *  FIXME: this might only be getting libraries from the TypedAtomicActor.
      *  @see ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#addLibrary(String)
      *  @see ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#addLibraryIfNecessary(String)
@@ -1706,7 +1706,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // }
     }
 
-    /** Add the directories and files from the classpath to 
+    /** Add the directories and files from the classpath to
      *  the list of libraries.
      *  This method is used to add the JavaScope.zip file used by code
      *  coverage so that we can use Ptolemy classes in the nightly build.
@@ -1913,7 +1913,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     }
 
     /** Generate the preinitialization method body.
-     *        
+     *
      *  <p>Typically, the preinitialize code consists of variable
      *   declarations.  However, AutoAdapter generates method calls
      *   that instantiate wrapper TypedCompositeActors, so we need
@@ -2051,7 +2051,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Return the class of the templateParser class. In cse
      *  there isn't one return null.
-     *  @return The base class for templateParser.  
+     *  @return The base class for templateParser.
      */
     protected Class<? extends TemplateParser> _templateParserClass() {
         return JavaTemplateParser.class;
@@ -2401,7 +2401,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                         + block);
                             }
                         }
-                    } 
+                    }
                     // Second and successive lines are of
                     // the form "import static RepeatVariables.class0.*;".
 
@@ -2455,7 +2455,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             writer.write(block);
                             if (block.indexOf(StaticSchedulingDirector.CURRENTTIME_DECLARATION) != -1) {
 
-                                // Output the currentTime declaration, which is 
+                                // Output the currentTime declaration, which is
                                 // not static because _currentTime might? vary
                                 // between directors?
                                 result.append(StaticSchedulingDirector.CURRENTTIME_DECLARATION + _eol);
@@ -2514,7 +2514,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     //declareTypeOrTokenBlock.append("public static Token emptyToken; "
                     //        + comment("Used by *_delete() and others.") + _eol);
                     //}
-                } 
+                }
                 if (declareTypeOrTokenBlock.length() > 0) {
                     declareTypeOrTokenBlock.insert(0,
                             "package " + directoryName + ";" + _eol);
@@ -2538,7 +2538,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     File topTokenClass = new File(codeDirectoryFile,
                             typesAndTokenArray[i] + ".class");
                     if (!topTokenClass.delete()) {
-			System.out.println("Warning: Failed to delete " + topTokenClass);
+                        System.out.println("Warning: Failed to delete " + topTokenClass);
                     }
                 }
             }
@@ -2642,7 +2642,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  This method is used when inline is false so that if we have
      *  an actor with the same name as a Java keyword, we don't end
      *  up trying to create a method with with that name.
-     *  @param word The string to be checked.   
+     *  @param word The string to be checked.
      *  @return the sanitized version.
      */
     private String _javaKeywordSanitize(String word) {
@@ -2663,19 +2663,19 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     private Set<String> _overloadedFunctionSet;
 
     /** Java import statements for Token, Array, etc.
-     */   
+     */
     private StringBuffer _typeDeclarations;
 
     /** A map from String type name to a HashMap of variable name to
      * Array Index.  Used for large models to reduce the number
      * of variables
-     */   
+     */
     private HashMap<String, HashMap<String,Integer>> _variableTypeMap;
 
     /** A map from String type name to a HashMap of variable name to
      * Array Index.  Used for large models to reduce the number
      * of variables
-     */   
+     */
     private HashMap<String, Integer> _variableTypeMaxIndex;
 
     /** Set of type/function combinations that are not supported.

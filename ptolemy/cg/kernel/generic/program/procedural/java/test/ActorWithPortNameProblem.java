@@ -68,7 +68,7 @@ public class ActorWithPortNameProblem extends TypedAtomicActor {
 
         // set the type constraints.
         output.setTypeAtLeast(input);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

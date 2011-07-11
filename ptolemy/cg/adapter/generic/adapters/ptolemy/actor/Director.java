@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Director
 
 /**
@@ -76,7 +76,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     ////                Public Methods                           ////
 
     /** Generate the send code for Port port.
-     *  @param port The port for which to generate send code. 
+     *  @param port The port for which to generate send code.
      *  @param channel The channel for which the send code is generated.
      *  @param dataToken The token to be sent
      *  @return The code that sends the dataToken on the channel.
@@ -250,7 +250,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate the preinitialization method body.
-     *        
+     *
      *  <p>Typically, the preinitialize code consists of variable
      *   declarations.  However, AutoAdapter generates method calls
      *   that instantiate wrapper TypedCompositeActors, so we need

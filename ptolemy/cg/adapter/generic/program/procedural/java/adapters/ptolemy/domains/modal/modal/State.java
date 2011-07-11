@@ -55,7 +55,7 @@ public class State
      */
     public State(ptolemy.domains.modal.kernel.State component) {
         super(component);
-        
+
     }
 
     /** Generate code for transferring enough tokens to fulfill the output

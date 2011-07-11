@@ -48,7 +48,7 @@ import ptolemy.vergil.basic.layout.KielerLayoutAction;
 
 ///////////////////////////////////////////////////////////////////
 //// KielerJUnitTest
-/** 
+/**
  * Test out Kieler by open models, using Kieler to layout the graph
  * and then doing undo and redo.
  *
@@ -78,15 +78,15 @@ import ptolemy.vergil.basic.layout.KielerLayoutAction;
 public class KielerJUnitTest {
 
     /** Test the Kieler layout facility.
-     *   
+     *
      *  <p>To run, use:</p>
      *
      *  <pre>
      *   java -classpath \
      *      $PTII:$PTII/lib/junit-4.8.2.jar:$PTII/lib/kieler.jar \
-     *      ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest   
+     *      ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest
      *  </pre>
-     * 
+     *
      *  @param args Not used.
      */
     public static void main(String args[]) {
@@ -94,7 +94,7 @@ public class KielerJUnitTest {
                 .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
 
-    /** 
+    /**
      * Test the layout facility by reading in a models, stripping
      * out the graphical elements, laying out the models, comparing
      * the new results with the known good results and then doing
@@ -142,7 +142,7 @@ public class KielerJUnitTest {
      * <p>The caller of this method need <b>not</b>be in the Swing
      * Event Thread.</p>
      *
-     * @param modelFileName The file name of the test model. 
+     * @param modelFileName The file name of the test model.
      * @param compareAgainstOriginal  If true, then run the Kieler
      * Layouter and compare against the original file.  If false, run
      * the Ptolemy layouter, the Kieler layouter, then undo, redo,
@@ -222,7 +222,7 @@ public class KielerJUnitTest {
             // that we see the Ptolemy layout and then layout the
             // model with Kieler.  Don't do a comparison yet.
             _sleep();
-            // The "original" model is now the model laid out with 
+            // The "original" model is now the model laid out with
             // the Ptoelmy mechanism.
             baseMoML = model[0].exportMoML();
             Runnable kielerLayoutModelAction = new Runnable() {
@@ -325,7 +325,7 @@ public class KielerJUnitTest {
 
     /** Lay out the model and compare the results against the original
      *  model file name.
-     *   
+     *
      *  <p>The caller of this method should be in the Swing Event
      *  Thread.</p>
      *
@@ -366,7 +366,7 @@ public class KielerJUnitTest {
     }
 
     /** Redo the last operation on the model.
-     *   
+     *
      *  <p>The caller of this method should be in the Swing Event
      *  Thread.</p>
      *  @param model The model upon which the last operation
@@ -390,7 +390,7 @@ public class KielerJUnitTest {
     }
 
     /** Undo the last operation on the model.
-     *   
+     *
      *  <p>The caller of this method should be in the Swing Event
      *  Thread.</p>
      *  @param model The model upon which the last operation

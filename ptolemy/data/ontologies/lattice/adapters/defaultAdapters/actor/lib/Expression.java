@@ -34,7 +34,7 @@ import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Expression
 
 /** The default adapter class for ptolemy.actor.lib.Expression.
@@ -56,16 +56,16 @@ public class Expression extends LatticeOntologyAdapter {
             throws IllegalActionException {
         super(solver, actor, false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return the list of constraints for the Expression actor. The only
      *  constraint specified is that the ontology concept applied to the output
      *  port of the actor must be greater than or equal to the concept applied
      *  to the expression evaluated in the actor.
      *  @return The list of constraints for this adapter.
-     *  @throws IllegalActionException If there is an error creating
+     *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
     public List<Inequality> constraintList() throws IllegalActionException {

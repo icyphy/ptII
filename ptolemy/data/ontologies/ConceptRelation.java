@@ -40,12 +40,12 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  A relation between concepts in an ontology.
- 
+
  This class is really only used to connect the FiniteConcepts in the Ontology
  class, which corresponds to the relations that a user draws in the Ontology
  Editor in Vergil.  This information is also then used to generate the
  ordering relations when a ConceptGraph is created.
- 
+
  @author Edward A. Lee, Ben Lickly
  @version $Id$
  @since Ptolemy II 8.0
@@ -140,7 +140,7 @@ public class ConceptRelation extends ComponentRelation {
 
     /** Throw an exception if the port cannot be linked
      *  to this relation.
-     *  
+     *
      *  @param port The port to be checked to see if the relation
      *  can be attached
      *  @exception IllegalActionException If the port's container
@@ -164,9 +164,9 @@ public class ConceptRelation extends ComponentRelation {
     ////                         private methods                   ////
 
     /** Initialize the variables of this relation.
-     *  @throws IllegalActionException Thrown if the relation's variables
+     *  @exception IllegalActionException Thrown if the relation's variables
      *   cannot be initialized.
-     *  @throws NameDuplicationException Thrown if any of the names of attributes
+     *  @exception NameDuplicationException Thrown if any of the names of attributes
      *   created for this relation conflict with existing attributes in this
      *   relation.
      */

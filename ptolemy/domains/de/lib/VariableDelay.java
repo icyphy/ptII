@@ -65,11 +65,11 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class VariableDelay extends Transformer {
-    
+
     // NOTE: This actor has alot copies from TimeDelay, but because it has
     // a PortParameter named delay and TimeDelay has just a parameter,
     // subclassing does not work well.
-    
+
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
@@ -81,7 +81,7 @@ public class VariableDelay extends Transformer {
     public VariableDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
@@ -91,7 +91,7 @@ public class VariableDelay extends Transformer {
         Set<Port> dependentPorts = new HashSet<Port>();
         _causalityMarker = new CausalityMarker(this, "causalityMarker");
         _causalityMarker.addDependentPortSet(dependentPorts);
-        
+
         _delay = 1.0;
     }
 
@@ -158,7 +158,7 @@ public class VariableDelay extends Transformer {
         _declareDelayDependency(delay.getPort(), output, 0.0);
         _declareDelayDependency(input, output, 0.0);
     }
-    
+
     /** Update the delay parameter from the delay port and ensure the delay
      *  is not negative. Call the fire method of super class to consume
      *  inputs and generate outputs.
@@ -167,7 +167,7 @@ public class VariableDelay extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         delay.update();
         _delay = ((DoubleToken) delay.getToken()).doubleValue();
 
@@ -212,7 +212,7 @@ public class VariableDelay extends Transformer {
             _delayedOutputTokens.take();
         }
     }
-    
+
     /** Initialize the states of this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -266,7 +266,7 @@ public class VariableDelay extends Transformer {
 
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

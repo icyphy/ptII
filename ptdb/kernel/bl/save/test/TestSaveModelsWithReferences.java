@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -38,15 +38,15 @@ import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.kernel.bl.save.SaveModelManager;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////TestSaveModelsWithReferences
 
 /**
- * JUnit test for saving/updating models with and without references and getting new 
+ * JUnit test for saving/updating models with and without references and getting new
  * model Id after each successful save operation when new save is done and the same
- * model Id after each successful update operation. 
- * 
- * 
+ * model Id after each successful update operation.
+ *
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -58,48 +58,48 @@ import ptdb.kernel.bl.save.SaveModelManager;
 
 public class TestSaveModelsWithReferences {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public variables 				  ////
-    
-   
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+
     /**
      * Test the save with null model passed.
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testNullModel() throws Exception {
-        
+
         XMLDBModel dbModel = null;
-        
+
         boolean exceptionThrown = false;
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
-        try{
+        try {
 
             saveModelManager.save(dbModel);
-            
-        } catch (IllegalArgumentException e){
+
+        } catch (IllegalArgumentException e) {
 
             exceptionThrown = true;
-            
+
         }
-        
+
 
         assertTrue(exceptionThrown);
-        
+
     }
-    
+
     /**
      * Test saving a new model in the database which does not have references.
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSavingNewModel_NoReferences() throws Exception {
-                
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -125,26 +125,26 @@ public class TestSaveModelsWithReferences {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         String modelId = saveModelManager.save(dbModel);
         assertTrue(modelId.contains(dbModel.getModelName()));
-        
+
         //System.out.println(modelId);
     }
-    
-    
+
+
     /**
      * Test the saving of a new model which has references in it.
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSavingNewModel_WithReferences() throws Exception {
-        
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -261,30 +261,30 @@ public class TestSaveModelsWithReferences {
                         + "<link port=\"modeltest.port\" relation=\"relation\"/>"
                         + "<link port=\"modeltest.port2\" relation=\"relation2\"/>"
                     + "</entity>");
-        
-        
+
+
         //System.out.println(dbModel.getModel());
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         String modelId = saveModelManager.save(dbModel);
         assertTrue(modelId.contains(dbModel.getModelName()));
-        
-        //System.out.println(modelId);    
+
+        //System.out.println(modelId);
     }
-    
-    
-    
+
+
+
     /**
      * Test updating an existing model in the database which does not have references in it.
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testUpdateModel_NoReferences() throws Exception {
-                
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -310,32 +310,32 @@ public class TestSaveModelsWithReferences {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         String modelId = saveModelManager.save(dbModel);
-        
+
         dbModel.setIsNew(false);
-        
+
         String newModelId = saveModelManager.save(dbModel);
-        
+
         assertTrue(modelId.equals(newModelId));
-        
+
         //System.out.println(modelId);
     }
-    
-    
+
+
 
     /**
      * Test updating a model in the database which has references in it.
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testUpdateModel_WithReferences() throws Exception {
-        
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -452,36 +452,36 @@ public class TestSaveModelsWithReferences {
                         + "<link port=\"modeltest.port\" relation=\"relation\"/>"
                         + "<link port=\"modeltest.port2\" relation=\"relation2\"/>"
                     + "</entity>");
-        
-        
-        
-        
+
+
+
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         String modelId = saveModelManager.save(dbModel);
-        
+
         dbModel.setIsNew(false);
-        
+
         String newModelId = saveModelManager.save(dbModel);
-        
+
         assertTrue(modelId.equals(newModelId));
-        
-        //System.out.println(modelId);    
+
+        //System.out.println(modelId);
     }
-    
-   
+
+
     /**
-     * Test updating a model which does not exist in the database and 
+     * Test updating a model which does not exist in the database and
      * does not have references.
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testUpdatingModelNotInDB_NoReferences() throws Exception {
-        
-   
+
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -507,29 +507,29 @@ public class TestSaveModelsWithReferences {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-               
-        
+
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
-        
+
         boolean exceptionThrown = false;
-      
+
         String modelId = "";
-      
-      
-        try{
-            
+
+
+        try {
+
             modelId = saveModelManager.save(dbModel);
-      
-        } catch(DBExecutionException e){
-          
-            exceptionThrown = true;     
-      
-        } 
-      
+
+        } catch (DBExecutionException e) {
+
+            exceptionThrown = true;
+
+        }
+
         assertTrue(exceptionThrown);
         assertTrue(modelId.length() == 0);
-         
+
     }
 
     /**
@@ -538,9 +538,9 @@ public class TestSaveModelsWithReferences {
      */
     @Test
     public void testUpdatingModelNotInDB_WithReferences() throws Exception {
-        
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -657,48 +657,48 @@ public class TestSaveModelsWithReferences {
                         + "<link port=\"modeltest.port\" relation=\"relation\"/>"
                         + "<link port=\"modeltest.port2\" relation=\"relation2\"/>"
                     + "</entity>");
-               
-        
+
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
-        
+
         boolean exceptionThrown = false;
-      
+
         String modelId = "";
-      
-      
-        try{
-            
+
+
+        try {
+
             modelId = saveModelManager.save(dbModel);
-      
-      
-        } catch(DBExecutionException e){
-          
-          
+
+
+        } catch (DBExecutionException e) {
+
+
             exceptionThrown = true;
-          
-      
-        } 
-      
+
+
+        }
+
         assertTrue(exceptionThrown);
         assertTrue(modelId.length() == 0);
-         
+
     }
-    
-    
-    
+
+
+
 
     /**
      * Test saving a model as a new model with a name while another model with the same
      * name already exists in the database. The model does not have references.
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSaveNewModelAreadyExists_NoReferences() throws Exception {
-                
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -724,42 +724,42 @@ public class TestSaveModelsWithReferences {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         saveModelManager.save(dbModel);
-        
+
         dbModel.setIsNew(true);
-        
+
         String newModelId = "";
- 
+
         boolean exceptionThrown = false;
-        
-        try{
+
+        try {
             newModelId = saveModelManager.save(dbModel);
-      
-        } catch(ModelAlreadyExistException e){
+
+        } catch (ModelAlreadyExistException e) {
             exceptionThrown = true;
-        } 
-      
+        }
+
         assertTrue(exceptionThrown);
         assertTrue(newModelId.length() == 0);
     }
-    
-    
-    
+
+
+
 
     /**
      * Test saving a model as a new model in the database while another model with
      * the same name already exist in the database. The model contains references in it.
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSaveNewModelAlreadyExists_WithReferences() throws Exception {
-        
+
         java.util.Date time = new java.util.Date();
-        
+
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -876,27 +876,27 @@ public class TestSaveModelsWithReferences {
                         + "<link port=\"modeltest.port\" relation=\"relation\"/>"
                         + "<link port=\"modeltest.port2\" relation=\"relation2\"/>"
                     + "</entity>");
-        
-               
+
+
         SaveModelManager saveModelManager = new SaveModelManager();
 
         saveModelManager.save(dbModel);
-        
+
         dbModel.setIsNew(true);
-        
+
         String newModelId = "";
- 
+
         boolean exceptionThrown = false;
-        
-        try{
+
+        try {
             newModelId = saveModelManager.save(dbModel);
-      
-        } catch(ModelAlreadyExistException e){
+
+        } catch (ModelAlreadyExistException e) {
             exceptionThrown = true;
-        } 
-      
+        }
+
         assertTrue(exceptionThrown);
         assertTrue(newModelId.length() == 0);
-        
+
     }
 }

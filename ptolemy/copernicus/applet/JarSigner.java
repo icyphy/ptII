@@ -260,7 +260,7 @@ public class JarSigner {
         // [certificate is valid from 7/15/04 5:00 PM to 7/15/14 4:59 PM]
         // X.509, OU=Class 3 Public Primary Certification Authority, O="VeriSign, Inc.", C=US
         // [certificate is valid from 1/28/96 4:00 PM to 8/1/28 4:59 PM]
-        // 
+        //
         // If we don't have those lines, then we get an error about how
         // the "JAR resources in JNLP file are not signed by same certificate"
 

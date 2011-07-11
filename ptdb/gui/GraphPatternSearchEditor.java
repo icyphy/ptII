@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -83,7 +83,7 @@ import diva.gui.GUIUtilities;
 //// GraphPatternSearchEditor
 
 /**
- * The UI frame for the advanced DB search window. It has the specific 
+ * The UI frame for the advanced DB search window. It has the specific
  * searching features for PTDB.
  *
  * @author Alek Wang
@@ -101,13 +101,13 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     //     *
     //     * @param entity  The model to put in this frame.
     //     * @param tableau The tableau responsible for this frame.
-    //     * @param containerModel The model that will import the searched results. 
-    //     * @param sourceFrame The frame that contains the model to import the 
-    //     * searched results. 
+    //     * @param containerModel The model that will import the searched results.
+    //     * @param sourceFrame The frame that contains the model to import the
+    //     * searched results.
     //     */
     //    public GraphPatternSearchEditor(CompositeEntity entity, Tableau tableau,
     //            NamedObj containerModel, JFrame sourceFrame) {
-    //        
+    //
     //        this(entity,tableau, null, containerModel,sourceFrame);
     //
     //    }
@@ -119,9 +119,9 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     //     * @param tableau The tableau responsible for this frame.
     //     * @param defaultLibrary An attribute specifying the default library to
     //     *   use if the model does not have a library.
-    //     * @param containerModel The model that will import the searched results. 
-    //     * @param sourceFrame The frame that contains the model to import the 
-    //     * searched results. 
+    //     * @param containerModel The model that will import the searched results.
+    //     * @param sourceFrame The frame that contains the model to import the
+    //     * searched results.
     //     */
     //    public GraphPatternSearchEditor(CompositeEntity entity, Tableau tableau,
     //            LibraryAttribute defaultLibrary, NamedObj containerModel,
@@ -132,9 +132,9 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     //
     //        _containerModel = containerModel;
     //        _sourceFrame = sourceFrame;
-    //        
+    //
     //        setDefaultCloseOperation(HIDE_ON_CLOSE);
-    //        
+    //
     //    }
 
     /**
@@ -144,11 +144,11 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
      * @param tableau The tableau responsible for this frame.
      * @param defaultLibrary An attribute specifying the default library to
      *   use if the model does not have a library.
-     * @param containerModel The model that will import the searched results. 
-     * @param sourceFrame The frame that contains the model to import the 
-     * searched results. 
-     * @param simpleSearchFrame The Simple Search Frame instance that opens 
-     * this frame. 
+     * @param containerModel The model that will import the searched results.
+     * @param sourceFrame The frame that contains the model to import the
+     * searched results.
+     * @param simpleSearchFrame The Simple Search Frame instance that opens
+     * this frame.
      */
     public GraphPatternSearchEditor(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary, NamedObj containerModel,
@@ -173,21 +173,21 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     ////                         public methods                    ////
 
     /**
-     * Close this window. 
+     * Close this window.
      */
     public void closeFrame() {
         dispose();
     }
 
     /**
-     * Fetch the search criteria of the graph pattern specified in this frame. 
-     * 
-     * @param searchCriteria The search criteria object to be set with 
-     * the graph pattern criteria information. 
-     * @exception NameDuplicationException Thrown if there are duplicated names 
-     * of the attributes. 
-     * @exception IllegalActionException Thrown if there is an illegal action  
-     * in setting the attribute name. 
+     * Fetch the search criteria of the graph pattern specified in this frame.
+     *
+     * @param searchCriteria The search criteria object to be set with
+     * the graph pattern criteria information.
+     * @exception NameDuplicationException Thrown if there are duplicated names
+     * of the attributes.
+     * @exception IllegalActionException Thrown if there is an illegal action
+     * in setting the attribute name.
      * @exception MalformedStringException Thrown if error occurs while parsing
      *  the expression.
      */
@@ -207,14 +207,14 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
             attributesList = searchCriteria.getAttributes();
         }
 
-        // Get the attributes from the pattern and add to the list. 
+        // Get the attributes from the pattern and add to the list.
         List<NamedObj> attributes = pattern.attributeList();
 
         for (NamedObj attribute : attributes) {
 
             // Fetch the attribute criteria specified in the AttributeMatcher.
-            // Since the database can only search on the attribute name, only 
-            // search on these parts. 
+            // Since the database can only search on the attribute name, only
+            // search on these parts.
             if (attribute instanceof AttributeMatcher) {
                 GTIngredientsAttribute gtIngredientsAttribute = ((AttributeMatcher) attribute)
                         .getCriteriaAttribute();
@@ -237,8 +237,8 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
                     }
                 }
-                // The AttributeMatcher itself should not be added as an 
-                // attribute, so just skip it. 
+                // The AttributeMatcher itself should not be added as an
+                // attribute, so just skip it.
                 continue;
 
             }
@@ -293,7 +293,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
             } else if (entity instanceof ComponentEntity) {
 
-                // Fetch the information from the AtomicActorMatcher. 
+                // Fetch the information from the AtomicActorMatcher.
                 if (entity instanceof AtomicActorMatcher) {
                     GTIngredientsAttribute gtIngredientsAttribute = ((AtomicActorMatcher) entity)
                             .getCriteriaAttribute();
@@ -313,8 +313,8 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
                         }
                     }
-                    // Skip adding the AtomicActorMatching to the component 
-                    // entities. 
+                    // Skip adding the AtomicActorMatching to the component
+                    // entities.
                     continue;
                 }
 
@@ -323,7 +323,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
         }
 
-        // The pattern GTIngredients attributes from the configure window. 
+        // The pattern GTIngredients attributes from the configure window.
         GTIngredientsAttribute patternGtIngredientsAttribute = pattern
                 .getCriteriaAttribute();
 
@@ -406,8 +406,8 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     }
 
     /**
-     * Get the MoMl of the pattern of the model from this frame. 
-     * 
+     * Get the MoMl of the pattern of the model from this frame.
+     *
      * @return The MoML of the pattern in this frame.
      */
     public String getPatternMoML() {
@@ -417,10 +417,10 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     }
 
     /**
-     * Indicates whether the pattern in this frame is empty. 
-     * 
+     * Indicates whether the pattern in this frame is empty.
+     *
      * @return true - if the pattern is empty.<br>
-     *  false - if the pattern is not empty. 
+     *  false - if the pattern is not empty.
      */
     public boolean isPatternEmpty() {
 
@@ -444,26 +444,26 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
             }
         }
 
-        // Check the ports in the pattern. 
+        // Check the ports in the pattern.
         List<Port> portsList = pattern.portList();
 
         if (portsList != null && portsList.size() > 0) {
             return false;
         }
 
-        // Check the relations in the pattern. 
+        // Check the relations in the pattern.
         List<Relation> relationsList = pattern.relationList();
         if (relationsList != null && relationsList.size() > 0) {
             return false;
         }
 
-        // Check the component and composite entities of the pattern. 
+        // Check the component and composite entities of the pattern.
         if (pattern.entityList().size() > 0) {
             return false;
 
         }
 
-        // The pattern GTIngredients attributes from the configure window. 
+        // The pattern GTIngredients attributes from the configure window.
         GTIngredientsAttribute patternGtIngredientsAttribute = pattern
                 .getCriteriaAttribute();
 
@@ -484,11 +484,11 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     }
 
     /**
-     * Update and refresh the pattern contained in this frame. This methods 
+     * Update and refresh the pattern contained in this frame. This methods
      * receives the MoML of the pattern, converts it to the model and display
-     * in this frame. 
-     * 
-     * @param moml The MoML of the pattern. 
+     * in this frame.
+     *
+     * @param moml The MoML of the pattern.
      */
     public void updatePattern(String moml) {
 
@@ -505,7 +505,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     protected void _addMenus() {
 
         super._addMenus();
@@ -520,11 +520,11 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
         _viewMenu.remove(4);
         _viewMenu.remove(4);
 
-        // Remove the fullscreen and open container tool bar icon. 
+        // Remove the fullscreen and open container tool bar icon.
         _toolbar.remove(6);
         _toolbar.remove(6);
 
-        // Remove the match actions icons from the tool bar. 
+        // Remove the match actions icons from the tool bar.
         _toolbar.remove(_toolbar.getComponentCount() - 1);
         _toolbar.remove(_toolbar.getComponentCount() - 1);
 
@@ -549,7 +549,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
             _toolbar.add(jButton);
         }
 
-        //        // Add the menu of opening simple search window. 
+        //        // Add the menu of opening simple search window.
         //        SimpleSearchAction simpleSearchAction = new SimpleSearchAction();
         //        GUIUtilities.addToolBarButton(_toolbar, simpleSearchAction);
 
@@ -561,22 +561,22 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     }
 
     //
-    //    
+    //
     //    protected RunnableGraphController _createActorGraphController() {
     //        return new DBSearchFrameController();
     //
     //    }
 
     /**
-     * Close the pattern search window without asking anything. 
-     * 
+     * Close the pattern search window without asking anything.
+     *
      * <p>When the user is closing this window, it just hides for the simple
      * search frame. So this does not require to ask whether the user wants to
      * save or not.</p>
-     * 
-     * @return true to close the window. 
+     *
+     * @return true to close the window.
      */
-    
+
     protected boolean _close() {
 
         if (isModified()) {
@@ -644,7 +644,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
             super.actionPerformed(e);
 
             // Perform the clicking of the search button from the simple
-            // search frame to perform the search. 
+            // search frame to perform the search.
             _simpleSearchFrame.clickSearchButton(e);
 
         }
@@ -728,7 +728,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     //                            .getMenuShortcutKeyMask()));
     //        }
     //
-    //        //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //        ////                public  methods                               ////
     //
     //        public void actionPerformed(ActionEvent e) {

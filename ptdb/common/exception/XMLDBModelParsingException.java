@@ -21,23 +21,23 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 /*
- * 
+ *
  */
 package ptdb.common.exception;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// XMLDBModelParsingException
 
 /**
- * Exception for document or MOML parsing errors. 
- * 
+ * Exception for document or MOML parsing errors.
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1

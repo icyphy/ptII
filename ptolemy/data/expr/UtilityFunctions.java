@@ -271,13 +271,13 @@ public class UtilityFunctions {
      *  This specialized method is called by the CachedMethod class and used
      *  to provide a better return type.
      *  @param firstArrayType The type of the predicate function.
-     *  @return The type of the result, which is an array of the 
+     *  @return The type of the result, which is an array of the
      *   firstArrayType arguments.  The length of the array type
      *   may be unknown.
      *  @exception IllegalActionException If the types of the array argument
      *   is not an Array.
      */
-    public static Type concatenateReturnType(Type firstArrayType) 
+    public static Type concatenateReturnType(Type firstArrayType)
             throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
@@ -1949,7 +1949,7 @@ public class UtilityFunctions {
 
             if (index != -1) {
                 // Everything after the trailing /
-                shortLibraryName = library.substring(index + 1);                
+                shortLibraryName = library.substring(index + 1);
             }
         }
 

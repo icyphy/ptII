@@ -183,7 +183,7 @@ public class Queue extends Transformer {
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
-    
+
     /** Declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      *  @exception IllegalActionException If the causality interface

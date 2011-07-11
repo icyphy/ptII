@@ -54,7 +54,7 @@ import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 import ptolemy.vergil.kernel.Link;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OntologyGraphModel
 
 /** A graph model for graphically manipulating ontology models. Most of this
@@ -82,7 +82,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         _linkSet = new HashSet();
         _update();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -111,8 +111,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             dispatchGraphEvent(e);
         }
     }
-    
-    /** Get the concept model which maps all nodes in the graph to the 
+
+    /** Get the concept model which maps all nodes in the graph to the
      *  {@link Concept} elements in the
      *  ontology model.
      *  @return The concept model.
@@ -162,7 +162,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             return null;
         }
     }
-    
+
     /** Return the node model for the given object.  If the object is not
      *  a node, then return null. The nodes in an ontology model should be
      *  either {@link Concept Concepts} or Ptolemy
@@ -183,7 +183,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
         return super.getNodeModel(node);
     }
-    
+
     /** Get the relation model. The only relations represented in the ontology
      *  should be {@link ConceptRelation ConceptRelations}.
      *  @return The relation model.
@@ -191,7 +191,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
     public RelationModel getRelationModel() {
         return _relationModel;
     }
-    
+
     /** Return the semantic object corresponding to the given node, edge,
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  If the argument is an instance of Locatable,
@@ -209,7 +209,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
         return super.getSemanticObject(element);
     }
-    
+
     /** Delete a node from its parent graph and notify
      *  graph listeners with a NODE_REMOVED event.
      *  @param eventSource The source of the event that will be dispatched,
@@ -224,10 +224,10 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         NamedObjNodeModel model = (NamedObjNodeModel) getNodeModel(node);
         model.removeNode(eventSource, node);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Update the graph model.  This is called whenever a change request is
      *  executed.  In this class the internal set of link objects is
      *  verified to be correct.
@@ -307,7 +307,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Check to make sure that there is a Link object representing
      *  the given relation.
      *  @param relation The relation to be checked.
@@ -367,26 +367,26 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
         _linkSet.add(link);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The set of all links in the model. */
     private Set<Link> _linkSet;
-    
+
     /** The model of concepts in the ontology model. */
     private ConceptModel _conceptModel = new ConceptModel();
-    
+
     /** The model of relations in the ontology model. */
     private RelationModel _relationModel = new RelationModel();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** The model for an icon that represents concepts in the ontology model.
      */
     public class ConceptModel extends NamedObjNodeModel {
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -434,7 +434,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             return _getEdgeIterator(node, false);
         }
 
-        
+
         /** Remove the given node from the model.  The node is assumed
          *  to be a Locatable belonging to an entity.
          *  @param eventSource The source of the event directing the removal of
@@ -498,10 +498,10 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             request.setUndoable(true);
             container.requestChange(request);
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
-        
+
         /** Return an iterator over the edges coming into or out of the given
          *  Concept node. The iterator is constructed by removing any links
          *  that do not have the given node as either head or tail, depending
@@ -536,16 +536,16 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 }
             }
             return conceptLinkList.iterator();
-        }        
+        }
     }
- 
+
     /** The model for relations between concepts in the ontology.
      */
     public class RelationModel implements MutableEdgeModel {
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        
+
         /** Return true if the head of the given edge can be attached to the
          *  given node.
          *  @param edge The edge to attach, which is assumed to be a Link object.
@@ -565,7 +565,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         public boolean acceptTail(Object edge, Object tail) {
             return _acceptConnection(edge, tail);
         }
-        
+
         /** Return a MoML String that will delete the given edge from the
          *  Ptolemy model.
          *  @param edge The edge to be removed.
@@ -612,7 +612,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         public boolean isDirected(Object edge) {
             return true;
         }
-        
+
         /** Remove the given edge and delete its associated relation.
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
@@ -647,7 +647,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             request.setUndoable(true);
             container.requestChange(request);
         }
-        
+
         /** Connect the given edge to the given head node. If the specified
          *  head is null, then any pre-existing relation associated with
          *  this edge will be deleted.
@@ -660,7 +660,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         public void setHead(final Object edge, final Object head) {
             _setHeadOrTail(edge, head, true);
         }
-        
+
         /** Connect the given edge to the given tail node. If the specified
          *  tail is null, then any pre-existing relation associated with
          *  this edge will be deleted.
@@ -671,12 +671,12 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @see #getTail(Object)
          */
         public void setTail(final Object edge, final Object tail) {
-            _setHeadOrTail(edge, tail, false);    
+            _setHeadOrTail(edge, tail, false);
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
-     
+
         /** Return true if the given edge can be attached to the
          *  given node.
          *  @param edge The edge to attach, which is assumed to be a Link.
@@ -690,7 +690,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 return false;
             }
         }
-        
+
         /** Return MoML to remove a relation in the specified container.
          *  @param container The direct container of the ontology relation in
          *   the Ptolemy model, which should be the Ontology.
@@ -702,7 +702,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             return "<deleteRelation name=\"" + relation.getName(container)
                     + "\"/>\n";
         }
-        
+
         /** Return either the head or tail object depending on the value of the
          *  isHead parameter.
          *  @param linkHead The head object of the relation.
@@ -718,7 +718,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 return linkTail;
             }
         }
-        
+
         /** Return either the head or tail port depending on the value of the
          *  isHead parameter.
          *  @param conceptHead The concept head object of the relation.
@@ -730,14 +730,14 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 Flowable conceptTail, boolean isHead) {
             Flowable concept = (Flowable) _getHeadOrTail(
                     (NamedObj) conceptHead, (NamedObj) conceptTail, isHead);
-            
+
             if (isHead) {
                 return concept.getIncomingPort();
             } else {
                 return concept.getOutgoingPort();
             }
         }
-        
+
         /** Append moml to the given buffer that connects a link with the
          *  given head or tail.  If the relation argument is non-null, then that
          *  relation is used, and null is returned.  Otherwise, a new
@@ -757,7 +757,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @param linkRelation The relation being linked.
          *  @param isHead True if the head of the relation is being linked,
          *   false if the tail of the relation is being linked.
-         *  @return The name of the relation being linked. 
+         *  @return The name of the relation being linked.
          */
         private String _linkHeadOrTail(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
@@ -847,7 +847,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 return null;
             }
         }
-        
+
         /** Connect the given edge to the given head or tail node.
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
@@ -964,9 +964,9 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 }
             });
             request.setUndoable(true);
-            container.requestChange(request);            
+            container.requestChange(request);
         }
-        
+
         /** Return MoML to unlink a relation with the given head or tail in the
          *  specified container.
          *  @param container The container that holds the ontology relation,
@@ -986,7 +986,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 headOrTailPort = conceptHeadOrTail.getIncomingPort();
             } else {
                 headOrTailPort = conceptHeadOrTail.getOutgoingPort();
-            }            
+            }
             return "<unlink port=\"" + headOrTailPort.getName(container)
                     + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }

@@ -497,7 +497,7 @@ public class Display extends AbstractPlaceableActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Free up memory when closing. */
     protected void cleanUp() {
         _tableau = null;

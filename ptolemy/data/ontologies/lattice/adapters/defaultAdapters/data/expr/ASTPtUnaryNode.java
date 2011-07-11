@@ -75,17 +75,17 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
      *  logical not operations if they are defined in the LatticeOntologySolver's model.
      *  If the concept functions are not defined or the operation is bitwise not, then
      *  the constraint is just between the node and its child node.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        
+
         ptolemy.data.expr.ASTPtUnaryNode node = (ptolemy.data.expr.ASTPtUnaryNode) _getNode();
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
-        
+
         if (node.isMinus()) {
             ConceptFunction negateFunction = null;
-            ConceptFunctionDefinitionAttribute negateDefinition = 
+            ConceptFunctionDefinitionAttribute negateDefinition =
                 (ConceptFunctionDefinitionAttribute) (_solver
                         .getContainedModel())
                         .getAttribute(LatticeOntologySolver.NEGATE_FUNCTION_NAME);
@@ -98,7 +98,7 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
             }
         } else if (node.isNot()) {
             ConceptFunction notFunction = null;
-            ConceptFunctionDefinitionAttribute notDefinition = 
+            ConceptFunctionDefinitionAttribute notDefinition =
                 (ConceptFunctionDefinitionAttribute) (_solver
                         .getContainedModel())
                         .getAttribute(LatticeOntologySolver.NOT_FUNCTION_NAME);
@@ -108,7 +108,7 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
                     setAtLeast(node, new ConceptFunctionInequalityTerm(
                             notFunction, childNodeTerms));
                 }
-            }          
+            }
         }
 
         return super.constraintList();

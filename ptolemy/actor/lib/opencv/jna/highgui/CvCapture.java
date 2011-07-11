@@ -5,10 +5,10 @@ import com.sun.jna.PointerType;
 import com.sun.jna.ptr.PointerByReference;
 
 public class CvCapture extends PointerType {
-    public CvCapture(){
+    public CvCapture() {
         super();
     }
-    public CvCapture(Pointer p){
+    public CvCapture(Pointer p) {
         super(p);
     }
     public PointerByReference getPointerByReference() {

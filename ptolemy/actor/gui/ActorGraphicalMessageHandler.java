@@ -68,7 +68,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
         boolean addButton = false;
         Object [] result = options;
         if (throwable instanceof KernelException) {
-            Nameable nameable1 = ((KernelException)throwable).getNameable1(); 
+            Nameable nameable1 = ((KernelException)throwable).getNameable1();
             if (nameable1 instanceof NamedObj) {
                 addButton = true;
             }
@@ -82,11 +82,11 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
                     break;
                 }
             }
-        } 
+        }
         if (addButton) {
             result = new Object[options.length + 1];
             System.arraycopy(options, 0, result, 0, options.length);
-            result[options.length] = "Go To Actor"; 
+            result[options.length] = "Go To Actor";
         }
         return result;
     }
@@ -99,7 +99,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
     protected void _showNameable(Throwable throwable) {
         Nameable nameable1 = null;
         if (throwable instanceof KernelException) {
-            nameable1 = ((KernelException)throwable).getNameable1(); 
+            nameable1 = ((KernelException)throwable).getNameable1();
         } else if (throwable instanceof KernelRuntimeException) {
             Iterator nameables = ((KernelRuntimeException)throwable).getNameables().iterator();
             while (nameables.hasNext()) {
@@ -126,7 +126,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
                 }
                 configuration.openModel((NamedObj)container);
             } catch (KernelException ex) {
-                // FIXME: Could be an endless loop here if 
+                // FIXME: Could be an endless loop here if
                 // we keep failing to open container.
                 throw new InternalErrorException(nameable1, ex,
                         "Could not open " + nameable1.getFullName());

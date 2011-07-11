@@ -1,5 +1,5 @@
 /* The PingToken holds a timestamp it was generated at.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -32,10 +32,10 @@ import ptolemy.data.Token;
 ///////////////////////////////////////////////////////////////////
 //// PingToken
 
-/** The PingToken holds a timestamp it was generated at. It's used for 
+/** The PingToken holds a timestamp it was generated at. It's used for
  *  measuring the roundtrip latency.
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)

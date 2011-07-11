@@ -164,8 +164,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     }
 
     /** Clean up by freeing memory.  After calling cleanup(), do not call
-     *  rerun().   
-     */   
+     *  rerun().
+     */
     public void cleanup() {
         // The next line removes the static backward compatibility
         // filters, which is probably not what we want if we
@@ -192,7 +192,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // _toplevel and _workspace are protected variables so
         // setting it to null will (hopefully) cause the
         // garbage collector to collect them
-        
+
         // Set toplevel to null so that the Manager is collected.
         _toplevel = null;
 
@@ -314,7 +314,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     ////                         private inner classes             ////
 
     /** Wait for the run to finish and the unload the model.
-     */   
+     */
     private class UnloadThread extends Thread {
         public void run() {
             waitForFinish();

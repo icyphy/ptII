@@ -91,7 +91,7 @@ public class PtidesPreemptiveEDFDirector
      */
     public StringBuffer generateAsseblyFile() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
@@ -101,7 +101,7 @@ public class PtidesPreemptiveEDFDirector
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code;
         }
-        
+
         // Get all actors that are interruptDevices. Then for each of
         // these actors, generate a name for it, and put the name
         // along with this actor into a HashMap.
@@ -232,7 +232,7 @@ public class PtidesPreemptiveEDFDirector
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
-        
+
         code.append(getCodeGenerator().comment(
                 "Platform dependent initializatoin code of the PtidesDirector."));
 
@@ -252,7 +252,7 @@ public class PtidesPreemptiveEDFDirector
         StringBuffer code = new StringBuffer();
 
         code.append(super.generatePreinitializeCode());
-        
+
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
@@ -262,7 +262,7 @@ public class PtidesPreemptiveEDFDirector
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
-        
+
         code.append(_templateParser.getCodeStream().getCodeBlock(
                 "preinitPDBlock"));
 
@@ -306,7 +306,7 @@ public class PtidesPreemptiveEDFDirector
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return sharedCode;
         }
-        
+
         _modelStaticAnalysis();
 
         _templateParser.getCodeStream().clear();
@@ -329,11 +329,11 @@ public class PtidesPreemptiveEDFDirector
         List args = new LinkedList();
         for (Actor sensor : sensors.keySet()) {
             if (sensor instanceof GPInputHandler) {
-                args.add("IntDisable(INT_GPIO" + 
+                args.add("IntDisable(INT_GPIO" +
                         ((GPInputHandler)sensor).pad.stringValue() + ");" + _eol);
             } else {
                 throw new IllegalActionException("Only GPIO inputs are supported " +
-                		"as sensors.");
+                                "as sensors.");
             }
         }
         for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
@@ -341,7 +341,7 @@ public class PtidesPreemptiveEDFDirector
         }
         for (Actor sensor : sensors.keySet()) {
             if (sensor instanceof GPInputHandler) {
-                args.add("IntEnable(INT_GPIO" + 
+                args.add("IntEnable(INT_GPIO" +
                         ((GPInputHandler)sensor).pad.stringValue() + ");" + _eol);
             } else {
                 throw new IllegalActionException("Only GPIO inputs are supported " +
@@ -382,7 +382,7 @@ public class PtidesPreemptiveEDFDirector
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
-        
+
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
         for (Actor actor : actuators.keySet()) {

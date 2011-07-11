@@ -53,7 +53,7 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  * Flip image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -77,13 +77,13 @@ public class ObjectDetect extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
         pathName = new StringAttribute(this, "pathName");
         pathName.setExpression("C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_default.xml");
    }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////       
+    ////                     ports and parameters                  ////
     /** The name of the file to write to. The default
      *  value of this parameter is "haarcascade_frontalface_default.xml"
      */
@@ -92,7 +92,7 @@ public class ObjectDetect extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
 
@@ -109,7 +109,7 @@ public class ObjectDetect extends Transformer {
             _objectSeq = cvHaarDetectObjects (_srcFrame, _cascade, _storage, 1.11, 4, 0, size.byValue());
 
             output.send(0, new ObjectToken(_objectSeq));
-            
+
 //            draw_object_circle(_objectSeq,_srcFrame);
 //            output.send(0, new ObjectToken(_srcFrame));
         }
@@ -120,18 +120,18 @@ public class ObjectDetect extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-         
-        //FIXME: dummy call for CvHaarClassifierCascade. 
+
+        //FIXME: dummy call for CvHaarClassifierCascade.
         //       That causes crash before calling a function of cv library.
         IplImage dummy_img = cvCreateImage(new CvSize(60,60).byValue(), IPL_DEPTH_8U, 1);
         cvEqualizeHist (dummy_img, dummy_img);
         dummy_img.release();
 
-        
+
         String cascade_name = pathName.getExpression();
         //String cascade_name = "C:/temp/haarcascade_frontalface_default.xml";
         _cascade = new CvHaarClassifierCascade(cvLoad (cascade_name, null, null, null));
-        if(_storage == null){
+        if (_storage == null) {
             _storage = cvCreateMemStorage (0);
         }
         cvClearMemStorage (_storage);
@@ -142,23 +142,23 @@ public class ObjectDetect extends Transformer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-//        if(_cascade != null){
+//        if (_cascade != null) {
 //            _cascade.release();
 //        }
-//        if(_storage != null){
+//        if (_storage != null) {
 //            _storage.release();
 //        }
-//        if(_objectSeq != null){
+//        if (_objectSeq != null) {
 //            _storage.release();
 //        }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 //    private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
 //        int i = 0;
 //        int objTotal = 0;
-//        if(objs != null) objTotal = objs.total;
+//        if (objs != null) objTotal = objs.total;
 //
 //        for (i = 0; i < objTotal; i++) {
 //            Pointer r = cvGetSeqElem (objs, i);
@@ -173,11 +173,11 @@ public class ObjectDetect extends Transformer {
 //
 //    }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _srcFrame;
-//    private IplImage _dstFrame; 
+//    private IplImage _dstFrame;
     private CvHaarClassifierCascade _cascade;
     private CvMemStorage _storage;
     private CvSeq _objectSeq;

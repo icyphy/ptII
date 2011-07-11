@@ -49,7 +49,7 @@ public class ShortTokenHandler implements TokenHandler<ShortToken> {
 
     /** Convert ShortToken to a byte stream using an algorithm defined in the DataOutputStream.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
-     *  
+     *
      *  @param token The token to be converted to the byte stream.
      *  @param outputStream The byte stream to write the token to.
      *  @exception IOException If cannot write to the stream.
@@ -61,9 +61,9 @@ public class ShortTokenHandler implements TokenHandler<ShortToken> {
 
     /** Reads a short from the inputStream and converts it to the ShortToken.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
-     *  
+     *
      *  @param inputStream The stream that contains the token.
-     *  @param tokenType The type of the token. Should be ShortToken or it's derivatives. 
+     *  @param tokenType The type of the token. Should be ShortToken or it's derivatives.
      *  @return The token that arrived on the stream.
      *  @exception IOException If the stream cannot be read.
      */

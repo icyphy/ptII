@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor generates discrete events by sampling the input signal whenever
- the <i>trigger</i> input is present. 
+ the <i>trigger</i> input is present.
  This sampler will send to the output whatever input occurs
  at a sample time; if the input is absent, the output will be
  absent.
@@ -141,7 +141,7 @@ public class Sampler extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         boolean hasTrigger = false;
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -149,7 +149,7 @@ public class Sampler extends Transformer {
                 hasTrigger = true;
             }
         }
-        
+
         // Read the input and send it to the output if a trigger has arrived.
         int width = Math.min(input.getWidth(), output.getWidth());
         for (int i = 0; i < input.getWidth(); i++) {

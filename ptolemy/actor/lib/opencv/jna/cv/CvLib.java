@@ -13,7 +13,7 @@ public class CvLib implements Library {
     }
 
     public static native void cvSmooth (Pointer src, Pointer dst, int soomthtype, int size1, int size2, double sigma1, double sigma2) ;
-    
+
     public static final int CV_BLUR_NO_SCALE = 0;
     public static final int CV_BLUR          = 1;
     public static final int CV_GAUSSIAN      = 2;

@@ -64,7 +64,7 @@ public class ImageDisplay extends Sink {
 
         //cvNamedWindow ("Display", 1);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     public void initialize() throws IllegalActionException {
@@ -73,9 +73,9 @@ public class ImageDisplay extends Sink {
         cvNamedWindow ("Display", 1);
     }
 
-    
+
     /** Display IplImage.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -91,7 +91,7 @@ public class ImageDisplay extends Sink {
             _frame = (Pointer)inputObject;
             //_frame = cvCloneImage((IplImage)inputObject);
             // Read the next frame.
-            
+
             cvShowImage ("Display", _frame);
             //_frameNum++;
             //cvSaveImage("c:/temp/test_cap" + _frameNum + ".png",_frame);
@@ -101,7 +101,7 @@ public class ImageDisplay extends Sink {
          }
         return super.postfire();
     }
- 
+
     /** Close window.
      *  @exception IllegalActionException If thrown by the super class.
      */
@@ -110,7 +110,7 @@ public class ImageDisplay extends Sink {
         //cvReleaseImage(new PointerByReference(_frame));
         cvDestroyWindow ("Display");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -49,17 +49,17 @@ import ptdb.kernel.database.OracleXMLDBConnection;
 
 /**
  * JUnit test for testing the SetupManager class.
- * 
- * 
+ *
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestSetupManager
 
 @RunWith(PowerMockRunner.class)
@@ -69,13 +69,13 @@ import ptdb.kernel.database.OracleXMLDBConnection;
 @SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
 public class TestSetupManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 				      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Test the SetupManager.getSetupParameters() method. <p> The conditions for
      * this test case:<br/>
-     * 
+     *
      * - The connection was done and the parameters are returned successfully.
      * </p>
      * @exception Exception Thrown if the test fails and the exception was not
@@ -85,7 +85,7 @@ public class TestSetupManager {
     public void testGetSetupParameters() throws Exception {
 
         DBConnectorFactory.loadDBProperties();
-        
+
         SetupManager setupManager = new SetupManager();
 
 //        PowerMock.mockStatic(DBConnectorFactory.class);
@@ -114,7 +114,7 @@ public class TestSetupManager {
     /**
      * Test the SetupManager.getSetupParameters() method. <p> The conditions for
      * this test case:<br/>
-     * 
+     *
      * - The connection was not setup. </p>
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
@@ -147,7 +147,7 @@ public class TestSetupManager {
     /**
      * Test the SetupManager.testConnection() method. <p> The conditions for
      * this test case:<br/>
-     * 
+     *
      * - The setup parameters are correct and the test should be successful.
      * </p>
      * @exception Exception Thrown if the test fails and the exception was not
@@ -156,17 +156,17 @@ public class TestSetupManager {
     @Test
     public void testTestConnection() throws Exception {
 
-        
-        
+
+
         SetupManager setupManager = new SetupManager();
 
-        
-        
-        
-        
+
+
+
+
         try {
 //            DBConnectorFactory.loadDBProperties();
-            
+
             SetupParameters setupParam = setupManager.getSetupParameters();
 
             setupManager.testConnection(setupParam);
@@ -181,7 +181,7 @@ public class TestSetupManager {
     /**
      * Test the SetupManager.testConnection() method. <p> The conditions for
      * this test case:<br/>
-     * 
+     *
      * - The setup parameters are incorrect and the test should throw an
      * exception. </p>
      * @exception Exception Thrown if the test fails and the exception was not
@@ -198,7 +198,7 @@ public class TestSetupManager {
         boolean isSuccessful = false;
 
         try {
-//            DBConnectorFactory.loadDBProperties();    
+//            DBConnectorFactory.loadDBProperties();
 
             setupManager.testConnection(setupParam);
         } catch (DBConnectionException e) {
@@ -216,7 +216,7 @@ public class TestSetupManager {
     /**
      * Test the SetupManager.testConnection() method. <p> The conditions for
      * this test case:<br/>
-     * 
+     *
      * - The setup parameters is null. </p>
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
@@ -249,36 +249,36 @@ public class TestSetupManager {
     /**
      * Test the SetupManager.updateConnection() method. <p> The conditions for
      * this test case:<br/>
-     * 
+     *
      * - The setup parameters are correct. </p>
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
      */
     @Test
     public void testUpdateConnection() throws Exception {
-      
+
         SetupManager setupManager = new SetupManager();
-        
+
         SetupParameters oldParam = setupManager.getSetupParameters();
-        
+
         PowerMock.mockStatic(DBConnectorFactory.class);
 
-       
+
         DBConnectorFactory.loadDBProperties();
-        
+
         PowerMock.expectLastCall().atLeastOnce();
-        
-     
+
+
         PowerMock.replayAll();
-        
-        
+
+
         SetupParameters setupParam = new SetupParameters("D:/Whatever", "testing.dbxml", "testing_cache.dbxml");
-        
+
         try {
 
             setupManager.updateDBConnectionSetupParameters(setupParam);
             assertTrue("Completed the update.", true);
-            
+
         } catch (DBConnectionException e) {
 
             fail("An exception was thrown" + e.getMessage());
@@ -290,7 +290,7 @@ public class TestSetupManager {
     /**
      * Test the SetupManager.updateConnection() method. <p> The conditions for
      * this test case:<br/>
-     * 
+     *
      * - The setup parameters are null. </p>
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
@@ -303,7 +303,7 @@ public class TestSetupManager {
         SetupManager setupManager = new SetupManager();
 
         SetupParameters oldParam = setupManager.getSetupParameters();
-        
+
         boolean isSuccessful = false;
 
         try {
@@ -317,11 +317,11 @@ public class TestSetupManager {
         if (!isSuccessful) {
             fail("Updated completed without throwing an exception when it should.");
             setupManager.updateDBConnectionSetupParameters(oldParam);
-            
+
         }
     }
-    
-    
+
+
 //    static {
 //        DBConnectorFactory.loadDBProperties();
 //    }

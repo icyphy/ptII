@@ -40,7 +40,7 @@ public class SensorHandler extends InputDevice {
     /**
      * Construct a SensorHandler adapter.
      * @param actor The associated actor.
-     * 
+     *
      */
     public SensorHandler(ptolemy.domains.ptides.lib.SensorHandler actor) {
         super(actor);

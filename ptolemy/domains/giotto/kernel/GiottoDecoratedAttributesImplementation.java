@@ -85,7 +85,7 @@ public class GiottoDecoratedAttributesImplementation extends
         super(container, decorator.getFullName().replaceAll("\\.", "_"));
 
         //Get all the actors seen by the Director and add a WCET attribute paramater equal to the default execution time value
-        //also add a parameter to the container that has the WCET for all the actors inside... ie this will propogate information 
+        //also add a parameter to the container that has the WCET for all the actors inside... ie this will propogate information
         //out
         if (_debugging) {
             _debug("inside GiottoDecoratedAttributesImplementation Constructor.");
@@ -125,7 +125,7 @@ public class GiottoDecoratedAttributesImplementation extends
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *  WARNING: don't use this constructor director. This should only be used
-     *  by the MoMLParser. 
+     *  by the MoMLParser.
      *  @param containerOfDecorator The container of the decorator.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an

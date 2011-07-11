@@ -29,14 +29,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.common.dto;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RenameModelTask
 
 /**
  * A data transfer object that holds the information of the model that its name
  * is required to be changed along with the new name.
- * 
- * 
+ *
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -47,22 +47,22 @@ package ptdb.common.dto;
 
 public class RenameModelTask {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					  ////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Construct the object and set the member variables for it.
-     * 
+     *
      * @param existingMode The model that its name need to be changed.
      * @param newModelName The new name for the model.
      */
     public RenameModelTask(XMLDBModel existingMode, String newModelName) {
-        
+
         _existingModel = existingMode;
         _newModelName = newModelName;
     }
-    
-    
+
+
     /**
      * Return the existing model set in the object.
      * @return The existing model set in the object.
@@ -71,7 +71,7 @@ public class RenameModelTask {
     public XMLDBModel getExistingModel() {
         return _existingModel;
     }
-    
+
     /**
      * Return the new name for the model.
      * @return The new name for the model.
@@ -80,19 +80,19 @@ public class RenameModelTask {
     public String getNewModelName() {
         return _newModelName;
     }
-    
-    
+
+
     /**
      * Set the existing model that its name need to be changed.
      * @param existingModel The model that its name needs to be changed.
      * @see #getExistingModel
      */
     public void setExistingModel(XMLDBModel existingModel) {
-        
+
         _existingModel = existingModel;
-        
+
     }
-    
+
     /**
      * Set the new model name.
      * @param newModelName The new model name.
@@ -101,13 +101,13 @@ public class RenameModelTask {
     public void setNewModelName(String newModelName) {
         _newModelName = newModelName;
     }
-    
-    //////////////////////////////////////////////////////////////////////
-    ////                private variables                                 ////
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     /** The model which its name need to be changed. */
     private XMLDBModel _existingModel;
-    
+
     /** The new name for the model. */
     private String _newModelName;
 

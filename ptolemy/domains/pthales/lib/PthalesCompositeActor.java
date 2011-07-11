@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  A composite actor imposes the use of PthalesIOPort
  as they contain needed values used by PThalesDirector.
  A PthalesCompositeActor can contain actors from different model (as SDF),
- but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
+ but the port must be a PthalesIOPort, because of the ArrayOL parameters.
 
  @author R&eacute;mi Barr&egrave;re
  @see ptolemy.actor.TypedIOPort
@@ -164,7 +164,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     ////                     public method                         ////
 
     /** Compute iteration number of the actor,
-     * which is the number of times internal entities are called. 
+     * which is the number of times internal entities are called.
      * and set corresponding attribute.
      * @param portIn the input port
      * @param sizes dimensions sizes of the input
@@ -215,7 +215,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     }
 
     /** Compute iteration number of the actor,
-     * which is the number of times internal entities are called. 
+     * which is the number of times internal entities are called.
      * and set corresponding attribute
      * @param portIn the input port
      * @param sizes dimensions sizes of the input
@@ -226,7 +226,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     }
 
     /** Set iteration number of the actor,
-     * which is the number of times internal entities are called. 
+     * which is the number of times internal entities are called.
      * and set corresponding attribute
      * @param repetition The number of times this actor is fired.
      */
@@ -296,8 +296,8 @@ public class PthalesCompositeActor extends TypedCompositeActor {
         }
     }
 
-    ///////////////////////////////////////////////////////
-    ////              protected variables              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The name of the total repetitions parameter. */
     protected static String _REPETITIONS = "repetitions";

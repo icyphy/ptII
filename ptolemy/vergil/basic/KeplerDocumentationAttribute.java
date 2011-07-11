@@ -192,7 +192,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public void createInstanceFromExisting(
             KeplerDocumentationAttribute documentationAttribute) {
-        if(documentationAttribute != null && documentationAttribute.attributeList() != null ){
+        if (documentationAttribute != null && documentationAttribute.attributeList() != null ) {
           Iterator attributes = documentationAttribute.attributeList().iterator();
           while (attributes.hasNext()) {
               ConfigurableAttribute attribute = (ConfigurableAttribute) attributes
@@ -230,7 +230,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
               }
           }
         }
-        
+
     }
 
     /** Write a MoML description of this object with the specified

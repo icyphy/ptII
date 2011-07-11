@@ -77,7 +77,7 @@ import diva.gui.toolbox.FigureIcon;
 /** This is a graph editor frame for ontology solver models. This class is
  *  largely adapted from {@link ptolemy.vergil.actor.ActorGraphFrame
  *  ActorGraphFrame}.
- * 
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -86,7 +86,7 @@ import diva.gui.toolbox.FigureIcon;
  */
 public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         ActionListener {
-    
+
     /** Construct a frame associated with the specified ontology solver model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
      *  frame appear. This is typically done by calling show() on the controlling
@@ -127,10 +127,10 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
      */
     public void actionPerformed(ActionEvent e) {
     }
-    
+
     /** Dispose of this frame.
      *  Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
+     *  this model from getting garbage collected.  This method invokes the
      *  dispose() method of the superclass,
      *  {@link ptolemy.vergil.basic.ExtendedGraphFrame}.
      */
@@ -152,7 +152,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         _instantiateEntityAction = null;
         _layoutAction = null;
         _debugMenuListener = null;
-        
+
         super.dispose();
     }
 
@@ -170,7 +170,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
         _insertOntologyAction = new InsertOntologyAction();
         _layoutAction = new LayoutAction();
-        
+
         _saveInLibraryAction = new SaveInLibraryAction();
         _importLibraryAction = new ImportLibraryAction();
         _instantiateAttributeAction = new InstantiateAttributeAction();
@@ -200,7 +200,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
         GUIUtilities.addHotKey(_getRightComponent(),
                 _instantiateEntityAction);
-        
+
         // Create the ontology menu.
         _ontologyMenu = new JMenu("Ontology");
         _ontologyMenu.setMnemonic(KeyEvent.VK_O);
@@ -228,7 +228,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             debugMenuItems[i].addActionListener(_debugMenuListener);
             _debugMenu.add(debugMenuItems[i]);
         }
-        
+
         // Even though the OntologySolverGraphController adds no menu items
         // or toolbar buttons, this call is necessary to add the hot key
         // for the ontology controller look inside action.
@@ -240,7 +240,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     /** Create a new graph pane. Note that this method is called in constructor
      *  of the base class, so it must be careful to not reference local variables
      *  that may not have yet been created.
-     * 
+     *
      *  @param entity The object to be displayed in the pane.
      *  @return The pane that is created.
      */
@@ -267,7 +267,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     /** The graph menu. */
     protected JMenu _graphMenu;
-    
+
     /** The ontology menu. */
     protected JMenu _ontologyMenu;
 
@@ -279,7 +279,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     /** The action for importing a library of components. */
     protected Action _importLibraryAction;
-    
+
     /** The action for inserting an ontology into the ontology solver model. */
     protected Action _insertOntologyAction;
 
@@ -288,7 +288,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
-    
+
     /** Listener for debug menu commands. */
     protected DebugMenuListener _debugMenuListener;
 
@@ -304,10 +304,10 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     /** The most recent location for instantiating a class. */
     private String _lastLocation = "";
-    
+
     /** Prototype ontology for rendering. */
     private static Location _prototypeOntology;
-    
+
     static {
         CompositeEntity container = new CompositeEntity();
 
@@ -329,15 +329,15 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     /** Listener for debug menu commands. */
     public static class DebugMenuListener implements ActionListener {
-        
+
         /** React to a menu command.
          *  @param e The event that is received to be reacted to.
          */
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
-            
-            if (actionCommand.equals("Check Monotonicity of Concept Functions")) {                    
+
+            if (actionCommand.equals("Check Monotonicity of Concept Functions")) {
                 MessageHandler.message("This function is not implemented yet.");
             }
         }
@@ -400,18 +400,18 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// InsertOntologyAction
 
     /** An action to insert an ontology into the ontology solver model. */
     private class InsertOntologyAction extends AbstractAction {
-        
+
         /** Create a new action to instantiate an entity. */
         public InsertOntologyAction() {
             super("Insert Ontology");
             putValue("tooltip", "Insert an Ontology into the Ontology Solver");
-            
+
             // We only need to instantiate this IconController in order to
             // render the figure for the insert ontology button on the toolbar
             IconController toolbarIconController = new IconController(_controller);
@@ -425,7 +425,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                     KeyEvent.VK_I, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
-            
+
             // Initialize the default ontology directory to null in the
             // constructor because the current directory may be changed later
             // before this action is executed for the first time.
@@ -441,7 +441,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             if (_ontologyDirectory == null) {
                 _ontologyDirectory = _directory;
             }
-            
+
             Query query = new Query();
             query.setTextWidth(60);
             query.addFileChooser("ontologyFilename", "Ontology Model Filename",
@@ -460,10 +460,10 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
                 String ontologyFileName = query.getStringValue("ontologyFilename");
                 File ontologyFile = new File(ontologyFileName);
-                
+
                 // Update the ontology directory to the most recent directory visited in the dialog.
                 _ontologyDirectory = new File(ontologyFile.getParent());
-                
+
                 String sourceURL = "";
                 try {
                     sourceURL = ontologyFile.toURI().toURL().toString();
@@ -471,7 +471,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                     report("Error getting ontology model file URL: ", ex);
                 }
                 String source = " source=\"" + sourceURL + "\"";
-                
+
                 String ontologyName = ontologyFile.getName();
                 ontologyName = ontologyName.substring(0, ontologyName.indexOf("."));
 
@@ -492,7 +492,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                 context.requestChange(request);
             }
         }
-        
+
         /** Holds the most recent directory visited in the file dialog when
          *  selecting an ontology file.
          */

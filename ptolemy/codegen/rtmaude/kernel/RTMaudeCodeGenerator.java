@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Settable;
 *
 */
 public class RTMaudeCodeGenerator extends CodeGenerator {
-    /** 
+    /**
      * Create a new instance of the RTMaude code generator.
      * @param container The container.
      * @param name      The name of the code generator.
@@ -169,7 +169,7 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
     }
 
     /** The default path of the Maude program.
-     * FIXME: Users may need to change this. 
+     * FIXME: Users may need to change this.
      */
     String maudeCommand = "/usr/local/share/maude/maude.intelDarwin";
 

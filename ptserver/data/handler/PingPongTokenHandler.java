@@ -1,6 +1,6 @@
 /*
  PingPongTokenHandler converts tokens from bytestream and back.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,9 +41,9 @@ import ptserver.data.PongToken;
 //// PingPongTokenHandler
 
 /**
- * PingPongTokenHandler converts tokens from bytestream and back. 
+ * PingPongTokenHandler converts tokens from bytestream and back.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

@@ -21,20 +21,20 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptdb.gui;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PTDBBasicFrame
 
 /**
- * The basic functions for the PTDB frames to be implemented to support the 
- * common functions. 
- * 
+ * The basic functions for the PTDB frames to be implemented to support the
+ * common functions.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -44,11 +44,11 @@ package ptdb.gui;
  */
 public interface PTDBBasicFrame {
 
-    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                public  methods                               ////
 
     /**
-     * Perform the close action of that window. 
+     * Perform the close action of that window.
      */
     public void closeFrame();
 }

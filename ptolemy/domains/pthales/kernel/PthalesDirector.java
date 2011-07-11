@@ -56,7 +56,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * A director for multidimensional dataflow.
  * This is based on Array-OL, as described by:
  * <ol>
@@ -65,12 +65,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  * Signal Processing Specification," Technical Report 6113,
  * INRIA, Orsay, France.
  * </ol>
- * 
+ *
  * A more detailed documentation of the Pthales domain can be found in
  * a technical report currently under preparation and accessible at:
  * svn+ssh://source.eecs.berkeley.edu/chess/ealpapers/10/Pthales/TechReport
  * [FIXME: the tech. report should eventually be made public].
- * 
+ *
  * The notation used here is intended to follow the spirit of
  * SpearDE [FIXME: Reference?], from Thales, a software system
  * based on Array-OL. In this notation, unlike Boulet's,
@@ -91,7 +91,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * stated, the parameters do not support strides.
  * Ports contain the following parameters:
  * <ol>
- * 
+ *
  * <li> <i>size</i>: This is a parameter of each output port
  * that specifies the size of the array written in that output
  * port. All dimensions must be specified. This parameter
@@ -99,17 +99,17 @@ import ptolemy.kernel.util.NameDuplicationException;
  * from the other parameters. In addition, every input
  * port of a composite actor that contains a PthalesDirector
  * must also have such a parameter. [FIXME: true?]
- * 
+ *
  * <li> <i>base</i>: This mandatory parameter gives the base location
  * (origin) of the output or input array at which an actor begins
  * writing or reading at each iteration of this director.
  * All dimensions must be specified. The order in which they are
  * specified does not matter.
- * 
+ *
  * <li> <i>pattern</i>: This is a parameter of each port that
  * specifies the shape of the portion of the array produced or consumed
  * on that port at each firing of the actor within an iteration.
- * The number of firings of an actor within an iteration is specified 
+ * The number of firings of an actor within an iteration is specified
  * by the "repetitions" parameter of the actor (see below).
  * Moreover, if an actor reads from or writes to the port
  * sequentially (using get() and send() methods), then the pattern
@@ -150,14 +150,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  * base location in each dimension for each successive firing
  * of the actor within an iteration. This is a property of an
  * output or an input port of an actor.
- * 
+ *
  * </ol>
- * 
+ *
  * In addition, actors must contain the following parameter:
  * <ol>
- * <li> <i>repetitions</i>: This is a required parameter 
+ * <li> <i>repetitions</i>: This is a required parameter
  * for every actor in the Pthales domain. It is an array of
- * positive integers of the form "{ k, l, ... }". It specifies 
+ * positive integers of the form "{ k, l, ... }". It specifies
  * the number of times an actor fires within an iteration. This
  * number is equal to the product of all elements in the repetitions
  * vector. So, "{2, 4}" specifies that the actor should fire a total
@@ -196,7 +196,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * SDF, allowing these Pthales models to be nested within SDF
  * or within Pthales, which will also allow it to be nested
  * within modal models.
- * 
+ *
  * @author Edward A. Lee, Eric Lenormand, Stavros Tripakis
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -419,7 +419,7 @@ public class PthalesDirector extends SDFDirector {
                         while (port.hasToken(i)) { //when to stop?
                             Token t = port.get(i);
                             port.sendInside(i, t);
-                            
+
                             wasTransferred = true;
                         }
                     }

@@ -116,8 +116,8 @@ public class Subscriber extends TypedAtomicActor {
     public StringParameter channel;
 
     /** Specification of whether the data is subscribed globally.
-     *  If this is set to true, then this subscriber will see values 
-     *  published by a publisher anywhere in the model references the same 
+     *  If this is set to true, then this subscriber will see values
+     *  published by a publisher anywhere in the model references the same
      *  channel by name. If this is set to false (the default), then only
      *  values published by the publisher that are fired by the same
      *  director are seen by this subscriber.

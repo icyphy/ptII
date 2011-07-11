@@ -916,9 +916,9 @@ public class Port extends NamedObj {
         try {
             Port newObject = (Port) super._propagateExistence(container);
             // FindBugs warns that the cast of container is
-            // unchecked.  
+            // unchecked.
             if (!(container instanceof Entity)) {
-                throw new InternalErrorException(container 
+                throw new InternalErrorException(container
                         + " is not a Entity.");
             } else {
                 newObject.setContainer((Entity) container);

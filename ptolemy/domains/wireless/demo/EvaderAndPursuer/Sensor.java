@@ -208,7 +208,7 @@ public class Sensor extends TypedAtomicActor {
         _declareDelayDependency(input, output, 0.0);
         _declareDelayDependency(signal, output, 0.0);
     }
-    
+
     /** When it receives token from the signal port, which is
      *  used to receive signal from the pursuer or the evader.
      *  it tells what the signal is from by checking the signal header.

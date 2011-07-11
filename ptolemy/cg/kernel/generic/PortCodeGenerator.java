@@ -66,7 +66,7 @@ public interface PortCodeGenerator {
     /** Generates code to check the receiver has a token.
      *  @param channel The channel for which the get code is generated.
      *  @param offset The offset in the array representation of the port.
-     *  @return The code that generates has token from the channel. 
+     *  @return The code that generates has token from the channel.
      *  FIXME: potentially, we could also pass in a boolean that indicates whether
      *  the port the channel resides is a multiport, if it is, then only a static
      *  variable is needed instead of an array of length 1.

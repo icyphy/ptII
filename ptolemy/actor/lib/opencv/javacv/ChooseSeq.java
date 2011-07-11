@@ -39,12 +39,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
-//// Draw circles for the result sequence data 
+//// Draw circles for the result sequence data
 
 /**
  * Draw result
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -65,34 +65,34 @@ public class ChooseSeq extends Transformer {
     public ChooseSeq(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         output1 = new TypedIOPort(this, "output1", false, true);
         output.setTypeEquals(BaseType.OBJECT);
         output1.setTypeEquals(BaseType.INT);
- 
-        
-        
+
+
+
         pathName = new StringAttribute(this, "pathName");
         pathName.setExpression("haarcascade_frontalface_default.xml");
-        
+
         seq1 = new TypedIOPort(this, "sequence1", true, false);
-        seq1.setTypeEquals(BaseType.OBJECT);      
-        
+        seq1.setTypeEquals(BaseType.OBJECT);
+
         seq2 = new TypedIOPort(this, "sequence2", true, false);
-        seq2.setTypeEquals(BaseType.OBJECT);   
-        
+        seq2.setTypeEquals(BaseType.OBJECT);
+
         seq3 = new TypedIOPort(this, "sequence3", true, false);
-        seq3.setTypeEquals(BaseType.OBJECT);   
-        
+        seq3.setTypeEquals(BaseType.OBJECT);
+
         seq4 = new TypedIOPort(this, "sequence4", true, false);
-        seq4.setTypeEquals(BaseType.OBJECT);   
-        
+        seq4.setTypeEquals(BaseType.OBJECT);
+
         seq5 = new TypedIOPort(this, "sequence5", true, false);
-        seq5.setTypeEquals(BaseType.OBJECT);   
+        seq5.setTypeEquals(BaseType.OBJECT);
    }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////       
+    ////                     ports and parameters                  ////
     /** The name of the file to write to. The default
      *  value of this parameter is "haarcascade_frontalface_default.xml"
      */
@@ -104,12 +104,12 @@ public class ChooseSeq extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
 
-    		
-            
+
+
             if (seq1.hasToken(0)) {
                 ObjectToken seqToken1 = (ObjectToken)seq1.get(0);
                 Object seqObject1 = seqToken1.getValue();
@@ -119,15 +119,15 @@ public class ChooseSeq extends Transformer {
                             + seqObject1.getClass());
                 }
                 _objectSeq = (CvSeq)seqObject1;
-               
-                
+
+
                 rotation_angle = 0;
-                
+
             }
-        
-            
-        	
-                
+
+
+
+
                 if (seq2.hasToken(0)) {
                     ObjectToken seqToken2 = (ObjectToken)seq2.get(0);
                     Object seqObject2 = seqToken2.getValue();
@@ -138,16 +138,16 @@ public class ChooseSeq extends Transformer {
                     }
                     CvSeq tester = (CvSeq)seqObject2;
                     int total = tester.total;
-                    if(total != 0) {
-                    	_objectSeq = tester;
-                    	rotation_angle = 25;
+                    if (total != 0) {
+                            _objectSeq = tester;
+                            rotation_angle = 25;
                     }
-                    
-         
+
+
                 }
-            
-                
-             
+
+
+
                     if (seq3.hasToken(0)) {
                         ObjectToken seqToken3 = (ObjectToken)seq3.get(0);
                         Object seqObject3 = seqToken3.getValue();
@@ -156,20 +156,20 @@ public class ChooseSeq extends Transformer {
                                     "Input is required to be an instance of IplImage. Got "
                                     + seqObject3.getClass());
                         }
-                      
-                        
+
+
                         CvSeq tester = (CvSeq)seqObject3;
                         int total = tester.total;
-                        if(total != 0) {
-                        	_objectSeq = tester;
-                        	rotation_angle = 50;
+                        if (total != 0) {
+                                _objectSeq = tester;
+                                rotation_angle = 50;
                         }
-                      
-                        
+
+
                     }
-                
-                    
-              
+
+
+
                         if (seq4.hasToken(0)) {
                             ObjectToken seqToken4 = (ObjectToken)seq4.get(0);
                             Object seqObject4 = seqToken4.getValue();
@@ -178,20 +178,20 @@ public class ChooseSeq extends Transformer {
                                         "Input is required to be an instance of IplImage. Got "
                                         + seqObject4.getClass());
                             }
-                         
-                            
+
+
                             CvSeq tester = (CvSeq)seqObject4;
                             int total = tester.total;
-                            if(total != 0) {
-                            	_objectSeq = tester;
-                            	rotation_angle = -25;
+                            if (total != 0) {
+                                    _objectSeq = tester;
+                                    rotation_angle = -25;
                             }
-                          
-                            
+
+
                         }
-                    
-                        
-                       
+
+
+
                             if (seq5.hasToken(0)) {
                                 ObjectToken seqToken5 = (ObjectToken)seq5.get(0);
                                 Object seqObject5 = seqToken5.getValue();
@@ -200,20 +200,20 @@ public class ChooseSeq extends Transformer {
                                             "Input is required to be an instance of IplImage. Got "
                                             + seqObject5.getClass());
                                 }
-                             
-                                
+
+
                                 CvSeq tester = (CvSeq)seqObject5;
                                 int total = tester.total;
-                                if(total != 0) {
-                                	_objectSeq = tester;
-                                	rotation_angle = -50;
+                                if (total != 0) {
+                                        _objectSeq = tester;
+                                        rotation_angle = -50;
                                 }
-                                
+
                             }
-                        
+
                             output.send(0, new ObjectToken(_objectSeq));
                             output1.send(0, new IntToken(rotation_angle));
-            
+
     }
 
     /** Initialize internal frame.
@@ -222,12 +222,12 @@ public class ChooseSeq extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
     }
-  
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private CvSeq _objectSeq;
     private int rotation_angle;
-   
+
 }

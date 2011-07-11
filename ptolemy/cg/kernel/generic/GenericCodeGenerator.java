@@ -279,7 +279,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
-     *  @return A list of decorated attributes for the target NamedObj. 
+     *  @return A list of decorated attributes for the target NamedObj.
      *  @exception IllegalActionException If thrown while creating a
      *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
      *  creating the decoratedAttributes.
@@ -405,7 +405,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             RemoveClasses removeClasses = new RemoveClasses();
             removeClasses.put("ptolemy.vergil.basic.DocViewerFactory", null);
             MoMLParser.addMoMLFilter(removeClasses);
-            
+
             // Reset the list each time we parse a parameter set.
             // Otherwise two calls to this method will share params!
             _parameterNames = new LinkedList<String>();
@@ -512,7 +512,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 } finally {
                     // Destroy the top level so that we avoid
                     // problems with running the model after generating code
-                    if (toplevel != null 
+                    if (toplevel != null
                             && toplevel.getManager() != null
                             && toplevel.getManager().getState().equals(Manager.IDLE)) {
                         try {
@@ -568,7 +568,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Return the copyright for this code.
      *  In this base class, the empty string is returned.
-     *  In derived classes, the standard Ptolemy copyright is 
+     *  In derived classes, the standard Ptolemy copyright is
      *  returned within a comment.
      *  @return The copyright.
      */
@@ -912,7 +912,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Return the filter class to find adapters. All
      *  adapters have to extend this class.
-     *  @return The base class for the adapters.  
+     *  @return The base class for the adapters.
      */
     protected Class<?> _getAdapterClassFilter() {
         return CodeGeneratorAdapter.class;
@@ -1022,7 +1022,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Test if the containing actor is in the top level.
      *  @return true if the containing actor is in the top level.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     protected boolean _isTopLevel() throws IllegalActionException {
         return getContainer().getContainer() == null;
@@ -1193,10 +1193,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Return the file extension for generated files.  The file
      *  extension is set to the last package of the
-     *  <i>generatePackage</i> parameter.  For example, if 
-     *  <i>generatePackage</i> is set to 
+     *  <i>generatePackage</i> parameter.  For example, if
+     *  <i>generatePackage</i> is set to
      *  ptolemy.cg.kernel.generic.html", then the extension will
-     *  be ".html".  In this base class, the output file extension 
+     *  be ".html".  In this base class, the output file extension
      *  @return The file extension.
      *  @exception IllegalActionException If getting the value of the
      *  <i>generatorPackage</i> parameter throws it.
@@ -1382,7 +1382,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Return the value of the -generatorPackage or -language command
      *  line argument.
-     *  @return The value of the generatorPackage argument    
+     *  @return The value of the generatorPackage argument
      */
     private static String _getGeneratorPackageValue() {
         // If the user called this with -generatorPackage
@@ -1400,7 +1400,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         .indexOf("language")) != -1) {
             String languageValue = _parameterValues
                 .get(parameterIndex);
-            
+
             boolean foundLanguage = false;
             // Use a two column table to make it easy to add languages
             for (int l = 0; l < _languages.length; l++) {
@@ -1412,7 +1412,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             }
             if (!foundLanguage) {
                 StringBuffer languageError = new StringBuffer();
-                for (int l = 0; l < _languages.length; l++) {        
+                for (int l = 0; l < _languages.length; l++) {
                     if (languageError.length() > 0) {
                         languageError.append(",");
                     }
@@ -1422,7 +1422,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 System.out.println("Warning, -language was \""
                         + languageValue + "\", defaulting to setting "
                         + "generatorPackage to \""
-                        + generatorPackageValue + "\".  " 
+                        + generatorPackageValue + "\".  "
                         + "Acceptable languages are: "
                         + languageError.toString());
             }
@@ -1536,7 +1536,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     private String _outputFileExtension;
 
-    /** Parse the generatorPackageList parameter. 
+    /** Parse the generatorPackageList parameter.
      *  The <i>generatorPackageList</i> parameter is assumed to be
      *  a semicolon ';' or asterix '*' separated list of Java packages
      *  to be searched for packages.

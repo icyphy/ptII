@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class StringSplit extends Transformer {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,16 +67,16 @@ public class StringSplit extends Transformer {
     public StringSplit(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-                
+
         separator = new StringParameter(this, "separator");
         separator.setExpression("\n");
-        
+
         trimSpaces = new Parameter(this, "trimSpaces");
         trimSpaces.setTypeEquals(BaseType.BOOLEAN);
         trimSpaces.setExpression("true");
-        
+
         input.setTypeEquals(BaseType.STRING);
-        
+
         output.setTypeEquals(new ArrayType(BaseType.STRING));
     }
 
@@ -88,7 +88,7 @@ public class StringSplit extends Transformer {
      *  at newline characters.
      */
     public StringParameter separator;
-    
+
     /** If true, then trim spaces around each resulting string.
      *  This is a boolean that defaults to true.
      */
@@ -103,7 +103,7 @@ public class StringSplit extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (input.hasToken(0)) {
             String inputValue = ((StringToken)input.get(0)).stringValue();
             String[] result = inputValue.split(separator.stringValue());

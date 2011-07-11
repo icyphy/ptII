@@ -47,7 +47,7 @@ import com.sun.jna.ptr.PointerByReference;
 /**
  * Flip image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -71,13 +71,13 @@ public class ImageCopy extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
 
@@ -90,9 +90,9 @@ public class ImageCopy extends Transformer {
                         + inputObject.getClass());
             }
             _frame = (Pointer)inputObject;
-            if(_copyFrame == Pointer.NULL){
+            if (_copyFrame == Pointer.NULL) {
                 _copyFrame = cvCloneImage(_frame).getPointer();
-            }else{
+            }else {
                 cvCopy(_frame, _copyFrame, Pointer.NULL);
             }
             output.send(0, new ObjectToken(_copyFrame));
@@ -105,14 +105,14 @@ public class ImageCopy extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _copyFrame = Pointer.NULL;
-        
+
     }
      /** Release image.
      *  @exception IllegalActionException If thrown by the super class.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_copyFrame == Pointer.NULL){
+        if (_copyFrame == Pointer.NULL) {
             cvReleaseImage (new PointerByReference(_copyFrame));
         }
     }
@@ -120,5 +120,5 @@ public class ImageCopy extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Pointer _frame;
-    private Pointer _copyFrame; 
+    private Pointer _copyFrame;
 }

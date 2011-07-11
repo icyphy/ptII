@@ -18,9 +18,9 @@ public class CxcoreLib implements Library {
     static {
         Native.register(LibraryName);
     }
-   
-    //public static native void cvFlip (CvArr src, CvArr dst, int flip_mode) ;    
-    public static native void cvFlip (Pointer src, Pointer dst, int flip_mode);    
+
+    //public static native void cvFlip (CvArr src, CvArr dst, int flip_mode) ;
+    public static native void cvFlip (Pointer src, Pointer dst, int flip_mode);
 
     //public static native IplImage cvCreateImage( CvSize size, int depth, int channels );
     public static native Pointer cvCreateImage( CvSize size, int depth, int channels );
@@ -28,7 +28,7 @@ public class CxcoreLib implements Library {
     public static native void cvReleaseImage (PointerByReference image);
 
     public static native IplImage cvCloneImage( Pointer image );
-    
+
     public static native void cvCopy( Pointer src, Pointer dst, Pointer mask);
 
     public static class IplTileInfo extends PointerType {}

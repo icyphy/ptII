@@ -1,20 +1,20 @@
 /* A Graph Controller for ontology solver models.
  *
  * Below is the copyright agreement for the Ptolemy II system.
- * 
+ *
  * Copyright (c) 2009-2011 The Regents of the University of California. All rights
  * reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -35,11 +35,11 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeController;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OntologySolverGraphController
 
 /** A Graph Controller for ontology solver models.
- * 
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -47,17 +47,17 @@ import diva.graph.NodeController;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class OntologySolverGraphController extends WithIconGraphController {
-    
+
     /** Create a new ontology graph controller object.
      */
     public OntologySolverGraphController() {
         super();
         _createControllers();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the edge controller appropriate for the given edge. In the
      *  ontology solver editor, there are no edges, so this method returns
      *  null.
@@ -68,7 +68,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
     public EdgeController getEdgeController(Object object) {
         return null;
     }
-    
+
     /** Return the node controller appropriate for the given node object. In the
      *  ontology solver editor, all nodes are ontology model objects or
      *  attributes for concept functions or adapter definitions, so the
@@ -111,7 +111,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
         _attributeController.setConfiguration(configuration);
         _ontologyController.setConfiguration(configuration);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -122,7 +122,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
      */
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
-        
+
         _attributeController.addHotKeys(jgraph);
         _ontologyController.addHotKeys(jgraph);
     }
@@ -137,13 +137,13 @@ public class OntologySolverGraphController extends WithIconGraphController {
     protected void _createControllers() {
         _attributeController = new AttributeInOntologyController(this);
         _ontologyController = new OntologyEntityController(this);
-        
+
         // The port controller is not used in the ontology model editor,
         // but it must be initialized since it is referenced in the parent
         // class.
         _portController = new ExternalIOPortController(this);
     }
-    
+
     /** Initialize interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass
      *  AbstractGraphController. This initialization cannot be done in the
@@ -156,7 +156,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
         super.initializeInteraction();
 
         GraphPane pane = getGraphPane();
-        
+
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
         _selectionDragger.addSelectionModel(getSelectionModel());
@@ -165,19 +165,19 @@ public class OntologySolverGraphController extends WithIconGraphController {
         // disappear properly.
         _selectionDragger.setConsuming(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The controller for attribute objects in the model. */
     protected AttributeInOntologyController _attributeController;
-    
+
     /** The controller for ontologies in the ontology solver model. */
     protected OntologyEntityController _ontologyController;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The selection interactor for drag-selecting nodes */
     private SelectionDragger _selectionDragger;
 }

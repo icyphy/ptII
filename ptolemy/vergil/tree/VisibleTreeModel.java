@@ -118,7 +118,7 @@ public class VisibleTreeModel extends FullTreeModel {
     public void valueForPathChanged(TreePath path, Object newValue) {
         // Do nothing.
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -100,7 +100,7 @@ public class GiottoReceiver extends Receiver {
     /** Generate code for putting tokens from the receiver.
      *  @param sourcePort The source port.
      *  @param offset The offset of the port.
-     *  @param token The token.    
+     *  @param token The token.
      *  @return The generated put code.
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
@@ -112,7 +112,7 @@ public class GiottoReceiver extends Receiver {
         NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
                 .getContainer().getContainer());
 
-        // The source's channel as well as the offsetis irrelevant here because 
+        // The source's channel as well as the offsetis irrelevant here because
         // we use the token as the sourceRef instead.
         // The sink is actually also irrelevant, since we will get rid of it later.
         ProgramCodeGeneratorAdapter.Channel source = new Channel(sourcePort, 0);
@@ -177,10 +177,10 @@ public class GiottoReceiver extends Receiver {
 
     /** Each receiver is associated with a director, return that director.
      *  @return The director associated with this receiver.
-     *  @exception IllegalActionException 
-     *  
+     *  @exception IllegalActionException
+     *
      *  FIXME: this is not exactly correct.
-     *  This is probably because the information of the receiver is in the director of 
+     *  This is probably because the information of the receiver is in the director of
      *  the container?
      */
     protected StaticSchedulingDirector _getDirectorForReceiver()
@@ -190,9 +190,9 @@ public class GiottoReceiver extends Receiver {
 
     /** Each receiver is associated with a component of some executive director.
      *  @return The executive director if the component associated with this receiver.
-     *  @exception IllegalActionException 
-     *  
-     *  FIXME: This is a patch for hierarchical Giotto codegen, need to find a better way of doing this.  
+     *  @exception IllegalActionException
+     *
+     *  FIXME: This is a patch for hierarchical Giotto codegen, need to find a better way of doing this.
      */
     protected StaticSchedulingDirector _getExecutiveDirectorForReceiver()
             throws IllegalActionException {

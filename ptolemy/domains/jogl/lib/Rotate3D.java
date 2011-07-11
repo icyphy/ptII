@@ -12,13 +12,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 /**
- * An actor that is used for rotating 3D objects. 
+ * An actor that is used for rotating 3D objects.
  *
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
 public class Rotate3D extends Transformer{
-    
+
     /**
      *  Construct a Rotate3D object in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -43,7 +43,7 @@ public class Rotate3D extends Transformer{
         angle = new PortParameter(this, "angle");
         angle.setTypeEquals(BaseType.DOUBLE);
         angle.setExpression("0.0");
-        
+
         axis = new PortParameter(this, "axis");
         axis.setTypeEquals(new ArrayType(BaseType.DOUBLE, 3));
         axis.setExpression("{1.0, 0.0, 0.0}");
@@ -56,7 +56,7 @@ public class Rotate3D extends Transformer{
      */
     public PortParameter angle;
 
-    /** Array specifying the axis of rotation to be 
+    /** Array specifying the axis of rotation to be
      *  applied to the input. This is an array of length 3, where
      *  ||(x, y, z)|| = 1 (if not, the GL will normalize this vector). The three
      *  elements specify a vector with respect to x (horizontal),
@@ -87,13 +87,13 @@ public class Rotate3D extends Transformer{
             gl.glLoadIdentity();
             double angleValue = ((DoubleToken)angle.getToken()).doubleValue();
             ArrayToken axisValue = ((ArrayToken) axis.getToken());
-            
+
             gl.glRotated(
-                    angleValue, 
-                    ((DoubleToken) axisValue.getElement(1)).doubleValue(), 
-                    ((DoubleToken) axisValue.getElement(2)).doubleValue(), 
+                    angleValue,
+                    ((DoubleToken) axisValue.getElement(1)).doubleValue(),
+                    ((DoubleToken) axisValue.getElement(2)).doubleValue(),
                     ((DoubleToken) axisValue.getElement(3)).doubleValue()
-            ); 
+            );
             output.send(0, new ObjectToken(gl));
         }
 

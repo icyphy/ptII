@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 A class that decorates all the actors seen by the Giotto director.
-This is a modification of Bert's DecoratedAttributesImplementation class. 
+This is a modification of Bert's DecoratedAttributesImplementation class.
 
 The functionality is divided in two classes (DecoratedAttributes
 and this class) to solve dependency issues.
@@ -81,7 +81,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
         super(container, decorator.getFullName().replaceAll("\\.", "_"));
 
         //Get all the actors seen by the Director and add a WCET attribute paramater equal to the default execution time value
-        //also add a parameter to the container that has the WCET for all the actors inside... ie this will propogate information 
+        //also add a parameter to the container that has the WCET for all the actors inside... ie this will propogate information
         //out
         if (_debugging) {
             _debug("inside GiottoDecoratedAttributesImplementation Constructor.");
@@ -193,7 +193,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *  WARNING: don't use this constructor director. This should only be used
-     *  by the MoMLParser. 
+     *  by the MoMLParser.
      *  @param containerOfDecorator The container of the decorator.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
@@ -255,7 +255,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
      *  yourself if you want it there).
      *  The result is a DecoratedAttributes object with no container.
      *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If unable to clone 
+     *  @exception CloneNotSupportedException If unable to clone
      *  from the super class
      *  @return The new Attribute.
      */

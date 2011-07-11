@@ -307,21 +307,21 @@ public class LineReader extends Source {
     protected BufferedReader _reader;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Open the file and read the first line, putting its value into
      *  the _currentLine variable. Also, read the second line, putting
      *  its value in the _nextLine variable.
-     *  @throws IllegalActionException If the file cannot be read.
+     *  @exception IllegalActionException If the file cannot be read.
      */
     protected void _openAndReadFirstTwoLines() throws IllegalActionException {
         if (_debugging) {
             _debug("Opening file: " + ((StringToken)fileOrURL.getToken()).stringValue());
         }
         _reader = fileOrURL.openForReading();
-        
+
         if (_reader == null) {
-            throw new IllegalActionException(this, "Failed to read file: " 
+            throw new IllegalActionException(this, "Failed to read file: "
                     + fileOrURL.getDisplayName());
         }
 
@@ -332,7 +332,7 @@ public class LineReader extends Source {
 
             for (int i = 0; i <= numberOfLines; i++) {
                 _currentLine = _reader.readLine();
-                
+
                 if (_debugging) {
                     _debug("Skipping line: " + _currentLine);
                 }
@@ -344,7 +344,7 @@ public class LineReader extends Source {
                 }
             }
             _nextLine = _reader.readLine();
-            
+
             if (_debugging) {
                 _debug("Read line: " + _nextLine);
             }

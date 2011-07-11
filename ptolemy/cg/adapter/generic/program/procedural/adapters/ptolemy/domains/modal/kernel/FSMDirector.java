@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 Code generator adapter associated with the FSMDirector class. This class
 is also associated with a code generator.
 
-@author Shanna-Shaye Forbes 
+@author Shanna-Shaye Forbes
 @version $Id$
 @since Ptolemy II 8.1
 @Pt.ProposedRating Red (sssf)

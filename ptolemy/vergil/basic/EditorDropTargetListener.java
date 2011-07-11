@@ -66,7 +66,7 @@ import diva.util.UserObjectContainer;
 /**
  * A drop target listener that provides drag and drop for the Ptolemy editor.
  *
- * <p>Derived classes could extend this class to provide a different 
+ * <p>Derived classes could extend this class to provide a different
  * drag and drop interface.</p>
  *
  * @author Sven Koehler, Contributor: Christopher Brooks.
@@ -77,8 +77,8 @@ import diva.util.UserObjectContainer;
  */
 public class EditorDropTargetListener implements DropTargetListener {
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Accept the event if the data is a known key.
      *  This is called while a drag operation is ongoing,
@@ -396,8 +396,8 @@ public class EditorDropTargetListener implements DropTargetListener {
         _dropTarget = dropTarget;
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                    protected methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return the figure that is an icon of a NamedObj and is
      *  under the specified point, or null if there is none.
@@ -472,14 +472,14 @@ public class EditorDropTargetListener implements DropTargetListener {
         return null;
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                    protected variables                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** Associated DropTarget. */
     protected EditorDropTarget _dropTarget = null;
 
-    ///////////////////////////////////////////////////////////////
-    ////                     private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Currently highlighted drop target.
     private NamedObj _highlighted = null;

@@ -1,18 +1,18 @@
 /* A concept that represents the concept values of entries in a record token.
- * 
+ *
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -31,7 +31,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept that represents the concept values of entries in a record token.
- *  
+ *
  *  A conceptable model element such as a port or node in a Ptolemy expression
  *  could contain a token value that is a record data type.  A record token
  *  is a token that is a collection of multiple token values of different
@@ -45,11 +45,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  wanted to assign a concept to the token above from the constAbstractInterpretation
  *  ontology, it would be:
  *  {x = Positive, y = Positive, pixelOn = BooleanTrue}
- *  
+ *
  *  This code is adapted from the
  *  {@link ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept}
  *  implementation.
- *  
+ *
  *  @author Charles Shelton, Ben Lickly, Elizabeth Latronico
  *  @version $Id$
  *  @since Ptolemy II 9.0
@@ -60,13 +60,13 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
-    
+
     /** Create a new record concept, belonging to the given
      *  ontology, with an automatically generated name.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @return The newly created RecordConcept.
-     *  @throws InternalErrorException If there .
+     *  @exception InternalErrorException If there .
      */
     public static RecordConcept createRecordConcept(Ontology ontology) {
         try {
@@ -83,14 +83,14 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
                   + "Original exception:" + e.toString());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Compare this concept with the given concept.
      *  Returns an int value that corresponds to the ordering between
      *  the elements as given in the CPO interface.
-     * 
+     *
      *  @param concept The concept with which we are comparing.
      *  @return CPO.HIGHER if this concept is above the given concept,
      *          CPO.LOWER if this concept is below the given concept,
@@ -123,9 +123,9 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
         if (!isSubset && !isSuperset) {
             return CPO.INCOMPARABLE;
         }
-        
+
         Set<String> commonFields = _commonKeys(righthandSide);
-        
+
         boolean seenHigher = false;
         boolean seenLower = false;
         boolean seenIncomparable = false;
@@ -139,8 +139,8 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
             case CPO.SAME:         break;
             default:
                 throw new IllegalActionException(this, "ConceptGraph compare " +
-                		"did not return one of the defined CPO values. " +
-                		"Return value was " + result + ". This should " +
+                                "did not return one of the defined CPO values. " +
+                                "Return value was " + result + ". This should " +
                                 "never happen.");
             }
         }
@@ -154,21 +154,21 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
         } else if (!seenHigher && !seenIncomparable && isSuperset) {
             return CPO.LOWER;
         } else {
-            return CPO.INCOMPARABLE;            
+            return CPO.INCOMPARABLE;
         }
     }
 
     /** Compute the greatest lower bound (GLB) of this and another concept.
-     *  
+     *
      *  @param concept The other concept
      *  @return The concept that is the GLB of this and the given concept.
      */
     public Concept greatestLowerBound(Concept concept) {
         return _getBoundWithOtherConcept(concept, BoundType.GREATESTLOWER);
-    }    
+    }
 
     /** Compute the least upper bound (LUB) of this and another concept.
-     *  
+     *
      *  @param concept The other concept
      *  @return The concept that is the LUB of this and the given concept.
      */
@@ -178,8 +178,8 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private methods                        ////
-    
+    ////                         private methods                   ////
+
     /** Return the concept that is the correct bound for the given two
      *  concepts.
      *  @param concept1 The first concept.
@@ -203,10 +203,10 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
                                     "LEASTUPPER");
         }
     }
-    
+
     /** Compute either the least upper bound or the greatest lower bound of
      *  this and another concept.
-     *  
+     *
      *  @param concept The other concept.
      *  @param boundType Specifies the type of bound to be returned; either
      *   GREATESTLOWER or LEASTUPPER.
@@ -234,7 +234,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
                         + boundType + ". Expected either GREATESTLOWER or " +
                                         "LEASTUPPER");
             }
-            
+
             if (concept.equals(otherLatticeEnd)) {
                 return this;
             } else {
@@ -242,10 +242,10 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
             }
         }
     }
-    
+
     /** Compute either the least upper bound or the greatest lower bound of
      *  this and another record concept.
-     *  
+     *
      *  @param concept The other flat token infinite concept
      *  @param boundType Specifies the type of bound to be returned; either
      *   GREATESTLOWER or LEASTUPPER.
@@ -253,19 +253,19 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      */
     private Concept _getBoundWithOtherRecordConcept(
                 RecordConcept concept, BoundType boundType) {
-        RecordConcept result = createRecordConcept(getOntology());        
+        RecordConcept result = createRecordConcept(getOntology());
         Set<String> commonFields = _commonKeys(concept);
-        
+
         // The least upper bound is the record concept that only contains
         // the common fields and the least upper bound of each concept in that
         // field.
         for (String field : commonFields) {
             Concept fieldConcept = _getBoundFromConceptGraph(
                     this.getConcept(field), concept.getConcept(field),
-                        boundType);       
+                        boundType);
             result.putConcept(field, fieldConcept);
         }
-        
+
         // The greatest lower bound is a record concept that includes all the
         // disjoint fields from both records in addition to the greatest lower
         // bounds of each common field.
@@ -275,14 +275,14 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
             for (String field : disjointFields) {
                 result.putConcept(field, this.getConcept(field));
             }
-            
+
             disjointFields = new TreeSet<String>(concept.keySet());
             disjointFields.removeAll(commonFields);
             for (String field : disjointFields) {
                 result.putConcept(field, concept.getConcept(field));
             }
         }
-        
+
         return result;
     }
 
@@ -291,14 +291,14 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
 
     /** Create a new Record concept, belonging to the given
      *  ontology.
-     * 
+     *
      *  @param ontology The ontology to which this RecordConcept belongs.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected RecordConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
           super(ontology);
-    } 
+    }
 
 }

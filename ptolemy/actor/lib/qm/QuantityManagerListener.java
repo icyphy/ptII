@@ -34,8 +34,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.QuantityManager;
 
 
-/** This interface defines a listener for quantity managers. 
- * 
+/** This interface defines a listener for quantity managers.
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -43,27 +43,27 @@ import ptolemy.actor.QuantityManager;
  *  @Pt.AcceptedRating Red (derler)
  */
 public interface QuantityManagerListener {
-    
+
     /** The event that is sent by the quantity manager and processed
      *  by the listener.
      *  @param quantityManager The quantity manager that sent the event.
-     *  @param source The source actor that caused the event in the 
-     *      quantity manager. 
-     *  @param messageId The ID of the message that caused the event in 
+     *  @param source The source actor that caused the event in the
+     *      quantity manager.
+     *  @param messageId The ID of the message that caused the event in
      *      the quantity manager.
      *  @param messageCnt The amount of messages currently being processed
      *      by the quantity manager.
-     *  @param eventType The type of the event. 
-     *  @param time The timestamp of the event. 
+     *  @param eventType The type of the event.
+     *  @param time The timestamp of the event.
      */
-    public void event(QuantityManager quantityManager, Actor source, int messageId, 
-            int messageCnt, double time, 
+    public void event(QuantityManager quantityManager, Actor source, int messageId,
+            int messageCnt, double time,
             EventType eventType);
 
     /** Type of the event. */
-    public static enum EventType { 
+    public static enum EventType {
         /** Token was received. */
-        RECEIVED,  
+        RECEIVED,
         /** Token was sent. */
         SENT
     }

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -31,26 +31,26 @@ package ptdb.common.dto;
 import java.util.List;
 
 /**
- * 
+ *
  * The attribute that need to be stored or retrieved from the database.
- * 
+ *
  * <p> It is used as a data transfer object. </p>
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 public class XMLDBAttribute {
 
     /**
-     * Construct an XMLDBAttribute instance with the given attribute name and 
-     * type. 
-     * 
+     * Construct an XMLDBAttribute instance with the given attribute name and
+     * type.
+     *
      * @param attributeName The name of the attribute to create.
-     * @param attributeType The type of the attribute to create. 
+     * @param attributeType The type of the attribute to create.
      */
     public XMLDBAttribute(String attributeName, String attributeType) {
         this._attributeName = attributeName;
@@ -59,7 +59,7 @@ public class XMLDBAttribute {
 
     /**
      * Construct a XMLDBAttribute instance with the given attribute name.
-     * 
+     *
      * @param attributeName The name for the given attribute.
      * @param attributeType The type for the given attribute.
      * @param attributeId The it for the given attribute.
@@ -88,7 +88,7 @@ public class XMLDBAttribute {
     /**
      * Return the attribute id.
      * @return The attribute id.
-     * 
+     *
      * @see #setAttributeId
      */
     public String getAttributeId() {
@@ -98,9 +98,9 @@ public class XMLDBAttribute {
     /**
      * Return the attribute name.
      * @return The attribute name.
-     * 
+     *
      * @see #setAttributeName
-     * 
+     *
      */
     public String getAttributeName() {
         return _attributeName;
@@ -109,7 +109,7 @@ public class XMLDBAttribute {
     /**
      * Return the attribute type.
      * @return A string representation of the attribute type.
-     * 
+     *
      * @see #setAttributeType
      */
     public String getAttributeType() {
@@ -119,7 +119,7 @@ public class XMLDBAttribute {
     /**
      * Return the attribute value.
      * @return A string representation of the attribute value.
-     * 
+     *
      * @see #setAttributeValue
      */
     public List<String> getAttributeValues() {
@@ -133,10 +133,10 @@ public class XMLDBAttribute {
     }
 
     /**
-     * Get the attribute list values without checking the attribute's type. 
-     * 
+     * Get the attribute list values without checking the attribute's type.
+     *
      * @return The list of items for the attribute list type.
-     * 
+     *
      *  @see #setAttributeValuesPlain
      */
     public List<String> getAttributeValuesPlain() {
@@ -146,7 +146,7 @@ public class XMLDBAttribute {
     /**
      * Set the attribute Id.
      * @param attributeId the attribute id to be set.
-     * 
+     *
      * @see #getAttributeId
      */
     public void setAttributeId(String attributeId) {
@@ -154,10 +154,10 @@ public class XMLDBAttribute {
     }
 
     /**
-     * Set the name of the attribute. 
-     * 
+     * Set the name of the attribute.
+     *
      * @param attributName The name of the attribute.
-     * 
+     *
      *  @see #getAttributeName
      */
     public void setAttributeName(String attributName) {
@@ -165,11 +165,11 @@ public class XMLDBAttribute {
     }
 
     /**
-     * Set the type of this attribute. 
-     * 
+     * Set the type of this attribute.
+     *
      * @param attributeType The type to set to this attribute.
-     * 
-     * @see #getAttributeType 
+     *
+     * @see #getAttributeType
      */
     public void setAttributeType(String attributeType) {
         _attributeType = attributeType;
@@ -178,7 +178,7 @@ public class XMLDBAttribute {
     /**
      * Set the attribute list value only when the attribute type is list.
      * @param attributeValues The list of attribute values.
-     * 
+     *
      * @see #getAttributeValues
      */
     public void setAttributeValue(List<String> attributeValues) {
@@ -189,10 +189,10 @@ public class XMLDBAttribute {
     }
 
     /**
-     * Set the list values to the attribute regardless of the attribute type. 
-     * 
+     * Set the list values to the attribute regardless of the attribute type.
+     *
      * @param attributeValues The list values to be set to this attribute.
-     * 
+     *
      *  @see #getAttributeValuesPlain
      */
     public void setAttributeValuesPlain(List<String> attributeValues) {
@@ -200,11 +200,11 @@ public class XMLDBAttribute {
     }
 
     /**
-     * Get the String representation of this object information. 
-     * 
-     * @return String representation of the attribute information. 
+     * Get the String representation of this object information.
+     *
+     * @return String representation of the attribute information.
      */
-    
+
     public String toString() {
 
         return super.toString() + "@Name:" + _attributeName + "@Type:"
@@ -220,7 +220,7 @@ public class XMLDBAttribute {
         String attributeNode = "<attribute id='" + _attributeId + "'"
                 + " name='" + _attributeName + "' type='" + _attributeType
                 + "'>";
-        
+
         StringBuffer attributeBuffer = new StringBuffer(attributeNode);
 
         if (_attributeType.equalsIgnoreCase(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
@@ -232,7 +232,7 @@ public class XMLDBAttribute {
                 }
             }
         }
-        
+
         attributeBuffer.append("</attribute>");
 
         attributeNode = attributeBuffer.toString();

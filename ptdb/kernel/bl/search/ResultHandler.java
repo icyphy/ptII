@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -41,8 +41,8 @@ import ptdb.kernel.database.DBConnection;
 //// ResultHandler
 
 /**
- * Handles the results from the searched models, according to different 
- * implementation of the actual handling function. 
+ * Handles the results from the searched models, according to different
+ * implementation of the actual handling function.
  *
  * @author Alek Wang
  * @version $Id$
@@ -57,13 +57,13 @@ public interface ResultHandler {
     ////                         public methods                    ////
 
     /**
-     * Handle the intermediate results that got from a certain ResultHandler 
-     * instance. 
-     * 
-     * @param intermediateResults The intermediate results set to be handled 
-     * in this ResultHandler. 
+     * Handle the intermediate results that got from a certain ResultHandler
+     * instance.
+     *
+     * @param intermediateResults The intermediate results set to be handled
+     * in this ResultHandler.
      * @param resultHandler The ResutHandler instance that gets the passed
-     * intermediate results. 
+     * intermediate results.
      */
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
             ResultHandler resultHandler);
@@ -75,8 +75,8 @@ public interface ResultHandler {
      * @param modelResults The searched model results to be handled.
      * @exception DBConnectionException Database connection problem occurs
      *  during handling the results through searching in the database.
-     * @exception DBExecutionException Thrown from the database layer when 
-     * there is error occurring in the execution. 
+     * @exception DBExecutionException Thrown from the database layer when
+     * there is error occurring in the execution.
      */
 
     public void handleResults(ArrayList<XMLDBModel> modelResults)
@@ -90,29 +90,29 @@ public interface ResultHandler {
      */
     public boolean isSearchCancelled();
 
-    
+
     /**
-     * In the case of getting some models that cannot be parsed or contains 
-     * some error, use this method to pass these error models to store for 
-     * error handling. 
-     * 
-     * @param errorModels The error models. 
+     * In the case of getting some models that cannot be parsed or contains
+     * some error, use this method to pass these error models to store for
+     * error handling.
+     *
+     * @param errorModels The error models.
      */
     public void passErrorModels(List<XMLDBModel> errorModels);
-    
-    
+
+
     /**
-     * Set the DB connection for this result handler.  
-     * 
-     * @param connection The DBConnection instance to be set in this result 
-     *  handler. 
+     * Set the DB connection for this result handler.
+     *
+     * @param connection The DBConnection instance to be set in this result
+     *  handler.
      */
     public void setConnection(DBConnection connection);
 
     /**
      * Notify the search result buffer that the searching is done.
      * @exception DBConnectionException Thrown if the DB connection cannot be
-     * obtained. 
+     * obtained.
      */
     public void wholeSearchDone() throws DBConnectionException;
 

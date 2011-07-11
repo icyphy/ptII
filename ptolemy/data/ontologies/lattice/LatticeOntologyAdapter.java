@@ -1,27 +1,27 @@
 /**
  * The base class for a lattice-based ontology adapter.
- * 
+ *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
- * 
+ *
+ *
  */
 package ptolemy.data.ontologies.lattice;
 
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * The base class for a lattice-based ontology adapter.
- * 
+ *
  * @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -113,7 +113,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
     /**
      * Return the InequalityTerm associated with the given model object.
-     * 
+     *
      * @param object The given model object for which to find the InequalityTerm in
      * the OntologySolver
      * @return The InequalityTerm associated with the model object
@@ -136,7 +136,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * interconnectConstraintType} is set to
      * {@linkplain ConstraintType#SOURCE_GE_SINK SOURCE_GE_SINK} or
      * {@linkplain ConstraintType#EQUALS EQUALS}.
-     * 
+     *
      * @return true if the interconnectConstraintType is for sources, false otherwise
      */
     public boolean isConstraintSource() {
@@ -145,7 +145,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             interconnectConstraintType == ConstraintType.EQUALS;
         return constraintSource;
     }
-    
+
     /** Reset and initialize the LatticeOntologyAdapter. This clears all
      *  the cached constraints and the states of their inequality terms.
      *  @exception IllegalActionException Thrown if
@@ -200,12 +200,12 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     public ConstraintType interconnectConstraintType;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /**
      * Add default constraints for the actor referred to by this OntologyAdapter
      * based on the given ConstraintType.
-     * 
+     *
      * @see ConstraintType
      * @param actorConstraintType The given ConstraintType for the default constraints
      * for the actor referred to by this OntologyAdapter
@@ -234,11 +234,11 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             IOPort port = (IOPort) ports.next();
             _constrainObject(actorConstraintType, port, portList2);
         }
-        
+
         boolean constrainPortConnectionSources = isConstraintSource();
-        for (TypedIOPort port : (List<TypedIOPort>) 
+        for (TypedIOPort port : (List<TypedIOPort>)
                 _getConstraintedPorts(constrainPortConnectionSources)) {
-            
+
             // Add default constraints for multiports with more than one channel.
             if (((TypedIOPort) port).isMultiport() && ((TypedIOPort) port).getWidth() > 1) {
                 _constrainObject(interconnectConstraintType, port,
@@ -269,7 +269,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * Create a new ParseTreeAnnotationEvaluator that is tailored for the
      * ontology. This class parses the user-defined ontology constraint
      * annotations in the model containing the LatticeOntologySolver.
-     * 
+     *
      * @return a new ParseTreeConstraintAnnotationEvaluator object
      */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
@@ -314,7 +314,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * Set default constraints between the given object and a list of objects based
      * on the given constraintType.  The given object is the sink and the list of objects
      * are the sources.
-     * 
+     *
      * @see ConstraintType
      * @param constraintType The given ConstraintType to be used for the default constraints
      * @param object The given object that represents the sink for the default constraints
@@ -353,7 +353,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * sink ports should be constrained. If source ports are constrained, it
      * returns the list of input ports of the associated actor; otherwise, it
      * returns the list of output ports.
-     * 
+     *
      * @param constraintSource The flag that indicates whether source or sink
      * ports are constrained.
      * @return The list of constrained ports.
@@ -402,7 +402,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * component it is.  This method is recursive and
      * will set the default constraints for the OntologyAdapters for all subcomponents
      * of this model component as well.
-     * 
+     *
      * @see ConstraintType
      * @param constraintType The default ConstraintType for generic model component
      * connections; will be used if the model component is not one of the following
@@ -450,7 +450,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
     /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;
-    
+
     /** The list of permanent property constraints. */
     protected List<Inequality> _subHelperConstraints = null;
 

@@ -1,5 +1,5 @@
 /* An interface that displays Petri Net evolution information
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -43,10 +43,10 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
-  
+
  */
 
 package ptolemy.domains.petrinet.kernel;
@@ -58,23 +58,23 @@ import ptolemy.kernel.util.IllegalActionException;
 
    <p>The PetriNetDirector searches its container for actors that implement
    this interface and then calls the openDisplay() and setText() methods.</p>
-  
+
    <p>A class that implements this method could display the the value of
    the setText() method's argument.</p>
 
    @author  Christopher Brooks, based on PetriNetDisplay by Zach Ezzell.
-   @version $Id$ 
+   @version $Id$
    @since Ptolemy II 8.1
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
 public interface PetriNetDisplayer {
-   
+
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////   
+    ////                         public methods                    ////
 
     /** Ensure that the text is placed in the textArea.
-     * 
+     *
      * @exception IllegalActionException occuurs of _openWindow() in
      * the base class throws it.
      */

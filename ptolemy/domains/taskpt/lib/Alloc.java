@@ -1,4 +1,4 @@
-/* An actor that allocates memory. 
+/* An actor that allocates memory.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Alloc
 
 /** An actor that allocates room for Tokens in a (shared) memory.
- *  
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -50,17 +50,17 @@ public class Alloc extends MemoryAccess {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
-     *  the <i>init</i> and <i>size</i> port parameter and define the 
+     *  the <i>init</i> and <i>size</i> port parameter and define the
      *  <i>ptr</i> port as output port. Initialize <i>size</i>
      *  to IntToken with value 1, and <i>init</i> to IntToken with value 0.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */    
+     */
     public Alloc(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -91,8 +91,8 @@ public class Alloc extends MemoryAccess {
     /** Allocate room for Tokens in a (shared) memory. The size is determined
      * by the value of the <i>size</i> PortParameter, the initial value by the
      * <i>init</i> PortParamter.
-     * 
-     * @throws IllegalActionException Thrown if no memory is found.
+     *
+     * @exception IllegalActionException Thrown if no memory is found.
      */
     public void fire() throws IllegalActionException {
 

@@ -3,7 +3,7 @@
 /** For every instance of pattern in stringToEdit, replace pattern with
  *  replacement.
  *  A new string is returned, it is up to the caller to free() it.
- */ 
+ */
 char *replaceString(char *stringToEdit, char *pattern, char *replacement) {
     size_t size = 10;
     char * output = NULL;

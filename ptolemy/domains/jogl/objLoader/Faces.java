@@ -4,7 +4,7 @@
 
 /* Faces stores the information for each face of a model.
 
-   A face is represented by three arrays of indicies for 
+   A face is represented by three arrays of indicies for
    the vertices, normals, and tex coords used in that face.
 
    facesVertIdxs, facesTexIdxs, and facesNormIdxs are ArrayLists of
@@ -12,7 +12,7 @@
 
    renderFace() is supplied with a face index, looks up the
    associated vertices, normals, and tex coords indicies arrays,
-   and uses those arrays to access the actual vertices, normals, 
+   and uses those arrays to access the actual vertices, normals,
    and tex coords data for rendering the face.
 
    CHANGES (Feb 2007)
@@ -48,7 +48,7 @@ public class Faces
   //private DecimalFormat df = new DecimalFormat("0.##");  // 2 dp
 
 
-  public Faces(ArrayList<Tuple3> vs, ArrayList<Tuple3> ns, 
+  public Faces(ArrayList<Tuple3> vs, ArrayList<Tuple3> ns,
                                          ArrayList<Tuple3> ts)
   {
     verts = vs;
@@ -71,7 +71,7 @@ public class Faces
       StringTokenizer st = new StringTokenizer(line, " ");
       int numTokens = st.countTokens();   // number of v/vt/vn tokens
       // create arrays to hold the v, vt, vn indicies
-      int v[] = new int[numTokens]; 
+      int v[] = new int[numTokens];
       int vt[] = new int[numTokens];
       int vn[] = new int[numTokens];
 
@@ -167,7 +167,7 @@ public class Faces
         norm = (Tuple3) normals.get(normIdxs[f] - 1);
         gl.glNormal3f(norm.getX(), norm.getY(), norm.getZ());
       }
-                
+
       if (texIdxs[f] != 0) {   // if there are tex coords, render them
         texCoord = (Tuple3) texCoords.get(texIdxs[f] - 1);
         yTC = texCoord.getY();
@@ -195,7 +195,7 @@ public class Faces
                                  df.format( vert.getZ() ));
 */
     }
-            
+
     gl.glEnd();
   } // end of renderFace()
 

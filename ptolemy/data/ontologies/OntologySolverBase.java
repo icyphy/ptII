@@ -151,7 +151,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *
      * @return The list of PropertyHelpers.
      * @exception IllegalActionException If there is an exception from getting
-     * all the subHelpers. 
+     * all the subHelpers.
      */
     public List<OntologyAdapter> getAllAdapters() throws IllegalActionException {
         NamedObj topLevel = _toplevel();
@@ -283,7 +283,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             return ((CompositeEntity) containedModel)
                     .entityList(Ontology.class);
         }
-        return new LinkedList<Ontology>();        
+        return new LinkedList<Ontology>();
     }
 
     /** Return the ontology for this constraint solver.
@@ -354,7 +354,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             getOntologySolverUtilities().putAttribute(parseTree, attribute);
         }
         return parseTrees.get(attribute);
-    }  
+    }
 
     /** Return the concept value associated with the specified object.
      *  @param object The specified object.
@@ -372,11 +372,11 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public OntologySolverUtilities getOntologySolverUtilities() {
         return _ontologySolverUtilities;
     }
-    
-    /** 
-     * Initialize the solver.  In the base class, only calls reset().  
-     * Subclasses can add functionality. 
-     * @exception IllegalActionException  Thrown if there is a problem 
+
+    /**
+     * Initialize the solver.  In the base class, only calls reset().
+     * Subclasses can add functionality.
+     * @exception IllegalActionException  Thrown if there is a problem
      * initializing the solver.
      */
     public void initialize() throws IllegalActionException {
@@ -391,9 +391,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public void markAsNonSettable(Object object) {
         _nonSettables.add(object);
     }
-    
+
     /**
-     * Reset the solver.  
+     * Reset the solver.
      */
     public void reset() {
         _resolvedProperties = new HashMap<Object, Concept>();
@@ -422,7 +422,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     /** Execute the OntologySolver's algorithm to resolve
      *  which Concepts in the Ontology are assigned to each object in the
      *  model.
-     *  @throws KernelException If the ontology resolution fails.
+     *  @exception KernelException If the ontology resolution fails.
      */
     public abstract void resolveConcepts() throws KernelException;
 
@@ -433,7 +433,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public void setOntologySolverUtilities(OntologySolverUtilities solverUtilities) {
         _ontologySolverUtilities = solverUtilities;
     }
-    
+
     /** Set the resolved property of the specified object.
      *  @param object The specified object.
      *  @param property The specified property.
@@ -451,7 +451,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *  for the specified component. This method is static so it can be
      *  called in any subclass of OntologySolverBase regardless of how many
      *  classes are in between in the inheritance hierarchy.
-     * 
+     *
      *  @param component The specified component.
      *  @param solver The solver for which to get the adapter.
      *  @return The PropertyHelper for the specified component.
@@ -572,7 +572,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     /**
      * Return the top level of the model hierarchy for the model
      * we want to analyze.
-     * 
+     *
      * @return The top level model object as a NamedObj
      */
     protected NamedObj _toplevel() {

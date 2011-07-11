@@ -67,11 +67,11 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        
+
         IfNodeFunction astIfFunction = new IfNodeFunction(
                 (ptolemy.data.expr.ASTPtFunctionalIfNode) _getNode(),
                 getSolver().getOntology(),

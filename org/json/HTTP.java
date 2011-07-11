@@ -66,7 +66,7 @@ public class HTTP {
      * @param string An HTTP header string.
      * @return A JSONObject containing the elements and attributes
      * of the XML string.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static JSONObject toJSONObject(String string) throws JSONException {
         JSONObject     o = new JSONObject();
@@ -121,7 +121,7 @@ public class HTTP {
      * The result will end with two CRLF pairs.
      * @param o A JSONObject
      * @return An HTTP header string.
-     * @throws JSONException if the object does not contain enough
+     * @exception JSONException if the object does not contain enough
      *  information.
      */
     public static String toString(JSONObject o) throws JSONException {

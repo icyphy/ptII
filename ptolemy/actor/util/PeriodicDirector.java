@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Nameable;
  fireAt() on the enclosing executive director to request
  subsequent firings, and refusing to fire (by returning false
  from prefire()) at times that are not multiples of the <i>period</i>.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.0

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -58,11 +58,11 @@ import ptolemy.kernel.util.Attribute;
 public class SearchCriteria {
 
     ///////////////////////////////////////////////////////////////////
-    ////        public methods                                     ////
+    ////                         public methods                    ////
 
     /**
      * Get the attributes criteria from the search criteria.
-     * 
+     *
      * @return All the attributes input by the user as the search criteria.
      * @see #setAttributes
      */
@@ -72,7 +72,7 @@ public class SearchCriteria {
 
     /**
      * Get the graph search criteria from the search criteria.
-     * 
+     *
      * @return The graph search criteria input by the user.
      * @see #setDBGraphSearchCriteria
      */
@@ -81,9 +81,9 @@ public class SearchCriteria {
     }
 
     /**
-     * Get the name of the model from the search criteria. 
-     * 
-     * @return The model name search criteria. 
+     * Get the name of the model from the search criteria.
+     *
+     * @return The model name search criteria.
      * @see #setModelName
      */
     public String getModelName() {
@@ -92,7 +92,7 @@ public class SearchCriteria {
 
     /**
      * Get the MoML of the graph pattern search criteria.
-     * 
+     *
      * @return The MoML of the pattern.
      * @see #setPattnerMoML(String)
      */
@@ -112,7 +112,7 @@ public class SearchCriteria {
 
     /**
      * Set the attribute criteria for the search criteria.
-     * 
+     *
      * @param attributes The attributes input by the user to set in the
      * search criteria.
      * @see #getAttributes
@@ -123,7 +123,7 @@ public class SearchCriteria {
 
     /**
      * Set the graph search criteria for the search criteria.
-     * 
+     *
      * @param dbGraphSearchCriteria The graph search criteria input by the user
      * to set in the search criteria.
      * @see #getDBGraphSearchCriteria
@@ -134,8 +134,8 @@ public class SearchCriteria {
     }
 
     /**
-     * Set the name of the model for the search criteria. 
-     * 
+     * Set the name of the model for the search criteria.
+     *
      * @param modelName The name of the model to be set in the search criteria.
      * @see #getModelName
      */
@@ -145,8 +145,8 @@ public class SearchCriteria {
 
     /**
      * Set the MoML for the graph pattern search criteria.
-     * 
-     * @param patternMoML The MoMl of the pattern to be set in the search 
+     *
+     * @param patternMoML The MoMl of the pattern to be set in the search
      * criteria.
      * @see #getPatternMoML()
      */
@@ -156,7 +156,7 @@ public class SearchCriteria {
 
     /**
      * Set the XQuery search command for the search criteria.
-     * 
+     *
      * @param searchCommand The XQuery search command to set in the search
      * criteria.
      * @see #getSearchCommand
@@ -166,7 +166,7 @@ public class SearchCriteria {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////    private variables                                      ////
+    ////                         private variables                 ////
 
     /**
      * Contains all the specified searching attributes.
@@ -176,12 +176,12 @@ public class SearchCriteria {
     private DBGraphSearchCriteria _dbGraphSearchCriteria;
 
     /**
-     * The name of the model as the search criteria. 
+     * The name of the model as the search criteria.
      */
     private String _modelName;
 
     /**
-     * The moml of the pattern. 
+     * The moml of the pattern.
      */
     private String _patternMoML;
 

@@ -66,10 +66,10 @@ public class Invert extends SharedBufferTransformer {
            throws IllegalActionException, NameDuplicationException {
        super(container, name);
        input.setTypeEquals(BaseType.OBJECT);
-       output.setTypeEquals(BaseType.OBJECT);  
+       output.setTypeEquals(BaseType.OBJECT);
    }
 
-   
+
    ///////////////////////////////////////////////////////////////////
    ////                         protected methods                 ////
 
@@ -86,15 +86,15 @@ public class Invert extends SharedBufferTransformer {
            OpenCV openCV = oio.openCV;
            openCV.copy(oio.img, 0, 0, oio.img.width, oio.img.height, 0,0, oio.img.width, oio.img.height);
            openCV.invert();
-           PImage buf = openCV.image(OpenCV.BUFFER);         
-           oio.img.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);           
+           PImage buf = openCV.image(OpenCV.BUFFER);
+           oio.img.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);
            output.send(0, new ObjectToken(oio));
        }
-   }   
+   }
 
 
    /** Output an OpenCV Object.
-    *  @exception IllegalActionException If thrown while writing to the port.   
+    *  @exception IllegalActionException If thrown while writing to the port.
     */
    protected void _fireCopying() throws IllegalActionException {
        if (input.hasToken(0)) {
@@ -112,7 +112,7 @@ public class Invert extends SharedBufferTransformer {
            PImage buf = openCV.image(OpenCV.BUFFER);
            PImage newImg = new PImage(buf.width, buf.height, buf.format);
            newImg.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);
-           OpenCVImageObject noio = new OpenCVImageObject(openCV, newImg); 
+           OpenCVImageObject noio = new OpenCVImageObject(openCV, newImg);
            output.send(0, new ObjectToken(noio));
        }
    }

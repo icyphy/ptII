@@ -71,10 +71,10 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 /** The PtolemyServer class is responsible for fulfilling simulation
  *  requests.  To do this, the server hosts a servlet through the Jetty
- *  servlet container that enables clients to administer control commands 
- *  for starting, pausing, resuming, and stopping simulations.  The server 
- *  relies on an MQTT message broker for transmitting tokens between the 
- *  client and server.  
+ *  servlet container that enables clients to administer control commands
+ *  for starting, pausing, resuming, and stopping simulations.  The server
+ *  relies on an MQTT message broker for transmitting tokens between the
+ *  client and server.
  *
  * <p>PtolemyServer uses mosquitto from <a href="http://mosquitto.org/download/#in_browser">http://mosquitto.org/download</a>.</p>
  *
@@ -109,7 +109,7 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
 public final class PtolemyServer implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
+    ////                         public variables                  ////
 
     /** The ResourceBundle containing configuration parameters.
      */
@@ -173,7 +173,7 @@ public final class PtolemyServer implements IServerManager {
      *  @param brokerAddress The host address of the MQTT broker.
      *  @param brokerPort The port of the broker.
      *  @param modelDirectory The root directory of where model files are stored.
-     *  @exception IllegalActionException If the server was unable to load the default 
+     *  @exception IllegalActionException If the server was unable to load the default
      *  configuration from the resource file.
      */
     private PtolemyServer(int servletPort, String brokerPath,
@@ -217,7 +217,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  public methods                           ////
+    ////                         public methods                    ////
 
     /** Create the singleton with non-default configuration values.
      *  @param servletPort The port on which the servlet operates.
@@ -234,7 +234,7 @@ public final class PtolemyServer implements IServerManager {
                 brokerPort, modelDirectory);
     }
 
-    /** Shut down the simulation thread by calling the finish() method 
+    /** Shut down the simulation thread by calling the finish() method
      *  on its Manager and removing the task from the server.
      *  @param ticket  Ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to destroy the simulation thread.
@@ -392,7 +392,7 @@ public final class PtolemyServer implements IServerManager {
         return task;
     }
 
-    /** Get the current state of a specific simulation based on the simulation manager's state. 
+    /** Get the current state of a specific simulation based on the simulation manager's state.
      *  @param ticket The ticket reference to the simulation request.
      *  @return The state of the queried simulation.
      *  @exception IllegalActionException If the ticket is invalid or the state
@@ -438,15 +438,15 @@ public final class PtolemyServer implements IServerManager {
         return tokenHandlerMap;
     }
 
-    /** Initialize the Ptolemy server, set up the servlet host, and wait for simulation requests. 
-     *  The following optional command line switches may be used with their accompanying value: 
-     *  -servlet_port, -broker_path (if launching local broker), -broker_address, -broker_port, 
-     *  and -model_dir. The port numbers must be integers, the broker path must be the path 
+    /** Initialize the Ptolemy server, set up the servlet host, and wait for simulation requests.
+     *  The following optional command line switches may be used with their accompanying value:
+     *  -servlet_port, -broker_path (if launching local broker), -broker_address, -broker_port,
+     *  and -model_dir. The port numbers must be integers, the broker path must be the path
      *  to the MQTT broker executable, and the broker address must be the host address.
-     *  
+     *
      *  For example: java -classpath ptserver.PtolemyServer -broker_address
      *  192.168.125.169 -broker_port 1883
-     * 
+     *
      *  @param args Optional command line arguments.
      *  @exception IllegalActionException If the server could not be launched.
      */
@@ -489,10 +489,10 @@ public final class PtolemyServer implements IServerManager {
         }
     }
 
-    /** Get the number of simulation on the server.  The current thread pool implementation 
+    /** Get the number of simulation on the server.  The current thread pool implementation
      *  allows for an infinite number of concurrent simulations rather than limiting the server to
      *  finite amount.
-     *  @return The number of active simulations as well as the queued requests that have not 
+     *  @return The number of active simulations as well as the queued requests that have not
      *  yet been fulfilled.
      */
     public synchronized int numberOfSimulations() {
@@ -611,7 +611,7 @@ public final class PtolemyServer implements IServerManager {
         }
     }
 
-    /** Shut down the broker process and stop all active simulation 
+    /** Shut down the broker process and stop all active simulation
      *  threads by calling their Managers.
      *  @exception IllegalActionException If the servlet, broker, or thread pool cannot be stopped.
      */
@@ -698,7 +698,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private methods                         ////
+    ////                         private methods                   ////
 
     /** Check to ensure that the provided ticket is valid and refers to
      *  a current simulation request on the server.
@@ -793,7 +793,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     private final RemoteModelListener _remoteModelListener = new RemoteModelListener() {
 

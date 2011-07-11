@@ -1,5 +1,5 @@
 /* Cellular Automata 2D Convolution Actor.
- 
+
  Copyright (c) 2010 The University of Florida
 
  All rights reserved.
@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
  */
@@ -38,19 +38,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Cellular Automata 2D Convolution Actor.
  *
- * <p>The CA2DConvolution actor should be used in conjunction with the CADirector. 
- * To use this actor, it is highly recommended to start with one of the 
- * examples.  The examples have the required variables (used by the 
- * director) added to the canvas and connected to the correct input and 
- * output ports of the CA2DConvolution actor.  The actor should be used to perform 
- * convolution operations in discrete two-dimensional (2D) space.  The 
- * inputs are: i and j, the x and yLocation of the current space on the 
- * 2D grid; the currentValue of the space (i,j) on the grid; and the 
- * currentValues of all neighboring cells in the grid.  The output is 
+ * <p>The CA2DConvolution actor should be used in conjunction with the CADirector.
+ * To use this actor, it is highly recommended to start with one of the
+ * examples.  The examples have the required variables (used by the
+ * director) added to the canvas and connected to the correct input and
+ * output ports of the CA2DConvolution actor.  The actor should be used to perform
+ * convolution operations in discrete two-dimensional (2D) space.  The
+ * inputs are: i and j, the x and yLocation of the current space on the
+ * 2D grid; the currentValue of the space (i,j) on the grid; and the
+ * currentValues of all neighboring cells in the grid.  The output is
  * the newValue at 2D grid position (i,j).</p>
- * 
+ *
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
@@ -59,7 +59,7 @@ public class CA2DConvolution extends TypedCompositeActor {
 
     /**
      * Construct a new CA2DConvolution.
-     * 
+     *
      * @param entity The container.
      * @param name The name of the CA2DConvolution actor.
      * @exception IllegalActionException If the name has a period in it.
@@ -117,65 +117,65 @@ public class CA2DConvolution extends TypedCompositeActor {
         neighbor8.setTypeEquals(BaseType.DOUBLE);
         neighbor8.setMultiport(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
     /**
      *  This is the xLocation of the current grid space.
      */
-    
+
     private TypedIOPort xLocation;
-    
+
     /**
      *  This is the yLocation of the current grid space.
      */
     private TypedIOPort yLocation;
-    
+
     /**
      *  This is top-left neighbor (i-1,j-1) of the current grid space (i,j).
      */
     private TypedIOPort neighbor1;
-    
+
     /**
      *  This is top neighbor (i,j-1) of the current grid space (i,j).
      */
     private TypedIOPort neighbor2;
-    
+
     /**
      *  This is top-right neighbor (i+1,j-1) of the current grid space (i,j).
      */
     private TypedIOPort neighbor3;
-    
+
     /**
      *  This is left neighbor (i-1,j) of the current grid space (i,j).
      */
     private TypedIOPort neighbor4;
-    
+
     /**
      *  This is right neighbor (i+1,j) of the current grid space (i,j).
      */
     private TypedIOPort neighbor5;
-    
+
     /**
      *  This is bottom-left neighbor (i-1,j+1) of the current grid space (i,j).
      */
     private TypedIOPort neighbor6;
-    
+
     /**
      *  This is bottom neighbor (i,j+1) of the current grid space (i,j).
      */
     private TypedIOPort neighbor7;
-    
+
     /**
      *  This is bottom-right neighbor (i+1,j+1) of the current grid space (i,j).
      */
     private TypedIOPort neighbor8;
-    
+
     /**
      *  This is the newValue of the current grid space (i,j).
      */
     private TypedIOPort newValue;
-    
+
     /**
      *  This is the value of the current grid space (i,j).
      */

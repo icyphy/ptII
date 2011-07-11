@@ -113,7 +113,7 @@ public final class ArrayFIFOQueue implements Cloneable {
             System.arraycopy(model._queueArray, 0, _queueArray, 0,
                     _queueArray.length);
             if (model._historyList != null) {
-            	_historyList = new LinkedList(model._historyList);
+                    _historyList = new LinkedList(model._historyList);
             }
         }
     }
@@ -221,7 +221,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 
                     throw new NoSuchElementException("No object at offset "
                             + offset + " in the FIFOQueue" + message);
-            	}
+                    }
             } else {
                 String message = "";
 

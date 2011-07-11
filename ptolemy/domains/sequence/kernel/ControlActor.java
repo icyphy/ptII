@@ -48,7 +48,7 @@ Control Actors are responsible for setting the list of output ports
 that are currently enabled (enabledOutports).
 
 FIXME:  What to do about Ptolemy control actors?
-FIXME:  Should this be a class, or an interface?  Has a new variable 
+FIXME:  Should this be a class, or an interface?  Has a new variable
         for holding control flow information.
 
   @author Elizabeth Latronico (Bosch)
@@ -103,18 +103,18 @@ public class ControlActor extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Return the (possibly empty) list of enabled output ports.
-     * 
-     *  @return The (possible empty) list of enabled output ports 
-     *  @see #setEnabledOutports(List) 
+     *
+     *  @return The (possible empty) list of enabled output ports
+     *  @see #setEnabledOutports(List)
      **/
     public ArrayList<TypedIOPort> getEnabledOutports() {
         return _enabledOutports;
     }
-    
+
     /** Return the (possibly empty) list of disabled output ports.
-     * 
+     *
      *  @return The (possible empty) list of disabled output ports.
-     */    
+     */
     public ArrayList<TypedIOPort> getDisabledOutports() {
         ArrayList<TypedIOPort> disabledOutports = new ArrayList<TypedIOPort>();
         for (Object outPort : outputPortList()) {
@@ -124,8 +124,8 @@ public class ControlActor extends TypedAtomicActor {
         }
         return disabledOutports;
     }
-    
-    /** Return true if there is at least one enabled output port, 
+
+    /** Return true if there is at least one enabled output port,
      *  false otherwise.
      *
      *  @return True if at least one output port is enabled.
@@ -146,11 +146,11 @@ public class ControlActor extends TypedAtomicActor {
     /** Set the list of enabled output ports.  Used by subclasses.
      *  Returns true if successful, and false if there was a problem
      *  (for example, if a port is not an output port).
-     *  
+     *
      *  If unsuccessful, the list of output ports is cleared.
-     *  
+     *
      *  @param ports List of output ports
-     *  @return True if operation was successful; false otherwise 
+     *  @return True if operation was successful; false otherwise
      *  @see #getEnabledOutports()
      */
     protected boolean setEnabledOutports(List<TypedIOPort> ports) {
@@ -185,15 +185,15 @@ public class ControlActor extends TypedAtomicActor {
 
     }
 
-    /** Add a port to the list of enabled output ports.  
+    /** Add a port to the list of enabled output ports.
      *  Used by subclasses.
      *  Returns true if successful, and false if there was a problem
      *  (for example, if a port is not an output port).
-     *  
+     *
      *  If unsuccessful, the list of output ports is unchanged.
-     *  
+     *
      *  @param port Output port
-     *  @return True if operation was successful; false otherwise 
+     *  @return True if operation was successful; false otherwise
      */
     protected boolean addEnabledOutport(TypedIOPort port) {
         if (port != null && port.isOutput()) {
@@ -215,7 +215,7 @@ public class ControlActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Returns a list of 0 or more output ports that are currently 
+    /** Returns a list of 0 or more output ports that are currently
      *  enabled.  An 'enabled' output port means that actors connected
      *  to this port should be executed.
      */

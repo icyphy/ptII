@@ -523,16 +523,16 @@ public class TypedCompositeActor extends
         Iterator<?> outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
 
-        if((getComponent() instanceof ModularCodeGenTypedCompositeActor) &&
+        if ((getComponent() instanceof ModularCodeGenTypedCompositeActor) &&
                 ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().size() > 0)
-            code.append("if(export) {" + _eol);
-        
+            code.append("if (export) {" + _eol);
+
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             directorAdapter.generateTransferOutputsCode(outputPort, code);
         }
-        
+
         return processCode(code.toString());
     }
 }

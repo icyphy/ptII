@@ -68,12 +68,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode(); 
+        ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode();
         Token nodeToken = node.getToken();
 
         if (node.isConstant()) {
@@ -82,21 +82,21 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                         getFlatTokenInfiniteConceptByToken(nodeToken));
             } else {
                 throw new IllegalActionException("A constant expression " +
-                		"leaf node should not have a null token value.");
+                                "leaf node should not have a null token value.");
             }
         }
-        
+
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Get the constant representative contained in the constant propagation
      *  ontology lattice. If none is found or there are more than one, throw
      *  an exception.
      *  @return The constant value representative.
-     *  @throws IllegalActionException Thrown if there is no constant value
+     *  @exception IllegalActionException Thrown if there is no constant value
      *   FlatTokenInfiniteRepresentativeConcept, or there is more than one.
      */
     private FlatTokenRepresentativeConcept _getConstantRepresentative()
@@ -105,19 +105,19 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             _solver.getOntology().entityList(FlatTokenRepresentativeConcept.class);
         if (_representatives == null || _representatives.isEmpty()) {
             throw new IllegalActionException("Constant propagation ontology " +
-            		"does not have a constant representative concept.");
+                            "does not have a constant representative concept.");
         } else if (_representatives.size() == 1) {
             return _representatives.get(0);
         } else {
             throw new IllegalActionException("There should only be one flat " +
-            		"token representative concept in the constant " +
-            		"propagation ontology.");
+                            "token representative concept in the constant " +
+                            "propagation ontology.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The constant representative for the const propagation ontology lattice. */
     private FlatTokenRepresentativeConcept _constantRepresentative;
 }

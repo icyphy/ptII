@@ -35,12 +35,12 @@ import ptolemy.kernel.util.IllegalActionException;
 <h1>Class comments</h1>
 BufferingProfile is an interface which when implemented by SDF actors
 Lets the OptimizingSDFDirector choose from different firings with different properties
-For now there are two firing modes define, one where the actor may assume it has 
-exclusive access to the information encapsulated by the input tokens. In particular, 
+For now there are two firing modes define, one where the actor may assume it has
+exclusive access to the information encapsulated by the input tokens. In particular,
 this is used for models where tokens communicate references to shared data structures
 such as video frames in image processing.
 In the alternative firing mode, the actor may not assume exclusive access and hence is
-not allowed to modify the frame.It may have to copy the frame first instead. 
+not allowed to modify the frame.It may have to copy the frame first instead.
 
 FIXME: we may want to generalize the notion of a profile to make it more generic and allow
 more than two modes of firing.
@@ -63,7 +63,7 @@ public interface BufferingProfile {
      * @return the number of buffers required for a shared buffer firing
      */
     int sharedBuffers();
-    
+
     /****
      * returns the number of buffers required upon calling exclusive fire in excess of
      * the input and output buffer.
@@ -76,17 +76,17 @@ public interface BufferingProfile {
      * @return execution time of a shared buffer firing
      */
     int sharedExecutionTime();
-    
+
     /****
      * returns (an estimate of) the execution time of an exclusive buffer firing of the actor.
      * @return execution time of an exclusive buffer firing
      */
     int exclusiveExecutionTime();
 
-    /** 
-     * Invoke a specified number of iterations of the actor in either shared or 
+    /**
+     * Invoke a specified number of iterations of the actor in either shared or
      * exclusive mode as indicated by the fireExclusive argument.
-     * 
+     *
      * @param iterationCount The number of iterations to perform.
      * @param fireExclusive whether to fire exclusive or not.
      * @return NOT_READY, STOP_ITERATING, or COMPLETED.

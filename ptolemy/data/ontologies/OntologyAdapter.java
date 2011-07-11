@@ -472,7 +472,7 @@ public abstract class OntologyAdapter {
             throws IllegalActionException {
         return _solver.getParseTree(attribute);
     }
-    
+
     /** Record the association between the specified ASTPtRootNode and the
      *  specified Attribute.
      *
@@ -545,7 +545,7 @@ public abstract class OntologyAdapter {
 
                     // Check to make sure the use case name of the
                     // AnnotationAttribute matches the name of the ontology
-                    // solver.                  
+                    // solver.
                     if (_solver.getName().equals(ontologySolverName)) {
                         result.add(attribute);
                     }

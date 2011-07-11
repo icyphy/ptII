@@ -131,7 +131,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             } else {
                 // To avoid really large .java files that won't
                 // compile, we put some of the inline fire methods
-                // inside inner classes.  
+                // inside inner classes.
 
                 // FIXME: What about other directors?
                 String results[] = codeGenerator.generateFireFunctionVariableAndMethodName((NamedObj)actor);
@@ -941,7 +941,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         inner classes                     ////
 
     /** Compare two NamedObjs by full name.
-     */   
+     */
     private static class FullNameComparator implements Comparator {
 
         // Findbugs suggested that this be made static.

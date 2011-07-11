@@ -61,7 +61,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  @param outputFileExtension The extension of the output file.
      *   (for example c in case of C and java in case of Java)
      *  @param templateExtension The extension of the template files.
-     *   (for example c in case of C and j in case of Java).  
+     *   (for example c in case of C and j in case of Java).
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
@@ -108,14 +108,14 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  <p>If the string "@help:all@" appears, then all the key/value
      *  pairs are echoed at run time, though this may not result in a
      *  syntactically correct command.</p>
-     * 
+     *
      *  <p>If <i>useMake</i> is true, then the value of this parameter
      *  is ignored.</p>
      */
     public StringParameter compileCommand;
 
     /** If true, then generate code for that uses the reflection for Java
-     *  and JNI for C and is embedded within the model 
+     *  and JNI for C and is embedded within the model
      *  The default value is false and this parameter is not usually
      *  editable by the user.  This parameter is set to true when
      *  CompiledCompositeActor is run in an interpreted Ptolemy model.
@@ -194,6 +194,6 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  The constructor of a derived class may compare the value of <i>compileCommand</i>
      *  and this variable and decide to override the value of the <i>compileCommand</i>
      *  parameter with a new value.
-     */   
+     */
     protected final static String _compileCommandDefault = "make -f @modelName@.mk";
 }

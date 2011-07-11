@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -31,7 +31,7 @@ package ptdb.common.dto;
 
 import ptolemy.data.expr.Variable;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PTDBSearchAttribute
 
 /**
@@ -52,68 +52,68 @@ public class PTDBSearchAttribute extends Variable {
      * Default constructor of PTDBSearchAttribute.
      */
     public PTDBSearchAttribute() {
-        
+
         super();
         _isGenericAttribute = false;
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                    public methods                           ////
-    
+
     /** Get an indication if the attribute is generic.
      * @return Indication if the attribute is generic.
      * @see #setGenericAttribute(boolean)
      */
-    public boolean isGenericAttribute(){
-        
+    public boolean isGenericAttribute() {
+
         return _isGenericAttribute;
-        
+
     }
-    
+
     /** Set the attribute as generic or not generic.
-     * 
-     * @param isGenericAttribute Set the attribute as generic (true) or 
+     *
+     * @param isGenericAttribute Set the attribute as generic (true) or
      * not generic (false)
-     * 
+     *
      */
-    public void setGenericAttribute(boolean isGenericAttribute){
-        
+    public void setGenericAttribute(boolean isGenericAttribute) {
+
         _isGenericAttribute = isGenericAttribute;
-        if(!_isGenericAttribute) _genericClassName = "";
-        
+        if (!_isGenericAttribute) _genericClassName = "";
+
     }
-    
+
     /** Get the class name for a generic attribute.
      * @return the class name.
      * @see #setGenericClassName(String)
      */
-    public String getGenericClassName(){
-        
+    public String getGenericClassName() {
+
         return _genericClassName;
-        
+
     }
-    
+
     /** Set the attribute class name for a generic attribute.
-     * 
+     *
      * @param genericClassName The attribute class name
      * @see #getGenericClassName()
      */
-    public void setGenericClassName(String genericClassName){
-        
+    public void setGenericClassName(String genericClassName) {
+
         _genericClassName = genericClassName;
-        if(_genericClassName.length()>0){
-            
+        if (_genericClassName.length()>0) {
+
             _isGenericAttribute = true;
-        
+
         }
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
-    
+
     private boolean _isGenericAttribute = false;
     private String _genericClassName = "";
-    
+
 }

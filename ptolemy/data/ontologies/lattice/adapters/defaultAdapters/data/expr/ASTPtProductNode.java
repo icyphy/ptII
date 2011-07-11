@@ -75,13 +75,13 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
     ////                         public methods                    ////
 
     /** Return the constraint list for the adapter.
-     *  @throws IllegalActionException If there is an error building the constraint list.
+     *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
         // Find the multiply and divide concept functions that
-        // are needed for the PtProductNode monotonic function.        
+        // are needed for the PtProductNode monotonic function.
         ConceptFunction multiplyFunction = null;
         ConceptFunctionDefinitionAttribute multiplyDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
@@ -96,14 +96,14 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                 .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         if (divideDefinition != null) {
             divideFunction = divideDefinition.createConceptFunction();
-        }        
+        }
 
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
         List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(childNodeTerms.length);
         for (int i = 0; i < childNodeTerms.length; i++) {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
-        
+
         List<Token> operatorTokenList = ((ptolemy.data.expr.ASTPtProductNode) _getNode())
                 .getLexicalTokenList();
 
@@ -151,7 +151,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          *  operands.
          * @param operatorTokenList The list of operator tokens for the product node
          *  expression.
-         * @throws IllegalActionException If the class cannot be initialized.
+         * @exception IllegalActionException If the class cannot be initialized.
          */
         public ASTPtProductNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction multiplyFunction,
@@ -170,8 +170,8 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
 
         /** Return the function result.
          *  @param inputConceptValues The array of input arguments for the function.
-         *  @return The concept value that is output from this function. 
-         *  @throws IllegalActionException If there is a problem evaluating the function
+         *  @return The concept value that is output from this function.
+         *  @exception IllegalActionException If there is a problem evaluating the function
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {

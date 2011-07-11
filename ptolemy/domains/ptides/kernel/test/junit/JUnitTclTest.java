@@ -32,7 +32,7 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
-/** 
+/**
  * Run the Tcl tests under JUnit.
  * <p>If the fileName JVM property is set, then the file named by
  * that property is sourced.  Otherwise, the testDefs.tcl file
@@ -51,12 +51,12 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
  * cd $PTII
  * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
  * </pre></p>
- * 
+ *
  * <p> A copy of this file appears in each test/ subdirectory
  * so that it is easy for developers to run tests.  The master
  * file is in $PTII/util/testsuite/JUnitTclTest.java.in.
  * To update all the files, run
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1

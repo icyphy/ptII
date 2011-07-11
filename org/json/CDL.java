@@ -50,7 +50,7 @@ public class CDL {
      * be empty.
      * @param x A JSONTokener of the source text.
      * @return The value string, or null if empty.
-     * @throws JSONException if the quoted string is badly formed.
+     * @exception JSONException if the quoted string is badly formed.
      */
     private static String getValue(JSONTokener x) throws JSONException {
         char c;
@@ -64,18 +64,18 @@ public class CDL {
             return null;
         case '"':
         case '\'':
-        	q = c;
-        	sb = new StringBuffer();
-        	for (;;) {
-        		c = x.next();
-        		if (c == q) {
-        			break;
-        		}
+                q = c;
+                sb = new StringBuffer();
+                for (;;) {
+                        c = x.next();
+                        if (c == q) {
+                                break;
+                        }
                 if (c == 0 || c == '\n' || c == '\r') {
                     throw x.syntaxError("Missing close quote '" + q + "'.");
                 }
                 sb.append(c);
-        	}
+                }
             return sb.toString();
         case ',':
             x.back();
@@ -90,19 +90,19 @@ public class CDL {
      * Produce a JSONArray of strings from a row of comma delimited values.
      * @param x A JSONTokener of the source text.
      * @return A JSONArray of strings.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static JSONArray rowToJSONArray(JSONTokener x) throws JSONException {
         JSONArray ja = new JSONArray();
         for (;;) {
             String value = getValue(x);
             char c = x.next();
-            if (value == null || 
-            		(ja.length() == 0 && value.length() == 0 && c != ',')) {
+            if (value == null ||
+                            (ja.length() == 0 && value.length() == 0 && c != ',')) {
                 return null;
             }
             ja.put(value);
-            for (;;) {                
+            for (;;) {
                 if (c == ',') {
                     break;
                 }
@@ -126,7 +126,7 @@ public class CDL {
      *  method.
      * @param x A JSONTokener of the source text.
      * @return A JSONObject combining the names and values.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static JSONObject rowToJSONObject(JSONArray names, JSONTokener x)
             throws JSONException {
@@ -139,7 +139,7 @@ public class CDL {
      * using the first row as a source of names.
      * @param string The comma delimited text.
      * @return A JSONArray of JSONObjects.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static JSONArray toJSONArray(String string) throws JSONException {
         return toJSONArray(new JSONTokener(string));
@@ -150,7 +150,7 @@ public class CDL {
      * using the first row as a source of names.
      * @param x The JSONTokener containing the comma delimited text.
      * @return A JSONArray of JSONObjects.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static JSONArray toJSONArray(JSONTokener x) throws JSONException {
         return toJSONArray(rowToJSONArray(x), x);
@@ -162,7 +162,7 @@ public class CDL {
      * @param names A JSONArray of strings.
      * @param string The comma delimited text.
      * @return A JSONArray of JSONObjects.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static JSONArray toJSONArray(JSONArray names, String string)
             throws JSONException {
@@ -175,7 +175,7 @@ public class CDL {
      * @param names A JSONArray of strings.
      * @param x A JSONTokener of the source text.
      * @return A JSONArray of JSONObjects.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static JSONArray toJSONArray(JSONArray names, JSONTokener x)
             throws JSONException {
@@ -199,7 +199,7 @@ public class CDL {
 
     /**
      * Produce a comma delimited text row from a JSONArray. Values containing
-     * the comma character will be quoted. Troublesome characters may be 
+     * the comma character will be quoted. Troublesome characters may be
      * removed.
      * @param ja A JSONArray of strings.
      * @return A string ending in NEWLINE.
@@ -213,16 +213,16 @@ public class CDL {
             Object o = ja.opt(i);
             if (o != null) {
                 String s = o.toString();
-                if (s.length() > 0 && (s.indexOf(',') >= 0 || s.indexOf('\n') >= 0 || 
-                		s.indexOf('\r') >= 0 || s.indexOf(0) >= 0 || 
-                		s.charAt(0) == '"')) {
+                if (s.length() > 0 && (s.indexOf(',') >= 0 || s.indexOf('\n') >= 0 ||
+                                s.indexOf('\r') >= 0 || s.indexOf(0) >= 0 ||
+                                s.charAt(0) == '"')) {
                     sb.append('"');
-                	int length = s.length();
-                	for (int j = 0; j < length; j += 1) {
-                		char c = s.charAt(j);
-                		if (c >= ' ' && c != '"') {
-                			sb.append(c);
-                		}
+                        int length = s.length();
+                        for (int j = 0; j < length; j += 1) {
+                                char c = s.charAt(j);
+                                if (c >= ' ' && c != '"') {
+                                        sb.append(c);
+                                }
                     }
                     sb.append('"');
                 } else {
@@ -240,7 +240,7 @@ public class CDL {
      * JSONObject.
      * @param ja A JSONArray of JSONObjects.
      * @return A comma delimited text.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static String toString(JSONArray ja) throws JSONException {
         JSONObject jo = ja.optJSONObject(0);
@@ -260,7 +260,7 @@ public class CDL {
      * @param names A JSONArray of strings.
      * @param ja A JSONArray of JSONObjects.
      * @return A comma delimited text.
-     * @throws JSONException
+     * @exception JSONException
      */
     public static String toString(JSONArray names, JSONArray ja)
             throws JSONException {

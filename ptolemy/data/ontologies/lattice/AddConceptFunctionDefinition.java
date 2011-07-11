@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Settable;
 //// AddConceptFunctionDefinition
 
 /** Concept function definition attribute specifically for arithmetic addition.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1

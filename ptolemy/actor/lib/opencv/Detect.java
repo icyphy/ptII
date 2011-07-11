@@ -83,7 +83,7 @@ public class Detect extends Transformer {
     ////                         public methods                    ////
 
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -116,7 +116,7 @@ public class Detect extends Transformer {
             }
         }
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

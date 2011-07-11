@@ -64,13 +64,13 @@ public class Blur extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);  
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV Object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -87,5 +87,5 @@ public class Blur extends Transformer {
             output.send(0, new ObjectToken(openCV));
         }
     }
-   
+
 }

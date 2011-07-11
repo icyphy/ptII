@@ -1,4 +1,4 @@
-/* An actor that loads or stores tokens from/into a (shared) memory. 
+/* An actor that loads or stores tokens from/into a (shared) memory.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// LoadStore
 
 /** An actor that loads or stores tokens fom/into a (shared) memory.
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -49,14 +49,14 @@ public abstract class LoadStore extends MemoryAccess {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>data</i> port.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException Thrown if the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Thrown if the container already has an
      *   actor with this name.
-     */    
+     */
     public LoadStore(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

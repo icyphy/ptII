@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ExpressionConceptFunctionParseTreeTypeInference extends
         ParseTreeTypeInference {
-    
+
     /** Set the type of the given node to be the return type of the
      *  function determined for the given node.  Since all functions in a
      *  Concept function expression are also Concept functions, the return type
@@ -58,7 +58,7 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
             throws IllegalActionException {
         _setType(node, new ObjectType(Concept.class));
     }
-    
+
     /** Set the type of the given node. Since the expression concept function
      *  leaf nodes are all tokens containing Concept objects, always set the
      *  type of the leaf node to be a token that holds a concept object.
@@ -67,7 +67,7 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
      *   method.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        
+
         // If the leaf node's parent is a method call node, then
         // we are calling a Java method on an object, and we
         // reuse the normal expression parse tree type inference to evaluate
@@ -79,7 +79,7 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
             super.visitLeafNode(node);
             return;
         }
-        
-        _setType(node, new ObjectType(Concept.class));        
+
+        _setType(node, new ObjectType(Concept.class));
     }
 }

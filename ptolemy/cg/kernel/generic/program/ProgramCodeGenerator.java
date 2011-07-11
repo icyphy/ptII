@@ -185,7 +185,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  <p>If the string "@help:all@" appears, then all the key/value
      *  pairs are echoed at run time, though this may not result in a
      *  syntactically correct command.</p>
-     * 
+     *
      *  <p>If <i>useMake</i> is true, then the value of this parameter
      *  is ignored.</p>
      */
@@ -222,7 +222,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     ////                         public methods                    ////
 
     /** If the attribute is the verbosity attribute, then if
-     *  its value is 1, set a debug listener on the code generator.   
+     *  its value is 1, set a debug listener on the code generator.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
@@ -378,7 +378,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  to a Composite Actor.  This method is called when the firing
      *  code of each actor is not inlined.
      *
-     *  @param className The name of the class to include in the 
+     *  @param className The name of the class to include in the
      *  initial code.
      *  @return In this base class, return the empty string.  Derived
      *  classes, such as the JavaCodeGenerator could return the
@@ -391,7 +391,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** Generate the fire function method invocation. This method is called
      *  when the firing code of each actor is not inlined.  In this
      *  base class, each actor's firing code is in a function with the
-     *  same name as that of the actor.  
+     *  same name as that of the actor.
      *
      *  @param namedObj The named object for which the name is generated.
      *  @return The name of the fire function invocation.
@@ -406,7 +406,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** Generate the fire function method name. This method is called
      *  when the firing code of each actor is not inlined.  In this
      *  base class, each actor's firing code is in a function with the
-     *  same name as that of the actor.  
+     *  same name as that of the actor.
      *
      *  @param namedObj The named object for which the name is generated.
      *  @return The name of the fire function method.
@@ -420,7 +420,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** Generate the fire function variable name and method
      *  name. This method is called when the firing code of each actor
-     *  is not inlined. 
+     *  is not inlined.
      *
      *  @param namedObj The named object for which the name is generated.
      *  @return An array of two elements.  In this base class, the
@@ -449,7 +449,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  of large models.</p>
      *
      *  @param namedObj The named object for which the name is generated.
-     *  @return In this baseclass, return the empty string. 
+     *  @return In this baseclass, return the empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      *  Derived classes should throw this exception if there are problems
      *  accessing the name or generating the name.
@@ -572,7 +572,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /**
      * Generate sanitized name for the given port.
-     * This method is used when the {@link #variablesAsArrays} 
+     * This method is used when the {@link #variablesAsArrays}
      * parameter is true.
      * See {@link ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector#generateInitializeCode()} for where the arrays are initialized.
      * @param port The port for which the name is generated.
@@ -597,7 +597,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // generating code, so we have a separate HashMap that
         // that is used at code generation time to map from
         // names to the index in the corresponding type array.
-        
+
 
         String typeName = targetType(port.getType());
 
@@ -622,7 +622,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             arrayName = "ports_";
             typeMap = _portTypeMap;
             typeMaxIndex = _portTypeMaxIndex;
-        } else if ((port.isMultiport() && bufferSize <= 1) 
+        } else if ((port.isMultiport() && bufferSize <= 1)
                 || (!port.isMultiport() && bufferSize > 1)) {
             // A 2D array is needed.
             if (_portTypeMap2 == null) {
@@ -878,7 +878,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Split a long function body into multiple functions.
-     *   
+     *
      *  <p>In this base class, since we don't know what the target
      *  language will be, the first element is the empty string, the
      *  second element is the code argument.</p>
@@ -905,7 +905,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Split a long variable declaration body into multiple blocks
-     *  or files. 
+     *  or files.
      *  <p>In this base class, since we don't know what the target
      *  language will be, the first element is the empty string, the
      *  second element is the code argument.</p>
@@ -956,13 +956,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return An array of updated command line options.
      */
     public String[][] updateCommandOptions() {
-        // This is a hack.  
+        // This is a hack.
 
-        // The command-line options that take arguments. 
+        // The command-line options that take arguments.
         String[][] options = {
             { "-generateComment", "   true|false (default: true)" },
             { "-inline", "            true|false (default: false)" },
-            { "-maximumLinesPerBlock", "<an integer, default: 2500>"}, 
+            { "-maximumLinesPerBlock", "<an integer, default: 2500>"},
             { "-measureTime", "       true|false (default: false)" },
             { "-run", "               true|false (default: true)" },
             { "-runCommand", "        <a string, default: make -f @modelName@.mk run>" },
@@ -972,11 +972,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String[][] parentOptions = super.updateCommandOptions();
         String[][] allOptions = new String[parentOptions.length + options.length][2];
         int i = 0;
-        for(; i < parentOptions.length; i++) {
+        for (; i < parentOptions.length; i++) {
             allOptions[i][0] = parentOptions[i][0];
             allOptions[i][1] = parentOptions[i][1];
         }
-        for(int j = 0; j < options.length; j++) {
+        for (int j = 0; j < options.length; j++) {
             allOptions[i + j ][0] = options[j][0];
             allOptions[i + j ][1] = options[j][1];
         }
@@ -1066,7 +1066,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  that match the code generation language.
      *  If the value of the <i>verbosity</i> parameter is greater than 9,
      *  then the comment is prepended with the name of the method that
-     *  called the method that called this method.  This is useful  
+     *  called the method that called this method.  This is useful
      *  for debugging.
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
@@ -1281,7 +1281,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // late as possible.  However, we have to generateSharedCode()
         // before generateTypeConvertCode() so that any polymorphic
         // codegen token methods used in the shared code are recorded.  See
-        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml 
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml
         String sharedCode = _generateSharedCode();
 
         // generate type resolution code has to be after
@@ -1511,7 +1511,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
 
     /** Generate the preinitialization method body.
-     *        
+     *
      *  <p>Typically, the preinitialize code consists of variable
      *   declarations.  However, AutoAdapter generates method calls
      *   that instantiate wrapper TypedCompositeActors, so we need
@@ -1631,7 +1631,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** Perform any setup or initialization of the adapter.
      *  Note that this is not the Ptolemy initialize() method,
-     *  this method merely sets up any codegen-time variables 
+     *  this method merely sets up any codegen-time variables
      *  in the adapters.
      *  @exception IllegalActionException If an error occurrs while
      *   initializing an adapter.
@@ -1679,7 +1679,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** Return the class of the templateParser class. In cse
      *  there isn't one return null.
-     *  @return The base class for templateParser.  
+     *  @return The base class for templateParser.
      */
     protected Class<? extends TemplateParser> _templateParserClass() {
         return TemplateParser.class;
@@ -1765,7 +1765,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.  Derived
      *  classes should throw this if there is a problem writing the file(s).
      */
-    protected String _writeVariableDeclarations(List<String> variableDeclarations) 
+    protected String _writeVariableDeclarations(List<String> variableDeclarations)
             throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         int lineNumber = 0;
@@ -1798,13 +1798,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  array index.  Ports with a buffer size of 1 end up in this
      *  array.  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
-     */   
+     */
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap;
 
     /** A map from String type name to a HashMap of port name to Array
      *  Index.  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
-     */   
+     */
     protected HashMap<String, Integer> _portTypeMaxIndex;
 
 
@@ -1813,33 +1813,33 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  ports with a buffer size greater than 1 end up in this array.
      *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
-     */   
+     */
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap2;
 
     /** A map from String type name to a HashMap of multiport or port
      *  to the maximum number in the corresponding array.
      *  Multiports with a buffersize of 1 or ports with a buffer size
-     *  greater than 1 end up in this array.  
+     *  greater than 1 end up in this array.
      *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
-     */   
+     */
     protected HashMap<String, Integer> _portTypeMaxIndex2;
 
     /** A map from String type name to a HashMap of multiports to an
      *  array index.  Multiports with a buffer size greater than 1 end
-     *  up in this array.  
+     *  up in this array.
      *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
-     */   
+     */
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap3;
 
     /** A map from String type name to a HashMap of multiports to an
      *  to the maximum number in the corresponding array.
      *  Multiports with a buffer size greater than 1 end up in this
-     *  array.  
+     *  array.
      *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
-     */   
+     */
     protected HashMap<String, Integer> _portTypeMaxIndex3;
 
     /** A list of the primitive types supported by the code generator.
@@ -1852,7 +1852,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  The constructor of a derived class may compare the value of <i>runCommand</i>
      *  and this variable and decide to override the value of the <i>runCommand</i>
      *  parameter with a new value.
-     */   
+     */
     protected final static String _runCommandDefault = "make -f @modelName@.mk run";
 
     /** A set that contains all token functions referenced in the model.

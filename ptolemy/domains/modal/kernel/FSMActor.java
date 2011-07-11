@@ -443,7 +443,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Clear the model error flag of this FSMActor.
-     * This method is called when the FSMActor handles a 
+     * This method is called when the FSMActor handles a
      * timing error.
      */
     public void clearModelError() {
@@ -558,10 +558,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             } else {
                 _foundUnknown = _foundUnknown
                         || !_referencedInputPortsByGuardKnown(transition);
-                // Add a transition the the enabled transition list if 
-                // it is an error transition and the model error flag is 
-                // set.  Otherwise, try to evaluate the guard whether 
-                // the inputs are known or not. An unknown input might be 
+                // Add a transition the the enabled transition list if
+                // it is an error transition and the model error flag is
+                // set.  Otherwise, try to evaluate the guard whether
+                // the inputs are known or not. An unknown input might be
                 // in a part of the guard expression that is not evaluated,
                 // e.g. if the guard expression is "true || in == 1".
 
@@ -1177,7 +1177,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                "Failed to get the dependent ports."); 
+                "Failed to get the dependent ports.");
             }
         }
         return true;
@@ -1477,7 +1477,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public void stop() {
         _stopRequested = true;
         // If the execution stops, that should result in clearing the HashMaps
-        // because the user might change the model (transition-labels). 
+        // because the user might change the model (transition-labels).
         this._portReferencedInTransitionMaps.clear();
     }
 

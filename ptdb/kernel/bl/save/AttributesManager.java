@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -40,49 +40,49 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.DBConnection;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AttributesManager
 
 /**
  * Manage the attributes and work as a link between the GUI and the database
  * layer.
- * 
+ *
  * @author Yousef Alsaeed, Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 public class AttributesManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 				      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Save a new user defined attribute into the database.    
-     * 
-     * @param attribute The attribute to be saved in the database.  It 
-     * contains the information to be stored for that attribute. 
-     * @return The instance of the newly created attribute. 
+     * Save a new user defined attribute into the database.
+     *
+     * @param attribute The attribute to be saved in the database.  It
+     * contains the information to be stored for that attribute.
+     * @return The instance of the newly created attribute.
      * @exception DBConnectionException Thrown from the database layer if the
      *  database layer fails to create a connection to the database.
      * @exception DBExecutionException Thrown from the database layer if the
-     *  database layer fails to execute the operations in the database. 
+     *  database layer fails to execute the operations in the database.
      */
     public XMLDBAttribute createAttribute(XMLDBAttribute attribute)
             throws DBConnectionException, DBExecutionException {
-        
+
         XMLDBAttribute updatedAttribute;
         try {
-            // create a DB connection 
+            // create a DB connection
             _dbConnection = DBConnectorFactory.getSyncConnection(true);
 
             // create the CreateAttributeTask
             CreateAttributeTask createAttributeTask = new CreateAttributeTask(
                     attribute);
 
-            // execute 
+            // execute
             updatedAttribute = _dbConnection
                     .executeCreateAttributeTask(createAttributeTask);
 
@@ -98,13 +98,13 @@ public class AttributesManager {
                 _dbConnection.closeConnection();
             }
         }
-        
+
         return updatedAttribute;
     }
 
     /**
-     * Delete an existing attribute from the database. 
-     * 
+     * Delete an existing attribute from the database.
+     *
      * @param attribute The attribute to be deleted from the database.
      * @exception DBConnectionException Thrown from the database layer if the
      *  database layer fails to create a connection to the database.
@@ -114,14 +114,14 @@ public class AttributesManager {
     public void deleteAttribute(XMLDBAttribute attribute)
             throws DBConnectionException, DBExecutionException {
         try {
-            // create a DB connection 
+            // create a DB connection
             _dbConnection = DBConnectorFactory.getSyncConnection(true);
 
             // create the DeleteAttributeTask
             DeleteAttributeTask deleteAttributeTask = new DeleteAttributeTask(
                     attribute);
 
-            // execute 
+            // execute
             _dbConnection.executeDeleteAttributeTask(deleteAttributeTask);
 
             // commit the connection
@@ -143,13 +143,13 @@ public class AttributesManager {
 
     /**
      * Call to the database and retrieve the list attributes stored there.
-     * 
+     *
      * @return The list of attributes stored in the database.
-     * 
+     *
      * @exception DBExecutionException Thrown if the operation fails.
      * @exception DBConnectionException Thrown if the db layer fails to create
      * the connection.
-     * 
+     *
      */
     public List<XMLDBAttribute> getDBAttributes() throws DBExecutionException,
             DBConnectionException {
@@ -185,10 +185,10 @@ public class AttributesManager {
 
     /**
      * Update an existing attribute in the database with the new information.
-     * 
+     *
      * @param attribute The attribute to be updated in the database. It
-     *  contains the new information to be stored for that attribute. 
-     * @exception DBConnectionException Thrown from the database layer if the 
+     *  contains the new information to be stored for that attribute.
+     * @exception DBConnectionException Thrown from the database layer if the
      *  database layer fails to create a connection to the database.
      * @exception DBExecutionException Thrown from the database layer if the
      *  database layer fails to execute the operations in the database.
@@ -196,14 +196,14 @@ public class AttributesManager {
     public void updateAttribute(XMLDBAttribute attribute)
             throws DBConnectionException, DBExecutionException {
         try {
-            // create a DB connection 
+            // create a DB connection
             _dbConnection = DBConnectorFactory.getSyncConnection(true);
 
             // create the UpdateAttributeTask
             UpdateAttributeTask updateAttributeTask = new UpdateAttributeTask(
                     attribute);
 
-            // execute 
+            // execute
             _dbConnection.executeUpdateAttributeTask(updateAttributeTask);
 
             // commit the connection
@@ -225,8 +225,8 @@ public class AttributesManager {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public variables                              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     private DBConnection _dbConnection;
 

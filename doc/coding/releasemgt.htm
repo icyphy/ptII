@@ -135,6 +135,57 @@ make missingMakefiles
 cd $PTII/adm/test
 make missingDocPackages
 </pre>
+Below are the packages that need not be in <code>doc/makefile</code>.
+<pre>
+config
+contrib.actor.lib.example
+diva.util.java2d.svg
+doc.coding.templates
+doc.tutorial
+doc.tutorial.domains
+doc.tutorial.graph
+doc.tutorial.graph.junit
+doc.tutorial.gui
+ptolemy.actor.corba
+ptolemy.actor.corba.CoordinatorUtil
+ptolemy.actor.corba.CorbaIOUtil
+ptolemy.actor.corba.util
+ptolemy.actor.lib.javasound.test.pitchshift
+ptolemy.actor.lib.jxta
+ptolemy.actor.lib.reactable
+ptolemy.actor.lib.tutorial
+ptolemy.backtrack.automatic.ptolemy.math
+ptolemy.backtrack.eclipse.ast
+ptolemy.backtrack.eclipse.ast.transform
+ptolemy.backtrack.eclipse.plugin
+ptolemy.backtrack.eclipse.plugin.actions
+ptolemy.backtrack.eclipse.plugin.actions.codestyle
+ptolemy.backtrack.eclipse.plugin.compatibility
+ptolemy.backtrack.eclipse.plugin.console
+ptolemy.backtrack.eclipse.plugin.dialogs
+ptolemy.backtrack.eclipse.plugin.editor
+ptolemy.backtrack.eclipse.plugin.preferences
+ptolemy.backtrack.eclipse.plugin.util
+ptolemy.backtrack.eclipse.plugin.widgets
+ptolemy.backtrack.test.array1
+ptolemy.backtrack.test.random1
+ptolemy.backtrack.test.test1
+ptolemy.backtrack.test.test2
+ptolemy.caltrop.ddi.util
+ptolemy.chic
+ptolemy.component
+ptolemy.component.data
+ptolemy.component.data.type
+ptolemy.component.domains.ptinyos
+ptolemy.copernicus.interpreted
+ptolemy.domains.gr.lib.quicktime
+ptolemy.domains.ptides.kernel.test.junit
+ptolemy.kernel.test.junit
+ptolemy.moml.jxta
+ptolemy.plot.servlet
+ptserver.test.helper
+ptserver.test.junit
+</pre>
 
 <li> Add trailing newlines to files with
 <code>$PTII/adm/bin/addtrailingnl</code>

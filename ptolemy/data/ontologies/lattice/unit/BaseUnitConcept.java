@@ -41,12 +41,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept in the unitSystem ontology for a specific unit for
  *  a specific physical dimension.
- *  
+ *
  *  A unit for a base dimension is defined by the physical dimension it
  *  measures and the multiplication factor and offset values required to convert
  *  a value in its unit measurement to a unit measurement in the SI unit for this
  *  dimension.
- *  
+ *
  *  For example, to represent the units for measuring temperature in degrees
  *  Fahrenheit, the multiplication factor and offset are specified as what is
  *  needed to convert Fahrenheit to Kelvin:
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  <li>unitFactor = 5.0/9.0
  *  <li>unitOffset = 459.67
  *  </ul>
- *  
+ *
  *  <p>To convert a temperature measurement value in degrees F to degrees K, apply
  *  the formula:<br>
  *  <code>value in K = (value in F + unitOffset) * unitFactor</code>
@@ -85,19 +85,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cshelton)
 */
 public class BaseUnitConcept extends UnitConcept {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
-    
+
     /** Create a new base unit concept, belonging to the given
      *  ontology, with an automatically generated name.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents where the infinite
      *   token concepts belong in the ontology lattice.
      *  @param unitInfo The token value for this BaseUnitConcept.
      *  @return The newly created RecordConcept.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public static BaseUnitConcept createBaseUnitConcept(
             Ontology ontology, BaseDimensionRepresentativeConcept representative,
@@ -118,22 +118,22 @@ public class BaseUnitConcept extends UnitConcept {
 
     /** Create a new BaseUnitConcept, belonging to the given
      *  ontology.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents the physical
      *   dimension for the set infinite concepts that represent units for
      *   this dimension in the ontology lattice.
      *  @param unitInfo The record token value that has the name and scale
      *   factor information for this unit.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected BaseUnitConcept(Ontology ontology,
             BaseDimensionRepresentativeConcept representative,
             RecordToken unitInfo)
                 throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
-        
+
         Token unitFactor = unitInfo.get(UnitConversionInfo.unitFactorLabel);
         if (unitFactor instanceof ScalarToken) {
             _unitFactor = (ScalarToken) unitFactor;
@@ -142,7 +142,7 @@ public class BaseUnitConcept extends UnitConcept {
                     "Invalid unit factor value (must be a scalar value): " +
                     unitFactor);
         }
-        
+
         Token unitOffset = unitInfo.get(UnitConversionInfo.unitOffsetLabel);
         if (unitOffset == null) {
             _unitOffset = DoubleToken.ZERO;

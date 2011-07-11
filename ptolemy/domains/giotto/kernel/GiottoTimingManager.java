@@ -1,5 +1,5 @@
 /* An attribute that varies the WCET values of actors.
- * 
+ *
  @Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
 
@@ -65,22 +65,22 @@ import ptolemy.kernel.util.SingletonAttribute;
 ///////////////////////////////////////////////////////////////////
 //// GiottoTimingManager
 /**
- * An attribute that varies the WCET values of actors and throws a model 
+ * An attribute that varies the WCET values of actors and throws a model
  * error if the sum of the execution times is larger than the sum of the
- * worst case execution times. 
- *  
+ * worst case execution times.
+ *
  * <p> This attribute helps the user to manage and  mitigate
  * timing errors in a specification that uses timing but has no
- * mechanisms in its specification for timing error handling. In 
+ * mechanisms in its specification for timing error handling. In
  * this context a timing error occurs if the actor takes more than
  * the specified WCET to execute.
- * 
- * <p> The presence of the timing manager indicates a desire to 
+ *
+ * <p> The presence of the timing manager indicates a desire to
  * incorporate execution timing as well as error handling
- * into a Giotto specification.  
- * 
+ * into a Giotto specification.
+ *
  * <p> This attribute is a decorator that adds a parameter to each actor at
- * the current level.  The parameter is named <i>WCET</i>, which is the Worst 
+ * the current level.  The parameter is named <i>WCET</i>, which is the Worst
  * Case Execution Time (WCET) for the actor whose initial default value is 0.0.
  * This indicates instantaneous execution, however, for each actor this
  * parameter can also be modified by the user with information gained
@@ -88,33 +88,33 @@ import ptolemy.kernel.util.SingletonAttribute;
  *
  * <p> This class simulates timing overruns by varying the execution time
  * of each actor. It currently uses the java.util.Random pseudo random number
- * generator to generate a random execution time in the range [0,2*<i>WCET</i>] 
- * for each iteration of each actor. The random number generator can be seeded 
+ * generator to generate a random execution time in the range [0,2*<i>WCET</i>]
+ * for each iteration of each actor. The random number generator can be seeded
  * by the <i>seed</i> parameter. The default value of the seed
- * is 0L interpreted as not having a seed. The user also has the option to reset to 
- * the seed on each run by selecting the <i>resetOnEachRun</i> parameter. 
+ * is 0L interpreted as not having a seed. The user also has the option to reset to
+ * the seed on each run by selecting the <i>resetOnEachRun</i> parameter.
  * A future modification could include adding a parameter to have
  * the user specify what probability distribution they wish to use.
- * 
- * <p> This attribute checks for two types of errors. First, it does a static check of 
- * (a) the sum of the worst case execution times for the actors and compares 
+ *
+ * <p> This attribute checks for two types of errors. First, it does a static check of
+ * (a) the sum of the worst case execution times for the actors and compares
  * (a) to the {@link ptolemy.domains.giotto.kernel.GiottoDirector#period}
  * of the Giotto Director. If (a) is larger than the director
  * period, then the attribute throws an exception notifying the user of the discrepancy
- * and does not execute the model. Second, during execution the attribute randomly varies 
+ * and does not execute the model. Second, during execution the attribute randomly varies
  * the execution time of the actors. The attribute then compares (b) the sum of the
- * actors execution times to (a) the sum of the actors worst case execution 
+ * actors execution times to (a) the sum of the actors worst case execution
  * times. If (a) > (b) then the attribute calls
  * {@link ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)},
  *  which throws a model error .
- *  
+ *
  * <p> A model error is an exception that is passed up the containment
  * hierarchy rather than being immediately thrown. Any container
  * in the containment hierarchy may choose to handle the error.
  * By default, containers will pass and delegate the error to their
  * container, if they have one, and throw an exception if they
  * don't. But some containers might do more with the error.</p>
- *  
+ *
  * <p>The attribute can be instantiated by instantiating an attribute of type
  * {@link ptolemy.domains.giotto.kernel.GiottoTimingManager}.</p>
  *
@@ -126,7 +126,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  *  @Pt.AcceptedRating Red (sssf)
  */
 public class GiottoTimingManager extends SingletonAttribute implements
-        Decorator { //extends SingletonAttribute 
+        Decorator { //extends SingletonAttribute
 
     /** Construct an instance with the specified container and name.
      *  @param container The container.
@@ -205,7 +205,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     /**
      *  The value that controls the type of the probability distribution
      *  used for random number generation.
-     *  The probability distribution defaults to none, which is interpreted 
+     *  The probability distribution defaults to none, which is interpreted
      *  as an equal distribution of numbers between 0 and 1.
      */
     public StringParameter probabilityDistribution;
@@ -554,7 +554,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                             + ((CompositeActor) (getContainer()))
                                                     .getDisplayName());
 
-                        } //end of if  
+                        } //end of if
                         if (_debugging) {
                             _debug("at the end of preinitialize in the timing quantity manager.");
                         }
@@ -585,7 +585,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     }
 
     /** Remove the decorated attributes.
-     *  @param target The decorated attribute to remove   
+     *  @param target The decorated attribute to remove
      */
     public void removeDecoratedAttributes(NamedObj target) {
         if (_debugging) {
@@ -610,7 +610,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj. 
+     *  @return The decorated attributes for the target NamedObj.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
@@ -625,7 +625,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Create the random number generator using current parameter values.
      *  @exception IllegalActionException If thrown while reading the
@@ -647,7 +647,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /**
      * Generate the next random number.
-     * @exception IllegalActionException Not thrown in this base class. 
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         // this method uses a design similar to that of ptolemy.actor.lib.RandomSource
@@ -655,7 +655,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** The current value of the seed parameter. */
     protected long _generatorSeed = 0L;
@@ -673,10 +673,10 @@ public class GiottoTimingManager extends SingletonAttribute implements
     protected double _current = 0.0;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
     /** Determine the period of the director of the associated container.
      *  @param container The container.
-     *  @exception IllegalActionException If the director or an actor seen 
+     *  @exception IllegalActionException If the director or an actor seen
      *  by the director does not contain an particular attribute
      */
 
@@ -720,7 +720,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
      * maximum length of time the task could take to execute on a
      * particular platform
      * @return A double containing the WCET of the actors
-     * @exception IllegalActionException If an actor does not contain a WCET 
+     * @exception IllegalActionException If an actor does not contain a WCET
      * parameter.
      */
     private double _getDirectorWCET(NamedObj container)
@@ -764,8 +764,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /** This variable stores the simulated execution time of actors
     * thus far. It is reset to 0 after the number of firings reaches
-    * _numberofExpectedFirings and a comparison of observed and expected 
-    * times is done 
+    * _numberofExpectedFirings and a comparison of observed and expected
+    * times is done
     * */
     private double _totalObservedExecutionTime;
 

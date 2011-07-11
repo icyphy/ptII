@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -65,13 +65,13 @@ import ptdb.kernel.database.DBConnection;
 
 /**
  * JUnit test case for testing SaveModelManager class.
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (yalsaeed)
  * @Pt.AcceptedRating red (yalsaeed)
- * 
+ *
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest( { SaveModelManager.class, DBConnection.class,
@@ -81,12 +81,12 @@ import ptdb.kernel.database.DBConnection;
 public class TestSaveModelManager {
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                            ////
+    ////                         public methods                    ////
 
     /**
      * Test the SaveManager.save() method. <p> The condition for this test
      * case:<br/>
-     * 
+     *
      * - The model being saved is a new model and should be created in the
      * database. </p>
      * @exception Exception Thrown if the test fails and the exception was not
@@ -167,7 +167,7 @@ public class TestSaveModelManager {
 
     /**
      * Test the SaveManager.save() method. <p> The condition for this test case:
-     * 
+     *
      * <br>- The model being saved is a new model and should be created in the
      * database. <br>- The executeCreateModelTask method throws exception. </p>
      * @exception Exception Thrown if the test fails and the exception was not
@@ -192,9 +192,9 @@ public class TestSaveModelManager {
 
         xmlDBModel.setModel("<entity name=\"" + xmlDBModel.getModelName()
                 + "\"></entity>");
-        
-        
-        
+
+
+
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
 
@@ -238,7 +238,7 @@ public class TestSaveModelManager {
 
     /**
      * Test the SaveManager.save() method. <p> The condition for this test case:
-     * 
+     *
      * <br>- The model being saved is an existing model and should be updated in
      * the database. </p>
      * @exception Exception Thrown if the test fails and the exception was not
@@ -319,7 +319,7 @@ public class TestSaveModelManager {
 
     /**
      * Test the SaveManager.save() method. <p> The condition for this test case:
-     * 
+     *
      * <br> - The model being saved is an existing model and should be updated
      * in the database. <br>- The executeSaveModelTask method throws exception.
      * </p>
@@ -391,11 +391,11 @@ public class TestSaveModelManager {
 
     /**
      * Test the SaveManager.save() method with DBConnection being null.
-     * 
+     *
      * <p> The condition for this test case:
-     * 
+     *
      * <br>- Fail to get a DBConnection from the DBConnectionFactory.
-     * 
+     *
      * </p>
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
@@ -434,10 +434,10 @@ public class TestSaveModelManager {
 
     /**
      * Test the SaveManager.save() with null parameters passed to it.
-     * 
+     *
      * <p> The condition for this test case: <br>- The model passed as a
      * parameter is null. The test result should throw an exception. </p>
-     * 
+     *
      * @exception Exception Thrown if the test fails and the exception was not
      * handled.
      */
@@ -537,7 +537,7 @@ public class TestSaveModelManager {
             fail("Failed with error - " + e.getMessage());
         }
 
-        // Reference model with extra attributes. 
+        // Reference model with extra attributes.
         XMLDBModel oneAdderModel = DBModelFetcher.load("modelWithTwoAdders");
 
         try {
@@ -566,12 +566,12 @@ public class TestSaveModelManager {
             fail("Failed with error - " + e.getMessage());
         }
 
-        // Reference model with two referenced model. 
+        // Reference model with two referenced model.
     }
 
     /**
      * Test the renaming of a model when the model and the name are correct.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testRenameModel() throws Exception {
@@ -579,7 +579,7 @@ public class TestSaveModelManager {
         SaveModelManager saveManager = new SaveModelManager();
 
         PowerMock.mockStatic(DBConnectorFactory.class);
-        
+
         PowerMock.mockStatic(CacheManager.class);
 
         DBConnection dBConnectionMock = PowerMock
@@ -603,7 +603,7 @@ public class TestSaveModelManager {
         modelList.add(modelMock);
         EasyMock.expect(CacheManager.removeFromCache(modelList))
                 .andReturn(true);
-        
+
         dBConnectionMock.executeRenameModelTask(taskMock);
 
         PowerMock.expectLastCall().atLeastOnce();
@@ -629,7 +629,7 @@ public class TestSaveModelManager {
 
     /**
      * Test the renaming of a model when the new name is empty.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testRenameModel_emptyNewName() throws Exception {
@@ -664,7 +664,7 @@ public class TestSaveModelManager {
     /**
      * Test the renaming of a model when the original model does not contain an
      * Id or a name.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testRenameModel_NoIdOrNameInOriginal() throws Exception {
@@ -699,7 +699,7 @@ public class TestSaveModelManager {
     /**
      * Test the renaming of a model when the original model does not contain an
      * Id but contains a name.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testRenameModel_NoIdInOriginal() throws Exception {
@@ -707,7 +707,7 @@ public class TestSaveModelManager {
         SaveModelManager saveManager = new SaveModelManager();
 
         PowerMock.mockStatic(DBConnectorFactory.class);
-        
+
         PowerMock.mockStatic(CacheManager.class);
 
         DBConnection dBConnectionMock = PowerMock
@@ -730,7 +730,7 @@ public class TestSaveModelManager {
         dBConnectionMock.executeRenameModelTask(taskMock);
 
         PowerMock.expectLastCall().atLeastOnce();
-        
+
         ArrayList<XMLDBModel> modelList = new ArrayList<XMLDBModel>();
         modelList.add(modelMock);
         EasyMock.expect(CacheManager.removeFromCache(modelList))
@@ -758,7 +758,7 @@ public class TestSaveModelManager {
     /**
      * Test the renaming of a model when the original model contains an Id but
      * does not contains a name.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testRenameModel_NoNameInOriginal() throws Exception {
@@ -766,7 +766,7 @@ public class TestSaveModelManager {
         SaveModelManager saveManager = new SaveModelManager();
 
         PowerMock.mockStatic(DBConnectorFactory.class);
-        
+
         PowerMock.mockStatic(CacheManager.class);
 
         DBConnection dBConnectionMock = PowerMock
@@ -789,7 +789,7 @@ public class TestSaveModelManager {
         dBConnectionMock.executeRenameModelTask(taskMock);
 
         PowerMock.expectLastCall().atLeastOnce();
-        
+
         ArrayList<XMLDBModel> modelList = new ArrayList<XMLDBModel>();
         modelList.add(modelMock);
         EasyMock.expect(CacheManager.removeFromCache(modelList))
@@ -817,7 +817,7 @@ public class TestSaveModelManager {
     /**
      * Test the save with parents methods when the parameters parameters contain
      * only the model to be saved.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void test_saveWithParents() throws Exception {
@@ -845,7 +845,7 @@ public class TestSaveModelManager {
         modelToBeSaved.setModelId(Utilities.generateId("ModelToBeSaved"));
 
         modelToBeSaved.setIsNew(false);
-        
+
         modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
                 + "\"></entity>");
 
@@ -906,7 +906,7 @@ public class TestSaveModelManager {
     /**
      * Test the save with parents methods when the parameters parameters contain
      * only the model to be saved and it is a new model.
-     * @throws Exception Thrown if an exception occurred and was not handled.
+     * @exception Exception Thrown if an exception occurred and was not handled.
      */
     @Test
     public void test_saveWithParents_NewModel() throws Exception {
@@ -934,7 +934,7 @@ public class TestSaveModelManager {
         modelToBeSaved.setModelId(Utilities.generateId("ModelToBeSaved"));
 
         modelToBeSaved.setIsNew(true);
-        
+
         modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
                 + "\"></entity>");
 
@@ -990,12 +990,12 @@ public class TestSaveModelManager {
 
         PowerMock.verifyAll();
     }
-    
-    
-    
+
+
+
     /**
      * Test the save with parents methods when the parameters are complete.
-     * @throws Exception Thrown if an exception occurred and was not handled.
+     * @exception Exception Thrown if an exception occurred and was not handled.
      */
     @Test
     public void test_saveWithParents_CompleteParams() throws Exception {
@@ -1020,18 +1020,18 @@ public class TestSaveModelManager {
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
                 dBConnectionNoTransactionMock);
-        
-        
-        
-        
 
-        
+
+
+
+
+
         XMLDBModel modelToBeSaved = new XMLDBModel("ModelToBeSaved");
 
         modelToBeSaved.setModelId(Utilities.generateId("ModelToBeSaved"));
 
         modelToBeSaved.setIsNew(false);
-        
+
         modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
                 + "\"></entity>");
 
@@ -1043,7 +1043,7 @@ public class TestSaveModelManager {
         modelList.add(modelToBeSaved);
 
         fetchHierarchyTaskMock.setModelsList(modelList);
-        
+
         EasyMock.expect(CacheManager.removeFromCache(modelList))
                 .andReturn(true);
 
@@ -1052,85 +1052,85 @@ public class TestSaveModelManager {
 
         PowerMock.expectNew(FetchHierarchyTask.class).andReturn(
                 fetchHierarchyTaskMock);
-        
+
         EasyMock.expect(
                 dBConnectionNoTransactionMock
                         .executeFetchHierarchyTask(fetchHierarchyTaskMock))
                 .andReturn(null);
-        
+
         EasyMock.expect(
                 dBConnectionNoTransactionMock
                         .executeFetchHierarchyTask(fetchHierarchyTaskMock))
                 .andReturn(null);
-        
+
 
         ArrayList<String> parentsList = new ArrayList<String>();
-        
+
         parentsList.add("parent");
-        
+
         XMLDBModelWithReferenceChanges modelWithReference = new XMLDBModelWithReferenceChanges(
                 modelToBeSaved, parentsList, "newModel");
-        
+
         GetModelTask getTask = new GetModelTask(modelToBeSaved.getModelName());
-        
+
         PowerMock.expectNew(GetModelTask.class, modelToBeSaved.getModelName()).andReturn(
                 getTask);
-        
+
         EasyMock.expect(dBConnectionMock.executeGetModelTask(getTask))
                 .andReturn(modelToBeSaved);
-        
+
         XMLDBModel newVersion = new XMLDBModel(modelWithReference.getVersionName());
-        
-        
+
+
         PowerMock.expectNew(XMLDBModel.class, modelWithReference.getVersionName()).andReturn(
                 newVersion);
-        
+
 
         newVersion.setIsNew(true);
         newVersion.setModel("<entity></entity>");
         newVersion.setModelId("new_modelId");
-        
+
 
         ArrayList<XMLDBModel> newVersionList = new ArrayList<XMLDBModel>();
-        
+
         newVersionList.add(newVersion);
 
         fetchHierarchyTaskMock.setModelsList(newVersionList);
-        
+
         EasyMock.expect(CacheManager.removeFromCache(newVersionList))
                 .andReturn(true);
-        
-        
+
+
         PowerMock.expectNew(XMLDBModel.class, "parent").andReturn(modelToBeSaved);
 
         ArrayList<XMLDBModel> modelsToRemove = new ArrayList<XMLDBModel>();
-        
+
         modelsToRemove.add(modelToBeSaved);
 
         EasyMock.expect(CacheManager.removeFromCache(modelsToRemove))
                 .andReturn(true);
 
-        
-        
+
+
         CreateModelTask newVersionCreateMock = new CreateModelTask(modelToBeSaved);
 
         PowerMock.expectNew(CreateModelTask.class, newVersion).andReturn(
                 newVersionCreateMock);
 
-        
+
         EasyMock.expect(dBConnectionMock.executeCreateModelTask(newVersionCreateMock))
                 .andReturn(newVersion.getModelId());
-        
-        
-        
-        
-        UpdateParentsToNewVersionTask updateParentsToNewVersionTask = 
+
+
+
+
+        UpdateParentsToNewVersionTask updateParentsToNewVersionTask =
             new UpdateParentsToNewVersionTask();
 
         PowerMock.expectNew(UpdateParentsToNewVersionTask.class).andReturn(
                 updateParentsToNewVersionTask);
 
-                
+
         updateParentsToNewVersionTask.setNewModel(newVersion);
 
         updateParentsToNewVersionTask
@@ -1138,12 +1138,12 @@ public class TestSaveModelManager {
 
         updateParentsToNewVersionTask
                 .setParentsList(parentsList);
-        
-        
+
+
 
         dBConnectionMock.executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
 
-        
+
         SaveModelTask taskMock = new SaveModelTask(modelToBeSaved);
 
         PowerMock.expectNew(SaveModelTask.class, modelToBeSaved).andReturn(
@@ -1151,11 +1151,11 @@ public class TestSaveModelManager {
 
         EasyMock.expect(dBConnectionMock.executeSaveModelTask(taskMock))
                 .andReturn(modelToBeSaved.getModelId());
-        
-        
 
-        
-        
+
+
+
+
 
         dBConnectionMock.commitConnection();
 
@@ -1164,7 +1164,7 @@ public class TestSaveModelManager {
         dBConnectionNoTransactionMock.closeConnection();
 
         dBConnectionNoTransactionMock.closeConnection();
-        
+
         PowerMock.replayAll();
 
         try {
@@ -1180,12 +1180,12 @@ public class TestSaveModelManager {
 
         PowerMock.verifyAll();
     }
-    
-    
+
+
 
     /**
      * Test the save with parents methods when null connection.
-     * @throws Exception Thrown if an exception occurred and was not handled.
+     * @exception Exception Thrown if an exception occurred and was not handled.
      */
     @Test
     public void test_saveWithParents_NullConnection() throws Exception {
@@ -1197,11 +1197,11 @@ public class TestSaveModelManager {
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 null);
 
-        
+
         XMLDBModelWithReferenceChanges modelWithReference = new XMLDBModelWithReferenceChanges(
                 new XMLDBModel("Test"), null, "newModel");
-        
-        
+
+
         PowerMock.replayAll();
 
         try {
@@ -1217,18 +1217,18 @@ public class TestSaveModelManager {
 
         PowerMock.verifyAll();
     }
-    
+
     /**
      * Test the save with parents methods when null connection.
-     * @throws Exception Thrown if an exception occurred and was not handled.
+     * @exception Exception Thrown if an exception occurred and was not handled.
      */
     @Test
     public void test_saveWithParents_NullParams() throws Exception {
 
         SaveModelManager saveManager = new SaveModelManager();
-        
+
         XMLDBModelWithReferenceChanges modelWithReference = null;
-        
+
         PowerMock.replayAll();
 
         try {
@@ -1244,11 +1244,11 @@ public class TestSaveModelManager {
 
         PowerMock.verifyAll();
     }
-    
-    
+
+
     /**
      * Test the save with parents methods when null connection.
-     * @throws Exception Thrown if an exception occurred and was not handled.
+     * @exception Exception Thrown if an exception occurred and was not handled.
      */
     @Test
     public void test_saveWithParents_NullModelToBeSaved() throws Exception {

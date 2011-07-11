@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  <a name="unbiased autocorrelation"></a>
  <pre>
           N-1-k
-        1  --- 
+        1  ---
  r(k) = -  \    x(n)x(n+k)
         N  /
            ---

@@ -1,25 +1,25 @@
 /** A concept represents a single piece of information in an ontology.
- * 
+ *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
+ *
  */
 package ptolemy.data.ontologies;
 
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
  *  <p>
  *  Note that this is an abstract class.  Any concrete instance must be
  *  either a FiniteConcept or an InfiniteConcept.
- * 
+ *
  *  @see Ontology
  *  @see ConceptGraph
  *  @author Ben Lickly, Edward A. Lee, Dai Bui, Christopher Brooks
@@ -59,7 +59,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
 
     /** Create a new concept with the specified name and the specified
      *  ontology.
-     *  
+     *
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
      *  @exception NameDuplicationException If the ontology already contains a
@@ -69,7 +69,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     public Concept(CompositeEntity ontology, String name)
             throws IllegalActionException, NameDuplicationException {
         super(ontology, name);
-        
+
         isAcceptable = new Parameter(this, "isAcceptable");
         isAcceptable.setTypeEquals(BaseType.BOOLEAN);
         isAcceptable.setExpression("true");
@@ -92,7 +92,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  to the model object associated with that InequalityTerm.
      *  For concepts, there is no associated model object, hence returning
      *  null is the right thing to do.
-     *  
+     *
      *  @return Null, since concepts have no associated objects.
      */
     final public Object getAssociatedObject() {
@@ -102,7 +102,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     /** Return the color attribute associated with this Concept, if it exists.
      *  @return The first ColorAttribute associated with this concept, if
      *   there is one.  Null, otherwise.
-     *  @throws IllegalActionException Not thrown in the base Concept class.
+     *  @exception IllegalActionException Not thrown in the base Concept class.
      */
     public ColorAttribute getColor() throws IllegalActionException {
         List<ColorAttribute> colors = attributeList(ColorAttribute.class);
@@ -130,7 +130,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
 
     /** Return the current value of the InequalityTerm. Since a concept
      *  is a constant, not a variable, its value is just itself.
-     *  
+     *
      *  @return This concept.
      *  @see #setValue
      */
@@ -149,7 +149,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
 
     /** Try to initialize the InequalityTerm, or in this case, throw an
      *  exception. A concept is not a variable.
-     * 
+     *
      *  @param object The object used to initialize the InequalityTerm; not used
      *  since a Concept is a static value that cannot be initialized.
      *  @exception IllegalActionException Always thrown.
@@ -161,14 +161,14 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
 
     /** Return true if this concept is greater than or equal to the
      *  specified concept in the partial ordering.
-     *  
+     *
      *  FIXME: This interface seems awkward, and should probably be removed,
      *  since it is obsoleted by {@link ConceptGraph#compare(Object, Object)},
      *  which provides more functionality.
      *  See our discussion in our
      *  <a href="http://chess.eecs.berkeley.edu/ptolemy/reviews/ptolemy/data/ontologies/20101213-code.htm">
      *  code review</a>.
-     *  
+     *
      *  @param concept The concept to compare.
      *  @return True if this concept is greater than or equal to the
      *   specified concept.
@@ -211,7 +211,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
 
     /** Try to set the value of this InequalityTerm, or in this case, just
      *  throw an exception. A concept is not a variable.
-     * 
+     *
      *  @param value The Object being passed in to set the value for the
      *  InequalityTerm; not used since a Concept is a static value that
      *  cannot be changed.
@@ -224,7 +224,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     }
 
     /** Return the (unique) string representation of this concept.
-     * 
+     *
      *  @return The string representation of this concept.
      */
     public abstract String toString();

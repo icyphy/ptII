@@ -224,7 +224,7 @@ public class TextEditorTableau extends Tableau {
 
                 URL url = effigy.uri.getURL();
                 if (url != null) {
-                    // Set the identifier so that if we start vergil and 
+                    // Set the identifier so that if we start vergil and
                     // do File -> New -> Text Editor, type some text, Save
                     // then the title changes from Unnames to the name of the file.
                     effigy.identifier.setExpression(url.toExternalForm());

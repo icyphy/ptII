@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -95,7 +95,7 @@ public class TestDBModelFetcher {
         PowerMock.verifyAll();
 
     }
-    
+
     /**
      * Verify that given a model name, null is not returned.
      * @exception Exception
@@ -105,7 +105,7 @@ public class TestDBModelFetcher {
 
         String modelId = "model1";
         String modelName = null;
-        
+
         PowerMock.mockStatic(DBConnectorFactory.class);
 
         GetModelTask getModelTaskMock = PowerMock.createMock(GetModelTask.class);

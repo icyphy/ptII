@@ -1,20 +1,20 @@
 /* A graph editor frame for ontology models.
- * 
+ *
  * Below is the copyright agreement for the Ptolemy II system.
- * 
+ *
  * Copyright (c) 2009-2010 The Regents of the University of California. All rights
  * reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -49,7 +49,7 @@ import diva.gui.GUIUtilities;
  *  a tableau, it creates an editor and populates the menus and toolbar. This
  *  overrides the base class to associate with the editor an instance of
  *  OntologyGraphController.
- * 
+ *
  *  @author Charles Shelton, Man-Kit Leung
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -88,16 +88,16 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionList
     public OntologyGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
-        
+
         // FIXME: Help file for ontology editor doesn't exist yet.
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilOntologyEditorHelp.htm";
         _layoutAction = new LayoutAction();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to the actions specific to this ontology graph frame.
      *  There are no actions implemented for the ontology graph frame so this
      *  method does nothing.
@@ -105,10 +105,10 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionList
      */
     public void actionPerformed(ActionEvent e) {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Create the menus that are used by this ontology graph frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -183,25 +183,25 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionList
         DebugMenuListener debugMenuListener = new DebugMenuListener();
         return debugMenuListener;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The controller for the ontology editor frame. */
     protected OntologyGraphController _controller;
-    
+
     /** Debug menu for the ontology editor frame. */
     protected JMenu _debugMenu;
-    
+
     /** The graph menu for the ontology editor frame. */
     protected JMenu _graphMenu;
-    
+
     /** The action for automatically laying out the graph. */
     protected Action _layoutAction;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Initialize the ontology graph controller for the editor frame.
      */
     private void _createController() {
@@ -209,34 +209,34 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionList
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The check lattice debug menu action string label. */
     private static final String CHECK_LATTICE = "Check Lattice Graph";
-    
+
     /** The clear lattice errors debug menu action string label. */
     private static final String CLEAR_LATTICE_ERRORS = "Clear Lattice Errors";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// DebugMenuListener
-    
+
     /** The listener class for debug menu commands. */
     public class DebugMenuListener implements ActionListener {
-        
+
         /** React to a menu command in the debug menu.
-         *  @param e The event received from the menu command. 
+         *  @param e The event received from the menu command.
          */
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
 
             if (actionCommand.equals(CHECK_LATTICE)) {
-                Ontology ontologyModel = (Ontology) getModel();                    
+                Ontology ontologyModel = (Ontology) getModel();
                 ReportOntologyLatticeStatus.showStatusAndHighlightCounterExample(
                         ontologyModel, (OntologyGraphController) _controller);
             } else if (actionCommand.equals(CLEAR_LATTICE_ERRORS)) {
@@ -244,13 +244,13 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionList
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private inner classes             ////
 
     ///////////////////////////////////////////////////////////////////
     //// LayoutAction
-    
+
     /** Action to automatically lay out the graph. */
     private class LayoutAction extends AbstractAction {
 

@@ -21,13 +21,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 /*
- * 
+ *
  */
 package ptdb.gui;
 
@@ -40,21 +40,21 @@ import javax.swing.JOptionPane;
 import ptdb.kernel.bl.migration.MigrateModelsManager;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelMigrationFrame
 
 /**
- * 
+ *
  * Model migration frame that is responsible to provide a GUI for the users to
  * specify a path for a directory that contains the list of models that they
  * wish to migrate to the database.
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 
 public class ModelMigrationFrame extends JFrame {
@@ -65,14 +65,14 @@ public class ModelMigrationFrame extends JFrame {
         initComponents();
     }
 
-    
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Entry point for running the migration frame from the command line.
-     * 
+     *
      * @param args the command line arguments.
      */
     public static void main(String args[]) {
@@ -82,13 +82,13 @@ public class ModelMigrationFrame extends JFrame {
             }
         });
     }
-    
-    
 
-    //////////////////////////////////////////////////////////////////////
-    ////                private methods                                ////
-    
-    
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
     /**
      * Handles the browse button action.
      * <p>
@@ -97,22 +97,22 @@ public class ModelMigrationFrame extends JFrame {
      * @param evt The action event performed on the browse button.
      */
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        
+
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         if (fileChooser.showOpenDialog(ModelMigrationFrame.this) == JFileChooser.APPROVE_OPTION) {
-            
+
             String directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
-            
+
             _directoryPathTextField.setText(directoryPath);
-            
+
             // Make sure the text field shows the beginning of the path.
             _directoryPathTextField.getCaret().setDot(0);
         }
     }
-    
+
     /**
      * Handles the close button action.
      * <p>
@@ -124,8 +124,8 @@ public class ModelMigrationFrame extends JFrame {
         this.setVisible(false);
         dispose();
     }
-    
-    
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -133,7 +133,7 @@ public class ModelMigrationFrame extends JFrame {
      */
 
     private void initComponents() {
-        
+
         _jLabel1 = new javax.swing.JLabel();
         _jLabel2 = new javax.swing.JLabel();
         _directoryPathTextField = new javax.swing.JTextField();
@@ -148,7 +148,7 @@ public class ModelMigrationFrame extends JFrame {
         _checkFileContentCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         setResizable(false);
 
         _jLabel1.setText("Please select the directory where the Ptolemy models exist.");
@@ -176,7 +176,7 @@ public class ModelMigrationFrame extends JFrame {
                 closeButtonActionPerformed(evt);
             }
         });
-        
+
 
         _resultsTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         _resultsTextField.setEditable(false);
@@ -186,11 +186,11 @@ public class ModelMigrationFrame extends JFrame {
         _jLabel4.setText("- Only files with .xml extension will be migrated.");
 
         _jLabel5.setText("- The model name in the Database will be the name of the file without the extension.");
-        
-        
+
+
         _allSubDirectoriesCheckBox.setSelected(true);
         _allSubDirectoriesCheckBox.setText("Migrate all .xml files under the given folder path and all sub-directories under it.");
-        
+
         _checkFileContentCheckBox.setSelected(true);
         _checkFileContentCheckBox.setText("Validate the file content before migrating the model. Only migrate proper Ptolemy models.");
 
@@ -257,71 +257,71 @@ public class ModelMigrationFrame extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(_resultsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        
+
         pack();
     }
 
-    
+
 
     /**
      * Handles the migrate button action by calling _migrateModels() method.
      * @param evt The action event performed on the migrate button.
      */
     private void migrateButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        
+
         String directoryPath = _directoryPathTextField.getText();
-        
+
         if (directoryPath != null && directoryPath.length() > 0) {
-            
+
             _migrateModels(directoryPath);
-            
+
         } else {
-            JOptionPane.showMessageDialog(ModelMigrationFrame.this, 
-                    "Please specify a path where the models to be migrated exist.", 
+            JOptionPane.showMessageDialog(ModelMigrationFrame.this,
+                    "Please specify a path where the models to be migrated exist.",
                     "Empty Path Error",
                     JOptionPane.INFORMATION_MESSAGE, null);
         }
-        
+
 
 
     }
-    
+
     /**
      * Migrate the models from the path given to the database by calling the business layer.
      * @param directoryPath The path where the models to be migrated exist.
      */
     private void _migrateModels(String directoryPath) {
-        
+
         // Clear the results text field.
         _resultsTextField.setText("");
-        
+
         MigrateModelsManager migrateModelsManager = new MigrateModelsManager();
-        
+
         try {
-            
+
             boolean migrateFilesInSubDirectories = _allSubDirectoriesCheckBox.isSelected();
             boolean checkFileContent = _checkFileContentCheckBox.isSelected();
-            
+
             String csvFilePath = migrateModelsManager.migrateModels(
-                    directoryPath, migrateFilesInSubDirectories, 
+                    directoryPath, migrateFilesInSubDirectories,
                     checkFileContent);
-            
-            _resultsTextField.setText("The migration results can be found in: " 
+
+            _resultsTextField.setText("The migration results can be found in: "
                     + csvFilePath);
-            
+
             // Make sure the text field shows the beginning of the result message.
             _resultsTextField.getCaret().setDot(0);
-            
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(ModelMigrationFrame.this, e
                     .getMessage(), "Read/Write Error",
                     JOptionPane.INFORMATION_MESSAGE, null);
         }
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
 
     private javax.swing.JButton _browseButton;

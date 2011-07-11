@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.gui;
 
@@ -26,12 +26,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AdvancedSimpleSearchFrame
 
 /**
- * The simple search frame to be opened in the advanced DB search window. 
- * 
+ * The simple search frame to be opened in the advanced DB search window.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -42,10 +42,10 @@ import ptolemy.util.MessageHandler;
 public class AdvancedSimpleSearchFrame extends JFrame {
 
     /**
-     * Construct the AdvancedSimpleSearchFrame. 
-     * 
-     * @param parentFrame The parent frame that invokes this simple search 
-     * frame. 
+     * Construct the AdvancedSimpleSearchFrame.
+     *
+     * @param parentFrame The parent frame that invokes this simple search
+     * frame.
      */
     public AdvancedSimpleSearchFrame(JFrame parentFrame) {
 
@@ -60,47 +60,47 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
         addWindowListener(new WindowListener() {
 
-            
+
             public void windowOpened(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
 
             }
 
-            
+
             public void windowIconified(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
 
-            
+
             public void windowDeiconified(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
 
-            
+
             public void windowDeactivated(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
 
-            
+
             public void windowClosing(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
                 _parentFrame.setEnabled(true);
 
             }
 
-            
+
             public void windowClosed(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
                 _parentFrame.setEnabled(true);
             }
 
-            
+
             public void windowActivated(WindowEvent e) {
-                // Do nothing. 
+                // Do nothing.
             }
         });
 
-        // Configure the layout and panels of the frame. 
+        // Configure the layout and panels of the frame.
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
         _attributesListPanel = new AttributesListPanel(new NamedObj());
@@ -176,19 +176,19 @@ public class AdvancedSimpleSearchFrame extends JFrame {
     //                    public  methods                          ////
 
     /**
-     * Get the attributes search criteria that the user specified in this 
-     * frame. 
-     * 
-     * @return The list of attributes search criteria. 
+     * Get the attributes search criteria that the user specified in this
+     * frame.
+     *
+     * @return The list of attributes search criteria.
      */
     public List<Attribute> getAttributes() {
         return _attributes;
     }
 
     /**
-     * Get the model name search criteria that the user specified in this 
+     * Get the model name search criteria that the user specified in this
      * frame.
-     * 
+     *
      * @return The model name search criteria.
      */
     public String getModelName() {
@@ -199,14 +199,14 @@ public class AdvancedSimpleSearchFrame extends JFrame {
     //                    private methods                          ////
 
     /**
-     * Validate whether the search criteria that the user has input is valid or 
-     * not. 
-     * 
+     * Validate whether the search criteria that the user has input is valid or
+     * not.
+     *
      * @return true - the search criteria is valid.<br>
-     *          false - the search criteria is invalid. 
+     *          false - the search criteria is invalid.
      * @exception NameDuplicationException Thrown if attributes with duplicated
-     * names are found in the search criteria. 
-     * @exception IllegalActionException Thrown if the intend action is illegal. 
+     * names are found in the search criteria.
+     * @exception IllegalActionException Thrown if the intend action is illegal.
      */
     private boolean _isValid() throws NameDuplicationException,
             IllegalActionException {

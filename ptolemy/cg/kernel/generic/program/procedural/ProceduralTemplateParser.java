@@ -78,14 +78,14 @@ public class ProceduralTemplateParser extends TemplateParser {
 
     /** The set of header files that needed to be included. */
     protected Set<String> _includeFiles = new HashSet<String>();
-    
+
     /** Generate code that corresponds with the fire() method.
      *  @return The generated code.
      */
     public String generateFireCode() {
         return "//stuff here";
     }
-    
+
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */

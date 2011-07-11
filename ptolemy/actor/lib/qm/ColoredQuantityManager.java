@@ -41,8 +41,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** This actor is an {@link QuantityManager} that has a color associated to
  *  it. This color is used by actors using this quantity manager to highlight
- *  ports or relations. 
- *  
+ *  ports or relations.
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -66,19 +66,19 @@ public abstract class ColoredQuantityManager extends TypedAtomicActor implements
      */
     public ColoredQuantityManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
         color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}"); 
+        color.setExpression("{1.0,0.0,0.0,1.0}");
     }
-    
+
     /** The color associated with this actor used to highlight other
      *  actors or connections that use this quantity manager. The default value
      *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
      */
     public ColorAttribute color;
-    
+
     /** If the attribute is <i>color</i>, then update the highlighting colors
-     *  in the model. 
+     *  in the model.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
@@ -86,8 +86,8 @@ public abstract class ColoredQuantityManager extends TypedAtomicActor implements
             throws IllegalActionException {
         if (attribute == color) {
             // FIXME not implemented yet.
-        } 
+        }
         super.attributeChanged(attribute);
     }
-    
+
 }

@@ -118,7 +118,7 @@ import ptolemy.util.StringUtilities;
  Derived classes should override the _description() method to
  append new fields if there is new information that should be included
  in the description.
- 
+
  <p>
  A NamedObj can contain DecoratedAttributes. These are attributes that are
  added by another NamedObj, called a decorator to this NamedObj.
@@ -128,7 +128,7 @@ import ptolemy.util.StringUtilities;
  These attributes are stored seperately and can be retrieved by using
  {@link #getDecoratorAttributes(Decorator)} or
  {@link #getDecoratorAttribute(Decorator, String)}.
-  
+
  @author Mudit Goel, Edward A. Lee, Neil Smyth, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 0.2
@@ -885,11 +885,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-    	
-        // Escape any < character in name. unescapeForXML occurs in 
+
+        // Escape any < character in name. unescapeForXML occurs in
         // setName(String).
-        name = StringUtilities.escapeForXML(name);    	
-    	
+        name = StringUtilities.escapeForXML(name);
+
         try {
             _workspace.getReadAccess();
 
@@ -1106,7 +1106,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  DecoratedAttribute is created, see
      *  {@link ptolemy.kernel.util.Decorator#createDecoratedAttributes(NamedObj)}.
      *  @param decorator The decorator.
-     *  @return The decorated attributes. 
+     *  @return The decorated attributes.
      */
     public DecoratedAttributes getDecoratorAttributes(Decorator decorator) {
         synchronized (_decoratedAttributes) {
@@ -1945,7 +1945,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     "Cannot set a name with a period: " + name);
         }
 
-        // Unescape if necessary. escapeForXML occurs in 
+        // Unescape if necessary. escapeForXML occurs in
         // exportMoML(Writer output, int depth, String name)
         // See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
         name = StringUtilities.unescapeForXML(name);
@@ -2155,10 +2155,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  is the attribute.  The DecoratedAttribute may be read using
      *  {@link #getDecoratorAttributes(Decorator)} or
      *  {@link #getDecoratorAttribute(Decorator, String)}.</p>
-     *  
+     *
      *  <p>This method is write-synchronized on the workspace and increments its
      *  version number.</p>
-     *  
+     *
      *  @param attribute The attribute to be added.
      *  @exception NameDuplicationException If this object already
      *   has an attribute with the same name.
@@ -2760,8 +2760,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             _workspace.doneWriting();
         }
     }
-    
-    /** Remove attribute from list of attributes. 
+
+    /** Remove attribute from list of attributes.
      *  @param param Attribute to remove.
      */
     public void removeAttribute(Attribute param) {

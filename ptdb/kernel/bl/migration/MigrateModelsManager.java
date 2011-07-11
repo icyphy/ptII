@@ -38,31 +38,31 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.util.StringUtilities;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MigrateModelsManager
 
 /**
- * 
+ *
  * Handle the migration of models from the file system to the database at the
  * business layer.
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- * 
+ *
  */
 
 public class MigrateModelsManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Migrate models from the file system stored in the given path to the
      * database.
-     * 
+     *
      * @param directoryPath The path on the file system where the models exist.
      * @param migrateFilesInSubDirectories A boolean that indicates if the
      * migration should consider files in sub-directories.
@@ -121,12 +121,12 @@ public class MigrateModelsManager {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Reads the models in the given directory and store them in the database.
-     * 
+     *
      * @param directory A file that represents the directory that contains the
      * models.
      * @param parentDirectory A file that represents the first directory passed.
@@ -153,20 +153,20 @@ public class MigrateModelsManager {
                         directory.getName().indexOf(".xml"));
 
                 String fileContent = _getContent(directory);
-                
-                if (checkContent == false || 
+
+                if (checkContent == false ||
                         (checkContent && _checkFileContent(fileContent))) {
-                
+
                     _createDBModel(modelName, fileContent, directory.getAbsolutePath());
-                    
+
                 } else {
-                    
-                    _csvFileWriter.write(modelName + "," 
+
+                    _csvFileWriter.write(modelName + ","
                             + directory.getAbsolutePath() + ",Failed,"
-                            + "The content of the file" 
-                            + " was not a proper Ptolemy model content." 
+                            + "The content of the file"
+                            + " was not a proper Ptolemy model content."
                             + System.getProperty("line.separator"));
-                    
+
                 }
             }
 
@@ -175,8 +175,8 @@ public class MigrateModelsManager {
                 || (directory.isDirectory() && !readSubDirectories && directory
                         .getAbsolutePath().equalsIgnoreCase(
                                 parentDirectory.getAbsolutePath()))) {
-            // If the path is a directory, get the list of files and call 
-            // this method recursively on each of the files. 
+            // If the path is a directory, get the list of files and call
+            // this method recursively on each of the files.
 
             File[] listOfFiles = directory.listFiles();
 
@@ -228,7 +228,7 @@ public class MigrateModelsManager {
 
     /**
      * create a new model in the database based on the parameters passed.
-     * 
+     *
      * @param modelName The name of the model to be created.
      * @param modelContent The content of the model to be created.
      * @param filePath The absolute file path to the model on the file system.
@@ -254,37 +254,37 @@ public class MigrateModelsManager {
                     + System.getProperty("line.separator"));
 
         } catch (Exception e) {
-            _csvFileWriter.write(modelName + ","+ filePath + ",Failed," 
+            _csvFileWriter.write(modelName + ","+ filePath + ",Failed,"
                     + e.getMessage()
                     + System.getProperty("line.separator"));
         }
     }
-    
+
     /**
      * Check if the file content is a proper Ptolemy Model content.
      * @param fileContent The content of the file.
-     * @return boolean indicating whether the file content is a proper 
+     * @return boolean indicating whether the file content is a proper
      * Ptolemy model or not.
      */
     private boolean _checkFileContent(String fileContent) {
-        
+
         boolean isPtolemyModel = false;
-        
+
         if (fileContent.lastIndexOf("</") >= 0) {
             String lastTag = fileContent.substring(fileContent.lastIndexOf("</"));
-            
-            if (lastTag.toLowerCase().contains("entity") 
+
+            if (lastTag.toLowerCase().contains("entity")
                     || lastTag.toLowerCase().contains("class")) {
                 isPtolemyModel = true;
             }
         }
-        
+
         return isPtolemyModel;
-        
+
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     /** File writer to handle writing the migration result to CSV file. */
     private FileWriter _csvFileWriter;
 

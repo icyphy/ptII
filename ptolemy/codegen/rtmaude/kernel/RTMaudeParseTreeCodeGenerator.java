@@ -76,7 +76,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         implements ParseTreeCodeGenerator {
 
     /**
-     * Create a new instance of the RTMaude parse tree 
+     * Create a new instance of the RTMaude parse tree
      * code generator.
      */
     public RTMaudeParseTreeCodeGenerator() {
@@ -366,11 +366,11 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
      */
     private void _printChildrenSeparated(ASTPtRootNode node, List separatorList)
             throws IllegalActionException {
-        
+
         char[] lefts = new char[separatorList.size()];
         Arrays.fill(lefts,'(');
         _writer.print(lefts);           // starts with left parentheses
-        
+
         Iterator separators = separatorList.iterator();
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
@@ -399,7 +399,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
             Arrays.fill(lefts,'(');
             _writer.print(lefts);           // starts with left parentheses
         }
-        
+
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
                 _writer.print(" " + _transformOp(string) + " ");
@@ -444,7 +444,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
             if (id.equals("Infinity")) {
                 return id;
             } else {
-                
+
                 //TODO: built-in functions should be enclosed by "builtin(...)"
                 return "'" + id;
             }

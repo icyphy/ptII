@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -30,12 +30,12 @@ package ptdb.common.dto;
 
 import java.util.ArrayList;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PTDBGenericAttribute
 
 /**
- * The DTO for transferring the generic attribute information. 
- * 
+ * The DTO for transferring the generic attribute information.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -46,22 +46,22 @@ import java.util.ArrayList;
 public class PTDBGenericAttribute {
 
     /**
-     * Construct the PTDBGenericAttribute class. 
-     * 
-     * @param attributeName The name of the attribute. 
-     * 
+     * Construct the PTDBGenericAttribute class.
+     *
+     * @param attributeName The name of the attribute.
+     *
      */
     public PTDBGenericAttribute(String attributeName) {
         _attributeName = attributeName;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    public methods                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Add more value for OR relationship to this attribute. 
-     * 
-     * @param newValue The new value to be added. 
+     * Add more value for OR relationship to this attribute.
+     *
+     * @param newValue The new value to be added.
      */
     public void addValue(String newValue) {
 
@@ -74,9 +74,9 @@ public class PTDBGenericAttribute {
     }
 
     /**
-     * Get the name of this attribute. 
-     * 
-     * @return The name of the attribute. 
+     * Get the name of this attribute.
+     *
+     * @return The name of the attribute.
      * @see #setAttributeName(String)
      */
     public String getAttributeName() {
@@ -84,9 +84,9 @@ public class PTDBGenericAttribute {
     }
 
     /**
-     * Get the class name of this attribute. 
-     * 
-     * @return The class name of this attribute. 
+     * Get the class name of this attribute.
+     *
+     * @return The class name of this attribute.
      * @see #setClassName(String)
      */
     public String getClassName() {
@@ -94,10 +94,10 @@ public class PTDBGenericAttribute {
     }
 
     /**
-     * Get the values of this attribute. 
-     * 
+     * Get the values of this attribute.
+     *
      * @return The values of the attributes. All the values share the "OR"
-     *  relationship. 
+     *  relationship.
      * @see #setValues(ArrayList)
      */
     public ArrayList<String> getValues() {
@@ -105,9 +105,9 @@ public class PTDBGenericAttribute {
     }
 
     /**
-     * Set the name of the attribute. 
-     * 
-     * @param attributeName The name to be set for the attribute. 
+     * Set the name of the attribute.
+     *
+     * @param attributeName The name to be set for the attribute.
      * @see #getAttributeName()
      */
     public void setAttributeName(String attributeName) {
@@ -115,9 +115,9 @@ public class PTDBGenericAttribute {
     }
 
     /**
-     * Set the class name of this attribute. 
-     * 
-     * @param className The class name to be set for this attribute. 
+     * Set the class name of this attribute.
+     *
+     * @param className The class name to be set for this attribute.
      * @see #getClassName()
      */
     public void setClassName(String className) {
@@ -125,9 +125,9 @@ public class PTDBGenericAttribute {
     }
 
     /**
-     * Set the values of the attribute. 
-     * 
-     * @param values The values to be set for the attribute. 
+     * Set the values of the attribute.
+     *
+     * @param values The values to be set for the attribute.
      * @see #getValues()
      */
     public void setValues(ArrayList<String> values) {
@@ -136,10 +136,10 @@ public class PTDBGenericAttribute {
 
     /**
      * Return the String representation of this attribute.
-     * 
+     *
      * @return The String representation of this attribute.
      */
-    
+
     public String toString() {
 
         return _attributeName + "@" + _className + "@" + _values.toString();
@@ -147,13 +147,13 @@ public class PTDBGenericAttribute {
 
     /**
      * Check whether the given attribute equals to this attribute.
-     * 
-     * @param attribute The given attribute to be checked. 
-     * 
+     *
+     * @param attribute The given attribute to be checked.
+     *
      * @return true - if the given attribute equals to this attribute.<br>
      *          false - if the given attribute does not equal to this attribute.
      */
-    
+
     public boolean equals(Object attribute) {
 
         if (!(attribute instanceof PTDBGenericAttribute)) {
@@ -213,11 +213,11 @@ public class PTDBGenericAttribute {
     }
 
     /**
-     * Calculate the hash code for this PTDBGenericAttribute instance. 
-     * 
-     * @return Return the calculated hash code. 
+     * Calculate the hash code for this PTDBGenericAttribute instance.
+     *
+     * @return Return the calculated hash code.
      */
-    
+
     public int hashCode() {
         StringBuffer summaryStringBuffer = new StringBuffer("");
 
@@ -242,8 +242,8 @@ public class PTDBGenericAttribute {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private String _className;
 

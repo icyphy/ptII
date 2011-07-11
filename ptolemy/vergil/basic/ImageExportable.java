@@ -34,7 +34,7 @@ import java.io.OutputStream;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageExportable
-/** 
+/**
  * Interface indicating support for exporting an image.
  * @author Edward A. Lee
  * @version $Id$
@@ -43,14 +43,14 @@ import java.io.OutputStream;
  * @Pt.AcceptedRating Red (cxh)
  */
 public interface ImageExportable {
-    
+
     /** Write an image to the specified output stream in the specified format.
      *  Supported formats include at least "gif" and "png", standard image file formats.
      *  The image is a rendition of the current view of the model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
-     *  @throws IOException If writing to the stream fails.
-     *  @throws PrinterException  If the specified format is not supported.
+     *  @exception IOException If writing to the stream fails.
+     *  @exception PrinterException  If the specified format is not supported.
      */
     public void writeImage(OutputStream stream, String format) throws PrinterException, IOException;
 }

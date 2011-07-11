@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Settable;
 //// DivideConceptFunctionDefinition
 
 /** Concept function definition attribute specifically for arithmetic division.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -62,7 +62,7 @@ public class DivideConceptFunctionDefinition extends
             String name) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
-        
+
         Token[] argNames = new Token[]{(Token) new StringToken("dividend"),
                 (Token) new StringToken("divisor")};
         argumentNames.setToken(new ArrayToken(argNames));

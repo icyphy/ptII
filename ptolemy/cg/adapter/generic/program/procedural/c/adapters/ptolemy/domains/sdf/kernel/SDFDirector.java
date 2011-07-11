@@ -505,7 +505,7 @@ public class SDFDirector
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer variableDeclarations = new StringBuffer(super
                 .generateVariableDeclaration());
-        
+
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
 
         Attribute period = _director.getAttribute("period");

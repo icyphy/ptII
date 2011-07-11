@@ -29,7 +29,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation adapter class for 
+ * A code generation adapter class for
  * ptolemy.domains.ptides.lib.targets.luminary.TimeTriggeredEncoderInputDevice. This actor
  * is basically the same as GPInputHandler, only the C template includes more
  * calculations.
@@ -44,8 +44,8 @@ public class TimeTriggeredEncoderHandler extends GPInputHandler {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.TimeTriggeredEncoderInputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.TimeTriggeredEncoderInputDevice actor.
-     *  @exception IllegalActionException 
-     *  @exception NameDuplicationException 
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public TimeTriggeredEncoderHandler(
             ptolemy.domains.ptides.lib.luminary.TimeTriggeredEncoderHandler actor)

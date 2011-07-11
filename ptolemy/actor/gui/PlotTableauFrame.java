@@ -164,9 +164,9 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
         _directory = null;
         plot.samplePlot();
     }
-    
+
     /** Dispose of this frame.
-     *	
+     *
      *  <p>Override this dispose() method to unattach any listeners
      *  that may keep this model from getting garbage collected.  This
      *  method invokes the dispose() method of the superclass,
@@ -184,8 +184,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
      *  The image is a rendition of the current view of the model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
-     *  @throws IOException If writing to the stream fails.
-     *  @throws PrinterException  If the specified format is not supported.
+     *  @exception IOException If writing to the stream fails.
+     *  @exception PrinterException  If the specified format is not supported.
      */
     public void writeImage(OutputStream stream, String format) throws PrinterException, IOException {
         if (plot == null) {
@@ -208,7 +208,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
 
     /** The export to PDF action. */
     protected Action _exportPDFAction;
-    
+
     /** Edit menu for this frame. */
     protected JMenu _editMenu;
 
@@ -292,10 +292,10 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
      */
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
-        
+
         JMenu exportMenu = (JMenu)fileMenuItems[_EXPORT_MENU_INDEX];
         exportMenu.setEnabled(true);
-        
+
         try {
             // Get the "export PDF" action classname from the configuration.
             // This may or many not be included because it depends on GPL'd code,
@@ -344,7 +344,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
         // We don't want it always enabled because ptiny, the applets and
         // Web Start should not included this AGPL'd piece of software
-        
+
         // NOTE: Comment out the entire block with lines that begin with //
         // so that the test in adm notices that the block is commented out.
 
@@ -372,7 +372,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
             JMenuItem exportItem = new JMenuItem(_exportPDFAction);
             exportMenu.add(exportItem);
         }
-        
+
         // Next do the export GIF action.
         if (_exportGIFAction == null) {
             _exportGIFAction = new ExportImageAction("GIF");
@@ -480,7 +480,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
     ///////////////////////////////////////////////////////////////////
     //// ExportImageAction
 
-    /** Export an image of a plot. */ 
+    /** Export an image of a plot. */
     public class ExportImageAction extends AbstractAction {
 
         /** Create a new action to export an image.
@@ -528,7 +528,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
                     }
                 }
 
-                int returnVal = fileDialog.showDialog(PlotTableauFrame.this, "Export " 
+                int returnVal = fileDialog.showDialog(PlotTableauFrame.this, "Export "
                         + _formatName.toUpperCase());
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -566,7 +566,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
                 jFileChooserBugFix.restoreBackground(background);
             }
         }
-        
+
         private String _formatName;
     }
 

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -47,7 +47,7 @@ import ptolemy.kernel.Entity;
 
 public class TestImportByReferenceRequirementsIntegration {
 
-    
+
     /**
      * Test importing a model by reference.  No DBReference tag is present.
      * @exception Exception
@@ -58,11 +58,11 @@ public class TestImportByReferenceRequirementsIntegration {
         Entity container = new Entity("container");
 
         java.util.Date time = new java.util.Date();
-        
+
         String modelName=String.valueOf(time.getTime()) + "model";
 
         Entity entity = null;
-        
+
         XMLDBModel dbModel = new XMLDBModel(modelName);
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -91,20 +91,20 @@ public class TestImportByReferenceRequirementsIntegration {
 
             SaveModelManager saveManager = new SaveModelManager();
             /*String modelID =*/ saveManager.save(dbModel);
-            
+
             entity = LoadManager.importModel(modelName, true, container);
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "TRUE");
 
-            removeModel(new XMLDBModel(dbModel.getModelName()));            
-            
+            removeModel(new XMLDBModel(dbModel.getModelName()));
+
 
         }
-    
+
     /**
      * Test importing a model by value.  No DBReference tag is present.
      * @exception Exception
@@ -115,11 +115,11 @@ public class TestImportByReferenceRequirementsIntegration {
         Entity container = new Entity("container");
 
         java.util.Date time = new java.util.Date();
-        
+
         String modelName=String.valueOf(time.getTime()) + "model";
 
         Entity entity = null;
-        
+
         XMLDBModel dbModel = new XMLDBModel(modelName);
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -149,22 +149,22 @@ public class TestImportByReferenceRequirementsIntegration {
 
             SaveModelManager saveManager = new SaveModelManager();
             /*String modelID =*/ saveManager.save(dbModel);
-            
+
             entity = LoadManager.importModel(modelName, true, container);
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "TRUE");
-            
+
 
             removeModel(new XMLDBModel(dbModel.getModelName()));
-            
-            
-            
+
+
+
         }
-    
+
     /**
      * Test importing a model by reference.  No DBReference tag is present.
      * @exception Exception
@@ -176,11 +176,11 @@ public class TestImportByReferenceRequirementsIntegration {
         Entity container = new Entity("container");
 
         java.util.Date time = new java.util.Date();
-        
+
         String modelName=String.valueOf(time.getTime()) + "model";
 
         Entity entity = null;
-        
+
         XMLDBModel dbModel = new XMLDBModel(modelName);
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -215,15 +215,15 @@ public class TestImportByReferenceRequirementsIntegration {
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "FALSE");
-            
+
 
             removeModel(new XMLDBModel(dbModel.getModelName()));
-            
+
 
         }
-    
+
     /**
      * Test importing a model by reference.  No DBReference tag is present.
      * @exception Exception
@@ -234,11 +234,11 @@ public class TestImportByReferenceRequirementsIntegration {
         Entity container = new Entity("container");
 
         java.util.Date time = new java.util.Date();
-        
+
         String modelName=String.valueOf(time.getTime()) + "model";
 
         Entity entity = null;
-        
+
         XMLDBModel dbModel = new XMLDBModel(modelName);
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -268,21 +268,21 @@ public class TestImportByReferenceRequirementsIntegration {
 
             SaveModelManager saveManager = new SaveModelManager();
             /*String modelID =*/ saveManager.save(dbModel);
-        
+
             entity = LoadManager.importModel(modelName, false, container);
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
                     ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(), 
+                        .getExpression(),
                     "FALSE");
-          
+
 
             removeModel(new XMLDBModel(dbModel.getModelName()));
-            
-            
+
+
         }
-    
+
     /**
      * Test attempting to import a model with a null model name.
      * @exception Exception
@@ -291,32 +291,32 @@ public class TestImportByReferenceRequirementsIntegration {
     public void testNull() throws Exception {
 
         Entity container = new Entity("container");
-        
+
         String inputString=null;
 
         //Entity entity = null;
 
         boolean isSuccess = false;
-        
+
         try {
-        
+
             /*entity =*/ LoadManager.importModel(inputString, false, container);
-            
-        } catch(Exception e){
-            
+
+        } catch (Exception e) {
+
             isSuccess = true;
-            
+
         }
-        
+
         assertTrue(isSuccess);
 
-            
+
         }
-    
+
     private void removeModel(XMLDBModel dbModel) throws Exception{
-        
+
         DBConnection dbConnection = null;
-        
+
         try {
 
             ArrayList<XMLDBModel> modelList = new ArrayList();
@@ -325,7 +325,7 @@ public class TestImportByReferenceRequirementsIntegration {
             RemoveModelsTask removeModelsTask = new RemoveModelsTask(modelList);
             dbConnection.executeRemoveModelsTask(removeModelsTask);
             dbConnection.commitConnection();
-            
+
         } catch (DBExecutionException e) {
 
             if (dbConnection != null) {
@@ -334,7 +334,7 @@ public class TestImportByReferenceRequirementsIntegration {
             }
 
             throw e;
-            
+
         } finally {
 
             if (dbConnection != null) {
@@ -343,6 +343,6 @@ public class TestImportByReferenceRequirementsIntegration {
 
             }
         }
-        
+
     }
 }

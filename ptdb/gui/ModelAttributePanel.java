@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -84,24 +84,24 @@ public class ModelAttributePanel extends JPanel {
         _attributeMap = attMap;
         _modified = false;
         _currentText = "";
-        
+
         setBorder(BorderFactory.createEtchedBorder());
-        
+
         setMaximumSize(new Dimension(650, 30));
         setMinimumSize(getMaximumSize());
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        
+
         setAlignmentX(LEFT_ALIGNMENT);
         setAlignmentY(TOP_ALIGNMENT);
-        
+
         JLabel nameLabel = new JLabel(" Attribute ");
         nameLabel.setPreferredSize(new Dimension(50, 20));
         nameLabel.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         _attributeName = new JComboBox(getAttributeList(_attributeMap));
         _attributeName.setPreferredSize(new Dimension(180, 20));
         _attributeName.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         JLabel valueLabel = new JLabel(" Value ");
         valueLabel.setPreferredSize(new Dimension(40, 20));
         valueLabel.setAlignmentX(LEFT_ALIGNMENT);
@@ -109,10 +109,10 @@ public class ModelAttributePanel extends JPanel {
         _textValue = new JTextField();
         _textValue.setPreferredSize(new Dimension(180, 20));
         _textValue.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         _booleanValue = new JCheckBox();
         _booleanValue.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         _listValue = new JComboBox();
         _listValue.setPreferredSize(new Dimension(180, 20));
         _listValue.setAlignmentX(LEFT_ALIGNMENT);
@@ -123,27 +123,27 @@ public class ModelAttributePanel extends JPanel {
 
                 updateDisplay();
                 setModified(true);
-                
+
             }
 
         });
-        
+
         _textValue.addFocusListener(new FocusListener() {
 
-            
+
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
-                
+
             }
 
-            
+
             public void focusLost(FocusEvent arg0) {
-                
-                if(!_textValue.getText().equals(_currentText)){
+
+                if (!_textValue.getText().equals(_currentText)) {
                         setModified(true);
                         _currentText = _textValue.getText();
                 }
-                
+
             }
 
         });
@@ -153,21 +153,21 @@ public class ModelAttributePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 setModified(true);
-                
+
             }
 
         });
-        
+
         _listValue.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
 
                 setModified(true);
-                
+
             }
 
         });
-        
+
         add(nameLabel);
         add(_attributeName);
         add(valueLabel);
@@ -185,61 +185,61 @@ public class ModelAttributePanel extends JPanel {
      *          The string value of the attribute,
      *          It is obtained from the applicable form Component based on
      *          the type mapped to the selected attribute.
-     * 
+     *
      * @see #setValue
-     * 
+     *
      */
     public String getValue() {
 
         try {
-            
+
             if (((XMLDBAttribute)_attributeMap
                     .get(_attributeName.getSelectedItem()
                     .toString())).getAttributeType()
                     .equals(XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
-    
+
                 return _textValue.getText();
-    
+
             } else if (((XMLDBAttribute)_attributeMap
                     .get(_attributeName.getSelectedItem()
                     .toString())).getAttributeType()
                     .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
-    
+
                 if (_listValue.getSelectedItem() != null) {
-    
+
                     return _listValue.getSelectedItem().toString();
-    
+
                 } else {
-    
+
                     return "";
-    
+
                 }
-    
+
             } else if (((XMLDBAttribute)_attributeMap
                     .get(_attributeName.getSelectedItem()
                     .toString())).getAttributeType()
                     .equals(XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
-    
+
                 if (_booleanValue.isSelected()) {
-    
+
                     return "TRUE";
-    
+
                 } else {
-    
+
                     return "FALSE";
-    
+
                 }
-    
+
             } else {
-    
+
                 return "";
-    
+
             }
-            
-        } catch (NullPointerException e){
-            
+
+        } catch (NullPointerException e) {
+
             return "";
-        
+
         }
 
     }
@@ -251,23 +251,23 @@ public class ModelAttributePanel extends JPanel {
      *
      * @return
      *          This attribute's name.
-     * 
+     *
      * @see #setAttributeName
-     * 
+     *
      */
     public String getAttributeName() {
 
         return _attributeName.getSelectedItem().toString();
 
     }
-    
+
     /** Set the attribute name.
-     * 
-     * @param name 
+     *
+     * @param name
      *          The attribute name.
-     * 
+     *
      * @see #getAttributeName
-     * 
+     *
      */
    public void setAttributeName(String name) {
 
@@ -275,22 +275,22 @@ public class ModelAttributePanel extends JPanel {
        updateDisplay();
 
    }
-    
+
     /** Set the value of this attribute.
-     * 
-     * @param value 
+     *
+     * @param value
      *          The value of the attribute.
-     * 
+     *
      * @see #getValue
-     * 
+     *
      */
    public void setValue(String value) {
 
        if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-               .toString())) == null){
-           
+               .toString())) == null) {
+
            return;
-       
+
        }
        else if (((XMLDBAttribute)_attributeMap
                .get(_attributeName.getSelectedItem()
@@ -316,12 +316,12 @@ public class ModelAttributePanel extends JPanel {
 
                _booleanValue.setSelected(true);
 
-           } else if (value.equals("FALSE")){
+           } else if (value.equals("FALSE")) {
 
                _booleanValue.setSelected(false);
-               
+
            }
-           
+
        }
 
    }
@@ -332,16 +332,16 @@ public class ModelAttributePanel extends JPanel {
     private void updateDisplay() {
 
         if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())) == null){   
-            
+                .toString())) == null) {
+
             _listValue.setEnabled(false);
             _textValue.setEnabled(false);
             _booleanValue.setEnabled(false);
-            
+
             _textValue.setText("");
             _booleanValue.setSelected(false);
             _listValue.setSelectedItem(null);
-        
+
         } else if (((XMLDBAttribute)_attributeMap
                 .get(_attributeName.getSelectedItem()
                 .toString())).getAttributeType()
@@ -373,34 +373,34 @@ public class ModelAttributePanel extends JPanel {
             _textValue.setText("");
             _booleanValue.setEnabled(false);
             _booleanValue.setSelected(false);
-            
-            DefaultComboBoxModel theModel = 
+
+            DefaultComboBoxModel theModel =
                 (DefaultComboBoxModel)_listValue.getModel();
             theModel.removeAllElements();
-            
+
             ArrayList<String> choiceList = (ArrayList)
                 ((XMLDBAttribute)_attributeMap
                     .get(_attributeName.getSelectedItem()
                     .toString())).getAttributeValues();
 
             _listValue.addItem("");
-            for(String choice : choiceList){
-                
+            for (String choice : choiceList) {
+
                 _listValue.addItem(choice);
-                
+
             }
-            
-        
+
+
         } else {
-            
+
             _listValue.setEnabled(false);
             _textValue.setEnabled(false);
             _booleanValue.setEnabled(false);
-            
+
             _textValue.setText("");
             _booleanValue.setSelected(false);
             _listValue.setSelectedItem(null);
-                
+
         }
 
     }
@@ -427,30 +427,30 @@ public class ModelAttributePanel extends JPanel {
      *
      * @return
      *         An indication if the panel has been modified.
-     * 
+     *
      * @see #setModified(boolean)
-     * 
+     *
      */
     public boolean isModified() {
-    
+
         return _modified;
-       
+
     }
-    
+
     /** Set the panel to modified or unmodified.
-     * 
+     *
      * @param modified True to set to modified.  False to set to unmodified.
-     * 
+     *
      * @see #isModified()
-     * 
+     *
      */
     public void setModified(boolean modified) {
-    
+
         _modified = modified;
-       
+
     }
-    
-   
+
+
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 

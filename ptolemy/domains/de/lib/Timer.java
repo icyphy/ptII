@@ -124,7 +124,7 @@ public class Timer extends DETransformer {
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, output, 0.0);
     }
-    
+
     /** Read one token from the input. Send out a token that is scheduled
      *  to produce at the current time to the output.
      *

@@ -182,7 +182,7 @@ public class TimedDelay extends DETransformer {
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, output, _delay);
     }
-    
+
     /** Read one token from the input. Send out a token that is scheduled
      *  to produce at the current time to the output.
      *  @exception IllegalActionException If there is no director, or the
@@ -313,7 +313,7 @@ public class TimedDelay extends DETransformer {
      *  do it at the requested time. This is a convenience method
      *  provided because many actors need it.
      *  <p>
-     *  If the executive director is a Ptides director, use 
+     *  If the executive director is a Ptides director, use
      *  fireAt(Actor, Time, IOPort) method because the pure event this
      *  actor generates is always safe to process.
      *  </p>

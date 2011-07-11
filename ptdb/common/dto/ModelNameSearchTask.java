@@ -21,23 +21,23 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 /*
- * 
+ *
  */
 package ptdb.common.dto;
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelNameSearchTask
 
 /**
  * Task to search for models based on model name.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -53,9 +53,9 @@ public class ModelNameSearchTask extends Task {
     public ModelNameSearchTask(String modelName) {
         this.modelName = modelName;
     }
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Return the model name.
      * @return The model name.
@@ -72,10 +72,10 @@ public class ModelNameSearchTask extends Task {
     public void setModelName(String modelName) {
         this.modelName = modelName;
     }
-    
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private String modelName;
 
-   
+
 }

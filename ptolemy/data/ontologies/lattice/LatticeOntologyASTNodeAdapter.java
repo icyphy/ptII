@@ -73,7 +73,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                 ////
+    ////                         public methods                    ////
 
     /**
      * Construct the property constraint adapter for the given
@@ -118,7 +118,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
                     // is equal.
                     if (isEqualConstraint) {
                         setSameAs(node, namedObj);
-                        
+
                     // Set up one-direction constraint.
                     } else if (constrainParent) {
                         setAtLeast(node, namedObj);
@@ -143,7 +143,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
                 if (!constrainParent && !isNone) {
                     // Set child >= parent.
                     setAtLeast(node.jjtGetChild(i), node);
-                }                
+                }
                 children.add(node.jjtGetChild(i));
             }
 
@@ -179,7 +179,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
     /**
      * Returns the component referenced by the given name in the given
      * container.
-     * 
+     *
      * @param container The container in which to find the component
      * @param name The name of the component
      * @return The NamedObj component referred to by the name found in the
@@ -212,9 +212,9 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
         list.add(getComponent());
         return list;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Return an array of all the inequality terms for the
      *  child nodes to this product node.
@@ -241,13 +241,13 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
 
     /**
      * Return the node this adapter references.
-     * 
+     *
      * @return The node referred to by this adapter
      */
     protected ASTPtRootNode _getNode() {
         return (ASTPtRootNode) getComponent();
     }
-    
+
     /**
      * Return the list of sub-adapters. In this base class,
      * return an empty list.

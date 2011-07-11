@@ -69,7 +69,7 @@ public class OntologySolverUtilities {
      */
     public void addErrors(String error) {
         _errors.add(error);
-    }    
+    }
 
     /**
      * Return the map that maps root ast node (keys) to the corresponding
@@ -120,7 +120,7 @@ public class OntologySolverUtilities {
 
     /**
      * Return the representation for the SharedUtilities object.
-     * 
+     *
      * @return The string representation of the SharedUtilities object
      */
     public String toString() {

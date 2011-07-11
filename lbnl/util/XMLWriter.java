@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -107,8 +107,8 @@ public class XMLWriter {
 
     /** Write the xml file.
      *
-     * @exception FileNotFoundException If the file exists but is a directory rather 
-     *              than a regular file, does not exist but cannot be created, 
+     * @exception FileNotFoundException If the file exists but is a directory rather
+     *              than a regular file, does not exist but cannot be created,
      *              or cannot be opened for any other reason.
      * @exception IOException if an I/O error occurs.
      */

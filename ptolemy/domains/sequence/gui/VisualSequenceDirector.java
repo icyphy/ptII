@@ -1,4 +1,4 @@
-/* A sequence director that supports visually editing the sequence. 
+/* A sequence director that supports visually editing the sequence.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -59,7 +59,7 @@ import ptolemy.vergil.icon.TableIcon;
  * by the model. This extends the base class by providing an interface
  * for editing the sequence.
  *
- * @author Bastian Ristau, Yasemin Demir, and Edward A. Lee 
+ * @author Bastian Ristau, Yasemin Demir, and Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (beth)
@@ -186,7 +186,7 @@ public class VisualSequenceDirector extends SequenceDirector {
             StringBuffer newScheduleText = new StringBuffer();
             newScheduleText.append("{");
             //String newScheduleText = new String("{");
-            // FIXME: Currently all previous values of sequence numbers are 
+            // FIXME: Currently all previous values of sequence numbers are
             // ignored. Probably this is not desired.
             // FIXME: Also SequenceNumbers of non-opaque actors are not taken into
             // account during renumbering, so duplicates may occur.

@@ -41,7 +41,7 @@ import ptolemy.util.MessageHandler;
  *  that Vergil shows an icon for the HelloWorld attribute.
  *  It specifies the location on the canvas where that icon
  *  should be placed.
- * 
+ *
  *  @author Edward A. Lee
  *  @version $Id$
  *
@@ -56,7 +56,7 @@ public class ShortestPathFinder extends Attribute {
     public ShortestPathFinder(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Create an EditorFactory to handle double clicks.
         new Calculate(this, "Calculate");
     }
@@ -73,7 +73,7 @@ public class ShortestPathFinder extends Attribute {
         // Array indicating which nodes have final distances.
         // This initializes to false for all nodes.
         boolean[] visited = new boolean[entities.length];
-        
+
         // Array indicating the calculated distances from the start.
         int[] distance = new int[entities.length];
         // Use max value to represent infinity (no path).
@@ -81,14 +81,14 @@ public class ShortestPathFinder extends Attribute {
             distance[i] = Integer.MAX_VALUE;
         }
         distance[start] = 0;
-        
+
         // Create a way to get the index of a node given
         // a reference to the node itself.
         Map<Object,Integer> entityToIndex = new HashMap<Object,Integer>();
-        for(int i = 0; i < entities.length; i++) {
+        for (int i = 0; i < entities.length; i++) {
             entityToIndex.put(entities[i], new Integer(i));
         }
-        
+
         // Set the start node as the current node and begin.
         Entity current = (Entity)entities[start];
         int currentIndex = start;
@@ -114,15 +114,15 @@ public class ShortestPathFinder extends Attribute {
             }
             // Mark the current node visited.
             visited[currentIndex] = true;
-            
+
             // We are done if the current node is the end node.
             if (currentIndex == end) break;
-            
+
             // Find the unvisited node with the minimum distance to be the
             // next current node.
             int minimumDistance = Integer.MAX_VALUE;
             done = true;
-            for(int i = 0; i < entities.length; i++) {
+            for (int i = 0; i < entities.length; i++) {
                 if (visited[i]) continue;
                 done = false;
                 if (distance[i] <= minimumDistance) {
@@ -153,21 +153,21 @@ public class ShortestPathFinder extends Attribute {
             List<Entity> entitiesList = ((CompositeEntity)
                     ShortestPathFinder.this.getContainer()).entityList();
             Object[] entities = entitiesList.toArray();
-            
+
             // Ask the user for a start and end node.
             Query query = new Query();
             query.addChoice("start", "start node", entities, entities[0]);
             query.addChoice("end", "end node", entities, entities[entities.length - 1]);
             ComponentDialog dialog = new ComponentDialog(
                     parent, "Specify start and end nodes", query);
-            
+
             // If the user clicks OK, proceed.
             if (dialog.buttonPressed().equals("OK")) {
-                
+
                 // Indices of the start and end node given by the user.
                 int start = query.getIntValue("start");
                 int end = query.getIntValue("end");
-                
+
                 int distance = calculateDistance(entities, start, end);
                 MessageHandler.message("The minimum distance is " + distance);
             }

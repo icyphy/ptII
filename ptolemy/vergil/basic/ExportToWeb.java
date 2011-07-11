@@ -54,7 +54,7 @@ import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportToWeb
-/** 
+/**
  * Export a model to a web page.
  * Usage:
  * <pre>
@@ -69,7 +69,7 @@ import ptolemy.util.MessageHandler;
  * in that directory is the main entry point. Note that the model
  * has to have parameters set for a finite run, or invoking this
  * will not return.
- * 
+ *
  * @author Christopher Brooks and Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -77,7 +77,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class ExportToWeb {
-    
+
     /** Export a model to a web page.
      *  @param modelFileName A Ptolemy model in MoML format.
      *  The string may start with $CLASSPATH, $HOME or other formats
@@ -110,7 +110,7 @@ public class ExportToWeb {
                     _configuration = (Configuration)toplevel;
 
                 } catch (Throwable throwable) {
-                    System.out.println("Failed to open " + modelFileName 
+                    System.out.println("Failed to open " + modelFileName
                             + ".\n" + throwable.getMessage());
                     return;
                 }
@@ -122,7 +122,7 @@ public class ExportToWeb {
         }
 
        _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(_modelToExport);
-       
+
        // Get permission to write to the destination directory.
        final File directory = new File(destinationDirectory);
        if (directory.exists()) {
@@ -140,17 +140,17 @@ public class ExportToWeb {
                }
                if (!directory.delete()) {
                    MessageHandler.message("Unable to delete file.");
-                   return;                            
+                   return;
                }
                if (!directory.mkdir()) {
                    MessageHandler.message("Unable to create directory.");
-                   return;                            
+                   return;
                }
            }
        } else {
            if (!directory.mkdir()) {
                MessageHandler.message("Unable to create directory.");
-               return;                            
+               return;
            }
        }
 
@@ -175,17 +175,17 @@ public class ExportToWeb {
                };
            SwingUtilities.invokeAndWait(runAction);
        }
-       
+
        // Open submodels and export to web
        Runnable ExportToWebAction = new Runnable() {
            public void run() {
                try {
-                   // Open submodels. 
+                   // Open submodels.
                    System.out.println("Opening submodels.");
 
                    Set<Effigy> effigiesToClose = new HashSet<Effigy>();
                    effigiesToClose.add(_masterEffigy);
-                   
+
                    List<Entity> entities = _modelToExport.entityList();
                    for (Entity entity : entities) {
                        _openEntity(entity, effigiesToClose);
@@ -194,7 +194,7 @@ public class ExportToWeb {
                    System.out.println("Writing web files to " + directory);
                    ExportHTMLAction action = new ExportHTMLAction(_basicGraphFrame);
                    action.writeHTML(directory);
-                   
+
                    System.out.println("Closing the model.");
                    // Close all tableau for top-level effigies.
                    // For simple cases, the following line will work. But if the
@@ -215,7 +215,7 @@ public class ExportToWeb {
     }
 
     /** Export a model as an image.
-     *  
+     *
      *  <p>Note that the a graphical display must be present, this
      *  code displays the model and executes.  To use in a headless
      *  environment under Linux, install Xvfb.</p>
@@ -233,12 +233,12 @@ public class ExportToWeb {
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.ExportToWeb -run png model.xml
      *  </pre>
-     * 
+     *
      *  @param args The arguments for the export image operation.
-     *  The arguments should be in the format: 
+     *  The arguments should be in the format:
      *  [-run] [-save] [GIF|gif|PNG|png] model.xml.
      *
-     *  @exception args If there is 1 argument, then it names a 
+     *  @exception args If there is 1 argument, then it names a
      *  Ptolemy MoML file and the model is exported as a .gif file.
      *  If there are two arguments, then the first argument names
      *  a format, current formats are GIF, gif, PNG and png and
@@ -274,7 +274,7 @@ public class ExportToWeb {
             int dot = modelFileName.lastIndexOf(".");
             directoryName = modelFileName.substring(0, dot);
         }
-        
+
         try {
             new ExportToWeb().exportToWeb(modelFileName, directoryName, run);
         } catch (Exception ex) {
@@ -283,7 +283,7 @@ public class ExportToWeb {
         }
         System.exit(0);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -293,8 +293,8 @@ public class ExportToWeb {
      *  @param effigiesToClose A list that the effigy will be added to
      *   if its effigy is not contained by the _masterEffigy (i.e.,
      *   what was opened was a class defined in another file).
-     *  @throws IllegalActionException If opening fails.
-     *  @throws NameDuplicationException Not thrown.
+     *  @exception IllegalActionException If opening fails.
+     *  @exception NameDuplicationException Not thrown.
      */
     private void _openComposite(CompositeEntity entity, Set<Effigy> effigiesToClose)
             throws IllegalActionException, NameDuplicationException {
@@ -313,7 +313,7 @@ public class ExportToWeb {
             _openEntity(inside, effigiesToClose);
         }
     }
-    
+
     /** Open the specified entity using the specified configuration.
      *  This method will recursively descend through the model, opening
      *  every composite actor and every state refinement.
@@ -339,13 +339,13 @@ public class ExportToWeb {
 
     /** The BasicGraphFrame of the model. */
     private BasicGraphFrame _basicGraphFrame;
-    
+
     /** Used in exportToWeb() to record the configuration for _modelToExport. */
     private Configuration _configuration;
 
     /** Used in exportToWeb() to record the effigy for _modelToExport. */
     private Effigy _masterEffigy;
-    
+
     /** Used in exportToWeb() to communicate between the main thread and the
      *  Swing event thread.
      */

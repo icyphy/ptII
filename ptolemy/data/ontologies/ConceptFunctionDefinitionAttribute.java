@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ConceptFunctionDefinitionAttribute
 
 /** Abstract base class for an Attribute that defines a concept function.
- *  
+ *
  *  @see ExpressionConceptFunction
  *  @author Charles Shelton
  *  @version $Id$

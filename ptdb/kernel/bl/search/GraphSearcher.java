@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -39,7 +39,7 @@ import ptdb.common.dto.SearchCriteria;
 
 /**
  * Inherits from the AbstractSearcher, and contains the common
- * functions for the searchers for graph pattern match search. 
+ * functions for the searchers for graph pattern match search.
  *
  * @author Alek Wang
  * @version $Id$
@@ -56,17 +56,17 @@ public abstract class GraphSearcher extends AbstractSearcher {
     /**
      * A factory which returns the concrete GraphSearcher objects
      * according to the complexity of the search criteria from the user.
-     * 
-     * <p>Different graph searcher has different capability to perform the 
-     * graph pattern match search.  The original design is that this factory 
-     * method will return the appropriate searchers according to the given 
+     *
+     * <p>Different graph searcher has different capability to perform the
+     * graph pattern match search.  The original design is that this factory
+     * method will return the appropriate searchers according to the given
      * graph pattern search criteria.</p>
-     * 
-     * <p>For now, due to the limitation of searching patterns in the 
-     * database, this factory will anyway construct both XQueryGraphSearcher 
-     * and PatternMatchGraphSearcher, and return both of them in a list. The 
-     * first searcher in the list will be the instance of the 
-     * XQueryGraphSearcher, and the second will be 
+     *
+     * <p>For now, due to the limitation of searching patterns in the
+     * database, this factory will anyway construct both XQueryGraphSearcher
+     * and PatternMatchGraphSearcher, and return both of them in a list. The
+     * first searcher in the list will be the instance of the
+     * XQueryGraphSearcher, and the second will be
      * PatternMatchGraphSearcher.</p>
      *
      * @param searchCriteria The search criteria input by the user.
@@ -99,9 +99,9 @@ public abstract class GraphSearcher extends AbstractSearcher {
      *  this graph searcher instance.
      *
      * @return true - if the search criteria has been set.<br>
-     *         false - if the search criteria has not been set. 
+     *         false - if the search criteria has not been set.
      */
-    
+
     protected boolean _isSearchCriteriaSet() {
 
         if (_dbGraphSearchCriteria != null
@@ -121,8 +121,8 @@ public abstract class GraphSearcher extends AbstractSearcher {
     ////                         protected variables               ////
 
     /**
-     * The search criteria for graph pattern matching that are input by the 
-     * user. 
+     * The search criteria for graph pattern matching that are input by the
+     * user.
      */
     protected DBGraphSearchCriteria _dbGraphSearchCriteria;
 

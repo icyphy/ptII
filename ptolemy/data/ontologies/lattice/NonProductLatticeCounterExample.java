@@ -46,7 +46,7 @@ because at least one of its component ontologies is not a lattice.
 @Pt.AcceptedRating Red (cshelton)
 */
 public class NonProductLatticeCounterExample extends NonLatticeCounterExample {
-    
+
     /** Construct a NonProductLatticeCounterExample object that indicates that
      *  the specified sub ontology is not a lattice.
      *  @param subOntology The sub ontology of the product lattice ontology
@@ -56,10 +56,10 @@ public class NonProductLatticeCounterExample extends NonLatticeCounterExample {
         super(ProductExampleType.SUBONTOLOGY, null);
         _subOntology = subOntology;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the sub ontology that is the reason the product lattice ontology
      *  is not a lattice.
      *  @return The sub ontology that is not a valid lattice.
@@ -67,18 +67,18 @@ public class NonProductLatticeCounterExample extends NonLatticeCounterExample {
     public Ontology getSubOntology() {
         return _subOntology;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The sub ontology associated with this NonLatticeCounterExample
      *  that is not a valid lattice.
      */
     private Ontology _subOntology;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
-    
+
     /** An enumeration type to represent the types of counterexamples
      *  that can be found when checking to see if product lattice ontology is a
      *  lattice.

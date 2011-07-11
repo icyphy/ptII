@@ -130,12 +130,12 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                 // Ignore, we can't find the icon.
             }
         }
-        
+
         ImageFigure newFigure = null;
         // Make sure the image is fully loaded before we create the
         // images. This prevents flashing.
         if (_scalePercentage == _scalePercentageImplemented
-                && (tk.checkImage(_scaledImage, 43, 33, this) & ImageObserver.ALLBITS) != 0) {        
+                && (tk.checkImage(_scaledImage, 43, 33, this) & ImageObserver.ALLBITS) != 0) {
             // Current image is fully loaded.
             newFigure = new ImageFigure(_scaledImage);
         } else {
@@ -147,10 +147,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // Record the figure so that the image can be updated
         // if it is changed or scaled.
         _addLiveFigure(newFigure);
-        
+
         return newFigure;
     }
-    
+
     /** Create a new Swing icon. This overrides the base class to
      *  wait until image has been rendered. Otherwise, we get a null
      *  pointer exception in Diva, and also the library collapses
@@ -258,10 +258,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                     int newHeight = (int) Math.round((height * _scalePercentage) / 100.0);
 
                     _scaledImage = _image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-                                        
+
                     _scalePercentageImplemented = _scalePercentage;
 
-                    if(tk.prepareImage(_scaledImage, width, height, ImageIcon.this)) {
+                    if (tk.prepareImage(_scaledImage, width, height, ImageIcon.this)) {
                         // Image is fully prepared. Request a re-rendering.
                         _updateFigures();
                     }
@@ -280,10 +280,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     public synchronized void setImage(Image image) {
         _image = image;
         _scaledImage = image;
-        
+
         // scaleImage() may have been called before this,
         // in which case it would have done nothing because
-        // _image was null. 
+        // _image was null.
         if (_scalePercentage != _scalePercentageImplemented) {
             // Delegate to scaleImage().
             scaleImage(_scalePercentage);
@@ -316,7 +316,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     // The image that is the master.
     private Image _image;
-    
+
     // Placeholder icon to be used if images are not fully processed.
     private static Figure _PLACEHOLDER_ICON = new BasicRectangle(0.0, 0.0, 10.0, 10.0);
 
@@ -325,7 +325,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     // The scale percentage. 0.0 means unspecified.
     private double _scalePercentage = 0.0;
-    
+
     // The scale percentage that has been implemented.
     // 0.0 means that the specified percentage has not been implemented.
     private double _scalePercentageImplemented = -1.0;

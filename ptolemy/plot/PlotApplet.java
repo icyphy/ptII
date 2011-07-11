@@ -90,7 +90,7 @@ public class PlotApplet extends JApplet {
                         _plot = null;
                     }
                 });
-        } catch (Throwable throwable) { 
+        } catch (Throwable throwable) {
             System.err.println("init() didn't successfully complete");
             throwable.printStackTrace();
         }

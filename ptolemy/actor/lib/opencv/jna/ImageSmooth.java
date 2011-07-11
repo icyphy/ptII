@@ -47,7 +47,7 @@ import com.sun.jna.Pointer;
 /**
  * Smooth image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -71,13 +71,13 @@ public class ImageSmooth extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
-        size1Param = new Parameter(this, "size1", new IntToken(3)); 
-        size2Param = new Parameter(this, "size2", new IntToken(3)); 
+
+        size1Param = new Parameter(this, "size1", new IntToken(3));
+        size2Param = new Parameter(this, "size2", new IntToken(3));
         size1Param.setTypeEquals(BaseType.INT);
         size2Param.setTypeEquals(BaseType.INT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -90,7 +90,7 @@ public class ImageSmooth extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         int size1 = ((IntToken) (size1Param.getToken())).intValue();
@@ -111,7 +111,7 @@ public class ImageSmooth extends Transformer {
     }
 
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Pointer _frame;

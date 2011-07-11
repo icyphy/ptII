@@ -43,7 +43,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AddSubtract
 
 /** The default adapter class for ptolemy.actor.lib.AddSubtract.
@@ -65,7 +65,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
             ptolemy.actor.lib.AddSubtract actor)
             throws IllegalActionException {
         super(solver, actor, false);
-        
+
         _addDefinition = (AddConceptFunctionDefinition) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
@@ -75,21 +75,21 @@ public class AddSubtract extends LatticeOntologyAdapter {
         _subtractDefinition = (SubtractConceptFunctionDefinition) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
-        
+
         // If definitions for addition, subtraction, and negation concept
         // functions cannot be found, just use the default constraints.
         if (_addDefinition == null || _negateDefinition == null ||
                 _subtractDefinition == null) {
             _useDefaultConstraints = true;
-        }        
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
-    
+    ////                         public methods                    ////
+
     /** Return the list of constraints for the AddSubtract actor.
      *  @return The list of constraints for this adapter.
-     *  @throws IllegalActionException If there is an error creating
+     *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -104,7 +104,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
         if (_negateDefinition != null) {
             negateFunction = _negateDefinition.createConceptFunction();
         }
-        
+
         ConceptFunction subtractFunction = null;
         if (_subtractDefinition != null) {
             subtractFunction = _subtractDefinition.createConceptFunction();
@@ -114,10 +114,10 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 subtractFunction != null) {
             if (interconnectConstraintType == ConstraintType.EQUALS ||
                     interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
-                
+
                 // If the plus input is a multiport with multiple input ports,
                 // set up the constraint to be the sum of the inputs.
-                List<IOPort> plusInputs = _getSourcePortList(actor.plus);                 
+                List<IOPort> plusInputs = _getSourcePortList(actor.plus);
                 if (plusInputs.size() > 1) {
                     InequalityTerm[] plusTerms = new InequalityTerm[plusInputs.size()];
                     for (int i = 0; i < plusTerms.length; i++) {
@@ -127,8 +127,8 @@ public class AddSubtract extends LatticeOntologyAdapter {
                             new ApplyBinaryFunctionToMultipleArguments("sumPlusInputs",
                                     _solver.getOntology(), addFunction),
                                     plusTerms));
-                }               
-                
+                }
+
                 // If the minus input is a multiport with multiple input ports,
                 // set up the constraint to be the sum of the inputs.
                 List<IOPort> minusInputs = _getSourcePortList(actor.minus);
@@ -142,19 +142,19 @@ public class AddSubtract extends LatticeOntologyAdapter {
                                     _solver.getOntology(), addFunction),
                                     minusTerms));
                 }
-                
+
                 // If the minus input port is unconnected, then the output
                 // is >= plus input.
                 if (minusInputs.size() == 0) {
                     setAtLeast(actor.output, actor.plus);
-                    
+
                 // If the plus input port is unconnected, then the output
                 // is >= negation of the minus input.
                 } else if (plusInputs.size() == 0) {
                     setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
                             negateFunction,
-                            new InequalityTerm[]{ getPropertyTerm(actor.minus) })); 
-                    
+                            new InequalityTerm[]{ getPropertyTerm(actor.minus) }));
+
                 // Otherwise the output is >= multiply input / divide input.
                 } else {
                     setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
@@ -174,16 +174,16 @@ public class AddSubtract extends LatticeOntologyAdapter {
 
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
-    
+    ////                         private variables                 ////
+
     /** The multiplication concept function definition found in the solver model. */
     private AddConceptFunctionDefinition _addDefinition;
-    
+
     /** The division concept function definition found in the solver model. */
     private UnaryOperationMonotonicFunctionDefinition _negateDefinition;
-    
+
     /** The multiplication concept function definition found in the solver model. */
     private SubtractConceptFunctionDefinition _subtractDefinition;
 }

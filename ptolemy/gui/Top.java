@@ -168,7 +168,7 @@ public abstract class Top extends JFrame {
         addWindowListener(new CloseWindowAdapter());
 
         getContentPane().setLayout(new BorderLayout());
-        
+
         _fileMenuListener = new FileMenuListener();
         _helpMenuListener = new HelpMenuListener();
         _historyMenuListener = new HistoryMenuListener();
@@ -251,7 +251,7 @@ public abstract class Top extends JFrame {
 
     /** Dispose of this frame.
      *     Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
+     *  this model from getting garbage collected.  This method invokes the
      *  dispose() method of the superclass,
      *  {@link javax.swing.JFrame}.
      */
@@ -259,12 +259,12 @@ public abstract class Top extends JFrame {
         if (_debugClosing) {
             System.out.println("Top.dispose() : " + this.getName());
         }
-        
+
         // Deal with help menu action listeners
         /*int c =*/ MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("_historyMenu: "+c);
         _historyMenuListener = null;
-        
+
         // Don't call removeWindowListeners here because Tableau.setFrame()
         // adds a WindowListener to windowsClosed events and that listener
         // handles closing the plots associated with a model.
@@ -279,7 +279,7 @@ public abstract class Top extends JFrame {
             //System.out.println("_fileMenuItems["+i+"]: "+c);
         }
         _fileMenuListener = null;
-        
+
         // Deal with help menu action listeners
         /*c =*/ MemoryCleaner.removeActionListeners(_helpMenu);
         //System.out.println("_helpMenu: "+c);
@@ -293,7 +293,7 @@ public abstract class Top extends JFrame {
         /*c =*/ MemoryCleaner.removeActionListeners(_menubar);
         //System.out.println("_menubar: "+c);
         _menubar.removeAll();
-        
+
         // ensure reference to this is removed
         UndeferredGraphicalMessageHandler.setContext(null);
 
@@ -304,7 +304,7 @@ public abstract class Top extends JFrame {
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         focusManager.clearGlobalFocusOwner();
         focusManager.downFocusCycle();
-        
+
         // Set any AbstractActions to null.  This is not strictly necessary,
         // but it helps free up memory more quickly.  By doing this here,
         // we no longer require people to update dispose() by hand.
@@ -336,7 +336,7 @@ public abstract class Top extends JFrame {
 
         getContentPane().removeAll();
         _disposed = true;
-        
+
         super.dispose();
     }
 
@@ -348,7 +348,7 @@ public abstract class Top extends JFrame {
     public boolean getCentering() {
         return _centering;
     }
-    
+
     /** Return the size of the contents of this window.
      *  @return The size of the contents.
      */
@@ -368,7 +368,7 @@ public abstract class Top extends JFrame {
         _hideMenuBar = true;
     }
 
-    /** Return true if this frame has been disposed. 
+    /** Return true if this frame has been disposed.
      *  It is possible for the dispose() method to be called directly.
      *  This may conflict with another dispose call
      *  in a window listener or somewhere else.  Before Top
@@ -511,7 +511,7 @@ public abstract class Top extends JFrame {
 
         deferIfNecessary(doShow);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -574,7 +574,7 @@ public abstract class Top extends JFrame {
         if (_debugClosing) {
             System.out.println("Top._close() : " + this.getName());
         }
-  
+
         // NOTE: We use dispose() here rather than just hiding the
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the
@@ -594,7 +594,7 @@ public abstract class Top extends JFrame {
             return true;
         }
     }
-    
+
     /** Create the items in the File menu. A null element in the array
      *  represents a separator in the menu.
      *
@@ -1021,7 +1021,7 @@ public abstract class Top extends JFrame {
 
     /** Create and return a FileDialog for the "Save As" command.
      *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true,
-     *  then {@link #_saveAs()} uses this method.  Otherwise, 
+     *  then {@link #_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsJFileChooserComponent()} is used.
      *  @return A file dialog for save as.
      */
@@ -1040,7 +1040,7 @@ public abstract class Top extends JFrame {
 
     /** Create and return a JFileChooser for the "Save As" command.
      *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
-     *  then {@link #_saveAs()} uses this method.  Otherwise, 
+     *  then {@link #_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsFileDialogComponent()} is used.
      *  @return A JFileChooser for save as.
      */
@@ -1059,12 +1059,12 @@ public abstract class Top extends JFrame {
     /** Update the submenu with a history list
      * and add a listener to each line.
      * @param historyList The list of history items,
-     * where each element is a String is the name of the 
+     * where each element is a String is the name of the
      * menu item.
      */
     protected void _populateHistory(List historyList) {
         //System.out.println("_populateHistory("+historyList.size()+")");
-        
+
         // Make sure we have a reference to the Recent Files menu
         if (_historyMenu == null) {
             Component[] components = _fileMenu.getMenuComponents();
@@ -1081,10 +1081,10 @@ public abstract class Top extends JFrame {
 
         /*int c =*/ MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("_historyMenu: "+c);
-        
+
         if (_historyMenu != null) {
             _historyMenu.removeAll();
-    
+
             for (int i = 0; i < historyList.size(); i++) {
                 String recentFileString = (String) historyList.get(i);
                 JMenuItem item = new JMenuItem(recentFileString);
@@ -1133,7 +1133,7 @@ public abstract class Top extends JFrame {
      *  <p>Note that this class can use either java.awt.FileDialog
      *  or javax.swing.JFileChooser, so classes should set
      *  both _fileFilter and _filenameFilter. Note that it
-     *  possible to define an inner class that extends 
+     *  possible to define an inner class that extends
      *  javax.swing.filechooser.FileFilter and implements
      *  java.io.FilenameFilter and that has two separate accept()
      *  methods.  This inner class can then be set as the
@@ -1154,7 +1154,7 @@ public abstract class Top extends JFrame {
      *         // For FilenameFilter
      *         return true;
      *      }
-     *      
+     *
      *      public String getDescription() {
      *         // For FileFilter
      *         return "My filter description.";
@@ -1169,7 +1169,7 @@ public abstract class Top extends JFrame {
 
     /** Items in the file menu. A null element represents a separator. */
     protected JMenuItem[] _fileMenuItems = _createFileMenuItems();
-    
+
     /** Index in the _fileMenuItems array of the New item. */
     protected static int _NEW_MENU_INDEX = 2;
 
@@ -1624,7 +1624,7 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Add the name of the last file open or set the name 
+    /** Add the name of the last file open or set the name
      * to the first position if already in the list
      * @param file name of the file to add
      */
@@ -1662,7 +1662,7 @@ public abstract class Top extends JFrame {
      * out.
      */
     protected boolean _debugClosing = false;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -1681,7 +1681,7 @@ public abstract class Top extends JFrame {
 
         }
     }
-    
+
     /** A runnable for setting the status bar message for a report. */
     class StatusBarMessageReportRunnable implements Runnable {
         public StatusBarMessageReportRunnable(String message, Throwable throwable) {
@@ -1700,7 +1700,7 @@ public abstract class Top extends JFrame {
         private String _message;
         private Throwable _throwable;
     }
-    
+
     /** A runnable for setting the status bar message. */
     class StatusBarMessageRunnable implements Runnable {
         public StatusBarMessageRunnable(String message) {
@@ -1713,7 +1713,7 @@ public abstract class Top extends JFrame {
         }
         private String _message;
     }
-    
+
     /** A runnable for packing the Window. */
     class DoPackRunnable implements Runnable {
         public void run() {
@@ -1794,21 +1794,21 @@ public abstract class Top extends JFrame {
             _menuPopulated = true;
         }
     }
-    
+
     /** A runnable for executing deferred actions. */
     static class DeferredActionsRunnable implements Runnable {
         public void run() {
             _executeDeferredActions();
         }
     }
-    
+
     /** A runnable for closing the window. */
     class CloseWindowRunnable implements Runnable {
         public void run() {
             _close();
         }
     }
-    
+
     /** A runnable for centering the window on the screen. */
     class CenterOnScreenRunnable implements Runnable {
         public void run() {
@@ -1820,7 +1820,7 @@ public abstract class Top extends JFrame {
             UndeferredGraphicalMessageHandler.setContext(Top.this);
         }
     }
-    
+
     /** A runnable for setting the background color of the status bar. */
     class SetBackgroundRunnable implements Runnable {
         public void run() {
@@ -1834,14 +1834,14 @@ public abstract class Top extends JFrame {
             }
         }
     }
-    
+
     /** Listener for windowClosing action. */
     class CloseWindowAdapter extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             if (_debugClosing) {
                 System.out.println("Top$CloseWindowAdapter.windowClosing() : " + (Top.this).getName());
             }
-            
+
             Window window = e.getWindow();
             if (window instanceof Top) {
                 Top top = (Top) window;
@@ -1851,7 +1851,7 @@ public abstract class Top extends JFrame {
             }
         }
     }
-    
+
     /** Listener for history menu commands. */
     class HistoryMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -1884,22 +1884,22 @@ public abstract class Top extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** An ActionListener for the menu items in the file menu. */
     private FileMenuListener _fileMenuListener;
-    
+
     /** An ActionListener for the menu items in the help menu. */
     private HelpMenuListener _helpMenuListener;
-    
+
     /** An ActionListener for the menu items in the history menu. */
     private HistoryMenuListener _historyMenuListener;
-    
+
     /** A reference to the history menu. */
     private JMenu _historyMenu;
-    
+
     /** The background color of the status bar */
     private Color _statusBarBackground;
-    
+
     /** Indicator of whether actions are deferred. */
     private static boolean _actionsDeferred = false;
 
@@ -1926,7 +1926,7 @@ public abstract class Top extends JFrame {
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
-    
+
     // True if this frame has been disposed
     private boolean _disposed = false;
 }

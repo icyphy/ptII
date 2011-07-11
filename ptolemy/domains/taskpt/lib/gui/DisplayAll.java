@@ -1,4 +1,4 @@
-/* An actor that displays all tokens present on the inputs on screen. 
+/* An actor that displays all tokens present on the inputs on screen.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -32,12 +32,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DisplayAll
 
-/** An actor that displays the values of all tokens present on the input channels on screen 
+/** An actor that displays the values of all tokens present on the input channels on screen
  * (in contrast to one token per channel in the base class).
- * 
+ *
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class DisplayAll extends Display {
 
     /** Construct an actor with an input multiport of type GENERAL.
-     * 
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException Thrown if the entity cannot be contained
@@ -68,14 +68,14 @@ public class DisplayAll extends Display {
      *  string value on the screen. Each value is terminated
      *  with a newline character. Order display of tokens by position in channel
      *  first, then by channel.
-     *  
+     *
      *  @exception IllegalActionException Thrown if there is no director.
      */
     public boolean postfire() throws IllegalActionException {
         //  TODO: Order by channel first and then by position in channel will be nicer,
         //  but this requires to override the Display.postfire() method completely and
         //  will result in some code copying.
-          
+
         boolean result = true;
         boolean hasTokensSomewhere = true;
         int width = input.getWidth();

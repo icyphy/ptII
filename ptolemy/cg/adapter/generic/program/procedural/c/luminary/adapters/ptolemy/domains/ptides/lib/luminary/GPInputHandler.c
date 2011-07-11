@@ -33,5 +33,5 @@ IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
-// Empty, the code needed is hard-coded in the 
+// Empty, the code needed is hard-coded in the
 /**/

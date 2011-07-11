@@ -140,7 +140,7 @@ public class AttributeValueIcon extends XMLIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Get the string value of the attribute to render in the icon.
      *  This string is the expression giving the value of the attribute of the
      *  container having the name <i>attributeName</i>. If the string is empty,
@@ -179,7 +179,7 @@ public class AttributeValueIcon extends XMLIcon {
                 return value;
             }
         }
-        
+
         return " ";
     }
 

@@ -33,16 +33,16 @@ import ptolemy.actor.Actor;
 
 /** This interface defines the method that has to be implemented by
  *  an execution time listener.
- *   
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (derler)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 public interface ExecutionTimeListener {
 
-    /** The event is displayed. 
+    /** The event is displayed.
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
      *  @param time The physical time when the event happened.
@@ -50,15 +50,15 @@ public interface ExecutionTimeListener {
      */
     public void event(Actor actor, double time,
             ExecutionEventType event);
-    
+
     /** Execution time event type. */
     public static enum ExecutionEventType {
         /** Started the execution of an actor. */
-        START, 
+        START,
         /** Stopped the execution of an actor. */
         STOP,
         /** Preempted the execution of an actor. */
         PREEMPTED
     }
-    
+
 }

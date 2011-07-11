@@ -127,24 +127,24 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         List<IOPort> portsOut = null;
         int portNumber;
 
-        // Input ports 
+        // Input ports
         portsIn = inputPortList();
         // Token Arrays from simulation
         Token[] tokensIn = null;
-        // Real Arrays 
+        // Real Arrays
         float[][] realIn = new float[portsIn.size()][];
 
         // ouput ports
         portsOut = outputPortList();
         // In the output case, each array is produced independantly
         Token[] tokensOut = null;
-        // Real Array (only one) 
+        // Real Array (only one)
         float[][] realOut = new float[portsOut.size()][];
 
         // BEFORE CALLING TASK //
 
         portNumber = 0;
-        // Input ports created and filled before elementary task called 
+        // Input ports created and filled before elementary task called
         for (IOPort port : portsIn) {
             int dataSize = PthalesIOPort.getDataProducedSize(port)
                     * PthalesIOPort.getNbTokenPerData(port);
@@ -158,7 +158,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         }
 
         portNumber = 0;
-        // Outputs ports arrays created before elementary task called 
+        // Outputs ports arrays created before elementary task called
         for (IOPort port : portsOut) {
             realOut[portNumber] = new float[PthalesIOPort
                     .getDataProducedSize(port)
@@ -167,7 +167,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         }
 
         ///////////////////////////////////////
-        // Call to elemetary task (JNI or JAVA) 
+        // Call to elemetary task (JNI or JAVA)
         ///////////////////////////////////////
         Object[] args = null;
         String function = ((Parameter) getAttribute("function"))
@@ -187,7 +187,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
                             // Arguments convertion and format as a list
                             args = _convertArguments(realIn, realOut);
                             if (method.getParameterTypes().length == args.length) {
-                                // JNI Function call with arguments 
+                                // JNI Function call with arguments
                                 method.invoke(c, args);
 
                             } else {
@@ -328,7 +328,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
                         || listArgs[i + 1].equals("Splfloat")) {
                     objs.add(Float.parseFloat(listArgs[i + 2]));
                 } else {
-                    // Type is not a primitive =>  string 
+                    // Type is not a primitive =>  string
                     objs.add(listArgs[i]);
                 }
                 increase = 2;

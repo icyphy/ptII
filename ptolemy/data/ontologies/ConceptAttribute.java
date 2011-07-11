@@ -1,21 +1,21 @@
 /*
  * The base class of a concept attribute.
- * 
+ *
  * Below is the copyright agreement for the Ptolemy II system.
- * 
+ *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -39,7 +39,7 @@ import ptolemy.util.StringUtilities;
 /**
  * The base class of a concept attribute. A ConceptAttribute contains the
  * concept value annotated by the solver.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -65,10 +65,10 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      * Add the specified ValueListener. Currently this class doesn't support
      * any listeners, so this method does nothing.
-     *  
+     *
      *  @param listener The listener to add.
      *  @see #removeValueListener
      */
@@ -106,10 +106,10 @@ public class ConceptAttribute extends AbstractSettableAttribute {
         }
     }
 
-    /** 
+    /**
      * Get the string name of the Concept contained by the ConceptAttribute
      * or the empty string if there is none.
-     * 
+     *
      * @return The name of the Concept as a string, or the empty string "".
      */
     public String getExpression() {
@@ -118,7 +118,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
 
     /**
      * Returns the Concept value.
-     * 
+     *
      * @return a Concept object representing the Concept value
      * contained by the ConceptAttribute.
      * @see #setConcept
@@ -132,17 +132,17 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      *  the default Settable.FULL. The returned value is one of the static
      *  instances of the Visibility inner class.
      *  @return The visibility of this Settable.
-     *  
+     *
      *  @see #setVisibility(Settable.Visibility)
      */
     public Visibility getVisibility() {
         return _visibility;
     }
 
-    /** 
+    /**
      * Remove the specified ValueListener. Currently this class doesn't support
      * any listeners, so this method does nothing.
-     * 
+     *
      * @param listener The listener to remove.
      * @see #addValueListener
      */
@@ -156,7 +156,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
 
     /**
      * Specifies the Concept value.
-     * 
+     *
      * @param concept a Concept object specifying the Concept value
      * contained by the ConceptAttribute.
      * @see #getConcept
@@ -178,11 +178,11 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     }
 
     /**
-     * The validate() method must be implemented to implement the 
+     * The validate() method must be implemented to implement the
      * {@linkplain ptolemy.kernel.util.Settable Settable}
      * interface but is not relevant
      * for the ConceptAttribute class.
-     * 
+     *
      * @return null
      * @exception IllegalActionException To match the signature of the
      * {@linkplain ptolemy.kernel.util.Settable#validate validate()}

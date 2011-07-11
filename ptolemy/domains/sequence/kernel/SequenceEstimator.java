@@ -1,4 +1,4 @@
-/* A base class for estimating sequence numbers in the sequence domain. 
+/* A base class for estimating sequence numbers in the sequence domain.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -46,9 +46,9 @@ import ptolemy.actor.sched.NotSchedulableException;
 * @Pt.AcceptedRating Red (ristau)
 */
 public abstract class SequenceEstimator {
-    
+
     /** Construct an estimator for the given director.
-     * 
+     *
      *  @param director The director that needs to guess a schedule.
      */
     public SequenceEstimator(Director director) {
@@ -58,21 +58,21 @@ public abstract class SequenceEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Estimate a sequenced schedule. 
-     * 
+    /** Estimate a sequenced schedule.
+     *
      * @param independentList The already present SequenceAttributes for the
      * Actors controlled by this scheduler.
-     * 
+     *
      * @return A vector with the ordered actors. Note that the sequence numbers
      * are not changed. This has to be done somewhere else.
-     * 
+     *
      * @exception NotSchedulableException If the underlying graph of the
      * actors is not acyclic.
      */
     public abstract Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
             throws NotSchedulableException;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

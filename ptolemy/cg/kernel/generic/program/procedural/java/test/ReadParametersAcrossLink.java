@@ -84,7 +84,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
 
     /** The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
-     *  output.  
+     *  output.
      */
     public TypedIOPort input;
 
@@ -97,7 +97,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Send the sum of the parameters named "remoteParameter"
-     *  in the containers of composites connected to the input.   
+     *  in the containers of composites connected to the input.
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
@@ -145,7 +145,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
         }
     }
 
-    /** A list of objects where each element contains the value of a 
+    /** A list of objects where each element contains the value of a
      *  remote parameter contained in a container connected to the
      *  input.
      */
@@ -161,7 +161,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
     private class PopulationGroup {
         public double performCalculation() {
             // This method could be arbitrarily complex and involve multiple
-            // parameters.  For the sake of simplicity, we just return 
+            // parameters.  For the sake of simplicity, we just return
             // the value * 2.0
             return _remoteParameter * 2.0;
         }

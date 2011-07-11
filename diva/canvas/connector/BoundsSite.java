@@ -91,7 +91,7 @@ public class BoundsSite extends AbstractSite {
         case SwingConstants.WEST:
             return Math.PI;
         case SwingConstants.EAST:
-        default:    
+        default:
             return 0.0;
         }
     }

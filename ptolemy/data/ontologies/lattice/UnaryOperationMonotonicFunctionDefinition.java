@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Settable;
 //// UnaryConceptFunctionDefinition
 
 /** Concept function definition attribute for any unary operation.
- *  
+ *
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -68,7 +68,7 @@ public class UnaryOperationMonotonicFunctionDefinition extends
             CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Since a binary function always has 2 arguments, its
         // number of arguments is fixed.
         numberOfArgumentsIsFixed.setToken(BooleanToken.TRUE);
@@ -80,12 +80,12 @@ public class UnaryOperationMonotonicFunctionDefinition extends
 
         functionOntologyName = new StringParameter(this, "functionOntologyName");
         functionOntologyName.setExpression("");
-        
+
         // Constrain argument list to have only 1 argument.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies.setVisibility(Settable.NONE);
-        
+
         Token[] argNamesArray = new Token[]{(Token) new StringToken("arg")};
         argumentNames.setToken(new ArrayToken(argNamesArray));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
@@ -111,16 +111,16 @@ public class UnaryOperationMonotonicFunctionDefinition extends
     ////                         public methods                    ////
 
     /** Override the attributeChanged method so that the output range and all
-     *  argument domain ontology names are set to the functionOntologyName. 
+     *  argument domain ontology names are set to the functionOntologyName.
      *  @param attribute The attribute that has been changed.
-     *  @throws IllegalActionException If there is a problem changing the attribute.
+     *  @exception IllegalActionException If there is a problem changing the attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == functionOntologyName) {
             StringToken ontologyNameToken = (StringToken) functionOntologyName.getToken();
             outputRangeOntologyName.setToken(ontologyNameToken);
-            
+
             ArrayToken domainOntologiesToken =
                 new ArrayToken(new Token[]{(Token) ontologyNameToken});
             argumentDomainOntologies.setToken(domainOntologiesToken);

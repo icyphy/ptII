@@ -1,7 +1,7 @@
 /*
  Initializer of the PtolemyModule with Java SE specific interface to
  implementation mappings.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,7 +41,7 @@ import ptolemy.actor.injection.PtolemyModule;
  * implementation mappings.  The module uses ptolemy.actor.JavaSEActorModule.properties
  * file to initialize the PtolemyModule.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

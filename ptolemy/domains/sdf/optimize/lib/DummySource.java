@@ -42,8 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 <h1>Class comments</h1>
 A simple actor acting as a dummy source used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
@@ -61,7 +61,7 @@ public class DummySource extends Source implements BufferingProfile {
    private int _counter;
 
 
-   /** 
+   /**
     * Construct an actor with the given container and name.
     *  @param container The container.
     *  @param name The name of this actor.
@@ -79,9 +79,9 @@ public class DummySource extends Source implements BufferingProfile {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-   /** 
+   /**
     * Fire the source actor and output a frame.
-    *  @exception IllegalActionException If thrown while writing to the port.   
+    *  @exception IllegalActionException If thrown while writing to the port.
     */
    public void fire() throws IllegalActionException {
        DummyFrame f = new DummyFrame();
@@ -153,6 +153,6 @@ public class DummySource extends Source implements BufferingProfile {
    public int sharedExecutionTime() {
        return 0;
    }
-  
-   
+
+
 }

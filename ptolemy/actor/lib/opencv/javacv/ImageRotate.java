@@ -78,13 +78,13 @@ public class ImageRotate extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
-        angleParam = new Parameter(this, "angle", new DoubleToken(40.0)); 
-        scaleParam = new Parameter(this, "scale", new DoubleToken(1.0)); 
+
+        angleParam = new Parameter(this, "angle", new DoubleToken(40.0));
+        scaleParam = new Parameter(this, "scale", new DoubleToken(1.0));
         angleParam.setTypeEquals(BaseType.DOUBLE);
         scaleParam.setTypeEquals(BaseType.DOUBLE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -97,7 +97,7 @@ public class ImageRotate extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         double angle = ((DoubleToken) (angleParam.getToken())).doubleValue();
@@ -113,16 +113,16 @@ public class ImageRotate extends Transformer {
             }
             _src_frame = (IplImage)inputObject;
             _dst_frame = cvCloneImage(_src_frame);
-            
+
             // FIXME: this sample use the center of entire image
             CvPoint2D32f center = cvPoint2D32f( _src_frame.width/2, _src_frame.height/2 );
 
             // interpolation param
             int flags = CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS;
             CvScalar fillval=cvScalarAll(0);
-            
+
             cv2DRotationMatrix(center.byValue(), angle, scale, map_matrix);
-            
+
             cvWarpAffine(_src_frame, _dst_frame, map_matrix, flags,fillval.byValue());
             output.send(0, new ObjectToken(_dst_frame));
         }
@@ -136,7 +136,7 @@ public class ImageRotate extends Transformer {
         map_matrix = cvCreateMat(2,3,CV_32FC1);
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _src_frame, _dst_frame;

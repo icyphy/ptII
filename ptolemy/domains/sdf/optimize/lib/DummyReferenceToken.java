@@ -27,7 +27,7 @@
  */
 
 /**
- * 
+ *
  */
 package ptolemy.domains.sdf.optimize.lib;
 
@@ -38,7 +38,7 @@ import ptolemy.data.Token;
 DummyReferenceToken is a token encapsulating a reference to a shared
 data object. It is used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 {@link ptolemy.domains.sdf.optimize.lib.DummyFrame} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
@@ -52,7 +52,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 */
 public class DummyReferenceToken extends Token {
 
-    
+
     /**
      * Create an instance of a reference token.
      * @param r the object the token shall refer to
@@ -60,12 +60,12 @@ public class DummyReferenceToken extends Token {
     public DummyReferenceToken(Object r) {
         _ref = r;
     }
-    
+
     /**
      * Gets the reference.
      * @return referenced object
      */
-    public Object getReference(){
+    public Object getReference() {
         return _ref;
     }
 

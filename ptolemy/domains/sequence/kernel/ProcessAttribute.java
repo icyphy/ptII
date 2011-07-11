@@ -43,8 +43,8 @@ ProcessAttribute is a subclass of Parameter with support for strings
    A ProcessAttribute is a tuple (string processName, int sequenceNumber, (optionally) string methodName)
 
    The ProcessDirector collects the ProcessAttributes to determine the order
-   in which order the actors in the model are fired. 
-   
+   in which order the actors in the model are fired.
+
  @author Elizabeth Latronico (Bosch)
  @version $Id$
  @since Ptolemy II 8.0
@@ -102,19 +102,19 @@ public class ProcessAttribute extends SequenceAttribute {
     // FIXME:  Do we want the sequence director to ignore the process name alltogether
     //   when executing a model?  If so, can't use this compareTo method.  Need to use
     // getSequenceNumber
-    /** Implement compareTo method to compare sequence numbers 
-     *  
-     *  Updated:  This method now compares both the process name and the 
+    /** Implement compareTo method to compare sequence numbers
+     *
+     *  Updated:  This method now compares both the process name and the
      *     sequence number.
      *     - If the process names are different, then "less than" is determined
      *     alphabetically
      *     - If the process names are the same, then "less than" is determined by
      *     the sequence number
-     *     - If a ProcessAttribute and a SequenceAttribute are compared, then only the 
+     *     - If a ProcessAttribute and a SequenceAttribute are compared, then only the
      *     sequence number is considered
-     *     
-     *     This method assumes that the expression is well-formed (checked in validate()) 
-     *     
+     *
+     *     This method assumes that the expression is well-formed (checked in validate())
+     *
      *   @param obj The SequenceAttribute or ProcessAttribute object.
      *   @return 0 if the sequence numbers are the same.
      */
@@ -182,33 +182,33 @@ public class ProcessAttribute extends SequenceAttribute {
 
     /** Return the method name to be called on the actor, or an empty
      *  string if there is none.
-     * 
+     *
      *  @return String method name.
-     *  @throws IllegalActionException If there is a problem getting the token
+     *  @exception IllegalActionException If there is a problem getting the token
      *   from the ProcessAttribute.
      */
     public String getMethodName() throws IllegalActionException {
         String methodName = "";
-        
+
         ArrayToken processArrayToken = (ArrayToken) getToken();
         if (processArrayToken.length() > 2) {
             methodName = ((StringToken) processArrayToken.getElement(2)).stringValue();
-        }        
-        
+        }
+
         return methodName;
-    }    
-    
+    }
+
     /** Returns the process name, or throws an exception if there is none.
-     * 
+     *
      * @return String process name
-     * @throws IllegalActionException If there is a problem getting the token
+     * @exception IllegalActionException If there is a problem getting the token
      *   from the ProcessAttribute.
      */
     public String getProcessName() throws IllegalActionException {
         String processName = "";
 
         ArrayToken processArrayToken = (ArrayToken) getToken();
-        
+
         if (processArrayToken.length() > 0) {
             StringToken processNameToken = (StringToken) (processArrayToken).getElement(0);
             processName = processNameToken.stringValue();
@@ -221,22 +221,22 @@ public class ProcessAttribute extends SequenceAttribute {
     }
 
     /** Returns the sequence number as an int, or throws an exception if there is none.
-     * 
+     *
      * @return int sequence number
-     * @throws IllegalActionException If there is a problem getting the token
+     * @exception IllegalActionException If there is a problem getting the token
      *   from the ProcessAttribute.
      */
     public int getSequenceNumber() throws IllegalActionException {
         // FIXME:  0 is actually a valid sequence number - want different default return?
         int seqNumber = 0;
-        
+
         ArrayToken processArrayToken = (ArrayToken) getToken();
-        
+
         if (processArrayToken.length() > 1) {
-            StringToken sequenceNumToken = (StringToken) (processArrayToken).getElement(1);            
+            StringToken sequenceNumToken = (StringToken) (processArrayToken).getElement(1);
             try {
                 seqNumber = Integer.parseInt(sequenceNumToken.stringValue());
-                
+
                 // Check to make sure sequence number is positive or zero.
                 if (seqNumber < 0) {
                     throw new IllegalActionException(this, "In ProcessAttribute " +
@@ -256,7 +256,7 @@ public class ProcessAttribute extends SequenceAttribute {
 
         return seqNumber;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

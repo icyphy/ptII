@@ -50,7 +50,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
 
     /** Create a ConceptToken from a given Concept.
      *  @param c The given Concept
-     *  @throws IllegalActionException Thrown if there is a problem creating
+     *  @exception IllegalActionException Thrown if there is a problem creating
      *   the ConceptTolen object.
      */
     public ConceptToken(Concept c) throws IllegalActionException {
@@ -75,10 +75,10 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      *  @return true if the values are the same Concept, or false otherwise.
      */
     public BooleanToken isEqualTo(Token rightArgument) {
-        if (this != null && rightArgument != null 
+        if (this != null && rightArgument != null
                 && rightArgument instanceof ConceptToken
-                && ((ConceptToken) rightArgument).conceptValue() != null 
-                && conceptValue() != null 
+                && ((ConceptToken) rightArgument).conceptValue() != null
+                && conceptValue() != null
                 && ((ConceptToken) rightArgument).conceptValue().equals(conceptValue())) {
             return BooleanToken.TRUE;
         } else {
@@ -92,8 +92,8 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      *
      *  @param rightArgument The token on greater than side of the inequality.
      *  @return BooleanToken.TRUE, if this token is less than the
-     *    argument token. BooleanToken.FALSE, otherwise. 
-     *  @throws IllegalActionException If the argument token and this
+     *    argument token. BooleanToken.FALSE, otherwise.
+     *  @exception IllegalActionException If the argument token and this
      *    token are of incomparable types, or are concepts from
      *    different ontologies.
      */

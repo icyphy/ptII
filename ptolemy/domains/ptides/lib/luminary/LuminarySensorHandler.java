@@ -76,7 +76,7 @@ public abstract class LuminarySensorHandler extends SensorHandler {
      */
     public static int numberOfSupportedInputDeviceConfigurations = 8;
 
-    /** A sensor device could have multiple access pin and pads 
+    /** A sensor device could have multiple access pin and pads
      *  (configurations), This method returns the current configuration.
      *  @return The current configuration captured in a string.
      *  @exception IllegalActionException

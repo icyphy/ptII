@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * At initialization, this actor reads input from the LabVIEW program,
  * which proposes a simulated physical time (hereby referred to as "time",
  * unless otherwise stated) to advance to. This actor then produces a
- * pure event (by calling fireAt() of the director, with this time as 
- * its timestamp. Notice this time may or may not be different from 
+ * pure event (by calling fireAt() of the director, with this time as
+ * its timestamp. Notice this time may or may not be different from
  * the current time of the Ptolemy simulation environment.
  * </p><p>
  * The director will invoke this actor either when a trigger event
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * advance to, and send it back to the Ptolemy actor. Also, if a previous
  * input has decided to produce an output at the current time, then an output
  * will be produced by the LabVIEW program at the current time, and that
- * output will be produced by this actor. 
+ * output will be produced by this actor.
  * </p><p>
  * The key assumption we make about the LabVIEW program is that it always
  * has information about what is the next time it wants to advance to.
@@ -100,12 +100,12 @@ public class LabVIEWSimulator extends Simulator {
      *  output from the client program to the output port. However
      *  if the received proposed time to advance to from LabVIEW
      *  is less than 0, it is interpreted as an indication to
-     *  terminate the program. In which case this actor does not 
+     *  terminate the program. In which case this actor does not
      *  send an event to the output port. Nor do we call fireAt().
      *  Note the other way to stop execution is to set the stop time
      *  of the DE actor to a finite value.
      *
-     *  @exception IllegalActionException If the simulation time 
+     *  @exception IllegalActionException If the simulation time
      *  between Ptolemy and the client program is not synchronized.
      */
     public void fire() throws IllegalActionException {
@@ -164,7 +164,7 @@ public class LabVIEWSimulator extends Simulator {
     */
    protected double[] _getDoubleArray(ptolemy.data.Token t)
            throws IllegalActionException {
-       
+
        double[] result;
        if (t == null) {
            result = new double[0];
@@ -232,7 +232,7 @@ public class LabVIEWSimulator extends Simulator {
            String em = "Error while writing to client: " + LS + e.getMessage();
            throw new IllegalActionException(this, em);
        }
-       // get tokens' time stamp. This time will be written to the 
+       // get tokens' time stamp. This time will be written to the
        // client in the next time step, this time step read from the client
        // the output which will be sent to clients in the next time step
        // as inputs

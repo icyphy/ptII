@@ -190,7 +190,7 @@ public class Server extends DETransformer {
         _declareDelayDependency(input, output, 0.0);
         _declareDelayDependency(serviceTime.getPort(), output, 0.0);
     }
-    
+
     /** If there is input, read it and put it in the queue.
      *  If the service time has expired for a token currently
      *  in the queue, then send that token on the output.

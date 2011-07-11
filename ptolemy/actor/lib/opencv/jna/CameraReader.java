@@ -47,10 +47,10 @@ import com.sun.jna.ptr.PointerByReference;
 * A simple actor starts a video capture process using
 * the Open Computer Vision (OpenCV) Library.
 * @author Tatsuaki Iwata, Edward A. Lee, Christopher Brooks
-* @version 
-* @since 
-* @Pt.ProposedRating 
-* @Pt.AcceptedRating 
+* @version
+* @since
+* @Pt.ProposedRating
+* @Pt.AcceptedRating
 */
 public class CameraReader extends Source {
    /** Construct an actor with the given container and name.
@@ -75,25 +75,25 @@ public class CameraReader extends Source {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
    /** Output a frame.
-    *  @exception IllegalActionException If thrown while writing to the port.   
+    *  @exception IllegalActionException If thrown while writing to the port.
     */
    public void fire() throws IllegalActionException {
        _frame = cvQueryFrame (_capture);
        output.send(0, new ObjectToken(_frame));
    }
-  
+
    /** Open the video capture device.
     *  @exception IllegalActionException If thrown by the super class.
     */
    public void initialize() throws IllegalActionException {
        super.initialize();
        _capture = cvCreateCameraCapture(0);
-       
-       // FIXME: These setting don't work correctly.. 
+
+       // FIXME: These setting don't work correctly..
 //       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_WIDTH, 320);
 //       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
    }
-   
+
    /** Stop the capture.
     *  @exception IllegalActionException If thrown by the super class.
     */
@@ -101,7 +101,7 @@ public class CameraReader extends Source {
        super.wrapup();
        cvReleaseCapture (new PointerByReference(_capture));
    }
-  
+
    ///////////////////////////////////////////////////////////////////
    ////                         private variables                 ////
 

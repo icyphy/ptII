@@ -52,7 +52,7 @@ public class ConceptTermManager implements ConceptTermFactory {
 
     /**
      * Construct a new ptolemy.graph.InequalityTerm factory.
-     * 
+     *
      * @param solver the LatticeOntologySolver that contains this PropertyTermManager
      */
     public ConceptTermManager(LatticeOntologySolver solver) {
@@ -61,7 +61,7 @@ public class ConceptTermManager implements ConceptTermFactory {
 
     /**
      * Return a list of all the inequality terms contained in the PropertyTermManager.
-     * 
+     *
      * @return The list of inequality terms for all objects in the model
      */
     public List<ptolemy.graph.InequalityTerm> terms() {
@@ -77,7 +77,7 @@ public class ConceptTermManager implements ConceptTermFactory {
      * its cache if a term object was created previously. Returns
      * the property term if it is found; otherwise, it creates
      * and caches a new property term before returning it.
-     * 
+     *
      * @param object The given object.
      * @return The property term.
      */
@@ -113,7 +113,7 @@ public class ConceptTermManager implements ConceptTermFactory {
      * Get the list of affected InequalityTerms from the PropertyTermManager.
      * FIXME: Not really sure what this method is used for. It appears to
      * always return an empty ArrayList.
-     * 
+     *
      * @param updateTerm This parameter doesn't appear to be used
      * @return The list of inequality terms that are affected by the OntologySolver
      * @exception IllegalActionException If an exception is thrown
@@ -139,7 +139,7 @@ public class ConceptTermManager implements ConceptTermFactory {
     /**
      * An InequalityTerm class that is used for ontology analysis and contains
      * a reference to the associated object for the InequalityTerm.
-     * 
+     *
      */
     public class InequalityTerm implements ptolemy.graph.InequalityTerm {
         ///////////////////////////////////////////////////////////////
@@ -154,7 +154,7 @@ public class ConceptTermManager implements ConceptTermFactory {
 
         /**
          * Construct an InequalityTerm for the given model object.
-         * 
+         *
          * @param object The model object associated with this InequalityTerm
          */
         protected InequalityTerm(Object object) {
@@ -163,7 +163,7 @@ public class ConceptTermManager implements ConceptTermFactory {
         }
 
         /** Return the model object associated with the InequalityTerm.
-         * 
+         *
          *  @return The associated model object
          */
         public Object getAssociatedObject() {
@@ -172,7 +172,7 @@ public class ConceptTermManager implements ConceptTermFactory {
 
         /** Return null if this term is not effective. Otherwise, return
          *  the resolved property of this ptolemy.graph.InequalityTerm.
-         * 
+         *
          * @return The resolved Concept of this InequalityTerm, or null if this
          * term is not effective
          * @see #setValue(Object)
@@ -204,7 +204,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          * Return an array of one element with this InequalityTerm if it is
          * a constant InequalityTerm that cannot be changed.  If it can be changed
          * then return an empty InequalityTerm array.
-         * 
+         *
          * @return The InequalityTerm array with either one or zero elements
          * that is returned.
          */
@@ -244,7 +244,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          * the OntologySolver, and false otherwise. Effective means the constraint
          * will be used by the OntologySolver when it runs its algorithm.  If it
          * is not effective, the constraint will not be used by the OntologySolver.
-         * 
+         *
          * @return true if the InequalityTerm is effective, false otherwise
          */
         public boolean isEffective() {
@@ -254,7 +254,7 @@ public class ConceptTermManager implements ConceptTermFactory {
         /** Test if the property of the port associated with this Term
          *  can be changed. The property can be changed if setEquals()
          *  is not called.
-         *  
+         *
          *  @return True if the property can be changed; false otherwise.
          */
         public boolean isSettable() {
@@ -264,7 +264,7 @@ public class ConceptTermManager implements ConceptTermFactory {
         /** Check whether the current value of this term is acceptable.
          *  This method delegates the check to the isTypeAcceptable()
          *  method of the outer class.
-         *  
+         *
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
@@ -283,7 +283,7 @@ public class ConceptTermManager implements ConceptTermFactory {
         /**
          * Sets whether the InequalityTerm constraint will be effective for
          * the OntologySolver's algorithm.
-         * 
+         *
          * @param isEffective true if the InequalityTerm should be effective,
          * false if it should be ineffective
          * @see #isEffective
@@ -293,7 +293,7 @@ public class ConceptTermManager implements ConceptTermFactory {
         }
 
         /** Set the property value of this term.
-         * 
+         *
          *  @param property The given property.
          *  @exception IllegalActionException If the new type violates
          *   the declared property of this port.

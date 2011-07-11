@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -83,30 +83,30 @@ public class SearchResultPanel extends JPanel {
         add(_modelPanel);
 
         _parentPanelList = new ArrayList();
-        
+
         if (dbModel.getParents() != null) {
-            
-            if(dbModel.getParents().size()>0){
-                
+
+            if (dbModel.getParents().size()>0) {
+
                 JLabel hierarchyLabel = new JLabel("Model Hierarchy:");
                 hierarchyLabel.setAlignmentX(LEFT_ALIGNMENT);
                 Border labelBorder = BorderFactory.createEmptyBorder(0, 3, 0, 0);
                 hierarchyLabel.setBorder(labelBorder);
                 add(hierarchyLabel);
-                
+
                 for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
-    
+
                     ParentHierarchyPanel panelToAdd;
                     panelToAdd = new ParentHierarchyPanel(hierarchy, _modelName,
                             _configuration);
                     _parentPanelList.add(panelToAdd);
                     panelToAdd.setAlignmentX(LEFT_ALIGNMENT);
                     add(panelToAdd);
-    
+
                 }
-                
+
             }
-            
+
         }
 
     }
@@ -136,16 +136,16 @@ public class SearchResultPanel extends JPanel {
 
         ArrayList<String> returnList = new ArrayList();
 
-        if(_parentPanelList.size() > 0){
-            
+        if (_parentPanelList.size() > 0) {
+
             for (ParentHierarchyPanel hierarchy : _parentPanelList) {
-    
+
                 returnList.addAll(hierarchy.getSelections());
-    
+
             }
-            
+
         }
-        
+
         if (_modelPanel.getValue()) {
 
             returnList.add(_modelPanel.getModelName());

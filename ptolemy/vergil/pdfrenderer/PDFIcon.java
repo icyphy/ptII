@@ -51,7 +51,7 @@ import diva.util.java2d.PaintedObject;
 //// PDFIcon
 
 /**
- An icon that displays a specified PDF page.  
+ An icon that displays a specified PDF page.
 
  <p> This class uses pdf-renderer, obtainable from <a
  href="https://pdf-renderer.dev.java.net/">https://pdf-renderer.dev.java.net/</a>.

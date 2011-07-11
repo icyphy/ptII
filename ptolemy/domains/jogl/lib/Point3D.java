@@ -15,14 +15,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * An actor that is used for drawing 3D point. 
+ * An actor that is used for drawing 3D point.
  *
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
 public class Point3D extends Sink{
-    
-    
+
+
     /**
      *  Construct a Point3D object in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -39,9 +39,9 @@ public class Point3D extends Sink{
     public Point3D(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container,name);
-        
+
         input.setTypeEquals(BaseType.OBJECT);
-        
+
 
         radius = new Parameter(this, "radius");
         radius.setExpression("1.0");
@@ -55,7 +55,7 @@ public class Point3D extends Sink{
 
     }
 
-    /**Specifies the diameter of the rasterized point.  The initial   
+    /**Specifies the diameter of the rasterized point.  The initial
      * value is 1.
      */
 
@@ -68,16 +68,16 @@ public class Point3D extends Sink{
      */
     public ColorAttribute rgbColor;
 
-    /** Array specifying the origin position of a point. This is an 
-     * array of length 3, where ||(x, y, z)|| = 1, if not, the GL will 
-     * normalize this vector. The default value is {0.0, 0.0, 0.0}.           
+    /** Array specifying the origin position of a point. This is an
+     * array of length 3, where ||(x, y, z)|| = 1, if not, the GL will
+     * normalize this vector. The default value is {0.0, 0.0, 0.0}.
      */
     public Parameter origin;
 
 
 
     public void fire() throws IllegalActionException {
-        if (_debugging) {  
+        if (_debugging) {
             _debug("Called fire()");
         }
         if (input.hasToken(0)) {
@@ -88,7 +88,7 @@ public class Point3D extends Sink{
                         "Input is required to be an instance of GL. Got "
                         + inputObject.getClass());
             }
-            
+
             GL gl = (GL) inputObject;
             ArrayToken originToken = ((ArrayToken) origin.getToken());
             ArrayToken rgbColorValue = ((ArrayToken) rgbColor.getToken());
@@ -107,10 +107,10 @@ public class Point3D extends Sink{
                     ((DoubleToken) originToken.getElement(1)).doubleValue(),
                     ((DoubleToken) originToken.getElement(2)).doubleValue());
             gl.glEnd();
-            
-            
 
-            
+
+
+
         }
     }
 

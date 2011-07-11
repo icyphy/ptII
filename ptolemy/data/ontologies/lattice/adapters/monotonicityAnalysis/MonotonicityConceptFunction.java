@@ -57,7 +57,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *   this number is fixed, and -1 otherwise.
      *  @param monotonicityAnalysisOntology The ontology that represents
      *   monotonicity lattice.
-     *  @param domainOntologies The ontologies that represents the domain 
+     *  @param domainOntologies The ontologies that represents the domain
      *   and range of the function that we are checking for monotonicity.
      *  @exception IllegalActionException If the output ontology is null,
      *   numArgs is invalid, or the monotonicity ontology does not have
@@ -68,12 +68,12 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
             List<Ontology> domainOntologies)
             throws IllegalActionException {
         super(name, numArgs, monotonicityAnalysisOntology);
-        
+
         _setup(monotonicityAnalysisOntology, domainOntologies);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     /** Add the concepts from the domain ontologies as constants
      *  for the parse tree evaluator.
@@ -82,7 +82,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *
      *  @param domainOntology The domain ontology containing the concepts
      *    to add.
-     *  @throws IllegalActionException If there is a problem adding any
+     *  @exception IllegalActionException If there is a problem adding any
      *   of the concepts to the Constants hash table.
      */
     private void _addConceptConstants(Ontology domainOntology)
@@ -94,7 +94,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
             }
         }
     }
-    
+
     /** Initialize all the variables we need to use monotonicity concepts.
      *  This includes saving the monotonicity, domain, and range ontologies;
      *  adding all necessary concepts to the expression parser;
@@ -104,18 +104,18 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *   monotonicity analysis's results are drawn.
      *  @param domainOntologies The ontologies that represents the domain of
      *   the function that we are checking for monotonicity.
-     *  @throws IllegalActionException If the monotonicity ontology
+     *  @exception IllegalActionException If the monotonicity ontology
      *   does not have the expected structure.
      */
     private void _setup(Ontology monotonicityAnalysisOntology,
             List<Ontology> domainOntologies) throws IllegalActionException {
         _monotonicityAnalysisOntology = monotonicityAnalysisOntology;
         _domainOntologies = domainOntologies;
-        
+
         for (Ontology domainOntology : domainOntologies) {
             _addConceptConstants(domainOntology);
         }
-        
+
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
         // Throw an exception if any of them are not found
@@ -151,14 +151,14 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
 
     /** The monotonicityAnalysis ontology referred to by all monotonicityAnalysis adapters. */
     protected Ontology _monotonicityAnalysisOntology;
-    
+
     /** The domain ontology.
      *  This ontology forms the domain of the functions whose monotonicity
      *  we check.
      */
     protected List<Ontology> _domainOntologies;
-    
-    // Get all the Concepts from the ontology to use in all the monotonicityAnalysis adapters   
+
+    // Get all the Concepts from the ontology to use in all the monotonicityAnalysis adapters
 
     /** The "Constant" Concept from the monotonicityAnalysis ontology. */
     protected FiniteConcept _constantConcept;

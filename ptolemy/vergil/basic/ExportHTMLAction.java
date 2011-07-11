@@ -86,7 +86,7 @@ import diva.graph.GraphController;
  *  In addition, if any composite actors are open, then
  *  clicking on the composite actors will take the viewer
  *  to a new HTML page showing the inside of the composite actor.
- *  
+ *
  @author  Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.2
@@ -106,12 +106,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     /** Export an HTML image map.
      *  @param e The event that triggered this action.
      */
-    public void actionPerformed(ActionEvent e) {            
+    public void actionPerformed(ActionEvent e) {
         // Open a file chooser to select a folder to write to.
         JFileChooser fileDialog = new JFileChooser();
         fileDialog.addChoosableFileFilter(new BasicGraphFrame.FolderFileFilter());
@@ -132,7 +132,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             }
         }
         int returnVal = fileDialog.showDialog(_basicGraphFrame, "Export HTML");
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File directory = fileDialog.getSelectedFile();
             if (directory.exists()) {
@@ -150,17 +150,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     }
                     if (!directory.delete()) {
                         MessageHandler.message("Unable to delete file.");
-                        return;                            
+                        return;
                     }
                     if (!directory.mkdir()) {
                         MessageHandler.message("Unable to create directory.");
-                        return;                            
+                        return;
                     }
                 }
             } else {
                 if (!directory.mkdir()) {
                     MessageHandler.message("Unable to create directory.");
-                    return;                            
+                    return;
                 }
             }
             // At this point, file is a directory and we have permission
@@ -169,14 +169,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 _basicGraphFrame.writeHTML(directory);
             } catch (IOException ex) {
                 MessageHandler.error("Unable to export HTML.", ex);
-                return;  
+                return;
             } catch (PrinterException e1) {
                 MessageHandler.error("Failed to created associated files.", e1);
-                return;  
+                return;
             }
         }
     }
-    
+
     /** Write an HTML page based on the current view of the model
      *  to the specified destination directory. The file will be
      *  named "index.html," and supporting files, including at
@@ -196,8 +196,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  {@link ptolemy.vergil.basic.BasicGraphFrame#writeImage(OutputStream, String)}
      *  method.
      *  @param directory The directory in which to put any associated files.
-     *  @throws IOException If unable to write associated files.
-     *  @throws PrinterException If unable to write associated files.
+     *  @exception IOException If unable to write associated files.
+     *  @exception PrinterException If unable to write associated files.
      */
     public void writeHTML(File directory) throws PrinterException, IOException {
         // First, create the gif file showing whatever the current
@@ -210,7 +210,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         } finally {
             out.close();
         }
-        
+
         // Next, create an HTML file.
         Writer indexWriter = new FileWriter(new File(directory, "index.html"));
         PrintWriter writer = new PrintWriter(indexWriter);
@@ -271,13 +271,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         }
         if (warn) {
             MessageHandler.message("Warning: Cannot find required Javascript files jquery.js" +
-            		" and jquery.lightbox-0.5.pack.js. Perhaps your Ptolemy II" +
-            		" installation does not include them (because they are GPLd." +
-            		" For the exported HTML to work correctly, you will need to find" +
-            		" and copy these files into a subdirectory called 'js' of the" +
-            		" directory into which the HTML is exported.");
+                            " and jquery.lightbox-0.5.pack.js. Perhaps your Ptolemy II" +
+                            " installation does not include them (because they are GPLd." +
+                            " For the exported HTML to work correctly, you will need to find" +
+                            " and copy these files into a subdirectory called 'js' of the" +
+                            " directory into which the HTML is exported.");
         }
-        
+
         // Now write the HTML.
         writer.println("<script type=\"text/javascript\" src=\"js/jquery.js\"></script>");
         writer.println("<script type=\"text/javascript\" src=\"js/jquery.lightbox-0.5.pack.js\"></script>");
@@ -294,7 +294,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         writer.println("});");
         writer.println("</script>");
         writer.println("</head><body>");
-        
+
         // Put a header in. Use the name of the ModalModel rather
         // than the Controller if we have a ModalModel.
         String modelName = model.getName();
@@ -305,14 +305,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             }
         }
         writer.println("<h1>" + modelName + "</h1>");
-        
+
         // Put the image in.
         writer.println("<img src=\"" + _basicGraphFrame.getModel().getName()
                 + ".gif\" usemap=\"#actormap\"/>");
 
         // Write the map next.
         writer.println("<map name=\"actormap\">");
-        
+
         // Create a table of effigies associated with any
         // open submodel or plot.
         Map<NamedObj,PtolemyEffigy> openEffigies = new HashMap<NamedObj,PtolemyEffigy>();
@@ -326,7 +326,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         for (IconVisibleLocation location : iconLocations) {
             // Create a table with parameter values for the actor.
             String table = _getParameterTable(location.object);
-            
+
             // If the actor has an open window (either an plot or
             // a vergil window), then create a link to that.
             String linkTo = "";
@@ -366,7 +366,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     }
                 }
             }
-            
+
             // Write the name of the actor followed by the table.
             writer.println("<area shape=\"rect\" coords=\""
                     + (int)location.topLeftX + ","
@@ -382,7 +382,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         }
         writer.println("</map>");
-        
+
         // Section into which actor information is written.
         writer.println("<p id=\"actorName\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
 
@@ -436,7 +436,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return a list of data structures with one entry for each visible
      *  entity plus the director, if there is one. Each data structure contains
@@ -454,7 +454,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      */
     protected List<IconVisibleLocation> _getIconVisibleLocations() {
         List<IconVisibleLocation> result = new LinkedList<IconVisibleLocation>();
-        
+
         Rectangle2D viewSize = _basicGraphFrame.getVisibleRectangle();
         // System.out.println("Visible rectangle: " + viewSize);
 
@@ -465,7 +465,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         double scaleY = transform.getScaleY();
         double translateX = transform.getTranslateX();
         double translateY = transform.getTranslateY();
-        
+
         NamedObj model = _basicGraphFrame.getModel();
         if (model instanceof CompositeEntity) {
             List<Entity> entities = ((CompositeEntity)model).entityList();
@@ -485,7 +485,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                         Point2D origin = ((CompositeFigure)figure).getOrigin();
                         double iconOriginX = origin.getX();
                         double iconOriginY = origin.getY();
-                        
+
                         if (figure instanceof CompositeFigure) {
                             mainIcon = ((CompositeFigure)figure).getBackgroundFigure();
                             origin = ((CompositeFigure)figure).getOrigin();
@@ -493,21 +493,21 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                             iconOriginY = origin.getY();
                         }
                         Rectangle2D iconBounds = mainIcon.getBounds();
-                        
+
                         IconVisibleLocation i = new IconVisibleLocation();
                         i.object = entity;
-                        
+
                         // Calculate the location of the icon relative to the visible rectangle.
                         i.topLeftX = (iconOriginX + iconBounds.getX())*scaleX + translateX;
                         i.topLeftY = (iconOriginY + iconBounds.getY())*scaleY + translateY;
-                        
-                        i.bottomRightX 
+
+                        i.bottomRightX
                                 = (iconOriginX + iconBounds.getX() + iconBounds.getWidth())
                                 *scaleX + translateX;
-                        i.bottomRightY 
+                        i.bottomRightY
                                 = (iconOriginY + iconBounds.getY() + iconBounds.getHeight())
                                 *scaleY + translateY;
-                        
+
                         if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
                                 || i.topLeftX > viewSize.getWidth() || i.topLeftY > viewSize.getHeight()) {
                             // Icon is out of view.
@@ -548,9 +548,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  @param effigy The effigy.
      *  @param directory The directory into which to write any HTML.
      *  @return The link to HTML, or an empty string if there is none.
-     *  @throws IOException If unable to create required HTML files.
-     *  @throws PrinterException If unable to create required HTML files.
-     *  @throws FileNotFoundException
+     *  @exception IOException If unable to create required HTML files.
+     *  @exception PrinterException If unable to create required HTML files.
+     *  @exception FileNotFoundException
      */
     private String _linkToText(PtolemyEffigy effigy, File directory) throws IOException,
             PrinterException {
@@ -596,16 +596,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-    
+
     /** The associated Vergil frame. */
     private final BasicGraphFrame _basicGraphFrame;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     ///////////////////////////////////////////////////////////////////
     //// IconVisibleLocation
-    
+
     /** A data structure consisting of a NamedObj and the coordinates
      *  of the upper left corner and lower right corner of the main
      *  part of its icon (not including decorations like the name
@@ -616,13 +616,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  and h is the height (in pixels).
      */
     static private class IconVisibleLocation {
-        
+
         /** The object with a visible icon. */
         public NamedObj object;
-        
+
         /** The top left X coordinate. */
         public double topLeftX;
-        
+
         /** The top left Y coordinate. */
         public double topLeftY;
 
@@ -631,10 +631,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         /** The bottom right Y coordinate. */
         public double bottomRightY;
-        
+
         /** String representation. */
         public String toString() {
-            return (object.getName() 
+            return (object.getName()
                     + " from (" + topLeftX + ", " + topLeftY + ") to ("
                     + bottomRightX + ", " + bottomRightY + ")");
         }

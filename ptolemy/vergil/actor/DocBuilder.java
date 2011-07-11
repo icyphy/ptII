@@ -160,24 +160,24 @@ public class DocBuilder extends Attribute {
                 if (toolsJarFile.exists()) {
                     results = "javac -classpath \"" + ptII + File.pathSeparator
                             + javaHome + toolsJarFileBase
-                            + "\" doc/doclets/PtDoclet.java";         
+                            + "\" doc/doclets/PtDoclet.java";
                 } else {
                     if (StringUtilities.getProperty("os.name").equals("Mac OS X")) {
                         results = "javac -classpath \"" + ptII
-                            + "\" doc/doclets/PtDoclet.java";   
+                            + "\" doc/doclets/PtDoclet.java";
                     } else {
                         results = "echo \"Warning: Failed to generate commands to compile "
                             + "ptII/doc/doclets/PtDoclet.java. The jar file tools.jar at "
-                            + toolsJarFile.getCanonicalPath() 
+                            + toolsJarFile.getCanonicalPath()
                             + " does not exist?\"";
-                    } 
+                    }
                 }
             }
         } catch (Throwable throwable) {
             results = "echo \"Warning, failed to generate command "
                 + "to compile ptII/doc/doclets/PtDoclet.java: "
                 + KernelException.stackTraceToString(throwable) + "\"";
- 
+
         }
         return results;
     }

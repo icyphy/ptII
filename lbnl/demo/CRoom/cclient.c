@@ -5,13 +5,13 @@
 ///         implementation of a client.
 ///
 /// \author Michael Wetter,
-///         Simulation Research Group, 
+///         Simulation Research Group,
 ///         LBNL,
 ///         MWetter@lbl.gov
 ///
 /// \date   2007-12-01
 ///
-/// This file is a simple simulation program written 
+/// This file is a simple simulation program written
 /// in C to illustrate how to implement a client.
 /// The program simulates two rooms, each represented
 /// by a first order ordinary differential equation
@@ -19,16 +19,16 @@
 /// room temperature.
 /// Input to the room model is the control signal
 /// for a heater. The control signal is obtained from
-/// Ptolemy II. Output of the model is the room 
+/// Ptolemy II. Output of the model is the room
 /// temperature, which is sent to Ptolemy II.
-/// The differential equation is solved using an 
+/// The differential equation is solved using an
 /// explicit Euler integration.
 ///
 ///////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include <stdlib.h>
-//#include <unistd.h> // for sleep 
+//#include <unistd.h> // for sleep
 #include "utilSocket.h"
 
 //////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
   const char *const simCfgFilNam = "socket.cfg";
   // client error flag
   const int cliErrFla = -1;
-  // Flags to exchange the status of the simulation program 
+  // Flags to exchange the status of the simulation program
   // and of the middleware.
   int flaWri = 0;
   int flaRea = 0;
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
     // Exchange values
     retVal = exchangedoubleswithsocket(&sockfd, &flaWri, &flaRea,
                                        &nDblWri, &nDblRea,
-                                       &simTimWri, dblValWri, 
+                                       &simTimWri, dblValWri,
                                        &simTimRea, dblValRea);
     /////////////////////////////////////////////////////////////
     // Check flags
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]){
       exit(1);
     }
     /////////////////////////////////////////////////////////////
-    // No flags found that require the simulation to terminate. 
+    // No flags found that require the simulation to terminate.
     // Assign exchanged variables
     for(i=0; i < nRoo; i++)
       y[i] = dblValRea[i];

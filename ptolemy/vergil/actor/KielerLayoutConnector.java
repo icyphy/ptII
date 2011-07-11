@@ -52,7 +52,7 @@ import diva.util.java2d.Polyline2D;
  * mechanism, e.g. the KIELER dataflow layout. The latter is currently used by
  * the automatic layout mechanism that simply adds such bend point layout hints
  * to relations.
- * 
+ *
  * @author Christian Motika
  * @since Ptolemy II 8.2
  * @Pt.ProposedRating Red (cmot)
@@ -60,8 +60,8 @@ import diva.util.java2d.Polyline2D;
 
 public class KielerLayoutConnector extends LinkManhattanConnector {
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Construct a new connector with the given tail and head for the specified
@@ -69,7 +69,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * in which case they are not necessarily the ones returned by getHeadSite()
      * or getTailSite(). Those methods will return new sites as needed to ensure
      * that each each connection is to its own site.
-     * 
+     *
      * @param tail The tail site.
      * @param head The head site.
      * @param link The link.
@@ -254,7 +254,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
     /**
      * Get the center point of a Perimeter Site. Copied the idea from
      * {@link PerimeterSite#getPoint(double)}.
-     * 
+     *
      * @param site the site
      * @return the center point of the shape that corresponds to the site
      */
@@ -268,12 +268,12 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
     }
 
     /**
-     * Get the starting and ending points of a connector. Copied some code from 
+     * Get the starting and ending points of a connector. Copied some code from
      * {@link BasicManhattanRouter#routeManhattan(diva.canvas.connector.ManhattanConnector)}.
      * @param c the corresponding connector
      * @param bendPoints a list of bendpoints to determine the anchor point on the site
-     * @return the anchor points at the start and end of the connectior, i.e. a Point2D array of size 2 
-     * 
+     * @return the anchor points at the start and end of the connectior, i.e. a Point2D array of size 2
+     *
      */
     private Point2D[] _getHeadTailPoints(Connector c, List<Point2D> bendPoints) {
         TransformContext currentContext = c.getTransformContext();
@@ -310,7 +310,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
 
     /**
      * Get the angle in radians from the origin to the other point.
-     * 
+     *
      * @param origin the original point
      * @param other the other point
      * @return angle in radians
@@ -323,8 +323,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
         return theta;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * The radius for filleting the corners of the connector.

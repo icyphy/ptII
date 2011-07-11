@@ -6,7 +6,7 @@
       * it loads the material details from the MTL file, storing
         them as Material objects in the materials ArrayList.
 
-      * it sets up a specified material's colours or textures 
+      * it sets up a specified material's colours or textures
         to be used when rendering -- see renderWithMaterial()
 
    CHANGES (Feb 2007)
@@ -39,7 +39,7 @@ public class Materials
   private String renderMatName = null;
 
   private boolean usingTexture = false;
-  private boolean flipTexCoords = false;   
+  private boolean flipTexCoords = false;
     // whether tex coords should be flipped around the y-axis
 
 
@@ -55,7 +55,7 @@ public class Materials
       readMaterials(br);
       br.close();
     }
-    catch (IOException e) 
+    catch (IOException e)
     { System.out.println(e.getMessage());  }
 
   } // end of Materials()
@@ -69,7 +69,7 @@ public class Materials
     try {
       String line;
       Material currMaterial = null;  // current material
-			
+
       while (((line = br.readLine()) != null)) {
         line = line.trim();
         if (line.length() == 0)
@@ -100,7 +100,7 @@ public class Materials
           float val = Float.valueOf(line.substring(2)).floatValue();
           currMaterial.setD( val );
         }
-        else if (line.startsWith("illum ")) { // illumination model 
+        else if (line.startsWith("illum ")) { // illumination model
           // not implemented
         }
         else if (line.charAt(0) == '#')   // comment line
@@ -111,7 +111,7 @@ public class Materials
       }
       materials.add(currMaterial);
     }
-    catch (IOException e) 
+    catch (IOException e)
     { System.out.println(e.getMessage());  }
   } // end of readMaterials()
 
@@ -123,15 +123,15 @@ public class Materials
   {
     StringTokenizer tokens = new StringTokenizer(line, " ");
     tokens.nextToken();    // skip MTL word
-		
+
     try {
       float x = Float.parseFloat(tokens.nextToken());
       float y = Float.parseFloat(tokens.nextToken());
       float z = Float.parseFloat(tokens.nextToken());
-			
+
       return new Tuple3(x,y,z);
-    } 
-    catch (NumberFormatException e) 
+    }
+    catch (NumberFormatException e)
     {  System.out.println(e.getMessage());  }
 
     return null;   // means an error occurred
@@ -151,7 +151,7 @@ public class Materials
   }  // end of showMaterials()
 
 
-  
+
   // ----------------- using a material at render time -----------------
 
   public boolean renderWithMaterial(String faceMat, GL gl)
@@ -198,7 +198,7 @@ public class Materials
 
 
   private void switchOnTex(Texture tex, GL gl)
-  // switch the lights off, and texturing on 
+  // switch the lights off, and texturing on
   {
     gl.glDisable(GL.GL_LIGHTING);
     gl.glEnable(GL.GL_TEXTURE_2D);
@@ -207,7 +207,7 @@ public class Materials
   } // end of resetMaterials()
 
 
-  private Texture getTexture(String matName) 
+  private Texture getTexture(String matName)
   // return the texture associated with the material name
   {
     Material m;

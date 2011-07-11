@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -47,7 +47,7 @@ package ptdb.common.dto;
 public class GraphSearchTask extends Task {
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                                         ////
+    ////                         public methods                    ////
 
     /**
      * Return the graphical search criteria.
@@ -68,7 +68,7 @@ public class GraphSearchTask extends Task {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                                ////
+    ////                         private variables                 ////
     private DBGraphSearchCriteria _graphSearchCriteria;
 
 }

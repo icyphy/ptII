@@ -58,14 +58,14 @@ import ptolemy.math.Fraction;
 ////OptimizingSDFScheduler
 
 /**
-OptimizingSDFScheduler is the scheduler companion to the OptimizingSDFDirector 
+OptimizingSDFScheduler is the scheduler companion to the OptimizingSDFDirector
 It works with the synchronous dataflow (SDF) model of computation to find
 an optimized schedule according to a defined criterion.
 
 <h1>Class comments</h1>
-An OptimizingSDFScheduler is the class that determines an optimized static schedule.  
+An OptimizingSDFScheduler is the class that determines an optimized static schedule.
 <p>
-See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and 
+See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and
 {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more information.
 </p>
 @see ptolemy.domains.sdf.kernel.SDFScheduler
@@ -79,20 +79,20 @@ See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and
 */
 
 public class OptimizingSDFScheduler extends SDFScheduler {
-    
+
     /**
      * The optimization criterion to use.
      */
     public OptimizationCriteria optimizationCriterion;
 
     /**
-     * Construct an instance of an OptimizingSDFScheduler. Provide container and name as 
+     * Construct an instance of an OptimizingSDFScheduler. Provide container and name as
      * usual and an optimization criterion <i>crit</i>.
      * @param container container
      * @param name name
      * @param crit optimization criterion
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public OptimizingSDFScheduler(OptimizingSDFDirector container, String name, OptimizationCriteria crit)
             throws IllegalActionException, NameDuplicationException {
@@ -196,7 +196,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         return result;
     }
 
-    /** Create an optimal schedule for a set of actors.  
+    /** Create an optimal schedule for a set of actors.
      *  FIXME: contains a lot of duplicated code from same method in SDFScheduler
      *  Would be good to factor out common code, but I do not want to touch SDFScheduler
      *
@@ -217,7 +217,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
             throws NotSchedulableException {
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
-        
+
         // optimizedSchedule holds the new schedule
         Schedule optimizedSchedule;
 
@@ -239,10 +239,10 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         unscheduledActorList.addAll(actorList);
 
         try {
-            // clear the receivers of input ports of all actors in actorList 
+            // clear the receivers of input ports of all actors in actorList
             // as well as the external ports. This should cover all receivers
             // we are dealing with
-            
+
             // clear all the receivers of input ports of actors in actorList
             Iterator actorsIterator = actorList.iterator();
             while (actorsIterator.hasNext()) {
@@ -260,7 +260,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
                     }
                 }
             }
-            // clear all the receivers of the external output ports 
+            // clear all the receivers of the external output ports
             Iterator externalOutputPorts = container.outputPortList()
                     .iterator();
             while (externalOutputPorts.hasNext()) {
@@ -276,7 +276,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
             }
 
 
- 
+
             // Simulate production of initial tokens.
             Iterator actors = actorList.iterator();
 
@@ -307,27 +307,27 @@ public class OptimizingSDFScheduler extends SDFScheduler {
                 }
             }
 
-            // Now the initial state is known and we can compute the optimal schedule 
+            // Now the initial state is known and we can compute the optimal schedule
             OptimalScheduleFinder finder = new OptimalScheduleFinder(this, optimizationCriterion);
-            
+
             // Collect the repetition vector from _firingVector
             // exclude the composite actor from the vector
             HashMap repVec = new HashMap();
             Iterator rvi = _firingVector.keySet().iterator();
-            while(rvi.hasNext()){
+            while (rvi.hasNext()) {
                 Actor rva = (Actor) rvi.next();
                 // do not include the composite
-                if(rva != container){
+                if (rva != container) {
                     repVec.put(rva, _firingVector.get(rva));
                 }
             }
             // delegate the construction of the schedule to the OptimizedScheduleFinder
             //optimizedSchedule = finder.makeSchedule(repVec);
             optimizedSchedule = finder.makeScheduleGreedy(repVec);
-            
+
             // Iterate over the schedule once to fix the buffer sizes.
             Iterator si = optimizedSchedule.iterator();
-            while(si.hasNext()){
+            while (si.hasNext()) {
                 Firing firing = (Firing) si.next();
                 Actor firingActor = firing.getActor();
 
@@ -343,7 +343,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
                     _simulateTokensCreated(outputPort, count);
                 }
             }
-            
+
         } catch (IllegalActionException ex) {
             // This could happen if we call getTokenConsumptionRate on a
             // port that isn't a part of the actor.   This probably means
@@ -408,11 +408,11 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      * Print a debug message.
      * @param message message to display
      */
-    public void showDebug(String message){
+    public void showDebug(String message) {
         if (_debugging) {
             _debug(message);
         }
-    
+
     }
-    
+
 }

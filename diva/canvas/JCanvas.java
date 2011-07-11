@@ -125,11 +125,11 @@ public class JCanvas extends JComponent implements Printable {
      *  to the specified stream.
      *  @param out The output stream to write to.
      *  @param formatName The format name (such as "gif" or "png").
-     *  @throws PrinterException If printing to graphics object fails.
-     *  @throws IOException If conversion to the specified format fails or is not supported
+     *  @exception PrinterException If printing to graphics object fails.
+     *  @exception IOException If conversion to the specified format fails or is not supported
      */
     public void exportImage(OutputStream out, String formatName) throws PrinterException, IOException {
-        
+
         boolean match = false;
         String[] supportedFormats = ImageIO.getWriterFormatNames();
         for (int i=0; i < supportedFormats.length; i++) {
@@ -168,7 +168,7 @@ public class JCanvas extends JComponent implements Printable {
         ImageIO.write(bufferedImage, formatName, out);
         graphics.dispose();
     }
-    
+
     /** Get the canvas pane contained by this component.
      */
     public final CanvasPane getCanvasPane() {

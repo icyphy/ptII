@@ -93,7 +93,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  ptolemy.graph.CPO.HIGHER, ptolemy.graph.CPO.INCOMPARABLE, indicating the
      *  first argument is lower than, equal to, higher than, or incomparable with
      *  the second argument in the property hierarchy, respectively.
-     *  
+     *
      *  @param e1 An instance of {@link Concept}.
      *  @param e2 An instance of {@link Concept}.
      *  @return One of CPO.LOWER, CPO.SAME, CPO.HIGHER, CPO.INCOMPARABLE.
@@ -130,7 +130,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Compute the down-set of an element in this concept graph.
      *  The down-set of an element is the subset consisting of
      *  all the elements less than or equal to the specified element.
-     *  
+     *
      *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the down-set of the
      *   specified element.
@@ -154,12 +154,12 @@ public class DAGConceptGraph extends ConceptGraph {
             throw new IllegalArgumentException("downSet method not implemented"
                     + " for Concept subclass " + e.getClass().getName() + ".");
         }
-    }    
+    }
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the concept graph
      *  that is less than or equal to both of the two elements.
-     *  
+     *
      *  @param e1 An Object representing an element in this concept graph.
      *  @param e2 An Object representing an element in this concept graph.
      *  @return A Concept representing the GLB of the two specified
@@ -170,7 +170,7 @@ public class DAGConceptGraph extends ConceptGraph {
     public Concept greatestLowerBound(Object e1, Object e2) {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
-        
+
         return _getBoundForConcepts(concept1, concept2, BoundType.GREATESTLOWER);
     }
 
@@ -185,7 +185,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Compute the least upper bound (LUB) of two elements.
      *  The LUB of two elements is the least element in the concept graph
      *  that is greater than or equal to both of the two elements.
-     *  
+     *
      *  @param e1 An Object representing an element in this concept graph.
      *  @param e2 An Object representing an element in this concept graph.
      *  @return A Concept representing the LUB of the two specified
@@ -196,7 +196,7 @@ public class DAGConceptGraph extends ConceptGraph {
     public Concept leastUpperBound(Object e1, Object e2) {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
-        
+
         return _getBoundForConcepts(concept1, concept2, BoundType.LEASTUPPER);
     }
 
@@ -210,7 +210,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Compute the up-set of an element in this concept graph.
      *  The up-set of an element is the subset consisting of
      *  all the elements greater than or equal to the specified element.
-     *  
+     *
      *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the up-set of the
      *   specified element.
@@ -234,13 +234,13 @@ public class DAGConceptGraph extends ConceptGraph {
                     + " for Concept subclass " + e.getClass().getName() + ".");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
-    
+    ////                         private methods                   ////
+
     /** Return the concept that is either the greatest lower or least upper
      *  bound for the two given concepts.
-     *  
+     *
      *  @param concept1 The first concept.
      *  @param concept2 The second concept.
      *  @param boundType Specifies the type of bound to be returned; either
@@ -259,7 +259,7 @@ public class DAGConceptGraph extends ConceptGraph {
             default:
                 throw new IllegalArgumentException("Unrecognized bound type: "
                         + boundType + ". Expected either GREATESTLOWER or " +
-                        		"LEASTUPPER");
+                                        "LEASTUPPER");
             }
         } else if (concept1 instanceof InfiniteConcept) {
             return _getBoundForInfiniteConcept((InfiniteConcept) concept1,
@@ -272,10 +272,10 @@ public class DAGConceptGraph extends ConceptGraph {
                     + "' and '" + concept2 + "' (neither finite nor infinite)");
         }
     }
-    
+
     /** Return the concept that is the correct bound for the specified infinite
      *  concept and another concept.
-     *  
+     *
      *  @param infiniteConcept The infinite concept.
      *  @param otherConcept The other concept.
      *  @param boundType Specifies the type of bound to be returned; either
@@ -295,7 +295,7 @@ public class DAGConceptGraph extends ConceptGraph {
                                     "LEASTUPPER");
         }
     }
-    
+
     /** Return the input object as a Concept, or throw an exception if the
      *  input object cannot be cast to a Concept.
      *  @param input The specified input object.
@@ -317,7 +317,7 @@ public class DAGConceptGraph extends ConceptGraph {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** A directed acyclic graph representing the connectivity of the
      *  concepts in this concept graph.

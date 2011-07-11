@@ -89,7 +89,7 @@ public class Tag implements Comparable {
             }
         }
     }
-    
+
     /** Checks if this tag is the same as another.
      *  @param arg0 The object checking against.
      *  @return true if the tags are equal.
@@ -110,7 +110,7 @@ public class Tag implements Comparable {
 
     /** Return a string representation of this class.
      *  @return a string representation of this class.
-     */ 
+     */
     public String toString() {
         return "timestamp = " + timestamp.getDoubleValue() +
             ", microstep = " + microstep;

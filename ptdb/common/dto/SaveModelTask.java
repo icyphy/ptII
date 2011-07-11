@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -31,10 +31,10 @@ package ptdb.common.dto;
 /**
  *
  * A task request to save/update the model in the database.
- * 
- * <p>It is used as a data transfer object that hold the model as XMLDBModel 
+ *
+ * <p>It is used as a data transfer object that hold the model as XMLDBModel
  * object with its getter and setter methods.</p>
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -44,7 +44,7 @@ package ptdb.common.dto;
  */
 public class SaveModelTask extends Task {
 
-    
+
     /**
      * Default nullary constructor.
      * <p>Should be removed once the code using it
@@ -53,24 +53,24 @@ public class SaveModelTask extends Task {
     public SaveModelTask() {
         //FIXME: Remove this method as soon as the code pointing to it is modified.
     }
-    
+
     /**
-     * Construct an instance of this class and set the model to be saved in the 
+     * Construct an instance of this class and set the model to be saved in the
      * database.
      * @param xmlDBModel the model to be saved in the database.
      */
     public SaveModelTask(XMLDBModel xmlDBModel) {
         _xmlDBModel = xmlDBModel;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    
+
+
     /**
      * Return the model to be saved in the database.
      * @return The model to be saved in the database.
-     * 
+     *
      * @see #setXMLDBModel
      */
     public XMLDBModel getXMLDBModel() {
@@ -81,17 +81,17 @@ public class SaveModelTask extends Task {
     /**
      * Set the model to be saved in the database.
      * @param xmlDBModel the model to be saved to the database.
-     * 
+     *
      * @see #getXMLDBModel
      */
     public void setXMLDBModel(XMLDBModel xmlDBModel) {
         _xmlDBModel = xmlDBModel;
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The model in XMLDBModel object format. */
     private XMLDBModel _xmlDBModel;
 

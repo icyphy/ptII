@@ -35,7 +35,7 @@ import ptolemy.actor.gui.ConfigurationApplication;
 
 ///////////////////////////////////////////////////////////////////
 //// HTMLAboutJUnitTest
-/** 
+/**
  * Test out HTMLAbout by starting vergil with various URLs.
  *
  * @author Christopher Brooks
@@ -46,7 +46,7 @@ import ptolemy.actor.gui.ConfigurationApplication;
  */
 public class HTMLAboutJUnitTest {
 
-    /** 
+    /**
      * Invoke about:allcopyrights, which pops up a window that lists
      * the copyrights.
      * @exception Exception If there is a problem reading or laying
@@ -57,7 +57,7 @@ public class HTMLAboutJUnitTest {
         _openModel("about:allcopyrights");
     }
 
-    /** 
+    /**
      * Invoke about:configuration, which expands the actor tree on
      * the left.
      * @exception Exception If there is a problem reading or laying
@@ -68,7 +68,7 @@ public class HTMLAboutJUnitTest {
         _openModel("about:configuration");
     }
 
-    /** 
+    /**
      * Invoke about:copyrights, which pops up a window that lists
      * the copyrights.
      * @exception Exception If there is a problem reading or laying
@@ -80,7 +80,7 @@ public class HTMLAboutJUnitTest {
     }
 
     /** Test the HTMLAbout
-     *   
+     *
      *  <p>To run, use:</p>
      *
      *  <pre>
@@ -108,7 +108,7 @@ public class HTMLAboutJUnitTest {
      * <p>The caller of this method need <b>not</b>be in the Swing
      * Event Thread.</p>
      *
-     * @param modelFileName The file name of the test model. 
+     * @param modelFileName The file name of the test model.
      * @exception Exception If the file name cannot be read or laid out.
      */
     protected void _openModel(final String modelFileName) throws Exception {

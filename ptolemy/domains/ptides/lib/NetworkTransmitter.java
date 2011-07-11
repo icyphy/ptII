@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  </p><p>
  *  This actor is expected to be used in pairs with the {@link NetworkReceiver}.
  *  This actor produces network packages from the source
- *  platform, and the {@link NetworkReceiver} consumes those packages 
+ *  platform, and the {@link NetworkReceiver} consumes those packages
  *  in the sink platform.
  *  Unlike {@link ActuatorSetup} for example, this actor is necessarily needed for
  *  both simulation and code generation purposes.
@@ -135,7 +135,7 @@ public class NetworkTransmitter extends OutputDevice {
 
         if (director == null || !(director instanceof PtidesBasicDirector)) {
             throw new IllegalActionException(this, "Director expected to" +
-            		"be a Ptides director, but it's not.");
+                            "be a Ptides director, but it's not.");
         }
 
         PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;

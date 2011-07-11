@@ -69,7 +69,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         // Automatically append the "preinitBlock" by default.
         super.generatePreinitializeCode();
 
-        CodeStream codeStream = _templateParser.getCodeStream(); 
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.appendCodeBlock("preinitBinomialSelectorBlock");
 
         ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
@@ -106,7 +106,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
      *  @return The code that produces a new random number.
      */
     protected String _generateRandomNumber() throws IllegalActionException {
-        CodeStream codeStream = _templateParser.getCodeStream(); 
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
 
         ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();

@@ -1122,7 +1122,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** Return the class of the templateParser class. In cse
      *  there isn't one return null.
-     *  @return The base class for templateParser.  
+     *  @return The base class for templateParser.
      */
     protected Class<? extends TemplateParser> _templateParserClass() {
         return CTemplateParser.class;
@@ -1595,7 +1595,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // FindBugs suggested "Could be refactored into a named static
         // inner class (1)"
         /** Return true if include/jni.h is found.
-         *  @return true if include/jni.h is found.  
+         *  @return true if include/jni.h is found.
          */
         public boolean accept(File pathname) {
             return new File(pathname, "/include/jni.h")

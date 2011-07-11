@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -33,9 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 
+ *
  * The Model that need to be stored or retrieved from the database.
- * 
+ *
  * <p>
  * It is used as a data transfer object and hold 4 information about the model:
  * <br>- Model name.
@@ -44,7 +44,7 @@ import java.util.List;
  * <br>- List of parents for the current model.
  * <br>Each of the 4 information has its own getter and setter methods.
  * </p>
- * 
+ *
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -123,16 +123,16 @@ public class XMLDBModel implements Comparable {
     }
 
     /**
-     * Compare this model with another given model, and the model is compared 
-     * according to their name. 
-     * 
-     * @param otherModel The other model to be compared with this model. 
+     * Compare this model with another given model, and the model is compared
+     * according to their name.
+     *
+     * @param otherModel The other model to be compared with this model.
      * @return The value to indicate the result of comparation. If the returned
-     * value is larger than 0, it means the otherModel is smaller.  If the 
-     * returned value is less than 0, it means the otherModel is larger. If 0 
-     * is returned, it means these two models are equal. 
+     * value is larger than 0, it means the otherModel is smaller.  If the
+     * returned value is less than 0, it means the otherModel is larger. If 0
+     * is returned, it means these two models are equal.
      */
-    
+
     public int compareTo(Object otherModel) {
 
         return _modelName.compareToIgnoreCase(((XMLDBModel) otherModel)
@@ -142,7 +142,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Return True or false based on if the model is new or it exists in the database.
      * @return True or false based on if the model is new or it exists in the database.
-     * 
+     *
      * @see #setIsNew
      */
     public boolean getIsNew() {
@@ -152,7 +152,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Return the model content.
      * @return A string representation of the model content.
-     * 
+     *
      * @see #setModel
      */
     public String getModel() {
@@ -162,7 +162,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Return the model id.
      * @return The model id.
-     * 
+     *
      * @see #setModelId
      */
     public String getModelId() {
@@ -172,7 +172,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Return the model name.
      * @return The model name.
-     * 
+     *
      * @see #setModelName
      */
     public String getModelName() {
@@ -180,12 +180,12 @@ public class XMLDBModel implements Comparable {
     }
 
     /**
-     * Return the number of times the model is referenced in the 
+     * Return the number of times the model is referenced in the
      * given hierarchy.
-     * 
+     *
      * @param list List of models in the parent hierarchy.
-     * @return the number of times the model is referenced in the given 
-     * hierarchy. 
+     * @return the number of times the model is referenced in the given
+     * hierarchy.
      */
     public int getReferenceCount(List<XMLDBModel> list) {
         String parentsMapKey = _createParentHierarchyString(list);
@@ -199,7 +199,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Return the parents for the current model.
      * @return List of parents models for the current model.
-     * 
+     *
      * @see #setParents
      */
     public List<List<XMLDBModel>> getParents() {
@@ -207,12 +207,12 @@ public class XMLDBModel implements Comparable {
     }
 
     /**
-     * Return the first level referenced children entities  
+     * Return the first level referenced children entities
      * for the current model.
-     * 
-     * @return List of first level referenced children entities 
+     *
+     * @return List of first level referenced children entities
      * for the current model.
-     * 
+     *
      * @see #setReferencedChildren
      */
     public List<String> getReferencedChildren() {
@@ -223,7 +223,7 @@ public class XMLDBModel implements Comparable {
      * Set the isNew variable which indicates if the model is in the database or
      * it is new model.
      * @param isNew a boolean True or false value to set the isNew member variable.
-     * 
+     *
      * @see #getIsNew
      */
     public void setIsNew(boolean isNew) {
@@ -233,7 +233,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Set the model content.
      * @param modelContent The model content in xml format.
-     * 
+     *
      * @see #getModel
      */
     public void setModel(String modelContent) {
@@ -243,7 +243,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Set the model identifier.
      * @param modelId The model identifier.
-     * 
+     *
      * @see #getModelId
      */
     public void setModelId(String modelId) {
@@ -253,7 +253,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Set the model name.
      * @param modelName The model name.
-     * 
+     *
      * @see #getModelName
      */
     public void setModelName(String modelName) {
@@ -263,7 +263,7 @@ public class XMLDBModel implements Comparable {
     /**
      * Set the parents for the current model.
      * @param listParents List of parents for this model.
-     * 
+     *
      * @see #getParents
      */
     public void setParents(List<List<XMLDBModel>> listParents) {
@@ -274,7 +274,7 @@ public class XMLDBModel implements Comparable {
      * Set the first level referenced children entities  for the current model.
      * @param listChildren List of first level referenced children entities
      * for this model.
-     * 
+     *
      * @see #getReferencedChildren
      */
     public void setReferencedChildren(List<String> listChildren) {
@@ -282,18 +282,18 @@ public class XMLDBModel implements Comparable {
     }
 
     /**
-     * Get the String representation of this model. 
-     * 
-    * @return The String representation of this model. 
+     * Get the String representation of this model.
+     *
+    * @return The String representation of this model.
     */
-    
+
     public String toString() {
 
         return super.toString() + "@ModelName:" + _modelName;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     private String _createParentHierarchyString(List<XMLDBModel> list) {
         StringBuilder hierarchyStringBuilder = new StringBuilder();
@@ -318,8 +318,8 @@ public class XMLDBModel implements Comparable {
     private List<List<XMLDBModel>> _listParents;
     /** List of unique hierarchies and their counts */
     private HashMap<String, Integer> _parentsMap;
-    /** List of all the first level referenced child entities for 
-     * the current model. 
+    /** List of all the first level referenced child entities for
+     * the current model.
      */
     private List<String> _listReferencedChildren;
 

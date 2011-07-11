@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -35,12 +35,12 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ArrayModelList
 
 /**
- * Extends AbstractListModel and implements the function through ArrayList. 
- * 
+ * Extends AbstractListModel and implements the function through ArrayList.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -51,13 +51,13 @@ import javax.swing.AbstractListModel;
 public class ArrayModelList extends AbstractListModel {
 
     /**
-     * Construct the ArrayModelList through the passed ArrayList object. 
-     * 
-     * @param items The passed list instance. 
+     * Construct the ArrayModelList through the passed ArrayList object.
+     *
+     * @param items The passed list instance.
      */
     public ArrayModelList(List<String> items) {
 
-        // Sort the passed items initially. 
+        // Sort the passed items initially.
         Collections.sort(items);
 
         _items = items;
@@ -67,10 +67,10 @@ public class ArrayModelList extends AbstractListModel {
     ////                         public methods                    ////
 
     /**
-     * Add a new item to this list. 
-     * 
-     * @param newItem The new item to be added into the list. 
-     * @return Return the index of the newly added item. 
+     * Add a new item to this list.
+     *
+     * @param newItem The new item to be added into the list.
+     * @return Return the index of the newly added item.
      */
     public int addItem(String newItem) {
         //        int index = _items.size();
@@ -84,28 +84,28 @@ public class ArrayModelList extends AbstractListModel {
     }
 
     /**
-     * Get the item at a certain index. 
-     * 
-     * @param i The index of item to be gotten. 
-     * @return The item at the given index. 
+     * Get the item at a certain index.
+     *
+     * @param i The index of item to be gotten.
+     * @return The item at the given index.
      */
     public Object getElementAt(int i) {
         return _items.get(i);
     }
 
     /**
-     * Get the size of the stored list. 
-     * 
-     * @return The size of the stored list. 
+     * Get the size of the stored list.
+     *
+     * @return The size of the stored list.
      */
     public int getSize() {
         return _items.size();
     }
 
     /**
-     * Remove the given item from the list. 
-     * 
-     * @param item The item to be removed from the list. 
+     * Remove the given item from the list.
+     *
+     * @param item The item to be removed from the list.
      */
     public void removeItem(String item) {
         for (Iterator iterator = _items.iterator(); iterator.hasNext();) {
@@ -120,14 +120,14 @@ public class ArrayModelList extends AbstractListModel {
             }
         }
     }
-    
+
 
     /**
-     * Update the item at a given index. 
-     * 
-     * @param item The new item to put into the list. 
-     * @param index The index of the item to be replaced. 
-     * @return Return the new index of the updated item. 
+     * Update the item at a given index.
+     *
+     * @param item The new item to put into the list.
+     * @param index The index of the item to be replaced.
+     * @return Return the new index of the updated item.
      */
     public int updateItem(String item, int index) {
 
@@ -139,11 +139,11 @@ public class ArrayModelList extends AbstractListModel {
         //        fireIntervalAdded(this, index, index);
         // Add the new item into the list.
         return addItem(item);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private int _getInsertIndex(String itemToInsert) {
 
@@ -162,7 +162,7 @@ public class ArrayModelList extends AbstractListModel {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private List<String> _items;
 }

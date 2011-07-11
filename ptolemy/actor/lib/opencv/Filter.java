@@ -72,7 +72,7 @@ public class Filter extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -85,13 +85,13 @@ public class Filter extends Transformer {
             }
             OpenCV openCV = (OpenCV)inputObject;
             PImage my_image = openCV.image();
-			float type = (float) 0.6;
-			my_image.filter(16,type);	
-			openCV.absDiff();
-			openCV.copy(my_image);
-			openCV.remember(OpenCV.BUFFER);
+                        float type = (float) 0.6;
+                        my_image.filter(16,type);
+                        openCV.absDiff();
+                        openCV.copy(my_image);
+                        openCV.remember(OpenCV.BUFFER);
           output.send(0, new ObjectToken(openCV));
         }
     }
-   
+
 }

@@ -50,11 +50,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cshelton)
 */
 public abstract class UnitConcept extends FlatTokenInfiniteConcept {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Return true if this unit can be converted to the specified unit. 
+
+    /** Return true if this unit can be converted to the specified unit.
      *  @param unit The other unit concept to compare to this one.
      *  @return true if the units can be converted, false otherwise.
      */
@@ -65,14 +65,14 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
             return false;
         }
     }
-    
+
     /** Return the the dimension concept for this unit concept.
      *  @return The dimension concept to which this unit concept belongs.
      */
     public DimensionRepresentativeConcept getDimension() {
         return (DimensionRepresentativeConcept) _representative;
     }
-    
+
     /** Return the multiplication factor that converts a value in this unit to the
      *  SI unit for this dimension.
      *  @return The unit factor as a scalar token.
@@ -80,14 +80,14 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
     public ScalarToken getUnitFactor() {
         return _unitFactor;
     }
-    
+
     /** Return the name of the unit.
      *  @return The name of the unit.
      */
     public String getUnitName() {
         return _unitName;
     }
-    
+
     /** Return the offset factor that converts a value in this unit to the SI
      *  unit for this dimension. Currently this is only used for temperature
      *  unit conversions.
@@ -96,39 +96,39 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
     public ScalarToken getUnitOffset() {
         return _unitOffset;
     }
-    
+
     /** Return the string representation of this base unit concept.
      *  It concatenates the name of the representative concept physical
      *  dimension name with the name of the unit.
-     *  
+     *
      *  @return The string representation of this concept.
      */
     public String toString() {
         return _representative.getName() + "_" + _unitName;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
-    
+
     /** Create a new BaseUnitConcept, belonging to the given
      *  ontology.
-     * 
+     *
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents the physical
      *   dimension for the set infinite concepts that represent units for
      *   this dimension in the ontology lattice.
      *  @param unitInfo The record token value that has the name and scale
      *   factor information for this unit.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected UnitConcept(Ontology ontology,
             DimensionRepresentativeConcept representative,
-            RecordToken unitInfo) 
+            RecordToken unitInfo)
                 throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
-        
-        Token unitName = unitInfo.get(UnitConversionInfo.unitNameLabel);            
+
+        Token unitName = unitInfo.get(UnitConversionInfo.unitNameLabel);
         if (unitName instanceof StringToken) {
             _unitName = ((StringToken) unitName).stringValue();
         } else {
@@ -137,23 +137,23 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
                     unitName);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The multiplication factor for converting this unit to the SI
      *  unit for this physical dimension.
      */
     protected ScalarToken _unitFactor;
-    
+
     /** The offset factor for converting this unit to the SI
      *  unit for this physical dimension.
      */
     protected ScalarToken _unitOffset;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The name of the unit represented by this unit concept. */
     private String _unitName;
 }

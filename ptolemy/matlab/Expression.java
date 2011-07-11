@@ -145,7 +145,7 @@ import ptolemy.matlab.Engine.ConversionParameters;
  <dt>64 Bit Mac (10.6?, Edit ~/.MacOSX/environment.plist)</dt>
  <dd><code>export DYLD_LIBRARY_PATH=$MATLAB/bin/maci64</code></dd>
  <dt>32 Bit Linux (Edit</dt>
- <dd><code>export LD_LIBRARY_PATH=$MATLAB/bin/gnlx86</code></dd> 
+ <dd><code>export LD_LIBRARY_PATH=$MATLAB/bin/gnlx86</code></dd>
  <dt>64 Bit Linux</dt>
  <dd><code>export LD_LIBRARY_PATH=$MATLAB/bin/glnxa64</code></dd>
  <dt>Windows (Start|My Computer|Properties|Advanced
@@ -154,7 +154,7 @@ import ptolemy.matlab.Engine.ConversionParameters;
  <dd><code>Be sure that the matlab binary is in your path</code></dd>
  </dl>
  </p>
- 
+
  @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
  @version $Id$
  @since Ptolemy II 2.0

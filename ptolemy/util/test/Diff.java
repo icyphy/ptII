@@ -1,7 +1,7 @@
 /* A simple diff utility, implemented in Java.
 
-Copyright (C) 2000-2011, Robert Sedgewick and Kevin Wayne. 
-All rights reserved. 
+Copyright (C) 2000-2011, Robert Sedgewick and Kevin Wayne.
+All rights reserved.
 */
 
 package ptolemy.util.test;
@@ -15,14 +15,14 @@ import ptolemy.util.FileUtilities;
 
 /**
  *  Read two files and compute the diff.
- *  <p>Based on <a href="http://introcs.cs.princeton.edu/96optimization/Diff.java">http://introcs.cs.princeton.edu/96optimization/Diff.java</a>, see 
+ *  <p>Based on <a href="http://introcs.cs.princeton.edu/96optimization/Diff.java">http://introcs.cs.princeton.edu/96optimization/Diff.java</a>, see
  *  <a href="http://introcs.cs.princeton.edu/96optimization">http://introcs.cs.princeton.edu/96optimization</a>.
- * 
+ *
  *  <p>Note that this code has a non-opensource copyright and should
- *  be 
+ *  be
  *  <p>Limitations:</p>
  *  <ul>
- *   <li>"Could hash the lines to avoid potentially more expensive 
+ *   <li>"Could hash the lines to avoid potentially more expensive
  *     string comparisons."
  *  </ul>
  *
@@ -39,7 +39,7 @@ public class Diff {
      *  @param bString The secondString to be compared
      *  @return A string describing the difference between the two
      *  strings in a format similar to the Unix diff command.
-     */   
+     */
     public static String diff(String aString, String bString) {
         String eol = System.getProperty("line.separator");
         String[] aStringSplit = aString.split(eol);
@@ -85,7 +85,7 @@ public class Diff {
     }
 
     /** Print the difference between two files.
-     *  <p>Usage:</p> 
+     *  <p>Usage:</p>
      *  <pre>
      *  java -classpath $PTII ptolemy.util.test.Diff File1.txt File2.txt
      *  </pre>
@@ -97,8 +97,8 @@ public class Diff {
      *  @exception MalformedURLException If a file name cannot be converted
      *  into a URL.
      *  @exception IOException If a file cannot be read.
-     */   
-    public static void main(String[] args) 
+     */
+    public static void main(String[] args)
             throws MalformedURLException, IOException {
         if (args.length != 2) {
             System.err.println("Error: number of arguments must be 2, "

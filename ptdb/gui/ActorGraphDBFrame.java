@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -71,7 +71,7 @@ import diva.gui.GUIUtilities;
 /**
  * An extended graph editor frame containing the ability to interface with a
  * model database via the Database menu.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -92,7 +92,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * tableau. This constructor results in a graph frame that obtains its
      * library either from the model (if it has one) or the default library
      * defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -111,7 +111,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * library either from the model (if it has one), or the
      * <i>defaultLibrary</i> argument (if it is non-null), or the default
      * library defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -141,7 +141,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _openDatabaseSetupAction = new DatabaseSetupAction();
         _simpleSearchAction = new SimpleSearchAction(getModel(), this,
                 getConfiguration());
-        _openAllModelListAction = new AllModelsListAction(getConfiguration()); 
+        _openAllModelListAction = new AllModelsListAction(getConfiguration());
         _configureAttributesAction = new ConfigureAttributesAction();
 
         _openModelMigrationFrameAction = new OpenModelMigrationFrameAction();
@@ -165,9 +165,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             _dbMenu = new JMenu("Database");
             _dbMenu.setMnemonic(KeyEvent.VK_B);
             _menubar.add(_dbMenu);
-            
+
             GUIUtilities.addMenuItem(_dbMenu, _openAllModelListAction);
-            
+
             JMenu recentModelMenu = new JMenu("Recently Opened Models");
             recentModelMenu.setMnemonic(KeyEvent.VK_R);
             _dbMenu.add(recentModelMenu);
@@ -253,7 +253,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     }
 
-    
+
     protected boolean _close() {
         boolean closeResult = super._close();
 
@@ -378,7 +378,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
     }
 
-    //    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //    //// OpenSearchFrameAction
     //
     //    private class OpenSearchFrameAction extends AbstractAction {
@@ -390,7 +390,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     //            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
     //        }
     //
-    //        ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //        ////            public methods                          //////
     //
     //        public void actionPerformed(ActionEvent e) {
@@ -446,7 +446,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         /**
          * Create a new action to save a model to the database.
          * @param source The frame from which the save frame will be opened.
-         * 
+         *
          */
         public SaveModelToDBAction(ActorGraphDBFrame source) {
 
@@ -460,7 +460,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
-            
+
                 _saveModelToDBFrame = new SaveModelToDBFrame(getModel(),
                         _source);
 
@@ -468,7 +468,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
                 _saveModelToDBFrame.pack();
                 _saveModelToDBFrame.setLocationRelativeTo(_source);
-            
+
 
             _saveModelToDBFrame.setVisible(true);
 
@@ -487,7 +487,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     private class DatabaseSetupAction extends AbstractAction {
         /**
          * Create a new action to setup database connection.
-         * 
+         *
          */
         public DatabaseSetupAction() {
 
@@ -519,7 +519,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     private class OpenModelMigrationFrameAction extends AbstractAction {
         /**
          * Create a new action to setup database connection.
-         * 
+         *
          */
         public OpenModelMigrationFrameAction() {
 
@@ -542,12 +542,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     //// RenameModelAction
 
     /**
-     * Action for performing model renaming. 
+     * Action for performing model renaming.
      */
     private class RenameModelAction extends AbstractAction {
 
         /**
-         * Default constructor. 
+         * Default constructor.
          */
         public RenameModelAction() {
 
@@ -563,20 +563,20 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             // Check whether the model is an existing model.
             // If it is not an existing model, show text message to tell the user.
             if (Utilities.getIdFromModel(getModel()) == null) {
-                // A new model that does not exist in the database. 
+                // A new model that does not exist in the database.
 
                 JOptionPane.showMessageDialog(ActorGraphDBFrame.this,
                         "This model hasn't been saved to the database"
                                 + " yet, so you cannot rename it.");
 
             } else {
-                // If the model is an existing model, show the rename frame. 
+                // If the model is an existing model, show the rename frame.
 
                 RenameModelFrame renameModelFrame = new RenameModelFrame(
                         getModel(), ActorGraphDBFrame.this);
 
                 _containedFramesManager.addContainedFrame(renameModelFrame);
-                
+
                 renameModelFrame.pack();
                 renameModelFrame.setLocationRelativeTo(ActorGraphDBFrame.this);
                 renameModelFrame.setVisible(true);
@@ -590,7 +590,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * Open list of all models in the database.
      */
     private class AllModelsListAction extends AbstractAction{
-        
+
         /**
          * Create an instance of AllModelsListAction.
          * @param configuration Configuration to open a model from the list.
@@ -599,18 +599,18 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             super("List All Database Models");
             _configuration = configuration;
         }
-        
+
         /**
-         * Open the models list frame. 
+         * Open the models list frame.
          */
         public void actionPerformed(ActionEvent e) {
             JFrame frame = new ModelsListFrame(_configuration);
             frame.pack();
             frame.setVisible(true);
         }
-        
+
         /**
-         * Configuration to open a model from the list. 
+         * Configuration to open a model from the list.
          */
         private Configuration _configuration;
     }
@@ -628,7 +628,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
          * will open.
          * @param configuration The configuration under which models from the
          * database will be loaded.
-         * 
+         *
          */
         public SimpleSearchAction(NamedObj model, JFrame frame,
                 Configuration configuration) {
@@ -796,14 +796,14 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     /**
      * Update the DBModelHistory.
-     * 
+     *
      * @param modelName The model name to add to the history.
      * @param delete Indication if the history should be updated with model name
      * or if it should be deleted.  If true, the opened model will not be added
      * to the history.  If false, it will.
      * @exception IOException Thrown if the history cannot be read from or
      * written to.
-     * 
+     *
      */
     public void updateDBModelHistory(String modelName, boolean delete)
             throws IOException {

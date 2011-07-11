@@ -65,13 +65,13 @@ public class Invert extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);  
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output an OpenCV Object
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -90,7 +90,7 @@ public class Invert extends Transformer {
             PImage newImg = new PImage(buf.width, buf.height, buf.format);
             newImg.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);
             oio.img = newImg;
-            
+
             output.send(0, new ObjectToken(oio));
         }
     }

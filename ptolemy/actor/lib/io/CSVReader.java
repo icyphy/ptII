@@ -117,19 +117,19 @@ public class CSVReader extends LineReader {
     public CSVReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         numberOfLinesToSkip.setVisibility(Settable.NONE);
-        
+
         separator = new StringParameter(this, "separator");
         separator.setExpression("comma");
         separator.addChoice("comma");
         separator.addChoice("tab");
         separator.addChoice("semicolon");
-        
+
         trimSpaces = new Parameter(this, "trimSpaces");
         trimSpaces.setTypeEquals(BaseType.BOOLEAN);
         trimSpaces.setExpression("true");
-        
+
         new SingletonParameter(endOfFile, "_showName").setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -155,7 +155,7 @@ public class CSVReader extends LineReader {
      *  be the separator.
      */
     public StringParameter separator;
-    
+
     /** If true, then trim spaces around each field name and value.
      *  This is a boolean that defaults to true. If you change it
      *  to false, then all spaces in the field names and values are
@@ -201,7 +201,7 @@ public class CSVReader extends LineReader {
         // Cannot invoke super.fire() because it produces the wrong
         // output.
         // super.fire();
-        
+
         // Duplicated from the AtomicActor base class:
         if (_debugging) {
             _debug("Called fire()");
@@ -217,14 +217,14 @@ public class CSVReader extends LineReader {
             StringTokenizer tokenizer = new StringTokenizer(_currentLine, _delimiter);
             int i = 0;
             StringToken[] fieldValues = new StringToken[_fieldNames.length];
-            while(tokenizer.hasMoreTokens()) {
+            while (tokenizer.hasMoreTokens()) {
                 if (i >= _fieldNames.length) {
                     // Ignore additional fields.
                     break;
                 }
                 String nextToken = tokenizer.nextToken();
                 if (((BooleanToken)trimSpaces.getToken()).booleanValue()) {
-                    nextToken = nextToken.trim(); 
+                    nextToken = nextToken.trim();
                 }
                 fieldValues[i] = new StringToken(nextToken);
                 i++;
@@ -288,7 +288,7 @@ public class CSVReader extends LineReader {
         // _nextLine variable. These two lines will be read again
         // in initialize(), which will close and re-open the file.
         _openAndReadFirstTwoLines();
-        
+
         if (_currentLine == null) {
             throw new IllegalActionException("File has no data.");
         }
@@ -303,9 +303,9 @@ public class CSVReader extends LineReader {
         }
         _fieldNames = new String[1];
         _fieldNames = fieldNames.toArray(_fieldNames);
-        
+
         Type[] fieldTypes = new Type[_fieldNames.length];
-        for(int i = 0; i < _fieldNames.length; i++) {
+        for (int i = 0; i < _fieldNames.length; i++) {
             fieldTypes[i] = BaseType.STRING;
         }
         RecordType outputType = new RecordType(_fieldNames, fieldTypes);
@@ -317,7 +317,7 @@ public class CSVReader extends LineReader {
 
     /** The string delimiter. */
     private String _delimiter = ",";
-    
+
     /** Field names for the output record. */
     private String[] _fieldNames;
 }

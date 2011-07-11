@@ -244,10 +244,10 @@ public class IOPort extends ComponentPort {
     }
 
     /** If a quantity manager is added, removed or modified update the list of
-     *  quantity managers. 
-     *  @param attribute The attribute that changed. 
+     *  quantity managers.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Thrown if the new color attribute cannot
-     *      be created. 
+     *      be created.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -1343,7 +1343,7 @@ public class IOPort extends ComponentPort {
                     "getCurrentTime: channel index is out of range.");
         }
     }
-    
+
     /** Return previously computed list of quantity managers or compute
      *  new if the list has been invalidated.
      *  @return The list of quantity managers.
@@ -1876,7 +1876,7 @@ public class IOPort extends ComponentPort {
                     // Need to re-create receivers for Pub/Sub in Opaques.
                     // See _getWidth() for a similar piece of code.
                     // If we don't check to see that sum < _insideWidth,
-                    // then actor/process/test/Branch.tcl has tests that 
+                    // then actor/process/test/Branch.tcl has tests that
                     // fail because we end up creating new receivers that
                     // are not producer receivers.
                     if (sum < _insideWidth && isOpaque()) {
@@ -4259,7 +4259,7 @@ public class IOPort extends ComponentPort {
                 listener.portEvent(event);
             }
         }
-    } 
+    }
 
     /** If this port has parameters whose values are tokens that contain
      *  an object implementing {@link QuantityManager}, then wrap the
@@ -4274,7 +4274,7 @@ public class IOPort extends ComponentPort {
      *  @param receiver The receiver to wrap.
      *  @return Either a new receiver wrapping the specified receiver,
      *   or the specified receiver.
-     *  @throws IllegalActionException If any parameter of the port
+     *  @exception IllegalActionException If any parameter of the port
      *   cannot be evaluated.
      */
     protected Receiver _wrapReceiver(Receiver receiver)
@@ -4689,12 +4689,12 @@ public class IOPort extends ComponentPort {
 
     /** List of quantity managers specified for the port. */
     private List<QuantityManager> _qmList;
-    
+
     /** True if list of quantity managers was not modified since
      *  it was last modified.
      */
     private boolean _qmListValid = false;
-    
+
     // A cache of the sink port list.
     private transient LinkedList<IOPort> _sinkPortList;
     private transient long _sinkPortListVersion;

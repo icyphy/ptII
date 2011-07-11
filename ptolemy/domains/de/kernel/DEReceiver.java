@@ -151,7 +151,7 @@ public class DEReceiver extends AbstractReceiver {
      *  whose input port contains this receiver. This receiver may contain
      *  more than one events.
      *  @param token The token to be put, or null to put no token.
-     *  @throws IllegalActionException If cannot get the director or if
+     *  @exception IllegalActionException If cannot get the director or if
      *   the current microstep is zero.
      */
     public void put(Token token) throws IllegalActionException {

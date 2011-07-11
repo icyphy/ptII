@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -105,7 +105,7 @@ public class TestSearchManager {
     ////                         public methods                    ////
 
     /**
-     * Test the search() method in the case when all the search criteria are 
+     * Test the search() method in the case when all the search criteria are
      * set, and results returned smoothly.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
@@ -178,7 +178,7 @@ public class TestSearchManager {
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
 
-        // Testing in name searcher. 
+        // Testing in name searcher.
         ModelNameSearchTask modelNameSearchTaskMock = PowerMock
                 .createMockAndExpectNew(ModelNameSearchTask.class,
                         searchCriteria.getModelName());
@@ -194,10 +194,10 @@ public class TestSearchManager {
                         .executeModelNameSearchTask(modelNameSearchTaskMock))
                 .andReturn(resultsFromNameSearcher);
 
-        // Testing in command searcher. 
-        // To add later. 
+        // Testing in command searcher.
+        // To add later.
 
-        // Testing in XQuery searcher. 
+        // Testing in XQuery searcher.
 
         GraphSearchTask graphSearchTaskMock = PowerMock
                 .createMockAndExpectNew(GraphSearchTask.class);
@@ -266,7 +266,7 @@ public class TestSearchManager {
             expect(matchResultRecorderMock.getResults())
                     .andReturn(matchResults);
 
-            // Testing in hierarchy fetcher. 
+            // Testing in hierarchy fetcher.
 
             FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                     .createMockAndExpectNew(FetchHierarchyTask.class);
@@ -303,7 +303,7 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method in the case when DBConnectionException 
+     * Test the search() method in the case when DBConnectionException
      * is thrown during the searching.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
@@ -338,7 +338,7 @@ public class TestSearchManager {
         // Testing in attribute searcher.
         mockStatic(DBConnectorFactory.class);
 
-        // DBConnectionException is thrown. 
+        // DBConnectionException is thrown.
         expect(DBConnectorFactory.getSyncConnection(false)).andThrow(
                 new DBConnectionException("testing"));
 
@@ -358,7 +358,7 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method in the case when DBExecutionException 
+     * Test the search() method in the case when DBExecutionException
      * is thrown during the searching.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
@@ -436,7 +436,7 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method in the case when there is no attribute 
+     * Test the search() method in the case when there is no attribute
      * search criteria.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
@@ -468,7 +468,7 @@ public class TestSearchManager {
 
         mockStatic(DBConnectorFactory.class);
 
-        //Testing in XQuery searcher. 
+        //Testing in XQuery searcher.
         DBConnection dbConnectionXQueryMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -545,7 +545,7 @@ public class TestSearchManager {
             expect(matchResultRecorderMock.getResults())
                     .andReturn(matchResults);
 
-            // Testing in hierarchy fetcher. 
+            // Testing in hierarchy fetcher.
 
             FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                     .createMockAndExpectNew(FetchHierarchyTask.class);
@@ -607,7 +607,7 @@ public class TestSearchManager {
             expect(matchResultRecorderMock.getResults())
                     .andReturn(matchResults);
 
-            // Testing in hierarchy fetcher. 
+            // Testing in hierarchy fetcher.
 
             FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                     .createMockAndExpectNew(FetchHierarchyTask.class);
@@ -631,7 +631,7 @@ public class TestSearchManager {
 
         dbConnectionXQueryMock.closeConnection();
 
-        // Start testing. 
+        // Start testing.
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
@@ -675,7 +675,7 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // Testing in attribute searcher. 
+        // Testing in attribute searcher.
         DBConnection dbConnectionAttributeMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -699,7 +699,7 @@ public class TestSearchManager {
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
-        // No result returned. 
+        // No result returned.
         expect(
                 dbConnectionAttributeMock
                         .executeAttributeSearchTask(attributeSearchTaskMock))
@@ -707,9 +707,9 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // In command searcher, no match is called. 
+        // In command searcher, no match is called.
 
-        // Start the testing. 
+        // Start the testing.
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
@@ -723,8 +723,8 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method in the case when no model name criteria is 
-     * specified. 
+     * Test the search() method in the case when no model name criteria is
+     * specified.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -795,10 +795,10 @@ public class TestSearchManager {
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
 
-        // Testing in name searcher. 
-        // Do nothing. 
+        // Testing in name searcher.
+        // Do nothing.
 
-        // Testing in XQuery searcher. 
+        // Testing in XQuery searcher.
 
         GraphSearchTask graphSearchTaskMock = PowerMock
                 .createMockAndExpectNew(GraphSearchTask.class);
@@ -865,7 +865,7 @@ public class TestSearchManager {
             expect(matchResultRecorderMock.getResults())
                     .andReturn(matchResults);
 
-            // Testing in hierarchy fetcher. 
+            // Testing in hierarchy fetcher.
 
             FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                     .createMockAndExpectNew(FetchHierarchyTask.class);
@@ -902,10 +902,10 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method in the case there is no result found in 
-     * the model name searcher. 
+     * Test the search() method in the case there is no result found in
+     * the model name searcher.
      *
-     * @exception Exception Thrown by PowerMock if error occurs during the 
+     * @exception Exception Thrown by PowerMock if error occurs during the
      *  execution of test cases.
      */
     @Test
@@ -972,7 +972,7 @@ public class TestSearchManager {
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
 
-        // Testing in name searcher. 
+        // Testing in name searcher.
         ModelNameSearchTask modelNameSearchTaskMock = PowerMock
                 .createMockAndExpectNew(ModelNameSearchTask.class,
                         searchCriteria.getModelName());
@@ -986,7 +986,7 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // Testing in hierarchy fetcher, found no match returned. 
+        // Testing in hierarchy fetcher, found no match returned.
 
         // Start testing.
         PowerMock.replayAll();
@@ -1023,7 +1023,7 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // Testing in attribute searcher. 
+        // Testing in attribute searcher.
         DBConnection dbConnectionAttributeMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -1077,7 +1077,7 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // Start testing. 
+        // Start testing.
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
@@ -1089,10 +1089,10 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method in the case there is no result found in 
+     * Test the search() method in the case there is no result found in
      * the XQuery graph searcher.
      *
-     * @exception Exception Thrown by PowerMock if error occurs during the 
+     * @exception Exception Thrown by PowerMock if error occurs during the
      *  execution of test cases.
      */
     @Test
@@ -1175,7 +1175,7 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // Testing in hierarchy fetcher, found no match returned. 
+        // Testing in hierarchy fetcher, found no match returned.
 
         // Start testing.
         PowerMock.replayAll();

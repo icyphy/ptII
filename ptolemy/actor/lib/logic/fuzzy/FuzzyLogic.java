@@ -54,28 +54,28 @@ import fuzzy.FuzzyEngine;
 import fuzzy.LinguisticVariable;
 
 /**
-An actor that implements a fuzzy logic operation. 
+An actor that implements a fuzzy logic operation.
 <p>
 Fuzzy Logic is multi-valued logic derived from Fuzzy Set Theory by
 Lotfi Zadeh. In fuzzy logic, reasoning is approximate instead of
 precise and takes on values between 0 and 1.
 </p>
 <p>
-This actor has three inputs and three outputs. The cost input and 
+This actor has three inputs and three outputs. The cost input and
 output are of type double. The remaining two inputs are of type
 string.  If no input token is available, the actor proceeds with
 its defuzzification and produces an output. Defuzzification is the
 evaluation of specification provided by the designer for a fuzzy logic
-based control system, such as "speed too fast," "speed too slow" and 
-"speed about right"  for a specific input and is used to determine 
+based control system, such as "speed too fast," "speed too slow" and
+"speed about right"  for a specific input and is used to determine
 a crisp output.A brief overview of fuzzy logic can be found at
 <a href="http://www.fuzzy-logic.com/#in_browser">http://www.fuzzy-logic.com/</a>.
 </p>
 
-<p>If there is input, the defuzzfied value is added or appended to the 
-input and produced as output. If there is no input, the defuzzified 
-value is produced as output. As a result, in a chain of FuzzyLogic 
-actors the inputs of the first actor need not be connected for the model 
+<p>If there is input, the defuzzfied value is added or appended to the
+input and produced as output. If there is no input, the defuzzified
+value is produced as output. As a result, in a chain of FuzzyLogic
+actors the inputs of the first actor need not be connected for the model
 to run under the {@link ptolemy.actor.Director}.
 </p>
 @author Shanna-Shaye Forbes
@@ -85,7 +85,7 @@ to run under the {@link ptolemy.actor.Director}.
 @Pt.AcceptedRating red (sssf)
  */
 
-public class FuzzyLogic extends TypedAtomicActor{ 
+public class FuzzyLogic extends TypedAtomicActor{
     /**
      *  Construct a fuzzy logic actor and set a default rule file name
      *  and a default component type.
@@ -122,7 +122,7 @@ public class FuzzyLogic extends TypedAtomicActor{
 
         tempOutputPort = new TypedIOPort(this,"output",false,true);
         tempOutputPort.setTypeEquals(BaseType.DOUBLE);
-        outputPorts.addElement(tempOutputPort);      
+        outputPorts.addElement(tempOutputPort);
         _numOutputs = 1;
         _numInputs = 1;
 
@@ -134,62 +134,62 @@ public class FuzzyLogic extends TypedAtomicActor{
     /** An input port that contains the level of risk associated
      * with upstream components.
      * In this context, risk is the risk that a failure will
-     * occur. The default type of this port is String. The only 
-     * meaningful values are "high", "medium" and "low". 
-     */ 
+     * occur. The default type of this port is String. The only
+     * meaningful values are "high", "medium" and "low".
+     */
     //  public TypedIOPort riskInput;
 
     /** An input port that contains the cost associated
      * with upstream components.
-     * The default type of this port is Double. 
-     */ 
+     * The default type of this port is Double.
+     */
     // public TypedIOPort costInput;
     public Vector<TypedIOPort> inputPorts;
 
     /** An input port that contains the mass associated
      * with upstream components.
-     * The default type of this port is String. Currently the only 
+     * The default type of this port is String. Currently the only
      * meaningful values are "high", "medium" and "low".
-     */ 
+     */
     //  public TypedIOPort massInput;
 
     /** An output port that specifies the level of risk associated
      * with using a component or combination of components.
      * In this context, risk is the risk that a failure will
-     * occur. The default type of this port is String. The only 
-     * meaningful values are "high", "medium" and "low". 
+     * occur. The default type of this port is String. The only
+     * meaningful values are "high", "medium" and "low".
      */
     //  public TypedIOPort risk;
 
     /** An output port that specifies the mass associated
      * with using a component or combination of components.
-     * The default type of this port is String. Currently the only 
+     * The default type of this port is String. Currently the only
      * meaningful values are "high", "medium" and "low", however they
-     * could be changed to doubles in the future. 
-     */ 
+     * could be changed to doubles in the future.
+     */
     //  public TypedIOPort mass;
 
     /** An output port that specifies the cost associated
      * with using a component or combination of components.
-     * The default type of this port is Double. 
+     * The default type of this port is Double.
      */
     //public TypedIOPort cost;
     public Vector<TypedIOPort> outputPorts;
 
     /**
      * The name of the file containing the xml specification for the component.
-     * The default value is a file name <code>rules.xml</code>. 
-     * The file is expected to be specified in XML/FCL Fuzzy Control Language XML. 
-     * Details on this schema can be found at 
+     * The default value is a file name <code>rules.xml</code>.
+     * The file is expected to be specified in XML/FCL Fuzzy Control Language XML.
+     * Details on this schema can be found at
      * <a href="http://www.havana7.com/dotfuzzy/format.aspx#in_browser">http://www.havana7.com/dotfuzzy/format.aspx</a>.
      * <p>
-     * The file named by this parameter should have a fuzzify xml element with the same name as 
+     * The file named by this parameter should have a fuzzify xml element with the same name as
      * the base name of the xml file. For example: The file <code>rules.xml</code> should contain
      *  <pre>
      *  <FUZZIFY NAME="rules">
-     *   ... 
+     *   ...
      *  </FUZZIFY>
-     *  </pre> 
+     *  </pre>
      *  </p>
      */
     public FileParameter rulesFileName;
@@ -206,7 +206,7 @@ public class FuzzyLogic extends TypedAtomicActor{
      *    &lt;TERM NAME="Wind" POINTS="0 0 0 1" /&gt;
      *    &lt;TERM NAME="Default" POINTS="2 0 0 3" /&gt;
      *  </FUZZIFY>
-     *  </pre> 
+     *  </pre>
      *  For details about the xml specification see {@link #rulesFileName}.
      */
     public Parameter componentType;
@@ -234,50 +234,50 @@ public class FuzzyLogic extends TypedAtomicActor{
     throws IllegalActionException {
         if (attribute == numOutputs) {
             int tempCount = 0;
-            if(_debugging){
+            if (_debugging) {
                 _debug("the number of outputs has been changed.");
             }
             tempCount = Integer.parseInt(numOutputs.getExpression().trim());
-            if(_debugging){
+            if (_debugging) {
                 _debug("Number of Outputs specified: "+tempCount);
             }
-            if(tempCount>_numOutputs)
+            if (tempCount>_numOutputs)
             {
-                if(_debugging){
+                if (_debugging) {
                     _debug(" need to create more output ports");
                     _debug("tempCount is "+tempCount+" number of Outputs is "+_numOutputs);
                 }
-                for(int i =  _numOutputs; i < tempCount; i++){
-                    try{
+                for (int i =  _numOutputs; i < tempCount; i++) {
+                    try {
                         tempOutputPort = new TypedIOPort(this,"output"+i,false,true);
                         tempOutputPort.setTypeEquals(BaseType.DOUBLE);
                         outputPorts.addElement(tempOutputPort);
-                    }catch(NameDuplicationException e){
+                    } catch (NameDuplicationException e) {
                     }
                 }
                 _numOutputs = tempCount;
 
             }
-        }else if(attribute == numInputs){
+        }else if (attribute == numInputs) {
             int tempCount = 0;
-            if(_debugging){
+            if (_debugging) {
                 _debug("the number of inputs has been changed.");
             }
             tempCount = Integer.parseInt(numInputs.getExpression().trim());
-            if(_debugging){
+            if (_debugging) {
                 _debug("Number of Inputs specified: "+tempCount);
             }
-            if(tempCount>_numInputs)
+            if (tempCount>_numInputs)
             {
-                if(_debugging){
+                if (_debugging) {
                     _debug(" need to create more input ports");
                 }
-                for(int i =  _numInputs; i < tempCount; i++){
-                    try{
+                for (int i =  _numInputs; i < tempCount; i++) {
+                    try {
                         tempInputPort = new TypedIOPort(this,"input"+i,true,false);
                         tempInputPort.setTypeEquals(BaseType.DOUBLE);
                         inputPorts.addElement(tempInputPort);
-                    }catch(NameDuplicationException e){
+                    } catch (NameDuplicationException e) {
                     }
                 }
                 _numInputs = tempCount;
@@ -347,7 +347,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         }
 
         double [] myOutputs = new double [_numOutputs];
-        if(_debugging){
+        if (_debugging) {
             _debug("number of outputs is : "+_numOutputs );
         }
         Token token = null;
@@ -357,18 +357,18 @@ public class FuzzyLogic extends TypedAtomicActor{
             // read the values from the input ports
             // set the input values here
 
-            for(int i = 0; i< _numInputs; i++){
+            for (int i = 0; i< _numInputs; i++) {
                 if (inputPorts.get(i).isOutsideConnected()) {
                     if (inputPorts.get(i).hasToken(0)) {
-                        if(_debugging){
+                        if (_debugging) {
                             _debug("i is "+i);
                         }
                         token = inputPorts.get(i).get(0);
                         //FIXME:  find the right location in the linguistic variable array and set the value
-                        _linguisticVariableArray.get(i).setInputValue(Double.parseDouble(token.toString())); 
+                        _linguisticVariableArray.get(i).setInputValue(Double.parseDouble(token.toString()));
 
                     }
-                }                         
+                }
             }
 
             for (int i = 0; i < _rules.size(); i++) {
@@ -377,25 +377,25 @@ public class FuzzyLogic extends TypedAtomicActor{
 
             ArrayList<Integer> indicesToDefuzzify = _fuzzyParser.getIndicesToDefuzzify();
 
-            for(int i = 0; i< indicesToDefuzzify.size(); i++){
+            for (int i = 0; i< indicesToDefuzzify.size(); i++) {
                 myOutputs[i] = _linguisticVariableArray.get(indicesToDefuzzify.get(i))
                 .defuzzify();
             }
 
 
             if (_debugging) {
-                for(int i = 0; i< _numOutputs; i++)
+                for (int i = 0; i< _numOutputs; i++)
                     _debug("result "+i+ " is: " +myOutputs[i]);
             }
 
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "A problem " 
-                    + "occurred when attempting to evaluate the " 
-                    + "rules or to get the linguistic variable " 
+            throw new IllegalActionException(this, ex, "A problem "
+                    + "occurred when attempting to evaluate the "
+                    + "rules or to get the linguistic variable "
                     + "for defuzzification.");
         }
 
-        for(int i = 0; i< _numOutputs; i++){
+        for (int i = 0; i< _numOutputs; i++) {
             outputPorts.get(i).send(0, new DoubleToken(myOutputs[i]));
         }
 
@@ -426,7 +426,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         /**The name of the fuzzy logic variable */
         String name;
         /*An array of term names. Each string in the termNames array
-         * is in the format name,initialvalue  specifying a single 
+         * is in the format name,initialvalue  specifying a single
          * string with two values a  name and an initial value for
          * the name*/
         ArrayList<String> termNames;
@@ -457,7 +457,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                 xr.parse(new InputSource(r));
 
             } catch (Exception ex) {
-                throw new IllegalActionException(null, ex, "Failed to parse " 
+                throw new IllegalActionException(null, ex, "Failed to parse "
                         + filename + ".");
             } finally{
                 if (r!=null) {
@@ -465,7 +465,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                         r.close();
                     } catch (IOException ex) {
                         //FIXME change null to super.this but something that actually works
-                        throw new IllegalActionException(null, ex, 
+                        throw new IllegalActionException(null, ex,
                                 "Failed to close " + filename + ".");
                     }
                 }
@@ -477,7 +477,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         /** Called by the SAX parser to report regular characters.
          * @param ch The array containing characters
          * @param start Is the starting point in the character array
-         * @param length Is length of the character array 
+         * @param length Is length of the character array
          * */
         public void characters(char ch[], int start, int length) {
 
@@ -487,7 +487,7 @@ public class FuzzyLogic extends TypedAtomicActor{
          * Called once when the SAX driver sees the end of a document, even if errors occurred.
          * */
         public void endDocument() {
-            if(_debugging){
+            if (_debugging) {
                 _debug("saw the end of the document");
             }
         }
@@ -495,12 +495,12 @@ public class FuzzyLogic extends TypedAtomicActor{
         /** Called each time the SAX parser sees the end of an element.
          * @param uri The Namespace Uniform Resource Identifier(URI)
          * @param name Is the elements local name
-         * @param qName Is the XML 1.0 name 
+         * @param qName Is the XML 1.0 name
          * */
         public void endElement(String uri, String name, String qName) {
             if ("".equals(uri)) {
                 if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("saw end of fuzzify or defuzzify");
                     }
                     _startVar = false;
@@ -511,7 +511,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                     }
                 }
                 if ("RULEBLOCK".equals(qName)) {
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("saw end of ruleblock");
                     }
                 }
@@ -522,19 +522,19 @@ public class FuzzyLogic extends TypedAtomicActor{
             }
         }
 
-        /** Return an array of fuzzy logic variables read from the xml file. 
+        /** Return an array of fuzzy logic variables read from the xml file.
          * @return Return an array of fuzzy logic variables read from the xml file.*/
         public ArrayList<FuzzyLogicVar> getFuzzyLogicVariableArray() {
             return _fuzzyLogicVariableArray;
         }
 
-        /** Return the array list index of the variable to be defuzzified. 
+        /** Return the array list index of the variable to be defuzzified.
          * @return Return the array list index of the variable to be defuzzified.*/
         public ArrayList<Integer> getIndicesToDefuzzify() {
             return _toDefuzzyify;
         }
 
-        /** Return an array of linguistic variables read from the xml file. 
+        /** Return an array of linguistic variables read from the xml file.
          * @return Return an array of linguistic variables read from the xml file.*/
         public ArrayList<LinguisticVariable> getLinguisticVariableArray() {
             return _linguisticVarArray;
@@ -558,7 +558,7 @@ public class FuzzyLogic extends TypedAtomicActor{
          * Called once when the SAX driver sees the beginning of a document.
          * */
         public void startDocument() {
-            if(_debugging){
+            if (_debugging) {
                 _debug("saw the start of the document");
             }
         }
@@ -568,36 +568,36 @@ public class FuzzyLogic extends TypedAtomicActor{
         /** Called each time the SAX parser sees the beginning of an element.
          * @param uri The Namespace Uniform Resource Identifier(URI)
          * @param name Is the elements local name
-         * @param qName Is the XML 1.0 name 
+         * @param qName Is the XML 1.0 name
          * @param atts An Attributes object
          * */
         public void startElement(String uri, String name, String qName,
                 Attributes atts) {
-            // Note: The method names and the parameters match those in the 
-            // DefaultHandler class 
+            // Note: The method names and the parameters match those in the
+            // DefaultHandler class
             String tempString;
             if ("".equals(uri)) {
 
-                if("VAR_INPUT".equals(qName)){
+                if ("VAR_INPUT".equals(qName)) {
 
                     int index = atts.getIndex("NAME");
-                    if(_debugging){
+                    if (_debugging) {
                         _debug(" found an input variable");
                         _debug(atts.getValue(index));
                     }
 
                 }
-                if("VAR_OUTPUT".equals(qName)){
+                if ("VAR_OUTPUT".equals(qName)) {
 
                     int index = atts.getIndex("NAME");
-                    if(_debugging){
+                    if (_debugging) {
                         _debug(" found an output variable with name ");
                         _debug(atts.getValue(index));
                     }
                 }
 
                 if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("saw start of defuzzyfy or fuzzify");
                     }
                     _startVar = true;
@@ -606,8 +606,8 @@ public class FuzzyLogic extends TypedAtomicActor{
                     }
                     int index = atts.getIndex("NAME");
                     if ("FUZZIFY".equals(qName)) {
-                        _fuzzyVar.name = atts.getValue(index); 
-                    } 
+                        _fuzzyVar.name = atts.getValue(index);
+                    }
                     _linguisticVarArray.add(new LinguisticVariable(atts
                             .getValue(index)));
 
@@ -650,7 +650,7 @@ public class FuzzyLogic extends TypedAtomicActor{
 
 
         ////////////////////////////////////////////////////////////////////
-        ///                         private methods                     ////   
+        ///                         private methods                     ////
         private void initialize() {
             _startVar = false;
             _toDefuzzyify = new ArrayList<Integer>();

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ExpressionConceptFunctionDefinitionAttribute
 
 /** Attribute that defines a concept function with a boolean expression.
- *  
+ *
  *  @see ExpressionConceptFunction
  *  @author Charles Shelton
  *  @version $Id$
@@ -83,10 +83,10 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
 
         outputRangeOntologyName = new StringParameter(this,
                 "outputRangeOntologyName");
-        
+
         argumentNames = new Parameter(this, "argumentNames");
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING));
-        
+
         argumentDomainOntologies = new Parameter(this, "argumentDomainOntologies");
         argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING));
 
@@ -104,12 +104,12 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
      *  the domain ontologies for the arguments for the concept function.
      */
     public Parameter argumentDomainOntologies;
-    
+
     /** The parameter that holds the array of strings that name
      *  the arguments for the concept function.
      */
     public Parameter argumentNames;
-    
+
     /** The string that represents the boolean expression of the concept function. */
     public StringParameter conceptFunctionExpression;
 
@@ -175,7 +175,7 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
                                 + " could not be found in the model.");
             } else {
                 argDomainOntologies.add(ontology);
-            }            
+            }
         }
 
         List<String> argNameList = new LinkedList<String>();

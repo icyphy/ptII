@@ -273,8 +273,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
-     *  
-     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is
      *  created in a separate Workspace and this method is not called, instead
      *  call {@link #addMoMLFilter(MoMLFilter, Workspace)}:</p>
      *  <pre>
@@ -305,7 +305,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
      *
-     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is
      *  created in a separate Workspace:</p>
      *  <pre>
      *  Workspace workspace = new Workspace("MyWorkspace");
@@ -317,7 +317,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
      *  @param workspace MoMLFilters are passed a MoMLParser that is optionally
      *  used by a filter.  This parameter determines the Workspace in which
-     *  that MoMLFilter is created.  To avoid memory leaks, typically the 
+     *  that MoMLFilter is created.  To avoid memory leaks, typically the
      *  MoMLFilter that is used to parse a model is created in a new workspace.
      *  The MoMLFilters are static, so we need to pass in the Workspace from
      *  the top level MoMLFilter.
@@ -350,7 +350,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
      *
-     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is
      *  created in a separate Workspace and this method is not called, instead
      *  call {@link #addMoMLFilters(List, Workspace)}:</p>
      *  <pre>
@@ -383,7 +383,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
      *
-     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is
      *  created in a separate Workspace:</p>
      *  <pre>
      *  Workspace workspace = new Workspace("MyWorkspace");
@@ -2003,7 +2003,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
      *
-     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is
      *  created in a separate Workspace and this method is not called, instead
      *  call {@link #setMoMLFilters(List, Workspace)}:</p>
      *  <pre>
@@ -2030,7 +2030,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  <p>To avoid leaking memory, if addMoMLFilter(), addMoMLFilters()
      *  or setMoMLFilters()  is called, then call setMoMLFilters(null).</p>
      *
-     *  <p>To avoid leaking memory, it is best if the MoMLParser is 
+     *  <p>To avoid leaking memory, it is best if the MoMLParser is
      *  created in a separate Workspace:</p>
      *  <pre>
      *  Workspace workspace = new Workspace("MyWorkspace");
@@ -4207,7 +4207,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     //                                     container,
                     //                                     "Cannot create entity named \"" + entityName
                     //                                             + "\" because a subclass or instance in \""
-                    //                                             + container.getFullName() 
+                    //                                             + container.getFullName()
                     //                                             + "\" contains an entity with the same name \""
                     //                                             + derived.getEntity(entityName).getFullName() + "\".");
                     //                         }
@@ -4314,7 +4314,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     //                                     container,
                     //                                     "Cannot create entity named \"" + entityName
                     //                                             + "\" because a subclass or instance in \""
-                    //                                             + container.getFullName() 
+                    //                                             + container.getFullName()
                     //                                             + "\" contains an entity with the same name \""
                     //                                             + derived.getEntity(entityName).getFullName() + "\".");
                     //                         }

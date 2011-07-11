@@ -54,15 +54,15 @@ public class ParseTreeConstraintAnnotationEvaluator extends
     /**
      *  visitLeafNode method is called when parsing an Annotation for a manual constraint.
      *  12/16/09 Charles Shelton
-     *  
+     *
      *  This visitLeafNode method assumes the node will refer to either a component
      *  in the model or a Concept in the ontology.  The _evaluatedObject will then be set to
      *  that component or Concept.
      *  If it is not, then an exception is thrown.
-     *  
+     *
      *  This method calls the superclass method for model Components, and then
      *  catches the superclass' exception to check for a Concept.
-     *  
+     *
      *  @param node The leaf node to be visited
      *  @exception IllegalActionException If the node label cannot be resolved to a
      *  component in the model
@@ -91,7 +91,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
      * Visit the relational node when parsing a user-defined manual constraint
      * doe the LatticeOntologySolver.  It should be an operator that is either
      * '==', '>=', or '<='.
-     * 
+     *
      * @param node The relational node to be visited
      * @exception IllegalActionException If the operator is not supported (should be
      * one of '==', '>=', or '<=')

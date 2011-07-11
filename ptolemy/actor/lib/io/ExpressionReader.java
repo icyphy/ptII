@@ -114,7 +114,7 @@ public class ExpressionReader extends LineReader {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         // Read the first two lines so that we can use the first
         // line to set the type of the output. The file will be
         // closed and re-opened in initialize().

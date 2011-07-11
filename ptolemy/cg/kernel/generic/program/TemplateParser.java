@@ -113,7 +113,7 @@ public class TemplateParser {
 
     /** Escape a port or actor name for use in the macro language.
      *  The issue is that port or actor names can have certain
-     *  characters in them that cause problems with 
+     *  characters in them that cause problems with
      *  macro expansion.  Removing these characters is
      *  not sufficient as the code generator sometimes
      *  needs to refer to the corresponding port or actor.  The
@@ -152,7 +152,7 @@ public class TemplateParser {
 
     /** Escape a port name for use in the macro language.
      *  The issue is that port names can have certain
-     *  characters in them that cause problems with 
+     *  characters in them that cause problems with
      *  macro expansion.  Removing these characters is
      *  not sufficient as the code generator sometimes
      *  needs to refer to the corresponding port.  The
@@ -501,7 +501,7 @@ public class TemplateParser {
                         .generateFireCode());
 
                 // Uncomment the next lines for debugging of parse trees.
-                //System.out.println(parseTreeCodeGenerator.traceParseTreeEvaluation(parseTree, 
+                //System.out.println(parseTreeCodeGenerator.traceParseTreeEvaluation(parseTree,
                 //                new VariableScope(variable)));
 
                 //if (castType == null && codeGenType(variable.getType()).equals("Array")) {
@@ -605,7 +605,7 @@ public class TemplateParser {
     }
 
     /** Parse the list of comma separted parameters.
-     *  @param parameters A comma separate list of parameters.   
+     *  @param parameters A comma separate list of parameters.
      *  @return A list of parameters.
      */
     public static List<String> parseList(String parameters) {
@@ -722,7 +722,7 @@ public class TemplateParser {
         int nextPos = -1;
         // Loop through, looking for (
         while (currentPos < code.length()) {
-            while (currentPos > 0 
+            while (currentPos > 0
                     && code.substring(currentPos - 1).startsWith("\"$nation")) {
                 // Skip "$nation
                 result.append(code.substring(currentPos, currentPos + 7));
@@ -744,7 +744,7 @@ public class TemplateParser {
             if (code.charAt(currentPos) == '$'
                     && currentPos < code.length() - 1 && code.charAt(currentPos + 1) == '$') {
                 // Skip $$, which appears in ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
-                nextPos = _getMacroStartIndex(code, currentPos + 2);                
+                nextPos = _getMacroStartIndex(code, currentPos + 2);
                 if (nextPos < 0) {
                     nextPos = code.length();
                 }
@@ -779,7 +779,7 @@ public class TemplateParser {
                     }
                 }
             }
-            if (openCurlyBracketIndex != -1 
+            if (openCurlyBracketIndex != -1
                     && ((openParenIndex != -1 && openCurlyBracketIndex < openParenIndex)
                             || (openParenIndex == -1))) {
                 // Houston, we might have ${foo}
@@ -801,7 +801,7 @@ public class TemplateParser {
                     // Handle things like ${TMPDIR}
                     constant = Constants.get(attributeName);
                     if (constant != null) {
-                        if (constant instanceof StringToken) { 
+                        if (constant instanceof StringToken) {
                             // Get rid or leading and trailing double quotes.
                             result.append(((StringToken)constant).stringValue());
                         } else {
@@ -812,7 +812,7 @@ public class TemplateParser {
                                 "Failed to find '" + attributeName + "' variable in scope, "
                                 + "code was \"" + code + "\".");
                     }
-                } 
+                }
 
                 //previousPos = currentPos;
                 //currentPos = closeCurlyBracketIndex;
@@ -826,7 +826,7 @@ public class TemplateParser {
                 currentPos = nextPos;
                 result.append(code.substring(closeCurlyBracketIndex + 1, nextPos));
             }
-            if (openParenIndex != -1 
+            if (openParenIndex != -1
                     && ((openCurlyBracketIndex != -1 && openParenIndex < openCurlyBracketIndex)
                             || (openCurlyBracketIndex == -1))) {
                 closeParenIndex = _findClosedParen(code, openParenIndex);
@@ -907,7 +907,7 @@ public class TemplateParser {
 //             StackTraceElement [] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
 //             for (int i = 0; i < stackTrace.length; i++) {
 //                 if (!stackTrace[i].getMethodName().equals("processCode")) {
-//                     result.append("/* TemplateParser: " 
+//                     result.append("/* TemplateParser: "
 //                             + stackTrace[i].getClassName()
 //                             + "."
 //                             + stackTrace[i].getMethodName()
@@ -1171,7 +1171,7 @@ public class TemplateParser {
     }
 
     /** Unescape a port or actor name so that the return value
-     *  may be used to find the port in the model.   
+     *  may be used to find the port in the model.
      *  @param name The port or actor name, which may contain "$",
      *  "-" and/or "*".
      *  @return A sanitized string suitable for use with
@@ -1190,7 +1190,7 @@ public class TemplateParser {
     }
 
     /** Unescape a port name so that the return value
-     *  may be used to find the port in the model.   
+     *  may be used to find the port in the model.
      *  @param name The port name, which may contain "$",
      *  "-" and/or "*".
      *  @return A sanitized string suitable for use with
@@ -1591,7 +1591,7 @@ public class TemplateParser {
         return processCode(portAdapter.generateGetCode(channel, offset));
     }
 
-    /** replace the $hasToken() with the corresponding parameter 
+    /** replace the $hasToken() with the corresponding parameter
      *  @param parameter The name and offset of the parameter
      *  @return the hasToken parameter is returned
      *  @exception IllegalActionException
@@ -1669,7 +1669,7 @@ public class TemplateParser {
 
     private String _replacePutMacro(String parameter)
             throws IllegalActionException {
-        // e.g. $put(input#channel, token); or 
+        // e.g. $put(input#channel, token); or
         // $put(input, token); or
         // $put(input#channel, offset, token)
         // $put(input, offset, token)

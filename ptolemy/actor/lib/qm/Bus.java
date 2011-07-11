@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
  *  This is similar to the {@link Server} actor.
  *  Tokens are processed in FIFO order.
  *  <p>
- *  This quantity manager will be used on any connection between actors 
+ *  This quantity manager will be used on any connection between actors
  *  where the receiving
  *  port has a parameter with an ObjectToken that refers
  *  to this Bus. Note that the name of this parameter is irrelevant.
@@ -152,12 +152,12 @@ public class Bus extends MonitoredQuantityManager {
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
         newObject._serviceTimeValue = 0.1;
-        newObject._tokens = new FIFOQueue(); 
+        newObject._tokens = new FIFOQueue();
         return newObject;
     }
 
     /** Initialize the actor.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -178,7 +178,7 @@ public class Bus extends MonitoredQuantityManager {
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
             //receiver.put(token);
-            
+
             // FIXME: See the FIXME's below. The commented
             // out code below is an attempt to address it, but a
             // questionable one.
@@ -218,7 +218,7 @@ public class Bus extends MonitoredQuantityManager {
                                 currentTime);
                     }
                 } else {
-                    // If the recipient is an input, then 
+                    // If the recipient is an input, then
                     if (receiver.getContainer().isInput()) {
                         // the container must have the correct model time before putting the token
                         ((Actor) container.getContainer()).getDirector()
@@ -240,12 +240,12 @@ public class Bus extends MonitoredQuantityManager {
         }
     }
 
-    /** If there are still tokens in the queue and a token has been produced in the fire, 
+    /** If there are still tokens in the queue and a token has been produced in the fire,
      *  schedule a refiring.
      */
     public boolean postfire() throws IllegalActionException {
         // This method contains two places where refirings can be
-        // scheduled. We only want to schedule a refiring once. 
+        // scheduled. We only want to schedule a refiring once.
         Time currentTime = getDirector().getModelTime();
 
         // If a token was actually sent to a delegated receiver
@@ -257,8 +257,8 @@ public class Bus extends MonitoredQuantityManager {
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
-            
-            //            if (_tokens.size() > 0) { 
+
+            //            if (_tokens.size() > 0) {
             //                _scheduleRefire();
             //                refiringScheduled = true;
             //                // FIXME:
@@ -292,7 +292,7 @@ public class Bus extends MonitoredQuantityManager {
             _receiversAndTokensToSendTo.clear();
         }
         // if there was no token in the queue, schedule a refiring.
-        // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) { 
+        // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) {
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
                         .compareTo(_nextTimeFree) >= 0)) {
@@ -315,11 +315,11 @@ public class Bus extends MonitoredQuantityManager {
 
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
-     *  if there is not one already scheduled. 
+     *  if there is not one already scheduled.
      *  @param source Sender of the token.
      *  @param receiver The receiver to send to.
      *  @param token The token to send.
-     *  @throws IllegalActionException If the refiring request fails.
+     *  @exception IllegalActionException If the refiring request fails.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
@@ -355,11 +355,11 @@ public class Bus extends MonitoredQuantityManager {
         } else {
 
             // In the Continuous domain, this actor gets fired if tokens are available
-            // or not. In the DE domain we need to schedule a refiring. 
+            // or not. In the DE domain we need to schedule a refiring.
             if (getDirector() instanceof FixedPointDirector) {
                 _receiversAndTokensToSendTo.put(receiver, token);
             } else {
-                _tokens.put(new Object[] { receiver, token }); 
+                _tokens.put(new Object[] { receiver, token });
                 _tokenCount++;
                 sendQMTokenEvent((Actor) source.getContainer()
                         .getContainer(), 0, _tokenCount, EventType.RECEIVED);
@@ -395,10 +395,10 @@ public class Bus extends MonitoredQuantityManager {
      *  It is required to be positive.
      */
     public Parameter serviceTime;
-    
+
     ///////////////////////////////////////////////////////////////////
     //                          protected methods                    //
-    
+
     /** Schedule a refiring of the actor.
      *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
      */

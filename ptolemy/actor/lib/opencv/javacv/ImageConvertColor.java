@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Color conversion
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -70,13 +70,13 @@ public class ImageConvertColor extends Transformer {
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output a frame.
-     *  @exception IllegalActionException If thrown while writing to the port.   
+     *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
 
@@ -89,19 +89,19 @@ public class ImageConvertColor extends Transformer {
                         + inputObject.getClass());
             }
             _srcFrame = (IplImage)inputObject;
-            
-            if(_dstFrame == null){
+
+            if (_dstFrame == null) {
                 _dstFrame = cvCreateImage(cvGetSize(_srcFrame), IPL_DEPTH_8U, 1);
                 _dstFrame.origin = _srcFrame.origin;
             }
             cvCvtColor (_srcFrame, _dstFrame, CV_BGR2GRAY);
-            
-//            // FIXME : In Windows, the result of image may be flip. 
-//            if(_dstFrame.origin == 0){
+
+//            // FIXME : In Windows, the result of image may be flip.
+//            if (_dstFrame.origin == 0) {
 //                cvFlip(_dstFrame, _dstFrame, 0);  // vertical
 //            }
-            
-    
+
+
             output.send(0, new ObjectToken(_dstFrame));
         }
     }
@@ -118,7 +118,7 @@ public class ImageConvertColor extends Transformer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_dstFrame != null){
+        if (_dstFrame != null) {
             _dstFrame.release();
         }
     }
@@ -126,5 +126,5 @@ public class ImageConvertColor extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _srcFrame;
-    private IplImage _dstFrame; 
+    private IplImage _dstFrame;
 }

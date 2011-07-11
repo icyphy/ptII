@@ -1,4 +1,4 @@
-/* A pane that displays and edits a sequential schedule. 
+/* A pane that displays and edits a sequential schedule.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -50,8 +50,8 @@ import ptolemy.actor.sched.Schedule;
 //// SequentialScheduleEditorPane
 
 /** A pane that displays and edits a sequential schedule.
- * Changes are not committed. Order is passed to the owning 
- * instance via getOrderedActors(). 
+ * Changes are not committed. Order is passed to the owning
+ * instance via getOrderedActors().
  *
  * @author Bastian Ristau
  * @version $Id$
@@ -63,7 +63,7 @@ public class SequentialScheduleEditorPane extends JPanel implements
         ListSelectionListener {
 
     /** Construct a SequentialScheduleEditorPane displaying the given actors
-     * in the order given by the vector containing the actors. 
+     * in the order given by the vector containing the actors.
      *
      * @param actors The actors to be displayed in the pane.
      */
@@ -77,8 +77,8 @@ public class SequentialScheduleEditorPane extends JPanel implements
         }
     }
 
-    /** Construct a SequentialScheduleEditorPane displaying the actors 
-     * contained in the given schedule and in the order given by the schedule. 
+    /** Construct a SequentialScheduleEditorPane displaying the actors
+     * contained in the given schedule and in the order given by the schedule.
      *
      * @param schedule The schedule for the actors to be displayed in the pane.
      */

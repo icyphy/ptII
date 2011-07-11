@@ -29,7 +29,7 @@ import ptolemy.util.MessageHandler;
  *  that Vergil shows an icon for the HelloWorld attribute.
  *  It specifies the location on the canvas where that icon
  *  should be placed.
- *  
+ *
  * @author Edward A. Lee
  * @version $Id$
  */
@@ -39,15 +39,15 @@ public class HelloWorld extends Attribute {
      *  the attribute in a model using MoML.
      *  @param container The containing model.
      *  @param name The name to give this attribute.
-     *  @throws IllegalActionException If the attribute cannot be contained by
+     *  @exception IllegalActionException If the attribute cannot be contained by
      *   the specified container.
-     *  @throws NameDuplicationException If the container already contains an
+     *  @exception NameDuplicationException If the container already contains an
      *   attribute with the proposed name.
      */
     public HelloWorld(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
- 
+
         // Create an EditorFactory to handle double clicks.
         new DoubleClickHandler(this, "Calculate");
     }
@@ -64,9 +64,9 @@ public class HelloWorld extends Attribute {
          *  the attribute in a model using MoML.
          *  @param container The containing model.
          *  @param name The name to give this attribute.
-         *  @throws IllegalActionException If the attribute cannot be contained by
+         *  @exception IllegalActionException If the attribute cannot be contained by
          *   the specified container.
-         *  @throws NameDuplicationException If the container already contains an
+         *  @exception NameDuplicationException If the container already contains an
          *   attribute with the proposed name.
          */
         public DoubleClickHandler(NamedObj container, String name)

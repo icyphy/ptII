@@ -103,7 +103,7 @@ public class AbsoluteDelay extends TimeDelay {
         _declareDelayDependency(outputTime, output, 0.0);
         _declareDelayDependency(input, output, 0.0);
     }
-    
+
     /** Update the delay parameter from the delay port and ensure the delay
      *  is not negative. Call the fire method of super class to consume
      *  inputs and generate outputs.

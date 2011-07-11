@@ -66,7 +66,7 @@ public class Material
 
 
   public boolean hasName(String nm)
-  {  return name.equals(nm);  } 
+  {  return name.equals(nm);  }
 
 
   // --------- set/get methods for colour info --------------

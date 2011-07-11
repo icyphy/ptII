@@ -137,7 +137,7 @@ public class SubscriptionAggregator extends Subscriber {
             }
         } else if (attribute == global) {
             boolean newValue = ((BooleanToken) global.getToken()).booleanValue();
-            if(newValue == false && _global == true) {
+            if (newValue == false && _global == true) {
                 NamedObj container = getContainer();
                 if (container instanceof CompositeActor
                         && !(_channel == null || _channel.trim().equals(""))) {
@@ -263,7 +263,7 @@ public class SubscriptionAggregator extends Subscriber {
                             publisher.attributeChanged(publisher.channel);
                         }
                     }
-                    
+
                     ((CompositeActor) container).linkToPublishedPort(
                             _channelPattern, input, _global);
                 }

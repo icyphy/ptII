@@ -17,7 +17,7 @@ static Token Complex_new() {
 #ifdef PTCG_TYPE_Complex
     result = Complex_new(0.0, 0.0);
 #endif
-    return result;	    
+    return result;
 }
 
 static Token Complex_new(double real) {
@@ -25,7 +25,7 @@ static Token Complex_new(double real) {
 #ifdef PTCG_TYPE_Complex
     result = Complex_new(real, 0.0);
 #endif
-    return result;	    
+    return result;
 }
 
 static Token Complex_new(Token thisToken) {
@@ -33,7 +33,7 @@ static Token Complex_new(Token thisToken) {
 #ifdef PTCG_TYPE_Complex
     case TYPE_Complex:
         return Complex_new(((ComplexCG)thisToken.payload).real,
-	        ((ComplexCG)thisToken.payload).imag);
+                ((ComplexCG)thisToken.payload).imag);
 #endif
 
 #ifdef PTCG_TYPE_Double
@@ -44,14 +44,14 @@ static Token Complex_new(Token thisToken) {
         // FIXME: not finished
     default:
         throw new RuntimeException("Complex_new(Token): Conversion from an unsupported type. ("
-		+ thisToken.type + ")");
+                + thisToken.type + ")");
     }
 }
 
 static Token Complex_new(double real, double imag) {
     Token result = null;
 #ifdef PTCG_TYPE_Complex
-    result = new Token();       
+    result = new Token();
     result.payload = new ComplexCG();
     result.type = TYPE_Complex;
     ((ComplexCG)result.payload).real = real;
@@ -85,10 +85,10 @@ static Token Complex_isCloseTo(Token thisToken, Token... tokens) {
 #ifdef PTCG_TYPE_Complex
     result = Boolean_new(
         Math.abs(((ComplexCG)thisToken.payload).real - ((ComplexCG)otherToken.payload).real) < (Double)tolerance.payload
-	&&
+        &&
         Math.abs(((ComplexCG)thisToken.payload).imag - ((ComplexCG)otherToken.payload).imag) < (Double)tolerance.payload);
 #endif
-    return result;  	
+    return result;
 }
 /**/
 
@@ -109,10 +109,10 @@ static String ComplextoString(Token thisToken) {
 #ifdef PTCG_TYPE_Complex
     if (((ComplexCG)thisToken.payload).imag >= 0) {
         result = Double.toString(((ComplexCG)thisToken.payload).real)
-	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i";
+               + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i";
     } else {
         result = Double.toString(((ComplexCG)thisToken.payload).real)
-	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i";
+               + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i";
     }
 #endif
     return result;
@@ -125,10 +125,10 @@ static Token Complex_toString(Token thisToken, Token... tokens) {
 #ifdef PTCG_TYPE_Complex
     if (((ComplexCG)thisToken.payload).imag >= 0) {
         result = String_new(Double.toString(((ComplexCG)thisToken.payload).real)
-	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i");
+               + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i");
     } else {
         result = String_new(Double.toString(((ComplexCG)thisToken.payload).real)
-	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i");
+               + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i");
 
     }
 #endif
@@ -169,17 +169,17 @@ static Token Complex_multiply(Token thisToken, Token... tokens) {
 #ifdef PTCG_TYPE_Complex
     case TYPE_Complex:
         result =  Complex_new(
-	       (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).real)
-	        - (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).real),
-	       (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).imag)
-	        + (((ComplexCG)otherToken.payload).imag * ((ComplexCG)thisToken.payload).real));
+               (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).real)
+                - (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).real),
+               (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).imag)
+                + (((ComplexCG)otherToken.payload).imag * ((ComplexCG)thisToken.payload).real));
         break;
         // FIXME: not finished
 #endif
     default:
         System.err.println("Complex_multiply(): Multiply with an unsupported type. ("
-	  + otherToken.type + ")");
-	System.exit(1);
+          + otherToken.type + ")");
+        System.exit(1);
     }
 
     return result;
@@ -201,7 +201,7 @@ static Token Complex_divide(Token thisToken, Token... tokens) {
             ((thisTokenImag * divisorReal) - (thisTokenReal * divisorImag))
             / denominator);
 #endif
-    return result;  
+    return result;
 }
 
 /**/
@@ -220,7 +220,7 @@ static Token Complex_negate(Token thisToken, Token... tokens) {
     }
     result = Complex_new(r, i);
 #endif
-    return result;    
+    return result;
 }
 /**/
 
@@ -264,7 +264,7 @@ static Token Complex_convert(Token token, Token... tokens) {
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
         if (token.payload != null) {
-	    ((ComplexCG)result.payload).real = ((Double)token.payload).doubleValue();
+            ((ComplexCG)result.payload).real = ((Double)token.payload).doubleValue();
         }
         break;
 #endif
@@ -272,7 +272,7 @@ static Token Complex_convert(Token token, Token... tokens) {
         // FIXME: not finished
     default:
         System.err.println("Complex_convert(): Conversion from an unsupported type. ("
-		+ token.type + ")");
+                + token.type + ")");
         System.exit(1);
         break;
     }

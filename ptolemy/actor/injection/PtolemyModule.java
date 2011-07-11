@@ -38,12 +38,12 @@ import com.google.inject.AbstractModule;
 /**
  * PtolemyModule loads interface to implementation mappings from the provided
  * ResourceBundle and configures Guice AbstractModule to use those mappings.
- * 
- * The Guice Module is used for creating a Guice Injector that is responsible for 
+ *
+ * The Guice Module is used for creating a Guice Injector that is responsible for
  * dependency injection.  The rationale for this class is to promote portability of
  * the Ptolemy by providing different interface to implementation mappings for different
  * platforms such as Android and Java SE.
- * 
+ *
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -56,7 +56,7 @@ public class PtolemyModule extends AbstractModule {
      * Create a new intance of the PtolemyModule based on the provided moduleBundle.
      * @param moduleBundle The moduleBundle contains mappings from platform independent
      * interfaces to platform dependent implementations.  The bundle must have key value mappings
-     * from the fully specified interface name to the fully specified class name. 
+     * from the fully specified interface name to the fully specified class name.
      */
     public PtolemyModule(ResourceBundle moduleBundle) {
         _moduleBundle = moduleBundle;
@@ -104,7 +104,7 @@ public class PtolemyModule extends AbstractModule {
     ////                         private variables                 ////
 
     /**
-     * The resource bundle holdding the mappings from an interface to its implementations. 
+     * The resource bundle holdding the mappings from an interface to its implementations.
      */
     private ResourceBundle _moduleBundle;
 }

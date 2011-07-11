@@ -67,7 +67,7 @@ import ptolemy.util.StringUtilities;
 
 /**
  * Class for modular code generator.
- * 
+ *
  * @author Dai Bui, Bert Rodiers
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -79,7 +79,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Create a new instance of the Modular java code generator.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -104,7 +104,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Create the profile for the model (at this level).
-     * 
+     *
      * @exception IllegalActionException
      *                when the profile can't be generated.
      */
@@ -169,7 +169,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
             topDirectory = "..";
         }
-        commands.add("javac -classpath \"" + topDirectory 
+        commands.add("javac -classpath \"" + topDirectory
                 + StringUtilities.getProperty("path.separator")
                 + StringUtilities.getProperty("ptolemy.ptII.dir") + "\""
                 + profileClassName + ".java");
@@ -284,7 +284,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Generate code. This is the main entry point.
-     * 
+     *
      * @param code
      *            The code buffer into which to generate the code.
      * @return The return value of the last subprocess that was executed. or -1
@@ -343,7 +343,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Generate the main entry point.
-     * 
+     *
      * @return Return the definition of the main entry point for a program. In
      *         C, this would be defining main().
      * @exception IllegalActionException
@@ -402,7 +402,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /**
      * Generate the main exit point.
-     * 
+     *
      * @return Return a string that declares the end of the main() function.
      * @exception IllegalActionException
      *                Not thrown in this base class.
@@ -427,7 +427,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     ///                             private methods                 /////
 
     /** Create clusters of actor firing based on the dependencies on input firings.
-     * 
+     *
      * @param outputFiringFunctions The list of firings that produces tokens to external actors.
      * @param inputFiringFunctions The list of firings that consumes external tokens.
      * @param clusteredOutputs The map from groups of input firings to the group of output firings
@@ -437,7 +437,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @param inInputConnectedPorts
      * @param inOutputConnectedPorts
      * @param firingClusters The cluster of frings.
-     * @param clusters 
+     * @param clusters
      * @exception IllegalActionException
      */
     private void _clusterActorFirings(
@@ -690,7 +690,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         }
     }
 
-    /** Create dependency graph between firings of internal actors inside a composite actor 
+    /** Create dependency graph between firings of internal actors inside a composite actor
      * @param container The composite actor.
      * @param firingVector The firing vector of the actors inside the composite actor obtained
      * by solving the balance equation.
@@ -961,11 +961,11 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         }
     }
 
-    /** Create "expanded" graph for a composite actors. Each firing of 
+    /** Create "expanded" graph for a composite actors. Each firing of
      * an internal actors will be a node in the the expanded graph. Each relation between
      * a pair of ports will be denoted by a "junction".
      * @param container The composite actor
-     * @param port2Junction The map from pairs for ports to their connected junction. 
+     * @param port2Junction The map from pairs for ports to their connected junction.
      * A junction is a counter denoting the number of tokens in a relation between two ports.
      * @param junction2InputPort The map from junctions to respective input ports
      * @param junction2OutputPort The map from junctions to respective output port
@@ -995,7 +995,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
                         if (!connectedPort.isOutput()
                                 && !(connectedPort.getContainer() instanceof SampleDelay)) { //only input ports, this exclude the output ports of the container
-                            //each connection has one junction 
+                            //each connection has one junction
                             SimulationJunction junction = new SimulationJunction(
                                     connectedPort, outputPort, 0); //FIXME what is the number of initial tokens
 
@@ -1026,7 +1026,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
                         if (!connectedPort.isOutput()) { //only input ports, this exclude the output ports of the container
 
-                            //each connection has one junction 
+                            //each connection has one junction
                             SimulationJunction junction = new SimulationJunction(
                                     connectedPort, outputPort, tokens.length()); //FIXME what is the number of initial tokens
 
@@ -1045,11 +1045,11 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /** Clustering output firings (firings that produces tokens to output port of a composite
      * actor) according to dependency on the input firings
-     * 
+     *
      * @param actorFirings The list of firings of internal actors inside the composite actor.
      * @param outputFiringFunctions The list of output firings.
      * @param inputFiringFunctions The list of input firings.
-     * @param clusteredOutputs 
+     * @param clusteredOutputs
      * @param outputInputDependence
      */
 
@@ -1107,7 +1107,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** Do simulation based on firing vector to determine if deadlock happens.
-     * @param firingVector 
+     * @param firingVector
      * @param port2Junction The map from pairs of ports to their respective junction.
      * @return If deadlock happens, return true, otherwise, return false.
      * @exception IllegalActionException
@@ -1254,7 +1254,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @param firingClusters The list of firing clusters
      */
     private void _deriveClusterDependency(List<FiringCluster> firingClusters) {
-        //create dependencies between clusters 
+        //create dependencies between clusters
         for (FiringCluster cluster : firingClusters) {
             for (Firing f : cluster.actorFirings) {
                 for (Firing nextFiring : (f.nextActorFirings)) {
@@ -1300,9 +1300,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** Derive the dependency between firing functions of internal actors inside a container
-     * 
-     * @param container The container SDF actor 
-     * @param firingVector The firing vector of actors which contains the number of firing of each actor 
+     *
+     * @param container The container SDF actor
+     * @param firingVector The firing vector of actors which contains the number of firing of each actor
      * in one iteration of the external composite actor
      * @param actorFirings The list of firings of actors in the one firing iteration of the composite actor
      * @exception IllegalActionException
@@ -1519,7 +1519,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** Simulating firing of an actor
-     * 
+     *
      * @param actor The actor to fire
      * @param port2Junction The map from ports to junction
      * @exception IllegalActionException
@@ -1563,9 +1563,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** Writing out the profile for the composite actor and print out the dot file.
-     * 
+     *
      * @param container The composite actor whose profile to be generated.
-     * @param actorFirings 
+     * @param actorFirings
      * @param firingClusters
      * @param esdf
      * @exception IllegalActionException
@@ -1725,9 +1725,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
             for (FiringCluster nextCluster : cluster.nextClusters) {
                 //                Firing nextFiring = nextCluster.actorFirings.get(0);
-                //                graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction 
-                //                        + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_" 
-                //                        + nextFiring.firingFunction 
+                //                graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction
+                //                        + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_"
+                //                        + nextFiring.firingFunction
                 //                        + " [ltail=cluster" + index + ", lhead=cluster" + firingClusters.indexOf(nextCluster) + "];" + _eol);
                 clustersGraph.append("\t" + "Cluster_" + index + " -> "
                         + "Cluster_" + firingClusters.indexOf(nextCluster)
@@ -1736,9 +1736,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
             for (FiringCluster nextCluster : cluster.nextIterationClusters) {
                 //                Firing nextFiring = nextCluster.actorFirings.get(0);
-                //                graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction 
-                //                        + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_" 
-                //                        + nextFiring.firingFunction 
+                //                graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction
+                //                        + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_"
+                //                        + nextFiring.firingFunction
                 //                        + " [style=dotted, ltail=cluster" + index + ", lhead=cluster" + firingClusters.indexOf(nextCluster) + "];" + _eol);
                 clustersGraph.append("\t" + "Cluster_" + index + " -> "
                         + "Cluster_" + firingClusters.indexOf(nextCluster)
@@ -1765,7 +1765,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** Return the output port (source port) that connects to an input port.
-     * 
+     *
      * @param inputPort The input port.
      * @return Return the output port (source port) that connects to
      * an input port.
@@ -1815,7 +1815,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     /** Find input firings that a firing of an internal actor depends on.
      * @param firing The firing of the internal actor.
      * @param inputFirings The derived input firings that the firing of the actor depends on.
-     * @param searchedFirings The list of visited firings. 
+     * @param searchedFirings The list of visited firings.
      * @param inputFiringFunctions The list of input firings (firings that consume external tokens).
      * @param outputFiringFunctions The list of output firings (firings that produced external tokens).
      */
@@ -1873,7 +1873,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** Get the respective firing function object of an actor and the index of the firing function.
-     * 
+     *
      * @param firingFunctionList The list of firing function object.
      * @param actor The actor that fire.
      * @param index The index of the firing function.
@@ -1892,7 +1892,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /** Get the firing instance of an actor based on firing iteration and firing function index.
      * @param actor The actor that fires.
-     * @param index The firing iteration of the actor. 
+     * @param index The firing iteration of the actor.
      * @param firingFunction The firing function.
      * @param firingList List of all firings.
      * @return The firing object if the object existed, otherwise return null.
@@ -1913,19 +1913,19 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         return ret;
     }
 
-    /** Print out the firing dependency graph for debugging both textually and in dot format. 
+    /** Print out the firing dependency graph for debugging both textually and in dot format.
      * @param inputFirings The list of all firings.
      */
     private void _printGraph(Set inputFirings) {
         //        for (Iterator firings = firingList.iterator(); firings.hasNext();) {
         //            Firing firing = (Firing) firings.next();
-        //            
+        //
         //            System.out.println(firing.actor.getFullName() + ", firing Index: " + firing.firingIndex + " function: " + firing.firingFunction);
         //            for (Iterator nextFirings = firing.nextActorFirings.iterator(); nextFirings.hasNext();) {
         //                Firing nextFiring = (Firing) nextFirings.next();
         //                System.out.println("\t next " + nextFiring.actor.getFullName() + ", firing Index: " + nextFiring.firingIndex + " function: " + nextFiring.firingFunction);
         //            }
-        //            
+        //
         //            for (Iterator previousFirings = firing.previousActorFirings.iterator(); previousFirings.hasNext();) {
         //                Firing previousFiring = (Firing) previousFirings.next();
         //                System.out.println("\t previous " + previousFiring.actor.getFullName() + ", firing Index: " + previousFiring.firingIndex  + " function: " + previousFiring.firingFunction);
@@ -1961,7 +1961,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** Compute the depth of firings to obtain firing order.
-     * 
+     *
      * @param firing
      * @param visitedFirings
      */
@@ -1988,7 +1988,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 //    }
 
     /** Compute the depths of clusters to obtain cluster firing order.
-     * 
+     *
      * @param cluster The cluster whose depth is computed.
      * @param firingClusters the list of visited clusters.
      */
@@ -2034,8 +2034,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         }
     }
 
-    /** Junction for simulation. 
-     * 
+    /** Junction for simulation.
+     *
      * @author dai
      *
      */
@@ -2127,12 +2127,12 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
 
     /** A firing instance of an actor.
-     * 
+     *
      * @author dai
      *
      */
     public static class Firing {
-        /** 
+        /**
          * @param firingActor The actor that fires
          * @param index The index of firing iterations.
          * @param function The firing function of the actor.
@@ -2162,8 +2162,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         public int index;
     }
 
-    /** A cluster of firings of actors. 
-     * 
+    /** A cluster of firings of actors.
+     *
      * @author dai
      */
     static public class FiringCluster {

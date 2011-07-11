@@ -85,13 +85,13 @@ public class Inhibit extends Transformer {
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         output.setWidthEquals(input, true);
-        
+
         inhibit = new TypedIOPort(this, "inhibit", true, false);
         inhibit.setMultiport(true);
         inhibit.setTypeEquals(BaseType.GENERAL);
         StringAttribute cardinality = new StringAttribute(inhibit, "_cardinal");
         cardinality.setExpression("SOUTH");
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"

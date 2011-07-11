@@ -33,7 +33,7 @@ import ptolemy.domains.ptides.kernel.PtidesEvent;
 
 ///////////////////////////////////////////////////////////////////
 //// PtidesEvent
-/** 
+/**
  * Tests for PtidesEvent.
  * @author Christopher Brooks
  * @version $Id$
@@ -42,8 +42,8 @@ import ptolemy.domains.ptides.kernel.PtidesEvent;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class PtidesEventJUnitTest {
-    /** 
-     *  
+    /**
+     *
      */
     @org.junit.Test
     public void constructorWithNulls() throws Exception {

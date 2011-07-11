@@ -230,7 +230,7 @@ public class ComponentDialog extends JDialog {
             _messageArea.setText(message);
         }
     }
-    
+
     public void dispose() {
         _optionPane.removePropertyChangeListener(_propChangeListener);
         _propChangeListener = null;
@@ -252,7 +252,7 @@ public class ComponentDialog extends JDialog {
         // Close the window.
         setVisible(false);
         dispose();
-        
+
         if ((contents instanceof CloseListener) && !_doneHandleClosing) {
             _doneHandleClosing = true;
             ((CloseListener) contents).windowClosed(this, _buttonPressed);
@@ -261,14 +261,14 @@ public class ComponentDialog extends JDialog {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             _handleClosing();
         }
     }
-    
+
     class PropChangeListener implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent e) {
             String prop = e.getPropertyName();
@@ -318,10 +318,10 @@ public class ComponentDialog extends JDialog {
 
     /** The label of the button pushed to dismiss the dialog. */
     protected String _buttonPressed = "";
-    
+
     /** A reference to the WindowClosingAdapter.*/
     protected WindowClosingAdapter _windowClosingAdapter;
-    
+
     /** A reference to the PropertyChangeListener.*/
     protected PropChangeListener _propChangeListener;
 

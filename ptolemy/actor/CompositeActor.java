@@ -709,12 +709,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
         return ports;
     }
-    
+
     /** Get the channel name of a published port.
      * @param port The published port.
      * @return The name of the channel of the published port.
      */
-    
+
     public String getPublishedPortChannel(IOPort port) {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
@@ -728,7 +728,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 }
             }
         }
-        
+
         return "";
     }
 
@@ -736,7 +736,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      * @param port The subscribed port.
      * @return The name of the channel.
      */
-    
+
     public String getSubscribedPortChannel(IOPort port) {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
@@ -750,7 +750,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 }
             }
         }
-        
+
         return "";
     }
 
@@ -959,11 +959,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
     public boolean isOpaque() {
         return _director != null;
     }
-    
+
     /** Return true if a port is in the published port list
      *  at this level.
      *  @param port The port to be checked against the list of published ports.
-     *  @return True if the port was added with 
+     *  @return True if the port was added with
      *  {@link #registerPublisherPort(String, IOPort, boolean)}.
      */
     public boolean isPublishedPort(IOPort port) {
@@ -974,7 +974,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -1108,9 +1108,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(String name, IOPort subscriberPort)
@@ -1171,7 +1171,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name being used in the matching process
      *   to match publisher and subscriber.
-     *  @param subscriberPort The subscriber port. 
+     *  @param subscriberPort The subscriber port.
      *  @param global Specification of whether the data is subscribed
      *   globally.  If set to true, then subscribers will see values
      *   published by publishers anywhere in the model that reference
@@ -1179,7 +1179,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *   published by publishers that are fired by the same director
      *   are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
-     *   as a result of the added relations or ports. 
+     *   as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(String name, IOPort subscriberPort,
@@ -1258,9 +1258,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param pattern The pattern is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort)
@@ -1306,7 +1306,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param pattern The pattern is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @param global Specification of whether the data is subscribed
      *  globally.  If set to true, then subscribers will see values
      *  published by publishers anywhere in the model that reference
@@ -1314,7 +1314,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  published by publishers that are fired by the same director
      *  are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(Pattern pattern,
@@ -1757,7 +1757,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param port The published port. 
+     *  @param port The published port.
      *  @exception NameDuplicationException If the published port
      *          is already registered.
      *  @exception IllegalActionException If the published port can't
@@ -1778,7 +1778,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param port The published port. 
+     *  @param port The published port.
      *  @param global If true, publish globally. If false, publish
      *   only to subscribers that are fired by the same director.
      *  @exception NameDuplicationException If the published port
@@ -2185,9 +2185,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort)
@@ -2229,7 +2229,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @param global Specification of whether the data is subscribed
      *  globally.  If set to true, then subscribers will see values
      *  published by publishers anywhere in the model that reference
@@ -2237,7 +2237,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  published by publishers that are fired by the same director
      *  are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort,
@@ -2307,7 +2307,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *          to match publisher and subscriber.
      *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(Pattern pattern,
@@ -2350,7 +2350,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  published by publishers that are fired by the same director
      *  are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(Pattern pattern,
@@ -2448,7 +2448,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  be set
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort,
-					boolean global) throws IllegalActionException, NameDuplicationException {
+                                        boolean global) throws IllegalActionException, NameDuplicationException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
@@ -2784,7 +2784,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** Keep track of all published ports accessable in this container.*/
     protected Map<String, List<IOPort>> _publishedPorts;
-    
+
     /** Keep track of all published ports accessable in this container.*/
     protected Map<String, List<IOPort>> _subscribedPorts;
 

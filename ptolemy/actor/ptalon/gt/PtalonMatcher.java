@@ -106,7 +106,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Setup parameters for this actor. 
+    /** Setup parameters for this actor.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If there are problems setting
      *  up parameters for this actor, or if the superclass throws it.
@@ -118,7 +118,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
         // FIXME: This is confusing.  _handleAttributeChange
         // will initially be true, which means the code will
         // always run.  Probably one of the methods in the try block
-        // calls attributeChanged and _handleAttributeChanged() is 
+        // calls attributeChanged and _handleAttributeChanged() is
         // necessary to avoid endless loops.
         if (!_handleAttributeChange) {
             return;
@@ -229,7 +229,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
         }
 
         /** If we are not initalizing or fixed, then call attributeChanged()
-         *  in the super class.   
+         *  in the super class.
          *  @param attribute The attribute that changed.
          *  @exception IllegalActionException If thrown by the superclass.
          */

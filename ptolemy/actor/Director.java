@@ -713,7 +713,7 @@ public class Director extends Attribute implements Executable {
         }
 
         _actorsFinishedExecution = new HashSet();
-        
+
         // Reset the flag that causes postfire() to return false.
         _finishRequested = false;
 
@@ -808,7 +808,7 @@ public class Director extends Attribute implements Executable {
      */
     public void invalidateSchedule() {
     }
-   
+
     /** Return true if this director is embedded inside an opaque composite
      *  actor contained by another composite actor.
      *  @return True if this directory is embedded inside an opaque composite
@@ -1037,7 +1037,7 @@ public class Director extends Attribute implements Executable {
 
     /**
      * Preintialize the actor.
-     * This method is used by directors that want to instrument calls to 
+     * This method is used by directors that want to instrument calls to
      * preinitialize. {@link #preinitialize()} calls this method.
      * @param actor The actor to be preinitialized.
      * @exception IllegalActionException If thrown while the actor is being

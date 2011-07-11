@@ -73,13 +73,13 @@ import diva.gui.toolbox.MenuCreator;
  @Pt.AcceptedRating Red (johnr)
  */
 public class ConceptRelationController extends BasicEdgeController {
-    
+
     /** Create a transition controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
      */
     public ConceptRelationController(final GraphController controller) {
-        super(controller);        
+        super(controller);
         SelectionInteractor interactor = (SelectionInteractor) getEdgeInteractor();
 
         // Create and set up the manipulator for connectors.
@@ -88,7 +88,7 @@ public class ConceptRelationController extends BasicEdgeController {
         manipulator.setSnapHalo(4.0);
         manipulator.addConnectorListener(new RelationDropper());
         interactor.setPrototypeDecorator(manipulator);
-        
+
         // The mouse filter needs to accept regular click or control click
         MouseFilter handleFilter = new MouseFilter(1, 0, 0);
         manipulator.setHandleFilter(handleFilter);
@@ -96,7 +96,7 @@ public class ConceptRelationController extends BasicEdgeController {
         ConnectorTarget ct = new RelationTarget();
         setConnectorTarget(ct);
         setEdgeRenderer(new RelationRenderer());
-        
+
         _menuCreator = new MenuCreator(null);
         _menuCreator.setMouseFilter(new PopupMouseFilter());
         interactor.addInteractor(_menuCreator);
@@ -126,7 +126,7 @@ public class ConceptRelationController extends BasicEdgeController {
      */
     public void addHotKeys(JGraph jgraph) {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -154,12 +154,12 @@ public class ConceptRelationController extends BasicEdgeController {
 
     ///////////////////////////////////////////////////////////////////
     //// RelationDropper
-    
+
     /** An inner class that handles interactive changes to connections between
      *  concepts in the ontology model.
      */
     private class RelationDropper extends ConnectorAdapter {
-        
+
         /** Called when a connector end is dropped.  Attach or
          *  detach the edge as appropriate.
          *  @param evt The connector event received when a connect end is
@@ -198,10 +198,10 @@ public class ConceptRelationController extends BasicEdgeController {
             getController().rerenderEdge(edge);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// RelationRenderer
-    
+
     /** Renderer for a relation in an ontology.
      */
     private static class RelationRenderer implements EdgeRenderer {
@@ -248,15 +248,15 @@ public class ConceptRelationController extends BasicEdgeController {
             return c;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// RelationTarget
-    
+
     /** A class for potential ontology relation targets. The target of a
      *  relation should always be a concept in the ontology model.
      */
     private static class RelationTarget extends PerimeterTarget {
-        
+
         /** Return true if the given connector's head can be attached to
          *  the given figure in the model graph.
          *  @param c The connector object.
@@ -276,10 +276,10 @@ public class ConceptRelationController extends BasicEdgeController {
         public boolean acceptTail(Connector c, Figure f) {
             return _acceptConnection(c, f, false);
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
-        
+
         /** Return true if the given connection can be attached to the given
          *  figure in the model graph.
          *  @param c The connector to be checked.
@@ -294,7 +294,7 @@ public class ConceptRelationController extends BasicEdgeController {
             if (object instanceof Locatable) {
                 Locatable location = (Locatable) object;
                 NamedObj modelElement = location.getContainer();
-                
+
                 // Do not accept the connection if it is a link back to
                 // the same concept.
                 if (modelElement instanceof Concept) {
@@ -308,7 +308,7 @@ public class ConceptRelationController extends BasicEdgeController {
 
             return false;
         }
-        
+
         /** Return true if the given connector's ontology relation head or tail is
          *  connected to the given ontology concept.
          *  @param connector The connector object that represents the graphical
@@ -342,7 +342,7 @@ public class ConceptRelationController extends BasicEdgeController {
                     }
                 }
             }
-            
+
             return false;
         }
     }

@@ -42,13 +42,13 @@ void StringArray_resize(Token array, int size) {
     } else {
         array.payload.StringArray->elements = (string*) realloc(
                      array.payload.StringArray->elements, size * sizeof(string));
-    } 
+    }
     array.payload.StringArray->size = size;
 }
 
 // StringArray_insert: Append the specified element to the end of an array.
 void StringArray_insert(Token array, string token) {
-    // FIXME: call this append(), not insert().  
+    // FIXME: call this append(), not insert().
     int oldSize = array.payload.StringArray->size;
     StringArray_resize(array, oldSize + 1 );
     ((string *) array.payload.StringArray->elements)[oldSize] = token;

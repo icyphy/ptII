@@ -72,7 +72,7 @@ public class Writer extends Sink {
         }
 
         setWriter(_stdOut);
-        
+
         input.setTypeEquals(BaseType.STRING);
     }
 
@@ -141,7 +141,7 @@ public class Writer extends Sink {
     public void wrapup() throws IllegalActionException {
         try {
             if (_writer != null) {
-                // FIXME: Findbugs warns out derived classes such as 
+                // FIXME: Findbugs warns out derived classes such as
                 // FileWriter.attributeChanged() not closing the
                 // _writer.  Should wrapup() close the _writer?
                 _writer.flush();

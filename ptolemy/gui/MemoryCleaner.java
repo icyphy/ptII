@@ -38,17 +38,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 
 /**
- * Methods that clean up possible memory leaks caused by listeners.  
- * Experimental methods will be marked so in their javadoc 
+ * Methods that clean up possible memory leaks caused by listeners.
+ * Experimental methods will be marked so in their javadoc
  * comments until they are proven to be effective.
- * 
+ *
  * The static methods of this class can be used to remove listeners
  * when disposing of Windows.  Swing, for various reasons, does not
  * know when a window has been disposed and thus never garbage
  * collects the listeners.  These listeners each have a reference
  * to the window which means the window (and everything it references)
  * never gets garbage collected.
- * 
+ *
  * @author Aaron Schultz
  * @version $Id$
  * @since Ptolemy II 1.0
@@ -62,7 +62,7 @@ public class MemoryCleaner {
 
     /**
      * Remove ActionListeners from a JMenuBar.
-     * 
+     *
      * @param menubar The menubar from which the ActionListeners
      * are to be removed.
      * @return The number of listeners removed.
@@ -74,7 +74,7 @@ public class MemoryCleaner {
             if (_isDebugging) {
                 System.out.println("menu count: " + count);
             }
-            
+
             for (int m = 0; m < count; m++) {
                 JMenu menu = menubar.getMenu(m);
 
@@ -84,12 +84,12 @@ public class MemoryCleaner {
         }
         return listenersRemoved;
     }
-    
+
     /**
      * Remove ActionListeners from an AbstractButton (such as a JMenuItem.
      * If the AbstractButton is a JMenu, the ActionListeners of all the
      * child items get removed too.
-     * 
+     *
      * @param button The button fomr which the ActionListeners
      * are to be removed.
      * @return The number of listeners removed.
@@ -106,11 +106,11 @@ public class MemoryCleaner {
                 int countAfter = button.getActionListeners().length;
                 listenersRemoved += count - countAfter;
                 //System.out.println("Removed "+listenersRemoved+" for "+button.getText());
-                if (countAfter != 0) { 
+                if (countAfter != 0) {
                     //System.out.println("cOUNTaFTERrEMOVE: "+countAfter);
                 }
             }
-            
+
             if (button instanceof JMenu) {
                 JMenu jmenu = (JMenu) button;
                 int totalMenuItems = jmenu.getMenuComponentCount();
@@ -125,11 +125,11 @@ public class MemoryCleaner {
         }
         return listenersRemoved;
     }
-    
+
     /**
      * Remove WindowListeners from a Window.
      * Experimental.
-     * 
+     *
      * @param window  The Window from which WindowListeners
      * are to be removed.
      * @return The number of listeners removed.
@@ -147,10 +147,10 @@ public class MemoryCleaner {
         }
         return listenersRemoved;
     }
-    
+
     /**
      * Remove ActionListeners from a JToolBar.
-     * 
+     *
      * @param toolbar The tool bar from which the ActionListeners
      * are to be removed.
      * @return The number of listeners removed.
@@ -162,7 +162,7 @@ public class MemoryCleaner {
             if (_isDebugging) {
                 System.out.println("component count: " + count);
             }
-            
+
             for (int m = 0; m < count; m++) {
                 Component c = toolbar.getComponentAtIndex(m);
                 if (c instanceof JButton) {
@@ -178,7 +178,7 @@ public class MemoryCleaner {
         }
         return listenersRemoved;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

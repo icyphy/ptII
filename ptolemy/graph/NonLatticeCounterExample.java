@@ -49,7 +49,7 @@ the graph has a cycle.
 @Pt.AcceptedRating Red (cshelton)
 */
 public class NonLatticeCounterExample {
-    
+
     /** Construct a NonLatticeCounterExample object with the given example
      *  type and list of nodes in the graph.
      *  @param exampleType The given example type for this counterexample.
@@ -59,7 +59,7 @@ public class NonLatticeCounterExample {
         _exampleType = exampleType;
         _nodeList = new ArrayList(nodeList);
     }
-    
+
     /** Construct a NonLatticeCounterExample object for a graph with a cycle.
      *  @param node The weight of one of the nodes in the graph that is on the
      *   cycle path.
@@ -82,17 +82,17 @@ public class NonLatticeCounterExample {
         _nodeList.add(node1);
         _nodeList.add(node2);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the example type for this NonLatticeCounterExample.
      *  @return Either LEASTUPPER, GREATESTLOWER, or GRAPHCYCLE.
      */
     public ExampleType getExampleType() {
         return _exampleType;
     }
-    
+
     /** Return the list of node weights in the graph associated with this
      *  counter example.
      *  @return The list of node weights.
@@ -100,10 +100,10 @@ public class NonLatticeCounterExample {
     public List getNodeList() {
         return _nodeList;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the correct example type given the CPO bound type (LEASTUPPER or
      *  GREATESTLOWER).
      *  @param boundType The given CPO bound type.
@@ -119,19 +119,19 @@ public class NonLatticeCounterExample {
             return null;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The example type for this NonLatticeCounterExample. */
     private ExampleType _exampleType;
-    
+
     /** The list of nodes associated with this NonLatticeCounterExample. */
     private List _nodeList;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
-    
+
     /** Marker interface for the counter example type. This allows
      *  us to create other enumerations of counter example types in
      *  subclasses. In particular, this is needed for the ontologies
@@ -144,17 +144,17 @@ public class NonLatticeCounterExample {
      */
     public interface ExampleType {
     }
-    
+
     /** An enumeration type to represent the types of counterexamples
      *  that can be found when checking to see if a graph is a lattice.
      */
     public static enum GraphExampleType implements ExampleType {
         /** Represents a counterexample where some nodes have no greatest lower bound. */
         GREATESTLOWER,
-        
+
         /** Represents a counterexample where some nodes have no least upper bound. */
         LEASTUPPER,
-        
+
         /** Represents a counterexample where the graph has a cycle. */
         GRAPHCYCLE
     }

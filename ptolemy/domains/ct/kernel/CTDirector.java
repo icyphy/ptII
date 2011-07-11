@@ -410,7 +410,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         _breakpoints.insert(time);
         return time;
     }
-    
+
     /** Request a firing of the container of this director at the specified time
      *  and throw an exception if the executive director does not agree to
      *  do it at the requested time. If there is no executive director (this
@@ -584,7 +584,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
         // set current time and initialize actors.
         super.initialize();
-        
+
         _breakpoints.insert(getModelStopTime());
     }
 

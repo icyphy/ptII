@@ -109,7 +109,7 @@ public class PtGUIUtilities {
      *  property is set to any other value, return false.  If the
      *  ptolemy.ptII.useFileDialog property is not set, then return
      *  the value of #macOSLookAndFeel().</p>
-     * 
+     *
      *  <p>To define ptolemy.ptII.useFileDialog, invoke Vergil with
      *  java -Dptolemy.ptII.useFileDialog=true -classpath $PTII ptolemy.vergil.VergilApplication
      *  Or, under Cygwin or bash:</p>

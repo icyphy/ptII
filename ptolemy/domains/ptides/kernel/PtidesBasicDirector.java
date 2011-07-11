@@ -227,7 +227,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  Embedded Systems</a>, 15th IEEE Real-Time and Embedded Technology
  *  and Applications Symposium, 2009, IEEE Computer Society, 77-86,
  *  April, 2009.</p>
- *  
+ *
  *  <p> Since sensors, actuators, and network devices are important
  *  in the context of Ptides, special actors such as {@link SensorHandler}
  *  {@link ActuatorSetup}, {@link NetworkReceiver},
@@ -275,7 +275,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  <i>networkDriverDelay</i>
  *  specifies the amount of physical time it takes for a packet to be
  *  consumed and an event produced in the destination platform. Note, the
- *  <i>d_o</i> parameter for network inputs is calculated by summing 
+ *  <i>d_o</i> parameter for network inputs is calculated by summing
  *  <i>networkDelay</i> and <i>networkDriverDelay</i>.</p>
  *
  *  <p> Like input ports, output ports of the composite actor governed by the
@@ -389,7 +389,7 @@ public class PtidesBasicDirector extends DEDirector {
                 .setTypeEquals(BaseType.BOOLEAN);
         forceActorsToProcessEventsInTimestampOrder.setExpression("false");
 
-        highlightModelTimeDelay = new Parameter(this, 
+        highlightModelTimeDelay = new Parameter(this,
                 "highlightModelTimeDelay");
         highlightModelTimeDelay.setTypeEquals(BaseType.BOOLEAN);
         highlightModelTimeDelay.setExpression("false");
@@ -487,7 +487,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** The initial execution time clock time. The initial oracle clock time
      *  zero. If the initial execution clock time differs from that time, then
-     *  that time is captured in this parameter. 
+     *  that time is captured in this parameter.
      */
     public Parameter initialExecutionClockTime;
 
@@ -840,8 +840,8 @@ public class PtidesBasicDirector extends DEDirector {
         // In Ptides, we should never stop when queue is empty.
         stopWhenQueueIsEmpty.setExpression("false");
     }
-    
-    /** Add a new execution time listener to the list of listeners. 
+
+    /** Add a new execution time listener to the list of listeners.
      *  @param listener New listener.
      */
     public void registerExecutionTimeListener(ExecutionTimeListener listener) {
@@ -951,14 +951,14 @@ public class PtidesBasicDirector extends DEDirector {
     protected void _actorFired() throws IllegalActionException {
 
         if (_lastExecutionTime.compareTo(_zero) == 0) {
-            _sendExecutionTimeEvent(_lastActorFired, 
-                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
-                    ExecutionEventType.START); 
-            _sendExecutionTimeEvent(_lastActorFired, 
-                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+            _sendExecutionTimeEvent(_lastActorFired,
+                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(),
+                    ExecutionEventType.START);
+            _sendExecutionTimeEvent(_lastActorFired,
+                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(),
                     ExecutionEventType.STOP);
-        } 
-        
+        }
+
         _noActorToFire();
 
         // Now clear _pureEvent* since an actor has finished firing.
@@ -1173,7 +1173,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  be connected to a NetworkReceiver. Also, it should not have a
      *  networkDelay attribute.
      *  </p><p>
-     *  If an input port is a network port (annotated networkPort), then it 
+     *  If an input port is a network port (annotated networkPort), then it
      *  should always be connected to a NetworkReceiver. Also, it should not
      *  have a deviceDelay attribute.
      *  </p>
@@ -1544,7 +1544,7 @@ public class PtidesBasicDirector extends DEDirector {
                             + temp.toString());
         }
     }
-    
+
     /** Return the value of the delayOffset parameter. The delayOffset parameter
      *  used in the safe to process analysis of Ptides. In Ptides, an event of
      *  timestamp tau is safe to process at physical time t if
@@ -1568,7 +1568,7 @@ public class PtidesBasicDirector extends DEDirector {
         // For the definition of the input port group, see
         // _portsBelongToTheSameInputGroup()
         // Note the checking of the parameter
-        // forceActorsToProcessEventsInTimestampOrder here is an optimization. 
+        // forceActorsToProcessEventsInTimestampOrder here is an optimization.
         // If forceActorsToProcessEventsInTimestampOrder
         // is false, we could skip this if clause.
         if (pureEvent
@@ -1576,7 +1576,7 @@ public class PtidesBasicDirector extends DEDirector {
                         .getToken()).booleanValue()) {
             double result = Double.POSITIVE_INFINITY;
             assert (inPort != null);
-            Collection<IOPort> relatedPorts = 
+            Collection<IOPort> relatedPorts =
                 _portsBelongToTheSameInputGroup(inPort);
             for (IOPort input : relatedPorts) {
                 Parameter parameter = (Parameter) ((NamedObj) input)
@@ -1627,7 +1627,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    
+
     /** Get the dependency between an input and an output ports. If the
      *  ports do not belong to the same actor, an exception is thrown.
      *  Depending on the type of the actor (atomic or composite),
@@ -1660,7 +1660,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return a MoML string describing the icon appearance for a Ptides
      *  director that is currently executing the specified actor.
-     *  The returned MoML can include a sequence of instances of 
+     *  The returned MoML can include a sequence of instances of
      *  VisibleAttribute or its subclasses. In this base class, this returns a
      *  red rectangle like the usual director rectangle.
      *  @see ptolemy.vergil.kernel.attributes.VisibleAttribute
@@ -1680,7 +1680,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the value of the executionTime parameter associated with
      *  the port. If the port is null, then get the value of the parameter
-     *  associated with the actor. 
+     *  associated with the actor.
      *  @param port The port at which execution time is annotated.
      *  @param actor actor at which execution time is annotated.
      *  @return The value of the executionTime parameter.
@@ -1831,7 +1831,7 @@ public class PtidesBasicDirector extends DEDirector {
             // parameter safeToProcessTimerHandlingOverhead. The value of this
             // parameter is passed into _startScheduler and simulated as a part
             // of execution time.
-            Parameter parameter = 
+            Parameter parameter =
                 (Parameter) getAttribute("safeToProcessTimerHandlingOverhead");
             double additionalExecutionTime = 0.0;
             if (parameter != null) {
@@ -1872,7 +1872,7 @@ public class PtidesBasicDirector extends DEDirector {
             ExecutionTimedEvent currentEventList = (ExecutionTimedEvent)
                 _currentlyExecutingStack.peek();
             // First check whether its remaining execution time is zero.
-            Time remainingExecutionTime = 
+            Time remainingExecutionTime =
                 currentEventList.remainingExecutionTime;
             Time finishTime = _physicalTimeExecutionStarted
                     .add(remainingExecutionTime);
@@ -1906,8 +1906,8 @@ public class PtidesBasicDirector extends DEDirector {
                         _getActorFromEventList((List<PtidesEvent>)
                                 currentEventList.contents), false);
                 _sendExecutionTimeEvent(_getActorFromEventList((List<PtidesEvent>)
-                        currentEventList.contents), 
-                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                        currentEventList.contents),
+                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(),
                         ExecutionEventType.STOP);
                 _lastExecutingActor = null;
 
@@ -1921,23 +1921,23 @@ public class PtidesBasicDirector extends DEDirector {
                 // Processing of an event has finished. In this case, the
                 // scheduler
                 // should run to figure out which is the next event to process.
-                // Unless the event is a sensor event, in which case the 
+                // Unless the event is a sensor event, in which case the
                 // scheduling overhead was accounted for when the sensor
                 // interrupt occurred.
                 // If the event is a pure event, however, then no scheduling
                 // overhead is simulated. This is based on the assumption that
                 // PtidyOS does not have a separate fireAt() for pure events,
                 // and thus an actor such as TimeDelay would produce an output
-                // in the same firing at which the triggere event is consumed. 
+                // in the same firing at which the triggere event is consumed.
                 if (!((List<PtidesEvent>)currentEventList.contents).get(0)
                         .isPureEvent()) {
                     _scheduleNewEvent = true;
-                }       
+                }
                 return _lastActorFired;
             } else { // comparison > 0
                 _fireAtPlatformTime(finishTime, executionTimeClock);
-                
-                
+
+
                 // The currently executing actor needs more execution time.
                 // Decide whether to preempt it.
                 if (_eventQueue.isEmpty() || !_preemptExecutingActor()) {
@@ -1953,8 +1953,8 @@ public class PtidesBasicDirector extends DEDirector {
                     return null;
                 }
                 _sendExecutionTimeEvent(_getActorFromEventList((List<PtidesEvent>)
-                        _currentlyExecutingStack.peek().contents), 
-                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                        _currentlyExecutingStack.peek().contents),
+                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(),
                         ExecutionEventType.START);
             }
         }
@@ -1985,7 +1985,7 @@ public class PtidesBasicDirector extends DEDirector {
         // somehow failed to produce the correct results.
         _trackLastTagConsumedByActor(eventFromQueue);
 
-        List<PtidesEvent> eventsToProcess = 
+        List<PtidesEvent> eventsToProcess =
             _takeAllSameTagEventsFromQueue(eventFromQueue);
 
         Actor actorToFire = _getActorFromEventList(eventsToProcess);
@@ -2011,7 +2011,7 @@ public class PtidesBasicDirector extends DEDirector {
             // Request a refiring so we can process the next event
             // on the event queue at the current physical time.
             executiveDirector.fireAtCurrentTime((Actor) container);
-            
+
             _lastActorFired = actorToFire;
 
             // An event has finished processing. In this case, the scheduler
@@ -2022,13 +2022,13 @@ public class PtidesBasicDirector extends DEDirector {
             // overhead is simulated. This is based on the assumption that
             // PtidyOS does not have a separate fireAt() for pure events,
             // and thus an actor such as TimeDelay would produce an output
-            // in the same firing at which the triggere event is consumed. 
+            // in the same firing at which the triggere event is consumed.
             if (!eventFromQueue.isPureEvent()) {
                 _scheduleNewEvent = true;
             }
             return actorToFire;
         } else {
-            
+
             // Execution time is not zero. Push the executing actor onto
             // the stack, call fireAt() on the enclosing director,
             // and return null.
@@ -2039,18 +2039,18 @@ public class PtidesBasicDirector extends DEDirector {
             // If we are preempting a current execution, then
             // update information of the preempted event.
             _resetExecutionTimeForPreemptedEvent();
-            
+
             if (_currentlyExecutingStack.size() > 0) {
                 _sendExecutionTimeEvent(_getActorFromEventList((List<PtidesEvent>)
-                        _currentlyExecutingStack.peek().contents), 
-                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                        _currentlyExecutingStack.peek().contents),
+                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(),
                         ExecutionEventType.PREEMPTED);
             }
             _currentlyExecutingStack.push(new ExecutionTimedEvent(
                     timeStampOfEventFromQueue, microstepOfEventFromQueue,
                     eventsToProcess, executionTime));
-            
-            
+
+
             _physicalTimeExecutionStarted = executionPhysicalTag.timestamp;
             if (_debugging) {
                 _debug("Actor " + actorToFire.toString()
@@ -2061,9 +2061,9 @@ public class PtidesBasicDirector extends DEDirector {
             // Animate if appropriate.
             _setIcon(_getExecutingIcon(actorToFire), false);
             _lastExecutingActor = actorToFire;
-            _sendExecutionTimeEvent(_lastExecutingActor, 
-                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
-                    ExecutionEventType.START); 
+            _sendExecutionTimeEvent(_lastExecutingActor,
+                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(),
+                    ExecutionEventType.START);
             return null;
         }
     }
@@ -2311,7 +2311,7 @@ public class PtidesBasicDirector extends DEDirector {
         if (refEvent.ioPort() == null || event.ioPort() == null) {
             return false;
         }
-        Collection<IOPort> inputPortGroup = 
+        Collection<IOPort> inputPortGroup =
             _portsBelongToTheSameInputGroup(refEvent.ioPort());
         if (inputPortGroup.contains(event.ioPort())) {
             return true;
@@ -2325,7 +2325,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  information
      *  is used to calculate the absolute deadline of the produced pure event.
      *  @param eventsToProcess The list of events to be processed.
-     *  @throws IllegalActionException If absolute deadline of an event,
+     *  @exception IllegalActionException If absolute deadline of an event,
      *  finite dependent ports of a port, or dependency between two ports
      *  cannot be evaluated.
      */
@@ -2344,7 +2344,7 @@ public class PtidesBasicDirector extends DEDirector {
         _pureEventSourcePorts.put(actorToFire, eventsToProcess.get(0).ioPort());
     }
 
-    /** Send an execution time event to all listeners. 
+    /** Send an execution time event to all listeners.
      *  @param actor Actor that produced an execution time event.
      *  @param time Time when the event occurred.
      *  @param event Type of the event.
@@ -2372,7 +2372,7 @@ public class PtidesBasicDirector extends DEDirector {
             String completeMoML = "<property name=\"_icon\" class=\"ptolemy.vergil.icon.EditorIcon\">"
                     + moml + "</property>";
             if (clearFirst && getAttribute("_icon") != null) {
-                // If we are running under MoMLSimpleApplication, then the 
+                // If we are running under MoMLSimpleApplication, then the
                 //_icon might not be present, so check before trying to
                 // delete it.
                 completeMoML = "<group><!-- PtidesBasicDirector --><deleteProperty name=\"_icon\"/>"
@@ -2392,7 +2392,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  These events should be removed from the event queue in the process.
      *  @param event The reference event.
      *  @return List of events of the same tag.
-     *  @exception IllegalActionException If failed to get 
+     *  @exception IllegalActionException If failed to get
      *   throws it.
      */
     protected List<PtidesEvent> _takeAllSameTagEventsFromQueue(
@@ -2464,7 +2464,7 @@ public class PtidesBasicDirector extends DEDirector {
                             "The tag of the previous processed event is: " +
                             "timestamp = prevTag.timestamp, microstep = " +
                             prevTag.microstep + ". The tag of the current " +
-                            "event is: timestamp = " + tag.timestamp + 
+                            "event is: timestamp = " + tag.timestamp +
                             ", microstep = " + tag.microstep + ". ");
                 } else {
                     // If the event is destined to an actuation port, it doesn't
@@ -2838,7 +2838,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private double _calculateDelayOffsetsForPortChannel(IOPort inputPort,
             Integer channel) throws IllegalActionException {
-        SuperdenseDependency smallestDependency = 
+        SuperdenseDependency smallestDependency =
             SuperdenseDependency.OPLUS_IDENTITY;
         for (IOPort port : (Collection<IOPort>)
                 _portsBelongToTheSameInputGroup(inputPort)) {
@@ -2908,14 +2908,14 @@ public class PtidesBasicDirector extends DEDirector {
         if (sensorPort && networkPort) {
             throw new IllegalActionException(
                     port, "This port has been connected to both a " +
-                    		"SensorHandler and a NetworkReceiver, " +
-                    		"which is disallowed. A port must be either " +
-                    		"a sensor port or a network port.");
+                                    "SensorHandler and a NetworkReceiver, " +
+                                    "which is disallowed. A port must be either " +
+                                    "a sensor port or a network port.");
         }
         // If both sensorPort and networkPort are false, this port is assumed to
         // be a sensor port with deviceDelay = 0.0.
         if (sensorPort
-                && (_getNetworkDelay(port) != null || 
+                && (_getNetworkDelay(port) != null ||
                         _getNetworkDriverDelay(port) != null)) {
             throw new IllegalActionException(
                     port,
@@ -2926,9 +2926,9 @@ public class PtidesBasicDirector extends DEDirector {
         } else if (networkPort && _getDeviceDelay(port) != null) {
             throw new IllegalActionException(
                     port, "A port that is connected to a NetworkReceiver is " +
-                    		"considered to be a network port, and a " +
-                    		"network port should not have deviceDelay " +
-                    		"parameter annotated on it.");
+                                    "considered to be a network port, and a " +
+                                    "network port should not have deviceDelay " +
+                                    "parameter annotated on it.");
         }
     }
 
@@ -3291,12 +3291,12 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         // If we are preempting a current execution, then
         // update information of the preempted event.
-        if (!_currentlyExecutingStack.isEmpty()) { 
+        if (!_currentlyExecutingStack.isEmpty()) {
             // We are preempting a current execution.
             ExecutionTimedEvent currentEventList = _currentlyExecutingStack.peek();
             Time elapsedTime = getPlatformPhysicalTag(executionTimeClock)
                     .timestamp.subtract(_physicalTimeExecutionStarted);
-            currentEventList.remainingExecutionTime = 
+            currentEventList.remainingExecutionTime =
                 currentEventList.remainingExecutionTime.subtract(elapsedTime);
             if (currentEventList.remainingExecutionTime.compareTo(_zero) < 0) {
                 // This should not occur.
@@ -3351,7 +3351,7 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         _schedulerFinishTime = getPlatformPhysicalTag(
                 executionTimeClock).timestamp;
-        Parameter parameter = 
+        Parameter parameter =
             (Parameter) getAttribute("schedulerExecutionTime");
         if ((parameter == null
                 || ((DoubleToken) parameter.getToken()).doubleValue() == 0.0) &&
@@ -3460,7 +3460,7 @@ public class PtidesBasicDirector extends DEDirector {
         while (!distQueue.isEmpty()) {
             PortDependency portDependency = (PortDependency) distQueue.remove();
             IOPort port = (IOPort) portDependency.port;
-            SuperdenseDependency prevDependency = 
+            SuperdenseDependency prevDependency =
                 (SuperdenseDependency)portDependency.dependency;
             Actor actor = (Actor) port.getContainer();
             // If this actor has not been visited before, add it to the
@@ -3478,7 +3478,7 @@ public class PtidesBasicDirector extends DEDirector {
                 if (port.isInput()) {
                     Collection<IOPort> outputs = _finiteDependentPorts(port);
                     for (IOPort outputPort : outputs) {
-                        SuperdenseDependency minimumDelay = 
+                        SuperdenseDependency minimumDelay =
                             (SuperdenseDependency) _getDependency(
                                     port, outputPort);
                         SuperdenseDependency modelTime = (SuperdenseDependency)
@@ -3511,12 +3511,12 @@ public class PtidesBasicDirector extends DEDirector {
                                                     remoteReceivers[i][j]);
                                     // we do not want to traverse to the outside
                                     // of the platform.
-                                    if (sinkPort.getContainer() 
+                                    if (sinkPort.getContainer()
                                             != getContainer()) {
                                         // for this port channel pair, add the
                                         // dependency.
-                                        Map<Integer, SuperdenseDependency> 
-                                            channelDependency = 
+                                        Map<Integer, SuperdenseDependency>
+                                            channelDependency =
                                             (Map<Integer, SuperdenseDependency>)
                                             _inputModelTimeDelays.get(sinkPort);
                                         if (channelDependency == null) {
@@ -3564,7 +3564,7 @@ public class PtidesBasicDirector extends DEDirector {
                                 = (Map<Integer, SuperdenseDependency>)
                                     _inputModelTimeDelays.get(sinkPort);
                             if (channelDependency == null) {
-                                channelDependency 
+                                channelDependency
                                 = new HashMap<Integer, SuperdenseDependency>();
                             }
                             channelDependency.put(Integer.valueOf(channel),
@@ -3643,7 +3643,7 @@ public class PtidesBasicDirector extends DEDirector {
                     _getOraclePhysicalTag().timestamp) < 0) {
                 throw new IllegalActionException(
                         this,
-                        "The original fireAt time: " + 
+                        "The original fireAt time: " +
                         originalFireAtTime +
                         ", which is supposed to happen in the future, " +
                         "is actually in the past: " +
@@ -3759,7 +3759,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
-    
+
     /** Execution time of last actor fired. */
     private Time _lastExecutionTime;
 
@@ -4016,7 +4016,7 @@ public class PtidesBasicDirector extends DEDirector {
             if (Math.abs(_clockDrift - newClockDrift) > thisTimeResolution) {
                 // First update all the parameters in realTimeClock.
                 Time newOracleTime = _getOraclePhysicalTag().timestamp;
-                _lastPlatformTime = 
+                _lastPlatformTime =
                     _getPlatformPhysicalTimeForOraclePhysicalTime(
                             newOracleTime, this, timeCachePair);
                 _lastOracleTime = newOracleTime;
@@ -4024,7 +4024,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // Based on the above information, update the future fireAt
                 // times.
                 if (this == executionTimeClock) {
-                    _futureExecutionFireAtTimes = (List<Time>) 
+                    _futureExecutionFireAtTimes = (List<Time>)
                         _updateFireAtTimes(_futureExecutionFireAtTimes,
                             _ignoredExecutionFireAtTimes, this, timeCachePair);
                 } else if (this == platformTimeClock) {
@@ -4122,7 +4122,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
             return deliveryTag.equals(((RealTimeEvent) other).deliveryTag);
         }
-        
+
         /** Hashcode for this class.
          *  @return hashcode for this class.
          */

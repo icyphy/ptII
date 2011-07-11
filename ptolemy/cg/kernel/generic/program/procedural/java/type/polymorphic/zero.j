@@ -9,7 +9,7 @@ static Token zero_ArrayOneArg(Token a) {
         return $Array_zero(a);
 }
 /**/
- 
+
 /*** zero_Boolean() ***/
 static boolean zero_Boolean() {
         return false;
@@ -25,7 +25,7 @@ static boolean zero_BooleanOneArg(boolean a) {
 /*** zero_Complex() ***/
 
 static Token zero_Complex() {
-       Token result = null;         
+       Token result = null;
 #ifdef PTCG_TYPE_Complex
        result =  $Complex_new(0.0);
 #endif
@@ -36,7 +36,7 @@ static Token zero_Complex() {
 
 /*** zero_ComplexOneArg() ***/
 static Token zero_ComplexOneArg(Token a) {
-       Token result = null;         
+       Token result = null;
 #ifdef PTCG_TYPE_Complex
        result = $Complex_new(0.0);
 #endif

@@ -54,15 +54,15 @@ import ptolemy.util.StringUtilities;
 
 
 /**
-RESTGetHandler is an actor that takes a model and a RESTful string specifying a 
-model resource as inputs, and prints information about that resource to the 
+RESTGetHandler is an actor that takes a model and a RESTful string specifying a
+model resource as inputs, and prints information about that resource to the
 destination file in a combination of HTML + Javascript format.
 
 In the future - should we separate actions (REST get) from actors?
-I envision a "RESTHandler" which would take care of web connection settings, 
-and have (at least) four methods (get, post, put, delete) where classes could be 
+I envision a "RESTHandler" which would take care of web connection settings,
+and have (at least) four methods (get, post, put, delete) where classes could be
 registered to support each method dynamically.  A default method can be inserted
-if the operation is not supported (for example, delete). 
+if the operation is not supported (for example, delete).
 
 @author Beth Latronico
 @version $Id$
@@ -88,78 +88,78 @@ public class RESTGetHandler extends TypedAtomicActor {
     public RESTGetHandler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-        
+
         resource = new StringParameter(this, "resource");
-        
+
         outputToFile = new Parameter(this, "outputToFile");
         outputToFile.setTypeEquals(BaseType.BOOLEAN);
-        
+
         destinationFileName = new FileParameter(this, "destinationFile");
         sourceModel = new FileParameter(this, "sourceModel");
-        
-        
+
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                  ports and parameters                     ////
 
-    /** The file name to write to.  
+    /** The file name to write to.
      *  @see FileParameter
      */
     public FileParameter destinationFileName;
-    
+
     /** Output port for the HTML response.
      */
     public TypedIOPort output;
-    
-    /** True if the actor should output to the file specified by 
+
+    /** True if the actor should output to the file specified by
      * destinationFileName.  Otherwise, actor sends output to output port.
      */
     public Parameter outputToFile;
 
-    /** The resource to return.  This can be the whole model, any contained 
+    /** The resource to return.  This can be the whole model, any contained
      * entity, or a set of contained entities.  Please see the find() method
      * for a full explanation of the syntax.  Some examples:
        modelName  - Returns the top-level entity (the whole model) and a list of
        resources contained by this entity
-        
+
        modelName/x  - Returns actor x whose parent is the top-level entity and a
        list of resources contained by x
-       
-       modelName/x/y  - Returns actor y, whose parent is x, whose parent is the 
+
+       modelName/x/y  - Returns actor y, whose parent is x, whose parent is the
        top-level entity, and a list of resources contained by y
-       
-       modelName/ontology.name=unitSystem&concept=Temperature -  Returns all 
-       entities who have a port annotated with the concept "Temperature" from 
+
+       modelName/ontology.name=unitSystem&concept=Temperature -  Returns all
+       entities who have a port annotated with the concept "Temperature" from
        the ontology "unitSystem"
      */
     public StringParameter resource;
-    
+
     /** An optional string specifying the file name or URL of the model to read
-     *  from.  If blank, the model containing this actor is used. 
+     *  from.  If blank, the model containing this actor is used.
      *  @see FileParameter
      */
     public FileParameter sourceModel;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Fire this actor.  This will collect information about the given resource
      * and the named objects it contains, and output this information to either
      * the output port or a file depending on the user's choice.
      *
-     *  @exception IllegalActionException If there is a problem finding the 
+     *  @exception IllegalActionException If there is a problem finding the
      *  resource or writing to the file.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (_readyToFire) {
-       
-            if (outputToFile != null && outputToFile.getToken() != null && 
+
+            if (outputToFile != null && outputToFile.getToken() != null &&
                     outputToFile.getToken().equals(BooleanToken.TRUE)) {
                 // TODO:  Output to file
             } else {
@@ -167,67 +167,67 @@ public class RESTGetHandler extends TypedAtomicActor {
             }
         }
     }
-    
-    /** Initialize this actor.  Check that the resource name is properly 
+
+    /** Initialize this actor.  Check that the resource name is properly
      * formatted.  If an external model is given, check that this model can be
      * found and opened.  If an output file is given, check that this file can
      * be found and opened.
      *
-     *  @exception IllegalActionException If the resource name is improperly 
-     *  formatted, if an external model is given but can't be opened, or if an 
+     *  @exception IllegalActionException If the resource name is improperly
+     *  formatted, if an external model is given but can't be opened, or if an
      *  output file is given but can't be opened.
      */
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         // Check that the resource is specified in a correctly formatted way.
         // Produce an error message if there is a problem and prohibit firing.
         // TODO:  Check for correct formatting of resource name
-        
-        // If an external model source is given, try to open that model.  
+
+        // If an external model source is given, try to open that model.
         // Produce an error message if there is a problem and prohibit firing
         // TODO:  Implement this feature later
 
-        // Open the destination file for writing.  
+        // Open the destination file for writing.
         // Produce an error message if there is a problem and prohibit firing.
         // TODO:  More error checking
-        if (outputToFile != null && outputToFile.getToken() != null && 
+        if (outputToFile != null && outputToFile.getToken() != null &&
                 outputToFile.getToken().equals(BooleanToken.TRUE)) {
             // TODO:  Implement writing to file.  For now, throw an exception
             /*
             _destinationFile = destinationFileName.asFile();
             if (_destinationFile.exists()) {
-                _readyToFire = true;    
+                _readyToFire = true;
             }
             */
             throw new IllegalActionException(this, "File export is not yet " +
-            		"implemented for RESTGetHandler.  Please uncheck the" +
-            		"outputToFile parmater, and read the output from the " +
-            		"output port.");
+                            "implemented for RESTGetHandler.  Please uncheck the" +
+                            "outputToFile parmater, and read the output from the " +
+                            "output port.");
         } else {
             _readyToFire = true;
         }
-        
-    }
-    
 
-    
+    }
+
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
-    /** Find and return all named objects referenced by the resource parameter.  
+
+    /** Find and return all named objects referenced by the resource parameter.
      *  Return an empty list if the request contained by the resource request is
-     *  malformed. 
-     *  
-     * @return  A list of all named objects corresponding to the request 
-     * contained by the resource parameter.  Can be empty.  Will return an empty 
-     * list if the request is malformed. 
-     * @exception  If the resource is improperly formatted  
+     *  malformed.
+     *
+     * @return  A list of all named objects corresponding to the request
+     * contained by the resource parameter.  Can be empty.  Will return an empty
+     * list if the request is malformed.
+     * @exception  If the resource is improperly formatted
      */
     protected List<NamedObj> findResources() throws IllegalActionException{
-        Vector<NamedObj> containers = new Vector<NamedObj>();     
-        
+        Vector<NamedObj> containers = new Vector<NamedObj>();
+
         // Get the top-level container
         // TODO:  In future, allow other models to be referenced
         NamedObj container = this;
@@ -237,7 +237,7 @@ public class RESTGetHandler extends TypedAtomicActor {
             container = container.getContainer();
         }
         containers.add(container);
-        
+
         // Parse the resource string
         // If blank, return the top-level container
         if (resource == null || resource.getExpression() == null) {
@@ -245,28 +245,28 @@ public class RESTGetHandler extends TypedAtomicActor {
             "a resource.");
         } else  {
             String expression = resource.getExpression();
-            
-            StringTokenizer tokenizer = 
+
+            StringTokenizer tokenizer =
                 new StringTokenizer(expression);
-            
+
             while (tokenizer.hasMoreTokens()) {
                 String objectName = tokenizer.nextToken("/");
-                
+
                 // Check for case where there is just a / and no name
                 // If that happens, query is malformed
                 if (!objectName.isEmpty() ) {
- 
+
                     // Check for queries
                     if (objectName.contains(".")) {
                         // TODO:  Handle queries
-                        
-                        
+
+
                     }  else {
                         int numContainers = containers.size();
-                    
+
                         // Add new objects
                         for (int i = 0; i < numContainers; i++) {
-                            Iterator iterator = 
+                            Iterator iterator =
                                 containers.get(i).containedObjectsIterator();
                             while (iterator.hasNext()) {
                                 NamedObj next = (NamedObj) iterator.next();
@@ -281,37 +281,37 @@ public class RESTGetHandler extends TypedAtomicActor {
                                 }
                             }
                         }
-                    
+
                         // Delete parent objects
                         for (int i = 0; i < numContainers; i++) {
                             containers.remove(0);
                         }
                     }
-                }  else {   
+                }  else {
                     throw new IllegalActionException(this, "The resource "+
                             expression + " is not properly " +
                             "formatted.  Please enter a valid resouce.");
                     }
                 }
-            } 
-           
+            }
+
         return containers;
     }
-    
+
     /** Construct and return the HTML response.  The HTML response includes
      * information about the selected entity or entities and links to contained
      * entities.  If no entities are selected, an empty HTML page is returned.
-     * Uses HTML5 syntax.  
-     * 
+     * Uses HTML5 syntax.
+     *
      * @return The HTML response.
-     * @exception IllegalActionException If the resource is improperly formatted 
+     * @exception IllegalActionException If the resource is improperly formatted
      * @see ptolemy.vergil.basic.ExportHTMLAction
      */
     protected String getHTML() throws IllegalActionException {
-        
+
         StringBuffer HTML = new StringBuffer();
-        HTML.append("<html><head></head><body>");  
-        
+        HTML.append("<html><head></head><body>");
+
         // Add information on each matching object and links to its contained
         // objects
         for (NamedObj obj : findResources()) {
@@ -321,55 +321,55 @@ public class RESTGetHandler extends TypedAtomicActor {
             if (obj.getContainer() instanceof ModalModel) {
                 name = obj.getContainer().getName();
             }
-            
+
             HTML.append("<h1>" + name + "</h1>");
             HTML.append("http:/" + obj.getFullName().replace(".", "/"));
             HTML.append("<br>");
             HTML.append(_getParameterTable(obj));
-            
+
             HTML.append("<h1> Contained resources </h1> <ul>");
             for (String resourceURI : listContainedResources(obj)) {
                 HTML.append("<li>" + resourceURI + "</li>");
             }
             HTML.append("</ul>");
         }
-        
+
         HTML.append("</body></html>");
-        
-        return HTML.toString();  
+
+        return HTML.toString();
     }
-    
-    /** Return a list of URIs for all contained objects.  This allows an agent 
-     * that knows the URI of the main resource (e.g. the top-level model) to 
-     * discover contained resources (e.g. actors in the model).  
-     * 
+
+    /** Return a list of URIs for all contained objects.  This allows an agent
+     * that knows the URI of the main resource (e.g. the top-level model) to
+     * discover contained resources (e.g. actors in the model).
+     *
      * @return A list of URIs for all contained objects
      */
     protected List<String> listContainedResources(NamedObj obj) {
         ArrayList<String> containedResources = new ArrayList();
-        
-        // The URI of an object is its full name with forward slashes instead 
+
+        // The URI of an object is its full name with forward slashes instead
         // of periods.  (Periods are used as a query indicator in a resource
-        // request instead of the conventional question marks, since an object's 
-        // short name cannot contain a period but it can contain a question 
-        // mark).  
+        // request instead of the conventional question marks, since an object's
+        // short name cannot contain a period but it can contain a question
+        // mark).
         Iterator objIterator = obj.containedObjectsIterator();
         while (objIterator.hasNext()) {
             NamedObj nextObj = (NamedObj) objIterator.next();
             containedResources
                 .add("http:/" + nextObj.getFullName().replace(".", "/"));
         }
-        
+
         return containedResources;
     }
-    
 
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**Copied from ExportHTMLAction
-     *  
+     *
      *  Get an HTML table describing the parameters of the object.
      *  @param object The Ptolemy object to return a table for.
      *  @return An HTML table displaying the parameter values for the
@@ -416,18 +416,18 @@ public class RESTGetHandler extends TypedAtomicActor {
         }
         return table.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private parameters                ////
-    
+
     /** The file to write to.  */
     File _destinationFile;
-    
-    /**  A flag indicating if the actor is ready to fire.  True if the source 
+
+    /**  A flag indicating if the actor is ready to fire.  True if the source
      * model is valid, the destination file is available for writing, and the
-     * resource requested is specified in a valid way.  These are checked in 
+     * resource requested is specified in a valid way.  These are checked in
      * initialize().  False otherwise.
      */
-    boolean _readyToFire = false;   
+    boolean _readyToFire = false;
 }
 

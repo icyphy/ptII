@@ -108,9 +108,9 @@ public class CommunicationToken extends Token {
             return false;
         }
 
-        // Calling portChannelTokenMap.equals(other.portChannelTokenMap) would not 
-        // work because the maps contain array objects, and equals method on the array 
-        // objects checks equality of a reference but in our case we need to check 
+        // Calling portChannelTokenMap.equals(other.portChannelTokenMap) would not
+        // work because the maps contain array objects, and equals method on the array
+        // objects checks equality of a reference but in our case we need to check
         // equality of each token within the array objects.
         if (_portChannelTokenMap == null) {
             if (other._portChannelTokenMap != null) {
@@ -147,9 +147,9 @@ public class CommunicationToken extends Token {
         return true;
     }
 
-    /** Return the mapping from ports to their channels with tokens have been 
+    /** Return the mapping from ports to their channels with tokens have been
      *  received within one iteration.
-     *  @return the mapping from ports to their channels with tokens have been 
+     *  @return the mapping from ports to their channels with tokens have been
      *  received within one iteration.
      */
     public HashMap<String, ArrayList<Token[]>> getPortChannelTokenMap() {
@@ -237,7 +237,7 @@ public class CommunicationToken extends Token {
     private final HashMap<String, ArrayList<Token[]>> _portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>();
 
     /** Number of tokens encapsulated by the communication token.
-     *  It's transient to indicate that the size field won't be serialized but 
+     *  It's transient to indicate that the size field won't be serialized but
      *  is here just for managing the size of batching.
      */
     private transient int _size = 0;

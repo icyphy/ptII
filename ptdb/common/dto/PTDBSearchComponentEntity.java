@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -36,9 +36,9 @@ import ptolemy.kernel.ComponentEntity;
 
 /**
  * The component entity to wrap the component information to be searched in the
- * database. It wraps the atomic component information specified in the 
- * AtomicActorMatcher. 
- * 
+ * database. It wraps the atomic component information specified in the
+ * AtomicActorMatcher.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -49,7 +49,7 @@ import ptolemy.kernel.ComponentEntity;
 public class PTDBSearchComponentEntity extends ComponentEntity {
 
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public PTDBSearchComponentEntity() {
        super();

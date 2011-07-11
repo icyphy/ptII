@@ -21,13 +21,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 /*
- * 
+ *
  */
 package ptdb.gui;
 
@@ -41,12 +41,12 @@ import ptdb.common.dto.SetupParameters;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.kernel.bl.setup.SetupManager;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DatabaseSetupFrame
 
 /**
  * Database setup frame to modify and test the datadase connection.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -56,7 +56,7 @@ import ptdb.kernel.bl.setup.SetupManager;
  */
 public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
 
-    /** Create a new Database setup frame with values 
+    /** Create a new Database setup frame with values
      * from the properties file. */
     public DatabaseSetupFrame() {
         this.setTitle("Setup Database Connection");
@@ -65,28 +65,28 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
         _populateSetupParameters();
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public variables 				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods                                ////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
-     * 
+     *
      */
-    
+
     public void closeFrame() {
         dispose();
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		protected methods 				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-    //////////////////////////////////////////////////////////////////////
-    ////		protected variables 				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 				////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -108,7 +108,7 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
         _cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         setResizable(false);
 
         urlLabel.setText("URL");
@@ -124,14 +124,14 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
                 });
 
         cacheLabel.setText("Cache Container Name");
-        
+
         _browseButton.setText("Browse...");
         _browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
             }
         });
-        
+
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,14 +181,14 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
                                                                                                 urlLabel)
                                                                                         .addComponent(
                                                                                                 cacheLabel))
-                                                                  
-                                                                         
+
+
                                                                         .addGap(
                                                                                 33,
                                                                                 33,
                                                                                 33)
                                                                         .addGroup(
-                                                                                
+
                                                                                 jPanel1Layout
                                                                                         .createParallelGroup(
                                                                                                 javax.swing.GroupLayout.Alignment.TRAILING,
@@ -196,21 +196,21 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
                                                                                         .addComponent(
                                                                                                 _containerNameTextField,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                
-                                                                                        
+
+
                                                                                         .addComponent(
                                                                                                 _urlTextField,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 281,
                                                                                                 Short.MAX_VALUE)
-                                                           
+
                                                                                         .addComponent(
                                                                                                 _cacheContainerNameTextField,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)))
-                                                        
-                                                           
-                                                                                                       
+
+
+
                                                            .addGroup(
                                                                 jPanel1Layout
                                                                         .createSequentialGroup()
@@ -253,13 +253,13 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
                                                 jPanel1Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        
+
                                                         .addComponent(
                                                                 _urlTextField,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        
+
                                                         .addComponent(_browseButton)
                                                         .addComponent(urlLabel))
                                         .addPreferredGap(
@@ -336,7 +336,7 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
             java.awt.event.ActionEvent evt) {
         _testConnection();
     }
-    
+
     /**
      * Handles the browse button action.
      * <p>
@@ -345,17 +345,17 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
      * @param evt The action event performed on the browse button.
      */
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        
+
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         if (fileChooser.showOpenDialog(DatabaseSetupFrame.this) == JFileChooser.APPROVE_OPTION) {
-            
+
             String directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
-            
+
             _urlTextField.setText(directoryPath);
-            
+
             // Make sure the text field shows the beginning of the path.
             _urlTextField.getCaret().setDot(0);
         }
@@ -386,7 +386,7 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
         dispose();
     }
 
-    
+
     /*public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -404,7 +404,7 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
     }
 
     /**
-     * Populate the three text fields on the form. 
+     * Populate the three text fields on the form.
      */
     private void _populateSetupParameters() {
 
@@ -451,8 +451,8 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
         SetupManager setupManager = new SetupManager();
 
         boolean isValid = _validateSetupParameters();
-        
-        if(isValid) {
+
+        if (isValid) {
             try {
                 setupManager.testConnection(_readSetupParameters());
             } catch (DBConnectionException e) {
@@ -469,14 +469,14 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
                 isValid = input == JOptionPane.YES_OPTION;
             }
         }
-        
+
         if (isValid) {
             SetupParameters setupParameters = _readSetupParameters();
             try {
-                try{
+                try {
                 setupManager.updateDBConnectionSetupParameters(setupParameters);
                 } catch (ExceptionInInitializerError e) {
-                    
+
                 }
                 JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
                         "Setup parameters have been saved.");
@@ -535,7 +535,7 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
 
     ///
     ///////////////////////////////////////////////////////////////////
-    ////		private variables				////
+    ////                         private variables                 ////
     private SetupParameters _setupParameters;
     private javax.swing.JTextField _cacheContainerNameTextField;
     private javax.swing.JButton _cancelButton;

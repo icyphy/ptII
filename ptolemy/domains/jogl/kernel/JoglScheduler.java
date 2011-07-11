@@ -49,14 +49,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-/////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GraphicsScheduler
 
 /**
 
  A scheduler that implements scheduling of the active parts of a GRO
  scene graph. The scene graph is assumed to be a directed acyclic graph.
- Scheduling is done by performing a reversed topological sort on 
+ Scheduling is done by performing a reversed topological sort on
  all the actors.
 
  @see ptolemy.actor.sched.Scheduler
@@ -153,7 +153,7 @@ public class JoglScheduler extends Scheduler {
         // get all the contained actors.
         List entities = castContainer.deepEntityList();
         Iterator actors = entities.iterator();
-       
+
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -247,29 +247,29 @@ public class JoglScheduler extends Scheduler {
      * @param actorToAdd The given actor to add a firing to the
      *  schedule.
      */
-    private void _constructDepthFirstSchedule(Schedule schedule, 
+    private void _constructDepthFirstSchedule(Schedule schedule,
             DirectedAcyclicGraph dag, Object actorToAdd) {
-        
+
         if (actorToAdd == null) {
             return;
         }
-        
 
-        
+
+
         Firing firing = new Firing();
         firing.setActor((Actor) actorToAdd);
         schedule.add(firing);
-        
+
         for (Object node : dag.successors(dag.node(actorToAdd))) {
             _constructDepthFirstSchedule(schedule, dag, ((Node) node).getWeight());
         }
 
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The static name of the scheduler
     private static final String _STATIC_NAME = "GROScheduler";
 }

@@ -45,7 +45,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportImageJUnitTest
-/** 
+/**
  * Test out the Export Image facility, which saves as gif, png, pdf etc.
  *
  * @author Christopher Brooks
@@ -57,7 +57,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 public class ExportImageJUnitTest {
 
     /** Test the ExportImage facility.
-     *   
+     *
      *  <p>To run, use:</p>
      *
      *  <pre>
@@ -65,7 +65,7 @@ public class ExportImageJUnitTest {
      *      $PTII:$PTII/lib/junit-4.8.2.jar: \
      *      ptolemy.vergil.basic.test.junit.ExportImageJUnitTest
      *  </pre>
-     * 
+     *
      *  @param args Not used.
      */
     public static void main(String args[]) {
@@ -73,7 +73,7 @@ public class ExportImageJUnitTest {
                 .main("ptolemy.vergil.basic.test.junit.ExportImageJUnitTest");
     }
 
-    /** 
+    /**
      * Test the layout facility by reading in a models, stripping
      * out the graphical elements, laying out the models, comparing
      * the new results with the known good results and then doing
@@ -98,7 +98,7 @@ public class ExportImageJUnitTest {
      * <p>The caller of this method need <b>not</b>be in the Swing
      * Event Thread.</p>
      *
-     * @param modelFileName The file name of the test model. 
+     * @param modelFileName The file name of the test model.
      * @exception Throwable If the file name cannot be read or laid out.
      */
     protected void _exportImageTest(final String modelFileName)
@@ -180,7 +180,7 @@ public class ExportImageJUnitTest {
 
                            // Run a model that displays the image.
                            ImageReader imageReader = (ImageReader) ((CompositeEntity)imageDisplayModel[0]).getEntity("ImageReader");
-                           
+
                            imageReader.fileOrURL.setExpression(imageFile.toURI().toURL().toString());
                            Manager manager = model[0].getManager();
                            if (manager == null) {

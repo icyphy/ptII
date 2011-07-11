@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -91,23 +91,23 @@ public interface DBConnection {
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException;
-    
-    
+
+
     /**
-     * Execute the necessary commands to create a new attribute in the database 
+     * Execute the necessary commands to create a new attribute in the database
      * according to the attribute specification given in the task parameter.
      *
      * @param task
      *          The task to be completed.  In this case, CreateAttributeTask.
      *          This will tell the DB layer to create a new attribute in the database.
-     * 
+     *
      * @return The XMLDBAttribute object that was stored in the Database.
-     *  
+     *
      * @exception DBExecutionException Thrown if the operation fails.
      */
     public XMLDBAttribute executeCreateAttributeTask(CreateAttributeTask task)
             throws DBExecutionException;
-    
+
     /**
      * Execute the necessary commands to create a new model in the database according
      * to the model specification given in the task parameter.
@@ -115,21 +115,21 @@ public interface DBConnection {
      * @param task
      *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
-     * 
+     *
      * @return The Id of the newly created model.
-     * 
+     *
      * @exception DBExecutionException
-     * @exception ModelAlreadyExistException Thrown if the model being created 
+     * @exception ModelAlreadyExistException Thrown if the model being created
      * already exists.
-     * @throws CircularDependencyException If thrown while creating reference 
+     * @exception CircularDependencyException If thrown while creating reference
      * string.
      */
     public String executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException, CircularDependencyException;
-    
-    
+
+
     /**
-     * Execute the necessary commands to delete an attribute from the database 
+     * Execute the necessary commands to delete an attribute from the database
      * according to the attribute specification given in the task parameter.
      *
      * @param task
@@ -151,16 +151,16 @@ public interface DBConnection {
     public ArrayList<XMLDBModel> executeFetchHierarchyTask(
             FetchHierarchyTask task) throws DBExecutionException;
 
-    /** 
-     * Retrieve and return the list of all models in the database. 
+    /**
+     * Retrieve and return the list of all models in the database.
      * @return List of models in the database.
-     * @throws DBExecutionException thrown if there is an error while reading 
+     * @exception DBExecutionException thrown if there is an error while reading
      * the model list from the database.
      */
-    public List<XMLDBModel> executeGetListOfAllModels() 
+    public List<XMLDBModel> executeGetListOfAllModels()
             throws DBExecutionException;
-    
-    
+
+
     /**
      * Search models that contain the given attributes in the database.
      *
@@ -182,22 +182,22 @@ public interface DBConnection {
      */
     public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException;
-    
+
     /**
      * Execute the given task to fetch the first level parents for the given model.
      * First level parents are models that are immediate parents for the given model.
      *
-     * @param task Task that contains the model for which the first level 
+     * @param task Task that contains the model for which the first level
      * parents list needs to be fetched.
-     * 
+     *
      * @return List of models that are the first-level parents of the given model.
-     * 
-     * @throws DBExecutionException If thrown while fetching the parents list from the 
+     *
+     * @exception DBExecutionException If thrown while fetching the parents list from the
      * database.
      */
     public List<XMLDBModel> executeGetFirstLevelParents(
             GetFirstLevelParentsTask task) throws DBExecutionException;
-    
+
     /**
      * Execute the necessary commands to retrieve a model from the database.
      *
@@ -210,19 +210,19 @@ public interface DBConnection {
      */
     public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException;
-    
+
     /**
      * Get the model reference string for the given model name.
      * @param task Task that contains the model name.
-     * @return The reference string for the given model name. 
-     * @throws DBExecutionException If thrown while fetching the reference 
+     * @return The reference string for the given model name.
+     * @exception DBExecutionException If thrown while fetching the reference
      * string.
      */
     public String executeGetReferenceStringTask(GetReferenceStringTask task)
             throws DBExecutionException;
-    
+
     /**
-     * Execute the necessary commands to retrieve a model from the database 
+     * Execute the necessary commands to retrieve a model from the database
      * and resolve all the references in it if any.
      *
      * @param task
@@ -234,8 +234,8 @@ public interface DBConnection {
      */
     public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
             throws DBExecutionException;
-    
-    
+
+
 
     /**
      * Search models that contain given graphical pattern in the database.
@@ -249,61 +249,61 @@ public interface DBConnection {
             throws DBExecutionException;
 
     /** Execute the model name search task.
-     * 
+     *
      * @param modelNameSearchTask Task that contains the model name to be searched for.
      * @return List of matching models.
-     * @throws DBExecutionException If thrown while searching the database.
+     * @exception DBExecutionException If thrown while searching the database.
      */
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
             throws DBExecutionException;
-    
+
     /**
-     * Execute the necessary commands to save/update a model in the database 
+     * Execute the necessary commands to save/update a model in the database
      * according to the model specification given in the task parameter.
      *
      * @param task
      *          The task to be completed.  In this case, SaveModelTask.
-     *          This will tell the DB layer to save/update a model already 
+     *          This will tell the DB layer to save/update a model already
      *          existing in the database.
-     * 
+     *
      * @return The Id of the saved model.
-     * 
-     * @exception DBExecutionException Thrown when there is a problem in 
+     *
+     * @exception DBExecutionException Thrown when there is a problem in
      * executing the task.
-     * @throws CircularDependencyException If thrown while creating reference 
-     * string. 
+     * @exception CircularDependencyException If thrown while creating reference
+     * string.
      */
     public String executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException, CircularDependencyException;
-    
-    
+
+
     /**
      * Execute remove models task to delete a list of models from the database.
      * @param task Contains a list of models to be deleted from the database.
-     * @throws DBExecutionException Thrown if the operation fails.
+     * @exception DBExecutionException Thrown if the operation fails.
      */
-    public void executeRemoveModelsTask (RemoveModelsTask task) 
+    public void executeRemoveModelsTask (RemoveModelsTask task)
             throws DBExecutionException;
-    
-    
+
+
     /**
-     * Execute rename model task which will change the name of the model in 
+     * Execute rename model task which will change the name of the model in
      * the database and reflect the change in the reference file.
-     * @param task RenameModelTask object that contains the XMLDBModel 
+     * @param task RenameModelTask object that contains the XMLDBModel
      * object and the new name.
      * @exception DBConnectionException Thrown if there was a problem with the connection.
      * @exception DBExecutionException Thrown if there is a problem in executing the task.
      * @exception DBModelNotFoundException Thrown if the model with the name to be changed does not exist.
      * @exception ModelAlreadyExistException Thrown if the new name is a name of a model that is already in the database.
      */
-    public void executeRenameModelTask(RenameModelTask task) 
+    public void executeRenameModelTask(RenameModelTask task)
             throws DBConnectionException, DBExecutionException,
             ModelAlreadyExistException, DBModelNotFoundException;
-    
+
 
     /**
-     * Execute the necessary commands to update an attribute in the database 
+     * Execute the necessary commands to update an attribute in the database
      * according to the attribute specification given in the task parameter.
      *
      * @param task
@@ -313,26 +313,26 @@ public interface DBConnection {
      */
     public void executeUpdateAttributeTask(UpdateAttributeTask task)
             throws DBExecutionException;
-    
+
     /**
      * Execute the necessary commands to update the cache with the given model.
-     * 
-     * <p>If the model exists, replace it with the new model. 
+     *
+     * <p>If the model exists, replace it with the new model.
      * <br> If the model does not exist, save it in the cache.</p>
-     * 
+     *
      * @param xmlDBModel The model object that needs to be added to the cache.
      * @exception DBExecutionException Thrown if the operation fails.
      * already exists.
      */
     public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
             throws DBExecutionException;
-    
+
     /**
-     * Execute the given task to update the referenced version for the given 
-     * parents from the old model to the new model. 
-     * @param task Task that contains the list of parents, the old model and the 
+     * Execute the given task to update the referenced version for the given
+     * parents from the old model to the new model.
+     * @param task Task that contains the list of parents, the old model and the
      * new model.
-     * @throws DBExecutionException If thrown while updating the parents in the 
+     * @exception DBExecutionException If thrown while updating the parents in the
      * database.
      */
     public void executeUpdateParentsToNewVersion(

@@ -57,7 +57,7 @@ import ptolemy.moml.Vertex;
  * creating vertices are available. The changes are performed by
  * MoMLChangeRequests where as long as possible those requests get buffered in
  * order to perform multiple changes at once for performance.
- * 
+ *
  * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>, Christian Motika
  *         <cmot@informatik.uni-kiel.de>
  * @version $Id$
@@ -67,8 +67,8 @@ import ptolemy.moml.Vertex;
  */
 public class PtolemyModelUtil {
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Construct an instance and initialize the internal request buffer.
@@ -84,7 +84,7 @@ public class PtolemyModelUtil {
      * {@link MoMLChangeRequest}. Although this might be inefficient, this will
      * take care about correct updating of all things that require the change,
      * e.g. the GUI.
-     * 
+     *
      * @param target the target Ptolem object
      * @param attribute the attribute to add
      */
@@ -102,7 +102,7 @@ public class PtolemyModelUtil {
     /**
      * Flush all buffered change requests to the given Actor. Reset the buffer
      * afterwards.
-     * 
+     *
      * @param actor The target of the change request, e.g. the composite actor
      *            containing the objects for which changes are requested.
      */
@@ -133,7 +133,7 @@ public class PtolemyModelUtil {
      * between the objects. Iterate all relations in the parent actor and for
      * all unnecessary relations with vertices, remove them and if required
      * reestablish the links such that the semantics keeps the same.
-     * 
+     *
      * @param parent The composite actor in which to look for unnecessary
      *            relations.
      */
@@ -216,7 +216,7 @@ public class PtolemyModelUtil {
      * get hidden, because they are not only inserted for layout. Usually those
      * are completely unnecessary and should be removed, so the user should be
      * able to see them.
-     * 
+     *
      * @param parent Composite actor that should be searched for unnecessary
      *            vertices.
      */
@@ -225,17 +225,17 @@ public class PtolemyModelUtil {
         _hide = !_hide;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Create a new MoMLChangeRequest to add a new Relation. The MoML code is
      * appended to the field MoMLChangeRequest buffer to buffer multiple such
      * requests. Don't actually execute the request.
-     * 
+     *
      * To flush the request, the method
      * {@link #performChangeRequest(CompositeActor)} must be called.
-     * 
+     *
      * @param relationName Name of the new relation which needs to be unique
      * @return name of newly created relation
      */
@@ -253,10 +253,10 @@ public class PtolemyModelUtil {
      * given position. The MoML code is appended to the field MoMLChangeRequest
      * buffer to buffer multiple such requests. Don't actually execute the
      * request.
-     * 
+     *
      * To flush the request, the method
      * {@link #performChangeRequest(CompositeActor)} must be called.
-     * 
+     *
      * @param relationName Name of the new relation which needs to be unique
      * @param x coordinate of new vertex
      * @param y coordinate of new vertex
@@ -277,7 +277,7 @@ public class PtolemyModelUtil {
     /**
      * Hide a specific relation vertex. Set or unset the _hide attribute of a
      * relation vertex.
-     * 
+     *
      * @param relationName Name of the relation that contains the vertex.
      * @param vertexName Name of the vertex.
      * @param hide True iff the hide attribute should be set. Otherwise if it
@@ -305,10 +305,10 @@ public class PtolemyModelUtil {
      * Supported types are given by MoML, e.g. "port", "relation". Connecting
      * multiple relations requires to add a number, "relation1", "relation2" to
      * the corresponding type.
-     * 
+     *
      * To flush the request, the method
      * {@link #performChangeRequest(CompositeActor)} must be called.
-     * 
+     *
      * @param type1 type of the first item to be linked, e.g. port, relation,
      *            relation1, relation2
      * @param name1 name of the first item to be linked
@@ -324,7 +324,7 @@ public class PtolemyModelUtil {
 
     /**
      * Link a port with something else (port or relation) at a specific index.
-     * 
+     *
      * @param portName Name of the port to be linked.
      * @param type2 Type of the second object, i.e. port or relation.
      * @param name2 Name of the second object to be linked.
@@ -340,7 +340,7 @@ public class PtolemyModelUtil {
     /**
      * Link a port with something else (port or relation) at a specific inside
      * index.
-     * 
+     *
      * @param portName Name of the port to be linked.
      * @param type2 Type of the second object, i.e. port or relation.
      * @param name2 Name of the second object to be linked.
@@ -359,7 +359,7 @@ public class PtolemyModelUtil {
      * Get the location given by the location attribute of the given input
      * object. If the Ptolemy object has no location attribute, return double
      * zero.
-     * 
+     *
      * @param namedObj The Ptolemy object for which the location should be
      *            retrieved.
      * @return A double array containing two double values corresponding to the
@@ -394,7 +394,7 @@ public class PtolemyModelUtil {
             /* Workaround for a strange behavior: If loading a model
              * from MoML, a Location might have set a valid expression with
              * non trivial values, but it hasn't been validated and therefore
-             * the value is still {0,0} 
+             * the value is still {0,0}
              */
             location = locationAttribute.getLocation();
             if (location[0] == 0 && location[1] == 0) {
@@ -417,7 +417,7 @@ public class PtolemyModelUtil {
      * For a set of relations get a set of relation groups, i.e. for each
      * relation construct a list of relations that are all interconnected,
      * either directly or indirectly.
-     * 
+     *
      * @param relations Set of relations
      * @return a Set of relation groups as given by List<Relation> objects by
      *         Ptolemy
@@ -450,7 +450,7 @@ public class PtolemyModelUtil {
      * where the official getUniqueName() methods of the parent composite actors
      * cannot be used (e.g. if to create multiple new objects in just one
      * MoMLChangeRequest.
-     * 
+     *
      * @return An integer where every following call will give a different one.
      */
     protected int _getUniqueNumber() {
@@ -470,7 +470,7 @@ public class PtolemyModelUtil {
      * The rationale is that for MoMLChangeRequests it is desireable to collect
      * multiple changes (e.g. multiple object creations that all require a
      * unique name).
-     * 
+     *
      * @param actor CompositeActor in which to search for the names.
      * @param prefix Given prefix that shall be suffixed to get a unique name.
      * @return A unique name in the composite actor namespace.
@@ -503,7 +503,7 @@ public class PtolemyModelUtil {
     /**
      * Check whether the given Ptolemy model object has any connections, i.e. is
      * connected to any other components via some link.
-     * 
+     *
      * @param namedObj The Ptolemy model object which is to be analyzed
      * @return True if the object is an Actor and any port has any relations or
      *         is connected to any other port; true if the object is a Relation;
@@ -542,7 +542,7 @@ public class PtolemyModelUtil {
 
     /**
      * Determine whether a given Port is an input port.
-     * 
+     *
      * @param port The port to be analyzed
      * @return True if the port is an input port
      */
@@ -562,7 +562,7 @@ public class PtolemyModelUtil {
 
     /**
      * Remove a single relation.
-     * 
+     *
      * @param relation Relation to be removed.
      * @param actor Parent actor of the relation.
      */
@@ -575,7 +575,7 @@ public class PtolemyModelUtil {
     /**
      * Create a MoMLChangeRequest to remove a set of relations in a Ptolemy
      * model object.
-     * 
+     *
      * @param relationSet Set of relation to be removed from the Ptolemy model
      */
     protected void _removeRelations(Set<Relation> relationSet) {
@@ -590,7 +590,7 @@ public class PtolemyModelUtil {
 
     /**
      * Remove a vertex from a relation.
-     * 
+     *
      * @param relation The relation to remove the vertex from.
      */
     protected void _removeRelationVertex(Relation relation) {
@@ -611,7 +611,7 @@ public class PtolemyModelUtil {
      * immediately. The request is addressed to a specific NamedObj in the
      * Ptolemy model and hence does not get buffered because there is only
      * exactly one move request per layout run per node.
-     * 
+     *
      * @param obj Ptolemy node to be moved
      * @param x new coordinate
      * @param y new coordinate
@@ -636,7 +636,7 @@ public class PtolemyModelUtil {
      * immediately. The request is addressed to a specific NamedObj in the
      * Ptolemy model and hence does not get buffered because there is only
      * exactly one move request per layout run per node.
-     * 
+     *
      * @param vertex Ptolemy node to be moved
      * @param relation Ptolemy Relation to be moved
      * @param x new coordinate
@@ -670,7 +670,7 @@ public class PtolemyModelUtil {
      * because they are not only inserted for layout. Usually those are
      * completely unnecessary and should be removed, so the user should be able
      * to see them.
-     * 
+     *
      * @param parent Composite actor that should be searched for unnecessary
      *            vertices.
      * @param show True iff the vertices should be shown, false if hidden.
@@ -720,7 +720,7 @@ public class PtolemyModelUtil {
     /**
      * Return a string that is identical to the specified string except any
      * trailing digits are removed.
-     * 
+     *
      * @param string The string to strip of its numeric suffix.
      * @return A string with no numeric suffix.
      */
@@ -753,7 +753,7 @@ public class PtolemyModelUtil {
 
     /**
      * Unlink a port at the given channel index.
-     * 
+     *
      * @param portName Name of the Port.
      * @param index Index of the channel to be unlinked.
      */
@@ -765,7 +765,7 @@ public class PtolemyModelUtil {
 
     /**
      * Unlink a port at the given channel inside index.
-     * 
+     *
      * @param portName Name of the Port.
      * @param insideIndex Index of the channel to be unlinked.
      */
@@ -777,7 +777,7 @@ public class PtolemyModelUtil {
 
     /**
      * Unlink two relations.
-     * 
+     *
      * @param relation1 Name of first relation to unlink.
      * @param relation2 Name of second relation to unlink.
      */
@@ -787,8 +787,8 @@ public class PtolemyModelUtil {
         _momlChangeRequest.append(moml);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * Flag indicating whether there have been any MoMLChangeRequests processed

@@ -7,7 +7,7 @@ import com.sun.jna.Structure;
 import com.sun.jna.ptr.PointerByReference;
 
 public class IplImage extends Structure {
-    public int  nSize; 
+    public int  nSize;
     public int  ID;
     public int  nChannels;
     public int  alphaChannel;
@@ -35,15 +35,15 @@ public class IplImage extends Structure {
     public IplImage() {
         super();
     }
-    public IplImage(Pointer p){
+    public IplImage(Pointer p) {
         super(p);
     }
     public static class ByReference extends IplImage implements Structure.ByReference {}
 
-    public ByReference getByReference(){
+    public ByReference getByReference() {
         return new ByReference();
     }
     public PointerByReference getPointerByReference() {
-        return new PointerByReference(this.getPointer()); 
+        return new PointerByReference(this.getPointer());
     };
 }
