@@ -100,7 +100,7 @@ public class ExecutionTime extends LimitedFiringSource {
 
     /** The granularity of the computation. This parameter specifies
      *  the number of additions performed in each invocation of the
-     *  (unintersting) computation. This is a long, which defaults
+     *  (uninteresting) computation. This is a long, which defaults
      *  to 400000, which yields a computation time granularity
      *  of approximately 1msec on a MacBook Pro.
      */

@@ -347,7 +347,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return super._replaceMacro(macro, parameter);
     }
 
-    /** Get the translanted expression.
+    /** Get the translated expression.
      *  @param expression The expression to be parsed and translated.
      *  @return the translated expression.
      *  @exception IllegalActionException If thrown by the parser.

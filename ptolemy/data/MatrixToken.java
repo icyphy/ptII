@@ -461,7 +461,7 @@ public abstract class MatrixToken extends Token {
      *  @param rowSpan The number of rows to copy.
      *  @param colSpan The number of columns to copy.
      *  @return subclasses return a sub-matrix of this matrix.  This
-     *  base class does not return, it always throwns an exception.
+     *  base class does not return, it always throws an exception.
      *  @exception IllegalActionException If the operation is not
      *  supported. Always thrown in this base class.
      */

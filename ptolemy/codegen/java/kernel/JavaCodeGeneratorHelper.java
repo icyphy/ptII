@@ -66,7 +66,7 @@ import ptolemy.util.StringUtilities;
  <p> In derived classes, these methods,
  if present, make actor specific changes to the corresponding code.
  If these methods are not present, then the parent class will automatically
- read the corresponding .c file and subsitute in the corresponding code
+ read the corresponding .c file and substitute in the corresponding code
  block.  For example, generateInitializeCode() reads the
  <code>initBlock</code>, processes the macros and adds the resulting
  code block to the output.

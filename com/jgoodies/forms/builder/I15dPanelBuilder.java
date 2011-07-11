@@ -207,7 +207,7 @@ public class I15dPanelBuilder extends PanelBuilder {
      * Adds an internationalized (i15d)  titled separator to the form using
      * the specified constraints.
      *
-     * @param resourceKey         the resource key for the separator titel
+     * @param resourceKey         the resource key for the separator title
      * @param encodedConstraints  a string representation for the constraints
      * @return the added titled separator
      */
@@ -232,7 +232,7 @@ public class I15dPanelBuilder extends PanelBuilder {
     /**
      * Adds a title to the form using the specified constraints.
      *
-     * @param resourceKey         the resource key for the separator titel
+     * @param resourceKey         the resource key for the separator title
      * @param encodedConstraints  a string representation for the constraints
      * @return the added title label
      */

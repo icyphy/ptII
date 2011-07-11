@@ -129,7 +129,7 @@ public class MobileModel extends TypedCompositeActor {
     public Parameter director;
 
     /** This Parameter specifies whether to replace the previous model
-     *  when there is model changing request or not. The type of thie
+     *  when there is model changing request or not. The type of this
      *  parameter is boolean. Select this parameter if it does replace.
      */
     public Parameter refresh;

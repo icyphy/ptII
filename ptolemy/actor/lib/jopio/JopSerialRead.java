@@ -1,4 +1,4 @@
-/* Serail port read for JOP.
+/* Serial port read for JOP.
 
  Copyright (c) 2009-2011 The Regents of the University of California.
  All rights reserved.
@@ -39,8 +39,7 @@ import ptolemy.kernel.util.Workspace;
 //// JopSerialRead
 
 /**
- <p>
- Read serail port on the Java processor JOP (see http://www.jopdesign.com).
+ Read the serial port on the Java processor JOP (see http://www.jopdesign.com).
  <p>
  In the simulation just dummy values are returned (the simulated us counter).
 

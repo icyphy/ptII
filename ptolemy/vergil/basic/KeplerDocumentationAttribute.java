@@ -52,7 +52,7 @@ import ptolemy.util.StringUtilities;
 /**
  A Documentation attribute for actors.
  This class is used by Kepler so that the DocViewer can access kepler
- specfic actor metadata based documentation.
+ specific actor metadata based documentation.
  @author Chad Berkley
  @version $Id$
  @since Ptolemy II 6.1

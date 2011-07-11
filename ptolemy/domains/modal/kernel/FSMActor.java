@@ -138,7 +138,7 @@ import ptolemy.kernel.util.Workspace;
  known during firings under a director with fixed-point semantics,
  such as SR or Continuous.
  <p>
- To refer to a channel specificatlly, a guard expression may use
+ To refer to a channel specificly, a guard expression may use
  <i>portName</i>_<i>channelIndex</i>, which has value equal to the token
  received on the port on the given channel. Similarly, it may refer
  to <i>portName</i>_<i>channelIndex</i>_<i>isPresent</i>.
@@ -1994,7 +1994,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  form portName, portName_isPresent, portName_i, portName_i_isPresent,
      *  etc.
      *  @param identifier The specified identifier.
-     *  @return The port that corresponds with teh specified identifier.
+     *  @return The port that corresponds with the specified identifier.
      *  @exception IllegalActionException If getting the width of the port fails.
      */
     protected Port _getPortForIdentifier(String identifier)

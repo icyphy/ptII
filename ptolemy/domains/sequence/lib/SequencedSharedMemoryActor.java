@@ -61,7 +61,7 @@ import ptolemy.kernel.util.StringAttribute;
  */
 public abstract class SequencedSharedMemoryActor extends SetVariable {
 
-    /** Create a new SequecedSharedMemoryActor with the given name and
+    /** Create a new SequencedSharedMemoryActor with the given name and
      *  container.
      * @param container The container for the new actor.
      * @param name The name of the new actor.

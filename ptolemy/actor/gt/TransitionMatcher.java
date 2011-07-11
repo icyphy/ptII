@@ -117,7 +117,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *  the pattern of the same {@link TransformationRule}, if this entity is in
      *  the replacement, or <tt>null</tt> otherwise.
      *
-     *  @return The attribute that stires the name of the corresponding entity.
+     *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
     public PatternObjectAttribute getPatternObjectAttribute() {

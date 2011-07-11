@@ -48,7 +48,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 /**
- * This class acts as a surogate layout manager for the JGoodies
+ * This class acts as a surrogate layout manager for the JGoodies
  * (www.jgoodies.com) FormLayout manager. This layout manager enables us to
  * associate names with components and then define the constraints for the
  * component elsewhere (like xml)

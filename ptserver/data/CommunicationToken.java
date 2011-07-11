@@ -184,7 +184,7 @@ public class CommunicationToken extends Token {
     }
 
     /** Compute hash code of the instance based on the targetActorname and portChannelTokenMap.
-     *  @return the hash code based on targetActorName and tokens in the portChannelTokanMap.
+     *  @return the hash code based on targetActorName and tokens in the portChannelTokenMap.
      *  @see java.lang.Object#hashCode()
      */
     @Override

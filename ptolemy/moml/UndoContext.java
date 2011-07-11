@@ -284,7 +284,7 @@ public class UndoContext {
     /**
      *  Set whether or not the child contexts are undoable.
      *
-     * @param  isUndoable  the new statet
+     * @param  isUndoable  the new state
      */
     public void setChildrenUndoable(boolean isUndoable) {
         _childrenUndoable = isUndoable;
@@ -293,7 +293,7 @@ public class UndoContext {
     /**
      *  Set whether or not the current context is undoable.
      *
-     * @param  isUndoable  the new statet
+     * @param  isUndoable  the new state
      */
     public void setUndoable(boolean isUndoable) {
         _undoable = isUndoable;

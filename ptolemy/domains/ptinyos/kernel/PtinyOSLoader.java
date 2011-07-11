@@ -83,7 +83,7 @@ public interface PtinyOSLoader {
 
     /** Native method that invokes the main() method in TOSSIM.
      *  @param argsToMain Arguments to pass to TOSSIM.
-     *  @return Zero if call completes succesfully, non-zero if there
+     *  @return Zero if call completes successfully, non-zero if there
      *  are errors in TOSSIM.
      *  @exception InternalErrorException If thrown in TOSSIM.
      */

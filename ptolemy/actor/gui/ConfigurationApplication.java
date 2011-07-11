@@ -1122,7 +1122,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     //                     System.out.println("-class: effigy: " + effigy);
                     //                     ModelDirectory directory = (ModelDirectory) _configuration
                     //                         .getEntity("directory");
-                    //                     // Can't use names with dots, so we subsitute.
+                    //                     // Can't use names with dots, so we substitute.
                     //                     String safeName =
                     //                         StringUtilities.substitute(arg, ".","_" );
                     //                     effigy.setName(safeName);

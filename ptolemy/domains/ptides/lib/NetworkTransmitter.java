@@ -109,15 +109,15 @@ public class NetworkTransmitter extends OutputDevice {
      */
     public TypedIOPort output;
 
-    /** label of the timestamp that's transmitterd within the RecordToken.
+    /** label of the timestamp that is transmitted within the RecordToken.
      */
     private static final String timestamp = "timestamp";
 
-    /** label of the microstep that's transmitterd within the RecordToken.
+    /** label of the microstep that is transmitted within the RecordToken.
      */
     private static final String microstep = "microstep";
 
-    /** label of the payload that's transmitterd within the RecordToken.
+    /** label of the payload that is transmitted within the RecordToken.
      */
     private static final String payload = "payload";
 

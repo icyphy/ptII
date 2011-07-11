@@ -274,7 +274,7 @@ public class ClassConceptFunctionDefinitionAttribute extends
     }
 
     /** Get the correct object from the given token for the specified index
-     *  in the constructor arguments array. Also set the class tpye for the
+     *  in the constructor arguments array. Also set the class type for the
      *  constructor types array. For any primitive Java types represented by
      *  Ptolemy tokens, the primitive class type must be specified for the
      *  constructor argument type array, and not the Object wrapper type. If

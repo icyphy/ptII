@@ -125,7 +125,7 @@ import ptolemy.util.StringUtilities;
    <p>When this director is used in simulation mode, the user sets the
    PtinyOSDirector <i>target</i> parameter to the string "ptII".  In
    addition to the previously mentioned nesC application file (.nc)
-   and a makefile for the application, ththe director will generate a
+   and a makefile for the application, the director will generate a
    Java loader file (.java).  This loader file implements {@link
    ptolemy.domains.ptinyos.kernel.PtinyOSLoader}, which is used as a
    wrapper for calls to JNI methods in TOSSIM.  The director uses the
@@ -401,7 +401,7 @@ public class PtinyOSDirector extends Director {
      *
      *  @param parameter The parameter.
      *  @return The parameter value, or 0 if the port is not connected
-     *  or not found or a token cannot be obtained succesfully.
+     *  or not found or a token cannot be obtained successfully.
      */
     public char getCharParameterValue(String parameter) {
         char parameterValue = 0;

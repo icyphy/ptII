@@ -55,7 +55,7 @@ public class SequencePlotter extends NamedProgramCodeGeneratorAdapter {
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,
-     * <code>printString</code>, or <code>printDouble</code> from SequencyPlotter.j,
+     * <code>printString</code>, or <code>printDouble</code> from SequencePlotter.j,
      * replaces macros with their values and returns the results.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an

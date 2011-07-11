@@ -140,7 +140,7 @@ import javax.sound.sampled.TargetDataLine;
  Thus, it is not possible to call this method too frequently.
  Note that if getSamples() is not called frequently enough,
  the internal buffer will overflow and some audio data will
- be lost, which is generally undersirable. After the consumer
+ be lost, which is generally undesirable. After the consumer
  object no longer wishes to capture audio, it should free up the
  audio system resources by calling the stopCapture(consumer)
  method. It should be noted that only one object may capture

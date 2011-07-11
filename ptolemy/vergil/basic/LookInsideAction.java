@@ -71,7 +71,7 @@ import diva.gui.GUIUtilities;
  *  elements and MoMLModelAttributes, then only one look inside action will be bound
  *  to the shortcut L key even though each action will be accessible from their
  *  individual context menus (See {@link GUIUtilities#addHotKey(javax.swing.JComponent,
- *  javax.swing.Action, javax.swing.KeyStroke) GUIUtilies.addHotKey()}).</p>
+ *  javax.swing.Action, javax.swing.KeyStroke) GUIUtilities.addHotKey()}).</p>
  *  <p>The solution here
  *  is that there is a single class to implement the look inside action that has
  *  two private methods to implement look inside for the normal Ptolemy CompositeEntity

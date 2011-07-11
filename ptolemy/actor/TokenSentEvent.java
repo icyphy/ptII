@@ -35,7 +35,7 @@ import ptolemy.data.Token;
 /**
  An event that is published by IOPorts whenever broadcast, send or
  sendInside is called.  The appropriate event should be published
- whenever a token is transfered from one port to another.  In
+ whenever a token is transferred from one port to another.  In
  Kepler the provenance recorder uses these events to save
  intermediate results of the workflow.  In the future these events
  could be used for "smart" reruns or a fault tolerance mechanism.

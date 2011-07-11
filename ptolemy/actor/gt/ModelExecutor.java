@@ -369,7 +369,7 @@ public class ModelExecutor extends TypedAtomicActor {
                                 //   director.transferOutputs(port);
                                 // Cannot use transferOutputs because it raises
                                 // exception if the tokens inside have already
-                                // been transfered.
+                                // been transferred.
                                 for (int i = 0; i < port.getWidthInside(); i++) {
                                     if (port.hasTokenInside(i)) {
                                         port.send(i, port.getInside(i));

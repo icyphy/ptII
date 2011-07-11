@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  The ports can be added by the addPort() method (or removed
  by the removePort() method.) Local ports and remote ports
  are binded by their names, such that at run time, the tokens
- sent to a local port is transfered to the remote port with
+ sent to a local port is transferred to the remote port with
  the same name.
  <P>
  It has three default parameters, one for name server, one for
@@ -90,7 +90,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  will be thrown.
  <P>
  FIXME: In the current implementation, all the values are
- transfered in the form of a string. This is not type save.
+ transferred in the form of a string. This is not type save.
  Further improvement is needed.
 
  @author Jie Liu
@@ -452,7 +452,7 @@ public class CorbaActorClient extends TypedAtomicActor {
     }
 
     /** Transfer the output data from the remote actor.
-     *  The remote output data is transfered in the form of
+     *  The remote output data is transferred in the form of
      *  String. This method converts the String back to
      *  Token and sends them.
      *  FIXME: This operation is not type-save. Consider better

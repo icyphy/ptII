@@ -819,7 +819,7 @@ public class FixPoint implements Cloneable, Serializable {
      *
      *  @param unscaledIntegerValue The integer value of the scaled
      *  floating point value.
-     *  @param precision The precision to represent the new unscalled value.
+     *  @param precision The precision to represent the new unscaled value.
      *  @exception ArithmeticException when precision is not sufficient
      *  to represent integerValue.
      *

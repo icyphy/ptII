@@ -37,8 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////SharedBufferTransformer
 
 /**
-<h1>Class comments</h1>
-SharedBufferTrasnformer is an abstract ancestor class to be used for filters
+An abstract ancestor class to be used for filters
 using references to shared data frames.
 It implements a default version of the BufferingProfile interface.
 <p>

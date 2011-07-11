@@ -68,7 +68,7 @@ public abstract class AbstractFormBuilder {
 
     /**
      * Holds the instance of <code>FormLayout</code> that is used to
-     * specifiy, fill and layout this form.
+     * specify, fill and layout this form.
      */
     private final FormLayout layout;
 

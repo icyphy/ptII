@@ -70,7 +70,7 @@ public class Loader3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** A String specifiy the name of the file to be opened.  The initial
+    /** The name of the file to be opened.  The initial
      *  default value is "chopper.obj".
      */
     public Parameter filename;

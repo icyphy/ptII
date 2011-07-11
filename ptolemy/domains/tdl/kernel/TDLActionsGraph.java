@@ -140,7 +140,7 @@ public class TDLActionsGraph {
      *            Node from which the reachable Nodes are computed.
      * @param visited
      *            Already visited nodes, used to avoid loops.
-     * @return Set of reachable nodes taht depend on more than one input port or
+     * @return Set of reachable nodes that depend on more than one input port or
      *         contain actions that should happen later than the given node.
      */
     public HashMap<Node, List<TDLAction>> getNextJoinNodes(Node justExecuted,

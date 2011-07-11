@@ -809,7 +809,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  the same length as this array token, and the subtraction is elementwise.
      *  Otherwise, subtract the argument from each element.
      *  This overrides the base class to allow subtraction by scalars.
-     *  @param rightArgument The token to subctract from this token.
+     *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token is
      *   an array token but does not have the same length as this

@@ -78,7 +78,7 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
 
     /**
      * Set the embeddedCCode parameter in the EmbeddedCActor to
-     * contain the contents of the file specifed by codeBlockFile.
+     * contain the contents of the file specified by codeBlockFile.
      * @exception IllegalActionException If there is a problem reading
      * the code block file.
      */

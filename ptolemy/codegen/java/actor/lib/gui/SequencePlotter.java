@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.gui.SequencyPlotter
+/* A code generation helper class for actor.lib.gui.SequencePlotter
 
  @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -55,7 +55,7 @@ public class SequencePlotter extends JavaCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,
-     * <code>printString</code>, or <code>printDouble</code> from SequencyPlotter.j,
+     * <code>printString</code>, or <code>printDouble</code> from SequencePlotter.j,
      * replaces macros with their values and returns the results.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an

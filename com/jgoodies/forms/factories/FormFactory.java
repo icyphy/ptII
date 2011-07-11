@@ -43,7 +43,7 @@ import com.jgoodies.forms.util.LayoutStyle;
  * form layouts. It makes form creation easier and more consistent.<p>
  *
  * <strong>I consider removing the <code>FormLayout</code> factory methods.
- * These seem to be less usefull and may lead to poor layout readability.
+ * These seem to be less useful and may lead to poor layout readability.
  * If you want to use these methods, you may consider copying them
  * to your codebase.</strong><p>
  *

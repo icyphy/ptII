@@ -70,7 +70,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /** Generate plot specfic fire code.
+    /** Generate plot specific fire code.
      *  @param width The width.
      *  @return The generated code.
      *  @exception IllegalActionException If the code stream encounters

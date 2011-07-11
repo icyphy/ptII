@@ -117,7 +117,7 @@ public class FSMReceiver extends AbstractReceiver {
     /** If the argument is 1, there is a token, and the status is known,
      *  then return an array containing the one token. Otherwise, throw
      *  an exception.
-     *  @exception NoTokenException If the status is unknow, if there is
+     *  @exception NoTokenException If the status is unknown, if there is
      *   no token, or if the argument is not 1.
      */
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
