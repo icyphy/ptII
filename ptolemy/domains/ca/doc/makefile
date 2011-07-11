@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Conway's Game Of Life with a Random element demo
+# Makefile for Ptolemy II Cellular Automata domain documentation
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011 The Regents of the University of California.
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ca/demo/ConwayRandom
+ME =		ptolemy/domains/ca/doc
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../..
+
+DIRS =
 
 CLASSPATH =	$(ROOT)
 
@@ -41,16 +43,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ConwayRandom
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	doc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	ConwayRandom.xml \
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
+# Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = \
+	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	ConwayRandom.htm \
-	ConwayRandomVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -58,27 +65,12 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+all:
+	@echo "Nothing to be done in this directory"
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
-all: jclass
-	@echo "To run all the demos, run 'make demo'"
-
-install: all $(PTCLASSJAR)
-
-demo: demo_ptolemy demo_vergil
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer ConwayRandom.htm
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" ConwayRandom.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" ConwayRandom.xml
+install: jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
