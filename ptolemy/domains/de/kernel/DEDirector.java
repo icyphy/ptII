@@ -1295,7 +1295,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  @return true if the earliest event in the event queue is at the
      *  same model time as the event that was just processed. Else if
      *  that event's timestamp is in the future, return false.
-     *  @exception IllegalActionException if model time is set backwords.
+     *  @exception IllegalActionException If model time is set backwards.
      */
     protected boolean _checkForNextEvent() throws IllegalActionException {
         // The following code enforces that a firing of a

@@ -35,7 +35,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * An adapther class for ptolemy.actor.lib.Minimum.
+ * An adapter class for ptolemy.actor.lib.Minimum.
  *
  * @author Christopher Brooks, based on codegen Minimum by Man-Kit Leung, Gang Zhou
  * @version $Id$

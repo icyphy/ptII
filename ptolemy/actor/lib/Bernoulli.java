@@ -106,7 +106,7 @@ public class Bernoulli extends RandomSource {
     ////                         protected methods                 ////
 
     /** Generate a new random number.
-     *  @exception IllegalActionoException If parameter values are incorrect.
+     *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         if (_random.nextDouble() < ((DoubleToken) (trueProbability.getToken()))

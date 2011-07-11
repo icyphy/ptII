@@ -1471,7 +1471,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     ////                         protected variables               ////
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
-     *  We use a end of line charactor so that the files we generate
+     *  We use a end of line character so that the files we generate
      *  have the proper end of line character for use by other native tools.
      */
     protected static final String _eol;

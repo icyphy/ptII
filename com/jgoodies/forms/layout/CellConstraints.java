@@ -452,7 +452,7 @@ public final class CellConstraints implements Cloneable, Serializable {
 
     /**
      * Sets the row, column, width, and height; sets the horizontal
-     * and vertical aligment using the specified alignment objects.
+     * and vertical alignment using the specified alignment objects.
      * The row span (height) is set to 1.<p>
      *
      * <strong>Examples:</strong><pre>
@@ -519,7 +519,7 @@ public final class CellConstraints implements Cloneable, Serializable {
 
     /**
      * Sets the row, column, width, and height; sets the horizontal
-     * and vertical aligment using the specified alignment objects.<p>
+     * and vertical alignment using the specified alignment objects.<p>
      *
      * <strong>Examples:</strong><pre>
      * cc.xywh(1, 3, 2, 1, CellConstraints.LEFT,   CellConstraints.BOTTOM);
@@ -635,7 +635,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * Decodes a string description for the horizontal and vertical alignment
      * and sets this CellConstraints' alignment values.<p>
      *
-     * Valid horizontal aligmnents are: left, middle, right, default, and fill.
+     * Valid horizontal alignments are: left, middle, right, default, and fill.
      * Valid vertical alignments are: top, center, bottom, default, and fill.
      * The anchor's string representation abbreviates the alignment:
      * l, m, r, d, f, t, c, and b.<p>
@@ -794,7 +794,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * alignment, unless it is <code>DEFAULT</code>, where the alignment
      * is inherited from the column or row resp.
      *
-     * @param cellAlignment   this cell's aligment
+     * @param cellAlignment   this cell's alignment
      * @param formSpec        the associated column or row specification
      * @return the concrete alignment
      */

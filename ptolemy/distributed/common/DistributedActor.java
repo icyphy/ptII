@@ -63,7 +63,7 @@ public interface DistributedActor {
 
     /** Return the Internet Address where the distributed actor is executing.
      *
-     *  @return InetAdress the Internet Address where the distributed actor is
+     *  @return InetAddress the Internet Address where the distributed actor is
      *  being executed.
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.

@@ -219,7 +219,7 @@ public class JCanvas extends JComponent implements Printable {
      * paints the canvas into the right buffer and blits it to the
      * on-screen buffer.
      * <p>
-     * Acknowledgement: some of this code was adapted from code
+     * Acknowledgment: some of this code was adapted from code
      * posted by Jonathon Knudsen to the Java2D mailing list, May
      * 1998.
      */

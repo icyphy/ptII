@@ -73,7 +73,7 @@ public interface EventQueueDebugListener extends DebugListener {
     /** Invoked when an event or actor is removed from the event queue.
      *
      *  @param position The position of the event or actor.
-     *  @param isCancelled Whether the removal is due to cancelation or
+     *  @param isCancelled Whether the removal is due to cancellation or
      *   successful processing.
      */
     public void removeEvent(int position, boolean isCancelled);

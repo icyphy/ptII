@@ -299,7 +299,7 @@ public class PtinyOSDirector extends Director {
 
     /** Flag for choosing whether to simulate the model in ptII.  The
      *  value defaults to true, and is of type BooleanToken.  If
-     *  false, this director only generates files and does not atempt
+     *  false, this director only generates files and does not attempt
      *  to simulate the model.
      */
     public SharedParameter simulate;

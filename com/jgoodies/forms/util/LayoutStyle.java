@@ -94,7 +94,7 @@ public abstract class LayoutStyle {
      *
      * @param key   the name of the system property
      * @return the system property's String value, or a blank string
-     *     if there's no such value, or a SecurityException has been catched
+     *     if there's no such value, or a SecurityException has been caught.
      */
     private static String getSystemProperty(String key) {
         try {

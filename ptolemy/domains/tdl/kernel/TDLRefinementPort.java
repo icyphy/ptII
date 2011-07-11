@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * The TDL refinement port represents an acutator and has some TDL specific
+ * The TDL refinement port represents an actuator and has some TDL specific
  * parameters: - frequceny: update frequency - initialValue: at time 0, this
  * initial value is used - fast: if the actuator is connected to a fast task,
  * this parameter is true - slots: string that supports TDL slot selection.

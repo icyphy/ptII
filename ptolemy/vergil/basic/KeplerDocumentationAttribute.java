@@ -187,7 +187,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     /**
      * Populate the members of KeplerDocumentationAttribute from
-     * another given KeplerDccumentationAtttribute.
+     * another given KeplerDocumentationAttribute.
      * @param documentationAttribute The DocumentationAttribute from which to copy attributes.
      */
     public void createInstanceFromExisting(

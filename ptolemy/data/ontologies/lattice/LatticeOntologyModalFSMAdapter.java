@@ -67,7 +67,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  specific defined adapter class. Default actor constraints
      *  are set for this adapter.
      *  @param solver The given solver.
-     *  @param actor The given ActomicActor.
+     *  @param actor The given AtomicActor.
      *  @exception IllegalActionException Thrown if super class throws it.
      */
     public LatticeOntologyModalFSMAdapter(LatticeOntologySolver solver,

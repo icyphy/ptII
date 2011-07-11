@@ -313,7 +313,7 @@ public abstract class GTIngredient {
      *
      *  @param s The string.
      *  @param startPos The start position.
-     *  @param separator The separator charactor.
+     *  @param separator The separator character.
      *  @return The position of the separator, if found, or -1 otherwise.
      */
     protected static int _findSeparator(String s, int startPos, char separator) {

@@ -96,7 +96,7 @@ public class PNDirector extends Director {
      * Generate code for getting data from the specified channel.
      * The generated code waits forever until the receipt of data.
      * Upon return the data can be access through using the
-     * $ref(port#channalNumber) macro.
+     * $ref(port#channelNumber) macro.
      *
      * @param port The specified port.
      * @param channelNumber The specified channel.

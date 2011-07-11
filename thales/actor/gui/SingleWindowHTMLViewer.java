@@ -159,7 +159,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
 
     /**
      * Creates a new Tab to the TabbedPane. Add a "windows closed" listener to
-     * automaticly remove Tabs;
+     * automatically remove Tabs;
      *
      * @param tableau
      */

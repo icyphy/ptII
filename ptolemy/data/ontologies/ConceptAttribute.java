@@ -194,7 +194,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
         return null;
     }
 
-    /** The Concept contained by the ConceptAtribute. */
+    /** The Concept contained by the ConceptAttribute. */
     protected Concept _concept;
 
     //    private Visibility _visibility = Settable.NONE;

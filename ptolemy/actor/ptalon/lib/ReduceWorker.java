@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p> This method defines the Reduce algorithm for the MapReduce
  system.  At each call, it should return a list of Strings, which is a
  reduction of the list of input values.  At each firing, this actor
- inputs all avaiable input keys and values.  It outputs the value
+ inputs all available input keys and values.  It outputs the value
  tokens when its <i>doneReading</i> port recieves a true value.  This
  should only happen after all inputs have been sent to the system.
 

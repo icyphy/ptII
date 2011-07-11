@@ -97,7 +97,7 @@ public class CPort extends TypedIOPort {
      *  @param isOutput True if this is to be an output port.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container is not an instance
-     *   of CActro.
+     *   of CActor.
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */

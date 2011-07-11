@@ -91,7 +91,7 @@ import ptolemy.kernel.util.Workspace;
  </pre>
  Here, <i>portName</i> is the name of a port of the FSM actor,
  If no <i>channelNumber</i> is given, then the value
- is broadcasted to all channels of the port.
+ is broadcast to all channels of the port.
  <p>
  For the <i>setActions</i> parameter, <i>destination</i> is
  <pre>

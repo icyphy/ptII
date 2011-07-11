@@ -167,7 +167,7 @@ public class CodeStream {
     /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
-     * passing an empty array list of argments. The requested
+     * passing an empty array list of arguments. The requested
      * code block is required to exist.
      * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
@@ -181,7 +181,7 @@ public class CodeStream {
     /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
-     * passing an empty array list of argments. The requested
+     * passing an empty array list of arguments. The requested
      * code block is required to exist.
      * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
@@ -198,7 +198,7 @@ public class CodeStream {
     /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
-     * passing an empty array list of argments. The requested
+     * passing an empty array list of arguments. The requested
      * code block is required to exist.
      * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
@@ -1783,7 +1783,7 @@ public class CodeStream {
     private CodeBlockTable _declarations = null;
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
-     *  We use a end of line charactor so that the files we generate
+     *  We use a end of line character so that the files we generate
      *  have the proper end of line character for use by other native tools.
      */
     private static String _eol;

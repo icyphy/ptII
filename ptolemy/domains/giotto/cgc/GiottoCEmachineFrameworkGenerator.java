@@ -946,10 +946,10 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     /** The set of all unique types used. */
     protected Set dataTypes;
 
-    /** The charactor use at the end of a line. */
+    /** The character use at the end of a line. */
     protected String _endLine = "\n";
 
-    /** The charactor to use for a tab. */
+    /** The character to use for a tab. */
     protected String _tabChar = "\t";
 
     /** The declaration of the driver functions and array variables. */

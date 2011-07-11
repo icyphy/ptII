@@ -266,7 +266,7 @@ public class JAIEdgeDetection extends Transformer {
         return new KernelJAI(width, height, floatArray);
     }
 
-    /** A convenience method to help in assinging masks.*/
+    /** A convenience method to help in assigning masks.*/
     private int _maskNumberer(String maskName) throws IllegalActionException {
         if (maskName.equals("Backdiagonal")) {
             return _BACKDIAGONAL;

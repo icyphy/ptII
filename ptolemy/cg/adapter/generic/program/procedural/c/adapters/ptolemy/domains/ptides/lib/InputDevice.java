@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public abstract class InputDevice extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     * Construct an InputDevice adapater.
+     * Construct an InputDevice adapter.
      * @param actor The associated actor.
      */
     public InputDevice(ptolemy.domains.ptides.lib.InputDevice actor) {

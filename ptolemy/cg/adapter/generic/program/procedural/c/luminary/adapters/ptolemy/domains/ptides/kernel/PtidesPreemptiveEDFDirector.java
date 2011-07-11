@@ -90,7 +90,7 @@ public class PtidesPreemptiveEDFDirector
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
-    public StringBuffer generateAsseblyFile() throws IllegalActionException {
+    public StringBuffer generateAssemblyFile() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         // if the outside is already a Ptides director (this could only happen if

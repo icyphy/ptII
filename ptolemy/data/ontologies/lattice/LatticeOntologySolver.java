@@ -849,7 +849,7 @@ public class LatticeOntologySolver extends OntologySolver {
     /** Return the constraint type based on the solver strategy and the
      *  type of the fixed point.
      *  Least fixed points with forward inference give constraints
-     *  that the sinks be greater that the sources, biderectional
+     *  that the sinks be greater that the sources, bidirectional
      *  inference requires sources and sinks to be equal, etc.
      *
      *  @return The enumeration from ConstraintType corresponding to the

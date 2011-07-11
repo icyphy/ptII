@@ -63,7 +63,7 @@ import diva.graph.GraphController;
  context menu commands to highlight dependents and prerequisites.
  A dependent is a downstream actor, and a prerequisite is an upstream
  actor. To use this, drop it onto any actor. The context menu (right click
- or command click) aquires four additional commands to highlight or clear
+ or command click) acquires four additional commands to highlight or clear
  highlights on dependents or prerequisites.
 
  @author Edward A. Lee

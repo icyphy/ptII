@@ -621,7 +621,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
     /** Return true if the value of the given PtalonParameter has
      *  changed.  This method checks for newly assigned values (where
-     *  the value was not previously asigned), changed expression
+     *  the value was not previously assigned), changed expression
      *  values, and changed token values (as a result of a change to
      *  the value of the underlying expression).
      *  @see #attributeChanged(Attribute)

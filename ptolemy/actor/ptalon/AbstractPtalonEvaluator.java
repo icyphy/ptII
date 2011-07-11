@@ -1210,7 +1210,7 @@ public abstract class AbstractPtalonEvaluator {
 
     /** This is a representation of an if/else construct in Ptalon.
      *  The true branch and/or the false branch can point to a set of
-     *  IfTrees.  This class is used when the keyword "if" apears in
+     *  IfTrees.  This class is used when the keyword "if" appears in
      *  the Ptalon source code.  There are no dangling "if"s in Ptalon,
      *  so this class always knows when to use the true or false branch
      *  in the representation.

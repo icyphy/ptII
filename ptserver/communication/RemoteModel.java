@@ -184,7 +184,7 @@ public class RemoteModel {
     }
 
     /** Create the remote attribute map.
-     *  @param attributeNames Set of settable attibute names.
+     *  @param attributeNames Set of settable attribute names.
      */
     public void createRemoteAttributes(Set<String> attributeNames) {
         for (String attributeName : attributeNames) {

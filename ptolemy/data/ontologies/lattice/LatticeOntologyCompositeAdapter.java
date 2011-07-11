@@ -147,7 +147,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      * Return the list of constrained ports given the flag
      * whether source or sink ports should be constrainted.
      * If source ports are constrained, it returns the list
-     * of input ports of the assoicated actor; otherwise, it
+     * of input ports of the associated actor; otherwise, it
      * returns the list of output ports.
      * @param constraintSource The flag that indicates whether
      *  source or sink ports are constrainted.
