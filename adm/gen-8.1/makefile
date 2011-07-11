@@ -1512,6 +1512,7 @@ NONJSALLDIRS = \
 	ptolemy/util \
 	ptolemy/configs \
 	ptserver/actor \
+	ptserver/actor/lib/io \
 	ptserver/communication \
 	ptserver/control \
 	ptserver/data \
