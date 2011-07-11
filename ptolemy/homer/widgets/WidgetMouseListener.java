@@ -58,9 +58,6 @@ package ptolemy.homer.widgets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-
 import org.netbeans.api.visual.widget.Widget;
 
 import ptolemy.homer.gui.WidgetPropertiesFrame;
@@ -84,21 +81,21 @@ public class WidgetMouseListener implements MouseListener {
      * @param e Event object.
      * */
     public void mouseClicked(MouseEvent e) {
-        System.out.println("mouseClicked");
+
         if (e.getClickCount() == 2) {
-            System.out.println(e.getSource().getClass());
-            JPanel glassPane = (JPanel) e.getSource();
-            System.out.println(glassPane.getParent().getClass());
-
-            JLayeredPane layeredPane = (JLayeredPane) glassPane.getParent();
-
-            layeredPane.repaint();
+            //            System.out.println(e.getSource().getClass());
+            //            JPanel glassPane = (JPanel) e.getSource();
+            //            System.out.println(glassPane.getParent().getClass());
+            //
+            //            JLayeredPane layeredPane = (JLayeredPane) glassPane.getParent();
+            //
+            //            layeredPane.repaint();
 
             _widget.revalidate();
 
-            layeredPane.getParent().repaint();
+            // layeredPane.getParent().repaint();
 
-            new WidgetPropertiesFrame(layeredPane, _widget).setVisible(true);
+            new WidgetPropertiesFrame(_widget).setVisible(true);
         }
 
     }

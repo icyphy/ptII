@@ -25,13 +25,11 @@
  */
 package ptolemy.homer.widgets;
 
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JComboBox;
 
 import org.netbeans.api.visual.widget.Scene;
 
@@ -39,14 +37,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-public class SpinnerWidget extends NamedObjectIconWidget {
+public class SpinnerWidget extends NamedObjectImageWidget {
 
     public SpinnerWidget(Scene scene, NamedObj namedObject)
             throws NameDuplicationException, IllegalActionException {
         super(scene, namedObject);
 
         try {
-            BufferedImage img = ImageIO.read(new File("J:/0026.jpg"));
+            BufferedImage img = ImageIO.read(new File("J:/spinner.png"));
 
             setImage(img);
         } catch (IOException e) {
@@ -65,22 +63,7 @@ public class SpinnerWidget extends NamedObjectIconWidget {
         //        addChild(spinnerImg);
     }
 
-    public JComboBox getJComboBox() {
-        return box;
-    }
-
-    protected Rectangle calculateClientArea() {
-        return new Rectangle(box.getPreferredSize());
-    }
-
-    protected void paintWidget() {
-        box.setSize(getBounds().getSize());
-        box.paint(getGraphics());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private final JComboBox box = new JComboBox();
 
 }

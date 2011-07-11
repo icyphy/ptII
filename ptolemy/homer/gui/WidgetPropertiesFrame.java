@@ -55,10 +55,11 @@
 
 package ptolemy.homer.gui;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
 import org.netbeans.api.visual.widget.Widget;
@@ -72,12 +73,14 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
-    public WidgetPropertiesFrame(JLayeredPane layeredPane, Widget widget) {
+    public WidgetPropertiesFrame(Widget widget) {
         initComponents();
-        xTextField.setText(String.valueOf(layeredPane.getX()));
-        yTextField.setText(String.valueOf(layeredPane.getY()));
-        heightTextField.setText(String.valueOf(layeredPane.getHeight()));
-        widthTextField.setText(String.valueOf(layeredPane.getWidth()));
+        xTextField.setText(String.valueOf(widget.getPreferredBounds().getX()));
+        yTextField.setText(String.valueOf(widget.getPreferredBounds().getY()));
+        heightTextField.setText(String.valueOf(widget.getPreferredBounds()
+                .getHeight()));
+        widthTextField.setText(String.valueOf(widget.getPreferredBounds()
+                .getWidth()));
         _widget = widget;
 
     }
@@ -294,7 +297,10 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
             return;
         }
 
-        _widget.setPreferredLocation(new Point(x, y));
+        // _widget.setPreferredLocation(new Point(x, y));
+        _widget.setPreferredBounds(new Rectangle(new Point(x, y),
+                new Dimension(200, 500)));
+
         dispose();
     }
 
