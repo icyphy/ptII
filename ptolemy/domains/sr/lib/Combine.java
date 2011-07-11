@@ -44,7 +44,7 @@ import ptolemy.kernel.util.StringAttribute;
  or no token) using a combine function.
  
  @author Christian Motika
- @version $Id: SRCombine.java 44783 2010-04-01 17:05:17Z $
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating red (cmot)
  @Pt.AcceptedRating red (cmot)
@@ -127,24 +127,24 @@ public class Combine extends TypedAtomicActor {
             _debug("Combine scheduled.");
         }
         
-    	// Check if any ports have known inputs.
-    	for (int i = 0; i < input.getWidth(); i++) {
+            // Check if any ports have known inputs.
+            for (int i = 0; i < input.getWidth(); i++) {
             if (input.isKnown(i) && input.hasToken(i)) {
-    	        _present = true;
-    	        if (_debugging) {
-    	            _debug("Combine: Port " + i + " has token.");
-    	        }
-    	        
-    	        IntToken in = (IntToken) input.get(i);
+                    _present = true;
+                    if (_debugging) {
+                        _debug("Combine: Port " + i + " has token.");
+                    }
+                    
+                    IntToken in = (IntToken) input.get(i);
                 if (in != null) {
                     _value = _updateFunction(in.intValue(), _value);
-                }    	        
+                }                    
             }
-    	}
+            }
 
-    	if (!_present) {
+            if (!_present) {
             if (_debugging) {
-    	        _debug("Checking iff unknown by all connected ports");
+                    _debug("Checking iff unknown by all connected ports");
             }
             //check if all ports are cleared (known w/o any token)
             boolean allKnown = true;
@@ -157,13 +157,13 @@ public class Combine extends TypedAtomicActor {
                 output.sendClear(0);
                 value.sendClear(0);
             }
-    	}
-    	else  {
+            }
+            else  {
             // Send out integer token if presentToken
             _debug("Sending value "+_value+" out");
             output.send(0, new IntToken(1));
             value.send(0, new IntToken(_value));
-    	}
+            }
     }
 
     /** This actor must be *NON-strict* because it must not wait for more than
@@ -181,7 +181,7 @@ public class Combine extends TypedAtomicActor {
         //cleanup for next run
         _present = false;
         resetValue();
-    	  return true;
+              return true;
     }
     
     /** Set the RailwayInterface and open a TCP connection to the
@@ -191,7 +191,7 @@ public class Combine extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-  	//cleanup for first run
+          //cleanup for first run
         _present = false;
         resetValue();
     }
@@ -199,12 +199,12 @@ public class Combine extends TypedAtomicActor {
     /** This should reset the value according to the current combine function. 
      */
     private void resetValue() {
-    	if (_function == _MINIMUM)
-    		_value = 10000000;
-    	else if ((_function == _MULTIPLY)||(_function == _AND))
-    		_value = 1;
-    	else
-    		_value = 0;
+            if (_function == _MINIMUM)
+                    _value = 10000000;
+            else if ((_function == _MULTIPLY)||(_function == _AND))
+                    _value = 1;
+            else
+                    _value = 0;
     }
 
     /** Terminate the TCP connection of the Model Railway interface.
@@ -214,7 +214,7 @@ public class Combine extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
-    	super.wrapup();
+            super.wrapup();
     }
 
     /** Calculate the function on the given arguments.
@@ -232,36 +232,36 @@ public class Combine extends TypedAtomicActor {
                     "Combine actor (" + getFullName() + ")" +
                     " function must not be NONE");
         }
-        	
+                
         switch (_function) {
-        	case _CONSTANT:
-        		result = _constValue;
-        		break;
-        	case _ADD:
-        		result = old + in;
-        		break;
-        	case _MULTIPLY:
-        		result = old * in;
-        		break;
-        	case _MAXIMUM:
-        		if (in > old) result = in;
-        		else          result = old; 
-        		break;
-        	case _MINIMUM:
-        		if (in < old) result = in;
-        		else          result = old; 
-        		break;
-        	case _AND:
-        		//assume: 1 true, 0 false
-        		if ((old == 0)||(in ==0)) result = 0;
-        		else result = 1;
-        		break;
-        	case _OR:
-        		//assume: 1 true, 0 false
-        		if ((old == 1)||(in == 1)) result = 1;
-        		else result = 0;
-        		break;
-        	default:
+                case _CONSTANT:
+                        result = _constValue;
+                        break;
+                case _ADD:
+                        result = old + in;
+                        break;
+                case _MULTIPLY:
+                        result = old * in;
+                        break;
+                case _MAXIMUM:
+                        if (in > old) result = in;
+                        else          result = old; 
+                        break;
+                case _MINIMUM:
+                        if (in < old) result = in;
+                        else          result = old; 
+                        break;
+                case _AND:
+                        //assume: 1 true, 0 false
+                        if ((old == 0)||(in ==0)) result = 0;
+                        else result = 1;
+                        break;
+                case _OR:
+                        //assume: 1 true, 0 false
+                        if ((old == 1)||(in == 1)) result = 1;
+                        else result = 0;
+                        break;
+                default:
                 throw new IllegalActionException(
                         "Invalid value for _function private variable. "
                                 + "Combine actor (" + getFullName() + ")"
@@ -295,15 +295,15 @@ public class Combine extends TypedAtomicActor {
             } else if (functionName.equals("or")) {
                 _function = _OR;
             } else {
-            	try {
-            		_constValue = Integer.parseInt(function.getValueAsString());
-            		_function = _CONSTANT;
-            	} catch(Exception e){
+                    try {
+                            _constValue = Integer.parseInt(function.getValueAsString());
+                            _function = _CONSTANT;
+                    } catch(Exception e){
                     throw new IllegalActionException(this,
                             "Unrecognized synchronous signal combine function: " + functionName
                                     + ". Valid combine functions are 'add', 'mult', 'max', "
                                     + "'min', 'and', 'or' and any constant number.");
-            	}
+                    }
             }
         } else {
             super.attributeChanged(attribute);

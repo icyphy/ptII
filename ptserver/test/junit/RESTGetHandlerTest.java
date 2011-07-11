@@ -45,7 +45,7 @@ import ptserver.actor.lib.io.RESTGetHandler;
  * code coverage.  However, the actor's results are not checked here.
  * For results checking, please run the model in ptserver.actor.lib.io.test
  * @author ltrnc
- * @version $Id: RESTGetHandlerTest.java 59625 2010-10-20 23:55:35Z ltrnc $
+ * @version $Id$
  * @see ptolemy.apps.graph.MinimumDistanceCalculatorTest
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ltrnc)

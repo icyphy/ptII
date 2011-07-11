@@ -130,7 +130,7 @@ public class SlaveClock extends TypedAtomicActor {
         Director director = getDirector();
         if (!(director instanceof PtidesBasicDirector)) {
             throw new IllegalActionException(this, "This actor can only " +
-            		"work under a Ptides director.");
+                            "work under a Ptides director.");
         }
     }
 

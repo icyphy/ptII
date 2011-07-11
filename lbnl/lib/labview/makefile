@@ -1,6 +1,6 @@
 # Makefile for Building Controls Virtual Test Bed Matlab Files
 #
-# @Version: $Id: makefile 54904 2009-07-10 18:06:35Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only) based on file by Zoltan Kemenczy
 #
 # @Copyright (c) 2009 The Regents of the University of California

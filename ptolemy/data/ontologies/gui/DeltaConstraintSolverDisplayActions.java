@@ -50,7 +50,7 @@ import diva.graph.GraphController;
  some additional actions specific to the DeltaConstraintSolver and subclasses.
 
  @author Beth Latronico
- @version $Id: DeltaConstraintSolverDisplayActions.java 58082 2010-06-11 15:24:37Z cxh $
+ @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (ltrnc)
  @Pt.AcceptedRating Red (ltrnc)
