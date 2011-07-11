@@ -103,9 +103,9 @@ public class VariableDelayCounter extends VariableDelay {
 
         // consume input
         if (input.hasToken(0)) {
-            _currentInput = input.get(0);
+            _currentOutput = input.get(0);
         } else {
-            _currentInput = null;
+            _currentOutput = null;
         }
 
         // produce output
@@ -166,9 +166,9 @@ public class VariableDelayCounter extends VariableDelay {
         }
 
         // Process the current input.
-        if (_currentInput != null) {
+        if (_currentOutput != null) {
             _delayedOutputTokens
-                    .put(new TimedEvent(delayToTime, _currentInput));
+                    .put(new TimedEvent(delayToTime, _currentOutput));
             _fireAt(delayToTime);
         }
 
