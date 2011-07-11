@@ -11,9 +11,9 @@
 # The first thing to do is to generate a list of new files
 # by running diff between the old release and the new release
 
-oldVersion=7.0.1
+oldVersion=8.0.1
 newVersion=8.1.devel
-sinceVersion=8.0
+sinceVersion=8.1
 
 #diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs

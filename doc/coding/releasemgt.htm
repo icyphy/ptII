@@ -274,11 +274,11 @@ grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $
 Then, edit <code>$PTII/adm/copyright/copyright.txt</code>
 and <code>$PTII/adm/copyright/insertcopyright</code> and run
 <pre>
-adm/copyright/insertcopyright -p `cat /tmp/j`
+adm/copyright/insertcopyright -p `cat /tmp/jc`
 </pre>
 and then
 <pre>
-adm/copyright/insertcopyright `cat /tmp/j`
+adm/copyright/insertcopyright `cat /tmp/jc`
 </pre>
 
 <li> Check out all the files again so we can build a release:

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2001-2005 The Regents of the University of California.
+  Copyright (c) 2001-2011 The Regents of the University of California.
   All rights reserved.
   Permission is hereby granted, without written agreement and without
   license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,7 @@ import java.net.URI;
 
     @author Christopher Hylands
     @version $Id$
-    @since Ptolemy II 2.0
+    @since Ptolemy II 8.1
     @Pt.ProposedRating Green (cxh)
     @Pt.AcceptedRating Red
 */

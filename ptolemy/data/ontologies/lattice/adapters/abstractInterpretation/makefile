@@ -4,7 +4,7 @@
 #
 # $Id: makefile 58592 2010-07-13 21:37:06Z bldmastr $
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 2010-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

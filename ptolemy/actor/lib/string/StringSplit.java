@@ -1,6 +1,6 @@
 /* An actor that outputs strings read from a text file or URL.
 
- @Copyright (c) 2002-2010 The Regents of the University of California.
+ @Copyright (c) 2002-2011 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 8.2
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */

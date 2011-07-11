@@ -1,7 +1,7 @@
 /* A simple adapter for expressions that just connects the output port to the
  *  overall expression result.
  *
- * Copyright (c) 2010 The Regents of the University of California. All
+ * Copyright (c) 2010-2011 The Regents of the University of California. All
  * rights reserved.
  *
  * Permission is hereby granted, without written agreement and without license

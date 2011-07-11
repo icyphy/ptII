@@ -87,7 +87,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 #gmake USER=bldmastr PTIIHOME=/export/home1/bldmastr/ptII PTIIADM=/export/home1/bldmastr/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar
 #make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar clean all src.jar setup
-
+# nohup make USER=cxh PTIIHOME=/home/cxh/tmp/ptII PTIIADM=/home/cxh/tmp/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/java/jdk1.6.0_21/bin/jar clean all src.jar setup
 
 USER =		ptII
 PTIIHOME =	/users/ptII

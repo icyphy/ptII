@@ -1,6 +1,6 @@
 /* A simple interface for Vergil GUI actions performed on the model.
 
- Copyright (c) 2010 The Regents of the University of California.
+ Copyright (c) 2010-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ to trigger it.
 
 @author  Christian Motika
 @version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
-@since Ptolemy II 2.1
+@since Ptolemy II 8.1
 @Pt.ProposedRating Red (cmot)
 @Pt.AcceptedRating Red (cmot)
 */

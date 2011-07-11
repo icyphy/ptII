@@ -1,6 +1,6 @@
 /* An attribute that varies the WCET values of actors.
  *
- @Copyright (c) 2010 The Regents of the University of California.
+ @Copyright (c) 2010-2011 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -121,7 +121,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  * @author Shanna-Shaye Forbes. Based on the MonitorReceiverContents.java
  * created by Edward A. Lee and RandomSource.java by Edward A. Lee, Steve Neuendorffer, Elaine Cheong
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (sssf)
  *  @Pt.AcceptedRating Red (sssf)
  */

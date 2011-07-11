@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
 #
-# @Copyright (c) 2011 The Regents of the University of California.
+# @Copyright (c) 2011-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

@@ -53,7 +53,7 @@ package ptolemy.actor.gui.jnlp;
 
  @author Christopher Hylands
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

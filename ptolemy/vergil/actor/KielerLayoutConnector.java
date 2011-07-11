@@ -1,6 +1,6 @@
 /* KIELER Bend Points with Manhattan Geometry Link.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 1998-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,7 +54,7 @@ import diva.util.java2d.Polyline2D;
  * to relations.
  *
  * @author Christian Motika
- * @since Ptolemy II 8.2
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cmot)
  */
 

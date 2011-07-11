@@ -51,7 +51,7 @@ import javax.swing.JToolBar;
  *
  * @author Aaron Schultz
  * @version $Id$
- * @since Ptolemy II 1.0
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

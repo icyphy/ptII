@@ -1,7 +1,7 @@
 /*
  Platform independent container for placing UI components into itself.
 
- Copyright (c) 2011 The Regents of the University of California.
+ Copyright (c) 2011-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,7 +36,7 @@ package ptolemy.actor.gui;
  *
  *  @author Anar Huseynov
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */

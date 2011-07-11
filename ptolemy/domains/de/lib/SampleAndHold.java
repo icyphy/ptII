@@ -1,7 +1,7 @@
 /* An actor that produces a copy of the most recent input each time
  the trigger input receives an event.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 1998-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -87,7 +87,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
  @version $Id$
- @since Ptolemy II 0.3
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (eal)
  @see ptolemy.domains.de.lib.Inhibit
