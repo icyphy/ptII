@@ -71,6 +71,7 @@ public class PortablePlaceableWidget extends NamedObjectWidget implements
         final JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(null);
         final JPanel glassPane = new JPanel();
+
         glassPane.setOpaque(false);
         Dimension dimension = new Dimension(300, 200);
         glassPane.setSize(dimension);
@@ -82,7 +83,7 @@ public class PortablePlaceableWidget extends NamedObjectWidget implements
         glassPane.addKeyListener(new KeyAdapter() {
         });
         glassPane.addMouseMotionListener(mouseAdapter);
-        glassPane.addMouseListener(mouseAdapter);
+        glassPane.addMouseListener(new WidgetMouseListener(this));
         glassPane.addMouseWheelListener(mouseAdapter);
 
         final JPanel containerPanel = new JPanel();

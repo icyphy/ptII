@@ -53,6 +53,18 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
      * @param namedObject
      * @param imageURL
      */
+    public NamedObjectImageWidget(Scene scene, NamedObj namedObject) {
+        super(scene);
+        _namedObject = namedObject;
+        setCheckClipping(true);
+    }
+
+    /**
+     * TODO
+     * @param scene
+     * @param namedObject
+     * @param imageURL
+     */
     public NamedObjectImageWidget(Scene scene, NamedObj namedObject,
             URL imageURL) {
         super(scene);

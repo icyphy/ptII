@@ -53,6 +53,7 @@ public class NamedObjectWidget extends Widget implements
         super(scene);
         _namedObject = namedObject;
         setCheckClipping(true);
+
     }
 
     /* TODO
@@ -67,4 +68,5 @@ public class NamedObjectWidget extends Widget implements
      * TODO
      */
     private final NamedObj _namedObject;
+
 }
